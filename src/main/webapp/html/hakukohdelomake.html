@@ -9,13 +9,49 @@
 
 <div class="tabsheets">
 <form name="form" ng-submit="submit()">
+
     <div class="form-row">
-        <label class="form-row-label" for="oid">OID</label>
+        <label class="form-row-label" for="">Hakukohteen nimi</label>
+
+        <div class="form-row-content width-60">
+            <input  class="width-60" type="text" name="nimi" ng-model="model.hakukohde.nimi" required />
+            <!--
+            <br/>
+            <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla cursus quam nec risus scelerisque rhoncus. Donec vitae dolor eu tortor pretium dictum. Suspendisse lobortis magna id ipsum facilisis dapibus.</small>
+            -->
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="form-row">
+        <label class="form-row-label" for="oid">Hakukohdekoodi:</label>
 
         <div class="form-row-content">
-            <!--{{model.hakukohde.oid}}-->
-            <input class="width-60" type="text" name="oid" ng-model="model.hakukohde.oid" required />
+            <!--{{model.hakukohde.oid}}
+            <input class="width-60" type="text" name="oid" ng-model="model.hakukohde.oid" required />         -->
+            {{model.hakukohde.oid}}
+        </div>
+        <div class="clear"></div>
+    </div>
 
+    <div class="form-row">
+        <label class="form-row-label" for="oid">Hakukohteen tunniste (oid);</label>
+
+        <div class="form-row-content">
+            <!--{{model.hakukohde.oid}}
+            <input class="width-60" type="text" name="oid" ng-model="model.hakukohde.oid" required />         -->
+             {{model.hakukohde.oid}}
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="form-row">
+        <label class="form-row-label" for="oid">Haun Tunniste (oid):</label>
+
+        <div class="form-row-content">
+            <!--{{model.hakukohde.oid}}
+            <input class="width-60" type="text" name="oid" ng-model="model.hakukohde.oid" required />         -->
+            {{model.hakukohde.hakuoid}}
         </div>
         <div class="clear"></div>
     </div>
@@ -41,18 +77,7 @@
         <div class="clear"></div>
     </div>
 
-    <div class="form-row">
-        <label class="form-row-label" for="">Hakukohteen nimi</label>
 
-        <div class="form-row-content width-60">
-            <input  class="width-60" type="text" name="nimi" ng-model="model.hakukohde.nimi" required />
-            <!--
-            <br/>
-            <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla cursus quam nec risus scelerisque rhoncus. Donec vitae dolor eu tortor pretium dictum. Suspendisse lobortis magna id ipsum facilisis dapibus.</small>
-            -->
-        </div>
-        <div class="clear"></div>
-    </div>
 
     <!--
     <div class="form-row">
