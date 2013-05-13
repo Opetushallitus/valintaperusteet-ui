@@ -49,7 +49,8 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 					tunniste: model.valintakoe.tunniste,
 					nimi: model.valintakoe.nimi,
 					kuvaus: model.valintakoe.kuvaus,
-					laskentakaavaId: laskentakaavaId
+					laskentakaavaId: laskentakaavaId,
+					aktiivinen: true
 				}
 
 				ValinnanvaiheValintakoe.insert({valinnanvaiheOid: parentValintakoeValinnanvaiheOid},valintakoe, function(result) {
