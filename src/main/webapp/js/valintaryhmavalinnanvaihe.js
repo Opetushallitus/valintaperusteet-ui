@@ -128,6 +128,8 @@ app.factory('ValintaryhmaValintakoeValinnanvaiheModel', function(Valinnanvaihe, 
 
         this.persist = function(parentValintaryhmaOid, valinnanvaiheet) {
             if(model.valintakoevalinnanvaihe.oid) {
+
+                //update valintaryhmävalinnanvaihe
                 Valinnanvaihe.post(model.valintakoevalinnanvaihe, function(result) {
                     var i;
                     for(i in valinnanvaiheet) {
@@ -136,8 +138,20 @@ app.factory('ValintaryhmaValintakoeValinnanvaiheModel', function(Valinnanvaihe, 
                         }
                     }
                 });
+
+                
+                for (var i = 0 ; i < model.valintakokeet.length ; i++) {
+                    
+                    Valintakoe.update({valintakoeOid: model.valintakokeet[i].oid}, model.valintakokeet[i], function(result) {
+
+                    });
+                      
+                }
+
+                
+
             } else {
-               
+                
                 var valintakoevalinnanvaihe = {
                     nimi: model.valintakoevalinnanvaihe.nimi,
                     kuvaus: model.valintakoevalinnanvaihe.kuvaus,
