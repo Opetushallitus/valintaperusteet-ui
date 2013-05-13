@@ -129,7 +129,7 @@ app.factory('ValintaryhmaValintakoeValinnanvaiheModel', function(Valinnanvaihe, 
         this.persist = function(parentValintaryhmaOid, valinnanvaiheet) {
             if(model.valintakoevalinnanvaihe.oid) {
 
-                //update valintaryhmävalinnanvaihe
+                //päivitä valintaryhmän valintakoevalinnanvaiheen tiedot
                 Valinnanvaihe.post(model.valintakoevalinnanvaihe, function(result) {
                     var i;
                     for(i in valinnanvaiheet) {
@@ -139,12 +139,10 @@ app.factory('ValintaryhmaValintakoeValinnanvaiheModel', function(Valinnanvaihe, 
                     }
                 });
 
-                
+                //päivitä valintaryhmän valintakoevalinnanvaiheen valintakokeet
                 for (var i = 0 ; i < model.valintakokeet.length ; i++) {
                     
-                    Valintakoe.update({valintakoeOid: model.valintakokeet[i].oid}, model.valintakokeet[i], function(result) {
-
-                    });
+                    Valintakoe.update({valintakoeOid: model.valintakokeet[i].oid}, model.valintakokeet[i], function(result) {});
                       
                 }
 

@@ -145,15 +145,22 @@ app.factory('HakukohdeValintakoeValinnanvaiheModel', function($q,HakukohdeValinn
 
         this.persist = function(parentHakukohdeOid, valinnanvaiheet) {
             if(model.valintakoevalinnanvaihe.oid) {
+
+                //päivitä hakukohteen valintakoevalinnanvaiheen tiedot
                 Valinnanvaihe.post(model.valintakoevalinnanvaihe, function(result) {
                     var i;
-                    //update valinnanvaihe in ValintaryhmaModel
                     for(i in valinnanvaiheet) {
                         if(result.oid === valinnanvaiheet[i].oid) {
                             valinnanvaiheet[i] = result;
                         }
                     }
                 });
+
+                //päivitä hakukohteen valintakoevalinnanvaiheen valintakokeet
+                for (var i = 0 ; i < model.valintakokeet.length ; i++) {
+                    Valintakoe.update({valintakoeOid: model.valintakokeet[i].oid}, model.valintakokeet[i], function(result) {});
+                }
+                
             } else {
                 var valintakoevalinnanvaihe = {
                     nimi: model.valintakoevalinnanvaihe.nimi,
