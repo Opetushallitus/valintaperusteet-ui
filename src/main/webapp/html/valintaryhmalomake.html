@@ -55,15 +55,24 @@
                             <span ng-hide="data.inheritance" class="btn remove" ng-click="model.removeValinnanvaihe(data)"></span>
                         </td>
                     </tr>
+                    
                 </tbody>
 
             </table>
-
         </div>
         <div class="clear"></div>
     </div>
 
-
+    <div class="form-row ">
+        <label class="form-row-label">Lisää hakukohdekoodi</label>
+        <div class="form-row-content">
+            <div class="nofield">
+                <input type="text" id="uusiHakukohdeUri" ng-model="uusiHakukohdeUri" />
+                <button class="margin-bottom-0 small" ng-click="addHakukohdeUri()">Lisää hakukohdekoodi</button>
+            </div>        
+        </div>
+        <div class="clear"></div>
+    </div>
 
 
 	<!--

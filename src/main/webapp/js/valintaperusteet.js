@@ -87,11 +87,20 @@ return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid/valinnanvaihe",
     get: {method: "GET", isArray: true}
   });
 });
+
 app.factory('NewValintaryhmaValinnanvaihe', function($resource) {
 return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:valintaryhmaOid/valinnanvaihe", {valintaryhmaOid: "@valintaryhmaOid"}, {
     put: {method: "PUT"}
   });
 });
+
+app.factory('ValintaryhmaHakukohdekoodi', function($resource) {
+return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:valintaryhmaOid/hakukohdekoodi", {valintaryhmaOid: "@valintaryhmaOid"}, {
+    insert: {method: "PUT" }, //one
+    post: {method: "POST"} //array
+  });
+});
+
 
 
 
