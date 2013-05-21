@@ -83,7 +83,21 @@ app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, Chil
         this.addHakukohdeUri = function(hakukohdekoodiUri) {
             model.hakukohdekoodit.some(function (koodi) {
                 if(koodi.koodiUri == hakukohdekoodiUri) {
-                    var hakukohdekoodi = {"uri": koodi.koodiUri, "arvo":koodi.koodiArvo};
+                    var hakukohdekoodi = {"uri": koodi.koodiUri,
+                                         "arvo":koodi.koodiArvo};
+
+                    koodi.metadata.forEach(function(metadata){
+                        if(metadata.kieli == "FI") {
+                            hakukohdekoodi.nimiFi = metadata.nimi;
+                        } else if(metadata.kieli == "SV") {
+                            hakukohdekoodi.nimiSv = metadata.nimi;
+                        } else if(metadata.kieli == "EN") {
+                            hakukohdekoodi.nimiEn = metadata.nimi;
+                        }
+                    });
+
+                    console.log(hakukohdekoodi);
+
                     //persist valintaryhma with added hakukohdekoodiuri
                     ValintaryhmaHakukohdekoodi.insert({valintaryhmaOid: model.valintaryhma.oid}, hakukohdekoodi, function(result) {
                         model.valintaryhma.hakukohdekoodit.push(result);

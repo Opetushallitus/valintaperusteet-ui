@@ -45,12 +45,16 @@
                 <thead>
                 <tr>
                     <th>koodi</th>
+                    <th>arvo</th>
+                    <th>nimi</th>
                     <th>poista</th>
                 </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="hakukohdekoodi in model.valintaryhma.hakukohdekoodit">
                         <td class="align-center">{{hakukohdekoodi.uri}}</td>
+                        <td class="align-center">{{hakukohdekoodi.arvo}}</td>
+                        <td class="align-center">{{hakukohdekoodi.nimiFi}}</td>
                         <td class="align-center">
                             <span class="btn remove" ng-click="removeHakukohdeKoodi(hakukohdekoodi)"></span>
                         </td>
@@ -65,12 +69,11 @@
 
     <div class="form-row ">
         <label class="form-row-label">Lisää hakukohdekoodi</label>
-        <div class="form-row-content">
-            <div class="nofield">
-            <input name="hakukohdekoodit" type="text" id="uusiHakukohdeUri" ng-model="uusiHakukohdeUri" list="hakukohdekoodit"/>
+        <div class="form-row-content width-60">
+            <input class="width-60" name="hakukohdekoodit" type="text" id="uusiHakukohdeUri" ng-model="uusiHakukohdeUri" list="hakukohdekoodit"/>
             <datalist id="hakukohdekoodit">
                 <!--[if IE 9]><select disabled style="display:none"><![endif]-->
-                <option ng-repeat="data in model.hakukohdekoodit" value="{{data.koodiUri}}"></option>
+                <option ng-repeat="data in model.hakukohdekoodit" value="{{data.koodiUri}}">{{data.metadata[0].nimi}}</option>
                 <!--[if IE 9]></select><![endif]-->
             </datalist>
 
