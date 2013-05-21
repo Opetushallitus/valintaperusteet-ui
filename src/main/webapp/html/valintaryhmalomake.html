@@ -49,10 +49,10 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="data in model.valintaryhma.hakukohdekoodit">
-                        <td class="align-center">{{data.uri}}</td>
+                    <tr ng-repeat="hakukohdekoodi in model.valintaryhma.hakukohdekoodit">
+                        <td class="align-center">{{hakukohdekoodi.uri}}</td>
                         <td class="align-center">
-                            <span ng-hide="data.inheritance" class="btn remove" ng-click="model.removeValinnanvaihe(data)"></span>
+                            <span class="btn remove" ng-click="removeHakukohdeKoodi(hakukohdekoodi)"></span>
                         </td>
                     </tr>
                     

@@ -89,7 +89,20 @@ app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, Chil
             
         };
 
+        this.removeHakukohdeKoodi = function(hakukohdekoodi) {
+            var hakukohdekoodit,index;
+            
+            hakukohdekoodit = model.valintaryhma.hakukohdekoodit; 
+            index = hakukohdekoodit.indexOf(hakukohdekoodi);
 
+            if(index !== -1) {
+                hakukohdekoodit.splice(index,1);
+            }
+            
+            ValintaryhmaHakukohdekoodi.post({valintaryhmaOid: model.valintaryhma.oid}, hakukohdekoodit, function(result) {
+                
+            });
+        }
 
     }
 
@@ -124,6 +137,10 @@ function valintaryhmaController($scope, $location, $routeParams, ValintaryhmaMod
 
     $scope.toValintaryhmaForm = function() {
         $location.path("/valintaryhma/" + $scope.valintaryhmaOid);
+    }
+
+    $scope.removeHakukohdeKoodi = function(hakukohdekoodi) {
+        $scope.model.removeHakukohdeKoodi(hakukohdekoodi);
     }
 }
 
