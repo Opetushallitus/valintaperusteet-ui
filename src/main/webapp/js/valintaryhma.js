@@ -1,9 +1,10 @@
 
-app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, ChildHakukohdes, Valinnanvaihe, ValintaryhmaValinnanvaihe, Treemodel, ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi) {
+app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, ChildHakukohdes, Valinnanvaihe, ValintaryhmaValinnanvaihe, Treemodel, ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, KoodistoHakukohdekoodi) {
 
     var model = new function() {
         this.valintaryhma = {};
         this.valinnanvaiheet =[];
+        this.hakukohdekoodit = [];
 
         this.refresh = function(oid) {
             if(!oid) {
@@ -18,6 +19,9 @@ app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, Chil
                     model.valinnanvaiheet = result;
                 });
 
+                KoodistoHakukohdekoodi.get(function(result) {
+                    model.hakukohdekoodit = result;
+                });
             }
         };
 
@@ -76,16 +80,18 @@ app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, Chil
             return type;
         };
 
-        this.addHakukohdeUri = function(hakukohdekoodiuri) {
-            var hakukohdekoodiUriObj = {
-                uri: hakukohdekoodiuri,
-                arvo: "staticvalue"
-            }
-            
-            //persist valintaryhma with added hakukohdekoodiuri
-            ValintaryhmaHakukohdekoodi.insert({valintaryhmaOid: model.valintaryhma.oid}, hakukohdekoodiUriObj, function(result) {
-                model.valintaryhma.hakukohdekoodit.push(result);
+        this.addHakukohdeUri = function(hakukohdekoodiUri) {
+            model.hakukohdekoodit.some(function (koodi) {
+                if(koodi.koodiUri == hakukohdekoodiUri) {
+                    var hakukohdekoodi = {"uri": koodi.koodiUri, "arvo":koodi.koodiArvo};
+                    //persist valintaryhma with added hakukohdekoodiuri
+                    ValintaryhmaHakukohdekoodi.insert({valintaryhmaOid: model.valintaryhma.oid}, hakukohdekoodi, function(result) {
+                        model.valintaryhma.hakukohdekoodit.push(result);
+                    });
+                    return true;
+                }
             });
+
             
         };
 
@@ -100,7 +106,7 @@ app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, Chil
             }
             
             ValintaryhmaHakukohdekoodi.post({valintaryhmaOid: model.valintaryhma.oid}, hakukohdekoodit, function(result) {
-                
+
             });
         }
 
@@ -203,12 +209,6 @@ function ValintaryhmaCreatorController($scope, $location, $routeParams, Valintar
     }
 
 }
-
-
-
-
-
-
 
 
 

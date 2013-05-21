@@ -1,7 +1,8 @@
 var app = angular.module('valintaperusteet', ['ngResource', 'loading']);
 
-var SERVICE_URL_BASE = SERVICE_URL_BASE || ""
-var TEMPLATE_URL_BASE = TEMPLATE_URL_BASE || ""
+var SERVICE_URL_BASE = SERVICE_URL_BASE || "";
+var TEMPLATE_URL_BASE = TEMPLATE_URL_BASE || "";
+var KOODISTO_URL_BASE = KOODISTO_URL_BASE || "";
 
 //Route configuration
 app.config(function($routeProvider) {
@@ -97,7 +98,13 @@ return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:valintaryhmaOid/val
 app.factory('ValintaryhmaHakukohdekoodi', function($resource) {
 return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:valintaryhmaOid/hakukohdekoodi", {valintaryhmaOid: "@valintaryhmaOid"}, {
     insert: {method: "PUT" }, //one
-    post: {method: "POST"} //array
+    post: {method: "POST", isArray: true} //array
+  });
+});
+
+app.factory('KoodistoHakukohdekoodi', function($resource) {
+return $resource(KOODISTO_URL_BASE + "json/hakukohteet/koodi", {}, {
+    get: {method: "GET", isArray: true}
   });
 });
 

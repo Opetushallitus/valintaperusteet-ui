@@ -16,11 +16,15 @@ public class ConfigController {
     @Value("${valintaperusteet-ui.valintaperuste-service-url.rest}")
     private String valintaperusteServiceRestURL;
 
+    @Value("${valintaperusteet-ui.koodisto-service-url.rest}")
+    private String koodistoServiceRestURL;
+
     @RequestMapping(value="/configuration.js", method = RequestMethod.GET, produces="text/javascript")
     @ResponseBody
     public String index() {
         StringBuilder b = new StringBuilder();
         append(b, "SERVICE_URL_BASE", valintaperusteServiceRestURL);
+        append(b, "KOODISTO_URL_BASE", koodistoServiceRestURL);
         append(b, "TEMPLATE_URL_BASE", "");
         return b.toString();
     }

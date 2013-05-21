@@ -67,9 +67,14 @@
         <label class="form-row-label">Lisää hakukohdekoodi</label>
         <div class="form-row-content">
             <div class="nofield">
-                <input type="text" id="uusiHakukohdeUri" ng-model="uusiHakukohdeUri" />
-                <button class="margin-bottom-0 small" ng-click="addHakukohdeUri()">Lisää hakukohdekoodi</button>
-            </div>        
+            <input name="hakukohdekoodit" type="text" id="uusiHakukohdeUri" ng-model="uusiHakukohdeUri" list="hakukohdekoodit"/>
+            <datalist id="hakukohdekoodit">
+                <!--[if IE 9]><select disabled style="display:none"><![endif]-->
+                <option ng-repeat="data in model.hakukohdekoodit" value="{{data.koodiUri}}"></option>
+                <!--[if IE 9]></select><![endif]-->
+            </datalist>
+
+            <button class="margin-bottom-0 small" ng-click="addHakukohdeUri()" ng-disabled="!model.hakukohdekoodit.length">Lisää hakukohdekoodi</button>
         </div>
         <div class="clear"></div>
     </div>
@@ -112,8 +117,6 @@
 		</div>
 		<div class="clear"></div>
 	</div>
-
-
 	-->
 
 
