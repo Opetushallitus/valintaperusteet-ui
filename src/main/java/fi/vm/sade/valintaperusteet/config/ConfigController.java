@@ -22,6 +22,11 @@ public class ConfigController {
     @Value("${valintaperusteet-ui.tarjona-service-url.rest}")
     private String tarjontaServiceRestURL;
 
+    @Value("${valintaperusteet-ui.valintalaskentakoostepalvelu-service-url.rest}")
+    private String valintalaskentakoostepalvelu;
+
+
+
     @RequestMapping(value="/configuration.js", method = RequestMethod.GET, produces="text/javascript")
     @ResponseBody
     public String index() {
@@ -29,6 +34,8 @@ public class ConfigController {
         append(b, "SERVICE_URL_BASE", valintaperusteServiceRestURL);
         append(b, "KOODISTO_URL_BASE", koodistoServiceRestURL);
         append(b, "TARJONTA_URL_BASE", tarjontaServiceRestURL);
+        append(b, "VALINTALASKENTAKOOSTE_URL_BASE", valintalaskentakoostepalvelu);
+
         append(b, "TEMPLATE_URL_BASE", "");
         return b.toString();
     }

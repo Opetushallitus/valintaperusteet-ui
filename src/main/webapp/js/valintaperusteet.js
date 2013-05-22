@@ -241,3 +241,15 @@ app.factory('Laskentakaava', function($resource) {
    });
 });
 
+
+//rest resources
+app.factory('Haku', function($resource) {
+  return $resource(TARJONTA_URL_BASE + "haku", {}, {
+    get: {method: "GET", isArray: true}
+  });
+});
+app.factory('TarjontaImport', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources//hakuimport/aktivoi", {}, {
+        aktivoi: {method: "GET"}
+    })
+});

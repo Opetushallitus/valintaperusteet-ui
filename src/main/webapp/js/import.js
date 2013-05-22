@@ -35,14 +35,23 @@ app.factory('HakuModel', function(Haku, $http) {
     return model;
 });
 
-function ImportController($scope, $location, $routeParams, HakuModel) {
+function ImportController($scope, $location, $routeParams, HakuModel, TarjontaImport) {
     $scope.model = HakuModel;
     HakuModel.init($routeParams.hakuOid);
 
-    $scope.$watch('model.hakuOid', function() {
-        if(HakuModel.hakuOid && HakuModel.hakuOid != $routeParams.hakuOid) {
-            $location.path('/haku/' + HakuModel.hakuOid + '/hakukohde/');
-        }
-    });
+        $scope.aktivoi = function() {
+                  //  console.debug($scope.model.hakuOid)
+                  TarjontaImport.aktivoi({hakuOid: $scope.model.hakuOid}, function() {
+                    });
+
+        };
+
+
+
+   // $scope.$watch('model.hakuOid', function() {
+     //   if(HakuModel.hakuOid && HakuModel.hakuOid != $routeParams.hakuOid) {
+     //       $location.path('/haku/' + HakuModel.hakuOid + '/hakukohde/');
+    //    }
+  //  });
 
 }
