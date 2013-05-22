@@ -21,16 +21,19 @@
         </li>
     </ul>
     -->
-    <select>
-        <option>haku1</option>
-        <option>haku2</option>
-        <option>haku3</option>
-        <option>ei viela integraatiota</option>
-    </select>
+    <div class="width-16-8 margin-vertical-2" ng-controller="ImportController">
+        <!--<select ng-model="model.hakuOid" ng-options="haku.haunKielistetytNimet[1].nimi for haku in model.haut">-->
+
+        <select ng-model="model.hakuOid" ng-options="haku for haku in model.haut"></select>
+
+        <!--
+        <select ng-model="model.hakuOid">
+            <option ng-repeat="oid in model.haut">{{oid}}</option>
+        </select>
+    -->
+    </div>
 
     <a href="#" class="button small">Synkronoi tarjonta</a>
-
     <a href="http://localhost:8180/valintalaskentakoostepalvelu/resources/hakuimport/aktivoi?hakuOid=xxx" class="button small">Mock nappi</a>
-
-
+e
 </div>
