@@ -39,7 +39,10 @@ app.config(function($routeProvider) {
         when('/laskentakaava', {controller: LaskentakaavaListController, templateUrl: TEMPLATE_URL_BASE + 'laskentakaava/laskentakaavalista.html'}).
         when('/laskentakaava/:laskentakaavaOid', {controller: LaskentakaavaController, templateUrl:TEMPLATE_URL_BASE + 'laskentakaava/laskentakaavalomake.html'}).
 		
-		
+        //Tarjonta import
+		when('/import', {controller: ImportController, templateUrl:TEMPLATE_URL_BASE + 'import.html'}).
+
+
         //else
         otherwise({redirectTo:'/etusivu'});
 });
