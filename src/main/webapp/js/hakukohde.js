@@ -1,11 +1,12 @@
 
 
-app.factory('HakukohdeModel', function(Hakukohde, Valintaryhma, HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta, HakukohdeKuuluuSijoitteluun) {
+app.factory('HakukohdeModel', function(KoodistoHakukohdekoodi, Hakukohde, Valintaryhma, HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta, HakukohdeKuuluuSijoitteluun) {
     var model = new function()  {
         
         this.parentValintaryhma = {};
         this.hakukohde = {};
         this.valinnanvaiheet = [];
+        this.hakukohdekoodit = [];
 
         this.refresh = function(oid) {
             Hakukohde.get({oid: oid}, function(result) {
@@ -16,6 +17,10 @@ app.factory('HakukohdeModel', function(Hakukohde, Valintaryhma, HakukohdeValinna
                 });
 
                 kuuluuSijoitteluun(oid);
+            });
+
+            KoodistoHakukohdekoodi.get(function(result) {
+                model.hakukohdekoodit = result;
             });
 
             model.refreshValinnanvaiheet(oid);
@@ -65,6 +70,33 @@ app.factory('HakukohdeModel', function(Hakukohde, Valintaryhma, HakukohdeValinna
             return type;
         }
 
+        this.addHakukohdeUri = function(hakukohdekoodiUri) {
+            model.hakukohdekoodit.some(function (koodi) {
+                if(koodi.koodiUri == hakukohdekoodiUri) {
+                    var hakukohdekoodi = {"uri": koodi.koodiUri,
+                                         "arvo":koodi.koodiArvo};
+
+                    koodi.metadata.forEach(function(metadata){
+                        if(metadata.kieli == "FI") {
+                            hakukohdekoodi.nimiFi = metadata.nimi;
+                        } else if(metadata.kieli == "SV") {
+                            hakukohdekoodi.nimiSv = metadata.nimi;
+                        } else if(metadata.kieli == "EN") {
+                            hakukohdekoodi.nimiEn = metadata.nimi;
+                        }
+                    });
+
+                    //persist valintaryhma with added hakukohdekoodiuri
+                    HakukohdeHakukohdekoodi.update({hakukohdeOid: model.hakukohde.oid}, hakukohdekoodi, function(result) {
+                        model.hakukohde.hakukohdekoodi = result;
+                    });
+                    return true;
+                }
+            });
+
+
+        };
+
     };
 
     function getValinnanvaiheOids() {
@@ -104,6 +136,11 @@ function HakukohdeController($scope, $location, $routeParams, HakukohdeModel) {
         $location.path("/hakukohde/" + $scope.hakukohdeOid + "/valintakoevalinnanvaihe/");
     }
 
+    $scope.addHakukohdeUri = function() {
+            $scope.model.addHakukohdeUri($scope.uusiHakukohdeUri);
+            $scope.uusiHakukohdeUri = "";
+    }
+
 }
 
 function HakukohdeLaskentakaavaController($scope, $location, $routeParams, Laskentakaava) {
@@ -125,12 +162,12 @@ app.factory('HakukohdeCreatorModel', function($location, NewHakukohde, Treemodel
             model.hakukohde = {};
         }
 
-        this.persistHakukohde = function(valintaryhmaOid) {
+        this.persistHakukohde = function() {
             NewHakukohde.insert(model.hakukohde, function(result) {
                 Treemodel.refresh();
                 $location.path("/");
             }, function(error){
-                // Tänne ei tulla jostain syystä vaikka tulis 500 error
+
             });
         }
 
@@ -140,7 +177,7 @@ app.factory('HakukohdeCreatorModel', function($location, NewHakukohde, Treemodel
 });
 
 function HakukohdeCreatorController($scope, $location, $routeParams, HakukohdeCreatorModel) {
-    $scope.valintaryhmaOid = $routeParams.valintaryhmaOid;
+    //$scope.valintaryhmaOid = $routeParams.valintaryhmaOid;
     $scope.model = HakukohdeCreatorModel;
     $scope.model.refresh();
 
@@ -149,6 +186,6 @@ function HakukohdeCreatorController($scope, $location, $routeParams, HakukohdeCr
     };
 
     $scope.submit = function() {
-        $scope.model.persistHakukohde($scope.valintaryhmaOid);
+        $scope.model.persistHakukohde();
     }
 }

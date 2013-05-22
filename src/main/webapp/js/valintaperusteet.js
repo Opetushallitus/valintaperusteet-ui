@@ -30,7 +30,8 @@ app.config(function($routeProvider) {
         // edit hakukohde
         when('/hakukohde/:hakukohdeOid', {controller:HakukohdeController, templateUrl:TEMPLATE_URL_BASE + 'hakukohdelomake.html'}).
 //        when('/hakukohde/:hakukohdeOid/valinnanvaihe', {controller:HakukohdeController, templateUrl:TEMPLATE_URL_BASE + 'hakukohdelomake.html'}).
-        when('/valintaryhma/:valintaryhmaOid/lisaaSisaltyvaHakukohde', {controller: HakukohdeCreatorController, templateUrl:TEMPLATE_URL_BASE + 'hakukohdelomake.html'}).
+//        when('/valintaryhma/:valintaryhmaOid/lisaaSisaltyvaHakukohde', {controller: HakukohdeCreatorController, templateUrl:TEMPLATE_URL_BASE + 'hakukohdelomake.html'}).
+        when('/lisaaHakukohde', {controller: HakukohdeCreatorController, templateUrl:TEMPLATE_URL_BASE + 'hakukohdelomake.html'}).
         when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid', {controller:ValinnanVaiheController, templateUrl:TEMPLATE_URL_BASE + 'valinnanvaihelomake.html'}).
         when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid', {controller: HakukohdeValintatapajonoController, templateUrl:TEMPLATE_URL_BASE + 'valintatapajono.html'}).
         when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/jarjestyskriteeri/:jarjestyskriteeriOid', {controller:JarjestyskriteeriController, templateUrl:TEMPLATE_URL_BASE + 'jarjestyskriteeri.html'}).
@@ -134,7 +135,7 @@ return $resource(SERVICE_URL_BASE + "resources/hakukohde/:oid/kuuluuSijoitteluun
   });
 });
 app.factory('NewHakukohde', function($resource) {
-  return $resource(SERVICE_URL_BASE + "resources/hakukohde/", {}, {
+  return $resource(SERVICE_URL_BASE + "resources/hakukohde", {}, {
     insert: {method: "PUT"}
   });
 });
@@ -144,6 +145,11 @@ app.factory('HakukohdeValinnanvaihe', function($resource) {
      post:{method: "POST"},
      insert: {method: "PUT"}
    });
+});
+app.factory('HakukohdeHakukohdekoodi', function($resource) {
+return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeOid/hakukohdekoodi", {hakukohdeOid: "@hakukohdeOid"}, {
+    post: {method: "POST"}
+  });
 });
 
 //Valinnanvaihe
@@ -238,3 +244,26 @@ app.factory('Laskentakaava', function($resource) {
    });
 });
 
+
+
+$(document).ready(function(){
+/* Juhanan jäänteet */
+
+	var dropMenu = {
+		build:function(){
+			dropMenu.setTriggers();
+		},
+		setTriggers:function(){
+
+			$('body').on('mouseover', '.dropmenu', function(){
+				$(this).addClass('hover');
+			});
+
+			$('body').on('mouseout', '.dropmenu', function(){
+				$(this).removeClass('hover');
+			});
+		}
+	}
+
+	dropMenu.build();
+});
