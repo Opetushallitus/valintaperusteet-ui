@@ -96,8 +96,6 @@ app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, Chil
                         }
                     });
 
-                    console.log(hakukohdekoodi);
-
                     //persist valintaryhma with added hakukohdekoodiuri
                     ValintaryhmaHakukohdekoodi.insert({valintaryhmaOid: model.valintaryhma.oid}, hakukohdekoodi, function(result) {
                         model.valintaryhma.hakukohdekoodit.push(result);
