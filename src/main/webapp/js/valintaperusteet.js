@@ -248,6 +248,19 @@ app.factory('Laskentakaava', function($resource) {
 });
 
 
+//ulkoiset
+app.factory('Haku', function($resource) {
+  return $resource(TARJONTA_URL_BASE + "haku", {}, {
+    get: {method: "GET", isArray: true}
+  });
+});
+app.factory('TarjontaImport', function($resource) {
+    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/hakuimport/aktivoi", {}, {
+        aktivoi: {method: "GET"}
+    })
+});
+
+
 
 $(document).ready(function(){
 /* Juhanan jäänteet */
@@ -271,14 +284,3 @@ $(document).ready(function(){
 	dropMenu.build();
 });
 
-//rest resources
-app.factory('Haku', function($resource) {
-  return $resource(TARJONTA_URL_BASE + "haku", {}, {
-    get: {method: "GET", isArray: true}
-  });
-});
-app.factory('TarjontaImport', function($resource) {
-    return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources//hakuimport/aktivoi", {}, {
-        aktivoi: {method: "GET"}
-    })
-});
