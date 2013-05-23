@@ -261,7 +261,9 @@ app.factory('ValintaryhmaChildrenModel', function($resource, $location, $routePa
         };
 
         this.persistChildHakukohteet = function() {
+            console.log("model.childHakukohteet:" + model.childHakukohteet);
             model.childHakukohteet.forEach(function(element, index, array) {
+                console.log("element:" + element);
                 Hakukohde.post(element, function(result) {
                     model.refresh(model.valintaryhma.oid);
                 })
@@ -270,9 +272,11 @@ app.factory('ValintaryhmaChildrenModel', function($resource, $location, $routePa
 
         this.addHakukohde = function(oid) {
             if(!model.valintaryhmaContainsHakukohde(oid)) {
+
                 Hakukohde.get({oid: oid}, function(result) {
                     if(result) {
-                        model.childHakukohteet.push(result);  
+                        result.valintaryhma = model.valintaryhma;
+                        model.childHakukohteet.push(result);
                         model.persistChildHakukohteet();  
                     }
                 });

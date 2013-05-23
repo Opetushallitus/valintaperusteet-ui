@@ -1,6 +1,6 @@
 
 
-app.factory('HakukohdeModel', function(KoodistoHakukohdekoodi, Hakukohde, Valintaryhma, HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta, HakukohdeKuuluuSijoitteluun) {
+app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohdekoodi, Hakukohde, Valintaryhma, HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta, HakukohdeKuuluuSijoitteluun) {
     var model = new function()  {
         
         this.parentValintaryhma = {};
@@ -87,7 +87,7 @@ app.factory('HakukohdeModel', function(KoodistoHakukohdekoodi, Hakukohde, Valint
                     });
 
                     //persist valintaryhma with added hakukohdekoodiuri
-                    HakukohdeHakukohdekoodi.update({hakukohdeOid: model.hakukohde.oid}, hakukohdekoodi, function(result) {
+                    HakukohdeHakukohdekoodi.post({hakukohdeOid: model.hakukohde.oid}, hakukohdekoodi, function(result) {
                         model.hakukohde.hakukohdekoodi = result;
                     });
                     return true;
@@ -180,6 +180,7 @@ function HakukohdeCreatorController($scope, $location, $routeParams, HakukohdeCr
     //$scope.valintaryhmaOid = $routeParams.valintaryhmaOid;
     $scope.model = HakukohdeCreatorModel;
     $scope.model.refresh();
+    $scope.showOidInputs = true;
 
     $scope.cancel = function() {
         $location.path("/");

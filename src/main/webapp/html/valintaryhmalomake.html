@@ -74,7 +74,7 @@
                 <!--[if IE 9]></select><![endif]-->
             </datalist>
 
-            <button class="margin-bottom-0 small" ng-click="addHakukohdeUri()" ng-disabled="!model.hakukohdekoodit.length">Lisää hakukohdekoodi</button>
+            <button type="button" class="margin-bottom-0 small" ng-click="addHakukohdeUri()" ng-disabled="!model.hakukohdekoodit.length">Lisää hakukohdekoodi</button>
         </div>
         <div class="clear"></div>
     </div>
@@ -152,8 +152,8 @@
             <div class="clear"></div>
 
             <div ng-show="model.valintaryhma.oid" class="form-row">
-                    <span class="button small" ng-click="lisaaValinnanVaihe()">Lisää valinnanvaihe</span>
-                    <span class="button small" ng-click="lisaaValintakoeValinnanVaihe()">Lisää valintakoevalinnanvaihe</span>
+                    <span type="button" class="button small" ng-click="lisaaValinnanVaihe()">Lisää valinnanvaihe</span>
+                    <span type="button" class="button small" ng-click="lisaaValintakoeValinnanVaihe()">Lisää valintakoevalinnanvaihe</span>
             </div>
         </div>
     </div>
@@ -161,7 +161,7 @@
     <div class="clear"></div>
 
     <button ng-disabled="!form.$valid" class="button small primary" type="submit">Tallenna</button>
-	<button class="float-left margin-right-1 button small" ng-click="cancel()">Peruuta</button>
+	<button type="button" class="float-left margin-right-1 button small" ng-click="cancel()">Peruuta</button>
 	
 
 </form>

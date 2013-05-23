@@ -9,7 +9,6 @@
 
 <div class="tabsheets">
 <form name="form" ng-submit="submit()">
-
     <div class="form-row">
         <label class="form-row-label" for="">Hakukohteen nimi</label>
 
@@ -20,7 +19,7 @@
     </div>
 
     <div class="form-row">
-        <label class="form-row-label" for="oid">Hakukohdekoodi:</label>
+        <label class="form-row-label" >Hakukohdekoodi:</label>
 
         <div class="form-row-content">
             <table class="virkailija-table-1 width-60">
@@ -56,7 +55,7 @@
                 <!--[if IE 9]></select><![endif]-->
             </datalist>
 
-            <button class="margin-bottom-0 small" ng-click="addHakukohdeUri()" ng-disabled="!model.hakukohdekoodit.length">Päivitä hakukohdekoodi</button>
+            <button type="button" class="margin-bottom-0 small" ng-click="addHakukohdeUri()" ng-disabled="!model.hakukohdekoodit.length">Päivitä hakukohdekoodi</button>
         </div>
         <div class="clear"></div>
     </div>
@@ -65,8 +64,7 @@
         <label class="form-row-label" for="oid">Hakukohteen tunniste (oid):</label>
 
         <div class="form-row-content">
-            <!--{{model.hakukohde.oid}}
-            <input class="width-60" type="text" name="oid" ng-model="model.hakukohde.oid" required />         -->
+            <input ng-show="showOidInputs" class="width-60" type="text" name="oid" ng-model="model.hakukohde.oid" required />
              {{model.hakukohde.oid}}
         </div>
         <div class="clear"></div>
@@ -76,8 +74,8 @@
         <label class="form-row-label" for="oid">Haun Tunniste (oid):</label>
 
         <div class="form-row-content">
-            <!--{{model.hakukohde.oid}}
-            <input class="width-60" type="text" name="oid" ng-model="model.hakukohde.oid" required />         -->
+
+            <input ng-show="showOidInputs" class="width-60" type="text" name="oid" ng-model="model.hakukohde.hakuoid" required />
             {{model.hakukohde.hakuoid}}
         </div>
         <div class="clear"></div>
@@ -149,6 +147,6 @@
     <div class="clear"></div>
 
     <button ng-disabled="!form.$valid" class="button small primary" type="submit">Tallenna</button>
-    <button class="float-left margin-right-1 button small" ng-click="cancel()">Peruuta</button>
+    <button type="button" class="float-left margin-right-1 button small" ng-click="cancel()">Peruuta</button>
 </form>
 </div>
