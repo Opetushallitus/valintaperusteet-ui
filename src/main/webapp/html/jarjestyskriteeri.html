@@ -12,6 +12,21 @@
         </div>
         <div class="clear"></div>
     </div>
+    
+    <div class="form-row" ng-model="model.valintaryhmaLaskentakaavat">
+        <div class="form-row-label">Valintaryhmakohtaiset laskentakaavat</div>
+        <div class="form-row-content">
+             <div ng-repeat="data in model.valintaryhmaLaskentakaavat" class="field-container-radio">
+                <label>
+                    <input type="radio" name="laskentakaava" value="{{data.id}}"
+                           ng-model="model.jarjestyskriteeri.laskentakaava_id" required />
+
+                    <span>{{data.nimi}}</span>(<span>{{data.id}}</span>)
+                </label>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
 
     <div class="form-row" ng-model="model.laskentakaavat" >
 
