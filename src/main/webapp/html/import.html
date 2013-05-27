@@ -8,7 +8,7 @@
     <h2>Synkronoi tarjonta</h2>
 
     <div>
-        <select ng-model="model.hakuOid" ng-options="haku for haku in model.haut"></select>
+        <select ng-model="model.hakuOid" ng-options="haku.oid for haku in model.haut"></select>
         <a ng-click="aktivoi()" class="button small">Synkronoi tarjonta</a>
     </div>
 
