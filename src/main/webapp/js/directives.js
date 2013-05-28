@@ -55,6 +55,7 @@ app.directive('uiSortable', function() {
     return {
       require: '?ngModel',
       link: function(scope, element, attrs, ngModel) {
+
         var onStart, onUpdate, opts, _start, _update;
         opts = angular.extend({}, options, scope.$eval(attrs.uiOptions));
         if (ngModel != null) {
@@ -91,3 +92,22 @@ app.directive('uiSortable', function() {
     };
   }
 );
+
+
+app.directive('valintaryhmaToolbox', function() {
+
+  return { 
+    retrict: 'A',
+    link: function(scope, element, atts){   
+      
+      $('body').on('mouseover', '.dropmenu', function(){
+        $(this).addClass('hover');
+      });
+
+      $('body').on('mouseout', '.dropmenu', function(){
+        $(this).removeClass('hover');
+      });
+    }
+  }
+
+});

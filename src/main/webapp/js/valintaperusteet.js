@@ -271,29 +271,3 @@ app.factory('TarjontaImport', function($resource) {
         aktivoi: {method: "GET"}
     })
 });
-
-
-
-/* Juhanan jäänteet */
-$(document).ready(function(){
-
-
-	var dropMenu = {
-		build:function(){
-			dropMenu.setTriggers();
-		},
-		setTriggers:function(){
-
-			$('body').on('mouseover', '.dropmenu', function(){
-				$(this).addClass('hover');
-			});
-
-			$('body').on('mouseout', '.dropmenu', function(){
-				$(this).removeClass('hover');
-			});
-		}
-	}
-
-	dropMenu.build();
-});
-
