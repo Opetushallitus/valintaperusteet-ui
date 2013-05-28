@@ -1,5 +1,5 @@
 ﻿
-app.factory('HakuModel', function(Haku, $http) {
+app.factory('HakuModel', function($q, Haku, HaunTiedot, $http) {
     var model;
     model = new function() {
         this.hakuOid;
@@ -9,19 +9,40 @@ app.factory('HakuModel', function(Haku, $http) {
             
             if(model.haut.length <= 0) {
                 Haku.get({}, function(result) {
-                    model.haut = result;
-                    model.hakuOid = model.haut[0].oid;
+                    var HakuOidObjects = result;
+                    
+                    var promises = [];
 
-                    //set haku (in view) to hakuselect to what is was or to first option
-                    model.haut.forEach(function(haku){
-                        if(haku.oid == oid) {
-                            model.hakuOid = haku;
-                        }
+                    //iterate hakuoids and fetch corresponding hakuobjects
+                    HakuOidObjects.forEach(function(element, index){
+                        promises[index] = (function() {
+                            var deferred = $q.defer();
+
+                            HaunTiedot.get({hakuOid: element.oid}, function(result) {
+                                model.haut.push(result);
+                                deferred.resolve();    
+                            });
+
+                            return deferred.promise;
+                        })();
                     });
-                });
+                        
+                    
 
+                    //wait until all hakuobjects have been fetched
+                    $q.all(promises).then(function() {
+                        model.hakuOid = model.haut[0].oid;
+                        
+                        //set the previously selected haku or first in list
+                        model.haut.forEach(function(haku){
+                            if(haku.oid == oid) {
+                                model.hakuOid = haku;
+                            }
+                        });
+                    }); 
+                });
             }
-        }
+        };
     };
 
     return model;

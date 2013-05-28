@@ -261,6 +261,11 @@ app.factory('Haku', function($resource) {
     get: {method: "GET", isArray: true}
   });
 });
+app.factory('HaunTiedot', function($resource) {
+  return $resource(TARJONTA_URL_BASE + "haku/:hakuOid", {hakuOid: "@hakuOid"}, {
+    get: {method: "GET"}
+  });
+});
 app.factory('TarjontaImport', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/hakuimport/aktivoi", {}, {
         aktivoi: {method: "GET"}
@@ -269,8 +274,9 @@ app.factory('TarjontaImport', function($resource) {
 
 
 
-$(document).ready(function(){
 /* Juhanan jäänteet */
+$(document).ready(function(){
+
 
 	var dropMenu = {
 		build:function(){
