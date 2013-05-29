@@ -111,3 +111,6 @@ app.directive('valintaryhmaToolbox', function() {
   }
 
 });
+
+
+

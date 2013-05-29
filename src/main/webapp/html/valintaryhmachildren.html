@@ -12,24 +12,13 @@
 	<span class="button small">Lisää uusi</span>
      -->
 		
-	<div class="form-row">
-		<label class="form-row-label" for="">OID</label>
-		<div class="form-row-content">
-            {{model.valintaryhma.oid}}
-		    <!--<input type="text" ng-model="model.valintaryhma.oid" disabled /> -->
-        </div>
-		<div class="clear"></div>
-	</div>
-		
-	<div class="form-row">
-		<label class="form-row-label" for="">Valintaryhmän nimi</label>
+	<dl>
+		<dt>OID</dt>
+		<dd>{{model.valintaryhma.oid}}</dd>
 
-		<div class="form-row-content width-60">
-			<!--<input class="width-60" type="text" name="" id="" ng-model="model.valintaryhma.nimi" disabled />  -->
-            {{model.valintaryhma.nimi}}
-	    </div>
-		<div class="clear"></div>
-	</div>
+		<dt>Valintaryhmän nimi</dt>
+		<dd>{{model.valintaryhma.nimi}}</dd>
+	</dl>
 
 	<table class="virkailija-table-1 margin-bottom-2" ng-show="model.childValintaryhmat">
 		<thead>
