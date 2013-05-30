@@ -12,38 +12,31 @@
         </div>
         <div class="clear"></div>
     </div>
-    
-    <div class="form-row" ng-model="model.valintaryhmaLaskentakaavat">
-        <div class="form-row-label">Valintaryhmakohtaiset laskentakaavat</div>
-        <div class="form-row-content">
-             <div ng-repeat="data in model.valintaryhmaLaskentakaavat" class="field-container-radio">
-                <label>
-                    <input type="radio" name="laskentakaava" value="{{data.id}}"
-                           ng-model="model.jarjestyskriteeri.laskentakaava_id" required />
-
-                    <span>{{data.nimi}}</span>(<span>{{data.id}}</span>)
-                </label>
-            </div>
-        </div>
-        <div class="clear"></div>
-    </div>
 
     <div class="form-row" ng-model="model.laskentakaavat" >
 
-        <div class="form-row-label">Laskentakaava</div>
-        <div class="form-row-content">
+        <div class="form-row-label">Laskentakaava<br /></div>
+        <div class="form-row-content">&nbsp;<br /></div>
+        <div class="clear"></div>
+        <div ng-repeat="group in model.laskentakaavat" class="field-container-radio">
+            <div class="form-row-label">{{group.name}}<br /></div>
+            <div class="form-row-content">
+            <!--<span >{{model.laskentakaavat}}</span>-->
 
-            <div ng-repeat="data in model.laskentakaavat" class="field-container-radio">
-                <label>
-                    <input type="radio" name="laskentakaava" value="{{data.id}}"
-                           ng-model="model.jarjestyskriteeri.laskentakaava_id" required />
+                <div ng-repeat="data in group.result" class="field-container-radio">
+                    <label>
+                        <input type="radio" name="laskentakaava" value="{{data.id}}"
+                               ng-model="model.jarjestyskriteeri.laskentakaava_id" ng-required="!model.jarjestyskriteeri.laskentakaava_id" />
 
-                    <span ng-bind="data.nimi"></span>(<span ng-bind="data.id"></span>)
-                </label>
+                        <span ng-bind="data.nimi"></span>(<span ng-bind="data.id"></span>)
+                    </label>
+                </div>
+                <br />
             </div>
 
+            <div class="clear"></div>
         </div>
-        <div class="clear"></div>
+
     </div>
 
     <button ng-disabled="!form.$valid" class="button small primary" type="submit">

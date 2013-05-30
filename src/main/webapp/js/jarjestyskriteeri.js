@@ -1,7 +1,7 @@
 
 
 // Valintaryhma Järjestyskriteerit
-app.factory('ValintaryhmaJarjestyskriteeriModel', function($q, Laskentakaava, Jarjestyskriteeri, ValintatapajonoJarjestyskriteeri, ValintaryhmaLaskentakaava) {
+app.factory('JarjestyskriteeriModel', function($q, Laskentakaava, Jarjestyskriteeri, ValintatapajonoJarjestyskriteeri, ParentValintaryhmas, Hakukohde) {
     
     var model;
 
@@ -9,7 +9,6 @@ app.factory('ValintaryhmaJarjestyskriteeriModel', function($q, Laskentakaava, Ja
 
         this.jarjestyskriteeri = {};
         this.laskentakaavat = [];
-        this.valintaryhmaLaskentakaavat = [];
 
 
         this.refresh = function(oid) {
@@ -21,7 +20,7 @@ app.factory('ValintaryhmaJarjestyskriteeriModel', function($q, Laskentakaava, Ja
             }
         };
 
-        this.refreshIfNeeded = function(oid, valintaryhmaOid) {
+        this.refreshIfNeeded = function(oid, valintaryhmaOid, hakukohdeOid) {
 
             if(!oid) {
                 model.jarjestyskriteeri = {};
@@ -32,16 +31,53 @@ app.factory('ValintaryhmaJarjestyskriteeriModel', function($q, Laskentakaava, Ja
                 this.refresh(oid);
             }
 
+
+            //root kaavat
             Laskentakaava.list(function(result) {
-                model.laskentakaavat = result;
-                if(!model.jarjestyskriteeri.laskentakaava_id) {
-                    model.jarjestyskriteeri.laskentakaava_id = model.laskentakaavat[0].id;
+                if(result.length > 0) {
+                    var obj = {
+                        name: 'root',
+                        result: result
+                    }
+                    model.laskentakaavat.push(obj);
                 }
             });
 
-             ValintaryhmaLaskentakaava.get({valintaryhmaOid: valintaryhmaOid}, function(result) {
-                model.valintaryhmaLaskentakaavat = result;
-            });
+            // hakukohteelta tulevat
+            if(hakukohdeOid) {
+                Laskentakaava.list({hakukohde: hakukohdeOid}, function(result) {
+                    if(result.length > 0) {
+                        var obj = {
+                            name: 'current',
+                            result: result
+                        }
+                        model.laskentakaavat.push(obj);
+                    }
+                });
+                Hakukohde.get({oid: hakukohdeOid}, function(result) {
+                    Valintaryhmas(result.valintaryhma_id);
+                });
+            }
+
+            // valintaryhmiltä tulevata
+            if(valintaryhmaOid) {
+                // Parent palauttaa itsensä?
+//                Laskentakaava.list({valintaryhma: valintaryhmaOid}, function(result) {
+//                    if(result.length > 0) {
+//                        var obj = {
+//                            name: 'current',
+//                            result: result
+//                        }
+//                        model.laskentakaavat.push(obj);
+//                    }
+//                });
+                  Valintaryhmas(valintaryhmaOid);
+            }
+
+            // valitaan ensimmäinen
+//            if(!model.jarjestyskriteeri.laskentakaava_id) {
+//                                model.jarjestyskriteeri.laskentakaava_id = model.laskentakaavat[0].id;
+//                            }
         };
 
         this.submit = function(valintatapajonoOid, jarjestyskriteerit) {
@@ -77,130 +113,46 @@ app.factory('ValintaryhmaJarjestyskriteeriModel', function($q, Laskentakaava, Ja
             return deferred.promise;
         };
 
+        function Valintaryhmas(valintaryhmaOid) {
+            ParentValintaryhmas.get({parentOid: valintaryhmaOid}, function(data) {
+                data.forEach(function(temp) {
+                    Laskentakaava.list({valintaryhma: temp.oid}, function(result) {
+                        if(result.length > 0) {
+                            var obj = {
+                                name: temp.nimi,
+                                result: result
+                            }
+                            model.laskentakaavat.push(obj);
+                        }
+                    });
+
+                });
+            });
+        }
+
     };
 
     return model;
     
 });
 
-function ValintaryhmaJarjestyskriteeriController($log, $scope, $location, $routeParams, ValintaryhmaJarjestyskriteeriModel, ValintatapajonoModel) {
+function JarjestyskriteeriController($scope, $location, $routeParams, JarjestyskriteeriModel, ValintatapajonoModel) {
 
     $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
     $scope.valintatapajonoOid =  $routeParams.valintatapajonoOid;
-    $scope.model = ValintaryhmaJarjestyskriteeriModel;
-    $scope.model.refreshIfNeeded($routeParams.jarjestyskriteeriOid, $routeParams.id);
 
-    
+    $scope.model = JarjestyskriteeriModel;
+    $scope.model.refreshIfNeeded($routeParams.jarjestyskriteeriOid, $routeParams.id, $routeParams.hakukohdeOid);
+
     $scope.submit = function() {
-        var promise = ValintaryhmaJarjestyskriteeriModel.submit($scope.valintatapajonoOid, ValintatapajonoModel.jarjestyskriteerit);
+        var promise = JarjestyskriteeriModel.submit($scope.valintatapajonoOid, ValintatapajonoModel.jarjestyskriteerit);
         promise.then(function(greeting) {
             var path;
-            path = "/valintaryhma/" + $routeParams.id;
-            $location.path(path + '/valinnanvaihe/'+ $routeParams.valinnanvaiheOid +
-                                    '/valintatapajono/' + $routeParams.valintatapajonoOid);
-        });
-
-    };
-
-    $scope.cancel = function() {
-        var path;
-        path = "/valintaryhma/" + $routeParams.id;
-        $location.path(path + '/valinnanvaihe/'+ $routeParams.valinnanvaiheOid +
-                                '/valintatapajono/' + $routeParams.valintatapajonoOid);
-    };
-    
-
-}
-
-
-
-
-
-
-
-
-//hakukohde Järjestyskriteerit
-app.factory('HakukohdeJarjestyskriteeriModel', function($q, Laskentakaava, Jarjestyskriteeri, ValintatapajonoJarjestyskriteeri) {
-    var model;
-
-    model = new function() {
-        this.jarjestyskriteeri = {};
-        this.laskentakaavat = [];
-
-        this.refresh = function(oid) {
-            if(oid) {
-                Jarjestyskriteeri.get({oid: oid}, function(result) {
-                    model.jarjestyskriteeri = result;
-                });
-            }
-        };
-
-        this.refreshIfNeeded = function(oid) {
-            if(!oid) {
-                model.jarjestyskriteeri = {};
-                model.laskentakaavat = [];
-            } else if (oid !== model.jarjestyskriteeri.oid) {
-                this.refresh(oid);
-            }
-
-            Laskentakaava.list(function(result) {
-                model.laskentakaavat = result;
-                if(!model.jarjestyskriteeri.laskentakaava_id) {
-                    model.jarjestyskriteeri.laskentakaava_id = model.laskentakaavat[0].id;
-                }
-            });
-        };
-
-        this.submit = function(valintatapajonoOid, jarjestyskriteerit) {
-            var deferred = $q.defer();
-            if(model.jarjestyskriteeri.oid == null) {
-                model.jarjestyskriteeri.aktiivinen = "true";
-                ValintatapajonoJarjestyskriteeri.insert({parentOid: valintatapajonoOid}, model.jarjestyskriteeri,
-                    function(jk) {
-                        Laskentakaava.get({oid: jk.laskentakaava_id}, function(result) {
-                            jk.nimi = result.nimi;
-                        });
-                        jarjestyskriteerit.push(jk);
-                        deferred.resolve();
-                });
+            if($routeParams.hakukohdeOid) {
+                path = "/hakukohde/" + $routeParams.hakukohdeOid;
             } else {
-                Jarjestyskriteeri.post(model.jarjestyskriteeri, function(jk) {
-                    var i;
-
-                    for(i in jarjestyskriteerit) {
-                        if(jk.oid === jarjestyskriteerit[i].oid) {
-
-                            Laskentakaava.get({oid: jk.laskentakaava_id}, function(result) {
-                                jk.nimi = result.nimi;
-                            });
-
-                            jarjestyskriteerit[i] = jk;
-                            deferred.resolve();
-                        }
-                    }
-                });
+                path = "/valintaryhma/" + $routeParams.id;
             }
-
-            return deferred.promise;
-        };
-    };
-
-    return model;
-});
-
-function HakukohdeJarjestyskriteeriController($scope, $location, $routeParams, HakukohdeJarjestyskriteeriModel, ValintatapajonoModel) {
-
-    $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
-    $scope.valintatapajonoOid =  $routeParams.valintatapajonoOid;
-
-    $scope.model = HakukohdeJarjestyskriteeriModel;
-    $scope.model.refreshIfNeeded($routeParams.jarjestyskriteeriOid);
-
-    $scope.submit = function() {
-        var promise = HakukohdeJarjestyskriteeriModel.submit($scope.valintatapajonoOid, ValintatapajonoModel.jarjestyskriteerit);
-        promise.then(function() {
-            var path;
-            path = "/hakukohde/" + $routeParams.hakukohdeOid;
             $location.path(path + '/valinnanvaihe/'+ $routeParams.valinnanvaiheOid +
                                     '/valintatapajono/' + $routeParams.valintatapajonoOid);
         });
@@ -209,7 +161,11 @@ function HakukohdeJarjestyskriteeriController($scope, $location, $routeParams, H
 
     $scope.cancel = function() {
         var path;
-        path = "/hakukohde/" + $routeParams.hakukohdeOid;
+        if($routeParams.hakukohdeOid) {
+            path = "/hakukohde/" + $routeParams.hakukohdeOid;
+        } else {
+            path = "/valintaryhma/" + $routeParams.id;
+        }
         $location.path(path + '/valinnanvaihe/'+ $routeParams.valinnanvaiheOid +
                                 '/valintatapajono/' + $routeParams.valintatapajonoOid);
     };
