@@ -1,6 +1,6 @@
 <script type="text/ng-template"  id="tree_item_renderer.html">
     <span class="icon valintaryhma" ng-class="{ folder: data.lapsivalintaryhma || data.lapsihakukohde, collapse: data.lapsivalintaryhma || data.lapsihakukohde, file: !data.lapsivalintaryhma && !data.lapsihakukohde, open: data.isVisible}" ng-click="expandNode(data)">&#8203;</span>
-	<span valintaryhma-toolbox class="dropmenu">
+	<span enter="hover" leave="hover" class="dropmenu">
 		<ul class="dropmenu-list">
             <!--
             <li> <a href="#/valintaryhma/{{data.oid}}">Muokkaa</a></li>
