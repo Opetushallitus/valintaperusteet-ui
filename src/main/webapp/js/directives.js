@@ -94,23 +94,20 @@ app.directive('uiSortable', function() {
 );
 
 
-app.directive('valintaryhmaToolbox', function() {
-
-  return { 
-    retrict: 'A',
-    link: function(scope, element, atts){   
-      
-      $('body').on('mouseover', '.dropmenu', function(){
-        $(this).addClass('hover');
-      });
-
-      $('body').on('mouseout', '.dropmenu', function(){
-        $(this).removeClass('hover');
+app.directive('enter', function() {
+  return function(scope, element, attrs){   
+      element.bind('mouseover', function() {
+          element.addClass(attrs.enter);
       });
     }
-  }
+  
 
 });
 
-
-
+app.directive('leave', function() {
+  return function(scope, element, attrs) {
+    element.bind('mouseleave', function() {
+      element.removeClass(attrs.leave);
+    });
+  }
+});
