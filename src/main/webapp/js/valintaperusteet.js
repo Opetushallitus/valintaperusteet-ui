@@ -41,7 +41,7 @@ app.config(function($routeProvider) {
         when('/laskentakaava/:laskentakaavaOid', {controller: LaskentakaavaController, templateUrl:TEMPLATE_URL_BASE + 'laskentakaava/laskentakaavalomake.html'}).
 		
         //Tarjonta import
-		    when('/import', {controller: ImportController, templateUrl:TEMPLATE_URL_BASE + 'import.html'}).
+		when('/import', {controller: ImportController, templateUrl:TEMPLATE_URL_BASE + 'import.html'}).
 
 
         //else
