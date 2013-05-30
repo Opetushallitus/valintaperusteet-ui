@@ -1501,6 +1501,8 @@ dl {
   dl dd {
     margin: 0 0 0 195px;
     padding: 0 0 1em; }
+    dl dd:after {
+      clear: both; }
     dl dd .virkailija-table-1 {
       width: auto; }
 
@@ -1524,6 +1526,12 @@ dl {
   border-top-width: 0;
   margin: 0 auto;
   padding: 0 0 10px; }
+
+#application-wrapper {
+  min-width: 960px;
+  max-width: 1280px;
+  margin: 0 auto;
+  background-color: none; }
 
 /*** Overlay
 ************************************************/
