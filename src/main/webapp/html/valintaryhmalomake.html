@@ -10,18 +10,33 @@
 
 <form name="form" ng-submit="submit()">
 
-    <dl>
-        <dt>Valintaryhmän nimi</dt>
-        <dd><input class="width-60" type="text" name="" id="" ng-model="model.valintaryhma.nimi" required/></dd>
+    <div class="form-row">
+        <label class="form-row-label" for="">Valintaryhmän nimi</label>
 
-        <dt>Valintaryhmän tunniste(oid):</dt>
-        <dd>{{model.valintaryhma.oid}}</dd>
-    </dl>
+        <div class="form-row-content width-60">
+            <input class="width-60" type="text" name="" id="" ng-model="model.valintaryhma.nimi" required/>
+              <!--
+            <br/>
+            <div><small>Valintaryhmän nimeen liittyvä ohjeteksti.</small></div>
+               -->
+        </div>
+        <div class="clear"></div>
+    </div>
 
-    <dl>
-        <dt>Hakukohdekoodit</dt>
-        <dd>
-            <table class="virkailija-table-1 width-100">
+    <div class="form-row">
+        <label class="form-row-label" for="">Valintaryhmän tunniste(oid):</label>
+        <div class="form-row-content">
+            <span class="nofield">{{model.valintaryhma.oid}}</span>
+            <!--    <input type="text" ng-model="valintaryhma.oid" disabled />
+               <input type="text" name="" id="" ng-model="valintaryhma.oid" />     -->
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="form-row">
+        <label class="form-row-label" for="">Hakukohde koodit</label>
+        <div class="form-row-content">
+            <table class="virkailija-table-1 width-60">
                 <thead>
                 <tr>
                     <th>koodi</th>
@@ -43,34 +58,28 @@
                 </tbody>
 
             </table>
-        </dd>
-    </dl>
+        </div>
+        <div class="clear"></div>
+    </div>
 
-    <dl ng-show="">
-        <dt>Lisää hakukohdekoodi</dt>
-        <dd><input class="width-60" name="hakukohdekoodit" type="text" id="uusiHakukohdeUri" ng-model="uusiHakukohdeUri" list="hakukohdekoodit"/>
+    <div class="form-row ">
+        <label class="form-row-label">&nbsp;</label>
+        <div class="form-row-content width-60">
+            <input class="width-60" name="hakukohdekoodit" type="text" id="uusiHakukohdeUri" ng-model="uusiHakukohdeUri" list="hakukohdekoodit"/>
             <datalist id="hakukohdekoodit">
-                <!--[if IE 9]><select disabled style="display:none"><<!doctype html>
-                <html lang="en" endif="">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Document</title>
-                </head>
-                <body>
-                    
-                </body>
-                </html>
+                <!--[if IE 9]><select disabled style="display:none"><![endif]-->
                 <option ng-repeat="data in model.hakukohdekoodit" value="{{data.koodiUri}}">{{data.metadata[0].nimi}}</option>
                 <!--[if IE 9]></select><![endif]-->
             </datalist>
 
             <button type="button" class="margin-bottom-0 small" ng-click="addHakukohdeUri()" ng-disabled="!model.hakukohdekoodit.length">Lisää hakukohdekoodi</button>
-        </dd>
-    </dl>
+        </div>
+        <div class="clear"></div>
+    </div>
 
-    <dl>
-        <dt>Valinnan vaiheet</dt>
-        <dd>
+    <div class="form-row width-100">
+        <div class="form-row-label">Valinnan vaiheet</div>
+        <div  class="form-row-content width-60">
             <table ng-show="model.valinnanvaiheet" class="virkailija-table-1 margin-bottom-2 width-60">
                 <thead>
                 <tr>
@@ -96,10 +105,17 @@
                 </tbody>
 
             </table>
-            <span ng-show="model.valintaryhma.oid" class="button small" ng-click="lisaaValinnanVaihe()">Lisää valinnanvaihe</span>
-            <span ng-show="model.valintaryhma.oid" class="button small" ng-click="lisaaValintakoeValinnanVaihe()">Lisää valintakoevalinnanvaihe</span>
-        </dd>
-    </dl>
+
+            <div class="clear"></div>
+
+            <div ng-show="model.valintaryhma.oid" class="form-row">
+                    <span type="button" class="button small" ng-click="lisaaValinnanVaihe()">Lisää valinnanvaihe</span>
+                    <span type="button" class="button small" ng-click="lisaaValintakoeValinnanVaihe()">Lisää valintakoevalinnanvaihe</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="clear"></div>
 
     <button ng-disabled="!form.$valid" class="button small primary" type="submit">Tallenna</button>
 	<button type="button" class="float-left margin-right-1 button small" ng-click="cancel()">Peruuta</button>
