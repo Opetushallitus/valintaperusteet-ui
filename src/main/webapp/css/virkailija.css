@@ -1493,7 +1493,6 @@ dl {
     font-weight: bold;
     line-height: 1.5em;
     height: 1.5em;
-    vertical-align: middle;
     width: 173px;
     margin: 0 15px 0 0;
     padding: 0;
@@ -1502,8 +1501,7 @@ dl {
     margin: -19px 0 0 195px;
     padding: 0 0 1em;
     line-height: 1.5em;
-    height: 1.5em;
-    vertical-align: middle; }
+    height: 1.5em; }
     dl dd:after {
       clear: both; }
     dl dd .virkailija-table-1 {
@@ -2991,51 +2989,6 @@ ul.orgmenu {
   .preference-sort legend {
     display: inline; }
 
-.portlet {
-  background: none repeat scroll 0 0 white;
-  border: 1px solid gainsboro; }
-
-.portlet-topper {
-  background: -moz-linear-gradient(center top, whitesmoke, #e5e5e5) repeat scroll 0 0 transparent;
-  border-bottom: 1px solid gainsboro;
-  height: 40px;
-  width: 100%;
-  padding-top: 1px;
-  padding-bottom: 1px; }
-  .portlet-topper h1 {
-    color: #555555;
-    font-size: 18px;
-    text-align: center;
-    text-shadow: 1px 1px 1px white;
-    text-transform: uppercase; }
-  .portlet-topper h2 {
-    color: #555555;
-    font-size: 18px;
-    text-align: center;
-    text-shadow: 1px 1px 1px white;
-    text-transform: uppercase; }
-  .portlet-topper h3 {
-    color: #555555;
-    font-size: 18px;
-    text-align: center;
-    text-shadow: 1px 1px 1px white;
-    text-transform: uppercase; }
-  .portlet-topper h4 {
-    color: #555555;
-    font-size: 18px;
-    text-align: center;
-    text-shadow: 1px 1px 1px white;
-    text-transform: uppercase; }
-  .portlet-topper h5 {
-    color: #555555;
-    font-size: 18px;
-    text-align: center;
-    text-shadow: 1px 1px 1px white;
-    text-transform: uppercase; }
-
-.portlet-content-container {
-  padding: 1em; }
-
 /*** Itemtree
 ************************************************/
 .selectlist,
@@ -3245,52 +3198,6 @@ ul.dropmenu-list {
     left: 0px;
     top: 25px;
     display: none; }
-
-#wrapper {
-  position: relative; }
-
-.popover-wrapper {
-  display: block;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-  margin: 0px;
-  z-index: 10;
-  background-color: rgba(0, 0, 0, 0.1); }
-  .popover-wrapper > .popover-close {
-    display: block;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    min-height: 100%; }
-  .popover-wrapper .popover {
-    display: block;
-    margin: 2em auto;
-    background: #ffffff;
-    position: relative;
-    padding: 10px;
-    border-radius: 3px 3px 3px 3px;
-    box-shadow: 2px 2px 2px 0 #5f5f5f;
-    width: auto;
-    max-width: 960px !important;
-    min-width: 460px !important;
-    height: auto; }
-    .popover-wrapper .popover > .popover-close {
-      display: block;
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      width: 16px;
-      height: 17px;
-      background-image: url(../img/popup-close-icon.png);
-      background-repeat: no-repeat;
-      background-position: center center;
-      cursor: pointer; }
-    .popover-wrapper .popover > .popover-content {
-      display: inline-block; }
 
 .logictree {
   padding: 0px; }
