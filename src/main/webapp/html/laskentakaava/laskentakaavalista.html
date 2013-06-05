@@ -3,6 +3,8 @@
 
 </script>
 
+<h1>Laskentakaavojen hallinta</h1>
+
 <div class="tabs" ng-controller="LaskentakaavaMenuController">
     <a ng-repeat="menuitem in menuitems" href="{{menuitem.url}}" ng-class="cssClass(menuitem)">
         <span>{{menuitem.title}}</span>
@@ -10,10 +12,11 @@
 </div>
 
 <div class="tabsheets">
-
-    <h2>Laskentakaavat</h2>
-    <span ng-click="createKaava()" class="button small">Luo laskentakaava</span>
-
+    
+    <h2>Laskentakaavalista</h2>
+    <span ng-click="createKaava()" class="button small">Luo uusi laskentakaava</span>
+    
+   
     <div ng-show="showForm">
         <form name="kaavaForm" novalidate>
         <div class="form-row">

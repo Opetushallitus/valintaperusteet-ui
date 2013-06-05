@@ -1,4 +1,4 @@
-﻿<h3>Valintaryhmän muokkaus</h3>
+﻿<h1>Valintaryhmän muokkaus</h1>
 
 
 <div class="tabs">
@@ -33,7 +33,7 @@
         <div class="clear"></div>
     </div>
 
-    <div class="form-row">
+    <div ng-show="model.valintaryhma.hakukohdekoodit" class="form-row">
         <label class="form-row-label" for="">Hakukohde koodit</label>
         <div class="form-row-content">
             <table class="virkailija-table-1 width-60">
@@ -63,7 +63,7 @@
     </div>
 
     <div class="form-row ">
-        <label class="form-row-label">&nbsp;</label>
+        <label class="form-row-label">Lisää hakukohdekoodi</label>
         <div class="form-row-content width-60">
             <input class="width-60" name="hakukohdekoodit" type="text" id="uusiHakukohdeUri" ng-model="uusiHakukohdeUri" list="hakukohdekoodit"/>
             <datalist id="hakukohdekoodit">

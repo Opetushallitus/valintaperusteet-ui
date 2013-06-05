@@ -1,11 +1,11 @@
-﻿<h3>Hakukohteen muokkaus</h3>
+﻿<h1>Hakukohteen muokkaus</h1>
 
-<!--
+
 <div class="tabs">
-	<a href="#/hakukohde/{{hakukohdeOid}}/" class="tab current"><span>Hakukohteen perustiedot</span></a>
-	<a href="#/hakukohde/{{hakukohdeOid}}/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
+    <a href="#/valintaryhma/{{model.valintaryhma.oid}}/" class="tab current"><span>Hakukohteen perustiedot</span></a>
+    <a ng-show="model.hakukohde.valintaryhma_id" href="#/valintaryhma/{{model.hakukohde.valintaryhma_id}}/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
 </div>
--->
+
 
 <div class="tabsheets">
 <form name="form" ng-submit="submit()">
