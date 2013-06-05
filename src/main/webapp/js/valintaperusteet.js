@@ -236,16 +236,6 @@ app.factory('JarjestyskriteeriJarjesta', function($resource) {
 
 
 
-//Laskentakaava
-app.factory('Laskentakaava', function($resource) {
- return $resource(SERVICE_URL_BASE + "resources/laskentakaava/:oid", {oid: "@oid"}, {
-     list: {method: "GET", isArray: true},
-     get: {method: "GET"},
-     insert: {method: "PUT"},
-     update: {method: "POST"},
-     updateMetadata: {method: "POST", params: {metadata: "true"}}
-   });
-});
 
 
 //ulkoiset
