@@ -57,9 +57,11 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
     }
 
     $scope.saveKaavaAsCompleted = function() {
-        var kaava = Laskentapuu.laskentakaava()[0].getData()
-        KaavaValidointi.post({}, kaava, function(data) {
-            Laskentapuu.setKaavaData(data)
+        var kaava = Laskentapuu.laskentakaava()[0].getData();
+        var validateKaava = {};
+        angular.copy(kaava, validateKaava);
+        KaavaValidointi.post({}, validateKaava, function(data) {
+            //Laskentapuu.setKaavaData(data)
             $scope.selected = null
             $scope.showTemplate = false
 
@@ -70,7 +72,7 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
 
             kaava.onLuonnos = false
             kaava.$save({oid: kaava.id}, function(data) {
-
+                Laskentapuu.setKaavaData(data);
             })
             $scope.errors = []
         })
