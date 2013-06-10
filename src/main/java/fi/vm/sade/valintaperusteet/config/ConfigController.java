@@ -25,6 +25,8 @@ public class ConfigController {
     @Value("${valintaperusteet-ui.valintalaskentakoostepalvelu-service-url.rest}")
     private String valintalaskentakoostepalvelu;
 
+    @Value("${auth.mode}")
+    private String authMode;
 
 
     @RequestMapping(value="/configuration.js", method = RequestMethod.GET, produces="text/javascript")
@@ -37,6 +39,14 @@ public class ConfigController {
         append(b, "VALINTALASKENTAKOOSTE_URL_BASE", valintalaskentakoostepalvelu);
 
         append(b, "TEMPLATE_URL_BASE", "");
+
+        if(!authMode.isEmpty()) {
+            append(b, "AUTH_MODE", authMode);
+            if(authMode.trim().equalsIgnoreCase("dev")) {
+                b.append("$('head').append('<script type=\"text/javascript\" src=\"/servers/cas/myroles\"></script>')");
+            }
+        }
+
         return b.toString();
     }
 
