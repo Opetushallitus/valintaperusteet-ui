@@ -19,3 +19,10 @@ app.factory('Laskentakaava', function($resource) {
      updateMetadata: {method: "POST", params: {metadata: "true"}}
    });
 });
+
+app.factory('HakukohdeLaskentakaavat', function($resource) {
+    return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeOid/laskentakaava", {hakukohdeOid: "@hakukohdeOid"}, {
+        get: {method: "GET"}
+    })
+});
+

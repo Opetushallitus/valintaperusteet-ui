@@ -1,46 +1,65 @@
+
+
+
 app.factory('LaskentakaavaLista', function(Laskentakaava, ParentValintaryhmas) {
-    var valintaryhmaList = [];
+    
+    var model = new function() {
+        this.valintaryhmaList = [];
 
-    var findWithValintaryhma = function(valintaryhmaId, myosLuonnos) {
-        var list = [];
-        ParentValintaryhmas.get({parentOid: valintaryhmaId}, function(data) {
-            for(var i in data) {
-                var valintaryhma = data[i];
-                valintaryhma['laskentakaavat'] = Laskentakaava.list({valintaryhma: valintaryhma.oid, myosLuonnos: myosLuonnos});
-            }
-
-            var paataso = findRootLevelLaskentakaavas(myosLuonnos);
-            list.push.apply(list, data);
-            list.push(paataso);
-        });
-        return list;
-    }
-
-    var findRootLevelLaskentakaavas = function(myosLuonnos) {
-        var paataso = {
-            nimi: "Yleiset kaavat",
-            laskentakaavat: []
-        };
-        Laskentakaava.list({myosLuonnos: myosLuonnos}, function(data) {
-            paataso.laskentakaavat = data;
-        });
-
-        return paataso;
-    }
-
-    return {
-        valintaryhmaList: function() {
-            return valintaryhmaList;
-        },
-        refresh: function(valintaryhmaId, myosLuonnos) {
+        this.refresh = function(valintaryhmaId, myosLuonnos) {
             if(valintaryhmaId) {
-                valintaryhmaList[0] = findWithValintaryhma(valintaryhmaId, myosLuonnos);
+                model.valintaryhmaList[0] = model.findWithValintaryhma(valintaryhmaId, myosLuonnos);
             } else {
-                valintaryhmaList[0] = findRootLevelLaskentakaavas(myosLuonnos);
+                model.valintaryhmaList[0] = model.findRootLevelLaskentakaavas(myosLuonnos);
             }
         }
+        
+        this.findWithValintaryhma = function(valintaryhmaId, myosLuonnos) {
+            var list = [];
+            ParentValintaryhmas.get({parentOid: valintaryhmaId}, function(data) {
+                for(var i in data) {
+                    var valintaryhma = data[i];
+                    valintaryhma['laskentakaavat'] = Laskentakaava.list({valintaryhma: valintaryhma.oid, myosLuonnos: myosLuonnos});
+                }
+
+                var paataso = model.findRootLevelLaskentakaavas(myosLuonnos);
+                list.push.apply(list, data);
+                list.push(paataso);
+            });
+            return list;
+        }
+
+        this.findRootLevelLaskentakaavas = function(myosLuonnos) {
+            var paataso = {
+                nimi: "Yleiset kaavat",
+                laskentakaavat: []
+            };
+            Laskentakaava.list({myosLuonnos: myosLuonnos}, function(data) {
+                paataso.laskentakaavat = data;
+            });
+
+            return paataso;
+        }
+
+        
+        this.valintaryhmaList = function() {
+            return model.valintaryhmaList;
+        }
+
+        
     }
+
+    return model;
+    
 });
+
+
+
+
+
+
+
+
 
 function LaskentakaavaListController($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista) {
     $scope.linkprefix = '';

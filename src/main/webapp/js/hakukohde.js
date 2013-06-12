@@ -7,11 +7,9 @@ app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohd
         this.hakukohde = {};
         this.valinnanvaiheet = [];
         this.hakukohdekoodit = [];
-
         this.refresh = function(oid) {
             Hakukohde.get({oid: oid}, function(result) {
                 model.hakukohde = result;
-                
                 Valintaryhma.get({oid: model.hakukohde.valintaryhma_id}, function(result) {
                     model.parentValintaryhma = result;
                 });
@@ -50,6 +48,7 @@ app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohd
                 }
             }
         };
+
         this.remove = function(vaihe) {
             Valinnanvaihe.delete({oid: vaihe.oid} ,function(result) {
                 for(i in model.valinnanvaiheet) {
