@@ -6,16 +6,14 @@
 <h1>Laskentakaavojen hallinta</h1>
 
 <div class="tabs" ng-controller="LaskentakaavaMenuController">
-    <a ng-repeat="menuitem in menuitems" href="{{menuitem.url}}" ng-class="cssClass(menuitem)">
-        <span>{{menuitem.title}}</span>
-    </a>
+    <a ng-repeat="menuitem in menuitems" href="{{menuitem.url}}" ng-class="cssClass(menuitem)"><span>{{menuitem.title}}</span></a>
 </div>
 
 <div class="tabsheets">
     
     <h2>Laskentakaavalista</h2>
-    <span ng-click="createKaava()" class="button small">Luo uusi laskentakaava</span>
     
+    <span ng-click="createKaava()" class="button small margin-top-2">Luo uusi laskentakaava</span>
    
     <div ng-show="showForm">
         <form name="kaavaForm" novalidate>
@@ -56,12 +54,12 @@
 
     <div class="width-60">
         
-        <div class="notification info" ng-show="laskentakaavat.length == 0 && !valintaryhmaOid">
-            <p ng-show="!valintaryhmaOid">Yhtään laskentakaavaa ei ole luotu.</p>
-            <p ng-show="valintaryhmaOid">Tälle valintaryhmälle ei ole luotu yhtään laskentakaavaa.</p>
+        <div class="notification info" ng-show="laskentakaavat.length == 0 && !hakukohdeLaskentakaavaLista.parentValintaryhma.oid">
+            <p ng-show="!hakukohdeLaskentakaavaLista.parentValintaryhma.oid">Yhtään laskentakaavaa ei ole luotu.</p>
+            <p ng-show="hakukohdeLaskentakaavaLista.parentValintaryhma.oid">Tälle hakukohteelle ei ole luotu yhtään laskentakaavaa.</p>
         </div>
 
-        <table class="virkailija-table-1" ng-show="laskentakaavat.length > 0">
+        <table class="virkailija-table-1" ng-show="hakukohdeLaskentakaavaLista.laskentakaavat.length > 0">
             <thead>
                 <tr>
                     <th>Nimi</th>
@@ -71,7 +69,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="kaava in laskentakaavat">
+                <tr ng-repeat="kaava in hakukohdeLaskentakaavaLista.laskentakaavat">
                     <td>
                         <a href="#{{linkprefix}}/laskentakaava/{{kaava.id}}">{{kaava.nimi}}</a>
                     </td>
@@ -89,7 +87,7 @@
             </tbody>
         </table>
 
-        <div ng-repeat="valintaryhmaList in valintaryhmat.valintaryhmaList()">
+        <div ng-repeat="valintaryhmaList in hakukohdeLaskentakaavaLista.valintaryhmaList()">
             <div ng-repeat="valintaryhma in valintaryhmaList">
                 <h3>{{valintaryhma.nimi}}</h3>
                 <div class="notification info margin-bottom-2" ng-show="!valintaryhma.laskentakaavat || valintaryhma.laskentakaavat.length == 0">

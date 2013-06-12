@@ -1,7 +1,7 @@
 
 
 
-function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, KaavaValidointi, LaskentakaavaLista) {
+function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, KaavaValidointi, LaskentakaavaLista, HakukohdeLaskentakaavaLista) {
     if($scope.fetched != $routeParams.laskentakaavaOid) {
         Laskentapuu.refresh($routeParams.laskentakaavaOid);
     }
@@ -56,17 +56,20 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
         oldParent.init()
     }
 
+
     $scope.saveKaavaAsCompleted = function() {
         var kaava = Laskentapuu.laskentakaava()[0].getData();
         var validateKaava = {};
         angular.copy(kaava, validateKaava);
         KaavaValidointi.post({}, validateKaava, function(data) {
-            //Laskentapuu.setKaavaData(data)
+            Laskentapuu.setKaavaData(data)
             $scope.selected = null
             $scope.showTemplate = false
 
             if(Laskentapuu.laskentakaava()[0].hasErrors()) {
+                
                 $scope.errors = Laskentapuu.laskentakaava()[0].getAllErrors()
+                Laskentapuu.setKaavaData(kaava);
                 return
             }
 
@@ -78,6 +81,7 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
         })
 
     }
+    
 
     $scope.saveKaavaAsDraft = function() {
         var kaava = Laskentapuu.laskentakaava()[0].getData()
@@ -92,6 +96,8 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
     $scope.goToListing = function() {
         if($routeParams.valintaryhmaOid) {
             $location.path("/valintaryhma/" + $routeParams.valintaryhmaOid + "/laskentakaava")
+        } else if($routeParams.hakukohdeOid) {
+            $location.path("/hakukohde/" + $routeParams.hakukohdeOid + "/laskentakaava")
         } else {
             $location.path("/laskentakaava")
         }
