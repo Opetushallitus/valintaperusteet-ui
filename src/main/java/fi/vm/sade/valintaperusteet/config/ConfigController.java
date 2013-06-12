@@ -25,7 +25,7 @@ public class ConfigController {
     @Value("${valintaperusteet-ui.valintalaskentakoostepalvelu-service-url.rest}")
     private String valintalaskentakoostepalvelu;
 
-    @Value("${auth.mode}")
+    @Value("${auth.mode:}")
     private String authMode;
 
 
