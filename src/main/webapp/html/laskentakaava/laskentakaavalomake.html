@@ -272,11 +272,13 @@
 
 <div class="clear"></div>
 
-<div class="notification warning" ng-show="errors.length > 0">
+<div class="notification warning margin-top-2" ng-show="errors.length > 0">
     <ul>
-        <p ng-repeat="error in errors">{{error.virheviesti}}</p>
+        <li ng-repeat="error in errors">{{error.virheviesti}}</li>
     </ul>
 </div>
+
+<div class="clear"></div>
 
 <div class="gradingformula dd" jq-nestable="{onChange: kaavaDragged}" style="width:60%;float:left;"
      ng-repeat="kaava in domain.laskentakaava()"
