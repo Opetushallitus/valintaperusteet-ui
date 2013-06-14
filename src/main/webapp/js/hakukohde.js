@@ -88,6 +88,8 @@ app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohd
                     //persist valintaryhma with added hakukohdekoodiuri
                     HakukohdeHakukohdekoodi.post({hakukohdeOid: model.hakukohde.oid}, hakukohdekoodi, function(result) {
                         model.hakukohde.hakukohdekoodi = result;
+                    }, function(error){
+                        alert(error.data);
                     });
                     return true;
                 }
