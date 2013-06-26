@@ -108,13 +108,24 @@ return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:valintaryhmaOid/hak
   });
 });
 
+app.factory('ValintaryhmaValintakoekoodi', function($resource) {
+return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:valintaryhmaOid/valintakoekoodi", {valintaryhmaOid: "@valintaryhmaOid"}, {
+    insert: {method: "PUT" }, //one
+    post: {method: "POST", isArray: true} //array
+  });
+});
+
 app.factory('KoodistoHakukohdekoodi', function($resource) {
 return $resource(KOODISTO_URL_BASE + "json/hakukohteet/koodi", {}, {
     get: {method: "GET", isArray: true}
   });
 });
 
-
+app.factory('KoodistoValintakoekoodi', function($resource) {
+  return $resource(KOODISTO_URL_BASE + "json/valintakokeentyyppi/koodi", {}, {
+    get: {method: "get", isArray: true}
+  });
+});
 
 
 //Hakukohde

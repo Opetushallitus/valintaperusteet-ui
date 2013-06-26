@@ -1,16 +1,18 @@
 
-app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, ChildHakukohdes, Valinnanvaihe, ValintaryhmaValinnanvaihe, Treemodel, ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, KoodistoHakukohdekoodi) {
+app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, ValintaryhmaValintakoekoodi, ChildHakukohdes, KoodistoValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe, Treemodel, ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, KoodistoHakukohdekoodi/*, KoodistoValintakoekoodi*/) {
 
     var model = new function() {
         this.valintaryhma = {};
         this.valinnanvaiheet =[];
         this.hakukohdekoodit = [];
+        this.valintakoekoodit = [];
 
         this.refresh = function(oid) {
             if(!oid) {
                 model.valintaryhma = {};
                 model.valinnanvaiheet = [];
             } else {
+                
                 Valintaryhma.get({oid: oid}, function(result) {
                     model.valintaryhma = result;
                 });
@@ -22,6 +24,11 @@ app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, Chil
                 KoodistoHakukohdekoodi.get(function(result) {
                     model.hakukohdekoodit = result;
                 });
+
+                KoodistoValintakoekoodi.get(function(result) {
+                    model.valintakoekoodit = result;
+                });
+                
             }
         };
 
@@ -105,8 +112,36 @@ app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, Chil
                     return true;
                 }
             });
+        };
 
-            
+        this.addValintakoeUri = function(valintakoeKoodiUri) {
+            model.valintakoekoodit.some(function (koodi) {
+                if(koodi.koodiUri == valintakoeKoodiUri) {
+                    var valintakoekoodi = {"uri": koodi.koodiUri,
+                                         "arvo":koodi.koodiArvo};
+
+                    koodi.metadata.forEach(function(metadata){
+                        if(metadata.kieli == "FI") {
+                            valintakoekoodi.nimiFi = metadata.nimi;
+                        } else if(metadata.kieli == "SV") {
+                            valintakoekoodi.nimiSv = metadata.nimi;
+                        } else if(metadata.kieli == "EN") {
+                            valintakoekoodi.nimiEn = metadata.nimi;
+                        }
+                    });
+
+                    //persist valintaryhma with added valintakoekoodiuri
+                    ValintaryhmaValintakoekoodi.insert({valintaryhmaOid: model.valintaryhma.oid}, valintakoekoodi, function(result) {
+                        if(!model.valintaryhma.valintakoekoodit) {
+                            model.valintaryhma.valintakoekoodit = [];
+                        }
+                        model.valintaryhma.valintakoekoodit.push(result);
+                    }, function(error){
+                        alert(error.data);
+                    });
+                    return true;
+                }
+            });
         };
 
         this.removeHakukohdeKoodi = function(hakukohdekoodi) {
@@ -120,6 +155,21 @@ app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, Chil
             }
             
             ValintaryhmaHakukohdekoodi.post({valintaryhmaOid: model.valintaryhma.oid}, hakukohdekoodit, function(result) {
+
+            });
+        }
+
+        this.removeValintakoeKoodi = function(valintakoekoodi) {
+            var valintakoekoodit, index;
+
+            valintakoekoodit = model.valintaryhma.valintakoekoodit;
+            index = valintakoekoodit.indexOf(valintakoekoodi);
+
+            if(index !== -1) {
+                valintakoekoodit.splice(index,1);
+            }
+
+            ValintaryhmaValintakoekoodi.post({valintaryhmaOid: model.valintaryhma.oid}, valintakoekoodit, function(result) {
 
             });
         }
@@ -150,9 +200,12 @@ function valintaryhmaController($scope, $location, $routeParams, ValintaryhmaMod
         $location.path("/valintaryhma/" + $scope.valintaryhmaOid + "/valintakoevalinnanvaihe/");
     }
 
-    $scope.addHakukohdeUri = function() {
-        $scope.model.addHakukohdeUri($scope.uusiHakukohdeUri);
-        $scope.uusiHakukohdeUri = "";
+    $scope.addHakukohdeUri = function(newHakukohdeUri) {
+        $scope.model.addHakukohdeUri(newHakukohdeUri);
+    }
+
+    $scope.addValintakoeUri = function(newValintakoeUri) {
+        $scope.model.addValintakoeUri(newValintakoeUri);
     }
 
     $scope.toValintaryhmaForm = function() {
@@ -162,12 +215,12 @@ function valintaryhmaController($scope, $location, $routeParams, ValintaryhmaMod
     $scope.removeHakukohdeKoodi = function(hakukohdekoodi) {
         $scope.model.removeHakukohdeKoodi(hakukohdekoodi);
     }
+
+    $scope.setHakukohdeUri = function(newUri) {
+        $scope.newHakukohdeUri = newUri;
+    }
+
 }
-
-
-
-
-
 
 
 app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routeParams, Valintaryhma, ChildValintaryhmas, Treemodel ) {

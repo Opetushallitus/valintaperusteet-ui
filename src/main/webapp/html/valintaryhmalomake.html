@@ -1,4 +1,4 @@
-﻿<h1>Valintaryhmän muokkaus</h1>
+<h1>Valintaryhmän muokkaus</h1>
 
 
 <div class="tabs">
@@ -34,7 +34,80 @@
             </div>
             <div class="clear"></div>
         </div>
+        
 
+
+        <!-- VALINTAKOEKOODIEN LISTAUS -->
+        <div ng-show="model.valintaryhma.valintakoekoodit" class="form-row">
+            <label class="form-row-label" for="">Hakukohde koodit</label>
+
+            <div class="form-row-content">
+                <table class="virkailija-table-1 width-60">
+                    <thead>
+                    <tr>
+                        <th>koodi</th>
+                        <th>arvo</th>
+                        <th>nimi</th>
+                        <th>poista</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="valintakoekoodit in model.valintaryhma.valintakoekoodit">
+                        <td class="align-center">{{valintakoekoodit.uri}}</td>
+                        <td class="align-center">{{valintakoekoodit.arvo}}</td>
+                        <td class="align-center">{{valintakoekoodit.nimiFi}}</td>
+                        <td class="align-center">
+                            <span class="btn remove" ng-click="removeValintakoeKoodi(valintakoekoodit)"></span>
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+            </div>
+            <div class="clear"></div>
+        </div>
+    
+
+        <!-- VALINTAKOEKOODIEN LISÄYS -->
+        <div class="form-row" ng-show="model.valintaryhma.oid">
+            <label class="form-row-label">Lisää valintakoekoodi</label>
+            <div class="form-row-content width-60">
+                
+                <div filterable-list ng-show="showValintakoeKoodit" class="autocomplete">
+                    <div class="form-row">
+                        <button type="button" class="margin-bottom-0 small" ng-click="addValintakoeUri(selectedId)"
+                        ng-disabled="!selectedId">Lisää valintakoekoodi</button>
+                    </div>
+                   
+                    <div class="ac-selection">
+                        <h3 class="margin-top-0">Valittu valintakoekoodi: {{selectedId}}</h3>
+                    </div>
+
+                    <input class="width-60 ac-filter search" type="text" placeholder="Suodata valintakoekoodeja" ng-model="valintakoekoodifilter" />                         
+
+                    <ul class="ac-options" ng-show="model.valintakoekoodit">
+                        <li fl-option="{{valintakoekoodi.koodiUri}}" class="ac-option" ng-click="setHakukohdeUri()" ng-repeat="valintakoekoodi in model.valintakoekoodit | filter:valintakoekoodifilter">
+                            <span>{{valintakoekoodi.metadata[0].nimi}}</span>
+                            <span class="float-right">{{valintakoekoodi.koodiUri}}</span>
+                        </li> 
+                    </ul>
+                    
+                </div>  
+                
+                <button ng-click="showValintakoeKoodit = !showValintakoeKoodit" ng-model="showValintakoeKoodit"  type="button" class="margin-bottom-0 small">
+                    <span ng-show="!showValintakoeKoodit">Näytä valintakoekoodit</span>
+                    <span ng-show="showValintakoeKoodit">Piilota valintakoekoodit</span>
+                </button>
+                
+                
+            </div>
+            <div class="clear"></div>
+        </div>
+    
+
+
+        <!-- HAKUKOHDEKOODIEN LISTAUS -->
         <div ng-show="model.valintaryhma.hakukohdekoodit" class="form-row">
             <label class="form-row-label" for="">Hakukohde koodit</label>
 
@@ -64,28 +137,46 @@
             </div>
             <div class="clear"></div>
         </div>
-
+        
+        <!-- HAKUKOHDEKOODIEN LISÄYS -->
         <div class="form-row" ng-show="model.valintaryhma.oid">
-            <label class="form-row-label">Lisää hakukohdekoodi</label>
-
+            <label class="form-row-label">Lisää hakukohdekoodeja</label>
             <div class="form-row-content width-60">
-                <input class="width-60" name="hakukohdekoodit" type="text" id="uusiHakukohdeUri"
-                       ng-model="uusiHakukohdeUri" list="hakukohdekoodit"/>
-                <datalist id="hakukohdekoodit">
-                    <!--[if IE 9]><select disabled style="display:none"><![endif]-->
-                    <option ng-repeat="data in model.hakukohdekoodit" value="{{data.koodiUri}}">
-                        {{data.metadata[0].nimi}}
-                    </option>
-                    <!--[if IE 9]></select><![endif]-->
-                </datalist>
+                
+                <div filterable-list ng-show="showHakukohdekoodit" class="autocomplete">
+                    <div class="form-row">
+                         <button type="button" class="margin-bottom-0 small" ng-click="addHakukohdeUri(selectedId)"
+                        ng-disabled="!selectedId">Lisää hakukohdekoodi</button>
+                    </div>
+                   
+                    <div class="ac-selection">
+                        <h3 class="margin-top-0">Valittu hakukohdekoodi: {{selectedId}}</h3>
+                    </div>
 
-                <button type="button" class="margin-bottom-0 small" ng-click="addHakukohdeUri()"
-                        ng-disabled="!model.hakukohdekoodit.length">Lisää hakukohdekoodi
+                    <input class="width-60 ac-filter search" type="text" placeholder="Suodata hakukohdekoodeja" ng-model="hakukohdekoodifilter" />
+
+                        
+
+                    <ul class="ac-options" ng-show="model.hakukohdekoodit">
+                        <li fl-option="{{hakukohdekoodi.koodiUri}}" class="ac-option" ng-click="setHakukohdeUri()" ng-repeat="hakukohdekoodi in model.hakukohdekoodit | filter:hakukohdekoodifilter">
+                            <span>{{hakukohdekoodi.metadata[0].nimi}}</span>
+                            <span class="float-right">{{hakukohdekoodi.koodiUri}}</span>
+                        </li> 
+                    </ul>
+                    
+                </div>  
+                
+                <button ng-click="showHakukohdekoodit = !showHakukohdekoodit" ng-model="showHakukohdekoodit"  type="button" class="margin-bottom-0 small">
+                    <span ng-show="!showHakukohdekoodit">Näytä hakukohdekoodit</span>
+                    <span ng-show="showHakukohdekoodit">Piilota hakukohdekoodit</span>
                 </button>
+                
+                
             </div>
             <div class="clear"></div>
         </div>
-
+        
+        <!-- VALINNANVAIHEIDEN LISTAUS -->
         <div class="form-row width-100">
             <div class="form-row-label">Valinnan vaiheet</div>
             <div class="form-row-content width-60">
@@ -125,9 +216,13 @@
                 </div>
             </div>
         </div>
+        
+        
+
+        
+
 
         <div class="clear"></div>
-
         <button ng-disabled="!form.$valid" class="button small primary" type="submit">Tallenna</button>
         <button type="button" class="float-left margin-right-1 button small" ng-click="cancel()">Takaisin</button>
 

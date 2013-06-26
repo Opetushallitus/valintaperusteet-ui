@@ -67,7 +67,6 @@ app.directive('uiSortable', function() {
             start = ui.item.data('ui-sortable-start');
             end = ui.item.index();
             ngModel.$modelValue.splice(end, 0, ngModel.$modelValue.splice(start, 1)[0]);
-
             return scope.$apply();
           };
           _start = opts.start;
@@ -100,8 +99,6 @@ app.directive('enter', function() {
           element.addClass(attrs.enter);
       });
     }
-  
-
 });
 
 app.directive('leave', function() {
@@ -109,5 +106,62 @@ app.directive('leave', function() {
     element.bind('mouseleave', function() {
       element.removeClass(attrs.leave);
     });
+  }
+});
+
+app.directive('filterableList', function() {
+  return {
+    scope: true,
+    controller: function($scope) {
+      $scope.selectedId = "";
+      var id = "";
+      this.setSelectedId = function(newId) {
+        $scope.selectedId = newId;
+        id = newId;
+        $scope.$digest();
+      }
+
+      this.removeSelection = function() {
+        $scope.selectedId = "";
+        id = "";
+        $scope.$broadcast('removeSelection');
+        $scope.$digest();
+      }
+
+      $scope.$watch('id', function() {
+        $scope.selectedId = id;
+      });
+
+    }
+  }
+});
+
+app.directive('flOption', function() {
+  return {
+    require: '^filterableList',
+    
+    link: function(scope, iElement, iAttrs, ctrl) {
+      var isSelected = false;
+
+      scope.$on('removeSelection', function(event, data) {
+        if(isSelected) {
+          iElement.removeClass('selected');
+          isSelected = false;
+        }
+      });
+
+      iElement.bind('click', function() {
+        if(isSelected) {
+          ctrl.removeSelection();
+          isSelected = false;
+        } else {
+          ctrl.removeSelection();
+          ctrl.setSelectedId(iAttrs.flOption);
+          iElement.addClass('selected');
+          isSelected = true;
+        }
+      });
+      
+    }
   }
 });
