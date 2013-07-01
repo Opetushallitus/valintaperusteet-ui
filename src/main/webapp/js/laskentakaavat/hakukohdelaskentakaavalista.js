@@ -39,7 +39,7 @@ app.factory('HakukohdeLaskentakaavaLista', function(Laskentakaava, ParentValinta
 
                     laskentakaavaQueryParams.hakukohde = hakukohdeOid;
 
-                    var queryParams = $.extend({all: true}, laskentakaavaQueryParams);
+                    var queryParams = $.extend({myosLuonnos: true}, laskentakaavaQueryParams);
                     model.laskentakaavat = Laskentakaava.list(queryParams);
 
                 });
