@@ -147,7 +147,6 @@ app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, Vali
                         if(!model.valintaryhma.valintakoekoodit) {
                             model.valintaryhma.valintakoekoodit = [];
                         }
-                        console.log(model.valintaryhma);
                         model.valintaryhma.valintakoekoodit.push(result);
 
                     }, function(error){
@@ -338,9 +337,7 @@ app.factory('ValintaryhmaChildrenModel', function($resource, $location, $routePa
         };
 
         this.persistChildHakukohteet = function() {
-            console.log("model.childHakukohteet:" + model.childHakukohteet);
             model.childHakukohteet.forEach(function(element, index, array) {
-                console.log("element:" + element);
                 Hakukohde.post(element, function(result) {
                     model.refresh(model.valintaryhma.oid);
                 })
