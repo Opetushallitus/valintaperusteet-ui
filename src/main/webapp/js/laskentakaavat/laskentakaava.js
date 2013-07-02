@@ -1,16 +1,18 @@
 
 
 
-function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, KaavaValidointi, LaskentakaavaLista, HakukohdeLaskentakaavaLista) {
+function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, KaavaValidointi, LaskentakaavaLista) {
     if($scope.fetched != $routeParams.laskentakaavaOid) {
         Laskentapuu.refresh($routeParams.laskentakaavaOid);
     }
     $scope.fetched = $routeParams.laskentakaavaOid;
 
     if($routeParams.valintaryhmaOid) {
-        LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, false);
+        LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, null, false);
+    } else if($routeParams.hakukohdeOid) {
+        LaskentakaavaLista.refresh(null, $routeParams.hakukohdeOid, false);
     } else {
-        LaskentakaavaLista.refresh(null, false);
+        LaskentakaavaLista.refresh(null, null, false);
     }
 
     $scope.kaavaLista = LaskentakaavaLista;

@@ -52,14 +52,15 @@
         </form>
     </div>
 
-    <div class="width-60">
-        
-        <div class="notification info" ng-show="laskentakaavat.length == 0 && !hakukohdeLaskentakaavaLista.parentValintaryhma.oid">
-            <p ng-show="!hakukohdeLaskentakaavaLista.parentValintaryhma.oid">Yhtään laskentakaavaa ei ole luotu.</p>
-            <p ng-show="hakukohdeLaskentakaavaLista.parentValintaryhma.oid">Tälle hakukohteelle ei ole luotu yhtään laskentakaavaa.</p>
+    <div class="width-60" ng-repeat="hakukohde in hakukohdeLaskentakaavaLista.hakukohdeList()">
+
+
+        <h3>{{hakukohde.nimi}}</h3>
+        <div class="notification info" ng-show="hakukohde.laskentakaavat.length == 0">
+            <p>Tälle hakukohteelle ei ole luotu yhtään laskentakaavaa.</p>
         </div>
 
-        <table class="virkailija-table-1" ng-show="hakukohdeLaskentakaavaLista.laskentakaavat.length > 0">
+        <table class="virkailija-table-1" ng-show="hakukohde.laskentakaavat.length > 0">
             <thead>
                 <tr>
                     <th>Nimi</th>
@@ -69,7 +70,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="kaava in hakukohdeLaskentakaavaLista.laskentakaavat">
+                <tr ng-repeat="kaava in hakukohde.laskentakaavat">
                     <td>
                         <a href="#{{linkprefix}}/laskentakaava/{{kaava.id}}">{{kaava.nimi}}</a>
                     </td>
@@ -86,42 +87,42 @@
                 </tr>
             </tbody>
         </table>
+    </div>
 
-        <div ng-repeat="valintaryhmaList in hakukohdeLaskentakaavaLista.valintaryhmaList()">
-            <div ng-repeat="valintaryhma in valintaryhmaList">
-                <h3>{{valintaryhma.nimi}}</h3>
-                <div class="notification info margin-bottom-2" ng-show="!valintaryhma.laskentakaavat || valintaryhma.laskentakaavat.length == 0">
-                    <p ng-show="!valintaryhma.oid">Yhtään laskentakaavaa ei ole luotu.</p>
-                    <p ng-show="valintaryhma.oid">Tälle valintaryhmälle ei ole luotu yhtään laskentakaavaa.</p>
-                </div>
-                <table class="virkailija-table-1" ng-show="valintaryhma.laskentakaavat.length > 0">
-                    <thead>
-                    <tr>
-                        <th>Nimi</th>
-                        <th>Kuvaus</th>
-                        <th>Tila</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="kaava in valintaryhma.laskentakaavat">
-                        <td>
-                            <a href="#{{linkprefix}}/laskentakaava/{{kaava.id}}">{{kaava.nimi}}</a>
-                        </td>
-                        <td>
-                            {{kaava.kuvaus}}
-                        </td>
-                        <td>
-                            <span ng-show="kaava.onLuonnos">LUONNOS</span>
-                            <span ng-show="!kaava.onLuonnos">VALMIS</span>
-                        </td>
-                        <td>
-                            <a ng-click="editKaava(kaava)">Muokkaa</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+    <div class="width-60" ng-repeat="valintaryhmaList in hakukohdeLaskentakaavaLista.valintaryhmaList()">
+        <div ng-repeat="valintaryhma in valintaryhmaList">
+            <h3>{{valintaryhma.nimi}}</h3>
+            <div class="notification info margin-bottom-2" ng-show="!valintaryhma.laskentakaavat || valintaryhma.laskentakaavat.length == 0">
+                <p ng-show="!valintaryhma.oid">Yhtään laskentakaavaa ei ole luotu.</p>
+                <p ng-show="valintaryhma.oid">Tälle valintaryhmälle ei ole luotu yhtään laskentakaavaa.</p>
             </div>
+            <table class="virkailija-table-1" ng-show="valintaryhma.laskentakaavat.length > 0">
+                <thead>
+                <tr>
+                    <th>Nimi</th>
+                    <th>Kuvaus</th>
+                    <th>Tila</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="kaava in valintaryhma.laskentakaavat">
+                    <td>
+                        <a href="#{{linkprefix}}/laskentakaava/{{kaava.id}}">{{kaava.nimi}}</a>
+                    </td>
+                    <td>
+                        {{kaava.kuvaus}}
+                    </td>
+                    <td>
+                        <span ng-show="kaava.onLuonnos">LUONNOS</span>
+                        <span ng-show="!kaava.onLuonnos">VALMIS</span>
+                    </td>
+                    <td>
+                        <a ng-click="editKaava(kaava)">Muokkaa</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

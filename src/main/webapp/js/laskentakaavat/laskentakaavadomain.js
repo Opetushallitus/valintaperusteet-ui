@@ -288,7 +288,7 @@ var Funktio = function(dsl, data) {
     /* UI methods */
     this.template = function() {
         var labelFunctions = ["NIMETTYLUKUARVO", "NIMETTYTOTUUSARVO"]
-        var paramFunctions = ["HAELUKUARVO", "LUKUARVO", "TOTUUSARVO", "HAETOTUUSARVO", "HAKUTOIVE", "DEMOGRAFIA"]
+        var paramFunctions = ["HAELUKUARVO", "LUKUARVO", "TOTUUSARVO", "HAETOTUUSARVO", "HAKUTOIVE", "DEMOGRAFIA", "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI"]
         if(paramFunctions.indexOf(this.nimi) != -1) {
             return "parametri_template.html"
         } else if(labelFunctions.indexOf(this.nimi) != -1) {
