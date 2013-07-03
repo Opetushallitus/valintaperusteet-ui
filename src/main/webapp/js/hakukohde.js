@@ -109,9 +109,11 @@ app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohd
     }
 
     function kuuluuSijoitteluun(oid) {
-        HakukohdeKuuluuSijoitteluun.get({oid: oid}, function(result) {
-            model.hakukohde.kuuluuSijoitteluun = result.sijoitteluun;
-        });
+        if(oid) {
+            HakukohdeKuuluuSijoitteluun.get({oid: oid}, function(result) {
+                model.hakukohde.kuuluuSijoitteluun = result.sijoitteluun;
+            });
+        }
     }
 
     return model;

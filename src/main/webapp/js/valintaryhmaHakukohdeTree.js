@@ -22,9 +22,11 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
                          node.lapsihakukohdeList = result;
 
                          result.forEach(function(hk){
-                             HakukohdeKuuluuSijoitteluun.get({oid: hk.oid}, function(result) {
-                                 hk.kuuluuSijoitteluun = result.sijoitteluun;
-                             });
+                             if(hk.oid) {
+                                 HakukohdeKuuluuSijoitteluun.get({oid: hk.oid}, function(result) {
+                                     hk.kuuluuSijoitteluun = result.sijoitteluun;
+                                 });
+                             }
                          });
                       });
                }
@@ -40,9 +42,11 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
                RootHakukohde.get({},function(result) {
                     model.hakukohde = result;
                     result.forEach(function(hk){
-                       HakukohdeKuuluuSijoitteluun.get({oid: hk.oid}, function(result) {
-                           hk.kuuluuSijoitteluun = result.sijoitteluun;
-                       });
+                       if(hk.oid) {
+                           HakukohdeKuuluuSijoitteluun.get({oid: hk.oid}, function(result) {
+                               hk.kuuluuSijoitteluun = result.sijoitteluun;
+                           });
+                       }
                     });
                });
         }
