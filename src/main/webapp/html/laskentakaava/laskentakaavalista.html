@@ -55,39 +55,6 @@
     </div>
 
     <div class="width-60">
-        
-        <div class="notification info" ng-show="laskentakaavat.length == 0 && !valintaryhmaOid">
-            <p ng-show="!valintaryhmaOid">Yhtään laskentakaavaa ei ole luotu.</p>
-            <p ng-show="valintaryhmaOid">Tälle valintaryhmälle ei ole luotu yhtään laskentakaavaa.</p>
-        </div>
-
-        <table class="virkailija-table-1" ng-show="laskentakaavat.length > 0">
-            <thead>
-                <tr>
-                    <th>Nimi</th>
-                    <th>Kuvaus</th>
-                    <th>Tila</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="kaava in laskentakaavat">
-                    <td>
-                        <a href="#{{linkprefix}}/laskentakaava/{{kaava.id}}">{{kaava.nimi}}</a>
-                    </td>
-                    <td>
-                        {{kaava.kuvaus}}
-                    </td>
-                    <td>
-                        <span ng-show="kaava.onLuonnos">LUONNOS</span>
-                        <span ng-show="!kaava.onLuonnos">VALMIS</span>
-                    </td>
-                    <td>
-                        <a ng-click="editKaava(kaava)">Muokkaa</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
 
         <div ng-repeat="valintaryhmaList in valintaryhmat.valintaryhmaList()">
             <div ng-repeat="valintaryhma in valintaryhmaList">
