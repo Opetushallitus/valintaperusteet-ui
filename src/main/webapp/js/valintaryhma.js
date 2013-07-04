@@ -275,6 +275,7 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
                 ChildValintaryhmas.insert({"parentOid": oid}, newValintaryhma, function(result){
                     Treemodel.refresh();
                     model.valintaryhma = result;
+                    $location.path("/valintaryhma/" + oid);
                 });
             }
         };
