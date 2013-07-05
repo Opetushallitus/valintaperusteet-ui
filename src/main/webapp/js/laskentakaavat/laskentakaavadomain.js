@@ -288,7 +288,7 @@ var Funktio = function(dsl, data) {
     /* UI methods */
     this.template = function() {
         var labelFunctions = ["NIMETTYLUKUARVO", "NIMETTYTOTUUSARVO"]
-        var paramFunctions = ["HAELUKUARVO", "LUKUARVO", "TOTUUSARVO", "HAETOTUUSARVO", "HAKUTOIVE", "DEMOGRAFIA"]
+        var paramFunctions = ["HAELUKUARVO", "LUKUARVO", "TOTUUSARVO", "HAETOTUUSARVO", "HAKUTOIVE", "DEMOGRAFIA", "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI"]
         if(paramFunctions.indexOf(this.nimi) != -1) {
             return "parametri_template.html"
         } else if(labelFunctions.indexOf(this.nimi) != -1) {
@@ -560,7 +560,7 @@ var Konvertteri = function(konvDef, data) {
     }
 
     this.getSallitut = function() {
-        var sallitut = []
+            var sallitut = []
         for(var i in this.konvDef.konvertteriTyypit) {
             var konvTyyppi = this.konvDef.konvertteriTyypit[i]
             sallitut.push(konvTyyppi.tyyppi)
@@ -746,7 +746,8 @@ var FunktioNimiService = function() {
         "NEGAATIO": "Negaatio",
         "KESKIARVO": "Keskiarvo",
         "DEMOGRAFIA": "Demografia",
-        "KONVERTOILUKUARVO": "Konvertoi"
+        "KONVERTOILUKUARVO": "Konvertoi",
+        "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI": "Konvertoi"
     };
 
     /*

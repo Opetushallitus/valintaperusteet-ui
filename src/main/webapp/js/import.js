@@ -48,12 +48,14 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot, $http) {
     return model;
 });
 
-function ImportController($scope, $location, $routeParams, HakuModel, TarjontaImport) {
+function ImportController($scope, $location, $routeParams, HakuModel, TarjontaImport, Treemodel) {
     $scope.model = HakuModel;
     HakuModel.init($routeParams.hakuOid);
 
     $scope.aktivoi = function() {
-        TarjontaImport.aktivoi({hakuOid: $scope.model.hakuOid.oid}, function() {  });
+        TarjontaImport.aktivoi({hakuOid: $scope.model.hakuOid.oid}, function() {  
+            Treemodel.refresh();
+        });
     };
 
 }

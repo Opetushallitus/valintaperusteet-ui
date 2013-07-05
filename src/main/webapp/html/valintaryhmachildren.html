@@ -25,7 +25,6 @@
 		<label class="form-row-label" for="">Valintaryhmän nimi</label>
 
 		<div class="form-row-content width-60">
-			<!--<input class="width-60" type="text" name="" id="" ng-model="model.valintaryhma.nimi" disabled />  -->
             {{model.valintaryhma.nimi}}
 	    </div>
 		<div class="clear"></div>
@@ -40,22 +39,13 @@
 				<td>Tyyppi</td>
 				<td>Nimi</td>
 				<td>OID</td>
-                <!--
-				<td>Oppilaitos</td>
-				<td></td>
-				-->
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="childRyhma in model.childValintaryhmat">
-
                 <td>Valintaryhmä</td>
-                <td>{{childRyhma.nimi}}</td>
+                <td><a href="#/valintaryhma/{{childRyhma.oid}}">{{childRyhma.nimi}}</a></td>
                 <td>{{childRyhma.oid}}</td>
-				<!--
-                <td></td>
-				<td></td>
-				-->
 			</tr>
 		</tbody>
 	</table>
@@ -69,19 +59,13 @@
 				<td>Tyyppi</td>
 				<td>Nimi</td>
 				<td>OID</td>
-			    <!--
-					<td></td>
-			    -->
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="childKohde in model.childHakukohteet">
 				<td>Hakukohde</td>
-				<td>{{childKohde.nimi}}</td>
+				<td><a href="#/hakukohde/{{childKohde.oid}}">{{childKohde.nimi}}</a></td>
 				<td>{{childKohde.oid}}</td>
-                <!--
-                   <td></td>
-                -->
 			</tr>
 		</tbody>
 	</table>
