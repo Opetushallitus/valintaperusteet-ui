@@ -38,17 +38,17 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
                //get initial listing
                RootValintaryhmas.get({},function(result) {
                      model.valintaryhma = result;
-               });
-               RootHakukohde.get({},function(result) {
-                    model.hakukohde = result;
-                    result.forEach(function(hk){
-                       if(hk.oid) {
-                           HakukohdeKuuluuSijoitteluun.get({oid: hk.oid}, function(result) {
-                               hk.kuuluuSijoitteluun = result.sijoitteluun;
-                           });
-                       }
+
+                     RootHakukohde.get({},function(result) {
+                         model.hakukohde = result;
+                         result.forEach(function(hk){
+                            HakukohdeKuuluuSijoitteluun.get({oid: hk.oid}, function(result) {
+                                hk.kuuluuSijoitteluun = result.sijoitteluun;
+                            });
+                         });
                     });
                });
+
         }
     };
     modelInterface.refresh();
