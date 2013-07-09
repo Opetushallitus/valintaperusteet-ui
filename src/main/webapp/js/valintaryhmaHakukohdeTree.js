@@ -26,6 +26,7 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
                      ChildHakukohdes.get({oid: node.oid}, function(result) {
                          node.lapsihakukohdeList = result;
                          node.lapsihakukohdeList.sort(sortNimi);
+
                          result.forEach(function(hk){
                              if(hk.oid) {
                                  HakukohdeKuuluuSijoitteluun.get({oid: hk.oid}, function(result) {
@@ -33,6 +34,7 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
                                  });
                              }
                          });
+
                       });
                }
 
@@ -45,7 +47,8 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
 
                RootValintaryhmas.get({},function(result) {
                      model.valintaryhma = result;
-                     model.valintaryhma.sort(sortNimi)
+                     model.valintaryhma.sort(sortNimi);
+
                      RootHakukohde.get({},function(result) {
                          model.hakukohde = result;
                          model.hakukohde.sort(sortNimi);
@@ -55,6 +58,7 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
                             });
                          });
                     });
+
                });
 
         }
