@@ -38,10 +38,10 @@
 </div>
 <div class="tabsheets">
 
-    <h2>Valintaryhmät ja hakukohteet</h2>
+    <h2>{{'valintaryhmatlistaus.header' | i18n}}</h2>
 
-    <a href="#/valintaryhma/root/lisaaSisaltyvaValintaryhma" class="button small">Lisaa valintaryhmä juureen</a>
-    <a href="#/lisaaHakukohde" class="button small">Lisaa hakukohde juureen</a>
+    <a href="#/valintaryhma/root/lisaaSisaltyvaValintaryhma" class="button small">{{'valintaryhmatlistaus.add.valintaryhma' | i18n}}</a>
+    <a href="#/lisaaHakukohde" class="button small">{{'valintaryhmatlistaus.add.valintaryhma' | i18n}}</a>
 
     <ul class="treelist collapsible multiselect">
         <li ng-repeat="data in domain.getValintaryhmaTree()" ng-include="'tree_item_renderer.html'"></li>

@@ -2,7 +2,7 @@
 app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhmas, RootHakukohde, ChildHakukohdes, HakukohdeKuuluuSijoitteluun) {
     //keep model to your self
     var model = [ ];
-
+    
     var sortNimi = function(a,b) {
         return a.nimi.localeCompare(b.nimi)
     };
@@ -43,7 +43,6 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
         },
         refresh:function() {
                //get initial listing
-
 
                RootValintaryhmas.get({},function(result) {
                      model.valintaryhma = result;

@@ -1,4 +1,22 @@
-var app = angular.module('valintaperusteet', ['ngResource', 'loading']);
+var app = angular.module('valintaperusteet', ['ngResource', 'loading','localization'])
+//
+// i18n toteutus kopioitu osittain http://jsfiddle.net/4tRBY/41/
+//
+angular.module('localization', [])
+.filter('i18n', ['$rootScope',function ($rootScope) {
+    return function (text) {
+    	if(!$rootScope.i18ndata[text]) {
+    		return text;
+    	}
+        return $rootScope.i18ndata[text];
+    };
+}]);
+app.run(function($http, $rootScope, $locale) {
+	$http.get("../configuration/i18n_"+ $locale.id + ".js").success(function(data) {
+		$rootScope.i18ndata = data;
+	});
+});
+
 
 var SERVICE_URL_BASE = SERVICE_URL_BASE || "";
 var TEMPLATE_URL_BASE = TEMPLATE_URL_BASE || "";
@@ -246,11 +264,6 @@ app.factory('JarjestyskriteeriJarjesta', function($resource) {
     });
 });
 
-
-
-
-
-
 //ulkoiset
 app.factory('Haku', function($resource) {
   return $resource(TARJONTA_URL_BASE + "haku", {}, {
@@ -267,3 +280,4 @@ app.factory('TarjontaImport', function($resource) {
         aktivoi: {method: "GET"}
     })
 });
+
