@@ -30,7 +30,7 @@ public class I18NController {
 
     @RequestMapping(value = "/i18n_{lowerCaseLocale}.js", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     @ResponseBody
-    public String getI18N(@PathVariable String lowerCaseLocale, Locale locale) throws IOException {
+    public String getI18N(@PathVariable("lowerCaseLocale") String lowerCaseLocale, Locale locale) throws IOException {
         // String lowercase = locale.toString().toLowerCase();
         return I18N_RESOURCES.get(lowerCaseLocale);
     }
