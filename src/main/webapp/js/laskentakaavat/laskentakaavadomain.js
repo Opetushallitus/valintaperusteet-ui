@@ -233,6 +233,13 @@ var Funktio = function(dsl, data) {
             var paramData = $.grep(this.data.syoteparametrit, function(param) {
                 return param.avain == paramDef.avain
             })[0];
+            if(!paramData) {
+                this.data.syoteparametrit.push({
+                    arvo: undefined,
+                    avain: paramDef.avain
+                });
+                paramData = this.data.syoteparametrit[this.data.syoteparametrit.length - 1];
+            }
             params.push(new Parametri(paramDef, paramData));
         }
         return params
