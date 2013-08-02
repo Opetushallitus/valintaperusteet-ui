@@ -32,7 +32,11 @@ public class I18NController {
     @ResponseBody
     public String getI18N(@PathVariable("lowerCaseLocale") String lowerCaseLocale, Locale locale) throws IOException {
         // String lowercase = locale.toString().toLowerCase();
-        return I18N_RESOURCES.get(lowerCaseLocale);
+        if (I18N_RESOURCES.containsKey(lowerCaseLocale)) {
+            return I18N_RESOURCES.get(lowerCaseLocale);
+        } else {
+            return I18N_RESOURCES.get("fi_fi");
+        }
     }
 
     private static Map<String, String> loadImmutableResourceMap() {
