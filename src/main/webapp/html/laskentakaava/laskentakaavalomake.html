@@ -179,7 +179,10 @@
                     <td>
                         <input type="text" size="1" ng-model="konvparam.data.minValue"/>
                     </td>
-                    <td>&ndash;</td>
+                    <td>
+                        <span ng-show="!$last" class="white-space-nowrap">&le; x &lt;</span>
+                        <span ng-show="$last" class="white-space-nowrap">&le; x &le;</span>
+                    </td>
                     <td>
                         <input type="text" size="1" ng-model="konvparam.data.maxValue"/>
                     </td>
