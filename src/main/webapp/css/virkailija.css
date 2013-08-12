@@ -1950,7 +1950,7 @@ table.dropmenu-table {
   display: block; }
 
 /*
-	Taulukko tyyli perustietojen näyttämiselle, esim. hakijan henkilötietot
+	Taulukko tyyli perustietojen nï¿½yttï¿½miselle, esim. hakijan henkilï¿½tietot
 */
 .perustieto-table {
   width: 100%; }
@@ -3307,10 +3307,10 @@ ul.dropmenu-list {
   padding: 5px 0 !important;
   width: auto;
   z-index: 10; }
-  ul.dropmenu-list li {
+  ul.dropmenu-list div {
     float: none;
     padding: 0px 0px 5px 0px; }
-    ul.dropmenu-list li a, ul.dropmenu-list li span {
+    ul.dropmenu-list div a, ul.dropmenu-list div span {
       display: block;
       line-height: 16px;
       border: none;
@@ -3320,7 +3320,7 @@ ul.dropmenu-list {
       text-decoration: none;
       box-shadow: none;
       white-space: nowrap; }
-      ul.dropmenu-list li a:hover, ul.dropmenu-list li a.current, ul.dropmenu-list li span:hover, ul.dropmenu-list li span.current {
+      ul.dropmenu-list div a:hover, ul.dropmenu-list div a.current, ul.dropmenu-list div span:hover, ul.dropmenu-list div span.current {
         background-color: #feedbd; }
 
 .dropmenu {
@@ -3845,3 +3845,96 @@ ul.dropmenu-list {
   border: 1px dashed #bbbbbb;
   background-color: transparent;
   background-color: rgba(255, 255, 255, 0.75); }
+
+  
+.nestable-lists { display: block; clear: both; padding: 30px 0; width: 100%; border: 0; border-top: 2px solid #ddd; border-bottom: 2px solid #ddd; }
+
+
+
+		.placeholder {
+			outline: 1px dashed #4183C4;
+			/*-webkit-border-radius: 3px;
+			-moz-border-radius: 3px;
+			border-radius: 3px;
+			margin: -1px;*/
+		}
+
+		.mjs-nestedSortable-error {
+			background: #fbe3e4;
+			border-color: transparent;
+		}
+
+		ol {
+			margin: 0;
+			padding: 0;
+			padding-left: 30px;
+		}
+
+		ol.sortable, ol.sortable ol {
+			margin: 0 0 0 25px;
+			padding: 0;
+			list-style-type: none;
+		}
+
+		ol.sortable {
+			margin: 0 0 4em 0;
+		}
+
+		.sortable li {
+			margin: 5px 0 0 0;
+			padding: 0;
+		}
+
+		.sortable li div  {
+			border: 1px solid #d4d4d4;
+			-webkit-border-radius: 3px;
+			-moz-border-radius: 3px;
+			border-radius: 3px;
+			border-color: #D4D4D4 #D4D4D4 #BCBCBC;
+			padding: 6px;
+			margin: 0;
+			cursor: move;
+			background: #f6f6f6;
+			background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed));
+			background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+			background: -o-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+			background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+			background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 );
+		}
+
+		.sortable li div {
+			background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #f0ece9 100%);
+			background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#f0ece9 100%);
+
+		}
+
+		li.uiCollapsed.mjs-nestedSortable-hovering div {
+			border-color: #999;
+			background: #fafafa;
+		}
+		.sortable li div.state-disabled {
+			cursor: default;
+		}
+		.disclose {
+			cursor: pointer;
+			width: 10px;
+			display: none;
+		}
+
+		.sortable li.uiCollapsed > ol {
+			display: none;
+		}
+
+		.sortable li > div > .disclose {
+			display: inline-block;
+		}
+
+		.sortable li.uiCollapsed > div > .disclose > span:before {
+			
+		}
+
+		.sortable li.uiExpanded > div > .disclose > span:before {
+			
+		}

@@ -152,12 +152,7 @@ return $resource(SERVICE_URL_BASE + "resources/hakukohde", {paataso: true}, {
     get: {method: "GET", isArray: true}
   });
 });
-app.factory('Hakukohde', function($resource) {
-return $resource(SERVICE_URL_BASE + "resources/hakukohde/:oid", {oid: "@oid"}, {
-    get: {method: "GET"},
-    post:{method: "POST"}
-  });
-});
+
 app.factory('ChildHakukohdes', function($resource) {
 return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid/hakukohde", {}, {
     get: {method: "GET", isArray: true}
@@ -180,10 +175,23 @@ app.factory('HakukohdeValinnanvaihe', function($resource) {
      insert: {method: "PUT"}
    });
 });
+
+app.factory('Hakukohde', function($resource) {
+	return $resource(SERVICE_URL_BASE + "resources/hakukohde/:oid", {oid: "@oid"}, {
+    	get: {method: "GET"},
+    	post:{method: "POST"}
+	});
+});
 app.factory('HakukohdeHakukohdekoodi', function($resource) {
-return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeOid/hakukohdekoodi", {hakukohdeOid: "@hakukohdeOid"}, {
-    post: {method: "POST"}
-  });
+	return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeOid/hakukohdekoodi", {hakukohdeOid: "@hakukohdeOid"}, {
+		post: {method: "POST"}
+	});
+});
+
+app.factory('HakukohdeSiirra', function($resource) {
+	return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeOid/siirra", {hakukohdeOid: "@hakukohdeOid"}, {
+		siirra: {method: "POST",headers:{'Content-Type':'text/plain; charset=UTF-8'} }
+	});
 });
 
 //Valinnanvaihe

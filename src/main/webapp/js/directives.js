@@ -47,6 +47,61 @@ app.directive('jqNestable', function($timeout) {
         }
     }
 });
+app.directive('nestedsortable', function(HakukohdeSiirra) {
+    return {
+        restrict: 'A',
+        require:"^ngController",
+        scope: true,
+        link: function(scope, element, attrs, ctrl) {
+            var options = scope.$eval(attrs.tree) || {}
+            $(element[0]).nestedSortable({
+            	cancel: ".state-disabled",
+            	disableNesting: "noNesting",
+                handle: 'div',
+                toleranceElement: '> div',
+                forcePlaceholderSize: true,
+                //helper: 'clone',
+    			helper:	'original',
+    			listType: 'ol',
+    			items: 'li',
+    			opacity: .6,
+    			placeholder: 'placeholder',
+    			revert: 250,
+    			tabSize: 10,
+    			tolerance: 'pointer',
+    			toleranceElement: '> div',
+    			maxLevels: 10,
+    			isTree: true,
+    			doNotClear: true,
+    			//expandOnHover: 700,
+    			startCollapsed: true,
+                //isAllowed: function(e) { return true; },
+    			
+    			update: function( event, ui ) {
+                	var root = event.target,
+            	    item = ui.item,
+            	    parent = item.parent();
+            		var hakukohdeOid = item.data('oid'); 
+            		var valintaryhmaOid = parent.data('valintaryhmaoid');
+            		if(valintaryhmaOid===undefined) {
+            			valintaryhmaOid="";
+            		}
+            		var index = item.index();
+            		//item.remove();
+            		//event.preventDefault();
+            		
+            		//scope.domain.moveNodeInATree(index,hakukohdeOid,valintaryhmaOid);
+            		
+            		scope.$apply(function() {
+            			scope.move(index, hakukohdeOid,valintaryhmaOid);
+            			
+            		});
+            		
+                }
+            });
+        }
+    }
+});
 
 
 app.directive('uiSortable', function() {
