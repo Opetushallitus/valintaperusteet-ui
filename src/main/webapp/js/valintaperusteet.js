@@ -2,20 +2,27 @@ var app = angular.module('valintaperusteet', ['ngResource', 'loading','localizat
 //
 // i18n toteutus kopioitu osittain http://jsfiddle.net/4tRBY/41/
 //
+
+
+
 angular.module('localization', [])
-.filter('i18n', ['$rootScope',function ($rootScope) {
+.filter('i18n', ['$rootScope','$locale',function ($rootScope, $locale) {
+	var localeMapping = {"en-us": "en_US", "fi-fi": "fi_FI", "sv-se": "sv-SE"};
+	
+	jQuery.i18n.properties({
+	    name:'messages', 
+	    path:'../i18n/', 
+	    mode:'map',
+	    language: localeMapping[$locale.id], 
+	    callback: function() {
+	    }
+	});
+	
     return function (text) {
-    	if(!$rootScope.i18ndata[text]) {
-    		return text;
-    	}
-        return $rootScope.i18ndata[text];
+        return jQuery.i18n.prop(text); //$rootScope.i18ndata[text];
     };
 }]);
-app.run(function($http, $rootScope, $locale) {
-	$http.get("../i18n/messages_"+ $locale.id + ".json").success(function(data) {
-		$rootScope.i18ndata = data;
-	});
-});
+
 
 
 var SERVICE_URL_BASE = SERVICE_URL_BASE || "";
