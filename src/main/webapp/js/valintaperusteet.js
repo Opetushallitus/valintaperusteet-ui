@@ -12,7 +12,7 @@ angular.module('localization', [])
     };
 }]);
 app.run(function($http, $rootScope, $locale) {
-	$http.get("../configuration/i18n_"+ $locale.id + ".js").success(function(data) {
+	$http.get("../i18n/messages_"+ $locale.id + ".json").success(function(data) {
 		$rootScope.i18ndata = data;
 	});
 });
