@@ -197,7 +197,7 @@ app.factory('HakukohdeHakukohdekoodi', function($resource) {
 
 app.factory('HakukohdeSiirra', function($resource) {
 	return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeOid/siirra", {hakukohdeOid: "@hakukohdeOid"}, {
-		siirra: {method: "POST",headers:{'Content-Type':'text/plain; charset=UTF-8'} }
+		siirra: {method: "POST"}
 	});
 });
 
