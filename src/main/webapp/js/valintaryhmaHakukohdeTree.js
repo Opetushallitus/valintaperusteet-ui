@@ -3,9 +3,6 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
     //keep model to yourself
     var model = {nimi: "ROOT", lapsihakukohdeList: []};
     
-    var sortNimi = function(a,b) {
-        return a.nimi.localeCompare(b.nimi)
-    };
     
     //and return interface for manipulating the model
     var modelInterface =  {
@@ -118,13 +115,11 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
            if( node.lapsivalintaryhma) {
                   ChildValintaryhmas.get({parentOid: node.oid}, function(result) {
                          node.lapsivalintaryhmaList = result;
-                         node.lapsivalintaryhmaList.sort(sortNimi);
                    });
            }
            if(node.lapsihakukohde) {
                  ChildHakukohdes.get({oid: node.oid}, function(result) {
                      node.lapsihakukohdeList = result;
-                     //node.lapsihakukohdeList.sort(sortNimi);
 
                      result.forEach(function(hk){
                          if(hk.oid) {
@@ -142,11 +137,9 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
             RootValintaryhmas.get({},function(result) {
             	 // lapsivalintaryhmaList lapsihakukohdeList
             	model.lapsivalintaryhmaList = result;
-                model.lapsivalintaryhmaList.sort(sortNimi);
                 
                 RootHakukohde.get({},function(result) {
                 	model.lapsihakukohdeList = result;
-                    model.lapsihakukohdeList.sort(sortNimi);
                     result.forEach(function(hk){
                     	HakukohdeKuuluuSijoitteluun.get({oid: hk.oid}, function(result) {
                     		hk.kuuluuSijoitteluun = result.sijoitteluun;
@@ -163,7 +156,7 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
 
 
 function ValintaryhmaHakukohdeTreeController($scope, $resource,Treemodel,HakukohdeSiirra) {
-	
+	$scope.predicate = 'nimi';
 	$scope.domain = Treemodel;
 	
 	$scope.expandGroup = function($event) {
