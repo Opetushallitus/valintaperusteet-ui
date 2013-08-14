@@ -449,8 +449,7 @@
             var pointElRoot = this.pointEl.closest('.' + opt.rootClass),
                 isNewRoot   = this.dragRootEl.data('nestable-id') !== pointElRoot.data('nestable-id');
 
-            this.canDrop = pointElRoot.data('nestable').options.canDrop(currentDragEl)
-            this.setPlaceElVisible(this.canDrop)
+            this.canDrop = pointElRoot.data('nestable').options.canDrop(currentDragEl);
 
             if(!this.canDrop) {
                 return
