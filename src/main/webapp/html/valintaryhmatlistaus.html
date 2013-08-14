@@ -1,15 +1,15 @@
 
 <script type="text/ng-template" id="valintaryhma_node.html">
-<span class="disclose icon valintaryhma folder" 
-ng-class="{ collapse: domain.isCollapsed(data), file: domain.isFile(data), open: domain.isExpanded(data)}" 
-ng-click="expandNode(data)">​</span>
-<span enter="hover" leave="hover" class="dropmenu">
+<div class="state-disabled label">
+	<span class="disclose icon valintaryhma folder" 
+	ng-class="{ collapse: domain.isCollapsed(data), file: domain.isFile(data), open: domain.isExpanded(data)}" 
+	ng-click="expandNode(data)">​</span>
+	<span enter="hover" leave="hover" class="dropmenu">
 	<ul class="dropmenu-list">
         <div class="state-disabled"> <a href="#/valintaryhma/{{data.oid}}/lisaaSisaltyvaValintaryhma">Lisää sisältyvä valintaryhmä</a> </div>
         <div class="state-disabled"> <a href="#/valintaryhma/{{data.oid}}/sisaltyvat"> liitä hakukohde</a> </div>
 	</ul>
-</span>
-<div class="state-disabled label">
+	</span>
 	<a href="#/valintaryhma/{{data.oid}}"> {{data.nimi}}</a>
 </div>
 <ol data-valintaryhmaoid="{{data.oid}}">
