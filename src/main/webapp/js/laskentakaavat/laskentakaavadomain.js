@@ -282,6 +282,14 @@ var Funktio = function(dsl, data) {
     }
 
     this.init = function() {
+        if(!this.data.funktioargumentit) {
+            this.data.funktioargumentit = [];
+        }
+
+        if(!this.data.syoteparametrit) {
+            this.data.syoteparametrit = [];
+        }
+
         this.nimi = this.getNimi();
         this.funktioargumentit = this.getFunktioargumentit();
 
@@ -437,9 +445,14 @@ var Funktio = function(dsl, data) {
     }
 
     this.addChildAt = function(funktio, index) {
-        var data = {
-            funktiokutsuChild: funktio.data
-        };
+        var data = {};
+        if(funktio instanceof Funktio) {
+            data.funktiokutsuChild = funktio.data;
+        }
+
+        if(funktio instanceof LaskentakaavaViite) {
+            data.laskentakaavaChild = funktio.data;
+        }
 
         // Jos ei nimettyjä argumentteja, lisätään haluttuun indeksiin ja tuupataan muita yksi eteenpäin.
         if(!this.hasNimetytArgumentit()) {
@@ -504,23 +517,32 @@ var Funktio = function(dsl, data) {
     }
 
     this.removeChildFunktio = function(funktio) {
-        var index = -1
+        var index = -1;
+        var data = null;
         for (var i in this.data.funktioargumentit) {
-            var farg = this.data.funktioargumentit[i]
+            var farg = this.data.funktioargumentit[i];
             if(farg.funktiokutsuChild === funktio.data) {
-                index = i
+                index = i;
+                data = angular.copy(this.data.funktioargumentit[index].funktiokutsuChild);
+                this.data.funktioargumentit.splice(index, 1);
+                this.funktioargumentit = this.getFunktioargumentit();
+                var func = new Funktio(angular.copy(this.dsl), data.funktiokutsu);
+                func.init();
+                return func;
+            }
+            if(farg.laskentakaavaChild === funktio.data) {
+                index = i;
+                data = angular.copy(this.data.funktioargumentit[index].laskentakaavaChild);
+                this.data.funktioargumentit.splice(index, 1);
+                this.funktioargumentit = this.getFunktioargumentit();
+                var func = new LaskentakaavaViite(angular.copy(this.dsl), data);
+                func.init();
+                return func;
             }
         }
         if(index == -1) {
-            return
+            return;
         }
-
-        var data = angular.copy(this.data.funktioargumentit[index].funktiokutsuChild)
-        this.data.funktioargumentit.splice(index, 1)
-        this.funktioargumentit = this.getFunktioargumentit()
-        var func = new Funktio(angular.copy(this.dsl), data)
-        func.init()
-        return func
     }
 
     this.isHaettavaArvoTyyppi = function() {
