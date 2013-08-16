@@ -142,17 +142,17 @@
 
 <!-- Arvojen syöttö -templatet -->
 <script type="text/ng-template" id="desimaaliluku-template">
-    <input type="text" size="9" step="0.1" ng-model="param.data.arvo"/>
+    <input type="text" size="9" ng-model="param.data.arvo"/>
 </script>
 <script type="text/ng-template" id="kokonaisluku-template">
-    <input type="text" size="9" step="1" ng-model="param.data.arvo"/>
+    <input type="text" size="9" ng-model="param.data.arvo"/>
 </script>
 <script type="text/ng-template" id="totuusarvo-template">
-    <input type="radio" size="9" step="1" ng-model="param.data.arvo" value="true"/> Tosi
-    <input type="radio" size="9" step="1" ng-model="param.data.arvo" value="false"/> Epätosi
+    <input type="radio" size="9" ng-model="param.data.arvo" value="true"/> Tosi
+    <input type="radio" size="9" ng-model="param.data.arvo" value="false"/> Epätosi
 </script>
 <script type="text/ng-template" id="merkkijono-template">
-    <input type="text" size="9" step="1" ng-model="param.data.arvo"/>
+    <input type="text" size="9" ng-model="param.data.arvo"/>
 </script>
 
 <script type="text/ng-template" id="arvovalikonvertteri-template">
@@ -179,7 +179,10 @@
                     <td>
                         <input type="text" size="1" ng-model="konvparam.data.minValue"/>
                     </td>
-                    <td>&ndash;</td>
+                    <td>
+                        <span ng-show="!$last" class="white-space-nowrap">&le; x &lt;</span>
+                        <span ng-show="$last" class="white-space-nowrap">&le; x &le;</span>
+                    </td>
                     <td>
                         <input type="text" size="1" ng-model="konvparam.data.maxValue"/>
                     </td>

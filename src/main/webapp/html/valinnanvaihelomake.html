@@ -85,7 +85,7 @@
                     <td>
                         <a ng-class="{true:'', false:'line-through'}[jono.aktiivinen]" ng-click="modifyJono(jono.oid)" >{{jono.nimi}}</a>
                     </td>
-                    <td>{{jono.inheritance}}</td>
+                    <td>{{'valintaperusteet.periytyy.' + jono.inheritance | i18n}}</td>
                     <td class="align-center">
                         <span ng-show="!jono.inheritance" class="btn remove" ng-click="model.remove(jono)"></span>
                     </td>

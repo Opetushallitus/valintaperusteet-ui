@@ -1,30 +1,24 @@
-<script type="text/ng-template"  id="tree_item_renderer.html">
-    <span class="icon valintaryhma" ng-class="{ folder: data.lapsivalintaryhma || data.lapsihakukohde, collapse: data.lapsivalintaryhma || data.lapsihakukohde, file: !data.lapsivalintaryhma && !data.lapsihakukohde, open: data.isVisible}" ng-click="expandNode(data)">&#8203;</span>
+
+<script type="text/ng-template" id="valintaryhma_node.html">
+<div class="state-disabled label">
+	<span class="disclose icon valintaryhma folder" 
+	ng-class="{ collapse: domain.isCollapsed(data), file: domain.isFile(data), open: domain.isExpanded(data)}" 
+	ng-click="expandNode(data)">​</span>
 	<span enter="hover" leave="hover" class="dropmenu">
-		<ul class="dropmenu-list">
-            <!--
-            <li> <a href="#/valintaryhma/{{data.oid}}">Muokkaa</a></li>
-            -->
-            <li> <a href="#/valintaryhma/{{data.oid}}/lisaaSisaltyvaValintaryhma">Lisää sisältyvä valintaryhmä</a> </li>
-            <li> <a href="#/valintaryhma/{{data.oid}}/sisaltyvat"> liitä hakukohde</a> </li>
-            <!--
-            <li> <a href="#">Poista</a></li>
-             -->
-        </ul>
+	<ul class="dropmenu-list">
+        <div class="state-disabled"> <a href="#/valintaryhma/{{data.oid}}/lisaaSisaltyvaValintaryhma">Lisää sisältyvä valintaryhmä</a> </div>
+        <div class="state-disabled"> <a href="#/valintaryhma/{{data.oid}}/sisaltyvat"> liitä hakukohde</a> </div>
+	</ul>
 	</span>
-    <span class="label">
-       <a href="#/valintaryhma/{{data.oid}}"> {{data.nimi}}</a>
-    </span>
-    <ul ng-show="data.isVisible" class="branch">
-        <li ng-repeat="data in data.lapsivalintaryhmaList" ng-include="'tree_item_renderer.html'"></li>
-        <li ng-repeat="data in data.lapsihakukohdeList" ng-include="'hakukohde_tree_item_renderer.html'"></li>
-    </ul>
+	<a href="#/valintaryhma/{{data.oid}}"> {{data.nimi}}</a>
+</div>
+<ol data-valintaryhmaoid="{{data.oid}}">
+	<li ng-repeat="data in domain.getLapset(data) | orderBy:predicate" data-oid="{{data.oid}}" ng-class="{noNesting: !domain.isValintaryhmaLeaf(data), uiExpanded: domain.isExpanded(data), uiCollapsed: domain.isCollapsed(data)}" ng-include="domain.getTemplate(data)"></li>
+</ol>
 </script>
-<script type="text/ng-template"  id="hakukohde_tree_item_renderer.html">
-    <span class="icon hakukohde file">&#8203;</span>
-    <span class="label">
-        <a href="#/hakukohde/{{data.oid}}">{{data.nimi}} <span ng-show="data.kuuluuSijoitteluun">(S)</span></a>
-    </span>
+<script type="text/ng-template" id="hakukohde_leaf.html">
+<span class="icon hakukohde file ng-scope">​</span>
+<div class="label ng-scope"><a href="#/hakukohde/{{data.oid}}"> {{data.nimi}}</a></div>
 </script>
 
 
@@ -38,14 +32,12 @@
 </div>
 <div class="tabsheets">
 
-    <h2>Valintaryhmät ja hakukohteet</h2>
+    <h2>{{'valintaryhmatlistaus.header' | i18n}}</h2>
 
-    <a href="#/valintaryhma/root/lisaaSisaltyvaValintaryhma" class="button small">Lisaa valintaryhmä juureen</a>
-    <a href="#/lisaaHakukohde" class="button small">Lisaa hakukohde juureen</a>
+    <a href="#/valintaryhma/root/lisaaSisaltyvaValintaryhma" class="button small">{{'valintaryhmatlistaus.add.valintaryhma' | i18n}}</a>
+    <a href="#/lisaaHakukohde" class="button small">{{'valintaryhmatlistaus.add.hakukohde' | i18n}}</a>
 
-    <ul class="treelist collapsible multiselect">
-        <li ng-repeat="data in domain.getValintaryhmaTree()" ng-include="'tree_item_renderer.html'"></li>
-        <li ng-repeat="data in domain.getRootHakukohde()" ng-include="'hakukohde_tree_item_renderer.html'"></li>
-    </ul>
-
+    <ol class="sortable treelist collapsible multiselect" ng-controller="ValintaryhmaHakukohdeTreeController" nestedsortable="">
+	    <li ng-repeat="data in domain.getRootNode() | orderBy:predicate" data-oid="{{data.oid}}" ng-class="{noNesting: !domain.isValintaryhmaLeaf(data), uiExpanded: data.isVisible, uiCollapsed: !data.isVisible}" ng-include="domain.getTemplate(data)"></li>
+    </ol>
 </div>

@@ -1,4 +1,29 @@
-var app = angular.module('valintaperusteet', ['ngResource', 'loading']);
+var app = angular.module('valintaperusteet', ['ngResource', 'loading','localization'])
+//
+// i18n toteutus kopioitu osittain http://jsfiddle.net/4tRBY/41/
+//
+
+
+
+angular.module('localization', [])
+.filter('i18n', ['$rootScope','$locale',function ($rootScope, $locale) {
+	var localeMapping = {"en-us": "en_US", "fi-fi": "fi_FI", "sv-se": "sv-SE"};
+	
+	jQuery.i18n.properties({
+	    name:'messages', 
+	    path:'../i18n/', 
+	    mode:'map',
+	    language: localeMapping[$locale.id], 
+	    callback: function() {
+	    }
+	});
+	
+    return function (text) {
+        return jQuery.i18n.prop(text); //$rootScope.i18ndata[text];
+    };
+}]);
+
+
 
 var SERVICE_URL_BASE = SERVICE_URL_BASE || "";
 var TEMPLATE_URL_BASE = TEMPLATE_URL_BASE || "";
@@ -134,12 +159,7 @@ return $resource(SERVICE_URL_BASE + "resources/hakukohde", {paataso: true}, {
     get: {method: "GET", isArray: true}
   });
 });
-app.factory('Hakukohde', function($resource) {
-return $resource(SERVICE_URL_BASE + "resources/hakukohde/:oid", {oid: "@oid"}, {
-    get: {method: "GET"},
-    post:{method: "POST"}
-  });
-});
+
 app.factory('ChildHakukohdes', function($resource) {
 return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid/hakukohde", {}, {
     get: {method: "GET", isArray: true}
@@ -162,10 +182,23 @@ app.factory('HakukohdeValinnanvaihe', function($resource) {
      insert: {method: "PUT"}
    });
 });
+
+app.factory('Hakukohde', function($resource) {
+	return $resource(SERVICE_URL_BASE + "resources/hakukohde/:oid", {oid: "@oid"}, {
+    	get: {method: "GET"},
+    	post:{method: "POST"}
+	});
+});
 app.factory('HakukohdeHakukohdekoodi', function($resource) {
-return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeOid/hakukohdekoodi", {hakukohdeOid: "@hakukohdeOid"}, {
-    post: {method: "POST"}
-  });
+	return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeOid/hakukohdekoodi", {hakukohdeOid: "@hakukohdeOid"}, {
+		post: {method: "POST"}
+	});
+});
+
+app.factory('HakukohdeSiirra', function($resource) {
+	return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeOid/siirra", {hakukohdeOid: "@hakukohdeOid"}, {
+		siirra: {method: "POST"}
+	});
 });
 
 //Valinnanvaihe
@@ -246,11 +279,6 @@ app.factory('JarjestyskriteeriJarjesta', function($resource) {
     });
 });
 
-
-
-
-
-
 //ulkoiset
 app.factory('Haku', function($resource) {
   return $resource(TARJONTA_URL_BASE + "haku", {}, {
@@ -267,3 +295,4 @@ app.factory('TarjontaImport', function($resource) {
         aktivoi: {method: "GET"}
     })
 });
+
