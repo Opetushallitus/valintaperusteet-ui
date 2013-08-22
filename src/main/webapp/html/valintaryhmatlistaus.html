@@ -13,7 +13,7 @@
 	<a href="#/valintaryhma/{{data.oid}}"> {{data.nimi}}</a>
 </div>
 <ol data-valintaryhmaoid="{{data.oid}}">
-	<li ng-repeat="data in domain.getLapset(data) | orderBy:predicate" data-oid="{{data.oid}}" ng-class="{noNesting: !domain.isValintaryhmaLeaf(data), uiExpanded: domain.isExpanded(data), uiCollapsed: domain.isCollapsed(data)}" ng-include="domain.getTemplate(data)"></li>
+	<li ng-repeat="data in domain.getLapset(data) | orderBy:predicate" data-oid="{{data.oid}}" ng-class="{uiExpanded: domain.isExpanded(data), uiCollapsed: domain.isCollapsed(data)}" ng-include="domain.getTemplate(data)"></li>
 </ol>
 </script>
 <script type="text/ng-template" id="hakukohde_leaf.html">
@@ -38,6 +38,6 @@
     <a href="#/lisaaHakukohde" class="button small">{{'valintaryhmatlistaus.add.hakukohde' | i18n}}</a>
 
     <ol class="sortable treelist collapsible multiselect" ng-controller="ValintaryhmaHakukohdeTreeController" nestedsortable="">
-	    <li ng-repeat="data in domain.getRootNode() | orderBy:predicate" data-oid="{{data.oid}}" ng-class="{noNesting: !domain.isValintaryhmaLeaf(data), uiExpanded: data.isVisible, uiCollapsed: !data.isVisible}" ng-include="domain.getTemplate(data)"></li>
+	    <li ng-repeat="data in domain.getRootNode() | orderBy:predicate" data-oid="{{data.oid}}" ng-class="{uiExpanded: data.isVisible, uiCollapsed: !data.isVisible}" ng-include="domain.getTemplate(data)"></li>
     </ol>
 </div>
