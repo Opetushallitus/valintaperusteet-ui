@@ -35,6 +35,10 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
     	isFile: function(data) {
     		return !data.lapsivalintaryhma && !data.lapsihakukohde;
     	},
+    	isHakukohde: function(data) { 
+    		// used to disable nesting -- to prevent putting hakukohde under hakukohde
+    		return this.isFile(data);
+    	},
     	isExpanded: function(data) {
     		if(this.isFile(data)) { // force file always open!
     			return true;
