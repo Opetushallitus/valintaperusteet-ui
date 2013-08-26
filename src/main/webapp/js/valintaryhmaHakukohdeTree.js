@@ -37,7 +37,8 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
     	},
     	isHakukohde: function(data) { 
     		// used to disable nesting -- to prevent putting hakukohde under hakukohde
-    		return this.isFile(data);
+    		var ryhma = data.lapsivalintaryhma || this.isValintaryhmaLeaf(data);
+    		return !ryhma;//!this.isFile(data);
     	},
     	isExpanded: function(data) {
     		if(this.isFile(data)) { // force file always open!
@@ -116,6 +117,7 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
         	targetNode.isVisible = true;
         },
         expandNode:function(node) {
+        	var self =this;
            if( node.lapsivalintaryhma) {
                   ChildValintaryhmas.get({parentOid: node.oid}, function(result) {
                          node.lapsivalintaryhmaList = result;
