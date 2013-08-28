@@ -1,4 +1,4 @@
-var app = angular.module('valintaperusteet', ['ngResource', 'loading','localization'])
+var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'ngAnimate', 'localization'])
 //
 // i18n toteutus kopioitu osittain http://jsfiddle.net/4tRBY/41/
 //
@@ -8,16 +8,16 @@ var app = angular.module('valintaperusteet', ['ngResource', 'loading','localizat
 angular.module('localization', [])
 .filter('i18n', ['$rootScope','$locale',function ($rootScope, $locale) {
 	var localeMapping = {"en-us": "en_US", "fi-fi": "fi_FI", "sv-se": "sv-SE"};
-	
+
 	jQuery.i18n.properties({
-	    name:'messages', 
-	    path:'../i18n/', 
+	    name:'messages',
+	    path:'../i18n/',
 	    mode:'map',
-	    language: localeMapping[$locale.id], 
+	    language: localeMapping[$locale.id],
 	    callback: function() {
 	    }
 	});
-	
+
     return function (text) {
         return jQuery.i18n.prop(text); //$rootScope.i18ndata[text];
     };
