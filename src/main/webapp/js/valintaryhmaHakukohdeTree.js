@@ -40,6 +40,13 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
     		var ryhma = data.lapsivalintaryhma || this.isValintaryhmaLeaf(data);
     		return !ryhma;//!this.isFile(data);
     	},
+    	noNesting: function(data) {
+    		if(this.isHakukohde(data)) {
+    			return "noNesting";
+    		} else {
+    			return "";
+    		}
+    	},
     	isExpanded: function(data) {
     		if(this.isFile(data)) { // force file always open!
     			return true;
@@ -103,7 +110,9 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
         		});
         	}
         	travel(targetNode,this.getLapset(model));
-    	
+        	if(previousNode === targetNode) {
+        		return false;
+        	}
         	if(previousNode.lapsihakukohdeList === undefined) {
         		previousNode.lapsihakukohdeList = [];
         	}
@@ -115,6 +124,7 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
         	addTo(targetNode.lapsihakukohdeList, childNode, targetNode.nimi);
         	targetNode.lapsihakukohde = targetNode.lapsihakukohdeList.length != 0;
         	targetNode.isVisible = true;
+        	return true;
         },
         expandNode:function(node) {
         	var self =this;
@@ -168,8 +178,10 @@ function ValintaryhmaHakukohdeTreeController($scope, $resource,Treemodel,Hakukoh
 	$scope.expandGroup = function($event) {
 		$($event.target).closest('li').toggleClass('uiCollapsed').toggleClass('uiExpanded');
 	}
-	$scope.move = function(index,hakukohdeOid, valintaryhmaOid) {
-		$scope.domain.moveNodeInATree(index,hakukohdeOid,valintaryhmaOid);
+	$scope.move = function(index,hakukohdeOid, valintaryhmaOid,item) {
+		if($scope.domain.moveNodeInATree(index,hakukohdeOid,valintaryhmaOid)) {
+			item.remove();
+		}
 		
 		HakukohdeSiirra.siirra({hakukohdeOid: hakukohdeOid}, valintaryhmaOid, function(result) {
 			// onnistui
@@ -177,6 +189,14 @@ function ValintaryhmaHakukohdeTreeController($scope, $resource,Treemodel,Hakukoh
     	}, function() {
     		alert('Siirto epäonnistui!');
     	});
+		
+	}
+	$scope.addClass = function(cssClass, ehto) {
+		if(ehto) {
+			return cssClass;
+		} else {
+			return "";
+		}
 	}
 	
     $scope.expandNode = function(node) {
