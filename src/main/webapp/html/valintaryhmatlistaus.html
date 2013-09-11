@@ -1,24 +1,28 @@
-
 <script type="text/ng-template" id="valintaryhma_node.html">
-<div class="state-disabled label">
-	<span class="disclose icon valintaryhma folder" 
-	ng-class="{ collapse: domain.isCollapsed(data), file: domain.isFile(data), open: domain.isExpanded(data)}" 
-	ng-click="expandNode(data)">​</span>
+    <div class="state-disabled label">
+	<span class="disclose icon valintaryhma folder"
+          ng-class="{ collapse: domain.isCollapsed(data), file: domain.isFile(data), open: domain.isExpanded(data)}"
+          ng-click="expandNode(data)">​</span>
 	<span enter="hover" leave="hover" class="dropmenu">
 	<ul class="dropmenu-list">
-        <div class="state-disabled"> <a href="#/valintaryhma/{{data.oid}}/lisaaSisaltyvaValintaryhma">Lisää sisältyvä valintaryhmä</a> </div>
-        <div class="state-disabled"> <a href="#/valintaryhma/{{data.oid}}/sisaltyvat"> liitä hakukohde</a> </div>
-	</ul>
+        <div class="state-disabled"><a href="#/valintaryhma/{{data.oid}}/lisaaSisaltyvaValintaryhma">Lisää sisältyvä
+            valintaryhmä</a></div>
+        <div class="state-disabled"><a href="#/valintaryhma/{{data.oid}}/sisaltyvat"> liitä hakukohde</a></div>
+    </ul>
 	</span>
-	<a href="#/valintaryhma/{{data.oid}}"> {{data.nimi}}</a>
-</div>
-<ol data-valintaryhmaoid="{{data.oid}}">
-	<li ng-repeat="data in domain.getLapset(data) | orderBy:predicate" data-oid="{{data.oid}}" class="{{addClass('noNesting',domain.isHakukohde(data))}} {{addClass('uiExpanded',domain.isExpanded(data))}} {{addClass('uiCollapsed',domain.isCollapsed(data))}}" ng-include="domain.getTemplate(data)"></li>
-</ol>
+        <a href="#/valintaryhma/{{data.oid}}"> {{data.nimi}}</a>
+    </div>
+    <ol data-valintaryhmaoid="{{data.oid}}">
+        <li ng-repeat="data in domain.getLapset(data) | orderBy:predicate" data-oid="{{data.oid}}"
+            class="{{addClass('noNesting',domain.isHakukohde(data))}} {{addClass('uiExpanded',domain.isExpanded(data))}} {{addClass('uiCollapsed',domain.isCollapsed(data))}}"
+            ng-include="domain.getTemplate(data)"></li>
+    </ol>
 </script>
 <script type="text/ng-template" id="hakukohde_leaf.html">
-<span class="icon hakukohde file">​</span>
-<div class="label"><a href="#/hakukohde/{{data.oid}}"> {{data.nimi}}</a></div>
+    <div ng-show="domain.filter.indexOf(data.tila) > -1 || domain.filter === ''">
+        <span class="icon hakukohde file">​</span>
+        <div class="label"><a href="#/hakukohde/{{data.oid}}"> {{data.nimi}} ({{data.tila}})</a></div>
+    </div>
 </script>
 
 
@@ -34,12 +38,18 @@
 
     <h2>{{'valintaryhmatlistaus.header' | i18n}}</h2>
 
-    <a href="#/valintaryhma/root/lisaaSisaltyvaValintaryhma" class="button small">{{'valintaryhmatlistaus.add.valintaryhma' | i18n}}</a>
+    <input id="osallistuu" type="checkbox" ng-model="domain.filter" ng-true-value="VALMIS JULKAISTU" ng-false-value=""/>
+    <label for="osallistuu">Vain valmiit ja julkaistut</label>
+    <br />
+
+    <a href="#/valintaryhma/root/lisaaSisaltyvaValintaryhma" class="button small">{{'valintaryhmatlistaus.add.valintaryhma'
+        | i18n}}</a>
     <a href="#/lisaaHakukohde" class="button small">{{'valintaryhmatlistaus.add.hakukohde' | i18n}}</a>
 
-    <ol class="sortable treelist collapsible multiselect" ng-controller="ValintaryhmaHakukohdeTreeController" nestedsortable="">
-	    <li ng-repeat="data in domain.getRootNode() | orderBy:predicate" data-oid="{{data.oid}}" ng-model="data" 
-	    	class="{{addClass('noNesting',domain.isHakukohde(data))}} {{addClass('uiExpanded',domain.isExpanded(data))}} {{addClass('uiCollapsed',domain.isCollapsed(data))}}" 
-	    	ng-include="domain.getTemplate(data)"></li>
+    <ol class="sortable treelist collapsible multiselect"
+        nestedsortable="">
+        <li ng-repeat="data in domain.getRootNode() | orderBy:predicate" data-oid="{{data.oid}}" ng-model="data"
+            class="{{addClass('noNesting',domain.isHakukohde(data))}} {{addClass('uiExpanded',domain.isExpanded(data))}} {{addClass('uiCollapsed',domain.isCollapsed(data))}}"
+            ng-include="domain.getTemplate(data)"></li>
     </ol>
 </div>

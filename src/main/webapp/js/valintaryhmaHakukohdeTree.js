@@ -6,28 +6,32 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
     
     //and return interface for manipulating the model
     var modelInterface =  {
+        filter:'VALMIS JULKAISTU',
+
     	isValintaryhmaLeaf: function(data) {
     		if(data.lapsivalintaryhma===false && (data.lapsihakukohde===false || data.lapsihakukohde===true)) {
     			return true;
     		}
     		return false;
     	},
+
     	getLapset: function(data) {
     		data.lapset = [];
     		
     		if(data.lapsivalintaryhmaList) {
     			data.lapsivalintaryhmaList.forEach(function(l) {
     				if(data.lapset.indexOf(l) == -1) {
-    				data.lapset.push(l);
+    				    data.lapset.push(l);
     				}
     			});
     		}
     		if(data.lapsihakukohdeList) {
     			data.lapsihakukohdeList.forEach(function(l) {
-    				
-    				if(data.lapset.indexOf(l) == -1) {
-    				data.lapset.push(l);
-    				}
+
+                    if(data.lapset.indexOf(l) == -1) {
+                        data.lapset.push(l);
+                    }
+
     			});
     		}
     		return data.lapset;
@@ -149,6 +153,7 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
            }
         },
         refresh:function() {
+            model.lapsihakukohdeList = [];
         	//get initial listing
             RootValintaryhmas.get({},function(result) {
             	 // lapsivalintaryhmaList lapsihakukohdeList
@@ -162,7 +167,6 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
                     	});
                     });
                 });
-
             });
         }
     };
@@ -210,5 +214,10 @@ function ValintaryhmaHakukohdeTreeController($scope, $resource,Treemodel,Hakukoh
         	node.isVisible = false;
         }
     }
+
+    $scope.updateDomain = function() {
+        Treemodel.refresh();
+    }
+
 
 }
