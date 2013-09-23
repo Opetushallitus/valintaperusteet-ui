@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
 /**
  * @author kkammone
  */
@@ -28,8 +27,7 @@ public class ConfigController {
     @Value("${auth.mode:}")
     private String authMode;
 
-
-    @RequestMapping(value="/configuration.js", method = RequestMethod.GET, produces="text/javascript")
+    @RequestMapping(value = "/configuration.js", method = RequestMethod.GET, produces = "text/javascript")
     @ResponseBody
     public String index() {
         StringBuilder b = new StringBuilder();
@@ -40,9 +38,9 @@ public class ConfigController {
 
         append(b, "TEMPLATE_URL_BASE", "");
 
-        if(!authMode.isEmpty()) {
+        if (!authMode.isEmpty()) {
             append(b, "AUTH_MODE", authMode);
-            if(authMode.trim().equalsIgnoreCase("dev")) {
+            if (authMode.trim().equalsIgnoreCase("dev")) {
                 b.append("$('head').append('<script type=\"text/javascript\" src=\"/servers/cas/myroles\"></script>')");
             }
         }
@@ -52,7 +50,7 @@ public class ConfigController {
 
     private void append(StringBuilder b, String key, String value) {
         b.append(key);
-        b.append( " = \"");
+        b.append(" = \"");
         b.append(value);
         b.append("\";\n");
     }
