@@ -1,5 +1,5 @@
 
-app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, ValintaryhmaValintakoekoodi, ChildHakukohdes, KoodistoValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe, Treemodel, ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, KoodistoHakukohdekoodi/*, KoodistoValintakoekoodi*/) {
+app.factory('ValintaryhmaModel', function($q, Valintaryhma, ChildValintaryhmas, ValintaryhmaValintakoekoodi, ChildHakukohdes, KoodistoValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe, Treemodel, ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, KoodistoHakukohdekoodi/*, KoodistoValintakoekoodi*/) {
 
     var model = new function() {
         this.valintaryhma = {};
@@ -12,7 +12,7 @@ app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, Vali
                 model.valintaryhma = {};
                 model.valinnanvaiheet = [];
             } else {
-                
+
                 Valintaryhma.get({oid: oid}, function(result) {
                     model.valintaryhma = result;
 
@@ -47,9 +47,13 @@ app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, Vali
         };
 
         this.persistValintaryhma = function(oid) {
+            var deferred = $q.defer();
             Valintaryhma.post(model.valintaryhma, function(result) {
                 model.valintaryhma = result;
                 Treemodel.refresh();
+                deferred.resolve();
+            }, function(error) {
+                deferred.reject();
             });
 
             if(model.valinnanvaiheet.length > 0) {
@@ -65,6 +69,10 @@ app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, Vali
                 });
             }
             */
+
+            return deferred.promise;
+
+
         };
 
         this.removeValinnanvaihe = function(vaihe) {
@@ -196,13 +204,22 @@ app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, Vali
     return model;
 });
 
-function valintaryhmaController($scope, $location, $routeParams, ValintaryhmaModel) {
+function valintaryhmaController($scope, $location, $routeParams, $timeout, ValintaryhmaModel) {
     $scope.valintaryhmaOid = $routeParams.id;
     $scope.model = ValintaryhmaModel;
     $scope.model.refreshIfNeeded($scope.valintaryhmaOid);
 
     $scope.submit = function() {
-        $scope.model.persistValintaryhma($scope.valintaryhmaOid);
+        var promise = $scope.model.persistValintaryhma($scope.valintaryhmaOid);
+
+        promise.then(function(successMsg) {
+            $scope.successOnSave = true;
+            $timeout(function(){
+                $scope.successOnSave = false;
+            }, 3000)
+        }, function(rejectMsg) {
+
+        });
     }
 
     $scope.cancel = function() {
@@ -302,10 +319,10 @@ function ValintaryhmaCreatorController($scope, $location, $routeParams, Valintar
 
 
 
-app.factory('ValintaryhmaChildrenModel', function($resource, $location, $routeParams, Hakukohde, Valintaryhma, ChildValintaryhmas, ChildHakukohdes ) {
+app.factory('ValintaryhmaChildrenModel', function($resource, $location, $routeParams, Hakukohde, Valintaryhma, ValintaryhmaModel, ChildValintaryhmas, ChildHakukohdes ) {
 
     var model = new function() {
-        this.valintaryhma = {};
+        this.valintaryhma = ValintaryhmaModel.valintaryhma;
         this.childValintaryhmat = [];
         this.childHakukohteet = [];
 
@@ -316,9 +333,7 @@ app.factory('ValintaryhmaChildrenModel', function($resource, $location, $routePa
                 model.childHakukohteet = [];
             } else {
 
-                Valintaryhma.get({oid: oid}, function(result) {
-                    model.valintaryhma = result;
-                });
+                ValintaryhmaModel.refreshIfNeeded(oid);
                
                 ChildValintaryhmas.get({parentOid: oid}, function(result) {
                     model.childValintaryhmat = result;
