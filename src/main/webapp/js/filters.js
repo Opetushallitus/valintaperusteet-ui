@@ -6,17 +6,20 @@ app.filter('hakukohdekoodiFullMatchFilter', function(ValintaryhmaModel) {
     var result = [];
 
     //copy original list (removing objects here would make it difficult to add them back if necessary)
-    for (var i = 0 ; i < list.length ; i++) {
-      result[i] = list[i];
-    }
+    if(list) {
 
-    if(model.valintaryhma.hakukohdekoodit) {
-      for (var i = 0 ; i < result.length ; i++) {
-        filterableListKoodi = result[i];
-        for (var j = 0 ; j < model.valintaryhma.hakukohdekoodit.length ; j++) {
-          koodi = model.valintaryhma.hakukohdekoodit[j];
-          if (koodi.uri === filterableListKoodi.koodiUri) {
-            result.splice(i, 1);
+      for (var i = 0 ; i < list.length ; i++) {
+        result[i] = list[i];
+      }
+
+      if(model.valintaryhma.hakukohdekoodit) {
+        for (var i = 0 ; i < result.length ; i++) {
+          filterableListKoodi = result[i];
+          for (var j = 0 ; j < model.valintaryhma.hakukohdekoodit.length ; j++) {
+            koodi = model.valintaryhma.hakukohdekoodit[j];
+            if (koodi.uri === filterableListKoodi.koodiUri) {
+              result.splice(i, 1);
+            }
           }
         }
       }
@@ -33,17 +36,22 @@ app.filter('valintakoekoodiFullMatchFilter', function(ValintaryhmaModel) {
     var filterableListKoodi;
 
     var result = [];
-    for (var i = 0 ; i < list.length ; i++) {
-      result[i] = list[i];
-    }
 
-    if(model.valintaryhma.valintakoekoodit) {
-      for (var i = 0 ; i < result.length ; i++) {
-        filterableListKoodi = result[i];
-        for (var j = 0 ; j < model.valintaryhma.valintakoekoodit.length ; j++) {
-          koodi = model.valintaryhma.valintakoekoodit[j];
-          if(koodi.uri === filterableListKoodi.koodiUri) {
-            result.splice(i, 1);
+    if(list) {
+
+
+      for (var i = 0 ; i < list.length ; i++) {
+        result[i] = list[i];
+      }
+
+      if(model.valintaryhma.valintakoekoodit) {
+        for (var i = 0 ; i < result.length ; i++) {
+          filterableListKoodi = result[i];
+          for (var j = 0 ; j < model.valintaryhma.valintakoekoodit.length ; j++) {
+            koodi = model.valintaryhma.valintakoekoodit[j];
+            if(koodi.uri === filterableListKoodi.koodiUri) {
+              result.splice(i, 1);
+            }
           }
         }
       }
