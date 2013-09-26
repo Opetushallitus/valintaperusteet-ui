@@ -106,17 +106,11 @@ app.factory('Valintaryhma', function($resource) {
 	return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid", {oid: "@oid"}, {
 	    get: {method: "GET"},
 	    post:{method: "POST"},
-	    insert: {method: "PUT"}
+	    insert: {method: "PUT"},
+      query: {method: "GET", isArray: true}
 	});
 });
-// Sama kuin Valintaryhma mutta odottaa joukkoa!
-app.factory('Hakukohderyhma', function($resource) {
-	return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid", {oid: "@oid"}, {
-	    get: {method: "GET", isArray: true},
-	    post:{method: "POST"},
-	    insert: {method: "PUT"}
-	});
-});
+
 app.factory('ParentValintaryhmas', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:parentOid/parents", {parentOid: "@parentOid"}, {
         get: {method: "GET", isArray: true}
