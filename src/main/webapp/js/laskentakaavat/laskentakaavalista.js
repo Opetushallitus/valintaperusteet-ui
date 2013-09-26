@@ -25,19 +25,23 @@ app.factory('LaskentakaavaLista', function(Laskentakaava, ParentValintaryhmas, H
             hakukohdeData['laskentakaavat'] = Laskentakaava.list({hakukohde: hakukohdeOid, myosLuonnos: myosLuonnos});
             hakukohde[0] = hakukohdeData;
 
-            Valintaryhma.get({oid: hakukohdeData.valintaryhma_id}, function(valintaryhmaData) {
-                ParentValintaryhmas.get({parentOid: valintaryhmaData.oid}, function(data) {
-                    for(var i in data) {
-                        var valintaryhma = data[i];
-                        valintaryhma['laskentakaavat'] = Laskentakaava.list({valintaryhma: valintaryhma.oid, myosLuonnos: myosLuonnos});
-                    }
+            if(hakukohdeData.valintaryhma_id) {
+                Valintaryhma.get({oid: hakukohdeData.valintaryhma_id}, function(valintaryhmaData) {
 
-                    var paataso = findRootLevelLaskentakaavas(myosLuonnos);
-                    list.push.apply(list, data);
-                    list.push(paataso);
-                });
+                    ParentValintaryhmas.get({parentOid: valintaryhmaData.oid}, function(data) {
+                        for(var i in data) {
+                            var valintaryhma = data[i];
+                            valintaryhma['laskentakaavat'] = Laskentakaava.list({valintaryhma: valintaryhma.oid, myosLuonnos: myosLuonnos});
+                        }
 
-            });
+                        var paataso = findRootLevelLaskentakaavas(myosLuonnos);
+                        list.push.apply(list, data);
+                        list.push(paataso);
+                    });
+
+                });    
+            }
+            
         });
 
         return list;
