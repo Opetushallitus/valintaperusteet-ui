@@ -101,7 +101,16 @@ return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid/hakukohde", {},
     get: {method: "GET", isArray: true}
   });
 });
+//Sama kuin Hakukohderyhma mutta odottaa yksittaista tulosta!
 app.factory('Valintaryhma', function($resource) {
+	return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid", {oid: "@oid"}, {
+	    get: {method: "GET"},
+	    post:{method: "POST"},
+	    insert: {method: "PUT"}
+	});
+});
+// Sama kuin Valintaryhma mutta odottaa joukkoa!
+app.factory('Hakukohderyhma', function($resource) {
 	return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid", {oid: "@oid"}, {
 	    get: {method: "GET", isArray: true},
 	    post:{method: "POST"},

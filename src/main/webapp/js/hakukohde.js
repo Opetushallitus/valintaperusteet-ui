@@ -1,6 +1,6 @@
 
 
-app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohdekoodi, Hakukohde, Valintaryhma, HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta, HakukohdeKuuluuSijoitteluun) {
+app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohdekoodi, Hakukohde, Hakukohderyhma, HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta, HakukohdeKuuluuSijoitteluun) {
     var model = new function()  {
         
         this.parentValintaryhma = {};
@@ -10,7 +10,7 @@ app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohd
         this.refresh = function(oid) {
             Hakukohde.get({oid: oid}, function(result) {
                 model.hakukohde = result;
-                Valintaryhma.get({oid: model.hakukohde.valintaryhma_id}, function(result) {
+                Hakukohderyhma.get({oid: model.hakukohde.valintaryhma_id}, function(result) {
                     model.parentValintaryhma = result;
                 });
 
@@ -84,8 +84,6 @@ app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohd
                             hakukohdekoodi.nimiEn = metadata.nimi;
                         }
                     });
-
-                    //persist valintaryhma with added hakukohdekoodiuri
                     HakukohdeHakukohdekoodi.post({hakukohdeOid: model.hakukohde.oid}, hakukohdekoodi, function(result) {
                         model.hakukohde.hakukohdekoodi = result;
                     }, function(error){
@@ -180,7 +178,6 @@ app.factory('HakukohdeCreatorModel', function($location, NewHakukohde, Treemodel
 });
 
 function HakukohdeCreatorController($scope, $location, $routeParams, HakukohdeCreatorModel) {
-    //$scope.valintaryhmaOid = $routeParams.valintaryhmaOid;
     $scope.model = HakukohdeCreatorModel;
     $scope.model.refresh();
     $scope.showOidInputs = true;
