@@ -1,5 +1,5 @@
 
-app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, ValintaryhmaValintakoekoodi, ChildHakukohdes, KoodistoValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe, Treemodel, ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, KoodistoHakukohdekoodi/*, KoodistoValintakoekoodi*/) {
+app.factory('ValintaryhmaModel', function($q, Valintaryhma, ChildValintaryhmas, ValintaryhmaValintakoekoodi, ChildHakukohdes, KoodistoValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe, Treemodel, ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, KoodistoHakukohdekoodi/*, KoodistoValintakoekoodi*/) {
 
     var model = new function() {
         this.valintaryhma = {};
@@ -12,7 +12,7 @@ app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, Vali
                 model.valintaryhma = {};
                 model.valinnanvaiheet = [];
             } else {
-                
+
                 Valintaryhma.get({oid: oid}, function(result) {
                     model.valintaryhma = result;
 
@@ -65,6 +65,8 @@ app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, Vali
                 });
             }
             */
+
+
         };
 
         this.removeValinnanvaihe = function(vaihe) {
@@ -196,7 +198,7 @@ app.factory('ValintaryhmaModel', function(Valintaryhma, ChildValintaryhmas, Vali
     return model;
 });
 
-function valintaryhmaController($scope, $location, $routeParams, ValintaryhmaModel) {
+function valintaryhmaController($scope, $location, $routeParams, $timeout, ValintaryhmaModel) {
     $scope.valintaryhmaOid = $routeParams.id;
     $scope.model = ValintaryhmaModel;
     $scope.model.refreshIfNeeded($scope.valintaryhmaOid);
@@ -275,7 +277,7 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
                 ChildValintaryhmas.insert({"parentOid": oid}, newValintaryhma, function(result){
                     Treemodel.refresh();
                     model.valintaryhma = result;
-                    $location.path("/valintaryhma/" + oid);
+                    $location.path("/valintaryhma/" + result.oid);
                 });
             }
         };
@@ -302,10 +304,10 @@ function ValintaryhmaCreatorController($scope, $location, $routeParams, Valintar
 
 
 
-app.factory('ValintaryhmaChildrenModel', function($resource, $location, $routeParams, Hakukohde, Valintaryhma, ChildValintaryhmas, ChildHakukohdes ) {
+app.factory('ValintaryhmaChildrenModel', function($resource, $location, $routeParams, Hakukohde, Valintaryhma, ValintaryhmaModel, ChildValintaryhmas, ChildHakukohdes ) {
 
     var model = new function() {
-        this.valintaryhma = {};
+        this.valintaryhma = ValintaryhmaModel.valintaryhma;
         this.childValintaryhmat = [];
         this.childHakukohteet = [];
 
@@ -316,9 +318,7 @@ app.factory('ValintaryhmaChildrenModel', function($resource, $location, $routePa
                 model.childHakukohteet = [];
             } else {
 
-                Valintaryhma.get({oid: oid}, function(result) {
-                    model.valintaryhma = result;
-                });
+                ValintaryhmaModel.refreshIfNeeded(oid);
                
                 ChildValintaryhmas.get({parentOid: oid}, function(result) {
                     model.childValintaryhmat = result;
