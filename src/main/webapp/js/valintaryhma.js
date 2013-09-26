@@ -47,13 +47,9 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma, ChildValintaryhmas, 
         };
 
         this.persistValintaryhma = function(oid) {
-            var deferred = $q.defer();
             Valintaryhma.post(model.valintaryhma, function(result) {
                 model.valintaryhma = result;
                 Treemodel.refresh();
-                deferred.resolve();
-            }, function(error) {
-                deferred.reject();
             });
 
             if(model.valinnanvaiheet.length > 0) {
@@ -69,8 +65,6 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma, ChildValintaryhmas, 
                 });
             }
             */
-
-            return deferred.promise;
 
 
         };
@@ -210,16 +204,7 @@ function valintaryhmaController($scope, $location, $routeParams, $timeout, Valin
     $scope.model.refreshIfNeeded($scope.valintaryhmaOid);
 
     $scope.submit = function() {
-        var promise = $scope.model.persistValintaryhma($scope.valintaryhmaOid);
-
-        promise.then(function(successMsg) {
-            $scope.successOnSave = true;
-            $timeout(function(){
-                $scope.successOnSave = false;
-            }, 3000)
-        }, function(rejectMsg) {
-
-        });
+        $scope.model.persistValintaryhma($scope.valintaryhmaOid);
     }
 
     $scope.cancel = function() {
