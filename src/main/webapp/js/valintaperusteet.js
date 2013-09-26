@@ -102,11 +102,11 @@ return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid/hakukohde", {},
   });
 });
 app.factory('Valintaryhma', function($resource) {
-return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid", {oid: "@oid"}, {
-    get: {method: "GET"}  ,
-    post:{method: "POST"},
-    insert: {method: "PUT"}
-  });
+	return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid", {oid: "@oid"}, {
+	    get: {method: "GET", isArray: true},
+	    post:{method: "POST"},
+	    insert: {method: "PUT"}
+	});
 });
 app.factory('ParentValintaryhmas', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:parentOid/parents", {parentOid: "@parentOid"}, {
