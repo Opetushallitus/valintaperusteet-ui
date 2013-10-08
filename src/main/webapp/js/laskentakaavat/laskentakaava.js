@@ -19,7 +19,6 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
     $scope.domain = Laskentapuu;
     $scope.showTemplate = false;
     $scope.selected = null;
-    $scope.errors = [];
 
     $scope.showDetails = function(funktio) {
         $scope.f = funktio;
@@ -41,6 +40,9 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
     }
 
     $scope.addNewFunktio = function(parentFunktio, funktioNimi, argumenttiNimi) {
+        console.log(parentFunktio);
+        console.log(funktioNimi);
+        console.log(argumenttiNimi);
         var newFunc = parentFunktio.addNewFunktiokutsu(funktioNimi, argumenttiNimi);
         $scope.showDetails(newFunc);
     }
@@ -58,29 +60,34 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
         oldParent.init()
     }
 
-
     $scope.saveKaavaAsCompleted = function() {
         var kaava = Laskentapuu.laskentakaava()[0].getData();
         var validateKaava = {};
         angular.copy(kaava, validateKaava);
+
         KaavaValidointi.post({}, validateKaava, function(data) {
+
             Laskentapuu.setKaavaData(data)
             $scope.selected = null
             $scope.showTemplate = false
 
             if(Laskentapuu.laskentakaava()[0].hasErrors()) {
-                
                 $scope.errors = Laskentapuu.laskentakaava()[0].getAllErrors()
-                Laskentapuu.setKaavaData(kaava);
-                return
-            }
-
+                Laskentapuu.setKaavaData(kaava);   
+                return             
+                
+            } 
+            
             kaava.onLuonnos = false
+
             kaava.$save({oid: kaava.id}, function(data) {
                 Laskentapuu.setKaavaData(data);
-            })
-            $scope.errors = []
-        })
+            });
+
+            $scope.errors = []    
+            
+            
+        });
 
     }
     
@@ -104,53 +111,33 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
             $location.path("/laskentakaava")
         }
     }
+
 }
 
 
-
-
-app.factory('FunktioDSL', function($resource, FunktioKuvaus) {
-    var model = [];
-    var funktioLogic = {
-        refresh: function() {
-            FunktioKuvaus.get({}, function(result) {
-                model = result;
-            });
-        },
-        findByFunktionimi: function(funktionimi) {
-            for(i in model) {
-                var f = model[i];
-                if(f.nimi == funktionimi) {
-                    return f;
-                }
-            }
-            throw Error("Function " + funktionimi + " not found.");
-        }
-    }
-    return funktioLogic;
-});
-
 app.factory('Laskentapuu', function(Laskentakaava, FunktioKuvaus) {
+    
+    var LaskentapuuWrapper = new function() {
+        this.laskentakaavapuu = [];
+        this.kuvaus = {};
 
-    var model = []
-    var kuvaus = {}
+        this.laskentakaava = function() {
+            return LaskentapuuWrapper.laskentakaavapuu;
+        }
 
-    var domainObject = {
-        laskentakaava: function() {
-            return model;
-        },
-        setKaavaData: function(data) {
-            model[0] = new Kaava(kuvaus, data);
-        },
-        refresh: function(id) {
+        this.setKaavaData = function(data) {
+            LaskentapuuWrapper.laskentakaavapuu[0] = new Kaava(LaskentapuuWrapper.kuvaus, data);
+        }
+
+        this.refresh = function(id) {
             FunktioKuvaus.get({}, function(res) {
-                kuvaus = res;
+                LaskentapuuWrapper.kuvaus = res;
                 Laskentakaava.get({oid: id}, function(kaava) {
-                    model = new Array(new Kaava(kuvaus, kaava))
+                    LaskentapuuWrapper.laskentakaavapuu = new Array(new Kaava(LaskentapuuWrapper.kuvaus,kaava));
                 });
             });
         }
     }
 
-    return domainObject;
+    return LaskentapuuWrapper;
 });
