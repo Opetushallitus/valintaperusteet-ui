@@ -85,13 +85,22 @@
                 <td ng-click="addNewFunktio(parent, 'JOS', funktio.nimi())"><span>Jos</span></td>
             </tr>
             <tr>
-                <td ng-click="addNewFunktio(parent, 'HYLKAA', funktio.nimi())">Hylkää</td>
-                <td></td>
+                <td ng-click="addNewFunktio(parent, 'HYLKAA', funktio.nimi())"><span>Hylkää</span></td>
+                <td ng-click="addNewFunktio(parent, 'PYORISTYS', funktio.nimi())"><span>Pyöristys</span></td>
             </tr>
             <tr>
-                <td ng-click="addNewFunktio(parent, 'KONVERTOILUKUARVO', funktio.nimi())">Konversio</td>
+                <td ng-click="addNewFunktio(parent, 'KONVERTOILUKUARVO', funktio.nimi())"><span>Konversio</span></td>
                 <td ng-click="addChildLaskentakaava(parent, funktio.nimi())"><span>Viittaus toiseen kaavaan</span></td>
             </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAKONVERTOILUKUARVOKSI', funktio.nimi())"><span>Hae merkkijono ja konvertoi lukuarvoksi</span></td>
+                <td ng-click="addNewFunktio(parent, 'NIMETTYLUKUARVO', funktio.nimi())"><span>Nimetty lukuarvo</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'SKAALAUS', funktio.nimi())"><span>Skaalaus</span></td>
+                <td ng-click="addNewFunktio(parent, 'PAINOTETTUKESKIARVO', funktio.nimi())"><span>Painotettu keskiarvo</span></td>
+            </tr>
+
             </tbody>
         </table>
         <table class="dropmenu-table" ng-show="funktio.isTotuusarvoFunktio()">
@@ -125,6 +134,15 @@
             <tr>
                 <td ng-click="addNewFunktio(parent, 'DEMOGRAFIA', funktio.nimi())"><span>Demografia</span></td>
                 <td ng-click="addNewFunktio(parent, 'HAKUTOIVE', funktio.nimi())"><span>Hakutoive</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI'
+                , funktio.nimi())"><span>Hae merkkijono ja konvertoi totuusarvoksi</span></td>
+                <td ng-click="addNewFunktio(parent, 'NIMETTYTOTUUSARVO', funktio.nimi())"><span>Nimetty totuusarvo</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'HAKUTOIVE', funktio.nimi()"><span>Hakutoive</span></td>
+                <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAVERTAAYHTASUURUUS', funktio.nimi())"><span>Hae merkkijono ja vertaa yhtäsuuruus</span></td>
             </tr>
             </tbody>
         </table>
