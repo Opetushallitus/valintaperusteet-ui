@@ -780,7 +780,15 @@ var FunktioNimiService = function() {
         "DEMOGRAFIA": "Demografia",
         "KONVERTOILUKUARVO": "Konvertoi",
         "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI": "Konvertoi",
-        "HYLKAA": "Hylkää"
+        "HYLKAA": "Hylkää",
+        "PYORISTYS": "Pyöristys",
+        "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI": "Hae merkkijono ja konvertoi totuusarvoksi",
+        "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI": "Hae merkkijono ja konvertoi lukuarvoksi",
+        "NIMETTYLUKUARVO": "Nimetty lukuarvo",
+        "NIMETTYTOTUUSARVO": "Nimetty totuusarvo",
+        "HAEMERKKIJONOJAVERTAAYHTASUURUUS": "Hae merkkijono ja vertaa yhtäsuuruus",
+        "SKAALAUS": "Skaalaus",
+        "PAINOTETTUKESKIARVO": "Painotettu keskiarvo"
     };
 
     /*
@@ -811,6 +819,8 @@ var FunktioNimiService = function() {
                     return "Arvo hakemukselta";
                 case "SYOTETTAVA_ARVO":
                     return "Syötettävä arvo";
+                case "HAKUKOHTEEN_ARVO":
+                    return "Hakukohteen arvo";
             }
         },
         "HAETOTUUSARVO": function(data) {
@@ -822,6 +832,8 @@ var FunktioNimiService = function() {
                     return "Arvo hakemukselta";
                 case "SYOTETTAVA_ARVO":
                     return "Syötettävä arvo";
+                case "HAKUKOHTEEN_ARVO":
+                    return "Hakukohteen arvo";
             }
         },
         "NMINIMI": function(data) {
