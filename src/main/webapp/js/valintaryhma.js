@@ -58,15 +58,6 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma, ChildValintaryhmas, 
                     Valinnanvaihe.post(model.valinnanvaiheet[i], function(){});
                 }
             }
-            /*
-            if(model.valintaryhma.hakukohdekoodit.length > 0) {
-                ValintaryhmaHakukohdekoodi.post({valintaryhmaOid: model.valintaryhma.oid}, model.valintaryhma.hakukohdekoodit, function(result) {
-                    console.log(result);
-                });
-            }
-            */
-
-
         };
 
         this.removeValinnanvaihe = function(vaihe) {
@@ -271,7 +262,7 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
             if(oid === "root"){
                 Valintaryhma.insert(newValintaryhma, function(result) {
                     Treemodel.refresh();
-                    $location.path("/");
+                    $location.path("/valintaryhma/" + result.oid);
                 });
             } else {
                 ChildValintaryhmas.insert({"parentOid": oid}, newValintaryhma, function(result){
