@@ -9,7 +9,7 @@
     </div>
     <ul class="frame-content list">
         <li class="item" ng-repeat="farg in funktio.funktioargumentit" ng-init="parent = funktio; funktio = farg"
-            ng-include="funktio.template()">
+            ng-include="funktio.template">
         </li>
     </ul>
 </script>
@@ -30,7 +30,7 @@
     </div>
     <ul class="function-content list">
         <li class="item" ng-repeat="farg in funktio.funktioargumentit" ng-init="parent = funktio; funktio = farg"
-            ng-include="funktio.template()">
+            ng-include="funktio.template">
         </li>
     </ul>
 </script>
@@ -141,7 +141,6 @@
                 <td ng-click="addNewFunktio(parent, 'NIMETTYTOTUUSARVO', funktio.nimi())"><span>Nimetty totuusarvo</span></td>
             </tr>
             <tr>
-                <td ng-click="addNewFunktio(parent, 'HAKUTOIVE', funktio.nimi()"><span>Hakutoive</span></td>
                 <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAVERTAAYHTASUURUUS', funktio.nimi())"><span>Hae merkkijono ja vertaa yhtäsuuruus</span></td>
             </tr>
             </tbody>
@@ -264,11 +263,8 @@
 
     <div class="clear"></div>
 
-   
     <div class="gradingformula dd" jq-nestable="{onChange: kaavaDragged}" style="width:60%;float:left;"
-         ng-repeat="kaava in domain.laskentakaava()"
-         ng-init="funktio = kaava.funktiopuu()"
-         ng-include="funktio.template()">
+         ng-include="domain.laskentakaavapuu.funktio.template">
     </div>
 
 
@@ -433,10 +429,11 @@
                             </tr>
                             </thead>
                             <tbody>
+
                             <tr ng-repeat="param in f.syoteparametrit" ng-show="param.isVisible()">
-                                <td>Avain: {{param.avain}}</td>
+                                <td>Avain: {{param.avain}} {{$id}}</td>
                                 <td ng-init="paramKey = param.avain"
-                                    ng-include="param.template()"></td>
+                                    ng-include="param.template"></td>
                             </tr>
                             <tr>
                                 <td colspan="2">{{param.avain}}</td>

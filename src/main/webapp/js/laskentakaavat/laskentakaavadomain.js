@@ -54,9 +54,7 @@ var Kaava = function(funktiokuvaus, data) {
 }
 
 var TyhjaFunktio = function(def) {
-    this.template = function() {
-        return "tyhja_template.html"
-    }
+    this.template = "tyhja_template.html";
 
     this.nimi = function() {
         return def.nimi
@@ -88,9 +86,7 @@ var LaskentakaavaViite = function(funktiokuvaus, data) {
         this.hashKey = Math.random().toString(36).substring(7);
     }
 
-    this.template = function() {
-        return "subformula_template.html";
-    }
+    this.template = "subformula_template.html";
 
     this.funktioCssClass = function(defaultClass, selected) {
         var cssClass = defaultClass
@@ -293,6 +289,7 @@ var Funktio = function(funktiokuvaus, data) {
         }
 
         this.nimi = this.getNimi();
+        this.template = this.getTemplate();
         this.funktioargumentit = this.getFunktioargumentit();
 
         // Used for comparison.
@@ -303,7 +300,7 @@ var Funktio = function(funktiokuvaus, data) {
     }
 
     /* UI methods */
-    this.template = function() {
+    this.getTemplate = function() {
         var labelFunctions = ["NIMETTYLUKUARVO", "NIMETTYTOTUUSARVO"]
         var paramFunctions = ["HAELUKUARVO", "LUKUARVO", "TOTUUSARVO", "HAETOTUUSARVO", "HAKUTOIVE", "DEMOGRAFIA", "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI"]
         if(paramFunctions.indexOf(this.nimi) != -1) {
@@ -719,18 +716,18 @@ var KonvertteriParametri = function(tietotyyppi, data) {
 }
 
 var Parametri = function(definition, data) {
-    this.definition = definition
-    this.data = data
-
+    this.definition = definition;
+    this.data = data;
+    var that = this;
     var HIDDEN_PARAMS = ["nimi"];
 
     /* Structure methods */
-    this.avain = this.definition.avain
+    this.avain = this.definition.avain;
     //this.arvo = this.data ? this.data.arvo : null
-    this.tyyppi = this.definition.tyyppi
+    this.tyyppi = this.definition.tyyppi;
 
-    this.template = function() {
-        switch(this.tyyppi) {
+    this.template = (function() {
+        switch(that.tyyppi) {
             case "DESIMAALILUKU":
                 return "desimaaliluku-template";
             case "KOKONAISLUKU":
@@ -742,7 +739,7 @@ var Parametri = function(definition, data) {
             default:
                 return ""
         }
-    }
+    })();
 
     this.init = function() {
         this.hashKey = Math.random().toString(36).substring(7);
