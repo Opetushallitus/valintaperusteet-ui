@@ -36,14 +36,22 @@
 </div>
 <div class="tabsheets">
 
+    <!--
     <h2>{{'valintaryhmatlistaus.header' | i18n}}</h2>
+    -->
 
-    <input id="osallistuu" type="checkbox" ng-model="domain.filter" ng-true-value="VALMIS JULKAISTU" ng-false-value=""/>
+    <input id="osallistuu" type="checkbox" ng-model="domain.valmiitJaJulkaistut" ng-true-value="VALMIS JULKAISTU" ng-false-value=""/>
     <label for="osallistuu">Vain valmiit ja julkaistut</label>
+
+    <label for="haku">Haku</label>
+    <select id="haku" ng-model="model.hakuOid" ng-options="haku.nimi.kieli_fi for haku in hakuModel.haut | orderBy:'nimi.kieli_fi'"></select>
+
+    <label for="text">Hae</label>
+    <input id="text" ng-model="model.textSearch" >
+
     <br />
 
-    <a href="#/valintaryhma/root/lisaaSisaltyvaValintaryhma" class="button small">{{'valintaryhmatlistaus.add.valintaryhma'
-        | i18n}}</a>
+    <a href="#/valintaryhma/root/lisaaSisaltyvaValintaryhma" class="button small">{{'valintaryhmatlistaus.add.valintaryhma' | i18n}}</a>
     <a href="#/lisaaHakukohde" class="button small">{{'valintaryhmatlistaus.add.hakukohde' | i18n}}</a>
 
     <ol class="sortable treelist collapsible multiselect"

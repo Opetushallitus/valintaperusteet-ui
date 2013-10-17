@@ -1,5 +1,5 @@
 //domain .. this is both, service & domain layer
-app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhmas, RootHakukohde, ChildHakukohdes, HakukohdeKuuluuSijoitteluun) {
+app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhmas, RootHakukohde, ChildHakukohdes) {
     //keep model to yourself
     var model = {nimi: "ROOT", lapsihakukohdeList: []};
     
@@ -141,6 +141,7 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
                  ChildHakukohdes.get({oid: node.oid}, function(result) {
                      node.lapsihakukohdeList = result;
 
+                    /*
                      result.forEach(function(hk){
                          if(hk.oid) {
                              HakukohdeKuuluuSijoitteluun.get({oid: hk.oid}, function(result) {
@@ -148,7 +149,7 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
                              });
                          }
                      });
-
+                      */
                   });
            }
         },
@@ -161,11 +162,13 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
                 
                 RootHakukohde.get({},function(result) {
                 	model.lapsihakukohdeList = result;
+                	/*
                     result.forEach(function(hk){
                     	HakukohdeKuuluuSijoitteluun.get({oid: hk.oid}, function(result) {
                     		hk.kuuluuSijoitteluun = result.sijoitteluun;
                     	});
                     });
+                    */
                 });
             });
         }
@@ -175,9 +178,17 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
 });
 
 
-function ValintaryhmaHakukohdeTreeController($scope, $resource,Treemodel,HakukohdeSiirra) {
+function ValintaryhmaHakukohdeTreeController($scope, $resource,Treemodel,HakukohdeSiirra, HakuModel) {
 	$scope.predicate = 'nimi';
 	$scope.domain = Treemodel;
+
+
+
+    console.debug("jeba");
+    $scope.hakuModel = HakuModel;
+    $scope.hakuModel.init();
+
+
 	
 	$scope.expandGroup = function($event) {
 		$($event.target).closest('li').toggleClass('uiCollapsed').toggleClass('uiExpanded');

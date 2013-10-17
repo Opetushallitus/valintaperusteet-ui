@@ -79,6 +79,19 @@ app.config(function($routeProvider) {
 //rest resources
 
 
+//TARJONTA RESOURCES
+app.factory('Haku', function($resource) {
+  return $resource(TARJONTA_URL_BASE + "haku", {}, {
+    get: {method: "GET", isArray: true}
+  });
+});
+
+app.factory('HaunTiedot', function($resource) {
+  return $resource(TARJONTA_URL_BASE + "haku/:hakuOid", {hakuOid: "@hakuOid"}, {
+    get: {method: "GET"}
+  });
+});
+
 //Valintaryhma
 app.factory('RootValintaryhmas', function($resource) {
 return $resource(SERVICE_URL_BASE + "resources/valintaryhma", {}, {
