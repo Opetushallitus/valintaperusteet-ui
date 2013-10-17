@@ -2,14 +2,17 @@
 
 <!-- PAGE TEMPLATES -->
 
+
 <script type="text/ng-template" id="frame_template.html">
     <div class="frame">
         <span class="icon">&#8302;</span>
         <span class="label" ng-click="showDetails(funktio)">{{funktio.naytettavaNimi}}</span>
     </div>
     <ul class="frame-content list">
-        <li class="item" ng-repeat="farg in funktio.funktioargumentit" ng-init="parent = funktio; funktio = farg"
-            ng-include="funktio.template">
+        <li class="item" ng-repeat="farg in funktio.funktioargumentit" >
+            <div ng-controller="recurseController">
+                <div ng-include="funktio.template"></div>
+            </div>
         </li>
     </ul>
 </script>
@@ -22,16 +25,23 @@
 </script>
 
 <script type="text/ng-template" id="funktio_template.html">
-
     <div ng-class="funktio.funktioCssClass('function', selected)">
         <span ng-class="funktio.iconCssClass()">&#8302;</span>
         <span class="label" ng-click="showDetails(funktio)">{{funktio.naytettavaNimi}}</span>
         <span class="notification warning" ng-show="funktio.hasErrors()">!</span>
     </div>
     <ul class="function-content list">
+        <li class="item" ng-repeat="farg in funktio.funktioargumentit" >
+            <div ng-controller="recurseController">
+                <div ng-include="funktio.template"></div>
+            </div>
+        </li>
+        <!--
         <li class="item" ng-repeat="farg in funktio.funktioargumentit" ng-init="parent = funktio; funktio = farg"
             ng-include="funktio.template">
         </li>
+    -->
+
     </ul>
 </script>
 
@@ -431,7 +441,7 @@
                             <tbody>
 
                             <tr ng-repeat="param in f.syoteparametrit" ng-show="param.isVisible()">
-                                <td>Avain: {{param.avain}} {{$id}}</td>
+                                <td>Avain: {{param.avain}}</td>
                                 <td ng-init="paramKey = param.avain"
                                     ng-include="param.template"></td>
                             </tr>
