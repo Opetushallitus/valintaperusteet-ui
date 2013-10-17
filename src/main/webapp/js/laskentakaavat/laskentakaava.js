@@ -45,9 +45,6 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
     }
 
     $scope.addNewFunktio = function(parentFunktio, funktioNimi, argumenttiNimi) {
-        console.log(parentFunktio);
-        console.log(funktioNimi);
-        console.log(argumenttiNimi);
         var newFunc = parentFunktio.addNewFunktiokutsu(funktioNimi, argumenttiNimi);
         $scope.showDetails(newFunc);
     }
@@ -97,6 +94,7 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
     }
     
 
+
     $scope.saveKaavaAsDraft = function() {
         var kaava = Laskentapuu.laskentakaava().getData()
         kaava.onLuonnos = true
@@ -117,6 +115,11 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
         }
     }
 
+}
+
+function recurseController($scope) {
+    $scope.funktio = $scope.$parent.farg;
+    $scope.parent = $scope.$parent.funktio;
 }
 
 
@@ -149,3 +152,4 @@ app.factory('Laskentapuu', function($q, Laskentakaava, FunktioKuvaus) {
 
     return LaskentapuuWrapper;
 });
+
