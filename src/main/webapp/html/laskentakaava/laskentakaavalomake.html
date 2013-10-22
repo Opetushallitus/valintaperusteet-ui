@@ -36,12 +36,6 @@
                 <div ng-include="funktio.template"></div>
             </div>
         </li>
-        <!--
-        <li class="item" ng-repeat="farg in funktio.funktioargumentit" ng-init="parent = funktio; funktio = farg"
-            ng-include="funktio.template">
-        </li>
-    -->
-
     </ul>
 </script>
 
@@ -51,6 +45,17 @@
         <span class="label" ng-click="showDetails(funktio)">{{funktio.naytettavaNimi}}</span>
     </div>
 </script>
+
+
+<script type="text/ng-template" id="funktio_pair_template.html">
+    <div ng-class="funktio.funktioCssClass('function', selected)">
+        <span ng-class="funktio.iconCssClass()">&#8302;</span>
+        <span class="label" ng-click="showDetails(funktio)">{{funktio.naytettavaNimi}}</span>
+        <span class="notification warning" ng-show="funktio.hasErrors()">!</span>
+    </div>
+    <h3>Not yet implemented</h3>
+</script>
+
 
 <script type="text/ng-template" id="tyhja_template.html">
     <div class="function">
@@ -272,7 +277,6 @@
     </div>
 
     <div class="clear"></div>
-
     <div class="gradingformula dd" jq-nestable="{onChange: kaavaDragged}" style="width:60%;float:left;"
          ng-include="domain.laskentakaavapuu.funktio.template">
     </div>
@@ -307,6 +311,7 @@
 
 
     <!-- FUNKTIOASETUKSET -->
+
     <div class="" style="width:30%;float:right;" ng-show="showTemplate">
         <div class="settingsform">
 
@@ -326,12 +331,12 @@
             <!-- Haettava arvo -->
             <div class="form-item" ng-show="f.isHaettavaArvoTyyppi()">
                 <label class="form-item-label" style="width:50px;">Tyyppi</label>
-
                 <div class="form-item-content">
                     <div class="field-select-containerbox">
                         <select ng-model="f.data.valintaperuste.lahde">
                             <option value="HAETTAVA_ARVO">Arvo hakemukselta</option>
                             <option value="SYOTETTAVA_ARVO">Syötettävä arvo</option>
+                            <option value="HAKUKOHTEEN_ARVO">Hakukohteen arvo</option>
                         </select>
                     </div>
                     <div class="field-container-checkbox">
@@ -371,7 +376,6 @@
 
                 <div class="form-item" ng-show="f.konvertteri.tyyppi">
                     <label class="form-item-label" for="" style="width:100px;">Konversiomäärittelyt</label>
-
                     <div class="form-item-content" ng-include="f.konvertteri.template">
 
                     </div>
@@ -380,7 +384,7 @@
                     <div class="clear"></div>
                 </div>
 
-
+                <!-- TOR -->
                 <div class="form-item" ng-show="false">
                     <label class="form-item-label" for="" style="width:50px;">Lähde</label>
 
@@ -402,8 +406,10 @@
                 <div class="clear"></div>
             </div>
 
+            
+            <!-- Konvertteri --> 
             <div class="form-item" ng-show="f.konvertteri && !f.isHaettavaArvoTyyppi()">
-
+    
                 <div class="form-item-content">
                     <div class="field-select-containerbox">
                         <select ng-change="f.konvertteri.setTyyppi(f.konvertteri.uusityyppi)"
