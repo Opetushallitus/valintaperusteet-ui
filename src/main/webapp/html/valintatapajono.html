@@ -127,25 +127,39 @@
         <span ng-show="!model.valintatapajono.oid">Tallenna jono lisätäksesi kriteeri.</span>
     </div>
 
-    <!--
-    <div class="form-row">
-        <label class="form-row-label" for="">Varasijoille olevien käsittely</label>
+    <div class="clear"></div>
 
-        <div class="form-row-content">
-            <div class="field-container-radio">
-                <input type="radio" name="vsk" ng-model="valintatapajono.varasijakasittely" id="vsk1" value="" />
-                <label for="vsk1">Otetaan kaikki</label><br/>
+    <div class="form-row width-100"  >
+        <div class="form-row-label">Hakijaryhmat</div>
+        <div class="form-row-content width-60">
+            <table ng-show="model.hakijaryhmat" class="virkailija-table-1 margin-bottom-2 width-60">
+                <thead>
+                <tr>
+                    <th>Nimi</th>
+                    <th>Periytyy</th>
+                    <th>Poista</th>
+                </tr>
+                </thead>
+                <tbody ui-sortable ng-model="model.hakijaryhmat">
+                <tr ng-repeat="data in model.hakijaryhmat">
+                    <td class="align-center">
+                        <a href="#/hakukohde/{{hakukohdeOid}}/hakijaryhma/{{data.oid}}">{{data.nimi}}</a>
+                    </td>
+                    <td class="align-center">{{data.inheritance}}</td>
+                    <td class="align-center">
+                        <span ng-show="!data.inheritance" class="btn remove" ng-click="model.remove(data)"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="clear"></div>
+
+            <div ng-show="model.valintatapajono.oid" class="form-row">
+                <span class="button small" ng-click="lisaaHakijaryhma()">Liitä hakijaryhma</span>
             </div>
-            <div class="field-container-radio">
-                <input type="radio" name="vsk" ng-model="valintatapajono.varasijakasittely" id="vsk2" value="" />
-                <label for="vsk2">Otetaan enintään</label>
-                <input type="text" name="vskr" ng-model="valintatapajono.varasijakasittelyraja"  id="vsk2r" value="" size="3" />
-            </div>
-            <div><small>Varasijojen käsittelyyn liittyvä ohjeteksti.</small></div>
         </div>
-        <div class="clear"></div>
     </div>
-     -->
 
     <div class="clear"></div>
 

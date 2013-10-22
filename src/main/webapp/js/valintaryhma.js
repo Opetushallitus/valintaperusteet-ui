@@ -1,11 +1,16 @@
 
-app.factory('ValintaryhmaModel', function($q, Valintaryhma, ChildValintaryhmas, ValintaryhmaValintakoekoodi, ChildHakukohdes, KoodistoValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe, Treemodel, ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, KoodistoHakukohdekoodi/*, KoodistoValintakoekoodi*/) {
+app.factory('ValintaryhmaModel', function($q, Valintaryhma, ChildValintaryhmas, ValintaryhmaValintakoekoodi,
+                                            ChildHakukohdes, KoodistoValintakoekoodi, Valinnanvaihe,
+                                            ValintaryhmaValinnanvaihe, Treemodel, ValinnanvaiheJarjesta,
+                                            ValintaryhmaHakukohdekoodi, KoodistoHakukohdekoodi,
+                                            ValintaryhmaHakijaryhma) {
 
     var model = new function() {
         this.valintaryhma = {};
         this.valinnanvaiheet =[];
         this.hakukohdekoodit = [];
         this.valintakoekoodit = [];
+        this.hakijaryhmat = [];
 
         this.refresh = function(oid) {
             if(!oid) {
@@ -27,6 +32,10 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma, ChildValintaryhmas, 
 
                 ValintaryhmaValinnanvaihe.get({oid: oid}, function(result) {
                     model.valinnanvaiheet = result;
+                });
+
+                ValintaryhmaHakijaryhma.get({oid: oid}, function(result) {
+                    model.hakijaryhmat = result;
                 });
 
                 KoodistoHakukohdekoodi.get(function(result) {

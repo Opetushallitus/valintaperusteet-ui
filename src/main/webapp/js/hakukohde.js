@@ -1,24 +1,32 @@
-
-
-app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohdekoodi, Hakukohde, Valintaryhma, HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta, HakukohdeKuuluuSijoitteluun) {
+app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohdekoodi, Hakukohde, Valintaryhma,
+                                        HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta,
+                                        HakukohdeKuuluuSijoitteluun, HakukohdeHakijaryhma) {
     var model = new function()  {
         
         this.parentValintaryhma = {};
         this.hakukohde = {};
         this.valinnanvaiheet = [];
         this.hakukohdekoodit = [];
+        this.hakijaryhmat = [];
+
         this.refresh = function(oid) {
             Hakukohde.get({oid: oid}, function(result) {
                 model.hakukohde = result;
-                Valintaryhma.query({oid: model.hakukohde.valintaryhma_id}, function(result) {
-                    model.parentValintaryhma = result;
-                });
-
+                if(model.hakukohde.valintaryhma_id) {
+                    Valintaryhma.get({oid: model.hakukohde.valintaryhma_id}, function(result) {
+                        model.parentValintaryhma = result;
+                    });
+                }
                 kuuluuSijoitteluun(oid);
             });
 
             KoodistoHakukohdekoodi.get(function(result) {
                 model.hakukohdekoodit = result;
+            });
+
+
+            HakukohdeHakijaryhma.get({oid: oid}, function(result) {
+                model.hakijaryhmat = result;
             });
 
             model.refreshValinnanvaiheet(oid);

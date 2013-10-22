@@ -38,6 +38,7 @@ app.config(function($routeProvider) {
 
         //edit valintaryhma
         when('/valintaryhma/:id', {controller:valintaryhmaController, templateUrl:TEMPLATE_URL_BASE + 'valintaryhmalomake.html'}).
+        when('/valintaryhma/:id/hakijaryhma/:hakijaryhmaOid', {controller:HakijaryhmaController, templateUrl:TEMPLATE_URL_BASE + 'hakijaryhma.html'}).
         when('/valintaryhma/:id/sisaltyvat', {controller: ValintaryhmaChildrenController, templateUrl: TEMPLATE_URL_BASE + 'valintaryhmachildren.html'}).
         when('/valintaryhma/:valintaryhmaOid/laskentakaava', {controller: LaskentakaavaListController, templateUrl: TEMPLATE_URL_BASE + 'laskentakaava/laskentakaavalista.html'}).
         when('/valintaryhma/:valintaryhmaOid/laskentakaava/:laskentakaavaOid', {controller: LaskentakaavaController, templateUrl: TEMPLATE_URL_BASE + 'laskentakaava/laskentakaavalomake.html'}).
@@ -54,6 +55,7 @@ app.config(function($routeProvider) {
 		    
         // edit hakukohde
         when('/hakukohde/:hakukohdeOid', {controller:HakukohdeController, templateUrl:TEMPLATE_URL_BASE + 'hakukohdelomake.html'}).
+        when('/hakukohde/:hakukohdeOid/hakijaryhma/:hakijaryhmaOid', {controller:HakijaryhmaController, templateUrl:TEMPLATE_URL_BASE + 'hakijaryhma.html'}).
 //        when('/hakukohde/:hakukohdeOid/valinnanvaihe', {controller:HakukohdeController, templateUrl:TEMPLATE_URL_BASE + 'hakukohdelomake.html'}).
 //        when('/valintaryhma/:valintaryhmaOid/lisaaSisaltyvaHakukohde', {controller: HakukohdeCreatorController, templateUrl:TEMPLATE_URL_BASE + 'hakukohdelomake.html'}).
         when('/hakukohde/:hakukohdeOid/laskentakaava', {controller: HakukohdeLaskentakaavaListController, templateUrl: TEMPLATE_URL_BASE + 'laskentakaava/hakukohdelaskentakaavalista.html'}).
@@ -69,7 +71,6 @@ app.config(function($routeProvider) {
 		
         //Tarjonta import
 		when('/import', {controller: ImportController, templateUrl:TEMPLATE_URL_BASE + 'import.html'}).
-
 
         //else
         otherwise({redirectTo:'/etusivu'});
@@ -268,7 +269,35 @@ app.factory('ValintatapajonoJarjesta', function($resource) {
     });
 });
 
+// Hakijaryhma
+app.factory('Hakijaryhma', function($resource) {
+ return $resource(SERVICE_URL_BASE + "resources/hakijaryhma/:oid", {oid: "@oid"}, {
+     get: {method: "GET"},
+     update: {method: "PUT"},
+     delete: {method: "DELETE"}
+   });
+});
 
+app.factory('ValintaryhmaHakijaryhma', function($resource) {
+ return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid/hakijaryhma", {oid: "@oid"}, {
+     get: {method: "GET", isArray: true},
+     insert: {method: "PUT"}
+   });
+});
+
+app.factory('HakukohdeHakijaryhma', function($resource) {
+ return $resource(SERVICE_URL_BASE + "resources/hakukohde/:oid/hakijaryhma", {oid: "@oid"}, {
+     get: {method: "GET", isArray: true},
+     insert: {method: "PUT"}
+   });
+});
+
+app.factory('ValintatapajonoHakijaryhma', function($resource) {
+ return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:oid/hakijaryhma", {oid: "@oid"}, {
+     get: {method: "GET", isArray: true},
+     insert: {method: "PUT"}
+   });
+});
 
 //Järjestyskriteeri
 app.factory('Jarjestyskriteeri', function($resource) {

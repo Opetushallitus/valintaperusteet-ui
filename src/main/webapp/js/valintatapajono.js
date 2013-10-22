@@ -1,15 +1,20 @@
 //domain .. this is both, service & domain layer
 app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheValintatapajono,
                                                 ValintatapajonoJarjestyskriteeri, Laskentakaava, Jarjestyskriteeri,
-                                                JarjestyskriteeriJarjesta) {
+                                                JarjestyskriteeriJarjesta, ValintatapajonoHakijaryhma) {
     var model = new function()  {
         this.valintatapajono = {};
         this.jarjestyskriteerit = [];
+        this.hakijaryhmat = [];
 
         this.refresh = function(oid) {
 
             Valintatapajono.get({oid: oid}, function(result) {
                 model.valintatapajono = result;
+            });
+
+            ValintatapajonoHakijaryhma.get({oid: oid}, function(result) {
+                model.hakijaryhmat = result;
             });
 
             this.refreshJK(oid);
