@@ -1,48 +1,34 @@
 //domain .. this is both, service & domain layer
-app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhmas, RootHakukohde, ChildHakukohdes) {
-    //keep model to yourself
-    var model = {nimi: "ROOT", lapsihakukohdeList: []};
-    
-    
+app.factory('Treemodel', function($resource, ValintaperusteetPuu) {
+
     //and return interface for manipulating the model
     var modelInterface =  {
+    valintaperusteList: [],
+
+       search : {q: null,
+              haku: null,
+               valmiitJaJulkaistut: null
+                             },
         filter:'VALMIS JULKAISTU',
-
-    	isValintaryhmaLeaf: function(data) {
-    		if(data.lapsivalintaryhma===false && (data.lapsihakukohde===false || data.lapsihakukohde===true)) {
-    			return true;
-    		}
-    		return false;
-    	},
-
+         /*
     	getLapset: function(data) {
     		data.lapset = [];
-    		
-    		if(data.lapsivalintaryhmaList) {
-    			data.lapsivalintaryhmaList.forEach(function(l) {
-    				if(data.lapset.indexOf(l) == -1) {
-    				    data.lapset.push(l);
-    				}
-    			});
-    		}
-    		if(data.lapsihakukohdeList) {
-    			data.lapsihakukohdeList.forEach(function(l) {
-
-                    if(data.lapset.indexOf(l) == -1) {
-                        data.lapset.push(l);
-                    }
-
-    			});
-    		}
+    		if(this.isExpanded(data)) {
+                if(data.alavalintaryhmat) {
+                   data.lapset = data.lapset.concat(data.alavalintaryhmat);
+                }
+                if(data.hakukohdeViitteet) {
+                 data.lapset= data.lapset.concat(data.hakukohdeViitteet);
+                }
+           }
     		return data.lapset;
     	},
+    	*/
     	isFile: function(data) {
-    		return !data.lapsivalintaryhma && !data.lapsihakukohde;
+    		return data.hakukohdeViitteet == 0 && data.alavalintaryhmat == 0;
     	},
     	isHakukohde: function(data) { 
-    		// used to disable nesting -- to prevent putting hakukohde under hakukohde
-    		var ryhma = data.lapsivalintaryhma || this.isValintaryhmaLeaf(data);
-    		return !ryhma;//!this.isFile(data);
+    	   return data.tyyppi == 'HAKUKOHDE';
     	},
     	noNesting: function(data) {
     		if(this.isHakukohde(data)) {
@@ -62,7 +48,7 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
     	},
     	getTemplate: function(data) {
     		if(data) {
-    			if(data.lapsivalintaryhma || this.isValintaryhmaLeaf(data)) {
+    			if(data.tyyppi == 'VALINTARYHMA') {
     				return "valintaryhma_node.html";
     			} else {
     				return "hakukohde_leaf.html";
@@ -70,9 +56,6 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
     		}
     		return "";
     	},
-    	getRootNode:function() {
-            return this.getLapset(model);
-        },
         moveNodeInATree:function(index, oid, parent) {
         	console.log("------");
         	var childNode = undefined;
@@ -130,46 +113,23 @@ app.factory('Treemodel', function($resource, RootValintaryhmas, ChildValintaryhm
         	targetNode.isVisible = true;
         	return true;
         },
-        expandNode:function(node) {
-        	var self =this;
-           if( node.lapsivalintaryhma) {
-                  ChildValintaryhmas.get({parentOid: node.oid}, function(result) {
-                         node.lapsivalintaryhmaList = result;
-                   });
-           }
-           if(node.lapsihakukohde) {
-                 ChildHakukohdes.get({oid: node.oid}, function(result) {
-                     node.lapsihakukohdeList = result;
+        sup:function() {
 
-                    /*
-                     result.forEach(function(hk){
-                         if(hk.oid) {
-                             HakukohdeKuuluuSijoitteluun.get({oid: hk.oid}, function(result) {
-                                 hk.kuuluuSijoitteluun = result.sijoitteluun;
-                             });
-                         }
-                     });
-                      */
-                  });
-           }
-        },
+                    	modelInterface.valintaperusteList = 0;
+
+
+            },
         refresh:function() {
-            model.lapsihakukohdeList = [];
-        	//get initial listing
-            RootValintaryhmas.get({},function(result) {
-            	 // lapsivalintaryhmaList lapsihakukohdeList
-            	model.lapsivalintaryhmaList = result;
-                
-                RootHakukohde.get({},function(result) {
-                	model.lapsihakukohdeList = result;
-                	/*
-                    result.forEach(function(hk){
-                    	HakukohdeKuuluuSijoitteluun.get({oid: hk.oid}, function(result) {
-                    		hk.kuuluuSijoitteluun = result.sijoitteluun;
-                    	});
-                    });
-                    */
-                });
+            var hakuoid = null;
+            if(this.search.haku) {
+                hakuoid = this.search.haku.oid;
+            }
+            ValintaperusteetPuu.get({
+                q: this.search.q,
+                hakuOid: hakuoid,
+                tila: this.search.tila
+            },function(result) {
+            	modelInterface.valintaperusteList = result;
             });
         }
     };
@@ -183,13 +143,11 @@ function ValintaryhmaHakukohdeTreeController($scope, $resource,Treemodel,Hakukoh
 	$scope.domain = Treemodel;
 
 
-
-    console.debug("jeba");
     $scope.hakuModel = HakuModel;
     $scope.hakuModel.init();
 
 
-	
+
 	$scope.expandGroup = function($event) {
 		$($event.target).closest('li').toggleClass('uiCollapsed').toggleClass('uiExpanded');
 	}
@@ -215,14 +173,13 @@ function ValintaryhmaHakukohdeTreeController($scope, $resource,Treemodel,Hakukoh
 	}
 	
     $scope.expandNode = function(node) {
-        if( (node.lapsivalintaryhma && (node.lapsivalintaryhmaList == null || node.lapsivalintaryhmaList.length <= 0) )  ||
-            (node.lapsihakukohde && (node.lapsihakukohdeList == null || node.lapsihakukohdeList.length <= 0 ) )) {
-        	Treemodel.expandNode(node);
-        	node.isVisible = true;
-        } else if(node.isVisible != true) {
-        	node.isVisible = true;
-        } else {
-        	node.isVisible = false;
+        if( (node.alavalintaryhmat && node.alavalintaryhmat.length > 0)  ||
+            (node.hakukohdeViitteet && node.hakukohdeViitteet.length > 0 )  ) {
+            if(node.isVisible != true) {
+                node.isVisible = true;
+            } else {
+                node.isVisible = false;
+            }
         }
     }
 

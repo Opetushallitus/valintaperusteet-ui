@@ -93,6 +93,20 @@ app.factory('HaunTiedot', function($resource) {
 });
 
 //Valintaryhma
+app.factory('ValintaperusteetPuu', function($resource) {
+return $resource(SERVICE_URL_BASE + "resources/puu", {
+      q: "@q",
+      hakuOid: "@hakuOid",
+      tila: "@tila"
+    }, {
+        get: {method: "GET", isArray: true  }
+      });
+});
+
+
+
+
+
 app.factory('RootValintaryhmas', function($resource) {
 return $resource(SERVICE_URL_BASE + "resources/valintaryhma", {}, {
     get: {method: "GET", isArray: true,
