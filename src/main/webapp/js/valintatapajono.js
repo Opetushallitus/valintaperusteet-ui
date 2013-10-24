@@ -1,32 +1,73 @@
 //domain .. this is both, service & domain layer
 app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheValintatapajono,
                                                 ValintatapajonoJarjestyskriteeri, Laskentakaava, Jarjestyskriteeri,
-                                                JarjestyskriteeriJarjesta, ValintatapajonoHakijaryhma) {
+                                                JarjestyskriteeriJarjesta, ValintatapajonoHakijaryhma, HakukohdeHakijaryhma,
+                                                ValintaryhmaHakijaryhma) {
     var model = new function()  {
         this.valintatapajono = {};
         this.jarjestyskriteerit = [];
         this.hakijaryhmat = [];
+        this.liitetytHakijaryhmat = [];
 
-        this.refresh = function(oid) {
+        this.refresh = function(oid, valintaryhmaOid, hakukohdeOid) {
 
             Valintatapajono.get({oid: oid}, function(result) {
                 model.valintatapajono = result;
             });
 
             ValintatapajonoHakijaryhma.get({oid: oid}, function(result) {
-                model.hakijaryhmat = result;
+
+                model.liitetytHakijaryhmat.length = 0;
+                result.forEach(function(hr){
+                    model.liitetytHakijaryhmat.push(hr.oid);
+                });
+
+                var deferred = $q.defer();
+
+                if(hakukohdeOid) {
+                    HakukohdeHakijaryhma.get({oid: hakukohdeOid}, function(result) {
+
+                        model.hakijaryhmat = result;
+                        deferred.resolve();
+                    });
+                } else if(valintaryhmaOid) {
+                    ValintaryhmaHakijaryhma.get({oid: valintaryhmaOid}, function(result) {
+
+                        model.hakijaryhmat = result;
+                        deferred.resolve();
+                    });
+                }
+
+                deferred.promise.then(function() {rikastaHakijaryhma()});
+
             });
+
 
             this.refreshJK(oid);
         };
 
-        this.refreshIfNeeded = function(oid) {
+        function rikastaHakijaryhma() {
+
+            model.hakijaryhmat.forEach( function(hr) {
+
+                Laskentakaava.get({oid: hr.laskentakaava_id}, function(result) {
+                    hr.laskentakaava_nimi = result.nimi;
+                });
+                if($.inArray(hr.oid, model.liitetytHakijaryhmat) > -1) {
+                    hr.liitetty = true;
+                } else {
+                    hr.liitetty = false;
+                };
+            });
+        }
+
+        this.refreshIfNeeded = function(oid, valintaryhmaOid, hakukohdeOid) {
             if(!oid) {
                 model.valintatapajono = {};
                 model.jarjestyskriteerit = [];
                 model.valintatapajono.tasapistesaanto = "YLITAYTTO";
             } else if (oid != model.valintatapajono.oid) {
-                this.refresh(oid);
+                this.refresh(oid, valintaryhmaOid, hakukohdeOid);
             }
         };
 
@@ -45,11 +86,13 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
             if(model.valintatapajono.oid == null) {
                 model.valintatapajono.aktiivinen = true;
                 ValinnanvaiheValintatapajono.insert({parentOid: valinnanvaiheOid}, model.valintatapajono,
-                function(result) {
-                    model.valintatapajono = result;
-                    valintatapajonot.push(result);
+                    function(result) {
+                        model.valintatapajono = result;
+                        valintatapajonot.push(result);
                 });
             } else {
+                console.log("jeo");
+                console.log(model.valintatapajono);
                 Valintatapajono.post(model.valintatapajono, function(result) {
                     var i;
                     for(i in valintatapajonot) {
@@ -61,20 +104,9 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
 
                 });
 
-                var promises = [];
-                for(var i = 0 ; i < model.jarjestyskriteerit.length ; ++i) {
-                    promises[i] = function(){
-                        var deferred = $q.defer();
-                        Jarjestyskriteeri.post(model.jarjestyskriteerit[i], function(result){
-                            deferred.resolve();
-                        });
-                        return deferred.promise;
-                    }();
-                }
 
-                $q.all(promises).then(function(){
-                    jarjestaJarjestyskriteerit();
-                });
+                jarjestaJarjestyskriteerit();
+
             }
         };
 
@@ -121,7 +153,7 @@ function HakukohdeValintatapajonoController($scope, $location, $routeParams, Val
     //$scope.valintatapajonoOid =  $routeParams.valintatapajonoOid;
 
     $scope.model = ValintatapajonoModel;
-    $scope.model.refreshIfNeeded($routeParams.valintatapajonoOid);
+    $scope.model.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid);
 
     $scope.submit = function() {
         $scope.model.submit($scope.valinnanvaiheOid, HakukohdeValinnanVaiheModel.valintatapajonot);
@@ -158,7 +190,7 @@ function ValintaryhmaValintatapajonoController($scope, $location, $routeParams, 
     //$scope.valintatapajonoOid =  $routeParams.valintatapajonoOid;
 
     $scope.model = ValintatapajonoModel;
-    $scope.model.refreshIfNeeded($routeParams.valintatapajonoOid);
+    $scope.model.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid);
 
 
 

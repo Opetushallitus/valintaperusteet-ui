@@ -70,11 +70,13 @@ function HakijaryhmaController($scope, $location, $routeParams, HakijaryhmaModel
 
     $scope.cancel = function() {
         var path;
+
         if($routeParams.hakukohdeOid) {
             path = "/hakukohde/" + $routeParams.hakukohdeOid;
         } else {
             path = "/valintaryhma/" + $routeParams.id;
         }
+
         $location.path(path);
     };
 
