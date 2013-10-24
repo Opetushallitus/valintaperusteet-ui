@@ -147,6 +147,8 @@
                 <thead>
                 <tr>
                     <th>Nimi</th>
+                    <th>Laskentakaava</th>
+                    <th>Kiintiö</th>
                     <th>Periytyy</th>
                     <th>Poista</th>
                 </tr>
@@ -156,6 +158,8 @@
                     <td class="align-center">
                         <a href="#/hakukohde/{{hakukohdeOid}}/hakijaryhma/{{data.oid}}">{{data.nimi}}</a>
                     </td>
+                    <td class="align-center">{{data.laskentakaava_nimi}}</td>
+                    <td class="align-center">{{data.kiintio}}</td>
                     <td class="align-center">{{data.inheritance}}</td>
                     <td class="align-center">
                         <span ng-show="!data.inheritance" class="btn remove" ng-click="model.remove(data)"></span>

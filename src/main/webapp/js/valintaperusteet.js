@@ -273,7 +273,7 @@ app.factory('ValintatapajonoJarjesta', function($resource) {
 app.factory('Hakijaryhma', function($resource) {
  return $resource(SERVICE_URL_BASE + "resources/hakijaryhma/:oid", {oid: "@oid"}, {
      get: {method: "GET"},
-     update: {method: "PUT"},
+     update: {method: "POST"},
      delete: {method: "DELETE"}
    });
 });

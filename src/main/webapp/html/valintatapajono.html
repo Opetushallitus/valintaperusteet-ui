@@ -129,9 +129,12 @@
 
     <div class="clear"></div>
 
-    <div class="form-row width-100"  >
+    <div class="form-row width-100" >
         <div class="form-row-label">Hakijaryhmat</div>
-        <div class="form-row-content width-60">
+        <div class="form-row-content width-60" ng-if="!model.valintatapajono.siirretaanSijoitteluun">
+            <span>Valintatapajonoa ei siirretä sijoitteluun. Hakijaryhma ei vaikuta jonoon.</span>
+        </div>
+        <div class="form-row-content width-60" ng-if="model.valintatapajono.siirretaanSijoitteluun">
             <table ng-show="model.hakijaryhmat" class="virkailija-table-1 margin-bottom-2 width-60">
                 <thead>
                 <tr>
@@ -140,7 +143,7 @@
                     <th>Poista</th>
                 </tr>
                 </thead>
-                <tbody ui-sortable ng-model="model.hakijaryhmat">
+                <tbody ng-model="model.hakijaryhmat">
                 <tr ng-repeat="data in model.hakijaryhmat">
                     <td class="align-center">
                         <a href="#/hakukohde/{{hakukohdeOid}}/hakijaryhma/{{data.oid}}">{{data.nimi}}</a>

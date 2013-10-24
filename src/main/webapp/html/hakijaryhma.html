@@ -4,7 +4,7 @@
     <div class="form-row">
         <label class="form-row-label" for="nimi">OID</label>
         <div class="form-row-content">
-            <span>{{model.hakijaryhma.nimi}}</span>
+            <span>{{model.hakijaryhma.oid}}</span>
         </div>
         <div class="clear"></div>
     </div>
@@ -57,10 +57,10 @@
     </div>
 
     <button ng-disabled="!form.$valid" class="button small primary" type="submit">
-        <div ng-show="!model.jarjestyskriteeri.oid">
+        <div ng-show="!model.hakijaryhma.oid">
             Lisää
         </div>
-        <div ng-show="model.jarjestyskriteeri.oid" >
+        <div ng-show="model.hakijaryhma.oid" >
             Muokkaa
         </div>
     </button>

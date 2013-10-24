@@ -3,7 +3,7 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma, ChildValintaryhmas, 
                                             ChildHakukohdes, KoodistoValintakoekoodi, Valinnanvaihe,
                                             ValintaryhmaValinnanvaihe, Treemodel, ValinnanvaiheJarjesta,
                                             ValintaryhmaHakukohdekoodi, KoodistoHakukohdekoodi,
-                                            ValintaryhmaHakijaryhma) {
+                                            ValintaryhmaHakijaryhma, Laskentakaava) {
 
     var model = new function() {
         this.valintaryhma = {};
@@ -36,6 +36,11 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma, ChildValintaryhmas, 
 
                 ValintaryhmaHakijaryhma.get({oid: oid}, function(result) {
                     model.hakijaryhmat = result;
+                    model.hakijaryhmat.forEach(function(hr){
+                        Laskentakaava.get({oid: hr.laskentakaava_id}, function(result) {
+                            hr.laskentakaava_nimi = result.nimi;
+                        });
+                    });
                 });
 
                 KoodistoHakukohdekoodi.get(function(result) {
@@ -252,6 +257,9 @@ function valintaryhmaController($scope, $location, $routeParams, $timeout, Valin
         $scope.newHakukohdeUri = newUri;
     }
 
+    $scope.lisaaHakijaryhma = function() {
+        $location.path("/valintaryhma/" + $routeParams.id + "/hakijaryhma/");
+    }
 }
 
 

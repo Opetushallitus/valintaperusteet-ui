@@ -1,6 +1,6 @@
 app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohdekoodi, Hakukohde, Valintaryhma,
                                         HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta,
-                                        HakukohdeKuuluuSijoitteluun, HakukohdeHakijaryhma) {
+                                        HakukohdeKuuluuSijoitteluun, HakukohdeHakijaryhma, Laskentakaava) {
     var model = new function()  {
         
         this.parentValintaryhma = {};
@@ -27,6 +27,11 @@ app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohd
 
             HakukohdeHakijaryhma.get({oid: oid}, function(result) {
                 model.hakijaryhmat = result;
+                model.hakijaryhmat.forEach(function(hr){
+                    Laskentakaava.get({oid: hr.laskentakaava_id}, function(result) {
+                        hr.laskentakaava_nimi = result.nimi;
+                    });
+                });
             });
 
             model.refreshValinnanvaiheet(oid);
@@ -148,6 +153,10 @@ function HakukohdeController($scope, $location, $routeParams, HakukohdeModel) {
     $scope.addHakukohdeUri = function() {
             $scope.model.addHakukohdeUri($scope.uusiHakukohdeUri);
             $scope.uusiHakukohdeUri = "";
+    }
+
+    $scope.lisaaHakijaryhma = function() {
+        $location.path("/hakukohde/" + $scope.hakukohdeOid + "/hakijaryhma/");
     }
 
 }
