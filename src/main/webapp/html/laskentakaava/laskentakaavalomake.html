@@ -2,7 +2,6 @@
 
 <!-- PAGE TEMPLATES -->
 
-
 <script type="text/ng-template" id="frame_template.html">
     <div class="frame">
         <span class="icon">&#8302;</span>
@@ -53,7 +52,13 @@
         <span class="label" ng-click="showDetails(funktio)">{{funktio.naytettavaNimi}}</span>
         <span class="notification warning" ng-show="funktio.hasErrors()">!</span>
     </div>
-    <h3>Not yet implemented</h3>
+    <ul class="function-content list">
+        <li class="item" ng-repeat="farg in funktio.funktioargumentit track by $index" >
+            <div ng-controller="recurseController">
+                <div ng-include="funktio.template"></div>
+            </div>
+        </li>
+    </ul>
 </script>
 
 
