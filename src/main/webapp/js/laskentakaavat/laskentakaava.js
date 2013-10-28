@@ -45,7 +45,7 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
     }
 
     $scope.addNewFunktio = function(parentFunktio, funktioNimi, argumenttiNimi) {
-        var newFunc = parentFunktio.addNewFunktiokutsu(funktioNimi, argumenttiNimi);
+        var newFunc = parentFunktio.addNewFunktiokutsu(parentFunktio, funktioNimi, argumenttiNimi);
         $scope.showDetails(newFunc);
     }
 
