@@ -1,0 +1,46 @@
+﻿<h1>Hakijaryhman liittäminen</h1>
+{{!model.hakijaryhmaOid}}
+<form name="form" ng-submit="submit()">
+
+
+    <div class="form-row" ng-model="model.hakijaryhmat" >
+        <div class="form-row-label">Hakijaryhmat</div>
+        <div class="form-row-content width-60">
+            <table class="virkailija-table-1 margin-bottom-2 width-60">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Nimi</th>
+                    <th>Laskentakaava</th>
+                    <th>Kiintiö</th>
+                    <th>Periytyy</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="data in model.hakijaryhmat">
+                    <td>
+                        <input type="radio" name="hakijaryhma" value="{{data.oid}}"
+                           ng-model="model.hakijaryhma.oid" ng-required="!model.hakijaryhma.oid" />
+                    </td>
+                    <td class="align-center">
+                        {{data.nimi}}
+                    </td>
+                    <td class="align-center">{{data.laskentakaava_nimi}}</td>
+                    <td class="align-center">{{data.kiintio}}</td>
+                    <td class="align-center">{{data.inheritance}}</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="clear"></div>
+        </div>
+    </div>
+           {{form.$valid}}
+    <div class="form-row">
+        <button ng-disabled="!form.$valid" class="button small primary" type="submit">
+                Liitä
+        </button>
+
+        <button class="button small float-left margin-right-2" ng-click="cancel()">Takaisin</button>
+    </div>
+</form>
