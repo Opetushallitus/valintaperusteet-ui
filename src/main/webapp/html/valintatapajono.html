@@ -138,18 +138,22 @@
             <table ng-show="model.hakijaryhmat" class="virkailija-table-1 margin-bottom-2 width-60">
                 <thead>
                 <tr>
-                    <th>Liitetty</th>
+                    <th>Aktiivinen</th>
                     <th>Nimi</th>
+                    <th>Kuvaus</th>
+                    <th>kiintio</th>
                     <th>Periytyy</th>
                     <th>Poista</th>
                 </tr>
                 </thead>
-                <tbody ng-model="model.hakijaryhmat">
+                <tbody ng-model="model.hakijaryhmat ">
                 <tr ng-repeat="data in model.hakijaryhmat">
-                    <td>{{data.liitetty}}</td>
+                    <td><input type="checkbox" ng-model="data.aktiivinen"/></td>
                     <td class="align-center">
-                        <a href="#/hakukohde/{{hakukohdeOid}}/hakijaryhma/{{data.oid}}">{{data.nimi}}</a>
+                        {{data.hakijaryhma.nimi}}
                     </td>
+                    <td class="align-center">{{data.hakijaryhma.kuvaus}}</td>
+                    <td class="align-center">{{data.hakijaryhma.kiintio}}</td>
                     <td class="align-center">{{data.inheritance}}</td>
                     <td class="align-center">
                         <span ng-show="!data.inheritance" class="btn remove" ng-click="model.remove(data)"></span>
@@ -157,6 +161,7 @@
                 </tr>
                 </tbody>
             </table>
+            <span class="button small" ng-click="addHakijaryhma()">Liitä hakijaryhmä</span>
         </div>
     </div>
 

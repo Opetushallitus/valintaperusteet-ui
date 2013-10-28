@@ -299,6 +299,15 @@ app.factory('ValintatapajonoHakijaryhma', function($resource) {
    });
 });
 
+app.factory('HakijaryhmaValintatapajono', function($resource) {
+ return $resource(SERVICE_URL_BASE + "resources/hakijaryhma_valintatapajono/:oid", {oid: "@oid"}, {
+     delete: {method: "GET", isArray: true},
+     update: {method: "POST"}
+   });
+});
+
+
+
 //Järjestyskriteeri
 app.factory('Jarjestyskriteeri', function($resource) {
  return $resource(SERVICE_URL_BASE + "resources/jarjestyskriteeri/:oid", {oid: "@oid"}, {

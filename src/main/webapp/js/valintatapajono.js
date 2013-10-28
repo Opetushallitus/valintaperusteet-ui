@@ -2,14 +2,16 @@
 app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheValintatapajono,
                                                 ValintatapajonoJarjestyskriteeri, Laskentakaava, Jarjestyskriteeri,
                                                 JarjestyskriteeriJarjesta, ValintatapajonoHakijaryhma, HakukohdeHakijaryhma,
-                                                ValintaryhmaHakijaryhma) {
+                                                ValintaryhmaHakijaryhma, HakijaryhmaValintatapajono) {
     var model = new function()  {
         this.valintatapajono = {};
         this.jarjestyskriteerit = [];
         this.hakijaryhmat = [];
-        this.liitetytHakijaryhmat = [];
 
-        this.refresh = function(oid, valintaryhmaOid, hakukohdeOid) {
+        this.refresh = function(oid) {
+            model.valintatapajono = {};
+            model.jarjestyskriteerit.length = 0;
+            model.hakijaryhmat.length = 0;
 
             Valintatapajono.get({oid: oid}, function(result) {
                 model.valintatapajono = result;
@@ -17,49 +19,12 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
 
             ValintatapajonoHakijaryhma.get({oid: oid}, function(result) {
 
-                model.liitetytHakijaryhmat.length = 0;
-                result.forEach(function(hr){
-                    model.liitetytHakijaryhmat.push(hr.oid);
-                });
-
-                var deferred = $q.defer();
-
-                if(hakukohdeOid) {
-                    HakukohdeHakijaryhma.get({oid: hakukohdeOid}, function(result) {
-
-                        model.hakijaryhmat = result;
-                        deferred.resolve();
-                    });
-                } else if(valintaryhmaOid) {
-                    ValintaryhmaHakijaryhma.get({oid: valintaryhmaOid}, function(result) {
-
-                        model.hakijaryhmat = result;
-                        deferred.resolve();
-                    });
-                }
-
-                deferred.promise.then(function() {rikastaHakijaryhma()});
-
+                model.hakijaryhmat = result;
             });
 
 
             this.refreshJK(oid);
         };
-
-        function rikastaHakijaryhma() {
-
-            model.hakijaryhmat.forEach( function(hr) {
-
-                Laskentakaava.get({oid: hr.laskentakaava_id}, function(result) {
-                    hr.laskentakaava_nimi = result.nimi;
-                });
-                if($.inArray(hr.oid, model.liitetytHakijaryhmat) > -1) {
-                    hr.liitetty = true;
-                } else {
-                    hr.liitetty = false;
-                };
-            });
-        }
 
         this.refreshIfNeeded = function(oid, valintaryhmaOid, hakukohdeOid) {
             if(!oid) {
@@ -91,8 +56,6 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
                         valintatapajonot.push(result);
                 });
             } else {
-                console.log("jeo");
-                console.log(model.valintatapajono);
                 Valintatapajono.post(model.valintatapajono, function(result) {
                     var i;
                     for(i in valintatapajonot) {
@@ -101,12 +64,31 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
                         }
                     }
                     model.valintatapajono = result;
-
                 });
 
+                model.hakijaryhmat.forEach(function(hr){
+                    HakijaryhmaValintatapajono.update({oid: hr.oid}, hr, function(result){
+                        hr = result;
+                    });
+                });
 
-                jarjestaJarjestyskriteerit();
+                var promises = [];
+                for(var i = 0 ; i < model.jarjestyskriteerit.length ; ++i) {
+                    console.log(model.jarjestyskriteerit[i]);
+                    promises[i] = function() {
+                        var deferred = $q.defer();
+                        Jarjestyskriteeri.post(model.jarjestyskriteerit[i], function(result){
+                            console.log(result);
+                            deferred.resolve();
+                        });
+                        return deferred.promise;
+                    }();
+                }
 
+
+                $q.all(promises).then(function(){
+                    jarjestaJarjestyskriteerit();
+                });
             }
         };
 
@@ -200,6 +182,12 @@ function ValintaryhmaValintatapajonoController($scope, $location, $routeParams, 
 
     $scope.cancel = function() {
         $location.path("/valintaryhma/" + $scope.valintaryhmaOid + '/valinnanvaihe/'+ $scope.valinnanvaiheOid );
+    }
+
+    $scope.addKriteeri = function() {
+        $location.path("/valintaryhma/" + $scope.valintaryhmaOid
+            + '/valinnanvaihe/' + $scope.valinnanvaiheOid
+            + '/valintatapajono/' + $scope.model.valintatapajono.oid + '/jarjestyskriteeri/');
     }
 
     $scope.addKriteeri = function() {
