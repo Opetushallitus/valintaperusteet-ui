@@ -45,23 +45,6 @@
     </div>
 </script>
 
-
-<script type="text/ng-template" id="funktio_pair_template.html">
-    <div ng-class="funktio.funktioCssClass('function', selected)">
-        <span ng-class="funktio.iconCssClass()">&#8302;</span>
-        <span class="label" ng-click="showDetails(funktio)">{{funktio.naytettavaNimi}}</span>
-        <span class="notification warning" ng-show="funktio.hasErrors()">!</span>
-    </div>
-    <ul class="function-content list">
-        <li class="item" ng-repeat="farg in funktio.funktioargumentit track by $index" >
-            <div ng-controller="recurseController">
-                <div ng-include="funktio.template"></div>
-            </div>
-        </li>
-    </ul>
-</script>
-
-
 <script type="text/ng-template" id="tyhja_template.html">
     <div class="function">
         <span class="dropzone">{{funktio.otsikko()}}</span>
