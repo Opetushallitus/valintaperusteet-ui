@@ -34,10 +34,8 @@
     </ol>
 </script>
 <script type="text/ng-template" id="hakukohde_leaf.html">
-    <div ng-show="domain.filter.indexOf(data.tila) > -1 || domain.filter === ''">
         <span class="icon hakukohde file">​</span>
         <div class="label"><a href="#/hakukohde/{{data.oid}}"> {{data.nimi}} ({{data.tila}})</a></div>
-    </div>
 </script>
 
 
@@ -51,23 +49,37 @@
 </div>
 <div class="tabsheets">
 
-    <input id="osallistuu" type="checkbox" ng-model="domain.search.valmiitJaJulkaistut" ng-true-value="VALMIS JULKAISTU" ng-false-value=""  ng-change="domain.refresh()"/>
+    <input id="osallistuu" type="checkbox" ng-model="domain.search.vainValmiitJaJulkaistut" ng-change="domain.refresh()"/>
     <label for="osallistuu">Vain valmiit ja julkaistut</label>
 
-    <label for="haku">Haku</label>
+    <input id="vainHakukohteitaSisaltavatRyhmat" type="checkbox" ng-model="domain.search.vainHakukohteitaSisaltavatRyhmat" ng-change="domain.update()"/>
+    <label for="vainHakukohteitaSisaltavatRyhmat">Vain hakukohteita sisältävät ryhmät</label>
+
+    <input id="vainHakukohteet" type="checkbox" ng-model="domain.search.vainHakukohteet" ng-change="domain.update()"/>
+    <label for="vainHakukohteet">Vain hakukohteet</label>
+
+    <br/>
+
+    <label for="haku">Hakuun kuuluvat hakukohteet</label>
     <select id="haku" ng-model="domain.search.haku" ng-options="haku.nimi.kieli_fi for haku in hakuModel.haut | orderBy:'nimi.kieli_fi'"  ng-change="domain.refresh()">
         <option value=""></option>
     </select>
 
     <label for="text">Hae</label>
-    <input id="text" ng-model="domain.search.q" ng-change="domain.sup()">
+    <input id="text" ng-model="domain.search.q" ng-change="domain.refresh()">
 
     <br />
 
     <a href="#/valintaryhma/root/lisaaSisaltyvaValintaryhma" class="button small">{{'valintaryhmatlistaus.add.valintaryhma' | i18n}}</a>
     <a href="#/lisaaHakukohde" class="button small">{{'valintaryhmatlistaus.add.hakukohde' | i18n}}</a>
+    <a class="button small" ng-click="domain.expandTree()"> Laajenna puu</a>
 
-    <ol class="sortable treelist collapsible multiselect" nestedsortable="">
+    <br/>
+
+    <div>Haku palautti {{domain.tilasto.valintaryhmia}} valintaryhmää ja {{domain.tilasto.hakukohteita}} hakukohdetta </div>
+
+
+    <ol ng-if="!domain.search.vainHakukohteet" class="sortable treelist collapsible multiselect" nestedsortable="">
         <li ng-repeat="data in domain.valintaperusteList | orderBy:predicate"
             data-oid="{{data.oid}}"
             ng-model="data"
@@ -75,6 +87,13 @@
             ng-include="domain.getTemplate(data)">
         </li>
     </ol>
+    <ol ng-if="domain.search.vainHakukohteet" class="sortable treelist collapsible multiselect" nestedsortable="">
+        <li ng-repeat="data in domain.hakukohteet | orderBy:predicate">
+            <span class="icon hakukohde file">​</span>
+            <div class="label"><a href="#/hakukohde/{{data.oid}}"> {{data.nimi}} ({{data.tila}})</a></div>
+        </li>
+    </ol>
+
+
 </div>
 
-        {{ domain.valintaperusteList}}

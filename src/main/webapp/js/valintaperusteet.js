@@ -1,4 +1,4 @@
-var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'ngAnimate', 'localization'])
+var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'localization']) //'ngAnimate' currently breaks valintaperustetree
 //
 // i18n toteutus kopioitu osittain http://jsfiddle.net/4tRBY/41/
 //

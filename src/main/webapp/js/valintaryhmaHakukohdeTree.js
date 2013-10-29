@@ -3,27 +3,23 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu) {
 
     //and return interface for manipulating the model
     var modelInterface =  {
-    valintaperusteList: [],
-
-       search : {q: null,
-              haku: null,
-               valmiitJaJulkaistut: null
-                             },
-        filter:'VALMIS JULKAISTU',
-         /*
-    	getLapset: function(data) {
-    		data.lapset = [];
-    		if(this.isExpanded(data)) {
-                if(data.alavalintaryhmat) {
-                   data.lapset = data.lapset.concat(data.alavalintaryhmat);
-                }
-                if(data.hakukohdeViitteet) {
-                 data.lapset= data.lapset.concat(data.hakukohdeViitteet);
-                }
-           }
-    		return data.lapset;
-    	},
-    	*/
+       //models
+       valintaperusteList: [],
+       hakukohteet: [],
+       search : {   q: null,
+                    haku: null,
+                    vainValmiitJaJulkaistut: true,
+                    vainHakukohteitaSisaltavatRyhmat: true,
+                    vainHakukohteet: null,
+                    valintaryhmatAuki: null
+        },
+        tilasto: {
+                    valintaryhmia: 0,
+                    hakukohteita: 0,
+                    valintaryhmiaNakyvissa: 0,
+                    hakukohteitaNakyvissa: 0
+        },
+        //rest
     	isFile: function(data) {
     		return data.hakukohdeViitteet == 0 && data.alavalintaryhmat == 0;
     	},
@@ -57,7 +53,6 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu) {
     		return "";
     	},
         moveNodeInATree:function(index, oid, parent) {
-        	console.log("------");
         	var childNode = undefined;
         	var targetNode = model; // initialized as root 
         	var previousNode = undefined;
@@ -113,25 +108,77 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu) {
         	targetNode.isVisible = true;
         	return true;
         },
-        sup:function() {
-
-                    	modelInterface.valintaperusteList = 0;
-
-
-            },
         refresh:function() {
             var hakuoid = null;
             if(this.search.haku) {
                 hakuoid = this.search.haku.oid;
             }
+            var tila=null;
+            if(this.search.vainValmiitJaJulkaistut) {
+                tila = ["VALMIIT", "JULKAISTUT"];
+            }
             ValintaperusteetPuu.get({
                 q: this.search.q,
                 hakuOid: hakuoid,
-                tila: this.search.tila
+                tila: tila
             },function(result) {
             	modelInterface.valintaperusteList = result;
+            	modelInterface.update();
             });
+        },
+        expandTree:function() {
+            var list = modelInterface.valintaperusteList;
+                  modelInterface.valintaperusteList = [];
+                  var recursion = function(item) {
+                      item.isVisible = true;
+                      if(item.alavalintaryhmat)  item.alavalintaryhmat.forEach(recursion);
+                  }
+                list.forEach(recursion);
+                modelInterface.valintaperusteList = list;
+                modelInterface.valintaperusteList.update();
+
+        },
+        update:function() {
+            var list = modelInterface.valintaperusteList;
+            modelInterface.valintaperusteList = [];
+            modelInterface.hakukohteet = [];
+            modelInterface.tilasto.valintaryhmia = 0;
+            modelInterface.tilasto.hakukohteita = 0;
+            modelInterface.tilasto.valintaryhmiaNakyvissa = 0;
+            modelInterface.tilasto.hakukohteitaNakyvissa = 0;
+
+
+            var recursion = function(item, previousItemsArray) {
+
+                modelInterface.tilasto.valintaryhmia++;
+                if(item.hakukohdeViitteet) item.hakukohdeViitteet.forEach(function(hakukohde){
+                    modelInterface.tilasto.hakukohteita++;
+                    modelInterface.hakukohteet.push(hakukohde);
+                });
+
+                 //      console.debug(previousItemsArray);
+              //  var copyOfPreviousItemsArray = previousItemsArray; //previousItemsArray.slice(0);
+              //  copyOfPreviousItemsArray.push(item);
+                if(modelInterface.search.vainHakukohteitaSisaltavatRyhmat) {
+
+                } else {
+
+                }
+
+                  var copyOfPreviousItemsArray = [];
+                if(item.alavalintaryhmat) {
+                    item.alavalintaryhmat.forEach(recursion,copyOfPreviousItemsArray);
+                }
+            }
+
+
+            var emptyArray = [];
+          //list.forEach(recursion);
+          for(var i=0; i<list.length;i++) recursion(list[i], emptyArray);
+
+          modelInterface.valintaperusteList = list;
         }
+
     };
     modelInterface.refresh();
     return modelInterface;
@@ -187,5 +234,8 @@ function ValintaryhmaHakukohdeTreeController($scope, $resource,Treemodel,Hakukoh
         Treemodel.refresh();
     }
 
+    $scope.expandTree = function() {
+        Treemodel.expandTree();
+    }
 
 }
