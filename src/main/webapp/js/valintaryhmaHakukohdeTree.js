@@ -115,7 +115,7 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu) {
             }
             var tila=null;
             if(this.search.vainValmiitJaJulkaistut) {
-                tila = ["VALMIIT", "JULKAISTUT"];
+                tila = ["VALMIS", "JULKAISTU"];
             }
             ValintaperusteetPuu.get({
                 q: this.search.q,
