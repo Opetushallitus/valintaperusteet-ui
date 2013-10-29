@@ -66,7 +66,6 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
         var kaava = Laskentapuu.laskentakaava().getData();
         var validateKaava = {};
         angular.copy(kaava, validateKaava);
-
         KaavaValidointi.post({}, validateKaava, function(data) {
 
             Laskentapuu.setKaavaData(data)

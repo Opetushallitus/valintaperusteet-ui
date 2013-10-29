@@ -109,8 +109,10 @@ var Funktio = function(funktiokuvaukset, data) {
     var FUNKTIOPARI_TYYPPI = ["PAINOTETTUKESKIARVO"];
 
     this.data = data;
+    this.data.valintaperuste = [{}];
     this.funktiokuvausService = new FunktiokuvausService(funktiokuvaukset);
     this.funktionimiService = FunktioNimiService();
+
 
     this.init = function() {
         if(!this.data.funktioargumentit) {
@@ -122,6 +124,8 @@ var Funktio = function(funktiokuvaukset, data) {
         }
 
         this.nimi = this.getNimi();
+
+        this.funktiokuvaus = this.funktiokuvausService.getFunktiokuvaus(this.nimi);
         this.template = this.getTemplate();
         this.funktioargumentit = this.getFunktioargumentit();
 
@@ -130,6 +134,8 @@ var Funktio = function(funktiokuvaukset, data) {
         this.syoteparametrit = this.getSyoteparametrit();
         this.konvertteri = this.getKonvertteri();
         this.naytettavaNimi = this.funktionimiService.nimi(this.data);
+
+        
     }
 
     /* Structure methods i.e. parses subitems */
@@ -141,7 +147,7 @@ var Funktio = function(funktiokuvaukset, data) {
         return this.data.funktionimi
     }
     this.tyyppi = function() {
-        return this.funktiokuvausService.getFunktiokuvaus(this.nimi)
+        return this.funktiokuvaus
     }
 
     /**
@@ -150,7 +156,7 @@ var Funktio = function(funktiokuvaukset, data) {
      */
     this.hasNimetytArgumentit = function() {
         // Tarkista, onko n kardinaliteetti
-        var funktiokuvaus = this.funktiokuvausService.getFunktiokuvaus(this.nimi);
+        var funktiokuvaus = this.funktiokuvaus;
         if(!funktiokuvaus.funktioargumentit) {
             return false
         }
@@ -164,7 +170,7 @@ var Funktio = function(funktiokuvaukset, data) {
     }
 
     this.isFunktioPariTyyppi = function() {
-        var funktiokuvaus = this.funktiokuvausService.getFunktiokuvaus(this.nimi);
+        var funktiokuvaus = this.funktiokuvaus;
         if(!funktiokuvaus.funktioargumentit) {
             return false
         }
@@ -196,7 +202,7 @@ var Funktio = function(funktiokuvaukset, data) {
      */
     this.getFArgsNimetty = function () {
         var funcArgs = []
-        var funktiokuvaus = this.funktiokuvausService.getFunktiokuvaus(this.nimi);
+        var funktiokuvaus = this.funktiokuvaus;
         var argCount = funktiokuvaus.funktioargumentit.length
         for(var i = 0; i < argCount; i++) {
             var arg = this.data.funktioargumentit.filter(function(arg) {
@@ -220,7 +226,7 @@ var Funktio = function(funktiokuvaukset, data) {
      * @return {Array}
      */
     this.getFunktioargumentitN = function() {
-        var funktiokuvaus = this.funktiokuvausService.getFunktiokuvaus(this.nimi);
+        var funktiokuvaus = this.funktiokuvaus;
         if(!funktiokuvaus || !funktiokuvaus.funktioargumentit || funktiokuvaus.funktioargumentit.length < 1) {
             return
         }
@@ -241,7 +247,7 @@ var Funktio = function(funktiokuvaukset, data) {
     this.getFunktioargumenttiPari = function() {
         var that = this;
         var funcArgs =[];   
-        var funktiokuvaus = this.funktiokuvausService.getFunktiokuvaus(this.nimi);
+        var funktiokuvaus = this.funktiokuvaus;
         var argCount = funktiokuvaus.funktioargumentit.length;
 
         var funktioArgumenttiCount = this.data.funktioargumentit.length;
@@ -326,7 +332,7 @@ var Funktio = function(funktiokuvaukset, data) {
      * @return {Array}
      */
     this.getSyoteparametrit = function() {
-        var funcdef = this.funktiokuvausService.getFunktiokuvaus(this.nimi);
+        var funcdef = this.funktiokuvaus;
         var params = [];
         for(var i in funcdef.syoteparametrit) {
             var paramDef = funcdef.syoteparametrit[i];
@@ -419,7 +425,7 @@ var Funktio = function(funktiokuvaukset, data) {
     }
 
     this.getKonvertteri = function() {
-        var funktiokuvaus = this.funktiokuvausService.getFunktiokuvaus(this.nimi);
+        var funktiokuvaus = this.funktiokuvaus;
         if(!funktiokuvaus.konvertteri) {
             return;
         }
@@ -433,7 +439,9 @@ var Funktio = function(funktiokuvaukset, data) {
      * @return {*}
      */
     this.addNewFunktiokutsu = function(parentfunktio, funktionimi, argumenttiNimi) {
+        // haetaan funktiokuvaus lisättävälle funktiokutsulle
         var funktiokuvaus = this.funktiokuvausService.getFunktiokuvaus(funktionimi);
+
         var newFunction = {
             funktiokutsuChild: {
                 funktionimi: funktiokuvaus.nimi,
@@ -464,7 +472,6 @@ var Funktio = function(funktiokuvaukset, data) {
 
             newFunction.indeksi = funktioArgumentitCount + pairIndex;
             this.data.funktioargumentit[funktioArgumentitCount] = newFunction;
-            console.log('giving funktioargumentit', this.data.funktioargumentit);
         } else if(argumenttiNimi) {
             // Case: Nimetty argumentti (jakolasku, suurempitaiyhtasuuri)
             var funktioArgumentitCount = this.determineIndexForSubfunction(argumenttiNimi);
@@ -477,13 +484,7 @@ var Funktio = function(funktiokuvaukset, data) {
             this.data.funktioargumentit.push(newFunction);
         }
 
-
-
-
         this.funktioargumentit = this.getFunktioargumentit();
-        
-        console.log("LEFT FUNKTIOPARI FUNCTION, returned by getFunktioargumentit(): ", this);
-
         return this.findFunktioArgumentti(newFunction.funktiokutsuChild);
     }
 
@@ -494,7 +495,7 @@ var Funktio = function(funktiokuvaukset, data) {
      * @return {int}
      */
     this.determineIndexForSubfunction = function(argumenttiNimi) {
-        var funktiokuvaus = this.funktiokuvausService.getFunktiokuvaus(this.nimi);
+        var funktiokuvaus = this.funktiokuvaus;
         var argumentti = funktiokuvaus.funktioargumentit.filter(function(arg) {
             return arg.nimi == argumenttiNimi;
         })[0]
@@ -709,7 +710,8 @@ var Konvertteri = function(konvDef, data) {
 
     this.getParamIndex = function() {
         if(!this.tyyppi) {
-            throw new Exception("Konvertterillä ei ole tyyppiä")
+            return ""
+            //throw new Exception("Konvertterillä ei ole tyyppiä")
         }
         return this.tyyppi == 'ARVOKONVERTTERI' ? 'arvokonvertteriparametrit' : 'arvovalikonvertteriparametrit'
     }
@@ -740,10 +742,11 @@ var Konvertteri = function(konvDef, data) {
     }
 
     this.getDefinition = function() {
-        var tyyppi = this.tyyppi
-        return this.konvDef.konvertteriTyypit.filter(function(cur) {
+        var tyyppi = this.tyyppi;
+        var array = this.konvDef.konvertteriTyypit.filter(function(cur) {
             return cur.tyyppi === tyyppi
-        })[0]
+        });
+        return array[0];
     }
 
     this.getParametrit = function() {
@@ -761,6 +764,7 @@ var Konvertteri = function(konvDef, data) {
     }
 
     this.addParametri = function() {
+        
         var konvertteri = this.getDefinition()
         if(!konvertteri) {
             return
