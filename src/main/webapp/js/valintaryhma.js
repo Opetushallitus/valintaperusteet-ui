@@ -418,6 +418,7 @@ function ValintaryhmaChildrenController($scope, $location, $routeParams, Valinta
     $scope.model = ValintaryhmaChildrenModel;
     $scope.model.refreshIfNeeded($scope.valintaryhmaOid);
 
+
     $scope.toValintaryhmaForm = function() {
         $location.path("/valintaryhma/" + $scope.valintaryhmaOid);
     };

@@ -3,7 +3,7 @@
 
 function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, KaavaValidointi, LaskentakaavaLista) {
     if($scope.fetched != $routeParams.laskentakaavaOid) {
-        Laskentapuu.refresh($routeParams.laskentakaavaOid);
+        
     }
     $scope.fetched = $routeParams.laskentakaavaOid;
 
@@ -17,8 +17,13 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
 
     $scope.kaavaLista = LaskentakaavaLista;
     $scope.domain = Laskentapuu;
+
     $scope.showTemplate = false;
     $scope.selected = null;
+    var promise = Laskentapuu.refresh($routeParams.laskentakaavaOid);
+    promise.then(function() {
+        $scope.funktio = Laskentapuu.laskentakaavapuu.funktio;
+    });
 
     $scope.showDetails = function(funktio) {
         $scope.f = funktio;
@@ -40,10 +45,7 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
     }
 
     $scope.addNewFunktio = function(parentFunktio, funktioNimi, argumenttiNimi) {
-        console.log(parentFunktio);
-        console.log(funktioNimi);
-        console.log(argumenttiNimi);
-        var newFunc = parentFunktio.addNewFunktiokutsu(funktioNimi, argumenttiNimi);
+        var newFunc = parentFunktio.addNewFunktiokutsu(parentFunktio, funktioNimi, argumenttiNimi);
         $scope.showDetails(newFunc);
     }
 
@@ -61,18 +63,17 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
     }
 
     $scope.saveKaavaAsCompleted = function() {
-        var kaava = Laskentapuu.laskentakaava()[0].getData();
+        var kaava = Laskentapuu.laskentakaava().getData();
         var validateKaava = {};
         angular.copy(kaava, validateKaava);
-
         KaavaValidointi.post({}, validateKaava, function(data) {
 
             Laskentapuu.setKaavaData(data)
             $scope.selected = null
             $scope.showTemplate = false
 
-            if(Laskentapuu.laskentakaava()[0].hasErrors()) {
-                $scope.errors = Laskentapuu.laskentakaava()[0].getAllErrors()
+            if(Laskentapuu.laskentakaava().hasErrors()) {
+                $scope.errors = Laskentapuu.laskentakaava().getAllErrors()
                 Laskentapuu.setKaavaData(kaava);   
                 return             
                 
@@ -92,8 +93,9 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
     }
     
 
+
     $scope.saveKaavaAsDraft = function() {
-        var kaava = Laskentapuu.laskentakaava()[0].getData()
+        var kaava = Laskentapuu.laskentakaava().getData()
         kaava.onLuonnos = true
         kaava.$save({oid: kaava.id}, function(data) {
             Laskentapuu.setKaavaData(data)
@@ -114,11 +116,16 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
 
 }
 
+function recurseController($scope) {
+    $scope.funktio = $scope.$parent.farg;
+    $scope.parent = $scope.$parent.funktio;
+}
 
-app.factory('Laskentapuu', function(Laskentakaava, FunktioKuvaus) {
+
+app.factory('Laskentapuu', function($q, Laskentakaava, FunktioKuvaus) {
     
     var LaskentapuuWrapper = new function() {
-        this.laskentakaavapuu = [];
+        this.laskentakaavapuu = {};
         this.kuvaus = {};
 
         this.laskentakaava = function() {
@@ -126,18 +133,22 @@ app.factory('Laskentapuu', function(Laskentakaava, FunktioKuvaus) {
         }
 
         this.setKaavaData = function(data) {
-            LaskentapuuWrapper.laskentakaavapuu[0] = new Kaava(LaskentapuuWrapper.kuvaus, data);
+            LaskentapuuWrapper.laskentakaavapuu = new Kaava(LaskentapuuWrapper.kuvaus, data);
         }
 
         this.refresh = function(id) {
+            var deferred = $q.defer();
             FunktioKuvaus.get({}, function(res) {
                 LaskentapuuWrapper.kuvaus = res;
                 Laskentakaava.get({oid: id}, function(kaava) {
-                    LaskentapuuWrapper.laskentakaavapuu = new Array(new Kaava(LaskentapuuWrapper.kuvaus,kaava));
+                    LaskentapuuWrapper.laskentakaavapuu = new Kaava(LaskentapuuWrapper.kuvaus,kaava);
+                    deferred.resolve();
                 });
             });
+            return deferred.promise;
         }
     }
 
     return LaskentapuuWrapper;
 });
+

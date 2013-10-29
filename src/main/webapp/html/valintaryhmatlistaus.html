@@ -1,28 +1,41 @@
 <script type="text/ng-template" id="valintaryhma_node.html">
     <div class="state-disabled label">
-	<span class="disclose icon valintaryhma folder"
+	    <span class="disclose icon valintaryhma folder"
           ng-class="{ collapse: domain.isCollapsed(data), file: domain.isFile(data), open: domain.isExpanded(data)}"
-          ng-click="expandNode(data)">​</span>
-	<span enter="hover" leave="hover" class="dropmenu">
-	<ul class="dropmenu-list">
+          ng-click="expandNode(data)">
+         ​</span>
+	    <!--
+        <span enter="hover" leave="hover" class="dropmenu">
+
+       <ul class="dropmenu-list">
         <div class="state-disabled"><a href="#/valintaryhma/{{data.oid}}/lisaaSisaltyvaValintaryhma">Lisää sisältyvä
             valintaryhmä</a></div>
         <div class="state-disabled"><a href="#/valintaryhma/{{data.oid}}/sisaltyvat"> liitä hakukohde</a></div>
     </ul>
-	</span>
-        <a href="#/valintaryhma/{{data.oid}}"> {{data.nimi}}</a>
+
+    </span>
+    -->
+         <a href="#/valintaryhma/{{data.oid}}"> {{data.nimi}}</a>
     </div>
     <ol data-valintaryhmaoid="{{data.oid}}">
-        <li ng-repeat="data in domain.getLapset(data) | orderBy:predicate" data-oid="{{data.oid}}"
+        <span ng-if="data.isVisible">
+            <li ng-repeat="data in data.alavalintaryhmat | orderBy:predicate "
+                data-oid="{{data.oid}}"
+                class="{{addClass('noNesting',domain.isHakukohde(data))}} {{addClass('uiExpanded',domain.isExpanded(data))}} {{addClass('uiCollapsed',domain.isCollapsed(data))}}"
+                ng-include="domain.getTemplate(data)">
+            </li>
+        </span>
+
+        <li ng-repeat="data in data.hakukohdeViitteet | orderBy:predicate"
+            data-oid="{{data.oid}}"
             class="{{addClass('noNesting',domain.isHakukohde(data))}} {{addClass('uiExpanded',domain.isExpanded(data))}} {{addClass('uiCollapsed',domain.isCollapsed(data))}}"
-            ng-include="domain.getTemplate(data)"></li>
+            ng-include="domain.getTemplate(data)">
+        </li>
     </ol>
 </script>
 <script type="text/ng-template" id="hakukohde_leaf.html">
-    <div ng-show="domain.filter.indexOf(data.tila) > -1 || domain.filter === ''">
         <span class="icon hakukohde file">​</span>
         <div class="label"><a href="#/hakukohde/{{data.oid}}"> {{data.nimi}} ({{data.tila}})</a></div>
-    </div>
 </script>
 
 
@@ -36,20 +49,51 @@
 </div>
 <div class="tabsheets">
 
-    <h2>{{'valintaryhmatlistaus.header' | i18n}}</h2>
-
-    <input id="osallistuu" type="checkbox" ng-model="domain.filter" ng-true-value="VALMIS JULKAISTU" ng-false-value=""/>
+    <input id="osallistuu" type="checkbox" ng-model="domain.search.vainValmiitJaJulkaistut" ng-change="domain.refresh()"/>
     <label for="osallistuu">Vain valmiit ja julkaistut</label>
+
+    <input id="vainHakukohteitaSisaltavatRyhmat" type="checkbox" ng-model="domain.search.vainHakukohteitaSisaltavatRyhmat" ng-change="domain.update()"/>
+    <label for="vainHakukohteitaSisaltavatRyhmat">Vain hakukohteita sisältävät ryhmät</label>
+
+    <input id="vainHakukohteet" type="checkbox" ng-model="domain.search.vainHakukohteet" ng-change="domain.update()"/>
+    <label for="vainHakukohteet">Vain hakukohteet</label>
+
+    <br/>
+
+    <label for="haku">Hakuun kuuluvat hakukohteet</label>
+    <select id="haku" ng-model="domain.search.haku" ng-options="haku.nimi.kieli_fi for haku in hakuModel.haut | orderBy:'nimi.kieli_fi'"  ng-change="domain.refresh()">
+        <option value=""></option>
+    </select>
+
+    <label for="text">Hae</label>
+    <input id="text" ng-model="domain.search.q" ng-change="domain.refresh()">
+
     <br />
 
-    <a href="#/valintaryhma/root/lisaaSisaltyvaValintaryhma" class="button small">{{'valintaryhmatlistaus.add.valintaryhma'
-        | i18n}}</a>
+    <a href="#/valintaryhma/root/lisaaSisaltyvaValintaryhma" class="button small">{{'valintaryhmatlistaus.add.valintaryhma' | i18n}}</a>
     <a href="#/lisaaHakukohde" class="button small">{{'valintaryhmatlistaus.add.hakukohde' | i18n}}</a>
+    <a class="button small" ng-click="domain.expandTree()"> Laajenna puu</a>
 
-    <ol class="sortable treelist collapsible multiselect"
-        nestedsortable="">
-        <li ng-repeat="data in domain.getRootNode() | orderBy:predicate" data-oid="{{data.oid}}" ng-model="data"
+    <br/>
+
+    <div>Haku palautti {{domain.tilasto.valintaryhmia}} valintaryhmää ja {{domain.tilasto.hakukohteita}} hakukohdetta </div>
+
+
+    <ol ng-if="!domain.search.vainHakukohteet" class="sortable treelist collapsible multiselect" nestedsortable="">
+        <li ng-repeat="data in domain.valintaperusteList | orderBy:predicate"
+            data-oid="{{data.oid}}"
+            ng-model="data"
             class="{{addClass('noNesting',domain.isHakukohde(data))}} {{addClass('uiExpanded',domain.isExpanded(data))}} {{addClass('uiCollapsed',domain.isCollapsed(data))}}"
-            ng-include="domain.getTemplate(data)"></li>
+            ng-include="domain.getTemplate(data)">
+        </li>
     </ol>
+    <ol ng-if="domain.search.vainHakukohteet" class="sortable treelist collapsible multiselect" nestedsortable="">
+        <li ng-repeat="data in domain.hakukohteet | orderBy:predicate">
+            <span class="icon hakukohde file">​</span>
+            <div class="label"><a href="#/hakukohde/{{data.oid}}"> {{data.nimi}} ({{data.tila}})</a></div>
+        </li>
+    </ol>
+
+
 </div>
+

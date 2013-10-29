@@ -1,8 +1,8 @@
 
-var Kaava = function(funktiokuvaus, data) {
-    this.funktiokuvaus = funktiokuvaus
+var Kaava = function(funktiokuvaukset, data) {
+    this.funktiokuvaukset = funktiokuvaukset
     this.data = data
-    this.funktio = new Funktio(this.funktiokuvaus, this.data.funktiokutsu)
+    this.funktio = new Funktio(this.funktiokuvaukset, this.data.funktiokutsu)
     this.funktio.init()
 
     /* Structure methods i.e. parses subitems */
@@ -54,9 +54,7 @@ var Kaava = function(funktiokuvaus, data) {
 }
 
 var TyhjaFunktio = function(def) {
-    this.template = function() {
-        return "tyhja_template.html"
-    }
+    this.template = "tyhja_template.html";
 
     this.nimi = function() {
         return def.nimi
@@ -79,8 +77,8 @@ var TyhjaFunktio = function(def) {
     }
 }
 
-var LaskentakaavaViite = function(funktiokuvaus, data) {
-    this.funktiokuvaus = funktiokuvaus;
+var LaskentakaavaViite = function(funktiokuvaukset, data) {
+    this.funktiokuvaukset = funktiokuvaukset;
     this.data = data;
 
     this.init = function() {
@@ -88,9 +86,7 @@ var LaskentakaavaViite = function(funktiokuvaus, data) {
         this.hashKey = Math.random().toString(36).substring(7);
     }
 
-    this.template = function() {
-        return "subformula_template.html";
-    }
+    this.template = "subformula_template.html";
 
     this.funktioCssClass = function(defaultClass, selected) {
         var cssClass = defaultClass
@@ -106,15 +102,41 @@ var LaskentakaavaViite = function(funktiokuvaus, data) {
     this.init();
 }
 
-var Funktio = function(funktiokuvaus, data) {
+var Funktio = function(funktiokuvaukset, data) {
 
-    var HAETTAVA_TYYPPI = ["HAELUKUARVO", "HAETOTUUSARVO"];
+    var HAETTAVA_TYYPPI = ["HAELUKUARVO", "HAETOTUUSARVO", "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI", "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI", "HAEMERKKIJONOJAVERTAAYHTASUURUUS"];
     var NIMETTAVAT_TYYPPI = ["NIMETTYLUKUARVO", "NIMETTYTOTUUSARVO"];
+    var FUNKTIOPARI_TYYPPI = ["PAINOTETTUKESKIARVO"];
 
-    this.funktiokuvaus = funktiokuvaus;
     this.data = data;
+    this.data.valintaperuste = [{}];
+    this.funktiokuvausService = new FunktiokuvausService(funktiokuvaukset);
     this.funktionimiService = FunktioNimiService();
 
+
+    this.init = function() {
+        if(!this.data.funktioargumentit) {
+            this.data.funktioargumentit = [];
+        }
+
+        if(!this.data.syoteparametrit) {
+            this.data.syoteparametrit = [];
+        }
+
+        this.nimi = this.getNimi();
+
+        this.funktiokuvaus = this.funktiokuvausService.getFunktiokuvaus(this.nimi);
+        this.template = this.getTemplate();
+        this.funktioargumentit = this.getFunktioargumentit();
+
+        // Used for comparison.
+        this.hashKey = Math.random().toString(36).substring(7);
+        this.syoteparametrit = this.getSyoteparametrit();
+        this.konvertteri = this.getKonvertteri();
+        this.naytettavaNimi = this.funktionimiService.nimi(this.data);
+
+        
+    }
 
     /* Structure methods i.e. parses subitems */
     this.getId = function() {
@@ -125,7 +147,7 @@ var Funktio = function(funktiokuvaus, data) {
         return this.data.funktionimi
     }
     this.tyyppi = function() {
-        return this.findFunctionDefinitionByFunktionimi(this.nimi)
+        return this.funktiokuvaus
     }
 
     /**
@@ -134,15 +156,29 @@ var Funktio = function(funktiokuvaus, data) {
      */
     this.hasNimetytArgumentit = function() {
         // Tarkista, onko n kardinaliteetti
-        var fdef = this.findFunctionDefinitionByFunktionimi(this.nimi);
-        if(!fdef.funktioargumentit) {
+        var funktiokuvaus = this.funktiokuvaus;
+        if(!funktiokuvaus.funktioargumentit) {
             return false
         }
-        if(fdef.funktioargumentit.length == 1
-            && fdef.funktioargumentit[0].kardinaliteetti == "n") {
+        if(funktiokuvaus.funktioargumentit.length == 1
+            && funktiokuvaus.funktioargumentit[0].kardinaliteetti == "n") {
             return false
         } else {
+
             return true
+        }
+    }
+
+    this.isFunktioPariTyyppi = function() {
+        var funktiokuvaus = this.funktiokuvaus;
+        if(!funktiokuvaus.funktioargumentit) {
+            return false
+        }
+        if(funktiokuvaus.funktioargumentit.length == 1
+            && funktiokuvaus.funktioargumentit[0].kardinaliteetti == "lista_pareja") {
+            return true
+        } else {
+            return false
         }
     }
 
@@ -151,7 +187,9 @@ var Funktio = function(funktiokuvaus, data) {
      * @return {Array}
      */
     this.getFunktioargumentit = function() {
-        if(this.hasNimetytArgumentit()) {
+        if(this.isFunktioPariTyyppi()) {
+            return this.getFunktioargumenttiPari();
+        } else if(this.hasNimetytArgumentit()) {
             return this.getFArgsNimetty()
         } else {
             return this.getFunktioargumentitN();
@@ -164,16 +202,17 @@ var Funktio = function(funktiokuvaus, data) {
      */
     this.getFArgsNimetty = function () {
         var funcArgs = []
-        var fdef = this.findFunctionDefinitionByFunktionimi(this.nimi);
-        var argCount = fdef.funktioargumentit.length
+        var funktiokuvaus = this.funktiokuvaus;
+        var argCount = funktiokuvaus.funktioargumentit.length
         for(var i = 0; i < argCount; i++) {
             var arg = this.data.funktioargumentit.filter(function(arg) {
                 // Kallen indeksit alkaa ykkösestä.
                 return arg.indeksi == i + 1
             })
             if(arg.length == 0) {
-                funcArgs[i] = new TyhjaFunktio(fdef.funktioargumentit[i]);
+                funcArgs[i] = new TyhjaFunktio(funktiokuvaus.funktioargumentit[i]);
             } else if (arg.length == 1) {
+
                 funcArgs[i] = this.createSubFunction(arg[0]);
             } else {
                 throw new Exception("Found too many objects from indeksi " + (i + 1))
@@ -187,8 +226,8 @@ var Funktio = function(funktiokuvaus, data) {
      * @return {Array}
      */
     this.getFunktioargumentitN = function() {
-        var fdef = this.findFunctionDefinitionByFunktionimi(this.nimi);
-        if(!fdef || !fdef.funktioargumentit || fdef.funktioargumentit.length < 1) {
+        var funktiokuvaus = this.funktiokuvaus;
+        if(!funktiokuvaus || !funktiokuvaus.funktioargumentit || funktiokuvaus.funktioargumentit.length < 1) {
             return
         }
         var funcargs = []
@@ -199,10 +238,75 @@ var Funktio = function(funktiokuvaus, data) {
         funcargs.push(new TyhjaFunktio({
                 otsikko: 'Lisää uusi funktio',
                 nimi: null,
-                tyyppi: fdef.funktioargumentit[0].tyyppi
+                tyyppi: funktiokuvaus.funktioargumentit[0].tyyppi
             })
         )
         return funcargs
+    }
+    
+    this.getFunktioargumenttiPari = function() {
+        var that = this;
+        var funcArgs =[];   
+        var funktiokuvaus = this.funktiokuvaus;
+        var argCount = funktiokuvaus.funktioargumentit.length;
+
+        var funktioArgumenttiCount = this.data.funktioargumentit.length;
+        var funktioArgumentit = this.data.funktioargumentit;
+        if(funktioArgumenttiCount == 0) {
+            // ei funktioargumentteja
+            addLukuarvoFunktio();
+            addPainotuskerroinFunktio();
+        } else if (funktioArgumenttiCount == 1) {
+            // 1 funktioargumentti annettu
+            funktioArgumentit.forEach(function(element, index, array) {
+                var annettuFunktioargumentti = that.createSubFunction(element);
+                if (element.indeksi == 1) {
+                    funcArgs.push(annettuFunktioargumentti);
+                    addPainotuskerroinFunktio();
+                } else {
+                    addLukuarvoFunktio();
+                    funcArgs.push(annettuFunktioargumentti);
+                }
+            });
+        } else {
+            //enemmän kuin 1 funktioargumentti annettu
+            funktioArgumentit.forEach(function(element, index, array) {
+                var annettuFunktioargumentti = that.createSubFunction(element);
+                funcArgs.push(annettuFunktioargumentti);
+            });
+
+            if(funktioArgumenttiCount % 2 == 0) {
+                // Jos annettuja funktioargumentteja on parillinen määrä, lisätään loppuun tyhjä lukuarvo- ja painotuskerroinfunktio
+                addLukuarvoFunktio();
+                addPainotuskerroinFunktio();
+            } else {
+                // Jos annettuja funktioargumentteja on pariton määrä, sille täytyy lisätä pari 
+                if(funktioArgumentit[funktioArgumenttiCount - 1].indeksi % 2 == 0) {
+                    addPainotuskerroinFunktio();
+                } else {
+                    addLukuarvoFunktio();
+                }
+            }
+        }
+       
+        function addPainotuskerroinFunktio() {
+            funcArgs.push(new TyhjaFunktio({
+                otsikko: "painotuskerroin",
+                nimi: "painotuskerroin",
+                tyyppi: "LUKUARVOFUNKTIO"
+            }));
+        }
+
+        function addLukuarvoFunktio() {
+            funcArgs.push(new TyhjaFunktio({
+                otsikko: "lukuarvo",
+                nimi: "lukuarvo",
+                tyyppi: "LUKUARVOFUNKTIO"
+            }));
+        }
+
+
+        return funcArgs;        
     }
 
     /**
@@ -212,11 +316,11 @@ var Funktio = function(funktiokuvaus, data) {
      */
     this.createSubFunction = function(data) {
         if(data.funktiokutsuChild) {
-            var f = new Funktio(this.funktiokuvaus, data.funktiokutsuChild)
+            var f = new Funktio(this.funktiokuvausService.getFunktiokuvaukset(), data.funktiokutsuChild)
             f.init()
             return f;
         } else if(data.laskentakaavaChild) {
-            var alikaava = new LaskentakaavaViite(this.funktiokuvaus, data.laskentakaavaChild);
+            var alikaava = new LaskentakaavaViite(this.funktiokuvausService, data.laskentakaavaChild);
             return alikaava;
         } else {
             console.log("Kutsuttiin alikaavaobjektin luontia virheellisellä datalla", data);
@@ -228,7 +332,7 @@ var Funktio = function(funktiokuvaus, data) {
      * @return {Array}
      */
     this.getSyoteparametrit = function() {
-        var funcdef = this.findFunctionDefinitionByFunktionimi(this.nimi);
+        var funcdef = this.funktiokuvaus;
         var params = [];
         for(var i in funcdef.syoteparametrit) {
             var paramDef = funcdef.syoteparametrit[i];
@@ -257,59 +361,22 @@ var Funktio = function(funktiokuvaus, data) {
         return false
     }
 
-    /* Helper methods */
-
-    /**
-     * Hakee funktion määrittelyt funktiokuvaus:stä nimen perusteella.
-     * @param {String} nimi
-     * @return {object}
-     */
-    this.findFunctionDefinitionByFunktionimi = function(nimi) {
-        return this.findFunctionDefinition(function(fdef) {
-            return nimi == fdef.nimi;
-        })
-    }
-
-    /**
-     * Filtteröi funktio funktiokuvaus:stä funktiokuvauksia annetun funktion perusteella.
-     * @param func
-     * @return {object}
-     */
-    this.findFunctionDefinition = function(func) {
-        var def = this.funktiokuvaus.filter(func)
-        if(def) {
-            return def[0]
-        }
-        return null
-    }
-
-    this.init = function() {
-        if(!this.data.funktioargumentit) {
-            this.data.funktioargumentit = [];
-        }
-
-        if(!this.data.syoteparametrit) {
-            this.data.syoteparametrit = [];
-        }
-
-        this.nimi = this.getNimi();
-        this.funktioargumentit = this.getFunktioargumentit();
-
-        // Used for comparison.
-        this.hashKey = Math.random().toString(36).substring(7);
-        this.syoteparametrit = this.getSyoteparametrit();
-        this.konvertteri = this.getKonvertteri();
-        this.naytettavaNimi = this.funktionimiService.nimi(this.data);
-    }
+    
 
     /* UI methods */
-    this.template = function() {
-        var labelFunctions = ["NIMETTYLUKUARVO", "NIMETTYTOTUUSARVO"]
-        var paramFunctions = ["HAELUKUARVO", "LUKUARVO", "TOTUUSARVO", "HAETOTUUSARVO", "HAKUTOIVE", "DEMOGRAFIA", "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI"]
+    this.getTemplate = function() {
+        var labelFunctions = ["NIMETTYLUKUARVO", "NIMETTYTOTUUSARVO"];
+        var paramFunctions = ["HAELUKUARVO", "LUKUARVO", "TOTUUSARVO", "HAETOTUUSARVO", "HAKUTOIVE", 
+        "DEMOGRAFIA", "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI", "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI", 
+        "HAEMERKKIJONOJAVERTAAYHTASUURUUS"];
+
+        var funktioPairFunctions = ["PAINOTETTUKESKIARVO"];
         if(paramFunctions.indexOf(this.nimi) != -1) {
             return "parametri_template.html"
         } else if(labelFunctions.indexOf(this.nimi) != -1) {
             return "frame_template.html"
+        } else if(funktioPairFunctions.indexOf(this.nimi) != -1) {
+            return "funktio_template.html"
         } else {
             return "funktio_template.html"
         }
@@ -358,11 +425,11 @@ var Funktio = function(funktiokuvaus, data) {
     }
 
     this.getKonvertteri = function() {
-        var fdef = this.findFunctionDefinitionByFunktionimi(this.nimi);
-        if(!fdef.konvertteri) {
+        var funktiokuvaus = this.funktiokuvaus;
+        if(!funktiokuvaus.konvertteri) {
             return;
         }
-        return new Konvertteri(fdef.konvertteri, this.data);
+        return new Konvertteri(funktiokuvaus.konvertteri, this.data);
     }
 
     /**
@@ -371,32 +438,48 @@ var Funktio = function(funktiokuvaus, data) {
      * @param argumenttiNimi
      * @return {*}
      */
-    this.addNewFunktiokutsu = function(funktionimi, argumenttiNimi) {
-        var f = this.findFunctionDefinitionByFunktionimi(funktionimi);
+    this.addNewFunktiokutsu = function(parentfunktio, funktionimi, argumenttiNimi) {
+        // haetaan funktiokuvaus lisättävälle funktiokutsulle
+        var funktiokuvaus = this.funktiokuvausService.getFunktiokuvaus(funktionimi);
+
         var newFunction = {
             funktiokutsuChild: {
-                funktionimi: f.nimi,
+                funktionimi: funktiokuvaus.nimi,
                 syoteparametrit: [],
                 funktioargumentit: []
             }
         };
-        for(var i in f.syoteparametrit) {
-            var param = f.syoteparametrit[i];
+        for(var i in funktiokuvaus.syoteparametrit) {
+            var param = funktiokuvaus.syoteparametrit[i];
             var newParam = {
                 avain: param.avain,
                 arvo: ""
             };
             newFunction.funktiokutsuChild.syoteparametrit.push(newParam);
         }
-
+        
         // Arvotaan indeksi, johon data laitetaan
-        // Case: Nimetty argumentti (jakolasku, suurempitaiyhtasuuri)
-        if(argumenttiNimi) {
-            var index = this.determineIndexForSubfunction(argumenttiNimi);
-            newFunction.indeksi = index + 1;
-            this.data.funktioargumentit[index] = newFunction;
-            // Case: N argumenttia, lisätään listan loppuun.
+        if(parentfunktio.nimi == "PAINOTETTUKESKIARVO") {
+            var pairIndex = undefined;
+            //determine which function was defined (lukuarvo or painotuskerroin - lukuarvo is always first so it's odd)
+            
+            var funktioArgumentitCount = this.data.funktioargumentit.length;
+            if(argumenttiNimi === "lukuarvo" || funktioArgumentitCount % 2 == 1) {
+                pairIndex = 1;
+            } else {
+                pairIndex = 2;
+            }
+
+            newFunction.indeksi = funktioArgumentitCount + pairIndex;
+            this.data.funktioargumentit[funktioArgumentitCount] = newFunction;
+        } else if(argumenttiNimi) {
+            // Case: Nimetty argumentti (jakolasku, suurempitaiyhtasuuri)
+            var funktioArgumentitCount = this.determineIndexForSubfunction(argumenttiNimi);
+            newFunction.indeksi = funktioArgumentitCount + 1;
+            this.data.funktioargumentit[funktioArgumentitCount] = newFunction;
+            
         } else {
+            // Case: N argumenttia, lisätään listan loppuun.
             newFunction.indeksi = this.data.funktioargumentit.length + 1;
             this.data.funktioargumentit.push(newFunction);
         }
@@ -412,11 +495,11 @@ var Funktio = function(funktiokuvaus, data) {
      * @return {int}
      */
     this.determineIndexForSubfunction = function(argumenttiNimi) {
-        var curFuncDef = this.findFunctionDefinitionByFunktionimi(this.nimi);
-        var argumentti = curFuncDef.funktioargumentit.filter(function(arg) {
+        var funktiokuvaus = this.funktiokuvaus;
+        var argumentti = funktiokuvaus.funktioargumentit.filter(function(arg) {
             return arg.nimi == argumenttiNimi;
         })[0]
-        return curFuncDef.funktioargumentit.indexOf(argumentti);
+        return funktiokuvaus.funktioargumentit.indexOf(argumentti);
     }
 
     this.addNewLaskentakaavaReference = function(argumenttiNimi, valintaryhmaOid) {
@@ -528,7 +611,7 @@ var Funktio = function(funktiokuvaus, data) {
                 data = angular.copy(this.data.funktioargumentit[index].funktiokutsuChild);
                 this.data.funktioargumentit.splice(index, 1);
                 this.funktioargumentit = this.getFunktioargumentit();
-                var func = new Funktio(angular.copy(this.funktiokuvaus), data.funktiokutsu);
+                var func = new Funktio(angular.copy(this.funktiokuvausService.getFunktiokuvaukset()), data.funktiokutsu);
                 func.init();
                 return func;
             }
@@ -537,7 +620,7 @@ var Funktio = function(funktiokuvaus, data) {
                 data = angular.copy(this.data.funktioargumentit[index].laskentakaavaChild);
                 this.data.funktioargumentit.splice(index, 1);
                 this.funktioargumentit = this.getFunktioargumentit();
-                var func = new LaskentakaavaViite(angular.copy(this.funktiokuvaus), data);
+                var func = new LaskentakaavaViite(angular.copy(this.funktiokuvaukset), data);
                 func.init();
                 return func;
             }
@@ -573,7 +656,7 @@ var Funktio = function(funktiokuvaus, data) {
 
 var Konvertteri = function(konvDef, data) {
     this.konvDef = konvDef
-    // this.data.arvovalikonvertteriparametrit || this.data.arvokonvertteriparametrit
+    //this.data.arvovalikonvertteriparametrit || this.data.arvokonvertteriparametrit
     this.data = data
     this.oldData = []
 
@@ -627,15 +710,19 @@ var Konvertteri = function(konvDef, data) {
 
     this.getParamIndex = function() {
         if(!this.tyyppi) {
-            throw new Exception("Konvertterillä ei ole tyyppiä")
+            return ""
+            //throw new Exception("Konvertterillä ei ole tyyppiä")
         }
         return this.tyyppi == 'ARVOKONVERTTERI' ? 'arvokonvertteriparametrit' : 'arvovalikonvertteriparametrit'
     }
 
     this.setTyyppi = function(tyyppi) {
         if(this.tyyppi) {
+
             var oldIdx = this.getParamIndex()
-            this.oldData[this.tyyppi] = this.data[oldIdx].slice()
+            if(this.data[oldIdx]) {
+                this.oldData[this.tyyppi] = this.data[oldIdx].slice()
+            }
             this.data[oldIdx] = []
         }
 
@@ -655,10 +742,11 @@ var Konvertteri = function(konvDef, data) {
     }
 
     this.getDefinition = function() {
-        var tyyppi = this.tyyppi
-        return this.konvDef.konvertteriTyypit.filter(function(cur) {
+        var tyyppi = this.tyyppi;
+        var array = this.konvDef.konvertteriTyypit.filter(function(cur) {
             return cur.tyyppi === tyyppi
-        })[0]
+        });
+        return array[0];
     }
 
     this.getParametrit = function() {
@@ -672,16 +760,11 @@ var Konvertteri = function(konvDef, data) {
             var konvparam = this.data[idx][i]
             konvparams.push(new KonvertteriParametri(konv.arvotyyppi, konvparam))
         }
-        /*this.data.konvertteriparametrit = this.data || []
-        if(this.data.konvertteriparametrit.length == 0) {
-            var data = {}
-            this.data.konvertteriparametrit.push(data)
-            konvparams.push(new KonvertteriParametri(konvertteri.arvotyyppi, data))
-        }*/
         return konvparams
     }
 
     this.addParametri = function() {
+        
         var konvertteri = this.getDefinition()
         if(!konvertteri) {
             return
@@ -697,6 +780,7 @@ var Konvertteri = function(konvDef, data) {
 
     this.removeParametri = function(konvparam) {
         var idx = this.getParamIndex()
+
         var index = this.data[idx].indexOf(konvparam)
         if(index == -1) return
         this.data[idx].splice(index, 1)
@@ -719,18 +803,18 @@ var KonvertteriParametri = function(tietotyyppi, data) {
 }
 
 var Parametri = function(definition, data) {
-    this.definition = definition
-    this.data = data
-
+    this.definition = definition;
+    this.data = data;
+    var that = this;
     var HIDDEN_PARAMS = ["nimi"];
 
     /* Structure methods */
-    this.avain = this.definition.avain
+    this.avain = this.definition.avain;
     //this.arvo = this.data ? this.data.arvo : null
-    this.tyyppi = this.definition.tyyppi
+    this.tyyppi = this.definition.tyyppi;
 
-    this.template = function() {
-        switch(this.tyyppi) {
+    this.template = (function() {
+        switch(that.tyyppi) {
             case "DESIMAALILUKU":
                 return "desimaaliluku-template";
             case "KOKONAISLUKU":
@@ -742,7 +826,7 @@ var Parametri = function(definition, data) {
             default:
                 return ""
         }
-    }
+    })();
 
     this.init = function() {
         this.hashKey = Math.random().toString(36).substring(7);
@@ -753,6 +837,38 @@ var Parametri = function(definition, data) {
     }
 
     this.init()
+}
+
+var FunktiokuvausService = function(funktiokuvaukset) {
+    this.funktiokuvaukset = funktiokuvaukset;
+
+    this.getFunktiokuvaukset = function() {
+        return this.funktiokuvaukset;
+    }
+
+    /**
+     * Hakee funktion määrittelyt funktiokuvaukset-listasta nimen perusteella.
+     * @param {String} nimi
+     * @return {object}
+     */
+    this.getFunktiokuvaus = function(nimi) {
+        return this.findFunctionDefinition(function(fdef) {
+            return nimi == fdef.nimi;
+        })
+    }
+
+    /**
+     * Filtteröi funktio funktiokuvaukset-listasta annetun funktion perusteella.
+     * @param func
+     * @return {object}
+     */
+    this.findFunctionDefinition = function(func) {
+        var def = this.funktiokuvaukset.filter(func);
+        if(def) {
+            return def[0]
+        }
+        return null
+    }
 }
 
 var FunktioNimiService = function() {
@@ -782,21 +898,12 @@ var FunktioNimiService = function() {
         "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI": "Konvertoi",
         "HYLKAA": "Hylkää",
         "PYORISTYS": "Pyöristys",
-        "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI": "Hae merkkijono ja konvertoi totuusarvoksi",
-        "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI": "Hae merkkijono ja konvertoi lukuarvoksi",
         "NIMETTYLUKUARVO": "Nimetty lukuarvo",
         "NIMETTYTOTUUSARVO": "Nimetty totuusarvo",
-        "HAEMERKKIJONOJAVERTAAYHTASUURUUS": "Hae merkkijono ja vertaa yhtäsuuruus",
         "SKAALAUS": "Skaalaus",
         "PAINOTETTUKESKIARVO": "Painotettu keskiarvo"
     };
 
-    /*
-     "NMINIMI": "N:ksi pienin", "NMAKSIMI"
-     "KESKIARVONPARASTA": "Keskiarvo N parasta",
-     "SUMMANPARASTA": "Summa N parasta",
-     TOTUUSARVO,
-     */
     var kustomit = {
         "NIMETTYLUKUARVO": function(data) {
             var nimi = $.grep(data.syoteparametrit, function(param) {
@@ -824,6 +931,45 @@ var FunktioNimiService = function() {
             }
         },
         "HAETOTUUSARVO": function(data) {
+            if(!data.valintaperuste || !data.valintaperuste.lahde) {
+                return "Haettava arvo";
+            }
+            switch (data.valintaperuste.lahde) {
+                case "HAETTAVA_ARVO":
+                    return "Arvo hakemukselta";
+                case "SYOTETTAVA_ARVO":
+                    return "Syötettävä arvo";
+                case "HAKUKOHTEEN_ARVO":
+                    return "Hakukohteen arvo";
+            }
+        },
+        "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI": function(data) {
+            if(!data.valintaperuste || !data.valintaperuste.lahde) {
+                return "Haettava arvo";
+            }
+            switch (data.valintaperuste.lahde) {
+                case "HAETTAVA_ARVO":
+                    return "Arvo hakemukselta";
+                case "SYOTETTAVA_ARVO":
+                    return "Syötettävä arvo";
+                case "HAKUKOHTEEN_ARVO":
+                    return "Hakukohteen arvo";
+            }
+        },
+        "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI": function(data) {
+            if(!data.valintaperuste || !data.valintaperuste.lahde) {
+                return "Haettava arvo";
+            }
+            switch (data.valintaperuste.lahde) {
+                case "HAETTAVA_ARVO":
+                    return "Arvo hakemukselta";
+                case "SYOTETTAVA_ARVO":
+                    return "Syötettävä arvo";
+                case "HAKUKOHTEEN_ARVO":
+                    return "Hakukohteen arvo";
+            }
+        },
+        "HAEMERKKIJONOJAVERTAAYHTASUURUUS": function(data) {
             if(!data.valintaperuste || !data.valintaperuste.lahde) {
                 return "Haettava arvo";
             }

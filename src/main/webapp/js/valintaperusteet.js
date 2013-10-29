@@ -1,4 +1,4 @@
-var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'ngAnimate', 'localization'])
+var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'localization']) //'ngAnimate' currently breaks valintaperustetree
 //
 // i18n toteutus kopioitu osittain http://jsfiddle.net/4tRBY/41/
 //
@@ -82,7 +82,34 @@ app.config(function($routeProvider) {
 //rest resources
 
 
+//TARJONTA RESOURCES
+app.factory('Haku', function($resource) {
+  return $resource(TARJONTA_URL_BASE + "haku", {}, {
+    get: {method: "GET", isArray: true}
+  });
+});
+
+app.factory('HaunTiedot', function($resource) {
+  return $resource(TARJONTA_URL_BASE + "haku/:hakuOid", {hakuOid: "@hakuOid"}, {
+    get: {method: "GET"}
+  });
+});
+
 //Valintaryhma
+app.factory('ValintaperusteetPuu', function($resource) {
+return $resource(SERVICE_URL_BASE + "resources/puu", {
+      q: "@q",
+      hakuOid: "@hakuOid",
+      tila: "@tila"
+    }, {
+        get: {method: "GET", isArray: true  }
+      });
+});
+
+
+
+
+
 app.factory('RootValintaryhmas', function($resource) {
 return $resource(SERVICE_URL_BASE + "resources/valintaryhma", {}, {
     get: {method: "GET", isArray: true,
