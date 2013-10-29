@@ -49,7 +49,7 @@ app.factory('HakijaryhmaModel', function($q, Hakijaryhma, LaskentakaavaModel, Va
     
 });
 
-function HakijaryhmaController($scope, $location, $routeParams, HakijaryhmaModel) {
+function HakijaryhmaController($scope, $location, $routeParams, HakijaryhmaModel, HakukohdeModel, ValintaryhmaModel) {
 
     $scope.model = HakijaryhmaModel;
     $scope.model.refresh($routeParams.hakijaryhmaOid, $routeParams.id, $routeParams.hakukohdeOid);
@@ -59,8 +59,10 @@ function HakijaryhmaController($scope, $location, $routeParams, HakijaryhmaModel
         promise.then(function() {
             var path;
             if($routeParams.hakukohdeOid) {
+                HakukohdeModel.refresh($routeParams.hakukohdeOid);
                 path = "/hakukohde/" + $routeParams.hakukohdeOid;
             } else {
+                ValintaryhmaModel.refresh($routeParams.id);
                 path = "/valintaryhma/" + $routeParams.id;
             }
             $location.path(path);

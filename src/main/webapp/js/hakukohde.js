@@ -1,6 +1,7 @@
 app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohdekoodi, Hakukohde, Valintaryhma,
                                         HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta,
-                                        HakukohdeKuuluuSijoitteluun, HakukohdeHakijaryhma, Laskentakaava) {
+                                        HakukohdeKuuluuSijoitteluun, HakukohdeHakijaryhma, Laskentakaava,
+                                        HakijaryhmaJarjesta) {
     var model = new function()  {
         
         this.parentValintaryhma = {};
@@ -53,12 +54,19 @@ app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohd
         this.persistHakukohde = function() {
             Hakukohde.post(model.hakukohde, function(result) {});
             if(model.valinnanvaiheet.length > 0) {
-                ValinnanvaiheJarjesta.post(getValinnanvaiheOids(), function(result) {});
-                for(var i = 0 ; i < model.valinnanvaiheet.length ; ++i) {
-                    Valinnanvaihe.post(model.valinnanvaiheet[i], function(){
+                ValinnanvaiheJarjesta.post(getValinnanvaiheOids(), function(result) {
+                    for(var i = 0 ; i < model.valinnanvaiheet.length ; ++i) {
+                        Valinnanvaihe.post(model.valinnanvaiheet[i], function(){
 
-                    });
-                }
+                        });
+                    }
+                });
+            }
+
+            if(model.hakijaryhmat.length > 0) {
+                console.log(model.hakijaryhmat);
+                HakijaryhmaJarjesta.post(getHakijaryhmaOids(), function(result) {
+                });
             }
         };
 
@@ -115,6 +123,14 @@ app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohd
         var oids = [];
         for (var i = 0 ; i < model.valinnanvaiheet.length ; ++i) {
             oids.push(model.valinnanvaiheet[i].oid);
+        }
+        return oids;
+    }
+
+    function getHakijaryhmaOids() {
+        var oids = [];
+        for (var i = 0 ; i < model.hakijaryhmat.length ; ++i) {
+            oids.push(model.hakijaryhmat[i].oid);
         }
         return oids;
     }

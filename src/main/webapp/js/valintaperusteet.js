@@ -308,7 +308,11 @@ app.factory('HakijaryhmaValintatapajono', function($resource) {
    });
 });
 
-
+app.factory('HakijaryhmaJarjesta', function($resource) {
+    return $resource(SERVICE_URL_BASE + "resources/hakijaryhma/jarjesta", {}, {
+        post: {method: "POST", isArray: true}
+    });
+});
 
 //Järjestyskriteeri
 app.factory('Jarjestyskriteeri', function($resource) {

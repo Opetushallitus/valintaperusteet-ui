@@ -1,9 +1,16 @@
 
-app.factory('ValintaryhmaModel', function($q, Valintaryhma, ChildValintaryhmas, ValintaryhmaValintakoekoodi,
-                                            ChildHakukohdes, KoodistoValintakoekoodi, Valinnanvaihe,
-                                            ValintaryhmaValinnanvaihe, Treemodel, ValinnanvaiheJarjesta,
-                                            ValintaryhmaHakukohdekoodi, KoodistoHakukohdekoodi,
-                                            ValintaryhmaHakijaryhma, Laskentakaava) {
+app.factory('ValintaryhmaModel', function($q, Valintaryhma,
+                                            HakijaryhmaJarjesta,
+                                            KoodistoHakukohdekoodi,
+                                            KoodistoValintakoekoodi,
+                                            Laskentakaava,
+                                            Treemodel,
+                                            ValintaryhmaValintakoekoodi,
+                                            Valinnanvaihe,
+                                            ValintaryhmaValinnanvaihe,
+                                            ValinnanvaiheJarjesta,
+                                            ValintaryhmaHakukohdekoodi,
+                                            ValintaryhmaHakijaryhma) {
 
     var model = new function() {
         this.valintaryhma = {};
@@ -79,6 +86,10 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma, ChildValintaryhmas, 
                 });
             }
             */
+            if(model.hakijaryhmat.length > 0) {
+                HakijaryhmaJarjesta.post(getHakijaryhmaOids(), function(result) {
+                });
+            }
 
 
         };
@@ -92,6 +103,14 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma, ChildValintaryhmas, 
                 }
             });
         };
+
+        function getHakijaryhmaOids() {
+            var oids = [];
+            for (var i = 0 ; i < model.hakijaryhmat.length ; ++i) {
+                oids.push(model.hakijaryhmat[i].oid);
+            }
+            return oids;
+        }
     
         function getValinnanvaiheOids() {
             var oids = [];

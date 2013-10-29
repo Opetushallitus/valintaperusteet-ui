@@ -73,7 +73,6 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
                     promises[i] = function() {
                         var deferred = $q.defer();
                         Jarjestyskriteeri.post(model.jarjestyskriteerit[i], function(result){
-                            console.log(result);
                             deferred.resolve();
                         });
                         return deferred.promise;
