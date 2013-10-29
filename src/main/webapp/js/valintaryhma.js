@@ -307,7 +307,7 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
             if(oid === "root"){
                 Valintaryhma.insert(newValintaryhma, function(result) {
                     Treemodel.refresh();
-                    $location.path("/");
+                    $location.path("/valintaryhma/" + result.oid);
                 });
             } else {
                 ChildValintaryhmas.insert({"parentOid": oid}, newValintaryhma, function(result){

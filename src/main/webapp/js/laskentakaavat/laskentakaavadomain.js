@@ -1,8 +1,8 @@
 
-var Kaava = function(dsl, data) {
-    this.dsl = dsl
+var Kaava = function(funktiokuvaus, data) {
+    this.funktiokuvaus = funktiokuvaus
     this.data = data
-    this.funktio = new Funktio(this.dsl, this.data.funktiokutsu)
+    this.funktio = new Funktio(this.funktiokuvaus, this.data.funktiokutsu)
     this.funktio.init()
 
     /* Structure methods i.e. parses subitems */
@@ -24,6 +24,8 @@ var Kaava = function(dsl, data) {
     }
 
     this.getData = function() {
+
+        //iterate object recursively and remove all key-value pairs where key is attr
         var removeByAttr = function(arr, attr){
             for(var i in arr) {
                 if(arr[i] && arr[i][attr]){
@@ -46,7 +48,7 @@ var Kaava = function(dsl, data) {
             }
             return o
         }
-        return removeMarkedFunktioargumentit(removeByAttr(this.data, 'validointivirheet'))
+        return removeMarkedFunktioargumentit(removeByAttr(this.data, 'validointivirheet'));
     }
 
 }
@@ -77,8 +79,8 @@ var TyhjaFunktio = function(def) {
     }
 }
 
-var LaskentakaavaViite = function(dsl, data) {
-    this.dsl = dsl;
+var LaskentakaavaViite = function(funktiokuvaus, data) {
+    this.funktiokuvaus = funktiokuvaus;
     this.data = data;
 
     this.init = function() {
@@ -104,12 +106,12 @@ var LaskentakaavaViite = function(dsl, data) {
     this.init();
 }
 
-var Funktio = function(dsl, data) {
+var Funktio = function(funktiokuvaus, data) {
 
     var HAETTAVA_TYYPPI = ["HAELUKUARVO", "HAETOTUUSARVO"];
     var NIMETTAVAT_TYYPPI = ["NIMETTYLUKUARVO", "NIMETTYTOTUUSARVO"];
 
-    this.dsl = dsl;
+    this.funktiokuvaus = funktiokuvaus;
     this.data = data;
     this.funktionimiService = FunktioNimiService();
 
@@ -210,11 +212,11 @@ var Funktio = function(dsl, data) {
      */
     this.createSubFunction = function(data) {
         if(data.funktiokutsuChild) {
-            var f = new Funktio(this.dsl, data.funktiokutsuChild)
+            var f = new Funktio(this.funktiokuvaus, data.funktiokutsuChild)
             f.init()
             return f;
         } else if(data.laskentakaavaChild) {
-            var alikaava = new LaskentakaavaViite(this.dsl, data.laskentakaavaChild);
+            var alikaava = new LaskentakaavaViite(this.funktiokuvaus, data.laskentakaavaChild);
             return alikaava;
         } else {
             console.log("Kutsuttiin alikaavaobjektin luontia virheellisellä datalla", data);
@@ -258,7 +260,7 @@ var Funktio = function(dsl, data) {
     /* Helper methods */
 
     /**
-     * Hakee funktion määrittelyt DSL:stä nimen perusteella.
+     * Hakee funktion määrittelyt funktiokuvaus:stä nimen perusteella.
      * @param {String} nimi
      * @return {object}
      */
@@ -269,12 +271,12 @@ var Funktio = function(dsl, data) {
     }
 
     /**
-     * Filtteröi funktio DSL:stä funktiokuvauksia annetun funktion perusteella.
+     * Filtteröi funktio funktiokuvaus:stä funktiokuvauksia annetun funktion perusteella.
      * @param func
      * @return {object}
      */
     this.findFunctionDefinition = function(func) {
-        var def = this.dsl.filter(func)
+        var def = this.funktiokuvaus.filter(func)
         if(def) {
             return def[0]
         }
@@ -526,7 +528,7 @@ var Funktio = function(dsl, data) {
                 data = angular.copy(this.data.funktioargumentit[index].funktiokutsuChild);
                 this.data.funktioargumentit.splice(index, 1);
                 this.funktioargumentit = this.getFunktioargumentit();
-                var func = new Funktio(angular.copy(this.dsl), data.funktiokutsu);
+                var func = new Funktio(angular.copy(this.funktiokuvaus), data.funktiokutsu);
                 func.init();
                 return func;
             }
@@ -535,7 +537,7 @@ var Funktio = function(dsl, data) {
                 data = angular.copy(this.data.funktioargumentit[index].laskentakaavaChild);
                 this.data.funktioargumentit.splice(index, 1);
                 this.funktioargumentit = this.getFunktioargumentit();
-                var func = new LaskentakaavaViite(angular.copy(this.dsl), data);
+                var func = new LaskentakaavaViite(angular.copy(this.funktiokuvaus), data);
                 func.init();
                 return func;
             }
@@ -768,6 +770,7 @@ var FunktioNimiService = function() {
         "PIENEMPI": "Pienempi",
         "MEDIAANI": "Mediaani",
         "PIENEMPITAIYHTASUURI": "Pienempi tai yhtä suuri",
+        "SUUREMPITAIYHTASUURI": "Suurempi tai yhtä suuri",
         "EI": "Ei",
         "JA": "Ja",
         "MAKSIMI": "Maksimi",
@@ -776,7 +779,16 @@ var FunktioNimiService = function() {
         "KESKIARVO": "Keskiarvo",
         "DEMOGRAFIA": "Demografia",
         "KONVERTOILUKUARVO": "Konvertoi",
-        "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI": "Konvertoi"
+        "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI": "Konvertoi",
+        "HYLKAA": "Hylkää",
+        "PYORISTYS": "Pyöristys",
+        "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI": "Hae merkkijono ja konvertoi totuusarvoksi",
+        "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI": "Hae merkkijono ja konvertoi lukuarvoksi",
+        "NIMETTYLUKUARVO": "Nimetty lukuarvo",
+        "NIMETTYTOTUUSARVO": "Nimetty totuusarvo",
+        "HAEMERKKIJONOJAVERTAAYHTASUURUUS": "Hae merkkijono ja vertaa yhtäsuuruus",
+        "SKAALAUS": "Skaalaus",
+        "PAINOTETTUKESKIARVO": "Painotettu keskiarvo"
     };
 
     /*
@@ -807,6 +819,8 @@ var FunktioNimiService = function() {
                     return "Arvo hakemukselta";
                 case "SYOTETTAVA_ARVO":
                     return "Syötettävä arvo";
+                case "HAKUKOHTEEN_ARVO":
+                    return "Hakukohteen arvo";
             }
         },
         "HAETOTUUSARVO": function(data) {
@@ -818,6 +832,8 @@ var FunktioNimiService = function() {
                     return "Arvo hakemukselta";
                 case "SYOTETTAVA_ARVO":
                     return "Syötettävä arvo";
+                case "HAKUKOHTEEN_ARVO":
+                    return "Hakukohteen arvo";
             }
         },
         "NMINIMI": function(data) {

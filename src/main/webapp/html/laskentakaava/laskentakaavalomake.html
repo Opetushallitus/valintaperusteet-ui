@@ -1,17 +1,6 @@
-﻿<h1>Laskentakaavan muokkaus</h1>
+﻿
 
-<div class="tabs" ng-controller="LaskentakaavaMenuController">
-    <a ng-repeat="menuitem in menuitems" href="{{menuitem.url}}" ng-class="cssClass(menuitem)">
-        <span>{{menuitem.title}}</span>
-    </a>
-</div>
-
-
-<div class="tabsheets">
-
-<span class="button small" ng-click="goToListing()">Palaa listalle</span>
-<span class="button small" ng-click="saveKaavaAsCompleted()">Tallenna valmiina</span>
-<span class="button small" ng-click="saveKaavaAsDraft()">Tallenna luonnoksena</span>
+<!-- PAGE TEMPLATES -->
 
 <script type="text/ng-template" id="frame_template.html">
     <div class="frame">
@@ -27,12 +16,13 @@
 
 <script type="text/ng-template" id="subformula_template.html">
     <div ng-class="funktio.funktioCssClass('frame', selected)">
-        <span class="icon">&#8302;</span>
+        <span class="icon">&#8302fromArray(span)
         <span class="label" ng-click="showKaavaDetails(funktio)">{{funktio.nimi}}</span>
     </div>
 </script>
 
 <script type="text/ng-template" id="funktio_template.html">
+
     <div ng-class="funktio.funktioCssClass('function', selected)">
         <span ng-class="funktio.iconCssClass()">&#8302;</span>
         <span class="label" ng-click="showDetails(funktio)">{{funktio.naytettavaNimi}}</span>
@@ -55,7 +45,7 @@
 <script type="text/ng-template" id="tyhja_template.html">
     <div class="function">
         <span class="dropzone">{{funktio.otsikko()}}</span>
-
+        
         <table class="dropmenu-table" ng-show="funktio.isLukuarvoFunktio()">
             <thead>
             <th colspan="2">Lisää uusi funktio</th>
@@ -95,9 +85,22 @@
                 <td ng-click="addNewFunktio(parent, 'JOS', funktio.nimi())"><span>Jos</span></td>
             </tr>
             <tr>
-                <td ng-click="addNewFunktio(parent, 'KONVERTOILUKUARVO', funktio.nimi())">Konversio</td>
+                <td ng-click="addNewFunktio(parent, 'HYLKAA', funktio.nimi())"><span>Hylkää</span></td>
+                <td ng-click="addNewFunktio(parent, 'PYORISTYS', funktio.nimi())"><span>Pyöristys</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'KONVERTOILUKUARVO', funktio.nimi())"><span>Konversio</span></td>
                 <td ng-click="addChildLaskentakaava(parent, funktio.nimi())"><span>Viittaus toiseen kaavaan</span></td>
             </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAKONVERTOILUKUARVOKSI', funktio.nimi())"><span>Hae merkkijono ja konvertoi lukuarvoksi</span></td>
+                <td ng-click="addNewFunktio(parent, 'NIMETTYLUKUARVO', funktio.nimi())"><span>Nimetty lukuarvo</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'SKAALAUS', funktio.nimi())"><span>Skaalaus</span></td>
+                <td ng-click="addNewFunktio(parent, 'PAINOTETTUKESKIARVO', funktio.nimi())"><span>Painotettu keskiarvo</span></td>
+            </tr>
+
             </tbody>
         </table>
         <table class="dropmenu-table" ng-show="funktio.isTotuusarvoFunktio()">
@@ -131,6 +134,15 @@
             <tr>
                 <td ng-click="addNewFunktio(parent, 'DEMOGRAFIA', funktio.nimi())"><span>Demografia</span></td>
                 <td ng-click="addNewFunktio(parent, 'HAKUTOIVE', funktio.nimi())"><span>Hakutoive</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI'
+                , funktio.nimi())"><span>Hae merkkijono ja konvertoi totuusarvoksi</span></td>
+                <td ng-click="addNewFunktio(parent, 'NIMETTYTOTUUSARVO', funktio.nimi())"><span>Nimetty totuusarvo</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'HAKUTOIVE', funktio.nimi()"><span>Hakutoive</span></td>
+                <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAVERTAAYHTASUURUUS', funktio.nimi())"><span>Hae merkkijono ja vertaa yhtäsuuruus</span></td>
             </tr>
             </tbody>
         </table>
@@ -223,109 +235,181 @@
     </div>
 </script>
 
-<div class="clear"></div>
 
-<div class="notification warning margin-top-2" ng-show="errors.length > 0">
-    <ul>
-        <li ng-repeat="error in errors">{{error.virheviesti}}</li>
-    </ul>
+
+<!-- LASKENTAKAAVAPAGE CONTENT -->
+<h1>Laskentakaavan muokkaus</h1>
+
+<div class="tabs" ng-controller="LaskentakaavaMenuController">
+    <a ng-repeat="menuitem in menuitems" href="{{menuitem.url}}" ng-class="cssClass(menuitem)">
+        <span>{{menuitem.title}}</span>
+    </a>
 </div>
 
-<div class="clear"></div>
 
-<div class="gradingformula dd" jq-nestable="{onChange: kaavaDragged}" style="width:60%;float:left;"
-     ng-repeat="kaava in domain.laskentakaava()"
-     ng-init="funktio = kaava.funktiopuu()"
-     ng-include="funktio.template()">
+<div class="tabsheets">
+    
+    <!-- LASKENTAKAAVAN MUOKKAUS -->
+    <span class="button small" ng-click="goToListing()">Palaa listalle</span>
+    <span class="button small" ng-click="saveKaavaAsCompleted()">Tallenna valmiina</span>
+    <span class="button small" ng-click="saveKaavaAsDraft()">Tallenna luonnoksena</span>
 
-</div>
+    <div class="clear"></div>
 
-<div style="width:30%;float:right;" ng-show="showKaavaMenu">
-    <div class="settingsform">
-        <h3>Laskentakaavaviittauksen asetukset</h3>
-
-        <div ng-repeat="valintaryhmaList in kaavaLista.valintaryhmaList()">
-            <div ng-repeat="valintaryhma in valintaryhmaList" ng-show="valintaryhma.laskentakaavat.length > 0">
-                <h3>{{valintaryhma.nimi}}</h3>
-
-                <div ng-repeat="kaava in valintaryhma.laskentakaavat">
-                    <input type="radio" name="kaava" value="{{kaava.id}}" ng-model="f.data.id"/>
-                    {{kaava.nimi}}
-                </div>
-            </div>
-        </div>
-
-
-        <span class="button small" ng-show="!f.data.deleted" ng-click="f.data.deleted=true">Poista funktiokutsu</span>
-        <span class="button small" ng-show="f.data.deleted" ng-click="f.data.deleted=false">Palauta funktiokutsu</span>
+    <div class="notification warning margin-top-2" ng-show="errors.length > 0">
+        <ul>
+            <li ng-repeat="error in errors">{{error.virheviesti}}</li>
+        </ul>
     </div>
 
-</div>
+    <div class="clear"></div>
 
-<div class="" style="width:30%;float:right;" ng-show="showTemplate">
-    <div class="settingsform">
+   
+    <div class="gradingformula dd" jq-nestable="{onChange: kaavaDragged}" style="width:60%;float:left;"
+         ng-repeat="kaava in domain.laskentakaava()"
+         ng-init="funktio = kaava.funktiopuu()"
+         ng-include="funktio.template()">
+    </div>
 
-        <h3>Funktioasetukset</h3>
 
-        <div class="form-item" ng-show="f.isNimettava()">
-            <label class="form-item-label" for="">Nimi</label>
 
-            <div class="form-item-content">
-                <div class="field-text-containerbox">
-                    <input type="text" ng-model="f.getNimiParametri().data.arvo"/>
+    
+
+    <!-- LASKENTAKAAVAVIITTAUKSEN ASETUKSET -->
+    <div style="width:30%;float:right;" ng-show="showKaavaMenu">
+        <div class="settingsform">
+            <h3>Laskentakaavaviittauksen asetukset</h3>
+
+            <div ng-repeat="valintaryhmaList in kaavaLista.valintaryhmaList()">
+                <div ng-repeat="valintaryhma in valintaryhmaList" ng-show="valintaryhma.laskentakaavat.length > 0">
+                    <h3>{{valintaryhma.nimi}}</h3>
+
+                    <div ng-repeat="kaava in valintaryhma.laskentakaavat">
+                        <input type="radio" name="kaava" value="{{kaava.id}}" ng-model="f.data.id"/>
+                        {{kaava.nimi}}
+                    </div>
                 </div>
             </div>
-            <div class="clear"></div>
+
+
+            <span class="button small" ng-show="!f.data.deleted" ng-click="f.data.deleted=true">Poista funktiokutsu</span>
+            <span class="button small" ng-show="f.data.deleted" ng-click="f.data.deleted=false">Palauta funktiokutsu</span>
         </div>
 
-        <!-- Haettava arvo -->
-        <div class="form-item" ng-show="f.isHaettavaArvoTyyppi()">
-            <label class="form-item-label" style="width:50px;">Tyyppi</label>
+    </div>
 
-            <div class="form-item-content">
-                <div class="field-select-containerbox">
-                    <select ng-model="f.data.valintaperuste.lahde">
-                        <option value="HAETTAVA_ARVO">Arvo hakemukselta</option>
-                        <option value="SYOTETTAVA_ARVO">Syötettävä arvo</option>
-                    </select>
-                </div>
-                <div class="field-container-checkbox">
-                    <input type="checkbox" id="requiredparam" ng-model="f.data.valintaperuste.onPakollinen"/>
-                    <label for="requiredparam">Pakollinen tieto</label>
-                </div>
-            </div>
 
-            <label class="form-item-label" style="width:50px;">Kuvaus</label>
 
-            <div class="form-item-content">
-                <textarea style="width: 330px" ng-model="f.data.valintaperuste.kuvaus"></textarea>
-            </div>
+    <!-- FUNKTIOASETUKSET -->
+    <div class="" style="width:30%;float:right;" ng-show="showTemplate">
+        <div class="settingsform">
 
-            <div class="form-item">
-                <label class="form-item-label" for="">Tunniste</label>
+            <h3>Funktioasetukset</h3>
+
+            <div class="form-item" ng-show="f.isNimettava()">
+                <label class="form-item-label" for="">Nimi</label>
 
                 <div class="form-item-content">
                     <div class="field-text-containerbox">
-                        <input type="text" ng-model="f.data.valintaperuste.tunniste" required="required"/>
+                        <input type="text" ng-model="f.getNimiParametri().data.arvo"/>
                     </div>
                 </div>
                 <div class="clear"></div>
             </div>
 
-            <label class="form-item-label" style="width:50px;">Arvomuunnin</label>
+            <!-- Haettava arvo -->
+            <div class="form-item" ng-show="f.isHaettavaArvoTyyppi()">
+                <label class="form-item-label" style="width:50px;">Tyyppi</label>
 
-            <div class="form-item-content">
-                <div class="field-select-containerbox">
-                    <select ng-change="f.konvertteri.setTyyppi(f.konvertteri.uusityyppi)"
-                            ng-model="f.konvertteri.uusityyppi">
-                        <option value="ARVOVALIKONVERTTERI">Arvovälimuunnin</option>
-                        <option value="ARVOKONVERTTERI">Arvovaihtoehdot</option>
-                    </select>
+                <div class="form-item-content">
+                    <div class="field-select-containerbox">
+                        <select ng-model="f.data.valintaperuste.lahde">
+                            <option value="HAETTAVA_ARVO">Arvo hakemukselta</option>
+                            <option value="SYOTETTAVA_ARVO">Syötettävä arvo</option>
+                        </select>
+                    </div>
+                    <div class="field-container-checkbox">
+                        <input type="checkbox" id="requiredparam" ng-model="f.data.valintaperuste.onPakollinen"/>
+                        <label for="requiredparam">Pakollinen tieto</label>
+                    </div>
                 </div>
+
+                <label class="form-item-label" style="width:50px;">Kuvaus</label>
+
+                <div class="form-item-content">
+                    <textarea style="width: 330px" ng-model="f.data.valintaperuste.kuvaus"></textarea>
+                </div>
+
+                <div class="form-item">
+                    <label class="form-item-label" for="">Tunniste</label>
+
+                    <div class="form-item-content">
+                        <div class="field-text-containerbox">
+                            <input type="text" ng-model="f.data.valintaperuste.tunniste" required="required"/>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <label class="form-item-label" style="width:50px;">Arvomuunnin</label>
+
+                <div class="form-item-content">
+                    <div class="field-select-containerbox">
+                        <select ng-change="f.konvertteri.setTyyppi(f.konvertteri.uusityyppi)"
+                                ng-model="f.konvertteri.uusityyppi">
+                            <option value="ARVOVALIKONVERTTERI">Arvovälimuunnin</option>
+                            <option value="ARVOKONVERTTERI">Arvovaihtoehdot</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-item" ng-show="f.konvertteri.tyyppi">
+                    <label class="form-item-label" for="" style="width:100px;">Konversiomäärittelyt</label>
+
+                    <div class="form-item-content" ng-include="f.konvertteri.template">
+
+                    </div>
+                    <span class="button small" ng-click="f.konvertteri.addParametri()">Lisää parametri</span>
+
+                    <div class="clear"></div>
+                </div>
+
+
+                <div class="form-item" ng-show="false">
+                    <label class="form-item-label" for="" style="width:50px;">Lähde</label>
+
+                    <div class="form-item-content">
+                        <div class="field-select-containerbox">
+                            <select>
+                                <option>Todennetun osaamisen rekisteri</option>
+                                <option>Vaihtoehto 2</option>
+                                <option>Vaihtoehto 3</option>
+                            </select>
+                        </div>
+                        <div class="field-textarea-containerbox">
+                            <textarea></textarea>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="clear"></div>
             </div>
 
-            <div class="form-item" ng-show="f.konvertteri.tyyppi">
-                <label class="form-item-label" for="" style="width:100px;">Konversiomäärittelyt</label>
+            <div class="form-item" ng-show="f.konvertteri && !f.isHaettavaArvoTyyppi()">
+
+                <div class="form-item-content">
+                    <div class="field-select-containerbox">
+                        <select ng-change="f.konvertteri.setTyyppi(f.konvertteri.uusityyppi)"
+                                ng-model="f.konvertteri.uusityyppi">
+                            <option value="ARVOVALIKONVERTTERI">Arvovälimuunnin</option>
+                            <option value="ARVOKONVERTTERI">Arvovaihtoehdot</option>
+                        </select>
+                    </div>
+                </div>
+
+                <label class="form-item-label" style="width:100px;"
+                       ng-show="f.konvertteri.template">Konversiomäärittelyt</label>
 
                 <div class="form-item-content" ng-include="f.konvertteri.template">
 
@@ -335,83 +419,41 @@
                 <div class="clear"></div>
             </div>
 
-
-            <div class="form-item" ng-show="false">
-                <label class="form-item-label" for="" style="width:50px;">Lähde</label>
+            <div class="form-item" ng-show="f.isSyoteparametritVisible()">
+                <label class="form-item-label" style="width:100px;">Arvon määrittelyt</label>
 
                 <div class="form-item-content">
-                    <div class="field-select-containerbox">
-                        <select>
-                            <option>Todennetun osaamisen rekisteri</option>
-                            <option>Vaihtoehto 2</option>
-                            <option>Vaihtoehto 3</option>
-                        </select>
-                    </div>
-                    <div class="field-textarea-containerbox">
-                        <textarea></textarea>
+
+                    <div class=" settingsbox">
+                        <table class="settingstable">
+                            <thead>
+                            <tr>
+                                <td>Määrite</td>
+                                <td>Arvo</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="param in f.syoteparametrit" ng-show="param.isVisible()">
+                                <td>Avain: {{param.avain}}</td>
+                                <td ng-init="paramKey = param.avain"
+                                    ng-include="param.template()"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">{{param.avain}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="clear"></div>
             </div>
 
-            <div class="clear"></div>
+            <span class="button small" ng-show="!f.data.deleted" ng-click="f.data.deleted=true">Poista funktiokutsu</span>
+            <span class="button small" ng-show="f.data.deleted" ng-click="f.data.deleted=false">Palauta funktiokutsu</span>
         </div>
 
-        <div class="form-item" ng-show="f.konvertteri && !f.isHaettavaArvoTyyppi()">
-
-            <div class="form-item-content">
-                <div class="field-select-containerbox">
-                    <select ng-change="f.konvertteri.setTyyppi(f.konvertteri.uusityyppi)"
-                            ng-model="f.konvertteri.uusityyppi">
-                        <option value="ARVOVALIKONVERTTERI">Arvovälimuunnin</option>
-                        <option value="ARVOKONVERTTERI">Arvovaihtoehdot</option>
-                    </select>
-                </div>
-            </div>
-
-            <label class="form-item-label" style="width:100px;"
-                   ng-show="f.konvertteri.template">Konversiomäärittelyt</label>
-
-            <div class="form-item-content" ng-include="f.konvertteri.template">
-
-            </div>
-            <span class="button small" ng-click="f.konvertteri.addParametri()">Lisää parametri</span>
-
-            <div class="clear"></div>
-        </div>
-
-        <div class="form-item" ng-show="f.isSyoteparametritVisible()">
-            <label class="form-item-label" style="width:100px;">Arvon määrittelyt</label>
-
-            <div class="form-item-content">
-
-                <div class=" settingsbox">
-                    <table class="settingstable">
-                        <thead>
-                        <tr>
-                            <td>Määrite</td>
-                            <td>Arvo</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="param in f.syoteparametrit" ng-show="param.isVisible()">
-                            <td>Avain: {{param.avain}}</td>
-                            <td ng-init="paramKey = param.avain"
-                                ng-include="param.template()"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="clear"></div>
-        </div>
-
-        <span class="button small" ng-show="!f.data.deleted" ng-click="f.data.deleted=true">Poista funktiokutsu</span>
-        <span class="button small" ng-show="f.data.deleted" ng-click="f.data.deleted=false">Palauta funktiokutsu</span>
     </div>
 
-</div>
-
-<div class="clear"></div>
+    <div class="clear"></div>
 
 </div>
