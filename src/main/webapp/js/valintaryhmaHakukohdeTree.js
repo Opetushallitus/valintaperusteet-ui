@@ -52,69 +52,6 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu) {
     		}
     		return "";
     	},
-        moveNodeInATree:function(index, oid, parent) {
-            console.debug("Siirto index: " + index +" oid: " + oid + " parent: " + parent);
-
-
-        	//var childNode = undefined;
-        //	var targetNode = model; // initialized as root
-        	//var previousNode = undefined;
-
-        	/*
-        	function removeFrom(target, source, nimi) {
-        		if(target.indexOf(source) == -1) {
-        			console.log("Failed removing from (didn't contain) [" +target.length+ "]" + nimi + " node " + source.nimi);
-        		} else {
-        			target.splice(target.indexOf(source), 1);
-        			console.log("Removing from [" +target.length+ "]" + nimi + " node " + source.nimi);
-        		}
-        	}
-        	function addTo(target, source, nimi) {
-        		//target.splice(index, 0, childNode);
-        		if(target.indexOf(source) == -1) {
-        			target.push(source);
-        			console.log("Adding to ["+target.length+"] " + nimi + " node " + source.nimi);
-        		} else {
-        			console.log("Failed adding to (already in array) [" +target.length+ "]" + nimi + " node " + source.nimi);
-        		}
-        	}
-        	function travel(previous, nodeArray) {
-        		nodeArray.forEach(function(node){
-        			if(oid === node.oid) {
-        				childNode = node;
-        				console.log("Child and previous node catched! " + node.nimi);
-        				previousNode = previous;
-        			}
-        			if(parent === node.oid) {
-        				console.log("Parent catched! " + node.nimi );
-        				targetNode = node;
-        			}
-        			if(node.lapset) {
-            			travel(node,node.lapset);
-            		}
-        		});
-        	}
-
-
-        	travel(targetNode,this.getLapset(model));
-        	if(previousNode === targetNode) {
-        		return false;
-        	}
-
-        	if(previousNode.lapsihakukohdeList === undefined) {
-        		previousNode.lapsihakukohdeList = [];
-        	}
-        	removeFrom(previousNode.lapsihakukohdeList, childNode, previousNode.nimi);
-        	previousNode.lapsihakukohde = previousNode.lapsihakukohdeList.length != 0;
-        	if(targetNode.lapsihakukohdeList === undefined) {
-        		targetNode.lapsihakukohdeList = [];
-        	}
-        	addTo(targetNode.lapsihakukohdeList, childNode, targetNode.nimi);
-        	targetNode.lapsihakukohde = targetNode.lapsihakukohdeList.length != 0;
-        	targetNode.isVisible = true;
-        	  	*/
-        	return true;
-        },
         refresh:function() {
             var hakuoid = null;
             if(this.search.haku) {
