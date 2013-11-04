@@ -1,7 +1,7 @@
 
 
 // Valintaryhma Järjestyskriteerit
-app.factory('JarjestyskriteeriModel', function($q, Laskentakaava, Jarjestyskriteeri, ValintatapajonoJarjestyskriteeri, ParentValintaryhmas, Hakukohde) {
+app.factory('JarjestyskriteeriModel', function($q, Laskentakaava, Jarjestyskriteeri, ValintatapajonoJarjestyskriteeri, ParentValintaryhmas, Hakukohde, LaskentakaavaModel) {
     
     var model;
 
@@ -31,53 +31,9 @@ app.factory('JarjestyskriteeriModel', function($q, Laskentakaava, Jarjestyskrite
                 this.refresh(oid);
             }
 
+            LaskentakaavaModel.refresh(valintaryhmaOid, hakukohdeOid);
+            model.laskentakaavaModel = LaskentakaavaModel;
 
-            //root kaavat
-            Laskentakaava.list(function(result) {
-                if(result.length > 0) {
-                    var obj = {
-                        name: 'root',
-                        result: result
-                    }
-                    model.laskentakaavat.push(obj);
-                }
-            });
-
-            // hakukohteelta tulevat
-            if(hakukohdeOid) {
-                Laskentakaava.list({hakukohde: hakukohdeOid}, function(result) {
-                    if(result.length > 0) {
-                        var obj = {
-                            name: 'current',
-                            result: result
-                        }
-                        model.laskentakaavat.push(obj);
-                    }
-                });
-                Hakukohde.get({oid: hakukohdeOid}, function(result) {
-                    Valintaryhmas(result.valintaryhma_id);
-                });
-            }
-
-            // valintaryhmiltä tulevata
-            if(valintaryhmaOid) {
-                // Parent palauttaa itsensä?
-//                Laskentakaava.list({valintaryhma: valintaryhmaOid}, function(result) {
-//                    if(result.length > 0) {
-//                        var obj = {
-//                            name: 'current',
-//                            result: result
-//                        }
-//                        model.laskentakaavat.push(obj);
-//                    }
-//                });
-                  Valintaryhmas(valintaryhmaOid);
-            }
-
-            // valitaan ensimmäinen
-//            if(!model.jarjestyskriteeri.laskentakaava_id) {
-//                                model.jarjestyskriteeri.laskentakaava_id = model.laskentakaavat[0].id;
-//                            }
         };
 
         this.submit = function(valintatapajonoOid, jarjestyskriteerit) {
@@ -112,23 +68,6 @@ app.factory('JarjestyskriteeriModel', function($q, Laskentakaava, Jarjestyskrite
 
             return deferred.promise;
         };
-
-        function Valintaryhmas(valintaryhmaOid) {
-            ParentValintaryhmas.get({parentOid: valintaryhmaOid}, function(data) {
-                data.forEach(function(temp) {
-                    Laskentakaava.list({valintaryhma: temp.oid}, function(result) {
-                        if(result.length > 0) {
-                            var obj = {
-                                name: temp.nimi,
-                                result: result
-                            }
-                            model.laskentakaavat.push(obj);
-                        }
-                    });
-
-                });
-            });
-        }
 
     };
 

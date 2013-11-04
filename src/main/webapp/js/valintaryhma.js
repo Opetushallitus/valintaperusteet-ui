@@ -1,11 +1,23 @@
 
-app.factory('ValintaryhmaModel', function($q, Valintaryhma, ChildValintaryhmas, ValintaryhmaValintakoekoodi, ChildHakukohdes, KoodistoValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe, Treemodel, ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, KoodistoHakukohdekoodi/*, KoodistoValintakoekoodi*/) {
+app.factory('ValintaryhmaModel', function($q, Valintaryhma,
+                                            HakijaryhmaJarjesta,
+                                            KoodistoHakukohdekoodi,
+                                            KoodistoValintakoekoodi,
+                                            Laskentakaava,
+                                            Treemodel,
+                                            ValintaryhmaValintakoekoodi,
+                                            Valinnanvaihe,
+                                            ValintaryhmaValinnanvaihe,
+                                            ValinnanvaiheJarjesta,
+                                            ValintaryhmaHakukohdekoodi,
+                                            ValintaryhmaHakijaryhma) {
 
     var model = new function() {
         this.valintaryhma = {};
         this.valinnanvaiheet =[];
         this.hakukohdekoodit = [];
         this.valintakoekoodit = [];
+        this.hakijaryhmat = [];
 
         this.refresh = function(oid) {
             if(!oid) {
@@ -27,6 +39,15 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma, ChildValintaryhmas, 
 
                 ValintaryhmaValinnanvaihe.get({oid: oid}, function(result) {
                     model.valinnanvaiheet = result;
+                });
+
+                ValintaryhmaHakijaryhma.get({oid: oid}, function(result) {
+                    model.hakijaryhmat = result;
+                    model.hakijaryhmat.forEach(function(hr){
+                        Laskentakaava.get({oid: hr.laskentakaava_id}, function(result) {
+                            hr.laskentakaava_nimi = result.nimi;
+                        });
+                    });
                 });
 
                 KoodistoHakukohdekoodi.get(function(result) {
@@ -58,6 +79,19 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma, ChildValintaryhmas, 
                     Valinnanvaihe.post(model.valinnanvaiheet[i], function(){});
                 }
             }
+            /*
+            if(model.valintaryhma.hakukohdekoodit.length > 0) {
+                ValintaryhmaHakukohdekoodi.post({valintaryhmaOid: model.valintaryhma.oid}, model.valintaryhma.hakukohdekoodit, function(result) {
+                    console.log(result);
+                });
+            }
+            */
+            if(model.hakijaryhmat.length > 0) {
+                HakijaryhmaJarjesta.post(getHakijaryhmaOids(), function(result) {
+                });
+            }
+
+
         };
 
         this.removeValinnanvaihe = function(vaihe) {
@@ -69,6 +103,14 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma, ChildValintaryhmas, 
                 }
             });
         };
+
+        function getHakijaryhmaOids() {
+            var oids = [];
+            for (var i = 0 ; i < model.hakijaryhmat.length ; ++i) {
+                oids.push(model.hakijaryhmat[i].oid);
+            }
+            return oids;
+        }
     
         function getValinnanvaiheOids() {
             var oids = [];
@@ -234,6 +276,9 @@ function valintaryhmaController($scope, $location, $routeParams, $timeout, Valin
         $scope.newHakukohdeUri = newUri;
     }
 
+    $scope.lisaaHakijaryhma = function() {
+        $location.path("/valintaryhma/" + $routeParams.id + "/hakijaryhma/");
+    }
 }
 
 

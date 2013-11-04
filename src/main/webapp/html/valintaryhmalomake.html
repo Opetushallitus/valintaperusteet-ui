@@ -214,8 +214,42 @@
                 </div>
             </div>
         </div>
-        
-        
+
+        <div class="form-row width-100"  >
+            <div class="form-row-label">Hakijaryhmat</div>
+            <div class="form-row-content width-60">
+                <table ng-show="model.hakijaryhmat" class="virkailija-table-1 margin-bottom-2 width-60">
+                    <thead>
+                    <tr>
+                        <th>Nimi</th>
+                        <th>Laskentakaava</th>
+                        <th>Kiintiö</th>
+                        <th>Periytyy</th>
+                        <th>Poista</th>
+                    </tr>
+                    </thead>
+                    <tbody ui-sortable ng-model="model.hakijaryhmat">
+                    <tr ng-repeat="data in model.hakijaryhmat">
+                        <td class="align-center">
+                            <a href="#/valintaryhma/{{model.valintaryhma.oid}}/hakijaryhma/{{data.oid}}">{{data.nimi}}</a>
+                        </td>
+                        <td class="align-center">{{data.laskentakaava_nimi}}</td>
+                        <td class="align-center">{{data.kiintio}}</td>
+                        <td class="align-center">{{data.inheritance}}</td>
+                        <td class="align-center">
+                            <span ng-show="!data.inheritance" class="btn remove" ng-click="model.remove(data)"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="clear"></div>
+
+                <div ng-show="model.valintaryhma.oid" class="form-row">
+                    <span class="button small" ng-click="lisaaHakijaryhma()">Lisää Hakijaryhma</span>
+                </div>
+            </div>
+        </div>
 
         
 

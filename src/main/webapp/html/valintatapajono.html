@@ -127,25 +127,43 @@
         <span ng-show="!model.valintatapajono.oid">Tallenna jono lisätäksesi kriteeri.</span>
     </div>
 
-    <!--
-    <div class="form-row">
-        <label class="form-row-label" for="">Varasijoille olevien käsittely</label>
+    <div class="clear"></div>
 
-        <div class="form-row-content">
-            <div class="field-container-radio">
-                <input type="radio" name="vsk" ng-model="valintatapajono.varasijakasittely" id="vsk1" value="" />
-                <label for="vsk1">Otetaan kaikki</label><br/>
-            </div>
-            <div class="field-container-radio">
-                <input type="radio" name="vsk" ng-model="valintatapajono.varasijakasittely" id="vsk2" value="" />
-                <label for="vsk2">Otetaan enintään</label>
-                <input type="text" name="vskr" ng-model="valintatapajono.varasijakasittelyraja"  id="vsk2r" value="" size="3" />
-            </div>
-            <div><small>Varasijojen käsittelyyn liittyvä ohjeteksti.</small></div>
+    <div class="form-row width-100" >
+        <div class="form-row-label">Hakijaryhmat</div>
+        <div class="form-row-content width-60" ng-if="!model.valintatapajono.siirretaanSijoitteluun">
+            <span>Valintatapajonoa ei siirretä sijoitteluun. Hakijaryhma ei vaikuta jonoon.</span>
         </div>
-        <div class="clear"></div>
+        <div class="form-row-content width-60" ng-if="model.valintatapajono.siirretaanSijoitteluun">
+            <table ng-show="model.hakijaryhmat" class="virkailija-table-1 margin-bottom-2 width-60">
+                <thead>
+                <tr>
+                    <th>Aktiivinen</th>
+                    <th>Nimi</th>
+                    <th>Kuvaus</th>
+                    <th>kiintio</th>
+                    <th>Periytyy</th>
+                    <th>Poista</th>
+                </tr>
+                </thead>
+                <tbody ng-model="model.hakijaryhmat ">
+                <tr ng-repeat="data in model.hakijaryhmat">
+                    <td><input type="checkbox" ng-model="data.aktiivinen"/></td>
+                    <td class="align-center">
+                        {{data.hakijaryhma.nimi}}
+                    </td>
+                    <td class="align-center">{{data.hakijaryhma.kuvaus}}</td>
+                    <td class="align-center">{{data.hakijaryhma.kiintio}}</td>
+                    <td class="align-center">{{data.inheritance}}</td>
+                    <td class="align-center">
+                        <span ng-show="!data.inheritance" class="btn remove" ng-click="model.removeHakijaryhma(data.oid)"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <span class="button small" ng-click="addHakijaryhma()">Liitä hakijaryhmä</span>
+        </div>
     </div>
-     -->
 
     <div class="clear"></div>
 
