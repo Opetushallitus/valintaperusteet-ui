@@ -1,5 +1,6 @@
 
 app.factory('ValintaryhmaModel', function($q, Valintaryhma,
+                                            Hakijaryhma,
                                             HakijaryhmaJarjesta,
                                             KoodistoHakukohdekoodi,
                                             KoodistoValintakoekoodi,
@@ -226,6 +227,16 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma,
             });
         }
 
+        this.removeHakijaryhma = function(hakijaryhmaOid) {
+            Hakijaryhma.delete({oid: hakijaryhmaOid}, function(){
+                for(i in model.hakijaryhmat) {
+                    if(hakijaryhmaOid === model.hakijaryhmat[i].oid) {
+                        model.hakijaryhmat.splice(i,1);
+                    }
+                }
+            });
+        }
+
     }
 
     return model;
@@ -278,6 +289,10 @@ function valintaryhmaController($scope, $location, $routeParams, $timeout, Valin
 
     $scope.lisaaHakijaryhma = function() {
         $location.path("/valintaryhma/" + $routeParams.id + "/hakijaryhma/");
+    }
+
+    $scope.removeHakijaryhma = function(hakijaryhmaOid) {
+        $scope.model.removeHakijaryhma(hakijaryhmaOid);
     }
 }
 

@@ -104,8 +104,12 @@ var LaskentakaavaViite = function(funktiokuvaukset, data) {
 
 var Funktio = function(funktiokuvaukset, data) {
 
-    var HAETTAVA_TYYPPI = ["HAELUKUARVO", "HAETOTUUSARVO", "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI", "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI", "HAEMERKKIJONOJAVERTAAYHTASUURUUS"];
+    // Funktiot, joille määritellään valintaperusteet
+    var HAETTAVA_TYYPPI = ["HAELUKUARVO", "HAETOTUUSARVO", "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI", "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI", "HAEMERKKIJONOJAVERTAAYHTASUURUUS", "VALINTAPERUSTEYHTASUURUUS"];
+    
     var NIMETTAVAT_TYYPPI = ["NIMETTYLUKUARVO", "NIMETTYTOTUUSARVO"];
+    
+    // Funktiot jotka ottavat listan funktioargumenttipareja
     var FUNKTIOPARI_TYYPPI = ["PAINOTETTUKESKIARVO"];
 
     this.data = data;
@@ -133,8 +137,14 @@ var Funktio = function(funktiokuvaukset, data) {
         this.syoteparametrit = this.getSyoteparametrit();
         this.konvertteri = this.getKonvertteri();
         this.naytettavaNimi = this.funktionimiService.nimi(this.data);
+
+        // jos funktio on haettava arvo -tyyppinen lisätään tyhjiä valintaperusteviiteobjekteja
+        // yhtä monta kuin sen funktiokuvauksessa on valintaperusteobjekteja 
         if((HAETTAVA_TYYPPI.indexOf(data.funktionimi) != -1) && !data.valintaperusteviitteet) {
-            data.valintaperusteviitteet = [{}];
+            data.valintaperusteviitteet = [];
+            this.funktiokuvaus.valintaperuste.forEach(function(element, index) {
+                data.valintaperusteviitteet.push({indeksi: index + 1});
+            }); 
         }
 
         
@@ -283,6 +293,7 @@ var Funktio = function(funktiokuvaukset, data) {
                 addPainotuskerroinFunktio();
             } else {
                 // Jos annettuja funktioargumentteja on pariton määrä, sille täytyy lisätä pari 
+                // indeksi (alkaa ykkösestä) kertoo onko annettu funktioargumentti painotuskerroin- vai lukuarvofunktio
                 if(funktioArgumentit[funktioArgumenttiCount - 1].indeksi % 2 == 0) {
                     addPainotuskerroinFunktio();
                 } else {
@@ -370,7 +381,7 @@ var Funktio = function(funktiokuvaukset, data) {
         var labelFunctions = ["NIMETTYLUKUARVO", "NIMETTYTOTUUSARVO"];
         var paramFunctions = ["HAELUKUARVO", "LUKUARVO", "TOTUUSARVO", "HAETOTUUSARVO", "HAKUTOIVE", 
         "DEMOGRAFIA", "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI", "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI", 
-        "HAEMERKKIJONOJAVERTAAYHTASUURUUS"];
+        "HAEMERKKIJONOJAVERTAAYHTASUURUUS", "VALINTAPERUSTEYHTASUURUUS"];
 
         var funktioPairFunctions = ["PAINOTETTUKESKIARVO"];
         if(paramFunctions.indexOf(this.nimi) != -1) {
@@ -840,6 +851,8 @@ var Parametri = function(definition, data) {
     this.init()
 }
 
+
+
 var FunktiokuvausService = function(funktiokuvaukset) {
     this.funktiokuvaukset = funktiokuvaukset;
 
@@ -902,7 +915,8 @@ var FunktioNimiService = function() {
         "NIMETTYLUKUARVO": "Nimetty lukuarvo",
         "NIMETTYTOTUUSARVO": "Nimetty totuusarvo",
         "SKAALAUS": "Skaalaus",
-        "PAINOTETTUKESKIARVO": "Painotettu keskiarvo"
+        "PAINOTETTUKESKIARVO": "Painotettu keskiarvo",
+        
     };
 
     var kustomit = {
@@ -973,6 +987,19 @@ var FunktioNimiService = function() {
         "HAEMERKKIJONOJAVERTAAYHTASUURUUS": function(data) {
             if(!data.valintaperuste || !data.valintaperuste.lahde) {
                 return "Haettava arvo";
+            }
+            switch (data.valintaperuste.lahde) {
+                case "HAETTAVA_ARVO":
+                    return "Arvo hakemukselta";
+                case "SYOTETTAVA_ARVO":
+                    return "Syötettävä arvo";
+                case "HAKUKOHTEEN_ARVO":
+                    return "Hakukohteen arvo";
+            }
+        },
+        "VALINTAPERUSTEYHTASUURUUS": function(data) {
+            if(!data.valintaperuste || !data.valintaperuste.lahde) {
+                return "Haettava arvo";    
             }
             switch (data.valintaperuste.lahde) {
                 case "HAETTAVA_ARVO":

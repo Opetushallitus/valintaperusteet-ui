@@ -145,6 +145,7 @@
             </tr>
             <tr>
                 <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAVERTAAYHTASUURUUS', funktio.nimi())"><span>Hae merkkijono ja vertaa yhtäsuuruus</span></td>
+                <td ng-click="addNewFunktio(parent, 'VALINTAPERUSTEYHTASUURUUS', funktio.nimi())"><span>Valintaperusteyhtasuuruus</span></td>
             </tr>
             </tbody>
         </table>
@@ -264,10 +265,12 @@
     </div>
 
     <div class="clear"></div>
-    <div class="gradingformula dd" jq-nestable="{onChange: kaavaDragged}" style="width:60%;float:left;"
+    <div class="gradingformula dd" style="width:60%;float:left;"
          ng-include="domain.laskentakaavapuu.funktio.template">
     </div>
-
+    <!--
+    jq-nestable="{onChange: kaavaDragged}"
+    -->
 
 
     
@@ -301,7 +304,7 @@
 
     <div class="" style="width:30%;float:right;" ng-show="showTemplate">
         <div class="settingsform">
-
+            
             <h3>Funktioasetukset</h3>
 
             <div class="form-item" ng-show="f.isNimettava()">
@@ -317,60 +320,64 @@
 
             <!-- Haettava arvo -->
             <div class="form-item" ng-show="f.isHaettavaArvoTyyppi()">
-                <label class="form-item-label" style="width:50px;">Tyyppi</label>
-                <div class="form-item-content">
-                    <div class="field-select-containerbox">
-                        <select ng-model="f.data.valintaperusteviitteet[0].lahde">
-                            <option value="HAETTAVA_ARVO">Arvo hakemukselta</option>
-                            <option value="SYOTETTAVA_ARVO">Syötettävä arvo</option>
-                            <option value="HAKUKOHTEEN_ARVO">Hakukohteen arvo</option>
-                        </select>
-                    </div>
-                    <div class="field-container-checkbox">
-                        <input type="checkbox" id="requiredparam" ng-model="f.data.valintaperusteviitteet[0].onPakollinen"/>
-                        <label for="requiredparam">Pakollinen tieto</label>
-                    </div>
-                </div>
-
-                <label class="form-item-label" style="width:50px;">Kuvaus</label>
-
-                <div class="form-item-content">
-                    <textarea style="width: 330px" ng-model="f.data.valintaperusteviitteet[0].kuvaus"></textarea>
-                </div>
-
-                <div class="form-item">
-                    <label class="form-item-label" for="">Tunniste</label>
-
+                <div ng-repeat="valintaperusteviite in f.data.valintaperusteviitteet">
+                    <label class="form-item-label" style="width:50px;">Tyyppi</label>
                     <div class="form-item-content">
-                        <div class="field-text-containerbox">
-                            <input type="text" ng-model="f.data.valintaperusteviitteet[0].tunniste" required="required"/>
+                        <div class="field-select-containerbox">
+                            <select ng-model="valintaperusteviite.lahde">
+                                <option value="HAETTAVA_ARVO">Arvo hakemukselta</option>
+                                <option value="SYOTETTAVA_ARVO">Syötettävä arvo</option>
+                                <option value="HAKUKOHTEEN_ARVO">Hakukohteen arvo</option>
+                            </select>
+                        </div>
+                        <div class="field-container-checkbox">
+                            <input type="checkbox" id="requiredparam" ng-model="valintaperusteviite.onPakollinen"/>
+                            <label for="requiredparam">Pakollinen tieto</label>
                         </div>
                     </div>
-                    <div class="clear"></div>
-                </div>
 
-                <label class="form-item-label" style="width:50px;">Arvomuunnin</label>
-                <div class="form-item-content">
-                    <div class="field-select-containerbox">
-                        <!--
-                        <select ng-change="f.konvertteri.settyyppi(f.konvertteri.tyyppi)"></select>
-                        -->
-                        
-                        <select ng-change="f.konvertteri.setTyyppi(f.konvertteri.uusityyppi)"
-                                ng-model="f.konvertteri.uusityyppi" >
-                            <option ng-repeat="konvertterityyppi in f.konvertteri.konvDef.konvertteriTyypit" value="{{konvertterityyppi.tyyppi}}">{{konvertterityyppi.tyyppi}}</option> 
-                        </select>
+                    <label class="form-item-label" style="width:50px;">Kuvaus</label>
+
+                    <div class="form-item-content">
+                        <textarea style="width: 330px" ng-model="valintaperusteviite.kuvaus"></textarea>
+                    </div>
+
+                    <div class="form-item">
+                        <label class="form-item-label" for="">Tunniste</label>
+
+                        <div class="form-item-content">
+                            <div class="field-text-containerbox">
+                                <input type="text" ng-model="valintaperusteviite.tunniste" required="required"/>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
                     </div>
                 </div>
-
-                <div class="form-item" ng-show="f.konvertteri.tyyppi">
-                    <label class="form-item-label" for="" style="width:100px;">Konversiomäärittelyt</label>
-                    <div class="form-item-content" ng-include="f.konvertteri.template">
-
+                
+                <div ng-show="f.konvertteri">
+                    <label class="form-item-label" style="width:50px;">Arvomuunnin</label>
+                    <div class="form-item-content">
+                        <div class="field-select-containerbox">
+                            <!--
+                            <select ng-change="f.konvertteri.settyyppi(f.konvertteri.tyyppi)"></select>
+                            -->
+                            
+                            <select ng-change="f.konvertteri.setTyyppi(f.konvertteri.uusityyppi)"
+                                    ng-model="f.konvertteri.uusityyppi" >
+                                <option ng-repeat="konvertterityyppi in f.konvertteri.konvDef.konvertteriTyypit" value="{{konvertterityyppi.tyyppi}}">{{konvertterityyppi.tyyppi}}</option> 
+                            </select>
+                        </div>
                     </div>
-                    <span class="button small" ng-click="f.konvertteri.addParametri()">Lisää parametri</span>
 
-                    <div class="clear"></div>
+                    <div class="form-item" ng-show="f.konvertteri.tyyppi">
+                        <label class="form-item-label" for="" style="width:100px;">Konversiomäärittelyt</label>
+                        <div class="form-item-content" ng-include="f.konvertteri.template">
+
+                        </div>
+                        <span class="button small" ng-click="f.konvertteri.addParametri()">Lisää parametri</span>
+
+                        <div class="clear"></div>
+                    </div>
                 </div>
 
                 <!-- TOR -->
