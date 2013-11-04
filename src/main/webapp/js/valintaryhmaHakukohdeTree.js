@@ -140,27 +140,23 @@ function ValintaryhmaHakukohdeTreeController($scope, $resource,Treemodel,Hakukoh
 
 
 
-	$scope.move = function(index,hakukohdeOid, valintaryhmaOid,item) {
+	$scope.move = function(index, hakukohdeOid, valintaryhmaOid, item) {
 
         console.log("siirto");
 	    console.log(index);
-	    console.log(hakukohdeOid);
-	    console.log(valintaryhmaOid);
+	    console.log("Hakukohde oid :"  + hakukohdeOid);
+	    console.log("Valintaryhmaoidi olisi sit :" + valintaryhmaOid);
 	    console.log(item);
-	   /*
-		if($scope.domain.moveNodeInATree(index,hakukohdeOid,valintaryhmaOid)) {
-			item.remove();
-		}
-		
+
+
 		HakukohdeSiirra.siirra({hakukohdeOid: hakukohdeOid}, valintaryhmaOid, function(result) {
-			// onnistui
-			//
+
     	}, function() {
-    		alert('Siirto epäonnistui!');
+              // show error
     	});
-    	*/
-		
+
 	}
+
 	$scope.addClass = function(cssClass, ehto) {
 		if(ehto) {
 			return cssClass;

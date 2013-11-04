@@ -97,7 +97,7 @@ app.directive('nestedsortable', function(HakukohdeSiirra) {
             		//$(item).remove();
             		scope.$apply(function() {
             			scope.move(index, hakukohdeOid,valintaryhmaOid,item);
-            			
+
             		});
             		
                 }

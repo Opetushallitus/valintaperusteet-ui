@@ -17,8 +17,8 @@
     -->
          <a href="#/valintaryhma/{{data.oid}}"> {{data.nimi}}</a>
     </div>
-    <ol data-valintaryhmaoid="{{data.oid}}">
-        <span ng-if="data.isVisible">
+    <ol>
+        <span ng-if="data.isVisible" data-valintaryhmaoid="{{data.oid}}">
             <li ng-repeat="data in data.alavalintaryhmat | orderBy:predicate "
                 data-oid="{{data.oid}}"
                 class="{{addClass('noNesting',domain.isHakukohde(data))}} {{addClass('uiExpanded',domain.isExpanded(data))}} {{addClass('uiCollapsed',domain.isCollapsed(data))}}"
