@@ -238,7 +238,6 @@
 </script>
 
 
-
 <!-- LASKENTAKAAVAPAGE CONTENT -->
 <h1>Laskentakaavan muokkaus</h1>
 
@@ -321,14 +320,14 @@
                 <label class="form-item-label" style="width:50px;">Tyyppi</label>
                 <div class="form-item-content">
                     <div class="field-select-containerbox">
-                        <select ng-model="f.data.valintaperuste[0].lahde">
+                        <select ng-model="f.data.valintaperusteviitteet[0].lahde">
                             <option value="HAETTAVA_ARVO">Arvo hakemukselta</option>
                             <option value="SYOTETTAVA_ARVO">Syötettävä arvo</option>
                             <option value="HAKUKOHTEEN_ARVO">Hakukohteen arvo</option>
                         </select>
                     </div>
                     <div class="field-container-checkbox">
-                        <input type="checkbox" id="requiredparam" ng-model="f.data.valintaperuste[0].onPakollinen"/>
+                        <input type="checkbox" id="requiredparam" ng-model="f.data.valintaperusteviitteet[0].onPakollinen"/>
                         <label for="requiredparam">Pakollinen tieto</label>
                     </div>
                 </div>
@@ -336,7 +335,7 @@
                 <label class="form-item-label" style="width:50px;">Kuvaus</label>
 
                 <div class="form-item-content">
-                    <textarea style="width: 330px" ng-model="f.data.valintaperuste[0].kuvaus"></textarea>
+                    <textarea style="width: 330px" ng-model="f.data.valintaperusteviitteet[0].kuvaus"></textarea>
                 </div>
 
                 <div class="form-item">
@@ -344,7 +343,7 @@
 
                     <div class="form-item-content">
                         <div class="field-text-containerbox">
-                            <input type="text" ng-model="f.data.valintaperuste[0].tunniste" required="required"/>
+                            <input type="text" ng-model="f.data.valintaperusteviitteet[0].tunniste" required="required"/>
                         </div>
                     </div>
                     <div class="clear"></div>
@@ -353,13 +352,13 @@
                 <label class="form-item-label" style="width:50px;">Arvomuunnin</label>
                 <div class="form-item-content">
                     <div class="field-select-containerbox">
+                        <!--
+                        <select ng-change="f.konvertteri.settyyppi(f.konvertteri.tyyppi)"></select>
+                        -->
+                        
                         <select ng-change="f.konvertteri.setTyyppi(f.konvertteri.uusityyppi)"
                                 ng-model="f.konvertteri.uusityyppi" >
                             <option ng-repeat="konvertterityyppi in f.konvertteri.konvDef.konvertteriTyypit" value="{{konvertterityyppi.tyyppi}}">{{konvertterityyppi.tyyppi}}</option> 
-    
-                            <!-- 
-                            ng-options="konvertterityyppi.tyyppi for konvertterityyppi in f.konvertteri.konvDef.konvertteriTyypit"
-                        -->
                         </select>
                     </div>
                 </div>

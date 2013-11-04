@@ -87,12 +87,15 @@
             ng-include="domain.getTemplate(data)">
         </li>
     </ol>
-    <ol ng-if="domain.search.vainHakukohteet" class="sortable treelist collapsible multiselect" nestedsortable="">
-        <li ng-repeat="data in domain.hakukohteet | orderBy:predicate">
-            <span class="icon hakukohde file">​</span>
-            <div class="label"><a href="#/hakukohde/{{data.oid}}"> {{data.nimi}} ({{data.tila}})</a></div>
-        </li>
-    </ol>
+    <table ng-if="domain.search.vainHakukohteet" class="sortable treelist collapsible multiselect" nestedsortable="">
+        <tr ng-repeat="data in domain.hakukohteet | orderBy:predicate">
+            <td>
+                <span class="icon hakukohde file">​</span>
+                <span class="label"><a href="#/hakukohde/{{data.oid}}"> {{data.nimi}} ({{data.tila}})</a></span>
+            </td>
+            <td> <span ng-repeat="parent in data.getParents()"> {{parent.nimi}} / </span> </td>
+        </tr>
+    </table>
 
 
 </div>

@@ -52,62 +52,6 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu) {
     		}
     		return "";
     	},
-        moveNodeInATree:function(index, oid, parent) {
-        	var childNode = undefined;
-        	var targetNode = model; // initialized as root 
-        	var previousNode = undefined;
-        	
-        	function removeFrom(target, source, nimi) {
-        		if(target.indexOf(source) == -1) {
-        			console.log("Failed removing from (didn't contain) [" +target.length+ "]" + nimi + " node " + source.nimi);
-        		} else {
-        			target.splice(target.indexOf(source), 1);
-        			console.log("Removing from [" +target.length+ "]" + nimi + " node " + source.nimi);
-        		}
-        	}
-        	function addTo(target, source, nimi) {
-        		//target.splice(index, 0, childNode);
-        		if(target.indexOf(source) == -1) {
-        			target.push(source);
-        			console.log("Adding to ["+target.length+"] " + nimi + " node " + source.nimi);
-        		} else {
-        			console.log("Failed adding to (already in array) [" +target.length+ "]" + nimi + " node " + source.nimi);
-        		}
-        	}
-        	
-        	function travel(previous, nodeArray) {
-        		nodeArray.forEach(function(node){
-        			if(oid === node.oid) {
-        				childNode = node;
-        				console.log("Child and previous node catched! " + node.nimi);
-        				previousNode = previous;
-        			}
-        			if(parent === node.oid) {
-        				console.log("Parent catched! " + node.nimi );
-        				targetNode = node;
-        			}
-        			if(node.lapset) {
-            			travel(node,node.lapset);
-            		}
-        		});
-        	}
-        	travel(targetNode,this.getLapset(model));
-        	if(previousNode === targetNode) {
-        		return false;
-        	}
-        	if(previousNode.lapsihakukohdeList === undefined) {
-        		previousNode.lapsihakukohdeList = [];
-        	}
-        	removeFrom(previousNode.lapsihakukohdeList, childNode, previousNode.nimi);
-        	previousNode.lapsihakukohde = previousNode.lapsihakukohdeList.length != 0;
-        	if(targetNode.lapsihakukohdeList === undefined) {
-        		targetNode.lapsihakukohdeList = [];
-        	}
-        	addTo(targetNode.lapsihakukohdeList, childNode, targetNode.nimi);
-        	targetNode.lapsihakukohde = targetNode.lapsihakukohdeList.length != 0;
-        	targetNode.isVisible = true;
-        	return true;
-        },
         refresh:function() {
             var hakuoid = null;
             if(this.search.haku) {
@@ -135,7 +79,7 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu) {
                   }
                 list.forEach(recursion);
                 modelInterface.valintaperusteList = list;
-                modelInterface.valintaperusteList.update();
+                modelInterface.update();
 
         },
         update:function() {
@@ -148,34 +92,32 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu) {
             modelInterface.tilasto.hakukohteitaNakyvissa = 0;
 
 
-            var recursion = function(item, previousItemsArray) {
-
-                modelInterface.tilasto.valintaryhmia++;
-                if(item.hakukohdeViitteet) item.hakukohdeViitteet.forEach(function(hakukohde){
-                    modelInterface.tilasto.hakukohteita++;
-                    modelInterface.hakukohteet.push(hakukohde);
-                });
-
-                 //      console.debug(previousItemsArray);
-              //  var copyOfPreviousItemsArray = previousItemsArray; //previousItemsArray.slice(0);
-              //  copyOfPreviousItemsArray.push(item);
-                if(modelInterface.search.vainHakukohteitaSisaltavatRyhmat) {
-
-                } else {
-
+            var recursion = function(item, previousItem) {
+                if(previousItem != null) {
+                    item.ylavalintaryhma = previousItem;
                 }
+                item.getParents = function() {
+                  i = this.ylavalintaryhma;
+                  arr = [];
+                  while(i != null) {
+                     arr.unshift(i);
+                     i = i.ylavalintaryhma;
+                  }
+                  return arr;
+                };
 
-                  var copyOfPreviousItemsArray = [];
-                if(item.alavalintaryhmat) {
-                    item.alavalintaryhmat.forEach(recursion,copyOfPreviousItemsArray);
+                if(item.tyyppi == 'VALINTARYHMA') {
+                  modelInterface.tilasto.valintaryhmia++;
                 }
+                if(item.tyyppi == 'HAKUKOHDE') {
+                   modelInterface.tilasto.hakukohteita++;
+                   modelInterface.hakukohteet.push(item);
+                 }
+                if(item.alavalintaryhmat)  for(var i=0; i<item.alavalintaryhmat.length;i++)  recursion(item.alavalintaryhmat[i],  item);
+                if(item.hakukohdeViitteet) for(var i=0; i<item.hakukohdeViitteet.length;i++) recursion(item.hakukohdeViitteet[i], item);
             }
 
-
-            var emptyArray = [];
-          //list.forEach(recursion);
-          for(var i=0; i<list.length;i++) recursion(list[i], emptyArray);
-
+          for(var i=0; i<list.length;i++) recursion(list[i]);
           modelInterface.valintaperusteList = list;
         }
 
@@ -189,16 +131,23 @@ function ValintaryhmaHakukohdeTreeController($scope, $resource,Treemodel,Hakukoh
 	$scope.predicate = 'nimi';
 	$scope.domain = Treemodel;
 
-
     $scope.hakuModel = HakuModel;
     $scope.hakuModel.init();
-
-
 
 	$scope.expandGroup = function($event) {
 		$($event.target).closest('li').toggleClass('uiCollapsed').toggleClass('uiExpanded');
 	}
+
+
+
 	$scope.move = function(index,hakukohdeOid, valintaryhmaOid,item) {
+
+        console.log("siirto");
+	    console.log(index);
+	    console.log(hakukohdeOid);
+	    console.log(valintaryhmaOid);
+	    console.log(item);
+	   /*
 		if($scope.domain.moveNodeInATree(index,hakukohdeOid,valintaryhmaOid)) {
 			item.remove();
 		}
@@ -209,6 +158,7 @@ function ValintaryhmaHakukohdeTreeController($scope, $resource,Treemodel,Hakukoh
     	}, function() {
     		alert('Siirto epäonnistui!');
     	});
+    	*/
 		
 	}
 	$scope.addClass = function(cssClass, ehto) {

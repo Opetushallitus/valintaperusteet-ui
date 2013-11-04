@@ -109,7 +109,6 @@ var Funktio = function(funktiokuvaukset, data) {
     var FUNKTIOPARI_TYYPPI = ["PAINOTETTUKESKIARVO"];
 
     this.data = data;
-    this.data.valintaperuste = [{}];
     this.funktiokuvausService = new FunktiokuvausService(funktiokuvaukset);
     this.funktionimiService = FunktioNimiService();
 
@@ -134,6 +133,9 @@ var Funktio = function(funktiokuvaukset, data) {
         this.syoteparametrit = this.getSyoteparametrit();
         this.konvertteri = this.getKonvertteri();
         this.naytettavaNimi = this.funktionimiService.nimi(this.data);
+        if((HAETTAVA_TYYPPI.indexOf(data.funktionimi) != -1) && !data.valintaperusteviitteet) {
+            data.valintaperusteviitteet = [{}];
+        }
 
         
     }
@@ -688,16 +690,16 @@ var Konvertteri = function(konvDef, data) {
 
     this.getTyyppi = function() {
         if(this.konvDef.konvertteriTyypit.length == 1) {
-            return this.konvDef.konvertteriTyypit[0]
+            return this.konvDef.konvertteriTyypit[0].tyyppi
         }
 
         if(!this.data.arvokonvertteriparametrit && !this.data.arvovalikonvertteriparametrit) {
             return null;
         }
 
-        if(this.data.arvokonvertteriparametrit.length > 0) {
+        if(this.data.arvokonvertteriparametrit && this.data.arvokonvertteriparametrit.length > 0) {
             return "ARVOKONVERTTERI";
-        } else if(this.data.arvovalikonvertteriparametrit.length > 0) {
+        } else if(this.data.arvovalikonvertteriparametrit && this.data.arvovalikonvertteriparametrit.length > 0) {
             return "ARVOVALIKONVERTTERI";
         }
     }
@@ -718,7 +720,6 @@ var Konvertteri = function(konvDef, data) {
 
     this.setTyyppi = function(tyyppi) {
         if(this.tyyppi) {
-
             var oldIdx = this.getParamIndex()
             if(this.data[oldIdx]) {
                 this.oldData[this.tyyppi] = this.data[oldIdx].slice()
