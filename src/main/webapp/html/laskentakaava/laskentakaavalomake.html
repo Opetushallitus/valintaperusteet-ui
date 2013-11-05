@@ -1,4 +1,4 @@
-﻿
+
 
 <!-- PAGE TEMPLATES -->
 
@@ -145,7 +145,7 @@
             </tr>
             <tr>
                 <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAVERTAAYHTASUURUUS', funktio.nimi())"><span>Hae merkkijono ja vertaa yhtäsuuruus</span></td>
-                <td ng-click="addNewFunktio(parent, 'VALINTAPERUSTEYHTASUURUUS', funktio.nimi())"><span>Valintaperusteyhtasuuruus</span></td>
+                <td ng-click="addNewFunktio(parent, 'Valintaperusteyhtasuuruus', funktio.nimi())"><span>Valintaperusteyhtasuuruus</span></td>
             </tr>
             </tbody>
         </table>
@@ -358,13 +358,9 @@
                     <label class="form-item-label" style="width:50px;">Arvomuunnin</label>
                     <div class="form-item-content">
                         <div class="field-select-containerbox">
-                            <!--
-                            <select ng-change="f.konvertteri.settyyppi(f.konvertteri.tyyppi)"></select>
-                            -->
-                            
                             <select ng-change="f.konvertteri.setTyyppi(f.konvertteri.uusityyppi)"
-                                    ng-model="f.konvertteri.uusityyppi" >
-                                <option ng-repeat="konvertterityyppi in f.konvertteri.konvDef.konvertteriTyypit" value="{{konvertterityyppi.tyyppi}}">{{konvertterityyppi.tyyppi}}</option> 
+                                    ng-model="f.konvertteri.uusityyppi" ng-options="konvertterityyppi.tyyppi as konvertterityyppi.tyyppi for konvertterityyppi in f.konvertteri.konvDef.konvertteriTyypit">
+                                <option value=""></option>
                             </select>
                         </div>
                     </div>

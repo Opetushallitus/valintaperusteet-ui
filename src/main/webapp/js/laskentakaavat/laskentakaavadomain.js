@@ -679,10 +679,10 @@ var Konvertteri = function(konvDef, data) {
     }
 
     this.init = function() {
-        this.tyyppi = this.getTyyppi()
-        this.sallitut = this.getSallitut()
-        this.parametrit = this.getParametrit()
-        this.uusityyppi = this.tyyppi
+        this.tyyppi = this.getTyyppi();
+        this.uusityyppi = this.getTyyppi();
+        this.sallitut = this.getSallitut();
+        this.parametrit = this.getParametrit();
         this.template = this.getTemplate()
     }
 
@@ -730,6 +730,7 @@ var Konvertteri = function(konvDef, data) {
     }
 
     this.setTyyppi = function(tyyppi) {
+
         //asetetaan konvertterityypin vaihtoa edeltävät konvertteriparametrit talteen 
         if(this.tyyppi) {
             var konvertterityyppi = this.getKonvertterityyppi()
