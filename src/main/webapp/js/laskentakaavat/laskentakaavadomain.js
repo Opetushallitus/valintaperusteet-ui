@@ -721,7 +721,7 @@ var Konvertteri = function(konvDef, data) {
         }
     }
 
-    this.getParamIndex = function() {
+    this.getKonvertterityyppi = function() {
         if(!this.tyyppi) {
             return ""
             //throw new Exception("Konvertterillä ei ole tyyppiä")
@@ -730,24 +730,26 @@ var Konvertteri = function(konvDef, data) {
     }
 
     this.setTyyppi = function(tyyppi) {
+        //asetetaan konvertterityypin vaihtoa edeltävät konvertteriparametrit talteen 
         if(this.tyyppi) {
-            var oldIdx = this.getParamIndex()
-            if(this.data[oldIdx]) {
-                this.oldData[this.tyyppi] = this.data[oldIdx].slice()
+            var konvertterityyppi = this.getKonvertterityyppi()
+            if(this.data[konvertterityyppi]) {
+                this.oldData[this.tyyppi] = this.data[konvertterityyppi].slice()
             }
-            this.data[oldIdx] = []
+            this.data[konvertterityyppi] = []
         }
+
 
         this.tyyppi = tyyppi
         this.template = TEMPLATE_MAP[tyyppi]
 
-        var idx = this.getParamIndex()
-        if(this.data[idx]) {
-            this.data[idx].splice(0, this.data[idx].length)
+        var konvertterityyppi = this.getKonvertterityyppi()
+        if(this.data[konvertterityyppi]) {
+            this.data[konvertterityyppi].splice(0, this.data[konvertterityyppi].length)
         }
         if(this.oldData[this.tyyppi]) {
             for(var i = 0; i < this.oldData[this.tyyppi].length; i++) {
-                this.data[idx].push(this.oldData[this.tyyppi][i])
+                this.data[konvertterityyppi].push(this.oldData[this.tyyppi][i])
             }
         }
         this.parametrit = this.getParametrit()
@@ -767,7 +769,7 @@ var Konvertteri = function(konvDef, data) {
             return konvparams
         }
         var konv = this.getDefinition()
-        var idx = this.getParamIndex()
+        var idx = this.getKonvertterityyppi()
         for(var i in this.data[idx]) {
             var konvparam = this.data[idx][i]
             konvparams.push(new KonvertteriParametri(konv.arvotyyppi, konvparam))
@@ -782,23 +784,29 @@ var Konvertteri = function(konvDef, data) {
             return
         }
         var data = {}
-        var idx = this.getParamIndex()
-        if(!this.data[idx]) {
-            this.data[idx] = []
+        var konvertterityyppi = this.getKonvertterityyppi()
+        
+        if(konvertterityyppi == "arvovalikonvertteriparametrit") {
+            this.data["arvokonvertteriparametrit"] = [];
+        } else {
+            this.data["arvovalikonvertteriparametrit"] = [];
         }
-        this.data[idx].push(data)
+
+        if(!this.data[konvertterityyppi]) {
+            this.data[konvertterityyppi] = []
+        }
+        this.data[konvertterityyppi].push(data)
         this.parametrit.push(new KonvertteriParametri(konvertteri.arvotyyppi, data))
     }
 
     this.removeParametri = function(konvparam) {
-        var idx = this.getParamIndex()
+        var konvertterityyppi = this.getKonvertterityyppi()
 
-        var index = this.data[idx].indexOf(konvparam)
+        var index = this.data[konvertterityyppi].indexOf(konvparam.data)
         if(index == -1) return
-        this.data[idx].splice(index, 1)
+        this.data[konvertterityyppi].splice(index, 1)
         this.parametrit.splice(index, 1)
     }
-
 
     this.init()
 }
