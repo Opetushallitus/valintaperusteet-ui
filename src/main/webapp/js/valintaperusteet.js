@@ -39,15 +39,20 @@ app.config(function($routeProvider) {
         when('/valintaryhma/:valintaryhmaOid/laskentakaava', {controller: LaskentakaavaListController, templateUrl: TEMPLATE_URL_BASE + 'laskentakaava/laskentakaavalista.html'}).
         when('/valintaryhma/:valintaryhmaOid/laskentakaava/:laskentakaavaOid', {controller: LaskentakaavaController, templateUrl: TEMPLATE_URL_BASE + 'laskentakaava/laskentakaavalomake.html'}).
         when('/valintaryhma/:id/lisaaSisaltyvaValintaryhma', {controller:ValintaryhmaCreatorController, templateUrl: TEMPLATE_URL_BASE + 'valintaryhmalomake.html'}).
+        when('/valintaryhma/:id/valinnanvaihe/', {controller: valintaryhmaValinnanvaiheController, templateUrl: TEMPLATE_URL_BASE + 'valinnanvaihelomake.html'}).
         when('/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid', {controller: valintaryhmaValinnanvaiheController, templateUrl: TEMPLATE_URL_BASE + 'valinnanvaihelomake.html'}).
+        when('/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid/valintatapajono/', {controller: ValintaryhmaValintatapajonoController, templateUrl:TEMPLATE_URL_BASE + 'valintatapajono.html'}).
         when('/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid', {controller: ValintaryhmaValintatapajonoController, templateUrl:TEMPLATE_URL_BASE + 'valintatapajono.html'}).
+        when('/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/jarjestyskriteeri/', {controller:JarjestyskriteeriController, templateUrl:TEMPLATE_URL_BASE + 'jarjestyskriteeri.html'}).
         when('/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/jarjestyskriteeri/:jarjestyskriteeriOid', {controller:JarjestyskriteeriController, templateUrl:TEMPLATE_URL_BASE + 'jarjestyskriteeri.html'}).
         when('/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/hakijaryhma', {controller:HakijaryhmaValintatapajonoController, templateUrl:TEMPLATE_URL_BASE + 'hakijaryhmaValintatapajono.html'}).
 
         //valintakoevalinnanvaihe
         when('/valintaryhma/:id/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid', {controller: ValintaryhmaValintakoeValinnanvaiheController, templateUrl:TEMPLATE_URL_BASE + 'valintakoevalinnanvaihelomake.html'}).
         when('/valintaryhma/:id/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid/valintakoe/:valintakoeOid', {controller: ValintaryhmaValintakoeController, templateUrl:TEMPLATE_URL_BASE + 'valintakoelomake.html'}).
+        when('/hakukohde/:hakukohdeOid/valintakoevalinnanvaihe/', {controller: HakukohdeValintakoeValinnanvaiheController, templateUrl:TEMPLATE_URL_BASE + 'valintakoevalinnanvaihelomake.html'}).
         when('/hakukohde/:hakukohdeOid/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid', {controller: HakukohdeValintakoeValinnanvaiheController, templateUrl:TEMPLATE_URL_BASE + 'valintakoevalinnanvaihelomake.html'}).
+        when('/hakukohde/:hakukohdeOid/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid/valintakoe/', {controller: HakukohdeValintakoeController, templateUrl:TEMPLATE_URL_BASE + 'valintakoelomake.html'}).
         when('/hakukohde/:hakukohdeOid/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid/valintakoe/:id', {controller: HakukohdeValintakoeController, templateUrl:TEMPLATE_URL_BASE + 'valintakoelomake.html'}).
 		    
         // edit hakukohde
@@ -59,8 +64,11 @@ app.config(function($routeProvider) {
         when('/hakukohde/:hakukohdeOid/laskentakaava', {controller: HakukohdeLaskentakaavaListController, templateUrl: TEMPLATE_URL_BASE + 'laskentakaava/hakukohdelaskentakaavalista.html'}).
         when('/hakukohde/:hakukohdeOid/laskentakaava/:laskentakaavaOid', {controller: LaskentakaavaController, templateUrl: TEMPLATE_URL_BASE + 'laskentakaava/laskentakaavalomake.html'}).
         when('/lisaaHakukohde', {controller: HakukohdeCreatorController, templateUrl:TEMPLATE_URL_BASE + 'hakukohdelomake.html'}).
+        when('/hakukohde/:hakukohdeOid/valinnanvaihe/', {controller:ValinnanVaiheController, templateUrl:TEMPLATE_URL_BASE + 'valinnanvaihelomake.html'}).
         when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid', {controller:ValinnanVaiheController, templateUrl:TEMPLATE_URL_BASE + 'valinnanvaihelomake.html'}).
+        when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/', {controller: HakukohdeValintatapajonoController, templateUrl:TEMPLATE_URL_BASE + 'valintatapajono.html'}).
         when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid', {controller: HakukohdeValintatapajonoController, templateUrl:TEMPLATE_URL_BASE + 'valintatapajono.html'}).
+        when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/jarjestyskriteeri/', {controller:JarjestyskriteeriController, templateUrl:TEMPLATE_URL_BASE + 'jarjestyskriteeri.html'}).
         when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/jarjestyskriteeri/:jarjestyskriteeriOid', {controller:JarjestyskriteeriController, templateUrl:TEMPLATE_URL_BASE + 'jarjestyskriteeri.html'}).
         when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/hakijaryhma', {controller:HakijaryhmaValintatapajonoController, templateUrl:TEMPLATE_URL_BASE + 'hakijaryhmaValintatapajono.html'}).
 
