@@ -404,17 +404,18 @@ var Funktio = function(funktiokuvaukset, data) {
     }
 
     this.funktioCssClass = function(defaultClass, selected) {
-        var cssClass = defaultClass
+        var cssClass = defaultClass;
         if(selected != null && this.hashKey == selected.hashKey) {
-            cssClass += " active"
+            cssClass += " active";
         }
         if(this.data.deleted) {
-            cssClass += " line-through"
+            cssClass += " line-through";
         }
         if(!this.hasNimetytArgumentit()) {
-            cssClass += " n-arguments"
+            cssClass += " n-arguments";
         }
-        return cssClass
+
+        return cssClass;
     }
 
     this.iconCssClass = function() {
@@ -422,6 +423,17 @@ var Funktio = function(funktiokuvaukset, data) {
             return "icon sum"
         }
         return "icon"
+    }
+
+    //returns style classes needed for drag & drop functionality
+    this.dragClasses = function() {
+        var dragClasses = "";
+
+        if(!this.funktiokuvaus.funktioargumentit) {
+            dragClasses += " no-nesting";
+        }
+
+        return dragClasses;
     }
 
     this.isNimettava = function() {
@@ -918,7 +930,6 @@ var FunktioNimiService = function() {
         "KESKIARVO": "Keskiarvo",
         "DEMOGRAFIA": "Demografia",
         "KONVERTOILUKUARVO": "Konvertoi",
-        "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI": "Konvertoi",
         "HYLKAA": "Hylkää",
         "PYORISTYS": "Pyöristys",
         "NIMETTYLUKUARVO": "Nimetty lukuarvo",

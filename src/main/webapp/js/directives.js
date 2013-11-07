@@ -47,6 +47,27 @@ app.directive('jqNestable', function($timeout) {
         }
     }
 });
+
+app.directive('kaavadrag', function() {
+  return {
+    restrict: 'A',
+    link: function($scope, iElm, iAttrs, controller) {
+      $(iElm[0]).nestedSortable({ 
+        disableNesting: "no-nesting",
+        listType: 'ul',
+        handle: '.icon',
+        cancel: '.disable-drag',
+        opacity: 0.5,
+        items: 'li',
+        revert: 250,
+        protectRoot: true,
+        placeholder: 'placeholder',
+        tolerance: 'intersect'
+      });
+    }
+  };
+});
+
 app.directive('nestedsortable', function(HakukohdeSiirra) {
     return {
         restrict: 'A',
