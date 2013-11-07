@@ -1,41 +1,33 @@
+<!-- Node template -->
 <script type="text/ng-template" id="valintaryhma_node.html">
-    <div class="state-disabled label">
-	    <span class="disclose icon valintaryhma folder"
-          ng-class="{ collapse: domain.isCollapsed(data), file: domain.isFile(data), open: domain.isExpanded(data)}"
-          ng-click="expandNode(data)">
-         ​</span>
-	    <!--
-        <span enter="hover" leave="hover" class="dropmenu">
 
-       <ul class="dropmenu-list">
-        <div class="state-disabled"><a href="#/valintaryhma/{{data.oid}}/lisaaSisaltyvaValintaryhma">Lisää sisältyvä
-            valintaryhmä</a></div>
-        <div class="state-disabled"><a href="#/valintaryhma/{{data.oid}}/sisaltyvat"> liitä hakukohde</a></div>
-    </ul>
-
-    </span>
-    -->
+    <span class="state-disabled label">
+        <span   class="disclose icon valintaryhma folder"
+                ng-class="{ collapse: domain.isCollapsed(data), file: domain.isFile(data), open: domain.isExpanded(data)}"
+                ng-click="expandNode(data)">
+        ​</span>
          <a href="#/valintaryhma/{{data.oid}}"> {{data.nimi}}</a>
-    </div>
-    <ol>
-        <span ng-if="data.isVisible" data-valintaryhmaoid="{{data.oid}}">
-            <li ng-repeat="data in data.alavalintaryhmat | orderBy:predicate "
-                data-oid="{{data.oid}}"
-                class="{{addClass('noNesting',domain.isHakukohde(data))}} {{addClass('uiExpanded',domain.isExpanded(data))}} {{addClass('uiCollapsed',domain.isCollapsed(data))}}"
-                ng-include="domain.getTemplate(data)">
-            </li>
-        </span>
-
-        <li ng-repeat="data in data.hakukohdeViitteet | orderBy:predicate"
+    </span>
+    <ol ng-if="data.isVisible" data-valintaryhmaoid="{{data.oid}}" >
+        <li ng-repeat="data in data.alavalintaryhmat | orderBy:predicate "
             data-oid="{{data.oid}}"
+            ng-show="!(!data.sisaltaaHakukohteita&&domain.search.vainHakukohteitaSisaltavatRyhmat)"
             class="{{addClass('noNesting',domain.isHakukohde(data))}} {{addClass('uiExpanded',domain.isExpanded(data))}} {{addClass('uiCollapsed',domain.isCollapsed(data))}}"
             ng-include="domain.getTemplate(data)">
         </li>
+         <li ng-repeat="data in data.hakukohdeViitteet | orderBy:predicate"
+             data-oid="{{data.oid}}"
+             class="{{addClass('noNesting',domain.isHakukohde(data))}} {{addClass('uiExpanded',domain.isExpanded(data))}} {{addClass('uiCollapsed',domain.isCollapsed(data))}}"
+             ng-include="domain.getTemplate(data)">
+         </li>
     </ol>
+
 </script>
+
+<!--Leaf template -->
 <script type="text/ng-template" id="hakukohde_leaf.html">
-        <span class="icon hakukohde file">​</span>
-        <div class="label"><a href="#/hakukohde/{{data.oid}}"> {{data.nimi}} ({{data.tila}})</a></div>
+    <span class="icon hakukohde file">​</span>
+    <div class="label"><a href="#/hakukohde/{{data.oid}}"> {{data.nimi}} ({{data.tila}})</a></div>
 </script>
 
 
@@ -44,9 +36,8 @@
     <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
     <a href="#/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
     <a href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
-
-    <!-- <a href="#/valinnanvaihe/:id/laskentakaava" class="tab"><span>Laskentakaavat</span></a>    -->
 </div>
+
 <div class="tabsheets">
 
     <input id="osallistuu" type="checkbox" ng-model="domain.search.vainValmiitJaJulkaistut" ng-change="domain.refresh()"/>
@@ -83,17 +74,25 @@
         <li ng-repeat="data in domain.valintaperusteList | orderBy:predicate"
             data-oid="{{data.oid}}"
             ng-model="data"
+            ng-show="!(!data.sisaltaaHakukohteita&&domain.search.vainHakukohteitaSisaltavatRyhmat)"
             class="{{addClass('noNesting',domain.isHakukohde(data))}} {{addClass('uiExpanded',domain.isExpanded(data))}} {{addClass('uiCollapsed',domain.isCollapsed(data))}}"
             ng-include="domain.getTemplate(data)">
         </li>
     </ol>
-    <table ng-if="domain.search.vainHakukohteet" class="sortable treelist collapsible multiselect" nestedsortable="">
+
+    <table ng-if="domain.search.vainHakukohteet" >  <!--class="virkailija-table-1"-->
+        <tr>
+            <th>Hakukohde</th>
+            <th>Valintaryhmä</th>
+        </tr>
         <tr ng-repeat="data in domain.hakukohteet | orderBy:predicate">
             <td>
-                <span class="icon hakukohde file">​</span>
+              <!--  <span class="icon hakukohde file">​</span>-->
                 <span class="label"><a href="#/hakukohde/{{data.oid}}"> {{data.nimi}} ({{data.tila}})</a></span>
             </td>
-            <td> <span ng-repeat="parent in data.getParents()"> {{parent.nimi}} / </span> </td>
+            <td>
+                <a href="#/valintaryhma/{{parent.oid}}" ng-repeat="parent in data.getParents()">{{parent.nimi}} / </a>
+            </td>
         </tr>
     </table>
 
