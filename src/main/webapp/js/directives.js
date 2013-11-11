@@ -10,7 +10,7 @@ app.directive('jqNestable', function($timeout) {
             $(element[0]).nestable({
                 group: 1,
                 listNodeName: 'ul',
-                rootClass: 'gradingformula',
+                rootCl2ass: 'gradingformula',
                 handleClass: 'icon',
                 dragClass: 'gradingformula-dragged',
                 placeClass: 'placeholder',
@@ -27,17 +27,17 @@ app.directive('jqNestable', function($timeout) {
 
             if(typeof options.onChange === 'function') {
                 $(element[0]).on('change', function(e, dragged) {
+
                     // TODO: Voisi innostuessaan tehdä jotain geneerisempää
                     // Haetaan pudotetun elementin scope ja sieltä paikallinen muuttuja 'funktio', asetettu laskentakaavalomake.html:ssä.
-                    var draggedFunction = dragged.scope().funktio
+                    var draggedFunction = dragged.scope().farg
                     // Haetaan edellinen parent model
                     var oldParentFunktio = dragged.scope().parent
                     // Haetaan uuden parentin scopesta muuttuja funktio
-                    var newParentEl = dragged.parent().parent()
+                    var newParentEl = dragged.parent().parent().parent()
                     var newParentFunktio = newParentEl.scope().funktio
                     var index = dragged.index()
                     options.onChange(draggedFunction, oldParentFunktio, newParentFunktio, index)
-
                     // Korjataan haamuelementti
                     dragged.remove()
 
@@ -54,15 +54,37 @@ app.directive('kaavadrag', function() {
     link: function($scope, iElm, iAttrs, controller) {
       $(iElm[0]).nestedSortable({ 
         disableNesting: "no-nesting",
+        cancel: 'cancel',
         listType: 'ul',
         handle: '.icon',
-        cancel: '.disable-drag',
         opacity: 0.5,
         items: 'li',
         revert: 250,
-        protectRoot: true,
         placeholder: 'placeholder',
-        tolerance: 'intersect'
+        tolerance: 'intersect',
+        containment: 'document',
+        update: function(event, ui) {
+          var item = ui.item;
+          var parent = item.parent('li');
+          console.log("parent li:", parent);
+          var draggedFunktio = item.data('funktio.tyyppi');
+          var oldParentFunktio = item.data('parent');
+
+          // prevent dragging a funktio to a position that it's imcompatible with
+          /*
+          if(!oldParentFunktio.funktioargumentit || oldParentFunktio.funktiokuvaus.funktioargumentit[0].tyyppi != draggedFunktio.funktiokuvaus.tyyppi) {
+            return false;
+          }
+          */
+        }
+        /*
+        stop: function(event, ui) {
+          var item = ui.item;
+          console.log("stop")
+          console.log(item.data('parent'));
+
+        }
+        */
       });
     }
   };

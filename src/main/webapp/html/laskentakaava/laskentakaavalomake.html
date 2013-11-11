@@ -2,28 +2,14 @@
 
 <!-- PAGE TEMPLATES -->
 
-<!-- kaava root needed for drag & drop -->
-<script type="text/ng-template" id="root_template.html">
-    <div class="frame">
-        <span class="icon">&#8302;</span>
-        <span class="label" ng-click="showDetails(funktio)">{{funktio.naytettavaNimi}}</span>
-    </div>
-    <ul class="frame-content">
-        <li class="item" ng-repeat="farg in funktio.funktioargumentit" >
-            <div ng-controller="recurseController">
-                <div ng-include="funktio.template"></div>
-            </div>
-        </li>
-    </ul>
-</script>
-
 <script type="text/ng-template" id="frame_template.html">
     <div class="frame">
         <span class="icon">&#8302;</span>
         <span class="label" ng-click="showDetails(funktio)">{{funktio.naytettavaNimi}}</span>
     </div>
-    <ul class="frame-content">
-        <li class="item" ng-repeat="farg in funktio.funktioargumentit">
+    <ul ng-init="parent = farg" class="frame-content list">
+        <li data-parent="{{parent}}" data-funktio="{{farg}}" class="item" ng-repeat="farg in funktio.funktioargumentit" ng-class="funktio.dragClasses()">
+
             <div ng-controller="recurseController">
                 <div ng-include="funktio.template"></div>
             </div>
@@ -44,8 +30,8 @@
         <span class="label" ng-click="showDetails(funktio)">{{funktio.naytettavaNimi}}</span>
         <span class="notification warning" ng-show="funktio.hasErrors()">!</span>
     </div>
-    <ul class="function-content">
-        <li class="item" ng-repeat="farg in funktio.funktioargumentit" ng-class="farg.dragClasses()">
+    <ul ng-init="parent = farg" class="function-content">
+        <li data-funktio="{{farg}}" data-parent="{{parent}}" class="item" ng-repeat="farg in funktio.funktioargumentit" ng-class="farg.dragClasses()">
             <div ng-controller="recurseController">
                 <div ng-include="funktio.template"></div>
             </div>
@@ -61,7 +47,7 @@
 </script>
 
 <script type="text/ng-template" id="tyhja_template.html">
-    <div class="function function-menu">
+    <div class="function cancel no-nesting">
         <span class="dropzone">{{funktio.otsikko()}}</span>
         
         <table class="dropmenu-table" ng-show="funktio.isLukuarvoFunktio()">
@@ -257,6 +243,7 @@
 <!-- LASKENTAKAAVAPAGE CONTENT -->
 <h1>Laskentakaavan muokkaus</h1>
 
+
 <div class="tabs" ng-controller="LaskentakaavaMenuController">
     <a ng-repeat="menuitem in menuitems" href="{{menuitem.url}}" ng-class="cssClass(menuitem)">
         <span>{{menuitem.title}}</span>
@@ -280,11 +267,15 @@
     </div>
 
     <div class="clear"></div>
+    <div class="clear"></div>
     <div class="gradingformula dd" style="width:60%;float:left;"
-         ng-include="'root_template.html'">
+    jq-nestable="{onChange: kaavaDragged}" 
+        ng-include="funktio.template">
     </div>
     <!--
-    jq-nestable="{onChange: kaavaDragged}"
+    <div class="gradingformula dd" style="width:60%;float:left;" ng-include="'root_template.html'">
+        
+    </div>
     -->
 
 
@@ -369,7 +360,7 @@
                     </div>
                 </div>
                 
-                <div ng-show="f.konvertteri">
+                <div ng-if="f.konvertteri">
                     <label class="form-item-label" style="width:50px;">Arvomuunnin</label>
                     <div class="form-item-content">
                         <div class="field-select-containerbox">
@@ -414,25 +405,29 @@
             </div>
 
             
-            <!-- Konvertteri --> 
-            <div class="form-item" ng-show="f.konvertteri && !f.isHaettavaArvoTyyppi()">
+
+            <div class="form-item" ng-if="f.konvertteri && !f.isHaettavaArvoTyyppi()">
     
                 <div class="form-item-content">
                     <div class="field-select-containerbox">
+                        <select ng-change="f.konvertteri.setTyyppi(f.konvertteri.uusityyppi)"
+                                ng-model="f.konvertteri.uusityyppi" ng-options="konvertterityyppi.tyyppi as konvertterityyppi.tyyppi for konvertterityyppi in f.konvertteri.konvDef.konvertteriTyypit">
+                            <option value=""></option>
+                        </select>
+                        <!--
                         <select ng-change="f.konvertteri.setTyyppi(f.konvertteri.uusityyppi)"
                                 ng-model="f.konvertteri.uusityyppi">
                             <option value="ARVOVALIKONVERTTERI">Arvovälimuunnin</option>
                             <option value="ARVOKONVERTTERI">Arvovaihtoehdot</option>
                         </select>
+                        -->
                     </div>
                 </div>
 
                 <label class="form-item-label" style="width:100px;"
                        ng-show="f.konvertteri.template">Konversiomäärittelyt</label>
 
-                <div class="form-item-content" ng-include="f.konvertteri.template">
-
-                </div>
+                <div class="form-item-content" ng-include="f.konvertteri.template"></div>
                 <span class="button small" ng-click="f.konvertteri.addParametri()">Lisää parametri</span>
 
                 <div class="clear"></div>

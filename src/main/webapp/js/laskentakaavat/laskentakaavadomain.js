@@ -104,7 +104,7 @@ var LaskentakaavaViite = function(funktiokuvaukset, data) {
 
 var Funktio = function(funktiokuvaukset, data) {
 
-    // Funktiot, joille määritellään valintaperusteet
+    // Hakutyyppiset funktiot. Näille määritellään valintaperusteet
     var HAETTAVA_TYYPPI = ["HAELUKUARVO", "HAETOTUUSARVO", "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI", "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI", "HAEMERKKIJONOJAVERTAAYHTASUURUUS", "VALINTAPERUSTEYHTASUURUUS"];
     
     var NIMETTAVAT_TYYPPI = ["NIMETTYLUKUARVO", "NIMETTYTOTUUSARVO"];
@@ -112,10 +112,11 @@ var Funktio = function(funktiokuvaukset, data) {
     // Funktiot jotka ottavat listan funktioargumenttipareja
     var FUNKTIOPARI_TYYPPI = ["PAINOTETTUKESKIARVO"];
 
+
+
     this.data = data;
     this.funktiokuvausService = new FunktiokuvausService(funktiokuvaukset);
     this.funktionimiService = FunktioNimiService();
-
 
     this.init = function() {
         if(!this.data.funktioargumentit) {
@@ -244,6 +245,7 @@ var Funktio = function(funktiokuvaukset, data) {
         }
         var funcargs = []
         for(i in this.data.funktioargumentit) {
+
             var data = this.data.funktioargumentit[i];
             funcargs.push(this.createSubFunction(data));
         }
@@ -636,7 +638,7 @@ var Funktio = function(funktiokuvaukset, data) {
                 data = angular.copy(this.data.funktioargumentit[index].funktiokutsuChild);
                 this.data.funktioargumentit.splice(index, 1);
                 this.funktioargumentit = this.getFunktioargumentit();
-                var func = new Funktio(angular.copy(this.funktiokuvausService.getFunktiokuvaukset()), data.funktiokutsu);
+                var func = new Funktio(angular.copy(this.funktiokuvausService.getFunktiokuvaukset()), data);
                 func.init();
                 return func;
             }
@@ -654,7 +656,7 @@ var Funktio = function(funktiokuvaukset, data) {
             return;
         }
     }
-
+    
     this.isHaettavaArvoTyyppi = function() {
         return HAETTAVA_TYYPPI.indexOf(this.nimi) !== -1
     }
@@ -677,6 +679,7 @@ var Funktio = function(funktiokuvaukset, data) {
         }
         return errors
     }
+
 }
 
 var Konvertteri = function(konvDef, data) {
