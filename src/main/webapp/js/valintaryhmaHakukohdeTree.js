@@ -19,7 +19,7 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu) {
                     valintaryhmiaNakyvissa: 0,
                     hakukohteitaNakyvissa: 0
         },
-        //rest
+        //methods
     	isFile: function(data) {
     		return data.hakukohdeViitteet == 0 && data.alavalintaryhmat == 0;
     	},
@@ -71,16 +71,30 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu) {
             });
         },
         expandTree:function() {
-            var list = modelInterface.valintaperusteList;
-                  modelInterface.valintaperusteList = [];
-                  var recursion = function(item) {
-                      item.isVisible = true;
-                      if(item.alavalintaryhmat)  item.alavalintaryhmat.forEach(recursion);
-                  }
-                list.forEach(recursion);
-                modelInterface.valintaperusteList = list;
-                modelInterface.update();
-
+            modelInterface.forEachValintaryhma(function(item) {
+                item.isVisible = true;
+            });
+        },
+        forEachValintaryhma:function(f) {
+            var recursion = function(item, f) {
+                f(item);
+                if(item.alavalintaryhmat) for(var i=0; i<item.alavalintaryhmat.length;i++)  recursion(item.alavalintaryhmat[i],  f);
+            }
+           for(var i=0; i<modelInterface.valintaperusteList.length;i++) recursion(modelInterface.valintaperusteList[i],  f);
+        },
+        getHakukohde:function(oid) {
+            for(i=0;i<modelInterface.hakukohteet.length;i++) {
+                if(oid == modelInterface.hakukohteet[i].oid) {
+                    return modelInterface.hakukohteet[i];
+                }
+            }
+        },
+       getValintaryhma:function(oid) {
+            var valintaryhma = null;
+            modelInterface.forEachValintaryhma(function(item) {
+                if(item.oid == oid) valintaryhma = item;
+            });
+            return valintaryhma;
         },
         update:function() {
             var list = modelInterface.valintaperusteList;
@@ -112,12 +126,21 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu) {
                 if(item.tyyppi == 'HAKUKOHDE') {
                    modelInterface.tilasto.hakukohteita++;
                    modelInterface.hakukohteet.push(item);
-                 }
+                }
                 if(item.alavalintaryhmat)  for(var i=0; i<item.alavalintaryhmat.length;i++)  recursion(item.alavalintaryhmat[i],  item);
                 if(item.hakukohdeViitteet) for(var i=0; i<item.hakukohdeViitteet.length;i++) recursion(item.hakukohdeViitteet[i], item);
             }
+            for(var i=0; i<list.length;i++) recursion(list[i]);
 
-          for(var i=0; i<list.length;i++) recursion(list[i]);
+            modelInterface.hakukohteet.forEach(function(hakukohde){
+              hakukohde.sisaltaaHakukohteita = true;
+              var parent = hakukohde.ylavalintaryhma;
+              while(parent != null) {
+                parent.sisaltaaHakukohteita = true;
+                parent = parent.ylavalintaryhma;
+              }
+            });
+
           modelInterface.valintaperusteList = list;
         }
 
@@ -142,15 +165,16 @@ function ValintaryhmaHakukohdeTreeController($scope, $resource,Treemodel,Hakukoh
 
 	$scope.move = function(index, hakukohdeOid, valintaryhmaOid, item) {
 
-        console.log("siirto");
-	    console.log(index);
-	    console.log("Hakukohde oid :"  + hakukohdeOid);
-	    console.log("Valintaryhmaoidi olisi sit :" + valintaryhmaOid);
-	    console.log(item);
+      //  console.log("siirto");
+	  //  console.log(index);
+	   // console.log("Hakukohde oid :"  + hakukohdeOid);
+	   // console.log("Valintaryhmaoidi olisi sit :" + valintaryhmaOid);
+	   // console.log(item);
 
-
-		HakukohdeSiirra.siirra({hakukohdeOid: hakukohdeOid}, valintaryhmaOid, function(result) {
-
+        HakukohdeSiirra.siirra({hakukohdeOid: hakukohdeOid}, valintaryhmaOid, function(result) {
+            //var hakukohde = Treemodel.getHakukohde(hakukohdeOid);
+            //var parentNode = hakukohde.ylavalintaryhma;
+            //var newParentNode = Treemodel.getValintaryhma(valintaryhmaOid);
     	}, function() {
               // show error
     	});

@@ -47,6 +47,27 @@ app.directive('jqNestable', function($timeout) {
         }
     }
 });
+
+app.directive('kaavadrag', function() {
+  return {
+    restrict: 'A',
+    link: function($scope, iElm, iAttrs, controller) {
+      $(iElm[0]).nestedSortable({ 
+        disableNesting: "no-nesting",
+        listType: 'ul',
+        handle: '.icon',
+        cancel: '.disable-drag',
+        opacity: 0.5,
+        items: 'li',
+        revert: 250,
+        protectRoot: true,
+        placeholder: 'placeholder',
+        tolerance: 'intersect'
+      });
+    }
+  };
+});
+
 app.directive('nestedsortable', function(HakukohdeSiirra) {
     return {
         restrict: 'A',
@@ -58,7 +79,7 @@ app.directive('nestedsortable', function(HakukohdeSiirra) {
             	cancel: ".state-disabled",
             	disableNesting: "noNesting",
                 handle: 'div',
-                toleranceElement: '> div',
+                toleranceElement: '> span',
                 forcePlaceholderSize: true,
                 //helper: 'clone',
     			helper:	'original',
@@ -69,7 +90,7 @@ app.directive('nestedsortable', function(HakukohdeSiirra) {
     			revert: 250,
     			tabSize: 10,
     			tolerance: 'pointer',
-    			toleranceElement: '> div',
+    			toleranceElement: '> span',
     			maxLevels: 10,
     			isTree: true,
     			doNotClear: true,
