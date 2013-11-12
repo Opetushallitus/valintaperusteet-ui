@@ -48,48 +48,6 @@ app.directive('jqNestable', function($timeout) {
     }
 });
 
-app.directive('kaavadrag', function() {
-  return {
-    restrict: 'A',
-    link: function($scope, iElm, iAttrs, controller) {
-      $(iElm[0]).nestedSortable({ 
-        disableNesting: "no-nesting",
-        cancel: 'cancel',
-        listType: 'ul',
-        handle: '.icon',
-        opacity: 0.5,
-        items: 'li',
-        revert: 250,
-        placeholder: 'placeholder',
-        tolerance: 'intersect',
-        containment: 'document',
-        update: function(event, ui) {
-          var item = ui.item;
-          var parent = item.parent('li');
-          console.log("parent li:", parent);
-          var draggedFunktio = item.data('funktio.tyyppi');
-          var oldParentFunktio = item.data('parent');
-
-          // prevent dragging a funktio to a position that it's imcompatible with
-          /*
-          if(!oldParentFunktio.funktioargumentit || oldParentFunktio.funktiokuvaus.funktioargumentit[0].tyyppi != draggedFunktio.funktiokuvaus.tyyppi) {
-            return false;
-          }
-          */
-        }
-        /*
-        stop: function(event, ui) {
-          var item = ui.item;
-          console.log("stop")
-          console.log(item.data('parent'));
-
-        }
-        */
-      });
-    }
-  };
-});
-
 app.directive('nestedsortable', function(HakukohdeSiirra) {
     return {
         restrict: 'A',

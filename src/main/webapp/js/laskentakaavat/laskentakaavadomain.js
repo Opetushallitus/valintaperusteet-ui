@@ -338,7 +338,7 @@ var Funktio = function(funktiokuvaukset, data) {
             var alikaava = new LaskentakaavaViite(this.funktiokuvausService, data.laskentakaavaChild);
             return alikaava;
         } else {
-            console.log("Kutsuttiin alikaavaobjektin luontia virheellisellä datalla", data);
+            throw new Error('Funktion muokkaus epäonnistui datalla. Data-objektilla ei ole funktiokutsuChild eikä laskentakaavaChild jäsenmuuttujaa');
         }
     }
 
