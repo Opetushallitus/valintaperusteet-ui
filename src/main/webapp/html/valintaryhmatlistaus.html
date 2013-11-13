@@ -3,18 +3,16 @@
 
     <span class="label">
         <i class="fa fa-users valintaryhma"  ng-class="{ kiinni: domain.isCollapsed(data), eilapsia: domain.isFile(data), auki: domain.isExpanded(data)}" ng-click="expandNode(data)"></i>
-         <a href="#/valintaryhma/{{data.oid}}"> {{data.nimi}}</a>
+        <a href="#/valintaryhma/{{data.oid}}"> {{data.nimi}}</a>
     </span>
     <ol ng-if="data.isVisible" data-valintaryhmaoid="{{data.oid}}" >
         <li ng-repeat="data in data.alavalintaryhmat | orderBy:predicate "
             data-oid="{{data.oid}}"
             ng-show="!(!data.sisaltaaHakukohteita&&domain.search.vainHakukohteitaSisaltavatRyhmat)"
-            class="{{addClass('noNesting',domain.isHakukohde(data))}} {{addClass('uiExpanded',domain.isExpanded(data))}} {{addClass('uiCollapsed',domain.isCollapsed(data))}}"
             ng-include="domain.getTemplate(data)">
         </li>
          <li ng-repeat="data in data.hakukohdeViitteet | orderBy:predicate"
              data-oid="{{data.oid}}"
-             class="{{addClass('noNesting',domain.isHakukohde(data))}} {{addClass('uiExpanded',domain.isExpanded(data))}} {{addClass('uiCollapsed',domain.isCollapsed(data))}}"
              ng-include="domain.getTemplate(data)">
          </li>
     </ol>
