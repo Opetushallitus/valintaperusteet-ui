@@ -80,20 +80,28 @@
         </li>
     </ol>
 
-    <table ng-if="domain.search.vainHakukohteet" >  <!--class="virkailija-table-1"-->
-        <tr>
-            <th>Hakukohde</th>
-            <th>Valintaryhmä</th>
-        </tr>
-        <tr ng-repeat="data in domain.hakukohteet | orderBy:predicate">
-            <td>
-              <!--  <span class="icon hakukohde file">​</span>-->
-                <span class="label"><a href="#/hakukohde/{{data.oid}}"> {{data.nimi}} ({{data.tila}})</a></span>
-            </td>
-            <td>
-                <a href="#/valintaryhma/{{parent.oid}}" ng-repeat="parent in data.getParents()">{{parent.nimi}} / </a>
-            </td>
-        </tr>
+    <table ng-if="domain.search.vainHakukohteet" class="virkailija-table-1 hakukohde-table" >  <!---->
+        <thead>
+            <tr>
+                <th>Hakukohde</th>
+                <th>Valintaryhmä</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="data in domain.hakukohteet | orderBy:predicate">
+                <td>
+                    <span class="float-left">
+                        <span class="hakukohdeicon">​</span>
+                        <span class="label"><a href="#/hakukohde/{{data.oid}}"> {{data.nimi}} ({{data.tila}})</a></span>
+                    </span>
+                </td>
+                <td>
+                    <span class="float-left">
+                        <a href="#/valintaryhma/{{parent.oid}}" ng-repeat="parent in data.getParents()">{{parent.nimi}} / </a>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
     </table>
 
 
