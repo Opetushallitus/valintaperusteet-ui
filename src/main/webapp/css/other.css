@@ -1,0 +1,15 @@
+.valintaryhma.auki {
+    color: gray;
+}
+
+.valintaryhma.kiinni {
+          color:black;
+}
+
+.valintaryhma.eilapsia {
+   color: light-gray;
+}
+
+.treelist i {
+    cursor: pointer;
+}
