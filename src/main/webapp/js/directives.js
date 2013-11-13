@@ -224,3 +224,42 @@ app.directive('flOption', function() {
     }
   }
 });
+
+
+app.directive('itemOnScreen', function ($timeout) {
+    return {
+        scope: true,
+        link: function ( scope, element, attrs ) {
+            var oldBottom = 0;
+            var oldDocument = 0;
+            var checkHeight = function(){
+              var docViewTop = $(window).scrollTop();
+              var docViewBottom = docViewTop + $(window).height();
+              var elemTop = $(element).offset().top;
+
+              var elemBottom = elemTop + $(element).height();
+
+              if(elemBottom < docViewBottom && oldBottom != elemBottom) {
+                  scope.$apply(function() {
+                      scope.lazyLoading();
+                      oldBottom = elemBottom;
+                  });
+
+                  $timeout(checkHeight,10);
+              }
+              else {
+                $(window).scroll(function(e) {
+                    var documentHeight = $(document).height();
+                    if($(window).scrollTop() + $(window).height() >= documentHeight * .9 && oldDocument != documentHeight) {
+                        scope.$apply(function() {
+                            scope.lazyLoading();
+                            oldDocument = documentHeight;
+                        });
+                    }
+                });
+              }
+            };
+            $timeout(checkHeight,10);
+        }
+    };
+});

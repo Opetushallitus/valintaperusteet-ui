@@ -63,7 +63,6 @@
 
     <div>Haku palautti {{domain.tilasto.valintaryhmia}} valintaryhmää ja {{domain.tilasto.hakukohteita}} hakukohdetta </div>
 
-
     <ol ng-if="!domain.search.vainHakukohteet" class="sortable treelist collapsible multiselect" nestedsortable="">
         <li ng-repeat="data in domain.valintaperusteList | orderBy:predicate"
             data-oid="{{data.oid}}"
@@ -74,7 +73,8 @@
         </li>
     </ol>
 
-    <table ng-if="domain.search.vainHakukohteet" class="virkailija-table-1 hakukohde-table" >  <!---->
+    <div ng-if="hakukohteetListingLimit < domain.hakukohteet.length && domain.search.vainHakukohteet">Näytetty: {{hakukohteetListingLimit}} / {{domain.hakukohteet.length}}</div>
+    <table ng-if="domain.search.vainHakukohteet" class="virkailija-table-1 hakukohde-table"  item-on-screen>
         <thead>
             <tr>
                 <th>Hakukohde</th>
@@ -82,7 +82,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="data in domain.hakukohteet | orderBy:predicate">
+            <tr ng-repeat="data in domain.hakukohteet | limitTo:hakukohteetListingLimit">
                 <td>
                     <span class="float-left">
                          <i class="fa fa-building-o"></i>
@@ -98,7 +98,7 @@
             </tr>
         </tbody>
     </table>
-
+    <div ng-if="hakukohteetListingLimit < domain.hakukohteet.length && domain.search.vainHakukohteet">Näytetty: {{hakukohteetListingLimit}} / {{domain.hakukohteet.length}}</div>
 
 </div>
 

@@ -157,6 +157,11 @@ function ValintaryhmaHakukohdeTreeController($scope, $resource,Treemodel,Hakukoh
     $scope.hakuModel = HakuModel;
     $scope.hakuModel.init();
 
+    $scope.hakukohteetListingLimit = 100;
+    $scope.lazyLoading = function() {
+        $scope.hakukohteetListingLimit +=100;
+    }
+
 	$scope.expandGroup = function($event) {
 		$($event.target).closest('li').toggleClass('uiCollapsed').toggleClass('uiExpanded');
 	}
