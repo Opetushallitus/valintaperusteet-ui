@@ -330,11 +330,8 @@
                     <label class="form-item-label" style="width:50px;">Tyyppi</label>
                     <div class="form-item-content">
                         <div class="field-select-containerbox">
-                            <select ng-model="valintaperusteviite.lahde">
-                                <option value="HAETTAVA_ARVO">Arvo hakemukselta</option>
-                                <option value="SYOTETTAVA_ARVO">Syötettävä arvo</option>
-                                <option value="HAKUKOHTEEN_ARVO">Hakukohteen arvo</option>
-                            </select>
+                            <select ng-model="valintaperusteviite.lahde" ng-options="item.key as item.text for item in f.getValintaperusteviitetyypit()">
+                            </select>        
                         </div>
                         <div class="field-container-checkbox">
                             <input type="checkbox" id="requiredparam" ng-model="valintaperusteviite.onPakollinen"/>

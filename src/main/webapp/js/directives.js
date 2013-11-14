@@ -21,7 +21,24 @@ app.directive('jqNestable', function($timeout) {
                 expandBtnHTML: '',
                 collapseBtnHTML: '',
                 canDrop: function(pointEl) {
-                    return true
+                  //check parent for every
+                  /*
+                  console.log(pointEl.scope().farg.nimi);
+                  
+                  var funktio = pointEl.scope().farg;
+                  var newparent = pointEl.parent().parent().parent().scope().funktio;
+                  var indexAt = pointEl.index();
+
+                  if(newparent.isAddFunktioToindexLegal(funktio, indexAt)) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                  */
+                  return true
+                },
+                dragStart: function(e) {
+                  console.log("lajflö)");
                 }
             })
 
@@ -30,6 +47,7 @@ app.directive('jqNestable', function($timeout) {
 
                     // TODO: Voisi innostuessaan tehdä jotain geneerisempää
                     // Haetaan pudotetun elementin scope ja sieltä paikallinen muuttuja 'funktio', asetettu laskentakaavalomake.html:ssä.
+                    
                     var draggedFunction = dragged.scope().farg
                     // Haetaan edellinen parent model
                     var oldParentFunktio = dragged.scope().parent
@@ -38,10 +56,13 @@ app.directive('jqNestable', function($timeout) {
                     var newParentFunktio = newParentEl.scope().funktio
                     var index = dragged.index()
                     options.onChange(draggedFunction, oldParentFunktio, newParentFunktio, index)
+                    
                     // Korjataan haamuelementti
                     dragged.remove()
 
                     $(newParentEl).scope().$apply()
+                    
+                    
                 })
             }
         }

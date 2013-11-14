@@ -112,7 +112,21 @@ var Funktio = function(funktiokuvaukset, data) {
     // Funktiot jotka ottavat listan funktioargumenttipareja
     var FUNKTIOPARI_TYYPPI = ["PAINOTETTUKESKIARVO"];
 
-
+    //valintaperusteviitetyypit, käytetään HAETTAVA_TYYPPI -tyyppisissä funktioissa
+    var VALINTAPERUSTEVIITETYYPIT = [
+        {
+            key: 'HAETTAVA_ARVO',
+            text: 'Arvo hakemukselta'
+        },
+        {
+            key: 'SYOTETTAVA_ARVO',
+            text: 'Syötettävä arvo'
+        },
+        {
+            key: 'HAKUKOHTEEN_ARVO',
+            text: 'Hakukohteen arvo'
+        }
+    ]
 
     this.data = data;
     this.funktiokuvausService = new FunktiokuvausService(funktiokuvaukset);
@@ -144,12 +158,13 @@ var Funktio = function(funktiokuvaukset, data) {
         if((HAETTAVA_TYYPPI.indexOf(data.funktionimi) != -1) && !data.valintaperusteviitteet) {
             data.valintaperusteviitteet = [];
             this.funktiokuvaus.valintaperuste.forEach(function(element, index) {
-                data.valintaperusteviitteet.push({indeksi: index + 1});
+                data.valintaperusteviitteet.push({indeksi: index + 1, lahde: "HAETTAVA_ARVO"});
             }); 
         }
 
         
     }
+
 
     /* Structure methods i.e. parses subitems */
     this.getId = function() {
@@ -161,6 +176,10 @@ var Funktio = function(funktiokuvaukset, data) {
     }
     this.tyyppi = function() {
         return this.funktiokuvaus
+    }   
+
+    this.getValintaperusteviitetyypit = function() {
+        return VALINTAPERUSTEVIITETYYPIT;
     }
 
     /**
@@ -554,6 +573,34 @@ var Funktio = function(funktiokuvaukset, data) {
 
         this.funktioargumentit = this.getFunktioargumentit();
         return this.findFunktioArgumentti(newReference.laskentakaavaChild);
+    }
+
+    this.isAddFunktioToindexLegal = function(funktio, index) {
+        
+        
+        var data = {};
+        if(funktio instanceof Funktio) {
+            data.funktiokutsuChild = funktio.data;
+        }
+
+        if(funktio instanceof LaskentakaavaViite) {
+            data.laskentakaavaChild = funktio.data;
+        }
+
+        if(this.funktiokuvaus.funktioargumentit && this.funktiokuvaus.funktioargumentit[0].tyyppi === funktio.tyyppi) {
+            return true;
+        }
+        console.log('can add here?');
+        console.log(this.funktiokuvaus.funktioargumentit[0].tyyppi);
+        console.log(funktio.funktiokuvaus.tyyppi);
+
+        if(this.nimi === 'JOS') {
+            if(funktio.funktiokuvaus.tyyppi !== this.funktiokuvaus.funktioargumentit[index]) {
+                return true;
+            }
+        }
+    
+        return true;
     }
 
     this.addChildAt = function(funktio, index) {
