@@ -1,73 +1,56 @@
 
-/**
- * JQuery Nestable drag'n'drop tree.
- */
-app.directive('jqNestable', function($timeout) {
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            var options = scope.$eval(attrs.jqNestable) || {}
-            $(element[0]).nestable({
-                group: 1,
-                listNodeName: 'ul',
-                rootCl2ass: 'gradingformula',
-                handleClass: 'icon',
-                dragClass: 'gradingformula-dragged',
-                placeClass: 'placeholder',
-                emptyClass: 'empty',
-                listClass: 'list',
-                itemClass: 'item',
-                maxDepth: 25,
-                expandBtnHTML: '',
-                collapseBtnHTML: '',
-                canDrop: function(pointEl) {
-                  //check parent for every
-                  /*
-                  console.log(pointEl.scope().farg.nimi);
-                  
-                  var funktio = pointEl.scope().farg;
-                  var newparent = pointEl.parent().parent().parent().scope().funktio;
-                  var indexAt = pointEl.index();
 
-                  if(newparent.isAddFunktioToindexLegal(funktio, indexAt)) {
-                    return true;
-                  } else {
-                    return false;
-                  }
-                  */
-                  return true
-                },
-                dragStart: function(e) {
-                  console.log("lajflö)");
-                }
-            })
+app.directive('kaavadrag', function() {
+  return {
+    restrict: 'A',
+    link: function($scope, iElm, iAttrs, controller) {
 
-            if(typeof options.onChange === 'function') {
-                $(element[0]).on('change', function(e, dragged) {
+      $(iElm[0]).nestedSortable({ 
+        disableNesting: "no-nesting",
+        cancel: 'cancel',
+        listType: 'ul',
+        handle: '.icon',
+        opacity: 0.5,
+        items: 'li',
+        revert: 250,
+        placeholder: 'placeholder',
+        tolerance: 'intersect',
 
-                    // TODO: Voisi innostuessaan tehdä jotain geneerisempää
-                    // Haetaan pudotetun elementin scope ja sieltä paikallinen muuttuja 'funktio', asetettu laskentakaavalomake.html:ssä.
-                    
-                    var draggedFunction = dragged.scope().farg
-                    // Haetaan edellinen parent model
-                    var oldParentFunktio = dragged.scope().parent
-                    // Haetaan uuden parentin scopesta muuttuja funktio
-                    var newParentEl = dragged.parent().parent().parent()
-                    var newParentFunktio = newParentEl.scope().funktio
-                    var index = dragged.index()
-                    options.onChange(draggedFunction, oldParentFunktio, newParentFunktio, index)
-                    
-                    // Korjataan haamuelementti
-                    dragged.remove()
+        update: function(event, ui) {
+          var item = ui.item;
+          var draggedFunktio = item.scope().farg;
+          var oldParentFunktio = item.scope().parent;
+          var newParentFunktio = ui.item.parent().parent().parent().scope().funktio;
+          var index = ui.item.index();
+          // Tarkistetaan, ettei funktiota aseteta paikkaan, johon se ei sovi
+          /*
+          if(!oldParentFunktio.funktioargumentit || oldParentFunktio.funktiokuvaus.funktioargumentit[0].tyyppi != draggedFunktio.funktiokuvaus.tyyppi) {
+            return false;
+          }
+          */
 
-                    $(newParentEl).scope().$apply()
-                    
-                    
-                })
-            }
+
+          $scope.$emit('saveKaava', {
+            draggedFunktio: draggedFunktio,
+            oldParentFunktio: oldParentFunktio,
+            newParentFunktio: newParentFunktio,
+            index: index
+          });
         }
+      });
     }
+  };
 });
+/*
+app.directive('kaavafunktio', function() {
+  return {
+    restrict: 'A',
+    link: function($scope, iElm, iAttrs, ctrl) {
+
+    }
+  }
+});
+*/
 
 app.directive('nestedsortable', function(HakukohdeSiirra) {
     return {

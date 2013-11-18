@@ -1,17 +1,17 @@
 
 var Kaava = function(funktiokuvaukset, data) {
-    this.funktiokuvaukset = funktiokuvaukset
-    this.data = data
-    this.funktio = new Funktio(this.funktiokuvaukset, this.data.funktiokutsu)
-    this.funktio.init()
+    this.funktiokuvaukset = funktiokuvaukset;
+    this.data = data;
+    this.funktio = new Funktio(this.funktiokuvaukset, this.data.funktiokutsu);
+    this.funktio.init();
 
     /* Structure methods i.e. parses subitems */
     this.funktiopuu = function() {
-        return this.funktio
+        return this.funktio;
     }
 
     this.luonnos = function() {
-        return this.data.onLuonnos
+        return this.data.onLuonnos;
     }
 
     /* UI Methods */
@@ -575,6 +575,7 @@ var Funktio = function(funktiokuvaukset, data) {
         return this.findFunktioArgumentti(newReference.laskentakaavaChild);
     }
 
+    /*
     this.isAddFunktioToindexLegal = function(funktio, index) {
         
         
@@ -602,6 +603,7 @@ var Funktio = function(funktiokuvaukset, data) {
     
         return true;
     }
+    */
 
     this.addChildAt = function(funktio, index) {
         var data = {};
@@ -792,16 +794,23 @@ var Konvertteri = function(konvDef, data) {
     }
 
     this.setTyyppi = function(tyyppi) {
-
+        
+        //poistetaan asetetut konvertteriparametrit konvertterityyppiä vaihdettaessa
+        
+        /*
         //asetetaan konvertterityypin vaihtoa edeltävät konvertteriparametrit talteen 
         if(this.tyyppi) {
             var konvertterityyppi = this.getKonvertterityyppi()
             if(this.data[konvertterityyppi]) {
                 this.oldData[this.tyyppi] = this.data[konvertterityyppi].slice()
             }
-            this.data[konvertterityyppi] = []
-        }
 
+            this.data[konvertterityyppi].splice(0);
+        }
+        */
+
+        //remove 
+        //this.parametrit.splice(0);
 
         this.tyyppi = tyyppi
         this.template = TEMPLATE_MAP[tyyppi]
@@ -810,12 +819,18 @@ var Konvertteri = function(konvDef, data) {
         if(this.data[konvertterityyppi]) {
             this.data[konvertterityyppi].splice(0, this.data[konvertterityyppi].length)
         }
+
+        //poistetaan asetetut konvertteriparametrit konvertterityyppiä vaihdettaessa
+        /*
         if(this.oldData[this.tyyppi]) {
             for(var i = 0; i < this.oldData[this.tyyppi].length; i++) {
                 this.data[konvertterityyppi].push(this.oldData[this.tyyppi][i])
             }
         }
+        */
+
         this.parametrit = this.getParametrit()
+        console.log('after:',this)
     }
 
     this.getDefinition = function() {
@@ -875,14 +890,8 @@ var Konvertteri = function(konvDef, data) {
 }
 
 var KonvertteriParametri = function(tietotyyppi, data) {
-    this.tietotyyppi = tietotyyppi
-    this.data = data
-
-    this.init = function() {
-
-    }
-
-    this.init()
+    this.tietotyyppi = tietotyyppi;
+    this.data = data;
 }
 
 var Parametri = function(definition, data) {

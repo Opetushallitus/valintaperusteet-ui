@@ -28,7 +28,7 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
     $scope.showDetails = function(funktio) {
         $scope.f = funktio;
         $scope.showTemplate = true;
-        $scope.showKaavaMenu = false;
+        $scope.showKaavaMenu = false;   
         $scope.selected = funktio;
     }
 
@@ -62,6 +62,11 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
         oldParent.init()
     }
 
+    //called from kaavaeditor -directive when an item has been moved in kaavaeditor
+    $scope.$on('saveKaava', function(event, paramObject) {
+        $scope.kaavaDragged(paramObject.draggedFunktio, paramObject.oldParentFunktio, paramObject.newParentFunktio, paramObject.index);
+    });
+
     $scope.saveKaavaAsCompleted = function() {
         var kaava = Laskentapuu.laskentakaava().getData();
         var validateKaava = {};
@@ -92,7 +97,7 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
 
     }
     
-
+    
 
     $scope.saveKaavaAsDraft = function() {
         var kaava = Laskentapuu.laskentakaava().getData()
