@@ -106,9 +106,9 @@ var Funktio = function(funktiokuvaukset, data) {
 
     // Hakutyyppiset funktiot. Näille määritellään valintaperusteet
     var HAETTAVA_TYYPPI = ["HAELUKUARVO", "HAETOTUUSARVO", "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI", "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI", "HAEMERKKIJONOJAVERTAAYHTASUURUUS", "VALINTAPERUSTEYHTASUURUUS"];
-    
+
     var NIMETTAVAT_TYYPPI = ["NIMETTYLUKUARVO", "NIMETTYTOTUUSARVO"];
-    
+
     // Funktiot jotka ottavat listan funktioargumenttipareja
     var FUNKTIOPARI_TYYPPI = ["PAINOTETTUKESKIARVO"];
 
@@ -154,15 +154,15 @@ var Funktio = function(funktiokuvaukset, data) {
         this.naytettavaNimi = this.funktionimiService.nimi(this.data);
 
         // jos funktio on haettava arvo -tyyppinen lisätään tyhjiä valintaperusteviiteobjekteja
-        // yhtä monta kuin sen funktiokuvauksessa on valintaperusteobjekteja 
+        // yhtä monta kuin sen funktiokuvauksessa on valintaperusteobjekteja
         if((HAETTAVA_TYYPPI.indexOf(data.funktionimi) != -1) && !data.valintaperusteviitteet) {
             data.valintaperusteviitteet = [];
             this.funktiokuvaus.valintaperuste.forEach(function(element, index) {
                 data.valintaperusteviitteet.push({indeksi: index + 1, lahde: "HAETTAVA_ARVO"});
-            }); 
+            });
         }
 
-        
+
     }
 
 
@@ -176,7 +176,7 @@ var Funktio = function(funktiokuvaukset, data) {
     }
     this.tyyppi = function() {
         return this.funktiokuvaus
-    }   
+    }
 
     this.getValintaperusteviitetyypit = function() {
         return VALINTAPERUSTEVIITETYYPIT;
@@ -276,10 +276,10 @@ var Funktio = function(funktiokuvaukset, data) {
         )
         return funcargs
     }
-    
+
     this.getFunktioargumenttiPari = function() {
         var that = this;
-        var funcArgs =[];   
+        var funcArgs =[];
         var funktiokuvaus = this.funktiokuvaus;
         var argCount = funktiokuvaus.funktioargumentit.length;
 
@@ -313,7 +313,7 @@ var Funktio = function(funktiokuvaukset, data) {
                 addLukuarvoFunktio();
                 addPainotuskerroinFunktio();
             } else {
-                // Jos annettuja funktioargumentteja on pariton määrä, sille täytyy lisätä pari 
+                // Jos annettuja funktioargumentteja on pariton määrä, sille täytyy lisätä pari
                 // indeksi (alkaa ykkösestä) kertoo onko annettu funktioargumentti painotuskerroin- vai lukuarvofunktio
                 if(funktioArgumentit[funktioArgumenttiCount - 1].indeksi % 2 == 0) {
                     addPainotuskerroinFunktio();
@@ -322,7 +322,7 @@ var Funktio = function(funktiokuvaukset, data) {
                 }
             }
         }
-       
+
         function addPainotuskerroinFunktio() {
             funcArgs.push(new TyhjaFunktio({
                 otsikko: "painotuskerroin",
@@ -340,7 +340,7 @@ var Funktio = function(funktiokuvaukset, data) {
         }
 
 
-        return funcArgs;        
+        return funcArgs;
     }
 
     /**
@@ -395,13 +395,13 @@ var Funktio = function(funktiokuvaukset, data) {
         return false
     }
 
-    
+
 
     /* UI methods */
     this.getTemplate = function() {
         var labelFunctions = ["NIMETTYLUKUARVO", "NIMETTYTOTUUSARVO"];
-        var paramFunctions = ["HAELUKUARVO", "LUKUARVO", "TOTUUSARVO", "HAETOTUUSARVO", "HAKUTOIVE", 
-        "DEMOGRAFIA", "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI", "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI", 
+        var paramFunctions = ["HAELUKUARVO", "LUKUARVO", "TOTUUSARVO", "HAETOTUUSARVO", "HAKUTOIVE",
+        "DEMOGRAFIA", "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI", "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI",
         "HAEMERKKIJONOJAVERTAAYHTASUURUUS", "VALINTAPERUSTEYHTASUURUUS"];
 
         var funktioPairFunctions = ["PAINOTETTUKESKIARVO"];
@@ -503,12 +503,12 @@ var Funktio = function(funktiokuvaukset, data) {
             };
             newFunction.funktiokutsuChild.syoteparametrit.push(newParam);
         }
-        
+
         // Arvotaan indeksi, johon data laitetaan
         if(parentfunktio.nimi == "PAINOTETTUKESKIARVO") {
             var pairIndex = undefined;
             //determine which function was defined (lukuarvo or painotuskerroin - lukuarvo is always first so it's odd)
-            
+
             var funktioArgumentitCount = this.data.funktioargumentit.length;
             if(argumenttiNimi === "lukuarvo" || funktioArgumentitCount % 2 == 1) {
                 pairIndex = 1;
@@ -523,7 +523,7 @@ var Funktio = function(funktiokuvaukset, data) {
             var funktioArgumentitCount = this.determineIndexForSubfunction(argumenttiNimi);
             newFunction.indeksi = funktioArgumentitCount + 1;
             this.data.funktioargumentit[funktioArgumentitCount] = newFunction;
-            
+
         } else {
             // Case: N argumenttia, lisätään listan loppuun.
             newFunction.indeksi = this.data.funktioargumentit.length + 1;
@@ -575,37 +575,84 @@ var Funktio = function(funktiokuvaukset, data) {
         return this.findFunktioArgumentti(newReference.laskentakaavaChild);
     }
 
-    /*
-    this.isAddFunktioToindexLegal = function(funktio, index) {
-        
-        
-        var data = {};
-        if(funktio instanceof Funktio) {
-            data.funktiokutsuChild = funktio.data;
-        }
+    
+    this.isLegalSubFunktio = function(funktio, index) {
+        var funktioargumentit = this.funktiokuvaus.funktioargumentit;
 
-        if(funktio instanceof LaskentakaavaViite) {
-            data.laskentakaavaChild = funktio.data;
+        if(this.isFunktioPariTyyppi()) {
+            return this.isLegalSubfunktioForFunktioPariTyyppi(funktio);
+        } else if(this.hasNimetytArgumentit()){
+            return this.isLegalSubfunktioForNimetytArgumentit(funktio, index);
+        } else {
+            return this.isLegalSubfunktioForNArgumenttia(funktio, index);
         }
+        
+    }
 
-        if(this.funktiokuvaus.funktioargumentit && this.funktiokuvaus.funktioargumentit[0].tyyppi === funktio.tyyppi) {
+    this.isLegalSubfunktioForFunktioPariTyyppi = function(funktio) {
+        if(funktio.funktiokuvaus.tyyppi == "LUKUARVOFUNKTIO") {
+            return true;
+        } 
+        return false;
+    }
+
+    this.isLegalSubfunktioForNimetytArgumentit = function(funktio, index) {
+        var subFunktioCandidateTyyppi = funktio.funktiokuvaus.tyyppi;
+        var funktioargumentit = this.funktiokuvaus.funktioargumentit;
+        if(funktioargumentit[index].tyyppi === subFunktioCandidateTyyppi) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    this.isLegalSubfunktioForNArgumenttia = function(funktio, index) {
+        var subFunktioCandidateTyyppi = funktio.funktiokuvaus.tyyppi;
+        var funktioargumenttiTyyppi = this.funktiokuvaus.funktioargumentit[0].tyyppi;
+        if(subFunktioCandidateTyyppi === funktioargumenttiTyyppi) {
+            return true;    
+        } else {
+            return false;
+        }
+        
+    }
+
+    //  onko nimetyt argumentit -tyyppisellä funktiolla enää tilaa alifunktioille
+    this.subFunctionCanBeAdded = function() {
+        if(this.hasNimetytArgumentit()) {
+            var kardinaliteettiSum = this.kardinaliteettiSum();
+            var funktioargumenttiSum = 0;
+            this.funktioargumentit.forEach(function(element, index, array) {
+                if(element instanceof Funktio) {
+                    funktioargumenttiSum += 1;
+                }
+            });
+
+            if(kardinaliteettiSum < funktioargumenttiSum) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } else {
             return true;
         }
-        console.log('can add here?');
-        console.log(this.funktiokuvaus.funktioargumentit[0].tyyppi);
-        console.log(funktio.funktiokuvaus.tyyppi);
-
-        if(this.nimi === 'JOS') {
-            if(funktio.funktiokuvaus.tyyppi !== this.funktiokuvaus.funktioargumentit[index]) {
-                return true;
-            }
-        }
-    
-        return true;
     }
-    */
+
+    // montako funktioargumenttia funktiolle voi asettaa
+    // oletetaan että tätä kutsutaan vain nimetyt argumentit -tyyppisille funktioille
+    this.kardinaliteettiSum = function() {
+        var funktioargumentit = this.funktiokuvaus.funktioargumentit;
+        
+        var kardinaliteettiSum = 0;
+        funktioargumentit.forEach(function(element, index, array) {
+            kardinaliteettiSum += 1;
+        });
+        return kardinaliteettiSum;
+    }
 
     this.addChildAt = function(funktio, index) {
+
         var data = {};
         if(funktio instanceof Funktio) {
             data.funktiokutsuChild = funktio.data;
@@ -705,7 +752,7 @@ var Funktio = function(funktiokuvaukset, data) {
             return;
         }
     }
-    
+
     this.isHaettavaArvoTyyppi = function() {
         return HAETTAVA_TYYPPI.indexOf(this.nimi) !== -1
     }
@@ -830,7 +877,6 @@ var Konvertteri = function(konvDef, data) {
         */
 
         this.parametrit = this.getParametrit()
-        console.log('after:',this)
     }
 
     this.getDefinition = function() {

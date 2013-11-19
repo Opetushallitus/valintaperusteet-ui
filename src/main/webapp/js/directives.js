@@ -22,15 +22,14 @@ app.directive('kaavadrag', function() {
           var oldParentFunktio = item.scope().parent;
           var newParentFunktio = ui.item.parent().parent().parent().scope().funktio;
           var index = ui.item.index();
-          // Tarkistetaan, ettei funktiota aseteta paikkaan, johon se ei sovi
-          /*
-          if(!oldParentFunktio.funktioargumentit || oldParentFunktio.funktiokuvaus.funktioargumentit[0].tyyppi != draggedFunktio.funktiokuvaus.tyyppi) {
-            return false;
-          }
-          */
+          
+          if(!newParentFunktio.subFunctionCanBeAdded() || !newParentFunktio.isLegalSubFunktio(draggedFunktio, index)) {
+            $(iElm[0]).nestedSortable('cancel');  
+            return;  
+          }        
+            
 
-
-          $scope.$emit('saveKaava', {
+          $scope.$emit('kaavadrag', {
             draggedFunktio: draggedFunktio,
             oldParentFunktio: oldParentFunktio,
             newParentFunktio: newParentFunktio,
@@ -41,16 +40,6 @@ app.directive('kaavadrag', function() {
     }
   };
 });
-/*
-app.directive('kaavafunktio', function() {
-  return {
-    restrict: 'A',
-    link: function($scope, iElm, iAttrs, ctrl) {
-
-    }
-  }
-});
-*/
 
 app.directive('nestedsortable', function(HakukohdeSiirra) {
     return {

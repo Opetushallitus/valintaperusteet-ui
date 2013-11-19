@@ -50,27 +50,48 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
     }
 
     $scope.kaavaDragged = function(funktio, oldParent, newParent, index) {
+        //console.log(newParent.kardinaliteettiSum());
+        var kaavaBeforeDrag = Laskentapuu.laskentakaava().getData();
         var oldIndex = oldParent.funktioargumentit.indexOf(funktio)
         var func = funktio
 
-        // Jos pudotetaan eri parenttiin, poistetaan vanhasta paikasta.
-        if(oldParent !== newParent) {
-            func = oldParent.removeChildFunktio(funktio)
-        }
+        func = oldParent.removeChildFunktio(funktio)
         newParent.addChildAt(func, index)
         newParent.init()
         oldParent.init()
+
+        /*
+        $scope.validoiKaavaData(kaavaBeforeDrag);
+        $scope.$digest();
+        */
     }
 
     //called from kaavaeditor -directive when an item has been moved in kaavaeditor
-    $scope.$on('saveKaava', function(event, paramObject) {
+    $scope.$on('kaavadrag', function(event, paramObject) {
         $scope.kaavaDragged(paramObject.draggedFunktio, paramObject.oldParentFunktio, paramObject.newParentFunktio, paramObject.index);
     });
+
+    
+    $scope.validoiKaavaData = function() {
+        var kaava = Laskentapuu.laskentakaava().getData();
+        var validateKaava = {};
+        angular.copy(kaava, validateKaava);
+        KaavaValidointi.post({}, validateKaava, function(data) {
+            Laskentapuu.setKaavaData(data);
+            if(Laskentapuu.laskentakaava().hasErrors()) {
+                $scope.errors = Laskentapuu.laskentakaava().getAllErrors()
+                Laskentapuu.setKaavaData();
+            }   
+        });
+    }
+    
+    
 
     $scope.saveKaavaAsCompleted = function() {
         var kaava = Laskentapuu.laskentakaava().getData();
         var validateKaava = {};
         angular.copy(kaava, validateKaava);
+        $scope.test = validateKaava;
         KaavaValidointi.post({}, validateKaava, function(data) {
 
             Laskentapuu.setKaavaData(data)
