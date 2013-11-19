@@ -1,0 +1,103 @@
+﻿<!-- Node template -->
+<script type="text/ng-template" id="node.html">
+    <span class="label" ng-if="data.nimi | filter:domain.search.q">
+        <i class="fa fa-users valintaryhma"  ng-class="{ kiinni: domain.isCollapsed(data), eilapsia: !(data.alavalintaryhmat.length > 0), auki: domain.isExpanded(data)}" ng-click="expandNode(data)"></i>
+        <input name="valintaryhmaOid" ng-required="!model.hakukohde.valintaryhmaOid" type="radio" ng-model="model.hakukohde.valintaryhmaOid" value="{{data.oid}}" id="{{data.oid}}"/> <label for="{{data.oid}}">{{data.nimi}}</label>
+    </span>
+    <ol ng-if="data.isVisible">
+        <li ng-repeat="data in data.alavalintaryhmat | filter:domain.search.q | orderBy:predicate" ng-include="'node.html'">
+        </li>
+    </ol>
+
+</script>
+
+<h1>Hakukohteen luonti</h1>
+
+<div class="tabs">
+    <a href="#/hakukohde/{{model.hakukohde.oid}}/" class="tab current"><span>Hakukohteen perustiedot</span></a>
+    <a ng-show="model.hakukohde" href="#/hakukohde/{{model.hakukohde.oid}}/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
+</div>
+
+
+
+<div class="tabsheets">
+<form name="form" ng-submit="submit()">
+
+    <div class="form-row">
+        <label class="form-row-label">Ylävalintaryhmä</label>
+
+        <div class="form-row-content width-60">
+            <input type="text" class="search" placeholder="Suodata valintaryhmiä" id="text" ng-model="domain.search.q">
+            <a class="button small" ng-click="domain.expandTree()"> <i class="fa fa-expand"></i> Avaa puu</a>
+            <br />
+            <span>Haku palautti {{domain.tilasto.valintaryhmia}} valintaryhmää</span>
+            <div class="results">
+                <ol class="treelist collapsible multiselect">
+                    <li ng-repeat="data in domain.valintaperusteList | filter:domain.search.q | orderBy:predicate"
+                        ng-model="data"
+                        ng-if="!domain.isHakukohde(data)"
+                        class="{{addClass('uiExpanded',domain.isExpanded(data))}} {{addClass('uiCollapsed',domain.isCollapsed(data))}}"
+                        ng-include="'node.html'">
+                    </li>
+                </ol>
+            </div>
+
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="form-row">
+        <label class="form-row-label">Hakukohteen nimi</label>
+
+        <div class="form-row-content width-60">
+            {{model.hakukohde.nimi || ''}}
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="form-row">
+        <label class="form-row-label" >Haun Tunniste:</label>
+
+        <div class="form-row-content width-60">
+            <input ng-disabled="!(haut.length)" ng-required="true" class="width-60" type="text" typeahead-on-select="setHakuoid($item)" ng-model="model.haku" typeahead-editable="false"
+                   typeahead="haku as haku.nimi.kieli_fi for haku in haut| filter:$viewValue | limitTo:20 | orderBy:'nimi.kieli_fi'">
+            <a ng-click="model.haku = undefined; model.hakukohde.hakuoid = undefined; model.hakukohde.oid = undefined">Tyhjennä</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="form-row">
+        <label class="form-row-label" >Hakukohteen tunniste:</label>
+
+        <div class="form-row-content width-60">
+            <input ng-disabled="!(hakukohteet.length)" ng-required="true" class="width-60" type="text" typeahead-on-select="setHakukohdeoid($item)" ng-model="model.selectedHakukohde" typeahead-editable="false"
+                   typeahead="hakukohde as (hakukohde.tarjoajaNimi.fi || 'Ei nimeä')+ ', ' + hakukohde.hakukohdeNimi.fi for hakukohde in hakukohteet| filter:$viewValue | limitTo:20 | orderBy:'hakukohde.kokoNimi'">
+            <a ng-click="model.selectedHakukohde = undefined; model.hakukohde.oid = undefined">Tyhjennä</a>
+            <!--<br />{{model.hakukohde.oid}}-->
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="form-row">
+        <label class="form-row-label" >Tarjoaja:</label>
+        <div class="form-row-content width-60">
+            {{model.selectedHakukohde.tarjoajaNimi.fi || 'Ei nimeä'}}
+            <!--<br/>{{model.selectedHakukohde.tarjoajaOid}}-->
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="form-row">
+        <label class="form-row-label" >Julkaisutila:</label>
+        <div class="form-row-content width-60">
+            {{model.selectedHakukohde.hakukohdeTila || 'Ei tilaa'}}
+            <!--<br/>{{model.selectedHakukohde.tarjoajaOid}}-->
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <button ng-disabled="!form.$valid" class="button small primary" type="submit">Tallenna</button>
+    <button type="button" class="float-left margin-right-1 button small" ng-click="cancel()">Takaisin</button>
+</form>
+</div>

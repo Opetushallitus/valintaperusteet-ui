@@ -1,7 +1,7 @@
 app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohdekoodi, Hakukohde, Valintaryhma,
                                         HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta,
                                         HakukohdeKuuluuSijoitteluun, HakukohdeHakijaryhma, Laskentakaava,
-                                        HakijaryhmaJarjesta, Hakijaryhma) {
+                                        HakijaryhmaJarjesta, Hakijaryhma, Haku, TarjontaHaku, HaunTiedot, HakukohdeNimi) {
     var model = new function()  {
         
         this.parentValintaryhma = {};
@@ -11,20 +11,35 @@ app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohd
         this.hakijaryhmat = [];
 
         this.refresh = function(oid) {
+            model.parentValintaryhma = {};
+            model.hakukohde = {};
+            model.valinnanvaiheet = [];
+            model.hakukohdekoodit = [];
+            model.hakijaryhmat = [];
+
             Hakukohde.get({oid: oid}, function(result) {
+                console.log(result);
                 model.hakukohde = result;
                 if(model.hakukohde.valintaryhma_id) {
                     Valintaryhma.get({oid: model.hakukohde.valintaryhma_id}, function(result) {
                         model.parentValintaryhma = result;
                     });
                 }
-                kuuluuSijoitteluun(oid);
+
+               HaunTiedot.get({hakuOid: result.hakuoid}, function(tiedot) {
+                   model.haku = tiedot;
+               });
+
+               HakukohdeNimi.get({hakukohdeoid: oid}, function(result){
+                   model.hakukohdeNimi = result;
+               });
+
+               kuuluuSijoitteluun(oid);
             });
 
             KoodistoHakukohdekoodi.get(function(result) {
                 model.hakukohdekoodit = result;
             });
-
 
             HakukohdeHakijaryhma.get({oid: oid}, function(result) {
                 model.hakijaryhmat = result;
@@ -39,6 +54,7 @@ app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohd
         };
         this.refreshIfNeeded = function(oid) {
             if(oid != model.hakukohde.oid) {
+
                 this.refresh(oid);
             } else {
                 kuuluuSijoitteluun(oid);
@@ -52,7 +68,9 @@ app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohd
         };
 
         this.persistHakukohde = function() {
-            Hakukohde.post(model.hakukohde, function(result) {});
+            Hakukohde.post(model.hakukohde, function(result) {
+
+            });
             if(model.valinnanvaiheet.length > 0) {
                 ValinnanvaiheJarjesta.post(getValinnanvaiheOids(), function(result) {
                     for(var i = 0 ; i < model.valinnanvaiheet.length ; ++i) {
@@ -64,7 +82,6 @@ app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohd
             }
 
             if(model.hakijaryhmat.length > 0) {
-                console.log(model.hakijaryhmat);
                 HakijaryhmaJarjesta.post(getHakijaryhmaOids(), function(result) {
                 });
             }
@@ -150,7 +167,7 @@ app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohd
     function kuuluuSijoitteluun(oid) {
         if(oid) {
             HakukohdeKuuluuSijoitteluun.get({oid: oid}, function(result) {
-                model.hakukohde.kuuluuSijoitteluun = result.sijoitteluun;
+                model.kuuluuSijoitteluun = result.sijoitteluun;
             });
         }
     }
@@ -158,9 +175,7 @@ app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohd
     return model;
 });
 
-
-
-function HakukohdeController($scope, $location, $routeParams, HakukohdeModel) {
+function HakukohdeController($q, $timeout, $scope, $location, $routeParams, HakukohdeModel) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakukohdeModel;
     $scope.model.refreshIfNeeded($scope.hakukohdeOid);
@@ -179,7 +194,7 @@ function HakukohdeController($scope, $location, $routeParams, HakukohdeModel) {
     }
 
     $scope.addHakukohdeUri = function() {
-            $scope.model.addHakukohdeUri($scope.uusiHakukohdeUri);
+            $scope.model.addHakukohdeUri($scope.uusiHakukohdeUri.koodiUri);
             $scope.uusiHakukohdeUri = "";
     }
 
@@ -191,51 +206,4 @@ function HakukohdeController($scope, $location, $routeParams, HakukohdeModel) {
         $scope.model.removeHakijaryhma(hakijaryhmaOid);
     }
 
-}
-
-function HakukohdeLaskentakaavaController($scope, $location, $routeParams, Laskentakaava) {
-     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
-}
-
-
-
-
-
-
-
-
-app.factory('HakukohdeCreatorModel', function($location, NewHakukohde, Treemodel) {
-    var model = new function()  {
-        this.hakukohde = {};
-
-        this.refresh = function() {
-            model.hakukohde = {};
-        }
-
-        this.persistHakukohde = function() {
-            NewHakukohde.insert(model.hakukohde, function(result) {
-                Treemodel.refresh();
-                $location.path("/");
-            }, function(error){
-
-            });
-        }
-
-    }
-
-    return model;
-});
-
-function HakukohdeCreatorController($scope, $location, $routeParams, HakukohdeCreatorModel) {
-    $scope.model = HakukohdeCreatorModel;
-    $scope.model.refresh();
-    $scope.showOidInputs = true;
-
-    $scope.cancel = function() {
-        $location.path("/");
-    };
-
-    $scope.submit = function() {
-        $scope.model.persistHakukohde();
-    }
 }

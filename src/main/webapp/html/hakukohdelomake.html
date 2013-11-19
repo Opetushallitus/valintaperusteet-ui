@@ -10,10 +10,10 @@
 <div class="tabsheets">
 <form name="form" ng-submit="submit()">
     <div class="form-row">
-        <label class="form-row-label" for="">Hakukohteen nimi</label>
+        <label class="form-row-label">Hakukohteen nimi</label>
 
         <div class="form-row-content width-60">
-            <input  class="width-60" type="text" name="nimi" ng-model="model.hakukohde.nimi" required />
+            {{model.hakukohde.nimi}} ({{model.hakukohde.oid}})
         </div>
         <div class="clear"></div>
     </div>
@@ -21,8 +21,8 @@
     <div class="form-row">
         <label class="form-row-label" >Hakukohdekoodi:</label>
 
-        <div class="form-row-content">
-            <table class="virkailija-table-1 width-60">
+        <div class="form-row-content width-60">
+            <table class="virkailija-table-1">
                 <thead>
                 <tr>
                     <th>koodi</th>
@@ -48,35 +48,37 @@
     <div class="form-row ">
         <label class="form-row-label">&nbsp;</label>
         <div class="form-row-content width-60">
-            <input class="width-60" name="hakukohdekoodit" type="text" id="uusiHakukohdeUri" ng-model="uusiHakukohdeUri" list="hakukohdekoodit"/>
-            <datalist id="hakukohdekoodit">
-                <!--[if IE 9]><select disabled style="display:none"><![endif]-->
-                <option ng-repeat="data in model.hakukohdekoodit" value="{{data.koodiUri}}">{{data.metadata[0].nimi}}</option>
-                <!--[if IE 9]></select><![endif]-->
-            </datalist>
-
-            <button type="button" class="margin-bottom-0 small" ng-click="addHakukohdeUri()" ng-disabled="!model.hakukohdekoodit.length">Päivitä hakukohdekoodi</button>
+            <input class="width-60" type="text" ng-model="uusiHakukohdeUri"
+                   typeahead-editable="false"
+                   typeahead="koodi as koodi.metadata[0].nimi + ' (' + koodi.koodiUri + ')' for koodi in model.hakukohdekoodit| filter:$viewValue | orderBy:'metadata[0].nimi' | limitTo :10 ">
+            <button type="button" class="margin-bottom-0 small" ng-click="addHakukohdeUri()" ng-disabled="!uusiHakukohdeUri">Päivitä hakukohdekoodi</button>
         </div>
         <div class="clear"></div>
     </div>
 
     <div class="form-row">
-        <label class="form-row-label" for="oid">Hakukohteen tunniste (oid):</label>
+        <label class="form-row-label" >Haun Tunniste (oid):</label>
 
-        <div class="form-row-content">
-            <input ng-show="showOidInputs" class="width-60" type="text" name="oid" ng-model="model.hakukohde.oid" required />
-             {{model.hakukohde.oid}}
+        <div class="form-row-content width-60">
+            {{model.haku.nimi.kieli_fi}} ({{model.haku.oid}})
         </div>
         <div class="clear"></div>
     </div>
 
     <div class="form-row">
-        <label class="form-row-label" for="oid">Haun Tunniste (oid):</label>
+        <label class="form-row-label" >Tarjoaja (oid):</label>
+        <div class="form-row-content width-60">
+            {{model.hakukohde.tarjoajaOid}}
+            <!--<br/>{{model.selectedHakukohde.tarjoajaOid}}-->
+        </div>
+        <div class="clear"></div>
+    </div>
 
-        <div class="form-row-content">
-
-            <input ng-show="showOidInputs" class="width-60" type="text" name="oid" ng-model="model.hakukohde.hakuoid" required />
-            {{model.hakukohde.hakuoid}}
+    <div class="form-row">
+        <label class="form-row-label" >Julkaisutila:</label>
+        <div class="form-row-content width-60">
+            {{model.hakukohde.tila}}
+            <!--<br/>{{model.selectedHakukohde.tarjoajaOid}}-->
         </div>
         <div class="clear"></div>
     </div>

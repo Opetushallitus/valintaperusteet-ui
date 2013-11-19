@@ -1,4 +1,4 @@
-var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'localization']) //'ngAnimate' currently breaks valintaperustetree
+var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'localization', 'ui.bootstrap']) //'ngAnimate' currently breaks valintaperustetree
 
 angular.module('localization', [])
 .filter('i18n', ['$rootScope','$locale',function ($rootScope, $locale) {
@@ -56,6 +56,7 @@ app.config(function($routeProvider) {
         when('/hakukohde/:hakukohdeOid/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid/valintakoe/:id', {controller: HakukohdeValintakoeController, templateUrl:TEMPLATE_URL_BASE + 'valintakoelomake.html'}).
 		    
         // edit hakukohde
+        when('/hakukohde/', {controller: UusiHakukohdeController, templateUrl:TEMPLATE_URL_BASE + 'hakukohde_uusi.html'}).
         when('/hakukohde/:hakukohdeOid', {controller:HakukohdeController, templateUrl:TEMPLATE_URL_BASE + 'hakukohdelomake.html'}).
         when('/hakukohde/:hakukohdeOid/hakijaryhma/', {controller:HakijaryhmaController, templateUrl:TEMPLATE_URL_BASE + 'hakijaryhma.html'}).
         when('/hakukohde/:hakukohdeOid/hakijaryhma/:hakijaryhmaOid', {controller:HakijaryhmaController, templateUrl:TEMPLATE_URL_BASE + 'hakijaryhma.html'}).
@@ -63,7 +64,6 @@ app.config(function($routeProvider) {
 //        when('/valintaryhma/:valintaryhmaOid/lisaaSisaltyvaHakukohde', {controller: HakukohdeCreatorController, templateUrl:TEMPLATE_URL_BASE + 'hakukohdelomake.html'}).
         when('/hakukohde/:hakukohdeOid/laskentakaava', {controller: HakukohdeLaskentakaavaListController, templateUrl: TEMPLATE_URL_BASE + 'laskentakaava/hakukohdelaskentakaavalista.html'}).
         when('/hakukohde/:hakukohdeOid/laskentakaava/:laskentakaavaOid', {controller: LaskentakaavaController, templateUrl: TEMPLATE_URL_BASE + 'laskentakaava/laskentakaavalomake.html'}).
-        when('/lisaaHakukohde', {controller: HakukohdeCreatorController, templateUrl:TEMPLATE_URL_BASE + 'hakukohdelomake.html'}).
         when('/hakukohde/:hakukohdeOid/valinnanvaihe/', {controller:ValinnanVaiheController, templateUrl:TEMPLATE_URL_BASE + 'valinnanvaihelomake.html'}).
         when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid', {controller:ValinnanVaiheController, templateUrl:TEMPLATE_URL_BASE + 'valinnanvaihelomake.html'}).
         when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/', {controller: HakukohdeValintatapajonoController, templateUrl:TEMPLATE_URL_BASE + 'valintatapajono.html'}).
@@ -374,4 +374,18 @@ app.factory('TarjontaImport', function($resource) {
         aktivoi: {method: "GET"}
     })
 });
-
+app.factory('HakuHakukohdeChildren', function($resource) {
+return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohde?count=99999", {hakuOid: "@hakuOid"}, {
+    get: {method: "GET", isArray: true}
+  });
+});
+app.factory('TarjontaHaku', function($resource) {
+	return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohdeTulos", {},{
+		query:  {method:'GET', isArray:false}
+	});
+});
+app.factory('HakukohdeNimi', function($resource) {
+    return $resource(TARJONTA_URL_BASE + "hakukohde/:hakukohdeoid/nimi", {hakukohdeoid: "@hakukohdeoid"}, {
+     get: {method: "GET"}
+    });
+});
