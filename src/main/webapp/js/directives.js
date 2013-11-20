@@ -23,6 +23,8 @@ app.directive('kaavadrag', function() {
           var newParentFunktio = ui.item.parent().parent().parent().scope().funktio;
           var index = ui.item.index();
           
+          // jos parentti on nimetyt argumentit -tyyppinen ja funktioargumentteja on jo maksimimäärä -> cancel
+          // tai jos siirrettävä funktio ei ole samantyyppinen kuin paikka johon se yritetään tiputtaa
           if(!newParentFunktio.subFunctionCanBeAdded() || !newParentFunktio.isLegalSubFunktio(draggedFunktio, index)) {
             $(iElm[0]).nestedSortable('cancel');  
             return;  

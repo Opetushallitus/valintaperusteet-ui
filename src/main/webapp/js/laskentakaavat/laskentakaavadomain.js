@@ -102,7 +102,7 @@ var LaskentakaavaViite = function(funktiokuvaukset, data) {
     this.init();
 }
 
-var Funktio = function(funktiokuvaukset, data) {
+var Funktio = function(funktiokuvaukset, data, funktioparent) {
 
     // Hakutyyppiset funktiot. Näille määritellään valintaperusteet
     var HAETTAVA_TYYPPI = ["HAELUKUARVO", "HAETOTUUSARVO", "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI", "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI", "HAEMERKKIJONOJAVERTAAYHTASUURUUS", "VALINTAPERUSTEYHTASUURUUS"];
@@ -350,7 +350,7 @@ var Funktio = function(funktiokuvaukset, data) {
      */
     this.createSubFunction = function(data) {
         if(data.funktiokutsuChild) {
-            var f = new Funktio(this.funktiokuvausService.getFunktiokuvaukset(), data.funktiokutsuChild)
+            var f = new Funktio(this.funktiokuvausService.getFunktiokuvaukset(), data.funktiokutsuChild, this);
             f.init()
             return f;
         } else if(data.laskentakaavaChild) {
@@ -724,6 +724,10 @@ var Funktio = function(funktiokuvaukset, data) {
         this.funktioargumentit = this.getFunktioargumentit()
     }
 
+    this.removeThis = function() {
+        funktioparent.removeChildFunktio(this);
+    }
+
     this.removeChildFunktio = function(funktio) {
         var index = -1;
         var data = null;
@@ -734,7 +738,7 @@ var Funktio = function(funktiokuvaukset, data) {
                 data = angular.copy(this.data.funktioargumentit[index].funktiokutsuChild);
                 this.data.funktioargumentit.splice(index, 1);
                 this.funktioargumentit = this.getFunktioargumentit();
-                var func = new Funktio(angular.copy(this.funktiokuvausService.getFunktiokuvaukset()), data);
+                var func = new Funktio(angular.copy(this.funktiokuvausService.getFunktiokuvaukset()), data, this);
                 func.init();
                 return func;
             }
