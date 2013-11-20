@@ -27,38 +27,26 @@
 
     <div class="form-row">
 
-        <label class="form-row-label" for="kuvaus">Aloituspaikat</label>
-
+        <label class="form-row-label" for="aloituspaikat">Aloituspaikat</label>
         <div class="form-row-content">
-            <input type="number" min="0" name="aloituspaikat" ng-model="model.valintatapajono.aloituspaikat" required>
-            <!--
-            <div><small>ohjeteksti.</small></div>
-            -->
+            <input type="number" min="0" id="aloituspaikat" name="aloituspaikat" ng-model="model.valintatapajono.aloituspaikat" required>
         </div>
-
         <div class="clear"></div>
 
-        <label class="form-row-label" for="kuvaus">{{'jononmuokkaus.siirretaan.sijoitteluun' | i18n}}</label>
-
+        <label class="form-row-label" for="siirretaanSijoitteluun">{{'jononmuokkaus.siirretaan.sijoitteluun' | i18n}}</label>
         <div class="form-row-content">
             <div class="field-container-checkbox">
-                <input type="checkbox" name="siirretaanSijoitteluun"
+                <input type="checkbox" id="siirretaanSijoitteluun" name="siirretaanSijoitteluun"
                        ng-model="model.valintatapajono.siirretaanSijoitteluun">
-                <label>&#8302;</label>
             </div>
-            <!--
-            <div><small>ohjeteksti.</small></div>
-            -->
         </div>
-
         <div class="clear"></div>
 
-        <label class="form-row-label" for="kuvaus">Ei varasijatayttoa</label>
+        <label class="form-row-label" for="eiVarasijatayttoa">Ei varasijatayttoa</label>
 
         <div class="form-row-content">
             <div class="field-container-checkbox">
-                <input type="checkbox" name="eiVarasijatayttoa" ng-model="model.valintatapajono.eiVarasijatayttoa">
-                <label>&#8302;</label>
+                <input type="checkbox" id="eiVarasijatayttoa" name="eiVarasijatayttoa" ng-model="model.valintatapajono.eiVarasijatayttoa">
             </div>
 
             <div>
@@ -70,6 +58,26 @@
 
         </div>
 
+        <div class="clear"></div>
+
+        <label class="form-row-label" for="varasijat">Varasijat</label>
+        <div class="form-row-content">
+            <input type="number" min="0" id="varasijat" name="varasijat" ng-model="model.valintatapajono.varasijat" required>
+        </div>
+        <div class="clear"></div>
+
+        <label class="form-row-label" for="varasijaTayttoPaivat">Varasija täyttö päivät</label>
+        <div class="form-row-content">
+            <input type="number" min="0" id="varasijaTayttoPaivat" name="varasijaTayttoPaivat" ng-model="model.valintatapajono.varasijaTayttoPaivat" required>
+        </div>
+        <div class="clear"></div>
+
+        <label class="form-row-label" for="poissaOlevaTaytto">Poissa olevien täyttö</label>
+        <div class="form-row-content">
+            <div class="field-container-checkbox">
+                <input type="checkbox" id="poissaOlevaTaytto" name="poissaOlevaTaytto" ng-model="model.valintatapajono.poissaOlevaTaytto">
+            </div>
+        </div>
         <div class="clear"></div>
 
         <div class="form-row-label">Tasasijasääntö</div>
