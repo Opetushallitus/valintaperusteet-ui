@@ -1041,7 +1041,7 @@ var FunktioNimiService = function() {
         "NIMETTYTOTUUSARVO": "Nimetty totuusarvo",
         "SKAALAUS": "Skaalaus",
         "PAINOTETTUKESKIARVO": "Painotettu keskiarvo",
-        
+        "HYLKAAARVOVALILLA": "Hylkää arvovälillä"
     };
 
     var kustomit = {
