@@ -320,9 +320,7 @@
             </div>
 
 
-            <span class="button small" ng-show="!f.data.deleted" ng-click="f.data.deleted=true">Poista funktiokutsu</span>
-            
-            <span class="button small" ng-show="f.data.deleted" ng-click="f.data.deleted=false">Palauta funktiokutsu</span>
+            <span class="button small" ng-click="f.removeThis(); selected = null; showKaavaMenu = false">Poista funktiokutsu</span>
         </div>
 
     </div>

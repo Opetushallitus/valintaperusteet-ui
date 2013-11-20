@@ -77,7 +77,7 @@ var TyhjaFunktio = function(def) {
     }
 }
 
-var LaskentakaavaViite = function(funktiokuvaukset, data) {
+var LaskentakaavaViite = function(funktiokuvaukset, data, parentfunktio) {
     this.funktiokuvaukset = funktiokuvaukset;
     this.data = data;
 
@@ -97,6 +97,10 @@ var LaskentakaavaViite = function(funktiokuvaukset, data) {
             cssClass += " line-through"
         }
         return cssClass
+    }
+
+    this.removeThis = function() {
+        parentfunktio.removeChildFunktio(this);
     }
 
     this.init();
@@ -354,7 +358,7 @@ var Funktio = function(funktiokuvaukset, data, funktioparent) {
             f.init()
             return f;
         } else if(data.laskentakaavaChild) {
-            var alikaava = new LaskentakaavaViite(this.funktiokuvausService, data.laskentakaavaChild);
+            var alikaava = new LaskentakaavaViite(this.funktiokuvausService, data.laskentakaavaChild, this);
             return alikaava;
         } else {
             throw new Error('Funktion muokkaus epäonnistui datalla. Data-objektilla ei ole funktiokutsuChild eikä laskentakaavaChild jäsenmuuttujaa');
@@ -747,7 +751,7 @@ var Funktio = function(funktiokuvaukset, data, funktioparent) {
                 data = angular.copy(this.data.funktioargumentit[index].laskentakaavaChild);
                 this.data.funktioargumentit.splice(index, 1);
                 this.funktioargumentit = this.getFunktioargumentit();
-                var func = new LaskentakaavaViite(angular.copy(this.funktiokuvaukset), data);
+                var func = new LaskentakaavaViite(angular.copy(this.funktiokuvaukset), data, this);
                 func.init();
                 return func;
             }
