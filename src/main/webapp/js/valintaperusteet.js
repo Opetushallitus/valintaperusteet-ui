@@ -333,6 +333,12 @@ app.factory('ValintatapajonoHakijaryhma', function($resource) {
    });
 });
 
+app.factory('HakijaryhmanValintatapajonot', function($resource) {
+ return $resource(SERVICE_URL_BASE + "resources/hakijaryhma/:oid/valintatapajono", {oid: "@oid", hakijaryhmaOid: "@hakijaryhmaOid"}, {
+     get: {method: "GET", isArray: true}
+   });
+});
+
 app.factory('HakijaryhmaValintatapajono', function($resource) {
  return $resource(SERVICE_URL_BASE + "resources/hakijaryhma_valintatapajono/:oid", {oid: "@oid"}, {
      delete: {method: "DELETE"},

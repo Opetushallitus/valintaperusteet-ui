@@ -61,7 +61,7 @@
 
         <div class="form-row-content width-60">
             <input ng-disabled="!(haut.length)" ng-required="true" class="width-60" type="text" typeahead-on-select="setHakuoid($item)" ng-model="model.haku" typeahead-editable="false"
-                   typeahead="haku as haku.nimi.kieli_fi for haku in haut| filter:$viewValue | limitTo:20 | orderBy:'nimi.kieli_fi'">
+                   typeahead-min-length="0" typeahead="haku as haku.nimi.kieli_fi for haku in haut| filter:$viewValue | limitTo:20 | orderBy:'nimi.kieli_fi'">
             <a ng-click="model.haku = undefined; model.hakukohde.hakuoid = undefined; model.hakukohde.oid = undefined">Tyhjennä</a>
         </div>
         <div class="clear"></div>

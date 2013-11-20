@@ -1,16 +1,22 @@
 // Valintaryhma Järjestyskriteerit
-app.factory('HakijaryhmaModel', function($q, Hakijaryhma, LaskentakaavaModel, ValintaryhmaHakijaryhma, HakukohdeHakijaryhma) {
+app.factory('HakijaryhmaModel', function($q, Hakijaryhma, LaskentakaavaModel,
+                                         ValintaryhmaHakijaryhma, HakukohdeHakijaryhma,
+                                         HakijaryhmanValintatapajonot) {
     
     var factory = (function() {
         var instance = {};
         instance.hakijaryhma = {};
+        instance.valintatapajonot = [];
 
         instance.refresh = function(oid, valintaryhmaOid, hakukohdeOid) {
             instance.hakijaryhma = {};
+            instance.valintatapajonot.length = 0;
             if(oid) {
                 Hakijaryhma.get({oid: oid}, function(result) {
                     instance.hakijaryhma = result;
                 });
+
+                instance.valintatapajonot = HakijaryhmanValintatapajonot.get({oid: oid});
             }
 
             LaskentakaavaModel.refresh(valintaryhmaOid, hakukohdeOid);

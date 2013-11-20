@@ -1,6 +1,7 @@
 ﻿<h1>Hakijaryhman muokkaus</h1>
 
 <form name="form" ng-submit="submit()">
+
     <div class="form-row">
         <label class="form-row-label" for="nimi">OID</label>
         <div class="form-row-content">
@@ -43,7 +44,8 @@
                 <div ng-repeat="data in group.result" class="field-container-radio">
                     <label>
                         <input type="radio" name="laskentakaava" value="{{data.id}}"
-                               ng-model="model.hakijaryhma.laskentakaava_id" ng-required="!model.hakijaryhma.laskentakaava_id" />
+                               ng-model="model.hakijaryhma.laskentakaava_id"
+                               ng-required="!model.hakijaryhma.laskentakaava_id" />
 
                         <span ng-bind="data.nimi"></span>(<span ng-bind="data.id"></span>)
                     </label>
@@ -54,6 +56,33 @@
             <div class="clear"></div>
         </div>
 
+    </div>
+
+    <div class="form-row" ng-show="model.hakijaryhma.oid">
+        <div class="form-row-label">Liitetyt valintatapajonot</div>
+
+        <div class="form-row-content">
+            <table class="virkailija-table-1 margin-bottom-2">
+                <thead>
+                <tr>
+                    <th>Aktiivinen</th>
+                    <th>Nimi</th>
+                    <th>Periytyminen</th>
+                </tr>
+                </thead>
+                <tbody class="margin-top-2">
+                <tr ng-repeat="jono in model.valintatapajonot">
+                    <td>{{jono.valintatapajono.aktiivinen ? 'Kyllä' : 'Ei'}}</td>
+                    <td>
+                        <span ng-class="{true:'', false:'line-through'}[jono.valintatapajono.aktiivinen]">{{jono.valintatapajono.nimi}}</span>
+                    </td>
+                    <td>{{'valintaperusteet.periytyy.' + jono.valintatapajono.inheritance | i18n}}</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="clear"></div>
     </div>
 
     <button ng-disabled="!form.$valid" class="button small primary" type="submit">
