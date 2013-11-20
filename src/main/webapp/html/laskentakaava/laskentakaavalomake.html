@@ -311,10 +311,11 @@
             <div ng-repeat="valintaryhmaList in kaavaLista.valintaryhmaList()">
                 <div ng-repeat="valintaryhma in valintaryhmaList" ng-show="valintaryhma.laskentakaavat.length > 0">
                     <h3>{{valintaryhma.nimi}}</h3>
-
                     <div ng-repeat="kaava in valintaryhma.laskentakaavat">
-                        <input type="radio" name="kaava" value="{{kaava.id}}" ng-model="f.data.id"/>
-                        {{kaava.nimi}}
+                        <div ng-hide="kaava.id == fetched">
+                            <input type="radio" name="kaava" value="{{kaava.id}}" ng-model="f.data.id"/>
+                            {{kaava.nimi}}
+                        </div>
                     </div>
                 </div>
             </div>

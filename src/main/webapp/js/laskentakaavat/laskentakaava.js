@@ -2,9 +2,7 @@
 
 
 function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, KaavaValidointi, LaskentakaavaLista) {
-    if($scope.fetched != $routeParams.laskentakaavaOid) {
-        
-    }
+
     $scope.fetched = $routeParams.laskentakaavaOid;
 
     if($routeParams.valintaryhmaOid) {
@@ -20,6 +18,7 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
 
     $scope.showTemplate = false;
     $scope.selected = null;
+    
     var promise = Laskentapuu.refresh($routeParams.laskentakaavaOid);
     promise.then(function() {
         $scope.funktio = Laskentapuu.laskentakaavapuu.funktio;
