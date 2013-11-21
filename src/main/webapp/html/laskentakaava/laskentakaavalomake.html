@@ -22,7 +22,8 @@
 <script type="text/ng-template" id="frame_template.html">
     <div class="frame">
         <span class="icon">&#8302;</span>
-        <span class="label" ng-click="showDetails(funktio)">{{funktio.syoteparametrit[0].data.arvo}} - {{funktio.naytettavaNimi}}</span>
+        <span ng-show="funktio.data.valintaperusteviitteet[0].lahde" class="label" ng-click="showDetails(funktio)">{{funktio.syoteparametrit[0].data.arvo}} - {{funktio.naytettavaNimi}}</span>
+        <span ng-show="funktio.data.valintaperusteviitteet[0].lahde" class="label" ng-click="showDetails(funktio)">{{funktio.syoteparametrit[0].data.arvo}} - {{funktio.naytettavaNimi}}</span>
     </div>
     <ul ng-init="parent = farg" class="frame-content list">
         <li data-parent="{{parent}}" data-funktio="{{farg}}" class="item" ng-repeat="farg in funktio.funktioargumentit" ng-class="funktio.dragClasses()">
@@ -43,9 +44,10 @@
 <script type="text/ng-template" id="funktio_template.html">
     <div ng-class="funktio.funktioCssClass('function', selected)">
         <span ng-class="funktio.iconCssClass()">&#8302;</span>
-        <span class="label" ng-click="showDetails(funktio)">{{funktio.naytettavaNimi}}</span>
+        <span  class="label" ng-click="showDetails(funktio)">{{funktio.naytettavaNimi}}</span>
         <span class="notification warning" ng-show="funktio.hasErrors()">!</span>
     </div>
+
     <ul ng-init="parent = farg" class="function-content">
         <li data-funktio="{{farg}}" data-parent="{{parent}}" class="item" ng-repeat="farg in funktio.funktioargumentit" ng-class="farg.dragClasses()">
             <div ng-controller="recurseController">
@@ -54,6 +56,21 @@
         </li>
     </ul>
 </script>
+
+<!-- HAETTAVA ARVO -->
+<script type="text/ng-template" id="haettava_arvo_template.html">
+    <div ng-show="funktio.data.valintaperusteviitteet[0].lahde" ng-class="funktio.funktioCssClass('parameter', selected)">
+        <span class="icon">&#8302;</span>
+        <span class="label" ng-click="showDetails(funktio)">
+            <span ng-show="funktio.data.valintaperusteviitteet[0].lahde == 'HAETTAVA_ARVO'">Arvo hakemukselta</span> 
+            <span ng-show="funktio.data.valintaperusteviitteet[0].lahde == 'SYOTETTAVA_ARVO'">Syötettävä arvo</span> 
+            <span ng-show="funktio.data.valintaperusteviitteet[0].lahde == 'HAKUKOHTEEN_ARVO'">Hakukohteen arvo</span> 
+            <span ng-show="funktio.data.valintaperusteviitteet[0].tunniste">({{funktio.data.valintaperusteviitteet[0].tunniste}})</span>
+            <span ng-show="funktio.data.valintaperusteviitteet[0].kuvaus">- {{funktio.data.valintaperusteviitteet[0].kuvaus}}</span>
+        </span>
+    </div>
+</script>
+
 
 <script type="text/ng-template" id="parametri_template.html">
     <div ng-class="funktio.funktioCssClass('parameter', selected)">
@@ -73,11 +90,11 @@
             <tbody>
             <tr>
                 <td ng-click="addNewFunktio(parent, 'HAELUKUARVO', funktio.nimi())"><span>Arvo hakemukselta</span></td>
-                <td ng-click="addNewFunktio(parent, 'HAELUKUARVO', funktio.nimi())"><span>Syötettävä arvo</span></td>
+                <td ng-click="addNewFunktio(parent, 'LUKUARVO', funktio.nimi())"><span>Vakio</span></td>
             </tr>
             <tr>
-                <td ng-click="addNewFunktio(parent, 'LUKUARVO', funktio.nimi())"><span>Vakio</span></td>
                 <td ng-click="addNewFunktio(parent, 'SUMMA', funktio.nimi())"><span>Summa</span></td>
+                <td ng-click="addNewFunktio(parent, 'JOS', funktio.nimi())"><span>Jos</span></td>
             </tr>
             <tr>
                 <td ng-click="addNewFunktio(parent, 'TULO', funktio.nimi())"><span>Tulo</span></td>
@@ -85,11 +102,12 @@
             </tr>
             <tr>
                 <td ng-click="addNewFunktio(parent, 'KESKIARVO', funktio.nimi())"><span>Keskiarvo</span></td>
-                <td ng-click="addNewFunktio(parent, 'MAKSIMI', funktio.nimi())"><span>Maksimi</span></td>
+                <td ng-click="addNewFunktio(parent, 'MEDIAANI', funktio.nimi())"><span>Mediaani</span></td>
+                
             </tr>
             <tr>
                 <td ng-click="addNewFunktio(parent, 'MINIMI', funktio.nimi())"><span>Minimi</span></td>
-                <td ng-click="addNewFunktio(parent, 'MEDIAANI', funktio.nimi())"><span>Mediaani</span></td>
+                <td ng-click="addNewFunktio(parent, 'MAKSIMI', funktio.nimi())"><span>Maksimi</span></td>
             </tr>
             <tr>
                 <td ng-click="addNewFunktio(parent, 'SUMMANPARASTA', funktio.nimi())"><span>N parasta summa</span></td>
@@ -102,11 +120,11 @@
             </tr>
             <tr>
                 <td ng-click="addNewFunktio(parent, 'NEGAATIO', funktio.nimi())"><span>Negaatio</span></td>
-                <td ng-click="addNewFunktio(parent, 'JOS', funktio.nimi())"><span>Jos</span></td>
+                <td ng-click="addNewFunktio(parent, 'PYORISTYS', funktio.nimi())"><span>Pyöristys</span></td>
             </tr>
             <tr>
                 <td ng-click="addNewFunktio(parent, 'HYLKAA', funktio.nimi())"><span>Hylkää</span></td>
-                <td ng-click="addNewFunktio(parent, 'PYORISTYS', funktio.nimi())"><span>Pyöristys</span></td>
+                <td ng-click="addNewFunktio(parent, 'HYLKAAARVOVALILLA', funktio.nimi())"><span>Hylkää arvovälillä</span></td>
             </tr>
             <tr>
                 <td ng-click="addNewFunktio(parent, 'KONVERTOILUKUARVO', funktio.nimi())"><span>Konversio</span></td>
@@ -119,10 +137,6 @@
             <tr>
                 <td ng-click="addNewFunktio(parent, 'SKAALAUS', funktio.nimi())"><span>Skaalaus</span></td>
                 <td ng-click="addNewFunktio(parent, 'PAINOTETTUKESKIARVO', funktio.nimi())"><span>Painotettu keskiarvo</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'HYLKAAARVOVALILLA', funktio.nimi())"><span>Hylkää arvovälillä</span></td>
-                <td><span></span></td>
             </tr>
 
             </tbody>

@@ -404,19 +404,21 @@ var Funktio = function(funktiokuvaukset, data, funktioparent) {
     /* UI methods */
     this.getTemplate = function() {
         var labelFunctions = ["NIMETTYLUKUARVO", "NIMETTYTOTUUSARVO"];
-        var paramFunctions = ["HAELUKUARVO", "LUKUARVO", "TOTUUSARVO", "HAETOTUUSARVO", "HAKUTOIVE",
-        "DEMOGRAFIA", "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI", "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI",
-        "HAEMERKKIJONOJAVERTAAYHTASUURUUS", "VALINTAPERUSTEYHTASUURUUS"];
-
+        var paramFunctions = ["LUKUARVO", "TOTUUSARVO",  "HAKUTOIVE", "DEMOGRAFIA"];
+        var haettava_arvo_functions = ["HAETOTUUSARVO", "HAELUKUARVO", "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI",
+        "HAEMERKKIJONOJAVERTAAYHTASUURUUS","HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI", "VALINTAPERUSTEYHTASUURUUS"]
         var funktioPairFunctions = ["PAINOTETTUKESKIARVO"];
+        
         if(paramFunctions.indexOf(this.nimi) != -1) {
             return "parametri_template.html"
         } else if(labelFunctions.indexOf(this.nimi) != -1) {
             return "frame_template.html"
+        } else if(haettava_arvo_functions.indexOf(this.nimi) != -1){
+            return "haettava_arvo_template.html";
         } else if(funktioPairFunctions.indexOf(this.nimi) != -1) {
-            return "funktio_template.html"
+            return "funktio_template.html";
         } else {
-            return "funktio_template.html"
+            return "funktio_template.html";
         }
     }
 
