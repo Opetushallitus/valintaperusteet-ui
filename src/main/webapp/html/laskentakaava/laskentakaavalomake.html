@@ -22,8 +22,8 @@
 <script type="text/ng-template" id="frame_template.html">
     <div class="frame">
         <span class="icon">&#8302;</span>
-        <span ng-show="funktio.data.valintaperusteviitteet[0].lahde" class="label" ng-click="showDetails(funktio)">{{funktio.syoteparametrit[0].data.arvo}} - {{funktio.naytettavaNimi}}</span>
-        <span ng-show="funktio.data.valintaperusteviitteet[0].lahde" class="label" ng-click="showDetails(funktio)">{{funktio.syoteparametrit[0].data.arvo}} - {{funktio.naytettavaNimi}}</span>
+        <span class="label" ng-click="showDetails(funktio)">{{funktio.syoteparametrit[0].data.arvo}} - {{funktio.naytettavaNimi}}</span>
+       
     </div>
     <ul ng-init="parent = farg" class="frame-content list">
         <li data-parent="{{parent}}" data-funktio="{{farg}}" class="item" ng-repeat="farg in funktio.funktioargumentit" ng-class="funktio.dragClasses()">
@@ -36,7 +36,7 @@
 
 <script type="text/ng-template" id="subformula_template.html">
     <div ng-class="funktio.funktioCssClass('frame', selected)">
-        <span class="icon">&#8302fromArray(span)
+        <span class="icon">&#8302;</span>
         <span class="label" ng-click="showKaavaDetails(funktio)">{{funktio.nimi}}</span>
     </div>
 </script>

@@ -49,16 +49,17 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
     }
 
     $scope.kaavaDragged = function(funktio, oldParent, newParent, index) {
-        //console.log(newParent.kardinaliteettiSum());
-        var kaavaBeforeDrag = Laskentapuu.laskentakaava().getData();
-        var oldIndex = oldParent.funktioargumentit.indexOf(funktio)
-        var func = funktio
 
-        func = oldParent.removeChildFunktio(funktio);
+        var kaavaBeforeDrag = Laskentapuu.laskentakaava().getData();
+        var oldIndex = oldParent.funktioargumentit.indexOf(funktio);
+
+        var func = funktio;
+
         newParent.addChildAt(func, index);
         newParent.init();
         oldParent.init();
 
+        func = oldParent.removeChildFunktio(funktio); 
     }
 
     //called from kaavaeditor -directive when an item has been moved in kaavaeditor
