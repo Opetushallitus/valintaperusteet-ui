@@ -99,7 +99,7 @@
     <div class="form-row">
         <div class="form-row-label">Kuuluu sijoitteluun</div>
         <div class="form-row-content">
-            {{model.hakukohde.kuuluuSijoitteluun}}
+            {{model.kuuluuSijoitteluun ? 'Kyllä' : 'Ei'}}
         </div>
         <div class="clear"></div>
     </div>
@@ -123,7 +123,7 @@
                     <td class="align-center">
                         <a ng-class="{true:'', false:'line-through'}[data.aktiivinen]" href="#/hakukohde/{{hakukohdeOid}}/{{model.getValinnanvaiheType(data)}}/{{data.oid}}">{{data.nimi}}</a>
                     </td>
-                    <td class="align-center">{{data.inheritance}}</td>
+                    <td class="align-center">{{data.inheritance ? 'Kyllä' : 'Ei'}}</td>
                     <td class="align-center">{{data.valinnanVaiheTyyppi}}</td>
                     <td class="align-center">
                         <span ng-show="!data.inheritance" class="btn remove" ng-click="model.remove(data)"></span>
@@ -152,6 +152,7 @@
                     <th>Laskentakaava</th>
                     <th>Kiintiö</th>
                     <th>Periytyy</th>
+                    <th>Valintatapajonot</th>
                     <th>Poista</th>
                 </tr>
                 </thead>
@@ -162,7 +163,12 @@
                     </td>
                     <td class="align-center">{{data.laskentakaava_nimi}}</td>
                     <td class="align-center">{{data.kiintio}}</td>
-                    <td class="align-center">{{data.inheritance}}</td>
+                    <td class="align-center">{{data.inheritance ? 'Kyllä' : 'Ei'}}</td>
+                    <td class="align-center">
+                            <span ng-repeat="jono in data.valintatapajonot" ng-class="{true:'', false:'line-through'}[jono.valintatapajono.aktiivinen]">
+                                <a href="#/hakukohde/{{model.hakukohde.oid}}/valinnanvaihe/{{jono.valintatapajono.valinnan_vaihe}}/valintatapajono/{{jono.valintatapajono.oid}}">{{jono.valintatapajono.nimi}}</a>{{!$last ? ', ' : ''}}
+                            </span>
+                    </td>
                     <td class="align-center">
                         <span ng-show="!data.inheritance" class="btn remove" ng-click="removeHakijaryhma(data.oid)"></span>
                     </td>

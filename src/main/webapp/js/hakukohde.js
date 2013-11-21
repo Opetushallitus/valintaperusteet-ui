@@ -1,7 +1,8 @@
 app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohdekoodi, Hakukohde, Valintaryhma,
                                         HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta,
                                         HakukohdeKuuluuSijoitteluun, HakukohdeHakijaryhma, Laskentakaava,
-                                        HakijaryhmaJarjesta, Hakijaryhma, Haku, TarjontaHaku, HaunTiedot, HakukohdeNimi) {
+                                        HakijaryhmaJarjesta, Hakijaryhma, Haku, TarjontaHaku, HaunTiedot, HakukohdeNimi,
+                                        HakijaryhmanValintatapajonot) {
     var model = new function()  {
         
         this.parentValintaryhma = {};
@@ -47,6 +48,7 @@ app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohd
                     Laskentakaava.get({oid: hr.laskentakaava_id}, function(result) {
                         hr.laskentakaava_nimi = result.nimi;
                     });
+                    hr.valintatapajonot = HakijaryhmanValintatapajonot.get({oid: hr.oid});
                 });
             });
 
