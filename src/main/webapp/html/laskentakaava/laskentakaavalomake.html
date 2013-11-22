@@ -1,193 +1,4 @@
 
-
-<!-- PAGE TEMPLATES -->
-
-
-<!-- kaava root needed for drag & drop -->
-<script type="text/ng-template" id="root_template.html">
-    <div class="frame">
-        <span class="icon">&#8302;</span>
-        <span class="label" ng-click="showDetails(funktio)"><span class="bold">{{funktio.syoteparametrit[0].data.arvo}}</span> - {{funktio.naytettavaNimi}}</span>
-    </div>
-    <ul kaavadrag class="frame-content">
-        <li class="item" ng-repeat="farg in funktio.funktioargumentit" >
-            <div ng-controller="recurseController">
-                <div ng-include="funktio.template"></div>
-            </div>
-        </li>
-    </ul>
-</script>
-
-<!-- Nimetty lukuarvo tai Nimetty totuusarvo -->
-<script type="text/ng-template" id="frame_template.html">
-    <div class="frame">
-        <span class="icon">&#8302;</span>
-        <span class="label" ng-click="showDetails(funktio)">{{funktio.syoteparametrit[0].data.arvo}} - {{funktio.naytettavaNimi}}</span>
-       
-    </div>
-    <ul ng-init="parent = farg" class="frame-content list">
-        <li data-parent="{{parent}}" data-funktio="{{farg}}" class="item" ng-repeat="farg in funktio.funktioargumentit" ng-class="funktio.dragClasses()">
-            <div ng-controller="recurseController">
-                <div ng-include="funktio.template"></div>
-            </div>
-        </li>
-    </ul>
-</script>
-
-<script type="text/ng-template" id="subformula_template.html">
-    <div ng-class="funktio.funktioCssClass('frame', selected)">
-        <span class="icon">&#8302;</span>
-        <span class="label" ng-click="showKaavaDetails(funktio)">{{funktio.nimi}}</span>
-    </div>
-</script>
-
-<script type="text/ng-template" id="funktio_template.html">
-    <div ng-class="funktio.funktioCssClass('function', selected)">
-        <span ng-class="funktio.iconCssClass()">&#8302;</span>
-        <span  class="label" ng-click="showDetails(funktio)">{{funktio.naytettavaNimi}}</span>
-        <span class="notification warning" ng-show="funktio.hasErrors()">!</span>
-    </div>
-
-    <ul ng-init="parent = farg" class="function-content">
-        <li data-funktio="{{farg}}" data-parent="{{parent}}" class="item" ng-repeat="farg in funktio.funktioargumentit" ng-class="farg.dragClasses()">
-            <div ng-controller="recurseController">
-                <div ng-include="funktio.template"></div>
-            </div>
-        </li>
-    </ul>
-</script>
-
-<!-- HAETTAVA ARVO -->
-<script type="text/ng-template" id="haettava_arvo_template.html">
-    <div ng-show="funktio.data.valintaperusteviitteet[0].lahde" ng-class="funktio.funktioCssClass('parameter', selected)">
-        <span class="icon">&#8302;</span>
-        <span class="label" ng-click="showDetails(funktio)">
-            <span ng-show="funktio.data.valintaperusteviitteet[0].lahde == 'HAETTAVA_ARVO'">Arvo hakemukselta</span> 
-            <span ng-show="funktio.data.valintaperusteviitteet[0].lahde == 'SYOTETTAVA_ARVO'">Syötettävä arvo</span> 
-            <span ng-show="funktio.data.valintaperusteviitteet[0].lahde == 'HAKUKOHTEEN_ARVO'">Hakukohteen arvo</span> 
-            <span ng-show="funktio.data.valintaperusteviitteet[0].tunniste">({{funktio.data.valintaperusteviitteet[0].tunniste}})</span>
-            <span ng-show="funktio.data.valintaperusteviitteet[0].kuvaus">- {{funktio.data.valintaperusteviitteet[0].kuvaus}}</span>
-        </span>
-    </div>
-</script>
-
-
-<script type="text/ng-template" id="parametri_template.html">
-    <div ng-class="funktio.funktioCssClass('parameter', selected)">
-        <span class="icon">&#8302;</span>
-        <span class="label" ng-click="showDetails(funktio)">{{funktio.naytettavaNimi}}</span>
-    </div>
-</script>
-
-<script type="text/ng-template" id="tyhja_template.html">
-    <div class="function cancel no-nesting">
-        <span class="dropzone">{{funktio.otsikko()}}</span>
-        
-        <table class="dropmenu-table" ng-show="funktio.isLukuarvoFunktio()">
-            <thead>
-            <th colspan="2">Lisää uusi funktio</th>
-            </thead>
-            <tbody>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'HAELUKUARVO', funktio.nimi())"><span>Arvo hakemukselta</span></td>
-                <td ng-click="addNewFunktio(parent, 'LUKUARVO', funktio.nimi())"><span>Vakio</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'SUMMA', funktio.nimi())"><span>Summa</span></td>
-                <td ng-click="addNewFunktio(parent, 'JOS', funktio.nimi())"><span>Jos</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'TULO', funktio.nimi())"><span>Tulo</span></td>
-                <td ng-click="addNewFunktio(parent, 'OSAMAARA', funktio.nimi())"><span>Osamäärä</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'KESKIARVO', funktio.nimi())"><span>Keskiarvo</span></td>
-                <td ng-click="addNewFunktio(parent, 'MEDIAANI', funktio.nimi())"><span>Mediaani</span></td>
-                
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'MINIMI', funktio.nimi())"><span>Minimi</span></td>
-                <td ng-click="addNewFunktio(parent, 'MAKSIMI', funktio.nimi())"><span>Maksimi</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'SUMMANPARASTA', funktio.nimi())"><span>N parasta summa</span></td>
-                <td ng-click="addNewFunktio(parent, 'KESKIARVONPARASTA', funktio.nimi())">
-                    <span>N parasta keskiarvo</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'NMAKSIMI', funktio.nimi())"><span>N maksimi</span></td>
-                <td ng-click="addNewFunktio(parent, 'NMINIMI', funktio.nimi())"><span>N minimi</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'NEGAATIO', funktio.nimi())"><span>Negaatio</span></td>
-                <td ng-click="addNewFunktio(parent, 'PYORISTYS', funktio.nimi())"><span>Pyöristys</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'HYLKAA', funktio.nimi())"><span>Hylkää</span></td>
-                <td ng-click="addNewFunktio(parent, 'HYLKAAARVOVALILLA', funktio.nimi())"><span>Hylkää arvovälillä</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'KONVERTOILUKUARVO', funktio.nimi())"><span>Konversio</span></td>
-                <td ng-click="addChildLaskentakaava(parent, funktio.nimi())"><span>Viittaus toiseen kaavaan</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAKONVERTOILUKUARVOKSI', funktio.nimi())"><span>Hae merkkijono ja konvertoi lukuarvoksi</span></td>
-                <td ng-click="addNewFunktio(parent, 'NIMETTYLUKUARVO', funktio.nimi())"><span>Nimetty lukuarvo</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'SKAALAUS', funktio.nimi())"><span>Skaalaus</span></td>
-                <td ng-click="addNewFunktio(parent, 'PAINOTETTUKESKIARVO', funktio.nimi())"><span>Painotettu keskiarvo</span></td>
-            </tr>
-
-            </tbody>
-        </table>
-        <table class="dropmenu-table" ng-show="funktio.isTotuusarvoFunktio()">
-            <thead>
-            <th colspan="2">Lisää uusi funktio</th>
-            </thead>
-            <tbody>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'HAETOTUUSARVO', funktio.nimi())"><span>Arvo hakemukselta</span>
-                </td>
-                <td ng-click="addNewFunktio(parent, 'TAI', funktio.nimi())"><span>Tai</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'SUUREMPITAIYHTASUURI', funktio.nimi())"><span>Suurempi tai yhtä suuri</span>
-                </td>
-                <td ng-click="addNewFunktio(parent, 'SUUREMPI', funktio.nimi())"><span>Suurempi</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'YHTASUURI', funktio.nimi())"><span>Yhtä suuri</span></td>
-                <td ng-click="addNewFunktio(parent, 'PIENEMPI', funktio.nimi())"><span>Pienempi</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'PIENEMPITAIYHTASUURI', funktio.nimi())"><span>Pienempi tai yhtä suuri</span>
-                </td>
-                <td ng-click="addNewFunktio(parent, 'EI', funktio.nimi())"><span>Ei</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'TOTUUSARVO', funktio.nimi())"><span>Totuusarvo</span></td>
-                <td ng-click="addNewFunktio(parent, 'JA', funktio.nimi())"><span>Ja</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'DEMOGRAFIA', funktio.nimi())"><span>Demografia</span></td>
-                <td ng-click="addNewFunktio(parent, 'HAKUTOIVE', funktio.nimi())"><span>Hakutoive</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI'
-                , funktio.nimi())"><span>Hae merkkijono ja konvertoi totuusarvoksi</span></td>
-                <td ng-click="addNewFunktio(parent, 'NIMETTYTOTUUSARVO', funktio.nimi())"><span>Nimetty totuusarvo</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAVERTAAYHTASUURUUS', funktio.nimi())"><span>Hae merkkijono ja vertaa yhtäsuuruus</span></td>
-                <td ng-click="addNewFunktio(parent, 'VALINTAPERUSTEYHTASUURUUS', funktio.nimi())"><span>Valintaperusteyhtasuuruus</span></td>
-            </tr>
-            </tbody>
-        </table>
-
-    </div>
-</script>
-
 <!-- Arvojen syöttö -templatet -->
 <script type="text/ng-template" id="desimaaliluku-template">
     <input type="text" size="9" ng-model="param.data.arvo"/>
@@ -304,7 +115,7 @@
 
     <div class="clear"></div>
     <div class="gradingformula dd" style="width:60%;float:left;"
-        ng-include="'root_template.html'">
+        ng-include="'laskentakaava/laskentakaavapuu.html'">
     </div>
 
 
@@ -439,13 +250,6 @@
                                 ng-model="f.konvertteri.uusityyppi" ng-options="konvertterityyppi.tyyppi as konvertterityyppi.tyyppi for konvertterityyppi in f.konvertteri.konvDef.konvertteriTyypit">
                             <option value=""></option>
                         </select>
-                        <!--
-                        <select ng-change="f.konvertteri.setTyyppi(f.konvertteri.uusityyppi)"
-                                ng-model="f.konvertteri.uusityyppi">
-                            <option value="ARVOVALIKONVERTTERI">Arvovälimuunnin</option>
-                            <option value="ARVOKONVERTTERI">Arvovaihtoehdot</option>
-                        </select>
-                        -->
                     </div>
                 </div>
 
@@ -490,10 +294,6 @@
             
             <span class="button small" ng-click="f.removeThis(); selected = null; showTemplate = false">poista funktiokutsu</span>
 
-            <!--
-            <span class="button small" ng-show="!f.data.deleted" ng-click="f.data.deleted=true">Poista funktiokutsu</span>
-            <span class="button small" ng-show="f.data.deleted" ng-click="f.data.deleted=false">Palauta funktiokutsu</span>
-        -->
         </div>
 
     </div>

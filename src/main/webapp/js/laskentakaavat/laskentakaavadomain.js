@@ -410,11 +410,11 @@ var Funktio = function(funktiokuvaukset, data, funktioparent) {
         var funktioPairFunctions = ["PAINOTETTUKESKIARVO"];
         
         if(paramFunctions.indexOf(this.nimi) != -1) {
-            return "parametri_template.html"
+            return "handle_templates.html"
         } else if(labelFunctions.indexOf(this.nimi) != -1) {
             return "frame_template.html"
         } else if(haettava_arvo_functions.indexOf(this.nimi) != -1){
-            return "haettava_arvo_template.html";
+            return "handle_templates.html";
         } else if(funktioPairFunctions.indexOf(this.nimi) != -1) {
             return "funktio_template.html";
         } else {
@@ -1029,7 +1029,6 @@ var FunktioNimiService = function() {
         "OSAMAARA": "Osamäärä",
         "TAI": "Tai",
         "TULO": "Tulo",
-        "SUMMA": "Summa",
         "JOS": "Jos",
         "SUUREMPI": "Suurempi",
         "YHTASUURI": "Yhtä suuri kuin",
