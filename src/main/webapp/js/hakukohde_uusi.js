@@ -72,8 +72,17 @@ app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu) {
             }
 
             modelInterface.valintaperusteList = list;
+        },
+        expandNode:function(node) {
+        if( (node.alavalintaryhmat && node.alavalintaryhmat.length > 0)  ||
+            (node.hakukohdeViitteet && node.hakukohdeViitteet.length > 0 )  ) {
+            if(node.isVisible != true) {
+                node.isVisible = true;
+            } else {
+                node.isVisible = false;
+            }
         }
-
+    }
     };
     modelInterface.refresh();
     return modelInterface;
@@ -90,6 +99,9 @@ app.factory('UusiHakukohdeModel', function(NewHakukohde) {
                        'KOPIOITU'];
 
         this.persistHakukohde = function() {
+            if(model.parentOid) {
+                model.hakukohde.valintaryhmaOid = model.parentOid;
+            }
             return NewHakukohde.insert(model.hakukohde, function(result) { }).$promise;
         };
 
@@ -97,6 +109,7 @@ app.factory('UusiHakukohdeModel', function(NewHakukohde) {
             model.hakukohde = {};
             model.haku = "";
             model.selectedHakukohde = "";
+            model.parentOid = "";
         }
 
     };
@@ -176,14 +189,4 @@ function UusiHakukohdeController($scope, $location, UusiHakukohdeModel, Ylavalin
         $location.path("/");
     }
 
-    $scope.expandNode = function(node) {
-        if( (node.alavalintaryhmat && node.alavalintaryhmat.length > 0)  ||
-            (node.hakukohdeViitteet && node.hakukohdeViitteet.length > 0 )  ) {
-            if(node.isVisible != true) {
-                node.isVisible = true;
-            } else {
-                node.isVisible = false;
-            }
-        }
-    }
 }

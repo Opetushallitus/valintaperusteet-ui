@@ -165,9 +165,9 @@
                     <td class="align-center">{{data.kiintio}}</td>
                     <td class="align-center">{{data.inheritance ? 'Kyllä' : 'Ei'}}</td>
                     <td class="align-center">
-                            <span ng-repeat="jono in data.valintatapajonot" ng-class="{true:'', false:'line-through'}[jono.valintatapajono.aktiivinen]">
-                                <a href="#/hakukohde/{{model.hakukohde.oid}}/valinnanvaihe/{{jono.valintatapajono.valinnan_vaihe}}/valintatapajono/{{jono.valintatapajono.oid}}">{{jono.valintatapajono.nimi}}</a>{{!$last ? ', ' : ''}}
-                            </span>
+                        <span ng-repeat="jono in data.valintatapajonot" ng-class="{true:'', false:'line-through'}[jono.valintatapajono.aktiivinen]">
+                            <a href="#/hakukohde/{{model.hakukohde.oid}}/valinnanvaihe/{{jono.valintatapajono.valinnan_vaihe}}/valintatapajono/{{jono.valintatapajono.oid}}">{{jono.valintatapajono.nimi}}</a>{{!$last ? ', ' : ''}}
+                        </span>
                     </td>
                     <td class="align-center">
                         <span ng-show="!data.inheritance" class="btn remove" ng-click="removeHakijaryhma(data.oid)"></span>

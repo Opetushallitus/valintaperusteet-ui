@@ -3,7 +3,6 @@
 
 <div class="tabs">
     <a href="#/valintaryhma/{{model.valintaryhma.oid}}/" class="tab current"><span>Valintaryhmän perustiedot</span></a>
-    <a ng-show="model.valintaryhma.oid" href="#/valintaryhma/{{model.valintaryhma.oid}}/sisaltyvat/" class="tab"><span>Sisältyvät hakukohteet/valintaryhmät</span></a>
     <a ng-show="model.valintaryhma.oid" href="#/valintaryhma/{{model.valintaryhma.oid}}/laskentakaava"
        class="tab"><span>Laskentakaavat</span></a>
 </div>
@@ -12,7 +11,7 @@
     <form name="form" ng-submit="submit()">
 
         <div class="form-row">
-            <label class="form-row-label" for="">Valintaryhmän nimi</label>
+            <label class="form-row-label" for="">Nimi</label>
 
             <div class="form-row-content width-60">
                 <input class="width-60" type="text" name="" id="" ng-model="model.valintaryhma.nimi" required/>
@@ -25,7 +24,7 @@
         </div>
 
         <div class="form-row">
-            <label class="form-row-label" for="">Valintaryhmän tunniste(oid):</label>
+            <label class="form-row-label" for="">Tunniste(oid):</label>
 
             <div class="form-row-content">
                 <span class="nofield">{{model.valintaryhma.oid}}</span>
@@ -34,8 +33,45 @@
             </div>
             <div class="clear"></div>
         </div>
-        
 
+        <div class="form-row">
+            <label class="form-row-label" for="">Organisaatiot:</label>
+
+            <div class="form-row-content  width-60">
+
+                <table class="virkailija-table-1">
+                    <thead>
+                    <tr>
+                        <th>nimi</th>
+                        <th>tyyppi</th>
+                        <th>oid</th>
+                        <th>poista</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="organisaatio in model.valintaryhma.organisaatiot">
+                        <td class="align-center">{{organisaatio.nimi['fi'] || organisaatio.nimi['sv'] || organisaatio.nimi['en']}}</td>
+                        <td class="align-center">
+                            <span ng-repeat="type in organisaatio.organisaatiotyypit">{{type}}</span>
+                            <span ng-repeat="type in organisaatio.tyypit">{{type}}</span>
+                        </td>
+                        <td class="align-center">{{organisaatio.oid}}</td>
+                        <td class="align-center">
+                            <i class="fa fa-trash-o organisaatio" ng-click="model.valintaryhma.organisaatiot.splice($index,1)"></i>
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+                <div class="clear"></div>
+                <br />
+                <div ng-include="'partials/organisaatioSelector.html'" />
+
+            </div>
+
+            <div class="clear"></div>
+        </div>
 
         <!-- VALINTAKOEKOODIEN LISTAUS -->
         <div ng-show="model.valintaryhma.valintakoekoodit" class="form-row">

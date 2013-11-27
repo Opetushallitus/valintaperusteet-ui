@@ -11,7 +11,8 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma,
                                             ValintaryhmaValinnanvaihe,
                                             ValinnanvaiheJarjesta,
                                             ValintaryhmaHakukohdekoodi,
-                                            ValintaryhmaHakijaryhma) {
+                                            ValintaryhmaHakijaryhma,
+                                            OrganizationByOid) {
 
     var model = new function() {
         this.valintaryhma = {};
@@ -36,6 +37,12 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma,
                     if(model.valintaryhma.valintakoekoodit !== undefined && model.valintaryhma.valintakoekoodit.length === 0) {
                         model.valintaryhma.valintakoekoodit = undefined;
                     }
+                    model.valintaryhma.organisaatiot.forEach(function(org, index){
+                        "use strict";
+                        OrganizationByOid.get(org, function(result){
+                            model.valintaryhma.organisaatiot[index] = result;
+                        });
+                    });
                 });
 
                 ValintaryhmaValinnanvaihe.get({oid: oid}, function(result) {
@@ -242,7 +249,7 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma,
     return model;
 });
 
-function valintaryhmaController($scope, $location, $routeParams, $timeout, ValintaryhmaModel) {
+function ValintaryhmaController($scope, $location, $routeParams, $timeout, ValintaryhmaModel) {
     $scope.valintaryhmaOid = $routeParams.id;
     $scope.model = ValintaryhmaModel;
     $scope.model.refreshIfNeeded($scope.valintaryhmaOid);
@@ -294,147 +301,21 @@ function valintaryhmaController($scope, $location, $routeParams, $timeout, Valin
     $scope.removeHakijaryhma = function(hakijaryhmaOid) {
         $scope.model.removeHakijaryhma(hakijaryhmaOid);
     }
-}
 
-
-app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routeParams, Valintaryhma, ChildValintaryhmas, Treemodel ) {
-
-    var model = new function() {
-        this.valintaryhma = {};
-
-        this.refresh = function() {
-            model.valintaryhma = {};
-        };
-
-        this.refreshIfNeeded = function() {
-            this.refresh();
-        };
-
-        this.persistValintaryhma = function(oid) {
-            
-            var newValintaryhma = {
-                hakuOid: 1,
-                lapsihakukohde: false,
-                lapsivalintaryhma: false,
-                nimi: model.valintaryhma.nimi
-            };
-
-            if(oid === "root"){
-                Valintaryhma.insert(newValintaryhma, function(result) {
-                    Treemodel.refresh();
-                    $location.path("/valintaryhma/" + result.oid);
-                });
-            } else {
-                ChildValintaryhmas.insert({"parentOid": oid}, newValintaryhma, function(result){
-                    Treemodel.refresh();
-                    model.valintaryhma = result;
-                    $location.path("/valintaryhma/" + result.oid);
-                });
+    $scope.organisaatioSelector = function(data) {
+        "use strict";
+        if(!$scope.model.valintaryhma.organisaatiot) {
+            $scope.model.valintaryhma.organisaatiot = [];
+        }
+        var contains = false
+        $scope.model.valintaryhma.organisaatiot.forEach(function(org){
+            if(data.oid === org.oid) {
+                contains = true;
             }
-        };
+        });
+
+        if(!contains) {
+            $scope.model.valintaryhma.organisaatiot.push(data);
+        }
     }
-
-    return model;
-});
-
-function ValintaryhmaCreatorController($scope, $location, $routeParams, ValintaryhmaCreatorModel) {
-    $scope.valintaryhmaOid = $routeParams.id;
-    $scope.model = ValintaryhmaCreatorModel;
-    $scope.model.refreshIfNeeded($scope.valintaryhmaOid);
-
-    $scope.submit = function() {
-        $scope.model.persistValintaryhma($scope.valintaryhmaOid);
-    }
-
-    $scope.cancel = function() {
-        $location.path("/");
-    }
-
-}
-
-
-
-
-app.factory('ValintaryhmaChildrenModel', function($resource, $location, $routeParams, Hakukohde, Valintaryhma, ValintaryhmaModel, ChildValintaryhmas, ChildHakukohdes ) {
-
-    var model = new function() {
-        this.valintaryhma = ValintaryhmaModel.valintaryhma;
-        this.childValintaryhmat = [];
-        this.childHakukohteet = [];
-
-        this.refresh = function(oid) {
-            if(!oid) {
-                model.valintaryhma = {};
-                model.childValintaryhmat = [];
-                model.childHakukohteet = [];
-            } else {
-
-                ValintaryhmaModel.refreshIfNeeded(oid);
-               
-                ChildValintaryhmas.get({parentOid: oid}, function(result) {
-                    model.childValintaryhmat = result;
-                });
-
-                ChildHakukohdes.get({oid: oid}, function(result) {
-                    model.childHakukohteet = result;
-                });
-
-            }
-        };
-
-        this.refreshIfNeeded = function(oid) {
-            if( oid !== model.valintaryhma.oid ) {
-                this.refresh(oid);
-            }
-        };
-
-        this.persistChildHakukohteet = function() {
-            model.childHakukohteet.forEach(function(element, index, array) {
-                Hakukohde.post(element, function(result) {
-                    model.refresh(model.valintaryhma.oid);
-                })
-            });
-        };
-
-        this.addHakukohde = function(oid) {
-            if(!model.valintaryhmaContainsHakukohde(oid)) {
-
-                Hakukohde.get({oid: oid}, function(result) {
-                    if(result) {
-                        result.valintaryhma = model.valintaryhma;
-                        model.childHakukohteet.push(result);
-                        model.persistChildHakukohteet();  
-                    }
-                });
-            }
-        };
-
-        this.valintaryhmaContainsHakukohde = function(hakukohdeOid) {
-
-            var currentHakukohdeOids = [];
-            model.childHakukohteet.forEach(function(element, index, array) {
-                currentHakukohdeOids.push(element.oid);
-            });
-
-            var hakukohdeExistIndex = currentHakukohdeOids.indexOf(hakukohdeOid);
-            if(hakukohdeExistIndex === -1) {
-                return false;
-            } else {
-                return true;
-            }
-        };
-    }
-
-    return model;
-});
-
-function ValintaryhmaChildrenController($scope, $location, $routeParams, ValintaryhmaChildrenModel) {
-    $scope.valintaryhmaOid = $routeParams.id;
-    $scope.model = ValintaryhmaChildrenModel;
-    $scope.model.refreshIfNeeded($scope.valintaryhmaOid);
-
-
-    $scope.toValintaryhmaForm = function() {
-        $location.path("/valintaryhma/" + $scope.valintaryhmaOid);
-    };
 }

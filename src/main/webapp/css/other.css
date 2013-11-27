@@ -14,6 +14,17 @@
     cursor: pointer;
 }
 
+.organisaatio.auki {
+    color: gray;
+}
+
+.organisaatio.kiinni {
+    color:black;
+}
+
+.organisaatio.eilapsia {
+    color: lightgray;
+}
 
 /* Bootstrap drop down menu typeaheadia */
 
@@ -148,4 +159,45 @@
         right: 0;
         left: auto;
     }
+}
+
+.orgSearch {
+    position: relative;
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    background-clip: padding-box;
+    padding: 5px;
+    z-index: 100050;
+}
+
+.orgSelector {
+    min-height: 5em;
+    max-height: 30em;
+    overflow: auto;
+    position: relative;
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    background-clip: padding-box;
+    padding: 5px;
+    z-index: 100050;
+}
+
+.valintaryhmaSelector {
+    max-height: 15em;
+    overflow: auto;
+    width: auto;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
 }
