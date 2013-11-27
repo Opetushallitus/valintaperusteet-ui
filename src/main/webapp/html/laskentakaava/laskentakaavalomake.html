@@ -27,7 +27,6 @@
                     <td>Max</td>
                     <td>Pisteet</td>
                     <td>Palauta haettu arvo</td>
-                    <td>Hylkäys- peruste</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -45,10 +44,10 @@
                     <td>
                         <input type="text" size="1" ng-model="konvparam.data.maxValue"/>
                     </td>
-                    <td><input type="text" size="3" ng-disabled="konvparam.data.palautaHaettuArvo"
+                    <td><input type="text" size="3" ng-disabled="konvparam.data.palautaHaettuArvo == 'true'"
                                ng-model="konvparam.data.paluuarvo"/></td>
-                    <td><input type="checkbox" ng-model="konvparam.data.palautaHaettuArvo"/></td>
-                    <td><input type="checkbox" ng-model="konvparam.data.hylkaysperuste"/></td>
+
+                    <td><input type="checkbox" ng-model="konvparam.data.palautaHaettuArvo" ng-true-value="true" ng-false-value="false"/></td>
                 </tr>
                 </tbody>
             </table>
@@ -76,7 +75,7 @@
                     </td>
                     <td><input type="text" size="9" ng-model="konvparam.data.arvo"/></td>
                     <td><input type="text" size="9" ng-model="konvparam.data.paluuarvo"/></td>
-                    <td><input type="checkbox" ng-model="konvparam.data.hylkaysperuste"/></td>
+                    <td><input type="checkbox" ng-model="konvparam.data.hylkaysperuste" ng-true-value="true" ng-false-value="false" /></td>
                 </tr>
                 </tbody>
             </table>
@@ -125,12 +124,12 @@
     <div style="width:30%;float:right;" ng-show="showKaavaMenu">
         <div class="settingsform">
             <h3>Laskentakaavaviittauksen asetukset</h3>
-
+            
             <div ng-repeat="valintaryhmaList in kaavaLista.valintaryhmaList()">
                 <div ng-repeat="valintaryhma in valintaryhmaList" ng-show="valintaryhma.laskentakaavat.length > 0">
                     <h3>{{valintaryhma.nimi}}</h3>
                     <div ng-repeat="kaava in valintaryhma.laskentakaavat">
-                        <div ng-hide="kaava.id == fetched">
+                        <div class="margin-bottom-1" ng-hide="kaava.id == fetched">
                             <input type="radio" name="kaava" value="{{kaava.id}}" ng-model="f.data.id"/>
                             {{kaava.nimi}}
                         </div>

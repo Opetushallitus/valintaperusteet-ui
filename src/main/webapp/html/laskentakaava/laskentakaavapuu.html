@@ -1,6 +1,7 @@
 
-
 <!-- PAGE TEMPLATES -->
+
+
 
 <!-- kaava root needed for drag & drop -->
 <div class="frame">
@@ -8,7 +9,7 @@
     <span class="label" ng-click="showDetails(funktio)"><span class="bold">{{funktio.syoteparametrit[0].data.arvo}}</span> - {{funktio.naytettavaNimi}}</span>
 </div>
 <ul kaavadrag class="frame-content">
-    <li class="item" ng-repeat="farg in funktio.funktioargumentit" >
+    <li class="item" ng-repeat="farg in funktio.funktioargumentit">
         <div ng-controller="recurseController">
             <div ng-include="funktio.template"></div>
         </div>
@@ -112,11 +113,11 @@
 <script type="text/ng-template" id="value_funktio_handle.html">
     <div ng-class="funktio.funktioCssClass('parameter', selected)">
         <span class="icon">&#8302;</span>
-        <span class="label" ng-show="!funktio.data.syoteparametrit[0].arvo" ng-click="showDetails(funktio)">
-            <span ng-show="funktio.data.syoteparametrit[0].avain == 'luku'">Vakio</span>
-            <span ng-show="funktio.data.syoteparametrit[0].avain == 'totuusarvo'">Totuusarvo</span>
+        <span class="label" ng-if="!funktio.data.syoteparametrit[0].arvo" ng-click="showDetails(funktio)">
+            <span ng-if="funktio.data.syoteparametrit[0].avain == 'luku'">Vakio</span>
+            <span ng-if="funktio.data.syoteparametrit[0].avain == 'totuusarvo'">Totuusarvo</span>
         </span>
-        <span class="label" ng-show="funktio.data.syoteparametrit[0].arvo !== undefined" ng-click="showDetails(funktio)">{{funktio.data.syoteparametrit[0].arvo}}</span>
+        <span class="label" ng-if="funktio.data.syoteparametrit[0].arvo !== undefined" ng-click="showDetails(funktio)">{{funktio.data.syoteparametrit[0].arvo}}</span>
     </div>
 </script>
 
@@ -126,12 +127,12 @@
         <span ng-class="funktio.iconCssClass()">&#8302;</span>
         <span class="label" ng-click="showDetails(funktio)">
             <span>Hylkää arvovälillä: </span>
-            <span ng-show="funktio.syoteparametrit[1].data.arvo">{{funktio.syoteparametrit[1].data.arvo}}</span>
-            <span ng-show="!funktio.syoteparametrit[1].data.arvo">?</span>
+            <span ng-if="funktio.syoteparametrit[1].data.arvo">{{funktio.syoteparametrit[1].data.arvo}}</span>
+            <span ng-if="!funktio.syoteparametrit[1].data.arvo">?</span>
             <span> - </span>
-            <span ng-show="funktio.syoteparametrit[2].data.arvo">{{funktio.syoteparametrit[2].data.arvo}}</span>
-            <span ng-show="!funktio.syoteparametrit[2].data.arvo">?</span>
-            <span ng-show="funktio.syoteparametrit[0].data.arvo"> ({{funktio.syoteparametrit[0].data.arvo}})</span>
+            <span ng-if="funktio.syoteparametrit[2].data.arvo">{{funktio.syoteparametrit[2].data.arvo}}</span>
+            <span ng-if="!funktio.syoteparametrit[2].data.arvo">?</span>
+            <span ng-if="funktio.syoteparametrit[0].data.arvo"> ({{funktio.syoteparametrit[0].data.arvo}})</span>
     </div>
 </script>
 
@@ -143,22 +144,23 @@
 </script>
 
 <script type="text/ng-template" id="funktio_handle.html">
+
     <div ng-class="funktio.funktioCssClass('function', selected)">
         <span ng-class="funktio.iconCssClass()">&#8302;</span>
         <span  class="label" ng-click="showDetails(funktio)">{{funktio.naytettavaNimi}}</span>
-        <span class="notification warning" ng-show="funktio.hasErrors()">!</span>
+        <span class="notification warning" ng-if="funktio.hasErrors()">!</span>
     </div>
 </script>
 
 <script type="text/ng-template" id="haettava_arvo_template.html">
-    <div ng-show="funktio.data.valintaperusteviitteet[0].lahde" ng-class="funktio.funktioCssClass('parameter', selected)">
+    <div ng-if="funktio.data.valintaperusteviitteet[0].lahde" ng-class="funktio.funktioCssClass('parameter', selected)">
         <span class="icon">&#8302;</span>
         <span class="label" ng-click="showDetails(funktio)">
-            <span ng-show="funktio.data.valintaperusteviitteet[0].lahde == 'HAETTAVA_ARVO'">Arvo hakemukselta</span> 
-            <span ng-show="funktio.data.valintaperusteviitteet[0].lahde == 'SYOTETTAVA_ARVO'">Syötettävä arvo</span> 
-            <span ng-show="funktio.data.valintaperusteviitteet[0].lahde == 'HAKUKOHTEEN_ARVO'">Hakukohteen arvo</span> 
-            <span ng-show="funktio.data.valintaperusteviitteet[0].tunniste">({{funktio.data.valintaperusteviitteet[0].tunniste}})</span>
-            <span ng-show="funktio.data.valintaperusteviitteet[0].kuvaus">- {{funktio.data.valintaperusteviitteet[0].kuvaus}}</span>
+            <span ng-if="funktio.data.valintaperusteviitteet[0].lahde == 'HAETTAVA_ARVO'">Arvo hakemukselta</span> 
+            <span ng-if="funktio.data.valintaperusteviitteet[0].lahde == 'SYOTETTAVA_ARVO'">Syötettävä arvo</span> 
+            <span ng-if="funktio.data.valintaperusteviitteet[0].lahde == 'HAKUKOHTEEN_ARVO'">Hakukohteen arvo</span> 
+            <span ng-if="funktio.data.valintaperusteviitteet[0].tunniste">({{funktio.data.valintaperusteviitteet[0].tunniste}})</span>
+            <span ng-if="funktio.data.valintaperusteviitteet[0].kuvaus">- {{funktio.data.valintaperusteviitteet[0].kuvaus}}</span>
         </span>
     </div>
 </script>
