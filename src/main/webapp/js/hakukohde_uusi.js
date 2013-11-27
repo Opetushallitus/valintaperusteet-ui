@@ -22,7 +22,8 @@ app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu) {
         refresh:function() {
 
             ValintaperusteetPuu.get({
-                q: this.search.q
+                q: this.search.q,
+                hakukohteet: false
             },function(result) {
                 modelInterface.valintaperusteList = result;
                 modelInterface.update();
@@ -58,9 +59,6 @@ app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu) {
 
                 if(item.tyyppi == 'VALINTARYHMA') {
                     modelInterface.tilasto.valintaryhmia++;
-                } else {
-                    console.log(item);
-                    list.remove(item);
                 }
 
                 if(item.alavalintaryhmat) {
@@ -74,8 +72,8 @@ app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu) {
             modelInterface.valintaperusteList = list;
         },
         expandNode:function(node) {
-        if( (node.alavalintaryhmat && node.alavalintaryhmat.length > 0)  ||
-            (node.hakukohdeViitteet && node.hakukohdeViitteet.length > 0 )  ) {
+        if( (node.alavalintaryhmat && node.alavalintaryhmat.length > 0)) {
+
             if(node.isVisible != true) {
                 node.isVisible = true;
             } else {
