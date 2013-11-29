@@ -147,7 +147,7 @@ var Funktio = function(funktiokuvaukset, data, funktioparent) {
         this.nimi = this.getNimi();
 
         this.funktiokuvaus = this.funktiokuvausService.getFunktiokuvaus(this.nimi);
-        this.template = this.getTemplate();
+        
         this.funktioargumentit = this.getFunktioargumentit();
 
         // Used for comparison.
@@ -395,29 +395,6 @@ var Funktio = function(funktiokuvaukset, data, funktioparent) {
             }
         }
         return false
-    }
-
-
-
-    /* UI methods */
-    this.getTemplate = function() {
-        var labelFunctions = ["NIMETTYLUKUARVO", "NIMETTYTOTUUSARVO"];
-        var paramFunctions = ["LUKUARVO", "TOTUUSARVO",  "HAKUTOIVE", "DEMOGRAFIA"];
-        var haettava_arvo_functions = ["HAETOTUUSARVO", "HAELUKUARVO", "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI",
-        "HAEMERKKIJONOJAVERTAAYHTASUURUUS","HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI", "VALINTAPERUSTEYHTASUURUUS"]
-        var funktioPairFunctions = ["PAINOTETTUKESKIARVO"];
-        
-        if(paramFunctions.indexOf(this.nimi) != -1) {
-            return "handle_templates.html"
-        } else if(labelFunctions.indexOf(this.nimi) != -1) {
-            return "frame_template.html"
-        } else if(haettava_arvo_functions.indexOf(this.nimi) != -1){
-            return "handle_templates.html";
-        } else if(funktioPairFunctions.indexOf(this.nimi) != -1) {
-            return "funktio_template.html";
-        } else {
-            return "funktio_template.html";
-        }
     }
 
     this.hasErrors = function() {
