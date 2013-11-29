@@ -6,29 +6,38 @@
 <!-- kaava root needed for drag & drop -->
 <div class="frame">
     <span class="icon">&#8302;</span>
-    <span class="label" ng-click="showDetails(funktio)"><span class="bold">{{funktio.syoteparametrit[0].data.arvo}}</span> - {{funktio.naytettavaNimi}}</span>
+    <span class="label" ng-click="showDetails(funktio)">
+    <span class="bold">{{funktio.syoteparametrit[0].data.arvo}}</span>
 </div>
+
 <ul kaavadrag class="frame-content">
-    <li class="item" ng-repeat="farg in funktio.funktioargumentit">
-        <div ng-controller="recurseController">
-            <div ng-include="funktio.template"></div>
+
+
+    <li class="item" ng-repeat="farg in funktio.funktioargumentit" >
+        <div ng-controller="treeNodeController">
+            <div ng-include="getFunktioTemplate(farg)"></div>
         </div>
     </li>
 </ul>
 
-<!-- Nimetty lukuarvo tai Nimetty totuusarvo -->
-<script type="text/ng-template" id="frame_template.html">
-    <div ng-include="'handle_templates.html'"></div>
+
+<!-- template jota käytetään kaikkien funktioiden piirtämiseen -->
+<script type="text/ng-template" id="node_template.html">
     
-    <ul ng-init="parent = farg" class="frame-content list">
-        <li class="item" ng-repeat="farg in funktio.funktioargumentit" ng-class="funktio.dragClasses()">
-            <div ng-controller="recurseController">
-                <div ng-include="funktio.template"></div>
+    <div ng-include="'leaf_template.html'"></div>
+    
+    <!--function-content toinen css-class frame-content list-->
+
+    <ul ng-if="funktio.funktioargumentit" ng-init="parent = farg" ng-class="templateClasses(parent)">
+        <li class="item" ng-repeat="farg in funktio.funktioargumentit" ng-class="farg.dragClasses()">
+            <div ng-controller="treeNodeController">
+                <div ng-include="getFunktioTemplate(farg)"></div>
             </div>
         </li>
-    </ul>
 
+    </ul>
 </script>
+
 
 <script type="text/ng-template" id="subformula_template.html">
     <div ng-class="funktio.funktioCssClass('frame', selected)">
@@ -37,24 +46,13 @@
     </div>
 </script>
 
-<script type="text/ng-template" id="funktio_template.html">
-    <div ng-include="'handle_templates.html'"></div>
 
-    <ul ng-init="parent = farg" class="function-content">
-        <li class="item" ng-repeat="farg in funktio.funktioargumentit" ng-class="farg.dragClasses()">
-            <div ng-controller="recurseController">
-                <div ng-include="funktio.template"></div>
-            </div>
-        </li>
-    </ul>
-</script>
 
-<!-- -->
-<script type="text/ng-template" id="handle_templates.html">
+<script type="text/ng-template" id="leaf_template.html">
     <div ng-if="farg.nimi == 'LUKUARVO'" ng-include="'value_funktio_handle.html'"></div>
     <div ng-if="farg.nimi == 'TOTUUSARVO'" ng-include="'value_funktio_handle.html'"></div>
 
-    <div ng-if="farg.nimi == 'HAKUTOIVE'" ng-include="'parametri_funktio_handle.html'"></div>
+    
 
     <div ng-if="farg.nimi == 'HAETOTUUSARVO'" ng-include="'haettava_arvo_template.html'"></div>
     <div ng-if="farg.nimi == 'HAELUKUARVO'" ng-include="'haettava_arvo_template.html'"></div>
@@ -79,12 +77,12 @@
     <div ng-if="farg.nimi == 'MINIMI'" ng-include="'funktio_handle.html'"></div>
     <div ng-if="farg.nimi == 'NEGAATIO'" ng-include="'funktio_handle.html'"></div>
     <div ng-if="farg.nimi == 'KESKIARVO'" ng-include="'funktio_handle.html'"></div>
-    <div ng-if="farg.nimi == 'DEMOGRAFIA'" ng-include="'funktio_handle.html'"></div>
+    <div ng-if="farg.nimi == 'PAINOTETTUKESKIARVO'" ng-include="'funktio_handle.html'"></div>
+
     <div ng-if="farg.nimi == 'KONVERTOILUKUARVO'" ng-include="'funktio_handle.html'"></div>
     <div ng-if="farg.nimi == 'HYLKAA'" ng-include="'funktio_handle.html'"></div>
     <div ng-if="farg.nimi == 'PYORISTYS'" ng-include="'funktio_handle.html'"></div>
     <div ng-if="farg.nimi == 'SKAALAUS'" ng-include="'funktio_handle.html'"></div>
-    
     <div ng-if="farg.nimi == 'SUMMA'" ng-include="'funktio_handle.html'"></div>
 
     <div ng-if="farg.nimi == 'NMINIMI'" ng-include="'fargumentticount_funktio_handle.html'"></div>
@@ -97,25 +95,32 @@
     <div ng-if="farg.nimi == 'NIMETTYLUKUARVO'" ng-include="'nimetty_funktio_handle.html'"></div>
     <div ng-if="farg.nimi == 'NIMETTYTOTUUSARVO'" ng-include="'nimetty_funktio_handle.html'"></div>
 
-    <div ng-if="farg.nimi == 'PAINOTETTUKESKIARVO'" ng-include="'funktio_handle.html'"></div>
-
+    
+    
+    <div ng-if="farg.nimi == 'HAKUTOIVE'" ng-include="'vain_syoteparametrit_template.html'"></div>
+    <div ng-if="farg.nimi == 'DEMOGRAFIA'" ng-include="'vain_syoteparametrit_template.html'"></div>
 
 </script>
 
-<!-- Yleisimmät funktiot -->
-<script type="text/ng-template" id="parametri_funktio_handle.html">
-    <div ng-class="funktio.funktioCssClass('parameter', selected)">
+<script type="text/ng-template" id="vain_syoteparametrit_template.html">
+    <div class="parameter">
         <span class="icon">&#8302;</span>
-        <span class="label" ng-click="showDetails(funktio)">{{funktio.naytettavaNimi}}</span>
+        <span ng-if="funktio.nimi == 'HAKUTOIVE'" class="label" ng-click="showDetails(funktio)">
+            <span ng-if="funktio.data.syoteparametrit[0].arvo">{{funktio.data.syoteparametrit[0].arvo}}. hakutoive</span>
+            <span ng-if="!funktio.data.syoteparametrit[0].arvo">Hakutoive</span>
+        </span>
+        <span ng-if="funktio.nimi == 'DEMOGRAFIA'"  class="label" ng-click="showDetails(funktio)">Demografia</span>
     </div>
+
 </script>
 
 <script type="text/ng-template" id="value_funktio_handle.html">
+    
     <div ng-class="funktio.funktioCssClass('parameter', selected)">
         <span class="icon">&#8302;</span>
         <span class="label" ng-if="!funktio.data.syoteparametrit[0].arvo" ng-click="showDetails(funktio)">
-            <span ng-if="funktio.data.syoteparametrit[0].avain == 'luku'">Vakio</span>
-            <span ng-if="funktio.data.syoteparametrit[0].avain == 'totuusarvo'">Totuusarvo</span>
+            <span ng-if="funktio.nimi == 'LUKUARVO'">Vakio</span>
+            <span ng-if="funktio.nimi == 'TOTUUSARVO'">Totuusarvo</span>
         </span>
         <span class="label" ng-if="funktio.data.syoteparametrit[0].arvo !== undefined" ng-click="showDetails(funktio)">{{funktio.data.syoteparametrit[0].arvo}}</span>
     </div>
@@ -124,15 +129,15 @@
 <!-- HYLKÄÄ ARVOVÄLILLÄ -->
 <script type="text/ng-template" id="hylkaa_arvovalilla_handle.html">
     <div ng-class="funktio.funktioCssClass('function', selected)">
-        <span ng-class="funktio.iconCssClass()">&#8302;</span>
+        <span class="icon">&#8302;</span>
         <span class="label" ng-click="showDetails(funktio)">
-            <span>Hylkää arvovälillä: </span>
-            <span ng-if="funktio.syoteparametrit[1].data.arvo">{{funktio.syoteparametrit[1].data.arvo}}</span>
-            <span ng-if="!funktio.syoteparametrit[1].data.arvo">?</span>
-            <span> - </span>
-            <span ng-if="funktio.syoteparametrit[2].data.arvo">{{funktio.syoteparametrit[2].data.arvo}}</span>
-            <span ng-if="!funktio.syoteparametrit[2].data.arvo">?</span>
-            <span ng-if="funktio.syoteparametrit[0].data.arvo"> ({{funktio.syoteparametrit[0].data.arvo}})</span>
+        <span>Hylkää arvovälillä: </span>
+        <span ng-if="funktio.syoteparametrit[1].data.arvo">{{funktio.syoteparametrit[1].data.arvo}}</span>
+        <span ng-if="!funktio.syoteparametrit[1].data.arvo">?</span>
+        <span> - </span>
+        <span ng-if="funktio.syoteparametrit[2].data.arvo">{{funktio.syoteparametrit[2].data.arvo}}</span>
+        <span ng-if="!funktio.syoteparametrit[2].data.arvo">?</span>
+        <span ng-if="funktio.syoteparametrit[0].data.arvo"> ({{funktio.syoteparametrit[0].data.arvo}})</span>
     </div>
 </script>
 
@@ -146,10 +151,33 @@
 <script type="text/ng-template" id="funktio_handle.html">
 
     <div ng-class="funktio.funktioCssClass('function', selected)">
-        <span ng-class="funktio.iconCssClass()">&#8302;</span>
-        <span  class="label" ng-click="showDetails(funktio)">{{funktio.naytettavaNimi}}</span>
-        <span class="notification warning" ng-if="funktio.hasErrors()">!</span>
+        <span ng-if="funktio.nimi != 'SUMMA'" class="icon">&#8302;</span>
+        
+        <span ng-if="funktio.nimi == 'TAI'"  class="label" ng-click="showDetails(funktio)">Tai</span>
+        <span ng-if="funktio.nimi == 'TULO'"  class="label" ng-click="showDetails(funktio)">Tulo</span>
+        <span ng-if="funktio.nimi == 'OSAMAARA'"  class="label" ng-click="showDetails(funktio)">Osamäärä</span>
+        <span ng-if="funktio.nimi == 'SUUREMPI'"  class="label" ng-click="showDetails(funktio)">Suurempi</span>
+        <span ng-if="funktio.nimi == 'YHTASUURI'"  class="label" ng-click="showDetails(funktio)">Yhtäsuuri</span>
+        <span ng-if="funktio.nimi == 'PIENEMPI'"  class="label" ng-click="showDetails(funktio)">Pienempi</span>
+        <span ng-if="funktio.nimi == 'MEDIAANI'"  class="label" ng-click="showDetails(funktio)">Mediaani</span>
+        <span ng-if="funktio.nimi == 'PIENEMPITAIYHTASUURI'"  class="label" ng-click="showDetails(funktio)">Pienempi tai yhtäsuuri</span>
+        <span ng-if="funktio.nimi == 'SUUREMPITAIYHTASUURI'"  class="label" ng-click="showDetails(funktio)">Suurempi tai yhtäsuuri</span>
+        <span ng-if="funktio.nimi == 'EI'"  class="label" ng-click="showDetails(funktio)">Ei</span>
+        <span ng-if="funktio.nimi == 'JA'"  class="label" ng-click="showDetails(funktio)">Ja</span>
+        <span ng-if="funktio.nimi == 'MAKSIMI'"  class="label" ng-click="showDetails(funktio)">Maksimi</span>
+        <span ng-if="funktio.nimi == 'MINIMI'"  class="label" ng-click="showDetails(funktio)">Minimi</span>
+        <span ng-if="funktio.nimi == 'NEGAATIO'"  class="label" ng-click="showDetails(funktio)">Negaatio</span>
+        <span ng-if="funktio.nimi == 'KESKIARVO'"  class="label" ng-click="showDetails(funktio)">Keskiarvo</span>
+        
+        <span ng-if="funktio.nimi == 'KONVERTOILUKUARVO'"  class="label" ng-click="showDetails(funktio)">Lukuarvon konversio</span>
+        <span ng-if="funktio.nimi == 'HYLKAA'"  class="label" ng-click="showDetails(funktio)">Hylkää</span>
+        <span ng-if="funktio.nimi == 'PYORISTYS'"  class="label" ng-click="showDetails(funktio)">Pyöristys</span>
+        <span ng-if="funktio.nimi == 'SKAALAUS'"  class="label" ng-click="showDetails(funktio)">Skaalaus</span>
+        <span ng-if="funktio.nimi == 'PAINOTETTUKESKIARVO'" class="label" ng-click="showDetails(funktio)">Painotettu keskiarvo</span>
+        <span ng-if="funktio.nimi == 'SUMMA'" class="icon sum">&#8302;</span>
+        <span ng-if="funktio.nimi == 'SUMMA'" class="label" ng-click="showDetails(funktio)">Summa</span>
     </div>
+
 </script>
 
 <script type="text/ng-template" id="haettava_arvo_template.html">
@@ -171,18 +199,18 @@
 <script type="text/ng-template" id="fargumentticount_funktio_handle.html">
 
     <div  ng-class="funktio.funktioCssClass('function', selected)">
-        <span ng-class="funktio.iconCssClass()">&#8302;</span>
-        <span ng-show="!funktio.data.syoteparametrit[0].arvo" class="label" ng-click="showDetails(funktio)">
-            <span ng-show="funktio.nimi == 'NMINIMI'">N pienintä</span>
-            <span ng-show="funktio.nimi == 'NMAKSIMI'">N suurinta</span>
-            <span ng-show="funktio.nimi == 'KESKIARVONPARASTA'">N parasta keskiarvo</span>
-            <span ng-show="funktio.nimi == 'SUMMANPARASTA'">N parasta summa</span>
+        <span class="icon">&#8302;</span>
+        <span ng-if="!funktio.data.syoteparametrit[0].arvo" class="label" ng-click="showDetails(funktio)">
+            <span ng-if="funktio.nimi == 'NMINIMI'">N pienintä</span>
+            <span ng-if="funktio.nimi == 'NMAKSIMI'">N suurinta</span>
+            <span ng-if="funktio.nimi == 'KESKIARVONPARASTA'">N:n suurimman keskiarvo</span>
+            <span ng-if="funktio.nimi == 'SUMMANPARASTA'">N:n suurimman summa</span>
         </span>
-        <span ng-show="funktio.data.syoteparametrit[0].arvo" ng-click="showDetails(funktio)" class="label">
-            <span ng-show="funktio.nimi == 'NMINIMI'">{{funktio.syoteparametrit[0].data.arvo}} pienintä</span>
-            <span ng-show="funktio.nimi == 'NMAKSIMI'">{{funktio.syoteparametrit[0].data.arvo}} suurinta</span>
-            <span ng-show="funktio.nimi == 'KESKIARVONPARASTA'">{{funktio.syoteparametrit[0].data.arvo}} parasta keskiarvo</span>
-            <span ng-show="funktio.nimi == 'SUMMANPARASTA'">{{funktio.syoteparametrit[0].data.arvo}} parasta summa</span>
+        <span ng-if="funktio.data.syoteparametrit[0].arvo" ng-click="showDetails(funktio)" class="label">
+            <span ng-if="funktio.nimi == 'NMINIMI'">{{funktio.syoteparametrit[0].data.arvo}} pienintä</span>
+            <span ng-if="funktio.nimi == 'NMAKSIMI'">{{funktio.syoteparametrit[0].data.arvo}} suurinta</span>
+            <span ng-if="funktio.nimi == 'KESKIARVONPARASTA'">{{funktio.syoteparametrit[0].data.arvo}} suurimman keskiarvo</span>
+            <span ng-if="funktio.nimi == 'SUMMANPARASTA'">{{funktio.syoteparametrit[0].data.arvo}} suurimman summa</span>
 
         </span>
     </div>

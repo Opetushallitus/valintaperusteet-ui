@@ -138,10 +138,7 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
 
 }
 
-function recurseController($scope) {
-    $scope.funktio = $scope.$parent.farg;
-    $scope.parent = $scope.$parent.funktio;
-}
+
 
 
 app.factory('Laskentapuu', function($q, Laskentakaava, FunktioKuvaus) {

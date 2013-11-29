@@ -134,7 +134,6 @@ var Funktio = function(funktiokuvaukset, data, funktioparent) {
 
     this.data = data;
     this.funktiokuvausService = new FunktiokuvausService(funktiokuvaukset);
-    this.funktionimiService = FunktioNimiService();
 
     this.init = function() {
         if(!this.data.funktioargumentit) {
@@ -155,7 +154,6 @@ var Funktio = function(funktiokuvaukset, data, funktioparent) {
         this.hashKey = Math.random().toString(36).substring(7);
         this.syoteparametrit = this.getSyoteparametrit();
         this.konvertteri = this.getKonvertteri();
-        this.naytettavaNimi = this.funktionimiService.nimi(this.data);
 
         // jos funktio on haettava arvo -tyyppinen lisätään tyhjiä valintaperusteviiteobjekteja
         // yhtä monta kuin sen funktiokuvauksessa on valintaperusteobjekteja
@@ -445,13 +443,6 @@ var Funktio = function(funktiokuvaukset, data, funktioparent) {
         return cssClass;
     }
 
-    this.iconCssClass = function() {
-        if("SUMMA" == this.nimi) {
-            return "icon sum"
-        }
-        return "icon"
-    }
-
     //returns style classes needed for drag & drop functionality
     this.dragClasses = function() {
         var dragClasses = "";
@@ -583,6 +574,10 @@ var Funktio = function(funktiokuvaukset, data, funktioparent) {
 
     
     this.isLegalSubFunktio = function(funktio, index) {
+        if(funktio instanceof LaskentakaavaViite) {
+            return this.isLegalLaskentakaavaViiteSubFunktio(funktio, index);
+        }
+
         var funktioargumentit = this.funktiokuvaus.funktioargumentit;
 
         if(this.isFunktioPariTyyppi()) {
@@ -620,7 +615,15 @@ var Funktio = function(funktiokuvaukset, data, funktioparent) {
         } else {
             return false;
         }
-        
+    }
+
+    this.isLegalLaskentakaavaViiteSubFunktio = function(funktio, index) {
+        var funktiotyyppi = funktio.data.tyyppi;
+        if(funktiotyyppi == this.funktiokuvaus.funktioargumentit[0].tyyppi) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     //  onko nimetyt argumentit -tyyppisellä funktiolla enää tilaa alifunktioille
@@ -852,23 +855,6 @@ var Konvertteri = function(konvDef, data) {
 
     this.setTyyppi = function(tyyppi) {
         
-        //poistetaan asetetut konvertteriparametrit konvertterityyppiä vaihdettaessa
-        
-        /*
-        //asetetaan konvertterityypin vaihtoa edeltävät konvertteriparametrit talteen 
-        if(this.tyyppi) {
-            var konvertterityyppi = this.getKonvertterityyppi()
-            if(this.data[konvertterityyppi]) {
-                this.oldData[this.tyyppi] = this.data[konvertterityyppi].slice()
-            }
-
-            this.data[konvertterityyppi].splice(0);
-        }
-        */
-
-        //remove 
-        //this.parametrit.splice(0);
-
         this.tyyppi = tyyppi
         this.template = TEMPLATE_MAP[tyyppi]
 
@@ -876,15 +862,6 @@ var Konvertteri = function(konvDef, data) {
         if(this.data[konvertterityyppi]) {
             this.data[konvertterityyppi].splice(0, this.data[konvertterityyppi].length)
         }
-
-        //poistetaan asetetut konvertteriparametrit konvertterityyppiä vaihdettaessa
-        /*
-        if(this.oldData[this.tyyppi]) {
-            for(var i = 0; i < this.oldData[this.tyyppi].length; i++) {
-                this.data[konvertterityyppi].push(this.oldData[this.tyyppi][i])
-            }
-        }
-        */
 
         this.parametrit = this.getParametrit()
     }
@@ -1020,192 +997,3 @@ var FunktiokuvausService = function(funktiokuvaukset) {
         return null
     }
 }
-
-var FunktioNimiService = function() {
-
-    var funktioNimiMap = {
-        "SUMMA": "Summa",
-        "KESKIARVO": "Keskiarvo",
-        "OSAMAARA": "Osamäärä",
-        "TAI": "Tai",
-        "TULO": "Tulo",
-        "JOS": "Jos",
-        "SUUREMPI": "Suurempi",
-        "YHTASUURI": "Yhtä suuri kuin",
-        "PIENEMPI": "Pienempi",
-        "MEDIAANI": "Mediaani",
-        "PIENEMPITAIYHTASUURI": "Pienempi tai yhtä suuri",
-        "SUUREMPITAIYHTASUURI": "Suurempi tai yhtä suuri",
-        "EI": "Ei",
-        "JA": "Ja",
-        "MAKSIMI": "Maksimi",
-        "MINIMI": "Pienin",
-        "NEGAATIO": "Negaatio",
-        "KESKIARVO": "Keskiarvo",
-        "DEMOGRAFIA": "Demografia",
-        "KONVERTOILUKUARVO": "Konvertoi",
-        "HYLKAA": "Hylkää",
-        "PYORISTYS": "Pyöristys",
-        "NIMETTYLUKUARVO": "Nimetty lukuarvo",
-        "NIMETTYTOTUUSARVO": "Nimetty totuusarvo",
-        "SKAALAUS": "Skaalaus",
-        "PAINOTETTUKESKIARVO": "Painotettu keskiarvo",
-        "HYLKAAARVOVALILLA": "Hylkää arvovälillä"
-    };
-
-    var kustomit = {
-        "NIMETTYLUKUARVO": function(data) {
-            var nimi = $.grep(data.syoteparametrit, function(param) {
-                return param.avain == "nimi";
-            });
-            return nimi[0] && nimi[0].arvo ? nimi[0].arvo : "Nimetty lukuarvo";
-        },
-        "NIMETTYTOTUUSARVO": function(data) {
-            var nimi = $.grep(data.syoteparametrit, function(param) {
-                return param.avain == "nimi";
-            });
-            return nimi[0] && nimi[0].arvo ? nimi[0].arvo : "Nimetty totuusarvo";
-        },
-        "HAELUKUARVO": function(data) {
-            if(!data.valintaperuste || !data.valintaperuste.lahde) {
-                return "Haettava arvo";
-            }
-            switch (data.valintaperuste.lahde) {
-                case "HAETTAVA_ARVO":
-                    return "Arvo hakemukselta";
-                case "SYOTETTAVA_ARVO":
-                    return "Syötettävä arvo";
-                case "HAKUKOHTEEN_ARVO":
-                    return "Hakukohteen arvo";
-            }
-        },
-        "HAETOTUUSARVO": function(data) {
-            if(!data.valintaperuste || !data.valintaperuste.lahde) {
-                return "Haettava arvo";
-            }
-            switch (data.valintaperuste.lahde) {
-                case "HAETTAVA_ARVO":
-                    return "Arvo hakemukselta";
-                case "SYOTETTAVA_ARVO":
-                    return "Syötettävä arvo";
-                case "HAKUKOHTEEN_ARVO":
-                    return "Hakukohteen arvo";
-            }
-        },
-        "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI": function(data) {
-            if(!data.valintaperuste || !data.valintaperuste.lahde) {
-                return "Haettava arvo";
-            }
-            switch (data.valintaperuste.lahde) {
-                case "HAETTAVA_ARVO":
-                    return "Arvo hakemukselta";
-                case "SYOTETTAVA_ARVO":
-                    return "Syötettävä arvo";
-                case "HAKUKOHTEEN_ARVO":
-                    return "Hakukohteen arvo";
-            }
-        },
-        "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI": function(data) {
-            if(!data.valintaperuste || !data.valintaperuste.lahde) {
-                return "Haettava arvo";
-            }
-            switch (data.valintaperuste.lahde) {
-                case "HAETTAVA_ARVO":
-                    return "Arvo hakemukselta";
-                case "SYOTETTAVA_ARVO":
-                    return "Syötettävä arvo";
-                case "HAKUKOHTEEN_ARVO":
-                    return "Hakukohteen arvo";
-            }
-        },
-        "HAEMERKKIJONOJAVERTAAYHTASUURUUS": function(data) {
-            if(!data.valintaperuste || !data.valintaperuste.lahde) {
-                return "Haettava arvo";
-            }
-            switch (data.valintaperuste.lahde) {
-                case "HAETTAVA_ARVO":
-                    return "Arvo hakemukselta";
-                case "SYOTETTAVA_ARVO":
-                    return "Syötettävä arvo";
-                case "HAKUKOHTEEN_ARVO":
-                    return "Hakukohteen arvo";
-            }
-        },
-        "VALINTAPERUSTEYHTASUURUUS": function(data) {
-            if(!data.valintaperuste || !data.valintaperuste.lahde) {
-                return "Haettava arvo";    
-            }
-            switch (data.valintaperuste.lahde) {
-                case "HAETTAVA_ARVO":
-                    return "Arvo hakemukselta";
-                case "SYOTETTAVA_ARVO":
-                    return "Syötettävä arvo";
-                case "HAKUKOHTEEN_ARVO":
-                    return "Hakukohteen arvo";
-            }
-        },
-        "NMINIMI": function(data) {
-            var format = " pienintä";
-            var n = $.grep(data.syoteparametrit, function(param) {
-                return param.avain == "n";
-            })
-            return n[0] && n[0].arvo ? n[0].arvo + format : "N" + format;
-        },
-        "NMAKSIMI": function(data) {
-            var format = " suurinta";
-            var n = $.grep(data.syoteparametrit, function(param) {
-                return param.avain == "n";
-            })
-            return n[0] && n[0].arvo ? n[0].arvo + format : "N" + format;
-        },
-        "KESKIARVONPARASTA": function(data) {
-            var format = " parasta keskiarvo";
-            var n = $.grep(data.syoteparametrit, function(param) {
-                return param.avain == "n";
-            })
-            return n[0] && n[0].arvo ? n[0].arvo + format : "N" + format;
-        },
-        "SUMMANPARASTA": function(data) {
-            var format = " parasta summa";
-            var n = $.grep(data.syoteparametrit, function(param) {
-                return param.avain == "n";
-            })
-            return n[0] && n[0].arvo ? n[0].arvo + format : "N" + format;
-        },
-        "TOTUUSARVO": function(data) {
-            var totuusarvo = $.grep(data.syoteparametrit, function(param) {
-                return param.avain == "totuusarvo";
-            });
-            return totuusarvo[0] && totuusarvo[0].arvo ? totuusarvo[0].arvo : "Totuusarvo";
-        },
-        "LUKUARVO": function(data) {
-            var luku = $.grep(data.syoteparametrit, function(param) {
-                return param.avain == "luku";
-            });
-            return luku[0] && luku[0].arvo ? luku[0].arvo : "Vakio";
-        },
-        "HAKUTOIVE": function(data) {
-            var n = $.grep(data.syoteparametrit, function(param) {
-                return param.avain == "n";
-            })
-            return n[0] && n[0].arvo ? n[0].arvo + ". hakutoive" : "Hakutoive";
-        }
-    }
-
-    return {
-        nimi : function(data) {
-            if(funktioNimiMap[data.funktionimi]) {
-                return funktioNimiMap[data.funktionimi];
-            } else if(kustomit[data.funktionimi]) {
-                return kustomit[data.funktionimi](data);
-            }
-            throw "Funktiolle " + data.funktionimi + " ei löytynyt nimeä.";
-        }
-    }
-};
-
-
-
-
-
-

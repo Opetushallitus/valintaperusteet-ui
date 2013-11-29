@@ -11,7 +11,6 @@ function LaskentakaavaMenuController($scope, $routeParams) {
     if($routeParams.valintaryhmaOid) {
         $scope.menuitems = [
             {url: '#/valintaryhma/' + $routeParams.valintaryhmaOid, title: 'Valintaryhmän perustiedot'},
-            {url: '#/valintaryhma/' + $routeParams.valintaryhmaOid + '/sisaltyvat', title: 'Sisältyvät hakukohteet'},
             {url: '#/valintaryhma/' + $routeParams.valintaryhmaOid + '/laskentakaava', title: 'Laskentakaavat'}
         ]
         $scope.selected = $scope.menuitems[2];
