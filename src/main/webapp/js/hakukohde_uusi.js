@@ -1,5 +1,5 @@
 //domain .. this is both, service & domain layer
-app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu) {
+app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu, AuthService) {
 
     //and return interface for manipulating the model
     var modelInterface =  {
@@ -60,6 +60,25 @@ app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu) {
                 if(item.tyyppi == 'VALINTARYHMA') {
                     modelInterface.tilasto.valintaryhmia++;
                 }
+
+                AuthService.getOrganizations("APP_VALINTAPERUSTEET").then(function(organisations){
+                    "use strict";
+                    item.access = false;
+                    organisations.forEach(function(org){
+
+                        if(item.organisaatiot.length > 0) {
+                            item.organisaatiot.forEach(function(org2) {
+                                if(org2.parentOidPath.indexOf(org) > -1) {
+                                    item.access = true;
+                                }
+                            });
+                        } else {
+                            AuthService.updateOph("APP_VALINTAPERUSTEET").then(function(){
+                                item.access = true;
+                            });
+                        }
+                    });
+                });
 
                 if(item.alavalintaryhmat) {
                     for(var i=0; i<item.alavalintaryhmat.length;i++)  recursion(item.alavalintaryhmat[i]);

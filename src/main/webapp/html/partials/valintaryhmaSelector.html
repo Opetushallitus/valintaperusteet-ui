@@ -3,7 +3,7 @@
 
     <span class="label" ng-if="data.nimi | filter:domain.search.q">
         <i class="fa fa-users valintaryhma"  ng-class="{ kiinni: domain.isCollapsed(data), eilapsia: !(data.alavalintaryhmat.length > 0), auki: domain.isExpanded(data)}" ng-click="domain.expandNode(data)"></i>
-        <input name="valintaryhmaOid" type="radio" ng-model="model.parentOid" value="{{data.oid}}" id="{{data.oid}}"/> <label for="{{data.oid}}">{{data.nimi}}</label>
+        <input ng-if="data.access" name="valintaryhmaOid" type="radio" ng-model="model.parentOid" value="{{data.oid}}" id="{{data.oid}}"/> <label for="{{data.oid}}">{{data.nimi}}</label>
     </span>
 
     <ol ng-if="data.isVisible">

@@ -1,5 +1,5 @@
 //domain .. this is both, service & domain layer
-app.factory('Treemodel', function($resource, ValintaperusteetPuu) {
+app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
 
     //and return interface for manipulating the model
     var modelInterface =  {
@@ -122,6 +122,24 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu) {
 
                 if(item.tyyppi == 'VALINTARYHMA') {
                   modelInterface.tilasto.valintaryhmia++;
+                  AuthService.getOrganizations("APP_VALINTAPERUSTEET").then(function(organisations){
+                      "use strict";
+                      item.access = false;
+                      organisations.forEach(function(org){
+
+                          if(item.organisaatiot.length > 0) {
+                              item.organisaatiot.forEach(function(org2) {
+                                  if(org2.parentOidPath.indexOf(org) > -1) {
+                                      item.access = true;
+                                  }
+                              });
+                          } else {
+                              AuthService.updateOph("APP_VALINTAPERUSTEET").then(function(){
+                                  item.access = true;
+                              });
+                          }
+                      });
+                  });
                 }
                 if(item.tyyppi == 'HAKUKOHDE') {
                    modelInterface.tilasto.hakukohteita++;
@@ -199,6 +217,22 @@ function ValintaryhmaHakukohdeTreeController($scope, $resource,Treemodel,Hakukoh
             (node.hakukohdeViitteet && node.hakukohdeViitteet.length > 0 )  ) {
             if(node.isVisible != true) {
                 node.isVisible = true;
+
+                // aukaisee alitason, jos ei ole liikaa tavaraa
+                var iter = function(ala) {
+                    ala.forEach(function(ala){
+                        "use strict";
+                        if(!ala.alavalintaryhmat || ala.alavalintaryhmat.length < 4) {
+                            ala.isVisible = true;
+                            iter(ala.alavalintaryhmat);
+                        }
+                    });
+                }
+                if(node.alavalintaryhmat.length < 4) {
+                    iter(node.alavalintaryhmat);
+                }
+
+
             } else {
                 node.isVisible = false;
             }

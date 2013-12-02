@@ -30,6 +30,9 @@ public class ConfigController {
     @Value("${auth.mode:}")
     private String authMode;
 
+    @Value("${valintalaskenta-ui.cas.url:/cas/myroles}")
+    private String casUrl;
+
     @RequestMapping(value = "/configuration.js", method = RequestMethod.GET, produces = "text/javascript")
     @ResponseBody
     public String index() {
@@ -42,11 +45,10 @@ public class ConfigController {
 
         append(b, "TEMPLATE_URL_BASE", "");
 
+        append(b, "CAS_URL", casUrl);
         if (!authMode.isEmpty()) {
             append(b, "AUTH_MODE", authMode);
-            if (authMode.trim().equalsIgnoreCase("dev")) {
-                b.append("$('head').append('<script type=\"text/javascript\" src=\"/servers/cas/myroles\"></script>')");
-            }
+
         }
 
         return b.toString();
