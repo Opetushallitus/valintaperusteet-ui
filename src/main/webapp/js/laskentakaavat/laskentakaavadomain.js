@@ -405,21 +405,6 @@ var Funktio = function(funktiokuvaukset, data, funktioparent) {
         return this.data.validointivirheet || []
     }
 
-    this.funktioCssClass = function(defaultClass, selected) {
-        var cssClass = defaultClass;
-        if(selected != null && this.hashKey == selected.hashKey) {
-            cssClass += " active";
-        }
-        if(this.data.deleted) {
-            cssClass += " line-through";
-        }
-        if(!this.hasNimetytArgumentit()) {
-            cssClass += " n-arguments";
-        }
-
-        return cssClass;
-    }
-
     //returns style classes needed for drag & drop functionality
     this.dragClasses = function() {
         var dragClasses = "";
