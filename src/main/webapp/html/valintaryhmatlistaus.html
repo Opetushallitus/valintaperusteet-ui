@@ -2,8 +2,9 @@
 <script type="text/ng-template" id="valintaryhma_node.html">
 
     <span class="label">
-        <i class="fa fa-users valintaryhma"  ng-class="{ kiinni: domain.isCollapsed(data), eilapsia: domain.isFile(data), auki: domain.isExpanded(data)}" ng-click="expandNode(data)"></i>
-        <a href="#/valintaryhma/{{data.oid}}"> {{data.nimi}}</a>
+            <i class="fa fa-users valintaryhma"  ng-class="{ kiinni: domain.isCollapsed(data), eilapsia: domain.isFile(data), auki: domain.isExpanded(data)}" ng-click="expandNode(data)"></i>
+        <a ng-if="data.access" href="#/valintaryhma/{{data.oid}}">{{data.nimi}} <i class="fa fa-unlock-alt"></i></a>
+        <span ng-if="!data.access" >{{data.nimi}} <i class="fa fa-lock"  style="cursor:default"></i></span>
     </span>
     <ol ng-if="data.isVisible" data-valintaryhmaoid="{{data.oid}}" >
         <li ng-repeat="data in data.alavalintaryhmat | orderBy:predicate "
@@ -24,8 +25,8 @@
     <div class="label"><i class="fa fa-building-o"></i><a href="#/hakukohde/{{data.oid}}"> {{data.nimi}} ({{data.tila}})</a></div>
 </script>
 
-
 <h1>Valintaperusteet</h1>
+
 <div class="tabs">
     <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
     <a href="#/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
