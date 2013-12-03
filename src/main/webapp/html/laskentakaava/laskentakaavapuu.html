@@ -22,8 +22,7 @@
     
     <div ng-include="'leaf_template.html'"></div>
     
-    <!--function-content toinen css-class frame-content list-->
-    <ul ng-if="funktio.funktioargumentit" ng-init="parent = farg" ng-class="templateClasses(parent)">
+    <ul ng-if="funktio.funktioargumentit" ng-init="parent = farg">
         <li class="item" ng-repeat="farg in funktio.funktioargumentit" ng-class="farg.dragClasses()">
             <div ng-controller="treeNodeController">
                 <div ng-include="getFunktioTemplate(farg)"></div>
@@ -31,6 +30,7 @@
         </li>
     </ul>
 </script>
+
 
 <!-- Laskentakaavaviite--> 
 <script type="text/ng-template" id="subformula_template.html">
@@ -55,7 +55,8 @@
     <div ng-if="farg.nimi == 'HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI'" ng-include="'haettava_arvo.html'"></div>
     <div ng-if="farg.nimi == 'VALINTAPERUSTEYHTASUURUUS'" ng-include="'haettava_arvo.html'"></div>
     
-    <div ng-if="farg.nimi == 'SUMMA'" ng-include="'funktio.html'"></div>
+    <div ng-if="farg.nimi == 'SUMMA'" ng-include="'summa.html'"></div>
+
     <div ng-if="farg.nimi == 'TAI'" ng-include="'funktio.html'"></div>
     <div ng-if="farg.nimi == 'TULO'" ng-include="'funktio.html'"></div>
     <div ng-if="farg.nimi == 'JOS'" ng-include="'funktio.html'"></div>
@@ -287,103 +288,103 @@ YHTASUURI
         
         <table class="dropmenu-table" ng-if="funktio.isLukuarvoFunktio()">
             <thead>
-            <th colspan="2">Lisää uusi funktio</th>
+                <th colspan="2">Lisää uusi funktio</th>
             </thead>
             <tbody>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'HAELUKUARVO', funktio.nimi())"><span>Arvo hakemukselta</span></td>
-                <td ng-click="addNewFunktio(parent, 'LUKUARVO', funktio.nimi())"><span>Vakio</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'SUMMA', funktio.nimi())"><span>Summa</span></td>
-                <td ng-click="addNewFunktio(parent, 'JOS', funktio.nimi())"><span>Jos</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'TULO', funktio.nimi())"><span>Tulo</span></td>
-                <td ng-click="addNewFunktio(parent, 'OSAMAARA', funktio.nimi())"><span>Osamäärä</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'KESKIARVO', funktio.nimi())"><span>Keskiarvo</span></td>
-                <td ng-click="addNewFunktio(parent, 'MEDIAANI', funktio.nimi())"><span>Mediaani</span></td>
-                
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'MINIMI', funktio.nimi())"><span>Minimi</span></td>
-                <td ng-click="addNewFunktio(parent, 'MAKSIMI', funktio.nimi())"><span>Maksimi</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'SUMMANPARASTA', funktio.nimi())"><span>N parasta summa</span></td>
-                <td ng-click="addNewFunktio(parent, 'KESKIARVONPARASTA', funktio.nimi())">
-                    <span>N parasta keskiarvo</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'NMAKSIMI', funktio.nimi())"><span>N maksimi</span></td>
-                <td ng-click="addNewFunktio(parent, 'NMINIMI', funktio.nimi())"><span>N minimi</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'NEGAATIO', funktio.nimi())"><span>Negaatio</span></td>
-                <td ng-click="addNewFunktio(parent, 'PYORISTYS', funktio.nimi())"><span>Pyöristys</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'HYLKAA', funktio.nimi())"><span>Hylkää</span></td>
-                <td ng-click="addNewFunktio(parent, 'HYLKAAARVOVALILLA', funktio.nimi())"><span>Hylkää arvovälillä</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'KONVERTOILUKUARVO', funktio.nimi())"><span>Konversio</span></td>
-                <td ng-click="addChildLaskentakaava(parent, funktio.nimi())"><span>Viittaus toiseen kaavaan</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAKONVERTOILUKUARVOKSI', funktio.nimi())"><span>Hae merkkijono ja konvertoi lukuarvoksi</span></td>
-                <td ng-click="addNewFunktio(parent, 'NIMETTYLUKUARVO', funktio.nimi())"><span>Nimetty lukuarvo</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'SKAALAUS', funktio.nimi())"><span>Skaalaus</span></td>
-                <td ng-click="addNewFunktio(parent, 'PAINOTETTUKESKIARVO', funktio.nimi())"><span>Painotettu keskiarvo</span></td>
-            </tr>
+                <tr>
+                    <td ng-click="addNewFunktio(parent, 'HAELUKUARVO', funktio.nimi())"><span>Arvo hakemukselta</span></td>
+                    <td ng-click="addNewFunktio(parent, 'LUKUARVO', funktio.nimi())"><span>Vakio</span></td>
+                </tr>
+                <tr>
+                    <td ng-click="addNewFunktio(parent, 'SUMMA', funktio.nimi())"><span>Summa</span></td>
+                    <td ng-click="addNewFunktio(parent, 'JOS', funktio.nimi())"><span>Jos</span></td>
+                </tr>
+                <tr>
+                    <td ng-click="addNewFunktio(parent, 'TULO', funktio.nimi())"><span>Tulo</span></td>
+                    <td ng-click="addNewFunktio(parent, 'OSAMAARA', funktio.nimi())"><span>Osamäärä</span></td>
+                </tr>
+                <tr>
+                    <td ng-click="addNewFunktio(parent, 'KESKIARVO', funktio.nimi())"><span>Keskiarvo</span></td>
+                    <td ng-click="addNewFunktio(parent, 'MEDIAANI', funktio.nimi())"><span>Mediaani</span></td>
+                    
+                </tr>
+                <tr>
+                    <td ng-click="addNewFunktio(parent, 'MINIMI', funktio.nimi())"><span>Minimi</span></td>
+                    <td ng-click="addNewFunktio(parent, 'MAKSIMI', funktio.nimi())"><span>Maksimi</span></td>
+                </tr>
+                <tr>
+                    <td ng-click="addNewFunktio(parent, 'SUMMANPARASTA', funktio.nimi())"><span>N parasta summa</span></td>
+                    <td ng-click="addNewFunktio(parent, 'KESKIARVONPARASTA', funktio.nimi())">
+                        <span>N parasta keskiarvo</span></td>
+                </tr>
+                <tr>
+                    <td ng-click="addNewFunktio(parent, 'NMAKSIMI', funktio.nimi())"><span>N maksimi</span></td>
+                    <td ng-click="addNewFunktio(parent, 'NMINIMI', funktio.nimi())"><span>N minimi</span></td>
+                </tr>
+                <tr>
+                    <td ng-click="addNewFunktio(parent, 'NEGAATIO', funktio.nimi())"><span>Negaatio</span></td>
+                    <td ng-click="addNewFunktio(parent, 'PYORISTYS', funktio.nimi())"><span>Pyöristys</span></td>
+                </tr>
+                <tr>
+                    <td ng-click="addNewFunktio(parent, 'HYLKAA', funktio.nimi())"><span>Hylkää</span></td>
+                    <td ng-click="addNewFunktio(parent, 'HYLKAAARVOVALILLA', funktio.nimi())"><span>Hylkää arvovälillä</span></td>
+                </tr>
+                <tr>
+                    <td ng-click="addNewFunktio(parent, 'KONVERTOILUKUARVO', funktio.nimi())"><span>Konversio</span></td>
+                    <td ng-click="addChildLaskentakaava(parent, funktio.nimi())"><span>Viittaus toiseen kaavaan</span></td>
+                </tr>
+                <tr>
+                    <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAKONVERTOILUKUARVOKSI', funktio.nimi())"><span>Hae merkkijono ja konvertoi lukuarvoksi</span></td>
+                    <td ng-click="addNewFunktio(parent, 'NIMETTYLUKUARVO', funktio.nimi())"><span>Nimetty lukuarvo</span></td>
+                </tr>
+                <tr>
+                    <td ng-click="addNewFunktio(parent, 'SKAALAUS', funktio.nimi())"><span>Skaalaus</span></td>
+                    <td ng-click="addNewFunktio(parent, 'PAINOTETTUKESKIARVO', funktio.nimi())"><span>Painotettu keskiarvo</span></td>
+                </tr>
 
             </tbody>
         </table>
         <table class="dropmenu-table" ng-if="funktio.isTotuusarvoFunktio()">
             <thead>
-            <th colspan="2">Lisää uusi funktio</th>
+                <th colspan="2">Lisää uusi funktio</th>
             </thead>
             <tbody>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'HAETOTUUSARVO', funktio.nimi())"><span>Arvo hakemukselta</span>
-                </td>
-                <td ng-click="addNewFunktio(parent, 'TAI', funktio.nimi())"><span>Tai</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'SUUREMPITAIYHTASUURI', funktio.nimi())"><span>Suurempi tai yhtä suuri</span>
-                </td>
-                <td ng-click="addNewFunktio(parent, 'SUUREMPI', funktio.nimi())"><span>Suurempi</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'YHTASUURI', funktio.nimi())"><span>Yhtä suuri</span></td>
-                <td ng-click="addNewFunktio(parent, 'PIENEMPI', funktio.nimi())"><span>Pienempi</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'PIENEMPITAIYHTASUURI', funktio.nimi())"><span>Pienempi tai yhtä suuri</span>
-                </td>
-                <td ng-click="addNewFunktio(parent, 'EI', funktio.nimi())"><span>Ei</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'TOTUUSARVO', funktio.nimi())"><span>Totuusarvo</span></td>
-                <td ng-click="addNewFunktio(parent, 'JA', funktio.nimi())"><span>Ja</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'DEMOGRAFIA', funktio.nimi())"><span>Demografia</span></td>
-                <td ng-click="addNewFunktio(parent, 'HAKUTOIVE', funktio.nimi())"><span>Hakutoive</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI'
-                , funktio.nimi())"><span>Hae merkkijono ja konvertoi totuusarvoksi</span></td>
-                <td ng-click="addNewFunktio(parent, 'NIMETTYTOTUUSARVO', funktio.nimi())"><span>Nimetty totuusarvo</span></td>
-            </tr>
-            <tr>
-                <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAVERTAAYHTASUURUUS', funktio.nimi())"><span>Hae merkkijono ja vertaa yhtäsuuruus</span></td>
-                <td ng-click="addNewFunktio(parent, 'VALINTAPERUSTEYHTASUURUUS', funktio.nimi())"><span>Valintaperusteyhtasuuruus</span></td>
-            </tr>
+                <tr>
+                    <td ng-click="addNewFunktio(parent, 'HAETOTUUSARVO', funktio.nimi())"><span>Arvo hakemukselta</span>
+                    </td>
+                    <td ng-click="addNewFunktio(parent, 'TAI', funktio.nimi())"><span>Tai</span></td>
+                </tr>
+                <tr>
+                    <td ng-click="addNewFunktio(parent, 'SUUREMPITAIYHTASUURI', funktio.nimi())"><span>Suurempi tai yhtä suuri</span>
+                    </td>
+                    <td ng-click="addNewFunktio(parent, 'SUUREMPI', funktio.nimi())"><span>Suurempi</span></td>
+                </tr>
+                <tr>
+                    <td ng-click="addNewFunktio(parent, 'YHTASUURI', funktio.nimi())"><span>Yhtä suuri</span></td>
+                    <td ng-click="addNewFunktio(parent, 'PIENEMPI', funktio.nimi())"><span>Pienempi</span></td>
+                </tr>
+                <tr>
+                    <td ng-click="addNewFunktio(parent, 'PIENEMPITAIYHTASUURI', funktio.nimi())"><span>Pienempi tai yhtä suuri</span>
+                    </td>
+                    <td ng-click="addNewFunktio(parent, 'EI', funktio.nimi())"><span>Ei</span></td>
+                </tr>
+                <tr>
+                    <td ng-click="addNewFunktio(parent, 'TOTUUSARVO', funktio.nimi())"><span>Totuusarvo</span></td>
+                    <td ng-click="addNewFunktio(parent, 'JA', funktio.nimi())"><span>Ja</span></td>
+                </tr>
+                <tr>
+                    <td ng-click="addNewFunktio(parent, 'DEMOGRAFIA', funktio.nimi())"><span>Demografia</span></td>
+                    <td ng-click="addNewFunktio(parent, 'HAKUTOIVE', funktio.nimi())"><span>Hakutoive</span></td>
+                </tr>
+                <tr>
+                    <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI'
+                    , funktio.nimi())"><span>Hae merkkijono ja konvertoi totuusarvoksi</span></td>
+                    <td ng-click="addNewFunktio(parent, 'NIMETTYTOTUUSARVO', funktio.nimi())"><span>Nimetty totuusarvo</span></td>
+                </tr>
+                <tr>
+                    <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAVERTAAYHTASUURUUS', funktio.nimi())"><span>Hae merkkijono ja vertaa yhtäsuuruus</span></td>
+                    <td ng-click="addNewFunktio(parent, 'VALINTAPERUSTEYHTASUURUUS', funktio.nimi())"><span>Valintaperusteyhtasuuruus</span></td>
+                </tr>
             </tbody>
         </table>
 

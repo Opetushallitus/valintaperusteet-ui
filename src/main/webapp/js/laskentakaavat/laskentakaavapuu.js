@@ -32,15 +32,6 @@ function treeNodeController($scope, FunktioTemplates) {
 
 }
 
-function konvertteriController($scope) {
-
-
-
-    var TEMPLATE_MAP = {
-        "ARVOKONVERTTERI": "arvokonvertteri-template",
-        "ARVOVALIKONVERTTERI": "arvovalikonvertteri-template"
-    }
-}
 
 app.factory('FunktioTemplates', function() {
 
@@ -63,8 +54,14 @@ app.factory('FunktiokuvausService', function(FunktioKuvaus) {
             return model.funktiokuvaukset;
         }
 
-        this.getFunktiokuvaus = function() {
-
+        this.getFunktiokuvaus = function(funktionimi) {
+            if(model.funktiokuvaukset) {
+                model.funktiokuvaukset.forEach(function(funktiokuvaus) {
+                    if(funktiokuvaus.nimi === funktionimi) {
+                        //return funktiokuvaus;
+                    }
+                });
+            }
         }
 
         this.refresh = function() {

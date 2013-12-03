@@ -34,32 +34,32 @@
 
 <div class="tabsheets">
     <div class="search">
-        <div>
-            <a href="#/valintaryhma/" class="button small primary"> <i class="fa fa-plus"></i> {{'valintaryhmatlistaus.add.valintaryhma' | i18n}}</a>
-            <a href="#/hakukohde/" class="button small primary"> <i class="fa fa-plus"></i> {{'valintaryhmatlistaus.add.hakukohde' | i18n}}</a>
+        <div class="margin-top-1">
+            <a href="#/valintaryhma/" class="margin-right-1 button small primary"> <i class="fa fa-plus"></i> {{'valintaryhmatlistaus.add.valintaryhma' | i18n}}</a>
+            <a href="#/hakukohde/" class="margin-right-1 button small primary"> <i class="fa fa-plus"></i> {{'valintaryhmatlistaus.add.hakukohde' | i18n}}</a>
             <a class="button small" ng-click="domain.expandTree()"> <i class="fa fa-expand"></i> Avaa puu</a>
         </div>
 
         <br>
 
-        <div>
-            <label for="haku">Haku</label>
+        <div class="margin-bottom-3">
+            <label class="margin-right-2" for="haku">Haku</label>
             <select id="haku" ng-model="domain.search.haku" ng-options="haku.nimi.kieli_fi for haku in hakuModel.haut | orderBy:'nimi.kieli_fi'"  ng-change="domain.refresh()">
                 <option value=""></option>
             </select>
         </div>
         <div>
-            <label for="text">Hae</label>
+            <label class="margin-right-2" for="text">Hae</label>
             <input type="text" class="search" placeholder="Suodata hakukohteita" id="text" ng-model="domain.search.q" ng-change="domain.refresh()">
 
 
-            <input id="osallistuu" type="checkbox" ng-model="domain.search.vainValmiitJaJulkaistut" ng-change="domain.refresh()"/>
+            <input class="margin-left-2" id="osallistuu" type="checkbox" ng-model="domain.search.vainValmiitJaJulkaistut" ng-change="domain.refresh()"/>
             <label for="osallistuu">Vain valmiit ja julkaistut</label>
 
-            <input id="vainHakukohteitaSisaltavatRyhmat" type="checkbox" ng-model="domain.search.vainHakukohteitaSisaltavatRyhmat" ng-change="domain.update()"/>
+            <input class="margin-left-2" id="vainHakukohteitaSisaltavatRyhmat" type="checkbox" ng-model="domain.search.vainHakukohteitaSisaltavatRyhmat" ng-change="domain.update()"/>
             <label for="vainHakukohteitaSisaltavatRyhmat">Vain hakukohteita sisältävät ryhmät</label>
 
-            <input id="vainHakukohteet" type="checkbox" ng-model="domain.search.vainHakukohteet" ng-change="domain.update()"/>
+            <input class="margin-left-2" id="vainHakukohteet" type="checkbox" ng-model="domain.search.vainHakukohteet" ng-change="domain.update()"/>
             <label for="vainHakukohteet">Vain hakukohteet</label>
         </div>
     </div>
