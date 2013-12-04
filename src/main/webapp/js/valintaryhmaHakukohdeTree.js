@@ -126,10 +126,10 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
                       "use strict";
                       item.access = false;
                       organisations.forEach(function(org){
-
                           if(item.organisaatiot.length > 0) {
                               item.organisaatiot.forEach(function(org2) {
-                                  if(org2.parentOidPath.indexOf(org) > -1) {
+
+                                  if(org2.parentOidPath != null && org2.parentOidPath.indexOf(org) > -1) {
                                       item.access = true;
                                   }
                               });
