@@ -16,11 +16,11 @@
     </div>
 </div>
 
-<div class="form-row" ng-show="model.valintakoevalinnanvaihe.oid">
+<div class="form-row width-100" ng-show="model.valintakoevalinnanvaihe.oid">
 
     <div class="form-row-label">Valintakokeet</div>
     
-    <div class="form-row-content">
+    <div class="form-row-content width-80">
         <table class="virkailija-table-1 margin-bottom-2" ng-show="model.valintakokeet">
             <thead>    
                 <tr>
@@ -41,12 +41,12 @@
                 </tr>
             </tbody>    
         </table>
-        <span class="button small" ng-click="addValintakoe()">Lisää valintakoe</span>
+        <span class="button small" ng-click="addValintakoe()"><i class="fa fa-plus"></i> Valintakoe</span>
     </div>
 </div>
 <div class="clear"></div>
 
 
-<button ng-disabled="!form.$valid" class="button small primary" type="submit">Tallenna</button>
-<button class="button small float-left margin-right-1" ng-click="cancel()">Takaisin</button>
+<button ng-disabled="!form.$valid" class="button small primary" type="submit"><i class="fa fa-floppy-o"></i> Tallenna</button>
+<button class="button small float-left margin-right-1" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin</button>
 </form>
