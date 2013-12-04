@@ -1,28 +1,26 @@
-
-
 // Valintaryhma Järjestyskriteerit
-app.factory('JarjestyskriteeriModel', function($q, Laskentakaava, Jarjestyskriteeri, ValintatapajonoJarjestyskriteeri, ParentValintaryhmas, Hakukohde, LaskentakaavaModel) {
-    
+app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskriteeri, ValintatapajonoJarjestyskriteeri, ParentValintaryhmas, Hakukohde, LaskentakaavaModel) {
+
     var model;
 
-    model = new function() {
+    model = new function () {
 
         this.jarjestyskriteeri = {};
         this.laskentakaavat = [];
 
 
-        this.refresh = function(oid) {
-            if(oid) {
-                Jarjestyskriteeri.get({oid: oid}, function(result) {
+        this.refresh = function (oid) {
+            if (oid) {
+                Jarjestyskriteeri.get({oid: oid}, function (result) {
                     model.jarjestyskriteeri = result;
                 });
 
             }
         };
 
-        this.refreshIfNeeded = function(oid, valintaryhmaOid, hakukohdeOid) {
+        this.refreshIfNeeded = function (oid, valintaryhmaOid, hakukohdeOid) {
 
-            if(!oid) {
+            if (!oid) {
                 model.jarjestyskriteeri = {};
                 model.laskentakaavat = [];
                 model.valintaryhmaLaskentakaavat = [];
@@ -36,26 +34,26 @@ app.factory('JarjestyskriteeriModel', function($q, Laskentakaava, Jarjestyskrite
 
         };
 
-        this.submit = function(valintatapajonoOid, jarjestyskriteerit) {
+        this.submit = function (valintatapajonoOid, jarjestyskriteerit) {
             var deferred = $q.defer();
-            if(model.jarjestyskriteeri.oid == null) {
+            if (model.jarjestyskriteeri.oid == null) {
                 model.jarjestyskriteeri.aktiivinen = "true";
-                ValintatapajonoJarjestyskriteeri.insert({parentOid: valintatapajonoOid}, model.jarjestyskriteeri,
-                    function(jk) {
-                        Laskentakaava.get({oid: jk.laskentakaava_id}, function(result) {
+                ValintatapajonoJarjestyskriteeri.insert({parentOid: valintatapajonoOid}, {jarjestyskriteeri: model.jarjestyskriteeri, laskentakaavaId: model.laskentakaavaId },
+                    function (jk) {
+                        Laskentakaava.get({oid: jk.laskentakaavaId}, function (result) {
                             jk.nimi = result.nimi;
                         });
                         jarjestyskriteerit.push(jk);
                         deferred.resolve();
-                });
+                    });
             } else {
-                Jarjestyskriteeri.post(model.jarjestyskriteeri, function(jk) {
+                Jarjestyskriteeri.post(model.jarjestyskriteeri, function (jk) {
                     var i;
 
-                    for(i in jarjestyskriteerit) {
-                        if(jk.oid === jarjestyskriteerit[i].oid) {
+                    for (i in jarjestyskriteerit) {
+                        if (jk.oid === jarjestyskriteerit[i].oid) {
 
-                            Laskentakaava.get({oid: jk.laskentakaava_id}, function(result) {
+                            Laskentakaava.get({oid: jk.laskentakaavaId}, function (result) {
                                 jk.nimi = result.nimi;
                             });
 
@@ -72,41 +70,41 @@ app.factory('JarjestyskriteeriModel', function($q, Laskentakaava, Jarjestyskrite
     };
 
     return model;
-    
+
 });
 
 function JarjestyskriteeriController($scope, $location, $routeParams, JarjestyskriteeriModel, ValintatapajonoModel) {
 
     $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
-    $scope.valintatapajonoOid =  $routeParams.valintatapajonoOid;
+    $scope.valintatapajonoOid = $routeParams.valintatapajonoOid;
 
     $scope.model = JarjestyskriteeriModel;
     $scope.model.refreshIfNeeded($routeParams.jarjestyskriteeriOid, $routeParams.id, $routeParams.hakukohdeOid);
 
-    $scope.submit = function() {
+    $scope.submit = function () {
         var promise = JarjestyskriteeriModel.submit($scope.valintatapajonoOid, ValintatapajonoModel.jarjestyskriteerit);
-        promise.then(function(greeting) {
+        promise.then(function (greeting) {
             var path;
-            if($routeParams.hakukohdeOid) {
+            if ($routeParams.hakukohdeOid) {
                 path = "/hakukohde/" + $routeParams.hakukohdeOid;
             } else {
                 path = "/valintaryhma/" + $routeParams.id;
             }
-            $location.path(path + '/valinnanvaihe/'+ $routeParams.valinnanvaiheOid +
-                                    '/valintatapajono/' + $routeParams.valintatapajonoOid);
+            $location.path(path + '/valinnanvaihe/' + $routeParams.valinnanvaiheOid +
+                '/valintatapajono/' + $routeParams.valintatapajonoOid);
         });
 
     };
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         var path;
-        if($routeParams.hakukohdeOid) {
+        if ($routeParams.hakukohdeOid) {
             path = "/hakukohde/" + $routeParams.hakukohdeOid;
         } else {
             path = "/valintaryhma/" + $routeParams.id;
         }
-        $location.path(path + '/valinnanvaihe/'+ $routeParams.valinnanvaiheOid +
-                                '/valintatapajono/' + $routeParams.valintatapajonoOid);
+        $location.path(path + '/valinnanvaihe/' + $routeParams.valinnanvaiheOid +
+            '/valintatapajono/' + $routeParams.valintatapajonoOid);
     };
 
 }
