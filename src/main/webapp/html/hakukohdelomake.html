@@ -51,7 +51,7 @@
             <input class="width-60" type="text" ng-model="uusiHakukohdeUri"
                    typeahead-editable="false"
                    typeahead="koodi as koodi.metadata[0].nimi + ' (' + koodi.koodiUri + ')' for koodi in model.hakukohdekoodit| filter:$viewValue | orderBy:'metadata[0].nimi' | limitTo :10 ">
-            <button type="button" class="margin-bottom-0 small" ng-click="addHakukohdeUri()" ng-disabled="!uusiHakukohdeUri">Päivitä hakukohdekoodi</button>
+            <button type="button" class="margin-bottom-0 small" ng-click="addHakukohdeUri()" ng-disabled="!uusiHakukohdeUri"><i class="fa fa-refresh"></i> Päivitä</button>
         </div>
         <div class="clear"></div>
     </div>
@@ -136,8 +136,8 @@
             <div class="clear"></div>
 
             <div ng-show="model.hakukohde.oid" class="form-row">
-                    <span class="button small" ng-click="lisaaValinnanVaihe()">Lisää valinnanvaihe</span>
-                    <span class="button small" ng-click="lisaaValintakoeValinnanVaihe()">Lisää valintakoevalinnanvaihe</span>
+                    <span class="button small" ng-click="lisaaValinnanVaihe()"><i class="fa fa-plus"></i> Valinnanvaihe</span>
+                    <span class="button small" ng-click="lisaaValintakoeValinnanVaihe()"><i class="fa fa-plus"></i> Valintakoevalinnanvaihe</span>
             </div>
         </div>
     </div>
@@ -179,14 +179,14 @@
             <div class="clear"></div>
 
             <div ng-show="model.hakukohde.oid" class="form-row">
-                    <span class="button small" ng-click="lisaaHakijaryhma()">Lisää Hakijaryhma</span>
+                    <span class="button small" ng-click="lisaaHakijaryhma()"><i class="fa fa-plus"></i> Hakijaryhma</span>
             </div>
         </div>
     </div>
 
     <div class="clear"></div>
 
-    <button ng-disabled="!form.$valid" class="button small primary" type="submit">Tallenna</button>
-    <button type="button" class="float-left margin-right-1 button small" ng-click="cancel()">Takaisin</button>
+    <button ng-disabled="!form.$valid" class="button small primary" type="submit"><i class="fa fa-floppy-o"></i> Tallenna</button>
+    <button type="button" class="float-left margin-right-1 button small" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin</button>
 </form>
 </div>

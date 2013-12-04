@@ -14,7 +14,7 @@
 <div class="tabsheets">
     
     <h2>Laskentakaavalista</h2>
-    <span ng-click="createKaava()" class="button small">Luo uusi laskentakaava</span>
+    <span ng-click="createKaava()" class="button small"><i class="fa fa-plus"></i> Laskentakaava</span>
     
    
     <div ng-show="showForm">
@@ -46,10 +46,11 @@
             <div class="clear"></div>
         </div>
         <div class="form-row">
+            <span class="button small" ng-click="cancelEdit(kaava)"><i class="fa fa-arrow-left"></i> Peruuta</span>
             <button class="button small primary"
                   ng-click="saveKaava(kaava)"
-                  ng-disabled="kaavaForm.$invalid">Tallenna</button>
-            <span class="button small" ng-click="cancelEdit(kaava)">Peruuta</span>
+                  ng-disabled="kaavaForm.$invalid"><i class="fa fa-floppy-o"></i> Tallenna</button>
+            
         </div>
         </form>
     </div>
@@ -85,7 +86,7 @@
                             <span ng-show="!kaava.onLuonnos">VALMIS</span>
                         </td>
                         <td>
-                            <a ng-click="editKaava(kaava)">Muokkaa</a>
+                            <a ng-click="editKaava(kaava)"><i class="fa fa-pencil"></i></a>
                         </td>
                     </tr>
                     </tbody>

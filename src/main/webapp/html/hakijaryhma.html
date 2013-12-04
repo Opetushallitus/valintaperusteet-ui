@@ -84,15 +84,17 @@
         </div>
         <div class="clear"></div>
     </div>
+    
 
+    <button class="button small float-left margin-right-2" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin</button>
     <button ng-disabled="!form.$valid" class="button small primary" type="submit">
-        <div ng-show="!model.hakijaryhma.oid">
+        <div ng-show="!model.hakijaryhma.oid"><i class="fa fa-floppy-o"></i> 
             Lisää
         </div>
-        <div ng-show="model.hakijaryhma.oid" >
+        <div ng-show="model.hakijaryhma.oid"><i class="fa fa-floppy-o"></i> 
             Muokkaa
         </div>
     </button>
 
-    <button class="button small float-left margin-right-2" ng-click="cancel()">Takaisin</button>
+    
 </form>

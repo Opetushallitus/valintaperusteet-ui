@@ -5,7 +5,7 @@
         <label class="form-row-label" for="metatiedot">Metatiedot</label>
 
         <div class="form-row-content">
-            <input type="text" name="metatiedot" id="metatiedot" ng-model="model.jarjestyskriteeri.metatiedot"/>
+            <input type="text" name="metatiedot" id="metatiedot" ng-model="model.jarjestyskriteeri.metatiedot" />
             <!--
             <div><small>Jonon nimeen liittyvä ohjeteksti.</small></div>
             -->
@@ -13,25 +13,25 @@
         <div class="clear"></div>
     </div>
 
-    <div class="form-row" ng-model="model.laskentakaavaModel.laskentakaavat">
+    <div class="form-row" ng-model="model.laskentakaavaModel.laskentakaavat" >
 
-        <div class="form-row-label">Laskentakaava<br/></div>
-        <div class="form-row-content">&nbsp;<br/></div>
+        <div class="form-row-label">Laskentakaava<br /></div>
+        <div class="form-row-content">&nbsp;<br /></div>
         <div class="clear"></div>
         <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat" class="field-container-radio">
-            <div class="form-row-label">{{group.name}}<br/></div>
+            <div class="form-row-label">{{group.name}}<br /></div>
             <div class="form-row-content">
-                <!--<span >{{model.laskentakaavat}}</span>-->
+            <!--<span >{{model.laskentakaavat}}</span>-->
 
                 <div ng-repeat="data in group.result" class="field-container-radio">
                     <label>
                         <input type="radio" name="laskentakaava" value="{{data.id}}"
-                               ng-model="model.laskentakaavaId" ng-required="!model.laskentakaavaId"/>
+                               ng-model="model.jarjestyskriteeri.laskentakaava_id" ng-required="!model.jarjestyskriteeri.laskentakaava_id" />
 
                         <span ng-bind="data.nimi"></span>(<span ng-bind="data.id"></span>)
                     </label>
                 </div>
-                <br/>
+                <br />
             </div>
 
             <div class="clear"></div>
@@ -41,12 +41,12 @@
 
     <button ng-disabled="!form.$valid" class="button small primary" type="submit">
         <div ng-show="!model.jarjestyskriteeri.oid">
-            Lisää
+            <i class="fa fa-floppy-o"></i> Lisää
         </div>
-        <div ng-show="model.jarjestyskriteeri.oid">
-            Muokkaa
+        <div ng-show="model.jarjestyskriteeri.oid" >
+            <i class="fa fa-floppy-o"></i> Muokkaa
         </div>
     </button>
 
-    <button class="button small float-left margin-right-2" ng-click="cancel()">Takaisin</button>
+    <button class="button small float-left margin-right-2" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin</button>
 </form>

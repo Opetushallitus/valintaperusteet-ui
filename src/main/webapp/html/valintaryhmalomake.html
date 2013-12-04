@@ -113,7 +113,7 @@
                 <div filterable-list ng-show="showValintakoeKoodit" class="autocomplete">
                     <div class="form-row">
                         <button type="button" class="margin-bottom-0 small" ng-click="addValintakoeUri(selectedId)"
-                        ng-disabled="!selectedId">Lisää valintakoekoodi</button>
+                        ng-disabled="!selectedId"><i class="fa fa-plus"></i> Valintakoekoodi</button>
                     </div>
                    
                     <div class="ac-selection">
@@ -132,8 +132,8 @@
                 </div>  
                 
                 <button ng-click="showValintakoeKoodit = !showValintakoeKoodit" ng-model="showValintakoeKoodit"  type="button" class="margin-bottom-0 small">
-                    <span ng-show="!showValintakoeKoodit">Näytä valintakoekoodit</span>
-                    <span ng-show="showValintakoeKoodit">Piilota valintakoekoodit</span>
+                    <span ng-show="!showValintakoeKoodit"><i class="fa fa-eye"></i> Valintakoekoodit</span>
+                    <span ng-show="showValintakoeKoodit"><i class="fa fa-eye-slash"></i> Valintakoekoodit</span>
                 </button>
                 
                 
@@ -182,7 +182,7 @@
                 <div filterable-list ng-show="showHakukohdekoodit" class="autocomplete">
                     <div class="form-row">
                          <button type="button" class="margin-bottom-0 small" ng-click="addHakukohdeUri(selectedId)"
-                        ng-disabled="!selectedId">Lisää hakukohdekoodi</button>
+                        ng-disabled="!selectedId"><i class="fa fa-plus"></i> Hakukohdekoodi</button>
                     </div>
                    
                     <div class="ac-selection">
@@ -201,8 +201,8 @@
                 </div>  
                 
                 <button ng-click="showHakukohdekoodit = !showHakukohdekoodit" ng-model="showHakukohdekoodit"  type="button" class="margin-bottom-0 small">
-                    <span ng-show="!showHakukohdekoodit">Näytä hakukohdekoodit</span>
-                    <span ng-show="showHakukohdekoodit">Piilota hakukohdekoodit</span>
+                    <span ng-show="!showHakukohdekoodit"><i class="fa fa-eye"></i> Hakukohdekoodit</span>
+                    <span ng-show="showHakukohdekoodit"><i class="fa fa-eye-slash"></i> Hakukohdekoodit</span>
                 </button>
                 
                 
@@ -245,8 +245,8 @@
                 <div class="clear"></div>
 
                 <div ng-show="model.valintaryhma.oid" class="form-row">
-                    <span type="button" class="button small" ng-click="lisaaValinnanVaihe()">{{'valintaryhmalomake.add.valinnanvaihe' | i18n}}</span>
-                    <span type="button" class="button small" ng-click="lisaaValintakoeValinnanVaihe()">{{'valintaryhmalomake.add.koekutsuvaihe' | i18n}}</span>
+                    <span type="button" class="button small" ng-click="lisaaValinnanVaihe()"><i class="fa fa-plus"></i> {{'valintaryhmalomake.valinnanvaihe' | i18n}}</span>
+                    <span type="button" class="button small" ng-click="lisaaValintakoeValinnanVaihe()"><i class="fa fa-plus"></i> {{'valintaryhmalomake.koekutsuvaihe' | i18n}}</span>
                 </div>
             </div>
         </div>
@@ -282,7 +282,7 @@
                 <div class="clear"></div>
 
                 <div ng-show="model.valintaryhma.oid" class="form-row">
-                    <span class="button small" ng-click="lisaaHakijaryhma()">Lisää Hakijaryhma</span>
+                    <span class="button small" ng-click="lisaaHakijaryhma()"><i class="fa fa-plus"></i> Hakijaryhma</span>
                 </div>
             </div>
         </div>
