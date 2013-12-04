@@ -28,12 +28,16 @@
     <div class="form-row">
 
         <label class="form-row-label" for="aloituspaikat">Aloituspaikat</label>
+
         <div class="form-row-content">
-            <input type="number" min="0" id="aloituspaikat" name="aloituspaikat" ng-model="model.valintatapajono.aloituspaikat" required>
+            <input type="number" min="0" id="aloituspaikat" name="aloituspaikat"
+                   ng-model="model.valintatapajono.aloituspaikat" required>
         </div>
         <div class="clear"></div>
 
-        <label class="form-row-label" for="siirretaanSijoitteluun">{{'jononmuokkaus.siirretaan.sijoitteluun' | i18n}}</label>
+        <label class="form-row-label" for="siirretaanSijoitteluun">{{'jononmuokkaus.siirretaan.sijoitteluun' |
+            i18n}}</label>
+
         <div class="form-row-content">
             <div class="field-container-checkbox">
                 <input type="checkbox" id="siirretaanSijoitteluun" name="siirretaanSijoitteluun"
@@ -46,14 +50,15 @@
 
         <div class="form-row-content">
             <div class="field-container-checkbox">
-                <input type="checkbox" id="eiVarasijatayttoa" name="eiVarasijatayttoa" ng-model="model.valintatapajono.eiVarasijatayttoa">
+                <input type="checkbox" id="eiVarasijatayttoa" name="eiVarasijatayttoa"
+                       ng-model="model.valintatapajono.eiVarasijatayttoa">
             </div>
 
             <div>
-                    <small>
-                            Jos valittu, sijoittelu pyrkii ainoastaan valitsemaan aloituspaikkojen mukaisen määrän jonon alusta,
-                            jättäen hylätyt huomioimatta. Varasijoille jääviä ei huomioida.
-                    </small>
+                <small>
+                    Jos valittu, sijoittelu pyrkii ainoastaan valitsemaan aloituspaikkojen mukaisen määrän jonon alusta,
+                    jättäen hylätyt huomioimatta. Varasijoille jääviä ei huomioida.
+                </small>
             </div>
 
         </div>
@@ -61,21 +66,27 @@
         <div class="clear"></div>
 
         <label class="form-row-label" for="varasijat">Varasija rajoitus</label>
+
         <div class="form-row-content">
-            <input type="number" min="0" id="varasijat" name="varasijat" ng-model="model.valintatapajono.varasijat" required>
+            <input type="number" min="0" id="varasijat" name="varasijat" ng-model="model.valintatapajono.varasijat"
+                   required>
         </div>
         <div class="clear"></div>
 
         <label class="form-row-label" for="varasijaTayttoPaivat">Montako päivää varasijoja täytetään</label>
+
         <div class="form-row-content">
-            <input type="number" min="0" id="varasijaTayttoPaivat" name="varasijaTayttoPaivat" ng-model="model.valintatapajono.varasijaTayttoPaivat" required>
+            <input type="number" min="0" id="varasijaTayttoPaivat" name="varasijaTayttoPaivat"
+                   ng-model="model.valintatapajono.varasijaTayttoPaivat" required>
         </div>
         <div class="clear"></div>
 
         <label class="form-row-label" for="poissaOlevaTaytto">Täytetäänkö poissa olevien tilalle</label>
+
         <div class="form-row-content">
             <div class="field-container-checkbox">
-                <input type="checkbox" id="poissaOlevaTaytto" name="poissaOlevaTaytto" ng-model="model.valintatapajono.poissaOlevaTaytto">
+                <input type="checkbox" id="poissaOlevaTaytto" name="poissaOlevaTaytto"
+                       ng-model="model.valintatapajono.poissaOlevaTaytto">
             </div>
         </div>
         <div class="clear"></div>
@@ -137,7 +148,7 @@
 
     <div class="clear"></div>
 
-    <div class="form-row width-100" >
+    <div class="form-row width-100">
         <div class="form-row-label">Hakijaryhmat</div>
         <div class="form-row-content width-60" ng-if="!model.valintatapajono.siirretaanSijoitteluun">
             <span>Valintatapajonoa ei siirretä sijoitteluun. Hakijaryhma ei vaikuta jonoon.</span>
@@ -164,7 +175,8 @@
                     <td class="align-center">{{data.hakijaryhma.kiintio}}</td>
                     <td class="align-center">{{data.inheritance}}</td>
                     <td class="align-center">
-                        <span ng-show="!data.inheritance" class="btn remove" ng-click="model.removeHakijaryhma(data.oid)"></span>
+                        <span ng-show="!data.inheritance" class="btn remove"
+                              ng-click="model.removeHakijaryhma(data.oid)"></span>
                     </td>
                 </tr>
                 </tbody>
@@ -175,7 +187,10 @@
 
     <div class="clear"></div>
 
-    <button ng-disabled="!form.$valid" class="button small primary" type="submit"><i class="fa fa-floppy-o"></i> Tallenna</button>
-    <button class="button small float-left margin-right-1" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin</button>
+    <button ng-disabled="!form.$valid" class="button small primary" type="submit"><i class="fa fa-floppy-o"></i>
+        Tallenna
+    </button>
+    <button class="button small float-left margin-right-1" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin
+    </button>
     <div class="clear"></div>
 </form>

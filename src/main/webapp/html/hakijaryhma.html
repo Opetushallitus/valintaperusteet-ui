@@ -4,6 +4,7 @@
 
     <div class="form-row">
         <label class="form-row-label" for="nimi">OID</label>
+
         <div class="form-row-content">
             <span>{{model.hakijaryhma.oid}}</span>
         </div>
@@ -11,46 +12,49 @@
     </div>
     <div class="form-row">
         <label class="form-row-label" for="nimi">Nimi</label>
+
         <div class="form-row-content">
-            <input type="text" id="nimi" required ng-model="model.hakijaryhma.nimi" />
+            <input type="text" id="nimi" required ng-model="model.hakijaryhma.nimi"/>
         </div>
         <div class="clear"></div>
     </div>
     <div class="form-row">
         <label class="form-row-label" for="kuvaus">Kuvaus</label>
+
         <div class="form-row-content">
-            <input type="text" id="kuvaus" ng-model="model.hakijaryhma.kuvaus" />
+            <input type="text" id="kuvaus" ng-model="model.hakijaryhma.kuvaus"/>
         </div>
         <div class="clear"></div>
     </div>
     <div class="form-row">
         <label class="form-row-label" for="kiintio">Määrä</label>
+
         <div class="form-row-content">
-            <input type="number" min="0" required id="kiintio" ng-model="model.hakijaryhma.kiintio" />
+            <input type="number" min="0" required id="kiintio" ng-model="model.hakijaryhma.kiintio"/>
         </div>
         <div class="clear"></div>
     </div>
 
-    <div class="form-row" ng-model="model.laskentakaavaModel.laskentakaavat" >
+    <div class="form-row" ng-model="model.laskentakaavaModel.laskentakaavat">
 
-        <div class="form-row-label">Laskentakaava<br /></div>
-        <div class="form-row-content">&nbsp;<br /></div>
+        <div class="form-row-label">Laskentakaava<br/></div>
+        <div class="form-row-content">&nbsp;<br/></div>
         <div class="clear"></div>
         <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat" class="field-container-radio">
-            <div class="form-row-label">{{group.name}}<br /></div>
+            <div class="form-row-label">{{group.name}}<br/></div>
             <div class="form-row-content">
-            <!--<span >{{model.laskentakaavat}}</span>-->
+                <!--<span >{{model.laskentakaavat}}</span>-->
 
                 <div ng-repeat="data in group.result" class="field-container-radio">
                     <label>
                         <input type="radio" name="laskentakaava" value="{{data.id}}"
                                ng-model="model.hakijaryhma.laskentakaava_id"
-                               ng-required="!model.hakijaryhma.laskentakaava_id" />
+                               ng-required="!model.hakijaryhma.laskentakaava_id"/>
 
                         <span ng-bind="data.nimi"></span>(<span ng-bind="data.id"></span>)
                     </label>
                 </div>
-                <br />
+                <br/>
             </div>
 
             <div class="clear"></div>
@@ -84,17 +88,18 @@
         </div>
         <div class="clear"></div>
     </div>
-    
 
-    <button class="button small float-left margin-right-2" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin</button>
+
+    <button class="button small float-left margin-right-2" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin
+    </button>
     <button ng-disabled="!form.$valid" class="button small primary" type="submit">
-        <div ng-show="!model.hakijaryhma.oid"><i class="fa fa-floppy-o"></i> 
+        <div ng-show="!model.hakijaryhma.oid"><i class="fa fa-floppy-o"></i>
             Lisää
         </div>
-        <div ng-show="model.hakijaryhma.oid"><i class="fa fa-floppy-o"></i> 
+        <div ng-show="model.hakijaryhma.oid"><i class="fa fa-floppy-o"></i>
             Muokkaa
         </div>
     </button>
 
-    
+
 </form>

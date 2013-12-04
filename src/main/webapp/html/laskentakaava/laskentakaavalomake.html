@@ -1,5 +1,3 @@
-
-
 <!-- LASKENTAKAAVAPAGE CONTENT -->
 <h1>Laskentakaavan muokkaus</h1>
 
@@ -12,12 +10,11 @@
 
 
 <div class="tabsheets">
-    
+
     <!-- LASKENTAKAAVAN MUOKKAUS -->
     <span class="button small" ng-click="goToListing()"><i class="fa fa-arrow-left"></i> Palaa listalle</span>
     <span class="button small" ng-click="saveKaavaAsCompleted()"><i class="fa fa-floppy-o"></i> Tallenna valmiina</span>
     <span class="button small" ng-click="saveKaavaAsDraft()"><i class="fa fa-floppy-o"></i> Tallenna luonnoksena</span>
-
 
 
     <div class="notification warning margin-top-2" ng-show="errors.length > 0">
@@ -27,14 +24,12 @@
     </div>
 
 
-    
     <!-- Laskentakaavapuu -->
     <div ng-include="'laskentakaava/laskentakaavapuu.html'"></div>
 
     <!-- Laskentakaavan tai funktion asetukset -->
     <div ng-include="'laskentakaava/laskentakaavamenu.html'"></div>
 
-    
 
     <div class="clear"></div>
 </div>

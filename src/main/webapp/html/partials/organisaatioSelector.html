@@ -6,7 +6,8 @@
                 kiinni: (!data.open && data.children.length > 0)}"
            ng-click="openChildren(data)"></i>
         <label>
-            <a href="" ng-click="organisaatioSelector(data);close()">{{data.nimi['fi'] || data.nimi['sv'] || data.nimi['en']}}</a>
+            <a href="" ng-click="organisaatioSelector(data);close()">{{data.nimi['fi'] || data.nimi['sv'] ||
+                data.nimi['en']}}</a>
             <span ng-repeat="type in data.organisaatiotyypit">({{type}}) </span>
         </label>
     </span>
@@ -19,23 +20,25 @@
 
 
 <div ng-controller="OrganisaatioTreeController">
-    <button type="button" class="button small" ng-model="orgSelector" ng-show="!orgSelector" ng-click="show()"><i class="fa fa-plus"></i> Organisaatio</button>
-    <div  ng-show="orgSelector">
-    <div class="modal-backdrop" ng-click="close()"></div>
+    <button type="button" class="button small" ng-model="orgSelector" ng-show="!orgSelector" ng-click="show()"><i
+            class="fa fa-plus"></i> Organisaatio
+    </button>
+    <div ng-show="orgSelector">
+        <div class="modal-backdrop" ng-click="close()"></div>
 
-    <div class="orgSearch">
-        <input type="text" class="search" placeholder="Lisää organisaatioita" ng-model="orgTree.searchStr"/>
-        <i class="fa fa-trash-o organisaatio" ng-click="clear()"></i>
-        <br />
-        <span>Hakutuloksia: {{orgTree.model.numHits || 0}}</span>
-    </div>
-    <div class="clear"></div>
-    <div class="orgSelector">
-        <ol class="treelist collapsible">
-            <li ng-repeat="data in orgTree.model.organisaatiot" ng-include="'organisaatio.html'">
-            </li>
-        </ol>
-    </div>
+        <div class="orgSearch">
+            <input type="text" class="search" placeholder="Lisää organisaatioita" ng-model="orgTree.searchStr"/>
+            <i class="fa fa-trash-o organisaatio" ng-click="clear()"></i>
+            <br/>
+            <span>Hakutuloksia: {{orgTree.model.numHits || 0}}</span>
+        </div>
+        <div class="clear"></div>
+        <div class="orgSelector">
+            <ol class="treelist collapsible">
+                <li ng-repeat="data in orgTree.model.organisaatiot" ng-include="'organisaatio.html'">
+                </li>
+            </ol>
+        </div>
 
     </div>
 </div>

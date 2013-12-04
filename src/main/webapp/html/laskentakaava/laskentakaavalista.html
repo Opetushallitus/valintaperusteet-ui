@@ -1,4 +1,3 @@
-
 <script type="text/ng-template" id="">
 
 </script>
@@ -12,46 +11,48 @@
 </div>
 
 <div class="tabsheets">
-    
+
     <h2>Laskentakaavalista</h2>
     <span ng-click="createKaava()" class="button small"><i class="fa fa-plus"></i> Laskentakaava</span>
-    
-   
+
+
     <div ng-show="showForm">
         <form name="kaavaForm" novalidate>
-        <div class="form-row">
-            <div class="form-row-label">Laskentakaavan nimi</div>
+            <div class="form-row">
+                <div class="form-row-label">Laskentakaavan nimi</div>
 
-            <div class="form-row-content">
-                <input type="text" ng-model="kaava.nimi" required />
+                <div class="form-row-content">
+                    <input type="text" ng-model="kaava.nimi" required/>
+                </div>
+                <div class="clear"></div>
             </div>
-            <div class="clear"></div>
-        </div>
-        <div class="form-row">
-            <div class="form-row-label">Laskentakaavan kuvaus</div>
+            <div class="form-row">
+                <div class="form-row-label">Laskentakaavan kuvaus</div>
 
-            <div class="form-row-content">
-                <textarea ng-model="kaava.kuvaus"></textarea>
+                <div class="form-row-content">
+                    <textarea ng-model="kaava.kuvaus"></textarea>
+                </div>
+                <div class="clear"></div>
             </div>
-            <div class="clear"></div>
-        </div>
-        <div class="form-row" ng-show="!kaava.id">
-            <div class="form-row-label">Laskentakaavan tyyppi</div>
+            <div class="form-row" ng-show="!kaava.id">
+                <div class="form-row-label">Laskentakaavan tyyppi</div>
 
-            <div class="form-row-content">
-                <input type="radio" name="tyyppi" value="NIMETTYTOTUUSARVO" ng-model="kaava.tyyppi" /> Totuusarvofunktio
-                <br />
-                <input type="radio" name="tyyppi" value="NIMETTYLUKUARVO" ng-model="kaava.tyyppi" /> Lukuarvofunktio
+                <div class="form-row-content">
+                    <input type="radio" name="tyyppi" value="NIMETTYTOTUUSARVO" ng-model="kaava.tyyppi"/>
+                    Totuusarvofunktio
+                    <br/>
+                    <input type="radio" name="tyyppi" value="NIMETTYLUKUARVO" ng-model="kaava.tyyppi"/> Lukuarvofunktio
+                </div>
+                <div class="clear"></div>
             </div>
-            <div class="clear"></div>
-        </div>
-        <div class="form-row">
-            <span class="button small" ng-click="cancelEdit(kaava)"><i class="fa fa-arrow-left"></i> Peruuta</span>
-            <button class="button small primary"
-                  ng-click="saveKaava(kaava)"
-                  ng-disabled="kaavaForm.$invalid"><i class="fa fa-floppy-o"></i> Tallenna</button>
-            
-        </div>
+            <div class="form-row">
+                <span class="button small" ng-click="cancelEdit(kaava)"><i class="fa fa-arrow-left"></i> Peruuta</span>
+                <button class="button small primary"
+                        ng-click="saveKaava(kaava)"
+                        ng-disabled="kaavaForm.$invalid"><i class="fa fa-floppy-o"></i> Tallenna
+                </button>
+
+            </div>
         </form>
     </div>
 
@@ -60,8 +61,11 @@
         <div ng-repeat="valintaryhmaList in valintaryhmat.valintaryhmaList()">
             <div ng-repeat="valintaryhma in valintaryhmaList">
                 <h3>{{valintaryhma.nimi}}</h3>
-                <div class="notification info margin-bottom-2" ng-show="!valintaryhma.laskentakaavat || valintaryhma.laskentakaavat.length == 0">
+
+                <div class="notification info margin-bottom-2"
+                     ng-show="!valintaryhma.laskentakaavat || valintaryhma.laskentakaavat.length == 0">
                     <p ng-show="!valintaryhma.oid">Yhtään laskentakaavaa ei ole luotu.</p>
+
                     <p ng-show="valintaryhma.oid">Tälle valintaryhmälle ei ole luotu yhtään laskentakaavaa.</p>
                 </div>
                 <table class="virkailija-table-1" ng-show="valintaryhma.laskentakaavat.length > 0">
