@@ -21,9 +21,9 @@ function treeNodeController($scope, FunktioTemplates) {
             return "subformula_template.html";
         }
 
-    	if(FunktioTemplates.kaavatyyppi.indexOf(funktio.nimi) != -1) {
+    	if(FunktioTemplates.nimettyarvo.indexOf(funktio.nimi) != -1) {
     		return "node_template.html";
-    	} else if(FunktioTemplates.lapseton.indexOf(funktio.nimi) != -1) {
+    	} else if(FunktioTemplates.leaf.indexOf(funktio.nimi) != -1) {
     		return "leaf_template.html";
     	} else {
     		return "node_template.html";
@@ -36,8 +36,8 @@ function treeNodeController($scope, FunktioTemplates) {
 app.factory('FunktioTemplates', function() {
 
 	var templates = new function() {
-		this.kaavatyyppi = ['NIMETTYLUKUARVO', 'NIMETTYTOTUUSARVO'];
-		this.lapseton = ["LUKUARVO", "TOTUUSARVO",  "HAKUTOIVE", "DEMOGRAFIA", "HAETOTUUSARVO", "HAELUKUARVO", "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI",
+		this.nimettyarvo = ['NIMETTYLUKUARVO', 'NIMETTYTOTUUSARVO'];
+		this.leaf = ["LUKUARVO", "TOTUUSARVO",  "HAKUTOIVE", "DEMOGRAFIA", "HAETOTUUSARVO", "HAELUKUARVO", "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI",
         "HAEMERKKIJONOJAVERTAAYHTASUURUUS","HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI", "VALINTAPERUSTEYHTASUURUUS"]
 	}
 
@@ -45,10 +45,10 @@ app.factory('FunktioTemplates', function() {
 
 });
 
-
-app.factory('FunktiokuvausService', function(FunktioKuvaus) {
+/*
+app.factory('FunktioService', function(FunktioKuvaus) {
     var model = new function() {
-        this.funktiokuvaukset = {}
+        this.funktiokuvaukset = {};
 
         this.getFunktiokuvaukset = function() {
             return model.funktiokuvaukset;
@@ -75,3 +75,4 @@ app.factory('FunktiokuvausService', function(FunktioKuvaus) {
 
     return model;
 });
+*/

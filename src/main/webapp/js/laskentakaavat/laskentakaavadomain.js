@@ -24,31 +24,7 @@ var Kaava = function(funktiokuvaukset, data) {
     }
 
     this.getData = function() {
-
-        //iterate object recursively and remove all key-value pairs where key is attr
-        var removeByAttr = function(arr, attr){
-            for(var i in arr) {
-                if(arr[i] && arr[i][attr]){
-                    delete arr[i][attr]
-                } else if(typeof arr[i] === 'object' || typeof arr[i] === 'array') {
-                    removeByAttr(arr[i], attr)
-                }
-            }
-            return arr;
-        }
-        var removeMarkedFunktioargumentit = function(o) {
-            for(var i in o) {
-                if(o[i] && o[i].funktiokutsuChild && o[i].funktiokutsuChild.deleted) {
-                    o.splice(i, 1)
-                } else if(o[i] && o[i].laskentakaavaChild && o[i].laskentakaavaChild.deleted) {
-                    o.splice(i, 1);
-                } else if(typeof o[i] === 'object' || typeof o[i] === 'array') {
-                    removeMarkedFunktioargumentit(o[i])
-                }
-            }
-            return o
-        }
-        return removeMarkedFunktioargumentit(removeByAttr(this.data, 'validointivirheet'));
+        return this.data;
     }
 
 }
@@ -107,7 +83,6 @@ var LaskentakaavaViite = function(funktiokuvaukset, data, parentfunktio) {
 }
 
 var Funktio = function(funktiokuvaukset, data, funktioparent) {
-
     // Hakutyyppiset funktiot. Näille määritellään valintaperusteet
     var HAETTAVA_TYYPPI = ["HAELUKUARVO", "HAETOTUUSARVO", "HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI", "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI", "HAEMERKKIJONOJAVERTAAYHTASUURUUS", "VALINTAPERUSTEYHTASUURUUS"];
 

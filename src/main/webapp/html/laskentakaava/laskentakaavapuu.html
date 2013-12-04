@@ -41,7 +41,7 @@
 </script>
 
 
-
+<!-- Valitaan funktion nimen perusteella, mitä templatea piirtämiseen käytetään --> 
 <script type="text/ng-template" id="leaf_template.html">
     <div ng-if="farg.nimi == 'LUKUARVO'" ng-include="'lukuarvo.html'"></div>
     <div ng-if="farg.nimi == 'TOTUUSARVO'" ng-include="'totuusarvo.html'"></div>
@@ -128,14 +128,14 @@
     <div class="function" ng-class="selected == funktio ? 'active' : ''">
         <span class="icon">&#8302;</span>
         <span ng-if="!funktio.data.syoteparametrit[0].arvo" class="label" ng-click="showDetails(funktio)">
-            <span ng-if="funktio.nimi == 'NMINIMI'">N pienintä</span>
-            <span ng-if="funktio.nimi == 'NMAKSIMI'">N suurinta</span>
+            <span ng-if="funktio.nimi == 'NMINIMI'">N huonoin</span>
+            <span ng-if="funktio.nimi == 'NMAKSIMI'">N paras</span>
             <span ng-if="funktio.nimi == 'KESKIARVONPARASTA'">N:n suurimman keskiarvo</span>
             <span ng-if="funktio.nimi == 'SUMMANPARASTA'">N:n suurimman summa</span>
         </span>
         <span ng-if="funktio.data.syoteparametrit[0].arvo" ng-click="showDetails(funktio)" class="label">
-            <span ng-if="funktio.nimi == 'NMINIMI'">{{funktio.syoteparametrit[0].data.arvo}} pienintä</span>
-            <span ng-if="funktio.nimi == 'NMAKSIMI'">{{funktio.syoteparametrit[0].data.arvo}} suurinta</span>
+            <span ng-if="funktio.nimi == 'NMINIMI'">{{funktio.syoteparametrit[0].data.arvo}} huonoin</span>
+            <span ng-if="funktio.nimi == 'NMAKSIMI'">{{funktio.syoteparametrit[0].data.arvo}} paras</span>
             <span ng-if="funktio.nimi == 'KESKIARVONPARASTA'">{{funktio.syoteparametrit[0].data.arvo}} suurimman keskiarvo</span>
             <span ng-if="funktio.nimi == 'SUMMANPARASTA'">{{funktio.syoteparametrit[0].data.arvo}} suurimman summa</span>
 
