@@ -1,10 +1,11 @@
-app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohdekoodi, Hakukohde, Valintaryhma,
+app.factory('HakukohdeModel', function($q, HakukohdeHakukohdekoodi, KoodistoHakukohdekoodi, Hakukohde, Valintaryhma,
                                         HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta,
                                         HakukohdeKuuluuSijoitteluun, HakukohdeHakijaryhma, Laskentakaava,
                                         HakijaryhmaJarjesta, Hakijaryhma, Haku, TarjontaHaku, HaunTiedot, HakukohdeNimi,
                                         HakijaryhmanValintatapajonot) {
     var model = new function()  {
-        
+
+        this.loaded = $q.defer();
         this.parentValintaryhma = {};
         this.hakukohde = {};
         this.valinnanvaiheet = [];
@@ -19,7 +20,6 @@ app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohd
             model.hakijaryhmat = [];
 
             Hakukohde.get({oid: oid}, function(result) {
-                console.log(result);
                 model.hakukohde = result;
                 if(model.hakukohde.valintaryhma_id) {
                     Valintaryhma.get({oid: model.hakukohde.valintaryhma_id}, function(result) {
@@ -36,6 +36,11 @@ app.factory('HakukohdeModel', function(HakukohdeHakukohdekoodi, KoodistoHakukohd
                });
 
                kuuluuSijoitteluun(oid);
+
+                model.loaded.resolve();
+            }, function(){
+                "use strict";
+                loaded.reject();
             });
 
             KoodistoHakukohdekoodi.get(function(result) {

@@ -1,4 +1,4 @@
-var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'localization', 'ui.bootstrap']) //'ngAnimate' currently breaks valintaperustetree
+var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'localization', 'ui.bootstrap']);//'ngAnimate' currently breaks valintaperustetree
 
 angular.module('localization', [])
 .filter('i18n', ['$rootScope','$locale',function ($rootScope, $locale) {

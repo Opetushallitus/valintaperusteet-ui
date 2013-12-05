@@ -15,6 +15,7 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma,
                                             OrganizationByOid) {
 
     var model = new function() {
+        this.loaded = $q.defer();
         this.valintaryhma = {};
         this.valinnanvaiheet =[];
         this.hakukohdekoodit = [];
@@ -43,6 +44,11 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma,
                             model.valintaryhma.organisaatiot[index] = result;
                         });
                     });
+
+                    model.loaded.resolve();
+                }, function(){
+                    "use strict";
+                    loaded.reject();
                 });
 
                 ValintaryhmaValinnanvaihe.get({oid: oid}, function(result) {
