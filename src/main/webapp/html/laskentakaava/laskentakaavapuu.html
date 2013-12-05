@@ -393,3 +393,46 @@ YHTASUURI
 
     </div>
 </script>
+
+
+
+
+<!-- kaava root needed for drag & drop -->
+<div class="gradingformula dd" style="width:60%;float:left;">
+    <div class="frame">
+        <span class="icon">&#8302;</span>
+        <span class="label" ng-click="showDetails(funktio)">
+        <span class="bold">{{funktio.syoteparametrit[0].data.arvo}}</span>
+    </div>
+
+    <ul kaavadrag class="frame-content">
+        <li class="item" ng-repeat="farg in funktio.funktioargumentit">
+            <div ng-controller="treeNodeController">
+                <div ng-include="getFunktioTemplate(farg)"></div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<!-- template jota käytetään kaikkien funktioiden piirtämiseen -->
+<script type="text/ng-template" id="node_template.html">
+
+    <div ng-include="'leaf_template.html'"></div>
+
+    <ul ng-if="funktio.funktioargumentit" ng-init="parent = farg">
+        <li class="item" ng-repeat="farg in funktio.funktioargumentit" ng-class="farg.dragClasses()">
+            <div ng-controller="treeNodeController">
+                <div ng-include="getFunktioTemplate(farg)"></div>
+            </div>
+        </li>
+    </ul>
+</script>
+
+
+<!-- Laskentakaavaviite-->
+<script type="text/ng-template" id="subformula_template.html">
+    <div class="frame" ng-class="selected == funktio ? 'active' : ''">
+        <span class="icon">&#8302;</span>
+        <span class="label" ng-click="showKaavaDetails(funktio)">{{funktio.nimi}}</span>
+    </div>
+</script>

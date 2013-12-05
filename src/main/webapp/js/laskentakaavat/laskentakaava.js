@@ -1,9 +1,10 @@
 
 
 
-function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, KaavaValidointi, LaskentakaavaLista) {
+function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, KaavaValidointi, LaskentakaavaLista, LaskentakaavaService) {
 
     $scope.fetched = $routeParams.laskentakaavaOid;
+    $scope.model = LaskentakaavaService;
 
     if($routeParams.valintaryhmaOid) {
         LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, null, false);
@@ -138,8 +139,22 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
 
 }
 
+app.factory('LaskentakaavaService', function($q, Laskentakaava, FunktioKuvaus){
+    var model = new function() {
+        this.laskentakaavapuu = {};
 
+        this.refresh = function() {
+            if(!model.laskentakaavapuu) {
+                Laskentakaava.get({oid: id}, function(kaava) {
+                    
+                });
+            }
+        }
 
+    }   
+
+    return model;
+});
 
 app.factory('Laskentapuu', function($q, Laskentakaava, FunktioKuvaus) {
     

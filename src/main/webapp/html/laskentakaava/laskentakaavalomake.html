@@ -16,13 +16,14 @@
     <span class="button small" ng-click="saveKaavaAsCompleted()"><i class="fa fa-floppy-o"></i> Tallenna valmiina</span>
     <span class="button small" ng-click="saveKaavaAsDraft()"><i class="fa fa-floppy-o"></i> Tallenna luonnoksena</span>
 
+    <div class="clear"></div>
 
     <div class="notification warning margin-top-2" ng-show="errors.length > 0">
         <ul>
             <li ng-repeat="error in errors">{{error.virheviesti}}</li>
         </ul>
     </div>
-
+    
 
     <!-- Laskentakaavapuu -->
     <div ng-include="'laskentakaava/laskentakaavapuu.html'"></div>
