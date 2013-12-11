@@ -1,4 +1,4 @@
-app.factory('FunktioKuvaus', function($resource) {
+app.factory('FunktioKuvausResource', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/laskentakaava/funktiokuvaus", {}, {
         get: {method: "GET", isArray: true}
     });

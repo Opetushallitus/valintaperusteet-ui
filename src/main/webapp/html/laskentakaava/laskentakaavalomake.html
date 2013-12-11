@@ -12,9 +12,12 @@
 <div class="tabsheets">
 
     <!-- LASKENTAKAAVAN MUOKKAUS -->
-    <span class="button small" ng-click="goToListing()"><i class="fa fa-arrow-left"></i> Palaa listalle</span>
-    <span class="button small" ng-click="saveKaavaAsCompleted()"><i class="fa fa-floppy-o"></i> Tallenna valmiina</span>
+    <span class="button small" ng-click="goToListing()"><i class="fa fa-arrow-left"></i> Palaa</span>
+    <span class="button small" ng-click="persistLaskentakaava()"><i class="fa fa-floppy-o"></i> Tallenna</span>
+
+    <!--
     <span class="button small" ng-click="saveKaavaAsDraft()"><i class="fa fa-floppy-o"></i> Tallenna luonnoksena</span>
+    -->
 
     <div class="clear"></div>
 
@@ -23,14 +26,16 @@
             <li ng-repeat="error in errors">{{error.virheviesti}}</li>
         </ul>
     </div>
-    
 
     <!-- Laskentakaavapuu -->
     <div ng-include="'laskentakaava/laskentakaavapuu.html'"></div>
 
     <!-- Laskentakaavan tai funktion asetukset -->
     <div ng-include="'laskentakaava/laskentakaavamenu.html'"></div>
+    
+
 
 
     <div class="clear"></div>
+    <h5>{{model.laskentakaavapuu.funktiokutsu}}</h5>
 </div>

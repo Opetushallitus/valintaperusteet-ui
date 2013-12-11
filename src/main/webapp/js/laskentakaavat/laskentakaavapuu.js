@@ -32,6 +32,10 @@ function treeNodeController($scope, FunktioTemplates) {
 
 }
 
+function laskentakaavapuuController($scope) {
+
+}
+
 
 app.factory('FunktioTemplates', function() {
 
@@ -45,8 +49,42 @@ app.factory('FunktioTemplates', function() {
 
 });
 
-/*
-app.factory('FunktioService', function(FunktioKuvaus) {
+app.factory('TemplateService', function(FunktioService) {
+    var templateservice = new function() {
+
+        this.getSyoteparametriTemplate = function(funktio, syoteparametriIndex) {
+            var funktioservice = FunktioService;
+
+            var funktiokuvaus = funktioservice.getFunktiokuvaus(funktio.funktionimi);
+            var syoteparametrityyppi = "";
+            if(funktiokuvaus.syoteparametrit[0].avain === 'n') {
+                syoteparametrityyppi = funktiokuvaus.syoteparametrit[0].tyyppi;
+            } else {
+                syoteparametrityyppi = funktiokuvaus.syoteparametrit[syoteparametriIndex].tyyppi;
+            }
+
+            switch(syoteparametrityyppi) {
+                case "DESIMAALILUKU":
+                    return "desimaaliluku-template";
+                case "KOKONAISLUKU":
+                    return "kokonaisluku-template";
+                case "TOTUUSARVO":
+                    return "totuusarvo-template";
+                case "MERKKIJONO":
+                    return "merkkijono-template";
+                default:
+                    return ""
+            }
+            
+        }
+
+    }
+
+    return templateservice;
+});
+
+
+app.factory('FunktioService', function(FunktioKuvausResource) {
     var model = new function() {
         this.funktiokuvaukset = {};
 
@@ -55,24 +93,26 @@ app.factory('FunktioService', function(FunktioKuvaus) {
         }
 
         this.getFunktiokuvaus = function(funktionimi) {
+            var result;
             if(model.funktiokuvaukset) {
                 model.funktiokuvaukset.forEach(function(funktiokuvaus) {
                     if(funktiokuvaus.nimi === funktionimi) {
-                        //return funktiokuvaus;
+                        result = funktiokuvaus;
                     }
                 });
             }
+
+            return result;
         }
 
         this.refresh = function() {
-            if(!this.funktiokuvaukset) {
-                FunktioKuvaus.get({}, function(result) {
-                    this.funktiokuvaukset = result;
-                });
-            }
+            
+            FunktioKuvausResource.get({}, function(result) {
+                model.funktiokuvaukset = result;
+            });
+            
         }
     }
 
     return model;
 });
-*/
