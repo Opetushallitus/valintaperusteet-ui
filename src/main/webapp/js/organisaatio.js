@@ -10,7 +10,7 @@ app.factory('OrganisaatioTreeModel', function(Organizations) {
             var params = {"searchStr": searchStr};
             Organizations.get(params, function(result){
                 instance.model = result;
-                console.log(instance.model.organisaatiot.length)
+
                 if(instance.model.organisaatiot.length < 4) {
                     instance.model.organisaatiot.forEach(function(data){
                         instance.openChildren(data);
