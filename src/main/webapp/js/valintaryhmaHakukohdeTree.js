@@ -168,7 +168,7 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
 });
 
 
-function ValintaryhmaHakukohdeTreeController($scope, $resource,Treemodel,HakukohdeSiirra, HakuModel) {
+function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra, HakuModel) {
 	$scope.predicate = 'nimi';
 	$scope.domain = Treemodel;
 
@@ -183,8 +183,6 @@ function ValintaryhmaHakukohdeTreeController($scope, $resource,Treemodel,Hakukoh
 	$scope.expandGroup = function($event) {
 		$($event.target).closest('li').toggleClass('uiCollapsed').toggleClass('uiExpanded');
 	}
-
-
 
 	$scope.move = function(index, hakukohdeOid, valintaryhmaOid, item) {
 

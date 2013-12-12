@@ -217,3 +217,77 @@ app.directive('itemOnScreen', function ($timeout) {
         }
     };
 });
+
+app.directive('auth', function($q, $animate, $routeParams, $timeout, AuthService, ValintaryhmaModel, HakukohdeModel) {
+    return {
+        link : function($scope, element, attrs) {
+
+            $animate.addClass(element, 'ng-hide');
+
+            var success = function() {
+                $animate.removeClass(element, 'ng-hide');
+            }
+
+            $timeout(function() {
+
+                var defer = $q.defer();
+                var orgs = [];
+                if($routeParams.id) {
+                    ValintaryhmaModel.refreshIfNeeded($scope.id);
+                    ValintaryhmaModel.loaded.promise.then(function(){
+                        "use strict";
+                        if(ValintaryhmaModel.valintaryhma.organisaatiot) {
+                            ValintaryhmaModel.valintaryhma.organisaatiot.forEach(function(org){
+                                orgs.push(org.oid);
+                            });
+                        }
+
+                        defer.resolve(orgs);
+                    });
+
+                } else if($routeParams.hakukohdeOid) {
+                    HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
+                    HakukohdeModel.loaded.promise.then(function(){
+                        "use strict";
+                        orgs.push(HakukohdeModel.hakukohde.tarjoajaOid);
+
+                        defer.resolve(orgs);
+                    });
+                } else {
+                    defer.resolve(orgs);
+                }
+
+                defer.promise.then(function(orgs){
+                    switch(attrs.auth) {
+
+                        case "crudOph":
+                            AuthService.crudOph("APP_VALINTAPERUSTEET").then(success);
+                            break;
+
+                        case "updateOph":
+                            AuthService.updateOph("APP_VALINTAPERUSTEET").then(success);
+                            break;
+
+                        case "readOph":
+                            AuthService.readOph("APP_VALINTAPERUSTEET").then(success);
+                            break;
+
+                        case "crud":
+                            AuthService.crudOrg("APP_VALINTAPERUSTEET", orgs).then(success);
+                            break;
+
+                        case "update":
+                            AuthService.updateOrg("APP_VALINTAPERUSTEET", orgs).then(success);
+                            break;
+
+                        case "read":
+                            AuthService.readOrg("APP_VALINTAPERUSTEET", orgs).then(success);
+                            break;
+
+                    }
+                });
+            },0);
+
+        }
+    };
+});

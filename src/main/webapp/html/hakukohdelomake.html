@@ -51,7 +51,7 @@
                 <input class="width-60" type="text" ng-model="uusiHakukohdeUri"
                        typeahead-editable="false"
                        typeahead="koodi as koodi.metadata[0].nimi + ' (' + koodi.koodiUri + ')' for koodi in model.hakukohdekoodit| filter:$viewValue | orderBy:'metadata[0].nimi' | limitTo :10 ">
-                <button type="button" class="margin-bottom-0 small" ng-click="addHakukohdeUri()"
+                <button auth="update" type="button" class="margin-bottom-0 small" ng-click="addHakukohdeUri()"
                         ng-disabled="!uusiHakukohdeUri"><i class="fa fa-refresh"></i> Päivitä
                 </button>
             </div>
@@ -111,7 +111,7 @@
         <div class="form-row width-100">
             <div class="form-row-label">Valinnan vaiheet</div>
             <div class="form-row-content width-60">
-                <table ng-show="model.valinnanvaiheet" class="virkailija-table-1 margin-bottom-2 width-60">
+                <table auth="update" ng-show="model.valinnanvaiheet" class="virkailija-table-1 margin-bottom-2 width-60">
                     <thead>
                     <tr>
                         <th>Aktiivinen</th>
@@ -131,7 +131,7 @@
                         <td class="align-center">{{data.inheritance ? 'Kyllä' : 'Ei'}}</td>
                         <td class="align-center">{{data.valinnanVaiheTyyppi}}</td>
                         <td class="align-center">
-                            <span ng-show="!data.inheritance" class="btn remove" ng-click="model.remove(data)"></span>
+                            <span auth="update" ng-show="!data.inheritance" class="btn remove" ng-click="model.remove(data)"></span>
                         </td>
 
                     </tr>
@@ -141,8 +141,8 @@
                 <div class="clear"></div>
 
                 <div ng-show="model.hakukohde.oid" class="form-row">
-                    <span class="button small" ng-click="lisaaValinnanVaihe()"><i class="fa fa-plus"></i> Valinnanvaihe</span>
-                    <span class="button small" ng-click="lisaaValintakoeValinnanVaihe()"><i class="fa fa-plus"></i> Valintakoevalinnanvaihe</span>
+                    <span auth="update" class="button small" ng-click="lisaaValinnanVaihe()"><i class="fa fa-plus"></i> Valinnanvaihe</span>
+                    <span auth="update" class="button small" ng-click="lisaaValintakoeValinnanVaihe()"><i class="fa fa-plus"></i> Valintakoevalinnanvaihe</span>
                 </div>
             </div>
         </div>
@@ -176,7 +176,7 @@
                         </span>
                         </td>
                         <td class="align-center">
-                            <span ng-show="!data.inheritance" class="btn remove"
+                            <span auth="update" ng-show="!data.inheritance" class="btn remove"
                                   ng-click="removeHakijaryhma(data.oid)"></span>
                         </td>
                     </tr>
@@ -186,7 +186,7 @@
                 <div class="clear"></div>
 
                 <div ng-show="model.hakukohde.oid" class="form-row">
-                    <span class="button small" ng-click="lisaaHakijaryhma()"><i
+                    <span auth="update" class="button small" ng-click="lisaaHakijaryhma()"><i
                             class="fa fa-plus"></i> Hakijaryhma</span>
                 </div>
             </div>
@@ -194,7 +194,7 @@
 
         <div class="clear"></div>
 
-        <button ng-disabled="!form.$valid" class="button small primary" type="submit"><i class="fa fa-floppy-o"></i>
+        <button auth="update" ng-disabled="!form.$valid" class="button small primary" type="submit"><i class="fa fa-floppy-o"></i>
             Tallenna
         </button>
         <button type="button" class="float-left margin-right-1 button small" ng-click="cancel()"><i

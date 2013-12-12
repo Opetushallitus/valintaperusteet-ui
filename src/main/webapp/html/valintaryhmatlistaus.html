@@ -3,8 +3,9 @@
 
     <span class="label">
             <i class="fa fa-users valintaryhma"  ng-class="{ kiinni: domain.isCollapsed(data), eilapsia: domain.isFile(data), auki: domain.isExpanded(data)}" ng-click="expandNode(data)"></i>
-        <a ng-if="data.access" href="#/valintaryhma/{{data.oid}}">{{data.nimi}} <i class="fa fa-unlock-alt"></i></a>
-        <span ng-if="!data.access" >{{data.nimi}} <i class="fa fa-lock"  style="cursor:default"></i></span>
+        <a href="#/valintaryhma/{{data.oid}}">{{data.nimi}}
+            <i ng-if="!data.access" class="fa fa-lock"></i>
+        </a>
     </span>
     <ol ng-if="data.isVisible" data-valintaryhmaoid="{{data.oid}}" >
         <li ng-repeat="data in data.alavalintaryhmat | orderBy:predicate "
@@ -30,14 +31,14 @@
 <div class="tabs">
     <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
     <a href="#/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
-    <a href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
+    <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
 </div>
 
 <div class="tabsheets">
     <div class="search">
         <div class="margin-top-1">
-            <a href="#/valintaryhma/" class="margin-right-1 button small primary"> <i class="fa fa-plus"></i> {{'valintaryhmatlistaus.add.valintaryhma' | i18n}}</a>
-            <a href="#/hakukohde/" class="margin-right-1 button small primary"> <i class="fa fa-plus"></i> {{'valintaryhmatlistaus.add.hakukohde' | i18n}}</a>
+            <a auth="crud" href="#/valintaryhma/" class="margin-right-1 button small primary"> <i class="fa fa-plus"></i> {{'valintaryhmatlistaus.add.valintaryhma' | i18n}}</a>
+            <a auth="crud" href="#/hakukohde/" class="margin-right-1 button small primary"> <i class="fa fa-plus"></i> {{'valintaryhmatlistaus.add.hakukohde' | i18n}}</a>
             <a class="button small" ng-click="domain.expandTree()"> <i class="fa fa-expand"></i> Avaa puu</a>
         </div>
 
