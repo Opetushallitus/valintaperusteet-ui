@@ -1,12 +1,23 @@
 "use strict";
-app.factory('OrganisaatioTreeModel', function(Organizations) {
+app.factory('OrganisaatioTreeModel', function(Organizations, AuthService, OrganizationByOid) {
 
     return (function() {
         var instance = {};
         instance.model = {};
         instance.searchStr = "";
 
-        instance.refresh = function(searchStr) {
+        var oph = {
+            "oid" : "1.2.246.562.10.00000000001",
+            "parentOidPath" : "1.2.246.562.10.00000000001",
+            "nimi" : {
+                "fi" : "OPH",
+                "sv" : "OPH",
+                "en" : "OPH"
+            },
+            "children": []
+        };
+
+        instance.search = function(searchStr) {
             var params = {"searchStr": searchStr};
             Organizations.get(params, function(result){
                 instance.model = result;
@@ -15,7 +26,6 @@ app.factory('OrganisaatioTreeModel', function(Organizations) {
                     instance.model.organisaatiot.forEach(function(data){
                         instance.openChildren(data);
                     });
-
                 }
             });
         }
@@ -37,20 +47,44 @@ app.factory('OrganisaatioTreeModel', function(Organizations) {
             }
         }
 
+        instance.init = function() {
+            instance.model = {};
+            // oph ei palaudu hausta
+            AuthService.crudOph("APP_VALINTAPERUSTEET").then(function(){
+                OrganizationByOid.get({oid:"1.2.246.562.10.00000000001"}, function(result){
+                    if(!instance.model.organisaatiot) {
+                        instance.model.organisaatiot = [];
+                        instance.model.numHits = 0;
+                    }
+                    if(!result.parentOidPath) {
+                        result.parentOidPath = result.oid;
+                    }
+                    if(!result.children) {
+                        result.children = [];
+                    }
+                    instance.model.organisaatiot.unshift(result);
+                    instance.model.numHits+=1;
+                });
+
+            });
+        };
+
         return instance;
     })();
 
 });
 
 function OrganisaatioTreeController($scope, $timeout, OrganisaatioTreeModel) {
+
     $scope.orgTree = OrganisaatioTreeModel;
+
     $scope.orgSelector = false;
 
     $scope.$watch('orgTree.searchStr', debounce(function() {
         if($scope.orgTree.searchStr.length > 2) {
-            OrganisaatioTreeModel.refresh($scope.orgTree.searchStr);
+            OrganisaatioTreeModel.search($scope.orgTree.searchStr);
         } else {
-            OrganisaatioTreeModel.model = {};
+            OrganisaatioTreeModel.init();
         }
     }, 500));
 

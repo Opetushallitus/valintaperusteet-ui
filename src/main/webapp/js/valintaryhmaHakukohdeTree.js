@@ -134,9 +134,7 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
                                   }
                               });
                           } else {
-                              AuthService.updateOph("APP_VALINTAPERUSTEET").then(function(){
-                                  item.access = true;
-                              });
+                              item.access = true;
                           }
                       });
                   });

@@ -3,7 +3,7 @@
 <div class="tabs">
     <a href="#/etusivu" class="tab"><span>Valintaryhmät ja hakukohteet</span></a>
     <a href="#/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
-    <a href="#/import" class="tab float-right current"><span>Yhteisvalinnan hallinta</span></a>
+    <a auth="crudOph" href="#/import" class="tab float-right current"><span>Yhteisvalinnan hallinta</span></a>
 </div>
 <div class="tabsheets">
 
@@ -11,7 +11,7 @@
 
     <div>
         <select ng-model="model.hakuOid" ng-options="haku.nimi.kieli_fi for haku in model.haut | orderBy:'nimi.kieli_fi'"></select>
-        <a ng-click="aktivoi()" class="button small">Synkronoi tarjonta</a>
+        <a auth="crudOph" ng-click="aktivoi()" class="button small">Synkronoi tarjonta</a>
     </div>
 
 </div>

@@ -23,6 +23,7 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma,
         this.hakijaryhmat = [];
 
         this.refresh = function(oid) {
+
             if(!oid) {
                 model.valintaryhma = {};
                 model.valinnanvaiheet = [];

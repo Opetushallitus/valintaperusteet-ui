@@ -136,11 +136,11 @@
                     </td>
                     <td>{{data.metatiedot}}</td>
                     <td>{{data.inheritance}}</td>
-                    <td><span ng-show="!data.inheritance" class="btn remove" ng-click="remove(data.oid)">X</span></td>
+                    <td><span auth="crud" ng-show="!data.inheritance" class="btn remove" ng-click="remove(data.oid)">X</span></td>
                 </tr>
                 </tbody>
             </table>
-            <span class="button small" ng-click="addKriteeri()"><i class="fa fa-plus"></i> Kriteeri</span>
+            <span auth="crud" class="button small" ng-click="addKriteeri()"><i class="fa fa-plus"></i> Kriteeri</span>
             <!--<div><small>Jonojen muodostuskriteereihin liittyvä ohjeteksti.</small></div>-->
         </div>
         <span ng-show="!model.valintatapajono.oid">Tallenna jono lisätäksesi kriteeri.</span>
@@ -175,19 +175,19 @@
                     <td class="align-center">{{data.hakijaryhma.kiintio}}</td>
                     <td class="align-center">{{data.inheritance}}</td>
                     <td class="align-center">
-                        <span ng-show="!data.inheritance" class="btn remove"
+                        <span auth="crud" ng-show="!data.inheritance" class="btn remove"
                               ng-click="model.removeHakijaryhma(data.oid)"></span>
                     </td>
                 </tr>
                 </tbody>
             </table>
-            <span class="button small" ng-click="addHakijaryhma()">Liitä hakijaryhmä</span>
+            <span auth="crud" class="button small" ng-click="addHakijaryhma()">Liitä hakijaryhmä</span>
         </div>
     </div>
 
     <div class="clear"></div>
 
-    <button ng-disabled="!form.$valid" class="button small primary" type="submit"><i class="fa fa-floppy-o"></i>
+    <button auth="update" ng-disabled="!form.$valid" class="button small primary" type="submit"><i class="fa fa-floppy-o"></i>
         Tallenna
     </button>
     <button class="button small float-left margin-right-1" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin
