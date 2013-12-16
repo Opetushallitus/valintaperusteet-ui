@@ -39,17 +39,17 @@
                     <td>{{valintakoe.tunniste}}</td>
                     <td><a ng-click="modifyvalintakoe(valintakoe.oid)">{{valintakoe.nimi}}</a></td>
                     <td>{{valintakoe.kuvaus}}</td>
-                    <td><span class="btn remove" ng-click="model.removeValintakoe(valintakoe)"></span></td>
+                    <td><span auth="crud" class="btn remove" ng-click="model.removeValintakoe(valintakoe)"></span></td>
                 </tr>
                 </tbody>
             </table>
-            <span class="button small" ng-click="addValintakoe()"><i class="fa fa-plus"></i> Valintakoe</span>
+            <span auth="crud" class="button small" ng-click="addValintakoe()"><i class="fa fa-plus"></i> Valintakoe</span>
         </div>
     </div>
     <div class="clear"></div>
 
 
-    <button ng-disabled="!form.$valid" class="button small primary" type="submit"><i class="fa fa-floppy-o"></i>
+    <button auth="update" ng-disabled="!form.$valid" class="button small primary" type="submit"><i class="fa fa-floppy-o"></i>
         Tallenna
     </button>
     <button class="button small float-left margin-right-1" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin

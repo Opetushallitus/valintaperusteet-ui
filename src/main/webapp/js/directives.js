@@ -220,6 +220,7 @@ app.directive('itemOnScreen', function ($timeout) {
 
 app.directive('auth', function($q, $animate, $routeParams, $timeout, AuthService, ValintaryhmaModel, HakukohdeModel) {
     return {
+        priority: -1000,
         link : function($scope, element, attrs) {
 
             $animate.addClass(element, 'ng-hide');
@@ -229,11 +230,11 @@ app.directive('auth', function($q, $animate, $routeParams, $timeout, AuthService
             }
 
             $timeout(function() {
-
+                $animate.addClass(element, 'ng-hide');
                 var defer = $q.defer();
                 var orgs = [];
                 if($routeParams.id) {
-                    ValintaryhmaModel.refreshIfNeeded($scope.id);
+                    ValintaryhmaModel.refreshIfNeeded($routeParams.id);
                     ValintaryhmaModel.loaded.promise.then(function(){
                         "use strict";
                         if(ValintaryhmaModel.valintaryhma.organisaatiot) {

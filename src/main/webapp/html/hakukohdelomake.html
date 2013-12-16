@@ -131,7 +131,7 @@
                         <td class="align-center">{{data.inheritance ? 'Kyllä' : 'Ei'}}</td>
                         <td class="align-center">{{data.valinnanVaiheTyyppi}}</td>
                         <td class="align-center">
-                            <span auth="update" ng-show="!data.inheritance" class="btn remove" ng-click="model.remove(data)"></span>
+                            <span auth="crud" ng-show="!data.inheritance" class="btn remove" ng-click="model.remove(data)"></span>
                         </td>
 
                     </tr>
@@ -141,8 +141,8 @@
                 <div class="clear"></div>
 
                 <div ng-show="model.hakukohde.oid" class="form-row">
-                    <span auth="update" class="button small" ng-click="lisaaValinnanVaihe()"><i class="fa fa-plus"></i> Valinnanvaihe</span>
-                    <span auth="update" class="button small" ng-click="lisaaValintakoeValinnanVaihe()"><i class="fa fa-plus"></i> Valintakoevalinnanvaihe</span>
+                    <span auth="crud" class="button small" ng-click="lisaaValinnanVaihe()"><i class="fa fa-plus"></i> Valinnanvaihe</span>
+                    <span auth="crud" class="button small" ng-click="lisaaValintakoeValinnanVaihe()"><i class="fa fa-plus"></i> Valintakoevalinnanvaihe</span>
                 </div>
             </div>
         </div>
@@ -176,7 +176,7 @@
                         </span>
                         </td>
                         <td class="align-center">
-                            <span auth="update" ng-show="!data.inheritance" class="btn remove"
+                            <span auth="crud" ng-show="!data.inheritance" class="btn remove"
                                   ng-click="removeHakijaryhma(data.oid)"></span>
                         </td>
                     </tr>
@@ -186,7 +186,7 @@
                 <div class="clear"></div>
 
                 <div ng-show="model.hakukohde.oid" class="form-row">
-                    <span auth="update" class="button small" ng-click="lisaaHakijaryhma()"><i
+                    <span auth="crud" class="button small" ng-click="lisaaHakijaryhma()"><i
                             class="fa fa-plus"></i> Hakijaryhma</span>
                 </div>
             </div>
