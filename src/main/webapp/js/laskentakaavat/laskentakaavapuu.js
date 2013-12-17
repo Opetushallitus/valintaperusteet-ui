@@ -5,30 +5,12 @@
 	Tallennetaan nykyinen funktio ja sen parentti jokaiseen skooppiin, 
 	kun puu rakennetaan rekursiivisesti
 */ 
-function treeNodeController($scope, FunktioTemplates) {
+function treeNodeController($scope) {
     
     $scope.funktio = $scope.$parent.farg;
     $scope.parent = $scope.$parent.funktio;
 
     $scope.template = "";
-
-    $scope.getFunktioTemplate = function(funktio) {
-    	if(funktio instanceof TyhjaFunktio) {
-    		return "tyhja_template.html"
-    	}
-
-        if(funktio instanceof LaskentakaavaViite) {
-            return "subformula_template.html";
-        }
-
-    	if(FunktioTemplates.nimettyarvo.indexOf(funktio.nimi) != -1) {
-    		return "node_template.html";
-    	} else if(FunktioTemplates.leaf.indexOf(funktio.nimi) != -1) {
-    		return "leaf_template.html";
-    	} else {
-    		return "node_template.html";
-    	}
-    }
 
 }
 
@@ -37,20 +19,11 @@ function laskentakaavapuuController($scope) {
 }
 
 
-app.factory('FunktioTemplates', function() {
-
-	var templates = new function() {
-		this.nimettyarvo = ['NIMETTYLUKUARVO', 'NIMETTYTOTUUSARVO'];
-		this.leaf = ["LUKUARVO", "TOTUUSARVO",  "HAKUTOIVE", "DEMOGRAFIA", "HAETOTUUSARVO", "HAELUKUARVO", "HAEMERKKIJONOJAKONVERTOILUKUARVOKSI",
-        "HAEMERKKIJONOJAVERTAAYHTASUURUUS","HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI", "VALINTAPERUSTEYHTASUURUUS"]
-	}
-
-	return templates;
-
-});
 
 app.factory('TemplateService', function(FunktioService) {
     var templateservice = new function() {
+
+        
 
         this.getSyoteparametriTemplate = function(funktio, syoteparametriIndex) {
             var funktioservice = FunktioService;
@@ -83,6 +56,14 @@ app.factory('TemplateService', function(FunktioService) {
     return templateservice;
 });
 
+
+app.factory('Valintaperusteviitetyypit', function() {
+    return [
+        { key: 'HAETTAVA_ARVO', text: 'Arvo hakemukselta' },
+        { key: 'SYOTETTAVA_ARVO', text: 'Syötettävä arvo' },
+        { key: 'HAKUKOHTEEN_ARVO', text: 'Hakukohteen arvo' }
+    ];
+});
 
 app.factory('FunktioService', function(FunktioKuvausResource) {
     var model = new function() {

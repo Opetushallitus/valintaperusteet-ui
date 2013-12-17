@@ -1,7 +1,7 @@
 
 
 
-function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValidointi, LaskentakaavaLista, LaskentakaavaService, TemplateService, FunktioService) {
+function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValidointi, LaskentakaavaLista, LaskentakaavaService, TemplateService, FunktioService, Valintaperusteviitetyypit) {
 
     //servicet laskentakaavapuun piirtämiseen
     $scope.templateService = TemplateService;
@@ -13,7 +13,7 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
     $scope.model = LaskentakaavaService;
     $scope.model.refresh($scope.laskentakaavaOid);
 
-
+    $scope.valintaperusteviitetyypit = Valintaperusteviitetyypit;
     
 
     if($routeParams.valintaryhmaOid) {
@@ -26,20 +26,26 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
 
     // Tieto laskentakaavan / funktion näyttämisestä ja piilottamisesta täytyy säilyttää tässä (parent) skoopissa
     // objektissa, jotta childskoopeissa tehdyt muutokset heijastuvat parenttiin ja muihin childskooppeihin 
-    $scope.funktioasetusTemplatePicker = {
+    $scope.funktioasetusTemplate = {
         showFunktioInformation: false,
         showLaskentakaavaInformation: false
+    }
+
+    $scope.setFunktioasetusTemplate = function(funktiokutsuVisible, laskentakaavaviiteVisible) {
+        $scope.funktioasetusTemplate.showFunktioInformation = funktiokutsuVisible;
+        $scope.funktioasetusTemplate.showLaskentakaavaInformation = laskentakaavaviiteVisible;
     }
 
     $scope.kaavaInformationView = function(funktio, isFunktiokutsu) {
 
         $scope.funktioSelection = funktio;
-        if(isFunktiokutsu) {
-            $scope.funktioasetusTemplatePicker.showFunktioInformation = true;
-            $scope.funktioasetusTemplatePicker.showLaskentakaavaInformation = false;
+        $scope.funktiokuvausForSelection = $scope.funktioService.getFunktiokuvaus(funktio.funktionimi);
+
+        console.log($scope.funktiokuvausForSelection);
+        if(isFunktiokutsu) {    
+            $scope.setFunktioasetusTemplate(true, false);
         } else {
-            $scope.funktioasetusTemplatePicker.showFunktioInformation = false;
-            $scope.funktioasetusTemplatePicker.showLaskentakaavaInformation = true;
+            $scope.setFunktioasetusTemplate(false, true);
         }
         
     }
@@ -52,7 +58,9 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         var funktiokutsuId = funktiokutsu.id;
 
         $scope.funktioSelection = undefined;
-        $scope.funktioasetusTemplatePicker.showFunktioInformation = false
+        $scope.funktiokuvausForSelection = undefined;
+        $scope.setFunktioasetusTemplate(false, false);
+
         
         searchTree($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
 
@@ -79,19 +87,17 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
                 var indexInFunktioargumentit = funktioargumentit.indexOf(searchedNode);
                 funktioargumentit.splice(indexInFunktioargumentit, 1);
             }
-
-
         }
-        
-
        
     }
 
+
+
     $scope.persistLaskentakaava = function() {
 
-        $scope.funktioasetusTemplatePicker.showFunktioInformation = false;
-        $scope.funktioasetusTemplatePicker.showLaskentakaavaInformation = false;
+        $scope.setFunktioasetusTemplate(false, false);
         $scope.funktioSelection = undefined;
+        $scope.funktiokuvausForSelection = undefined;
 
         KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function(result) {
             

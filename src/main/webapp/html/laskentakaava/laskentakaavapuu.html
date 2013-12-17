@@ -120,7 +120,7 @@
 
 
 <!--
-    N MINIMI 
+    N MINIMI
     N MAKSIMI
     N PARASTA KESKIARVO
     SUMMA N PARASTA 
@@ -135,7 +135,7 @@
             <span ng-if="funktiowrapper.lapsi.funktionimi == 'KESKIARVONPARASTA'">N:n suurimman keskiarvo</span>
             <span ng-if="funktiowrapper.lapsi.funktionimi == 'SUMMANPARASTA'">N:n suurimman summa</span>
         </span>
-        <span ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo" ng-click="kaavaInformationView(funktio, true)" class="label">
+        <span ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)" class="label">
             <span ng-if="funktiowrapper.lapsi.funktionimi == 'NMINIMI'">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} huonoin</span>
             <span ng-if="funktiowrapper.lapsi.funktionimi == 'NMAKSIMI'">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} paras</span>
             <span ng-if="funktiowrapper.lapsi.funktionimi == 'KESKIARVONPARASTA'">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} suurimman keskiarvo</span>
@@ -182,7 +182,10 @@
         <span class="label" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">
             <span ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo">Totuusarvo</span>
             <span class="label" ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo !== undefined"
-                  ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}}</span>
+                  ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">
+                  <span ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo === 'true'">Tosi</span>
+                  <span ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo === 'false'">Epätosi</span>
+            </span>
         </span>
     </div>
 </script>

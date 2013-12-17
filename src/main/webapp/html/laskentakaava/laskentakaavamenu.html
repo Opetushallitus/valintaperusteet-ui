@@ -89,7 +89,7 @@
 
 
 <!-- LASKENTAKAAVAVIITTAUKSEN ASETUKSET -->
-<div style="width:30%;float:right;" ng-if="funktioasetusTemplatePicker.showLaskentakaavaInformation">
+<div style="width:30%;float:right;" ng-if="funktioasetusTemplate.showLaskentakaavaInformation">
     <div class="settingsform">
         <h3>Laskentakaavaviittauksen asetukset</h3>
         
@@ -106,13 +106,13 @@
         </div>
 
 
-        <span class="button small" ng-click="funktioSelection.removeThis(); funktioSelection = null; funktioasetusTemplatePicker.showLaskentakaavaInformation = false">Poista funktiokutsu</span>
+        <span class="button small" ng-click="funktioSelection.removeThis(); funktioSelection = null; funktioasetusTemplate.showLaskentakaavaInformation = false">Poista funktiokutsu</span>
     </div>
 </div>
 
-
+{{funktioSelection}}
 <!-- FUNKTIOASETUKSET -->
-<div class="" style="width:30%;float:right;" ng-if="funktioasetusTemplatePicker.showFunktioInformation">
+<div class="" style="width:30%;float:right;" ng-if="funktioasetusTemplate.showFunktioInformation">
     <div class="settingsform">
 
         <h3>Funktioasetukset</h3>
@@ -126,15 +126,14 @@
             </div>
             <div class="clear"></div>
         </div>
-
+        
         <!-- Haettava arvo -->
-        <div class="form-item" ng-show="funktioSelection.isHaettavaArvoTyyppi()">
-
-            <div ng-repeat="valintaperusteviite in funktioSelection.data.valintaperusteviitteet">
+        <div class="form-item" ng-if="funktioSelection.valintaperusteviitteet">
+            <div ng-repeat="valintaperusteviite in funktioSelection.valintaperusteviitteet">
                 <label class="form-item-label" style="width:50px;">Tyyppi</label>
                 <div class="form-item-content">
                     <div class="field-select-containerbox">
-                        <select ng-model="valintaperusteviite.lahde" ng-options="item.key as item.text for item in funktioSelection.getValintaperusteviitetyypit()">
+                        <select ng-model="valintaperusteviite.lahde" ng-options="item.key as item.text for item in valintaperusteviitetyypit">
                         </select>        
                     </div>
                     <div class="field-container-checkbox">
@@ -161,18 +160,18 @@
                 </div>
             </div>
             
-            <div ng-show="funktioSelection.konvertteri">
+            <div ng-if="funktiokuvausForSelection.konvertteri">
                 <label class="form-item-label" style="width:50px;">Arvomuunnin</label>
                 <div class="form-item-content">
                     <div class="field-select-containerbox">
-                        <select ng-change="funktioSelection.konvertteri.setTyyppi(funktioSelection.konvertteri.uusityyppi)"
+                        <select ng-change="funktioSelection.konvertteri.setTyyppi(funktiokuvausForSelection.konvertteri.konvertteriTyypit)"
                                 ng-model="funktioSelection.konvertteri.uusityyppi" ng-options="konvertterityyppi.tyyppi as konvertterityyppi.tyyppi for konvertterityyppi in funktioSelection.konvertteri.konvDefunktioSelection.konvertteriTyypit">
                             <option value=""></option>
                         </select>
                     </div>
                 </div>
 
-                <div class="form-item" ng-show="funktioSelection.konvertteri.tyyppi">
+                <div class="form-item" ng-if="funktioSelection.konvertteri.tyyppi">
                     <label class="form-item-label" for="" style="width:100px;">Konversiomäärittelyt</label>
                     <div class="form-item-content" ng-include="funktioSelection.konvertteri.template">
 
