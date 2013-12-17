@@ -292,3 +292,25 @@ app.directive('auth', function($q, $animate, $routeParams, $timeout, AuthService
         }
     };
 });
+
+app.directive(
+    'dateInput',
+    function(dateFilter) {
+        return {
+            restrict: 'E',
+            require: 'ngModel',
+            template: '<input placeholder="yyyy-MM-dd"  type="date"></input>',
+            replace: true,
+            link: function(scope, elm, attrs, ngModelCtrl) {
+                ngModelCtrl.$formatters.unshift(function (modelValue) {
+                    return dateFilter(modelValue, 'yyyy-MM-dd');
+                });
+
+                ngModelCtrl.$parsers.unshift(function(viewValue) {
+                    if (viewValue)
+                        return new Date(viewValue);
+                    else return "";
+                });
+            }
+        };
+    });

@@ -201,3 +201,19 @@
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 4px;
 }
+
+.valintatapajono fieldset {
+    background-color: #f9fbfe;
+    border: 1px solid #cccccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 5px;
+}
+
+.valintatapajono input[disabled] {
+    color: #AAAAAA;
+}
+
+

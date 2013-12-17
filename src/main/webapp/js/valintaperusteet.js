@@ -1,20 +1,21 @@
+"use strict";
 var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'localization', 'ui.bootstrap']).run(function($http){
-    $http.get(SERVICE_URL_BASE + "buildversion.txt?auth")
+    $http.get(SERVICE_URL_BASE + "buildversion.txt?auth");
 });
 
-angular.module('localization', [])
-.filter('i18n', ['$rootScope','$locale',function ($rootScope, $locale) {
-	var localeMapping = {"en-us": "en_US", "fi-fi": "fi_FI", "sv-se": "sv-SE"};
+angular.module('localization', []).run(function($locale) {
+    var localeMapping = {"en-us": "en_US", "fi-fi": "fi_FI", "sv-se": "sv-SE"};
 
-	jQuery.i18n.properties({
-	    name:'messages',
-	    path:'../i18n/',
-	    mode:'map',
-	    language: localeMapping[$locale.id],
-	    callback: function() {
-	    }
-	});
-
+    jQuery.i18n.properties({
+        name:'messages',
+        path:'../i18n/',
+        mode:'map',
+        language: localeMapping[$locale.id],
+        callback: function() {
+        }
+    });
+})
+.filter('i18n', ['$rootScope','$locale',function ($rootScope) {
     return function (text) {
         return jQuery.i18n.prop(text); //$rootScope.i18ndata[text];
     };

@@ -1,50 +1,78 @@
 ﻿<h1>{{'jononmuokkaus.header' | i18n}}</h1>
 
-<form name="form" ng-submit="submit()">
-    <div class="form-row">
-        <label class="form-row-label" for="nimi">Jonon nimi</label>
+<form name="form" ng-submit="submit()" class="valintatapajono">
+<div class="form-row">
+    <label class="form-row-label" for="nimi">Jonon nimi</label>
 
-        <div class="form-row-content">
-            <input type="text" name="nimi" id="nimi" ng-model="model.valintatapajono.nimi" required/>
-            <!--
-            <div><small>Jonon nimeen liittyvä ohjeteksti.</small></div>
-            -->
+    <div class="form-row-content">
+        <input type="text" name="nimi" id="nimi" ng-model="model.valintatapajono.nimi" required/>
+    </div>
+    <div class="clear"></div>
+</div>
+
+<div class="form-row">
+    <label class="form-row-label" for="kuvaus">Kuvaus</label>
+
+    <div class="form-row-content">
+        <textarea name="kuvaus" id="kuvaus" ng-model="model.valintatapajono.kuvaus"/>
+    </div>
+    <div class="clear"></div>
+</div>
+
+<div class="form-row">
+
+    <label class="form-row-label" for="aloituspaikat">Aloituspaikat</label>
+
+    <div class="form-row-content">
+        <input type="number" min="0" id="aloituspaikat" name="aloituspaikat"
+               ng-model="model.valintatapajono.aloituspaikat" required>
+    </div>
+    <div class="clear"></div>
+
+    <label class="form-row-label" for="siirretaanSijoitteluun">{{'jononmuokkaus.siirretaan.sijoitteluun' |
+        i18n}}</label>
+
+    <div class="form-row-content">
+        <div class="field-container-checkbox">
+            <input type="checkbox" id="siirretaanSijoitteluun" name="siirretaanSijoitteluun"
+                   ng-model="model.valintatapajono.siirretaanSijoitteluun">
         </div>
-        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+
+    <label class="form-row-label" for="kaytetaanValintalaskentaa">Käytetään valintalaskentaa</label>
+
+    <div class="form-row-content">
+        <div class="field-container-checkbox">
+            <input type="checkbox" id="kaytetaanValintalaskentaa" name="kaytetaanValintalaskentaa"
+                   ng-model="model.valintatapajono.kaytetaanValintalaskentaa">
+        </div>
     </div>
 
-    <div class="form-row">
-        <label class="form-row-label" for="kuvaus">Kuvaus</label>
+    <div class="clear"></div>
 
-        <div class="form-row-content">
-            <textarea name="kuvaus" id="kuvaus" ng-model="model.valintatapajono.kuvaus"/>
-            <!--
-            <div><small>Jonon kuvaukseen liittyvä ohjeteksti.</small></div>
-            -->
+    <div class="form-row-label">Tasasijasääntö</div>
+    <div class="form-row-content">
+        <div class="field-container-radio">
+            <input type="radio" name="tps" ng-model="model.valintatapajono.tasapistesaanto" id="tps1"
+                   value="YLITAYTTO" required/>
+            <label for="tps1">Ylitäyttö</label>
         </div>
-        <div class="clear"></div>
+        <div class="field-container-radio">
+            <input type="radio" name="tps" ng-model="model.valintatapajono.tasapistesaanto" id="tps2"
+                   value="ALITAYTTO" required/>
+            <label for="tps2">Alitäyttö</label>
+        </div>
+        <div class="field-container-radio">
+            <input type="radio" name="tps" ng-model="model.valintatapajono.tasapistesaanto" id="tps3"
+                   value="ARVONTA" required/>
+            <label for="tps3">Arvonta</label>
+        </div>
     </div>
+    <div class="clear"></div>
 
-    <div class="form-row">
-
-        <label class="form-row-label" for="aloituspaikat">Aloituspaikat</label>
-
-        <div class="form-row-content">
-            <input type="number" min="0" id="aloituspaikat" name="aloituspaikat"
-                   ng-model="model.valintatapajono.aloituspaikat" required>
-        </div>
-        <div class="clear"></div>
-
-        <label class="form-row-label" for="siirretaanSijoitteluun">{{'jononmuokkaus.siirretaan.sijoitteluun' |
-            i18n}}</label>
-
-        <div class="form-row-content">
-            <div class="field-container-checkbox">
-                <input type="checkbox" id="siirretaanSijoitteluun" name="siirretaanSijoitteluun"
-                       ng-model="model.valintatapajono.siirretaanSijoitteluun">
-            </div>
-        </div>
-        <div class="clear"></div>
+    <fieldset>
+        <legend>Varasijakäsittelysäännöt</legend>
 
         <label class="form-row-label" for="eiVarasijatayttoa">Ei varasijatayttoa</label>
 
@@ -62,135 +90,157 @@
             </div>
 
         </div>
-
         <div class="clear"></div>
 
-        <label class="form-row-label" for="varasijat">Varasija rajoitus</label>
+        <div class="form-row">
+            <label class="form-row-label" for="varasijojaKaytetaanAlkaen">Varasijasääntöjä käytetään alkaen</label>
 
-        <div class="form-row-content">
-            <input type="number" min="0" id="varasijat" name="varasijat" ng-model="model.valintatapajono.varasijat"
-                   required>
-        </div>
-        <div class="clear"></div>
-
-        <label class="form-row-label" for="varasijaTayttoPaivat">Montako päivää varasijoja täytetään</label>
-
-        <div class="form-row-content">
-            <input type="number" min="0" id="varasijaTayttoPaivat" name="varasijaTayttoPaivat"
-                   ng-model="model.valintatapajono.varasijaTayttoPaivat" required>
-        </div>
-        <div class="clear"></div>
-
-        <label class="form-row-label" for="poissaOlevaTaytto">Täytetäänkö poissa olevien tilalle</label>
-
-        <div class="form-row-content">
-            <div class="field-container-checkbox">
-                <input type="checkbox" id="poissaOlevaTaytto" name="poissaOlevaTaytto"
-                       ng-model="model.valintatapajono.poissaOlevaTaytto">
+            <div class="form-row-content">
+                <input type="checkbox" id="alkaenRajattu" name="alkaenRajattu"
+                       ng-model="model.valintatapajono.alkaenRajattu">
+                <date-input ng-disabled="!model.valintatapajono.alkaenRajattu" name="varasijojaKaytetaanAlkaen" id="varasijojaKaytetaanAlkaen" ng-model="model.valintatapajono.varasijojaKaytetaanAlkaen"/>
             </div>
+            <div class="clear"></div>
         </div>
-        <div class="clear"></div>
 
-        <div class="form-row-label">Tasasijasääntö</div>
-        <div class="form-row-content">
-            <div class="field-container-radio">
-                <input type="radio" name="tps" ng-model="model.valintatapajono.tasapistesaanto" id="tps1"
-                       value="YLITAYTTO" required/>
-                <label for="tps1">Ylitäyttö</label>
+        <div class="form-row">
+            <label class="form-row-label" for="varasijojaTaytetaanAsti">Varasijoja täytetään asti</label>
+
+            <div class="form-row-content">
+                <input type="checkbox" id="astiRajattu" name="astiRajattu"
+                       ng-model="model.valintatapajono.astiRajattu">
+                <date-input ng-disabled="!model.valintatapajono.astiRajattu" name="varasijojaTaytetaanAsti" id="varasijojaTaytetaanAsti" ng-model="model.valintatapajono.varasijojaTaytetaanAsti"/>
             </div>
-            <div class="field-container-radio">
-                <input type="radio" name="tps" ng-model="model.valintatapajono.tasapistesaanto" id="tps2"
-                       value="ALITAYTTO" required/>
-                <label for="tps2">Alitäyttö</label>
-            </div>
-            <div class="field-container-radio">
-                <input type="radio" name="tps" ng-model="model.valintatapajono.tasapistesaanto" id="tps3"
-                       value="ARVONTA" required/>
-                <label for="tps3">Arvonta</label>
-            </div>
+            <div class="clear"></div>
         </div>
-        <div class="clear"></div>
+
+        <div class="form-row">
+            <label class="form-row-label" for="rajattu">Huomioitavien varasijojen määrä rajattu</label>
+
+            <div class="form-row-content">
+                <div class="field-container-checkbox">
+                    <input type="checkbox" id="rajattu" name="rajattu"
+                           ng-model="model.valintatapajono.rajattu">
+
+                    <input ng-disabled="!model.valintatapajono.rajattu" type="number" min="0" id="varasijat"
+                           name="varasijat" ng-model="model.valintatapajono.varasijat">
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="form-row">
+            <label class="form-row-label" for="poissaOlevaTaytto">Varasijatäyttö poissa olevaksi ilmoittautuneiden
+                tilalle</label>
+
+            <div class="form-row-content">
+                <div class="field-container-checkbox">
+                    <input type="checkbox" id="poissaOlevaTaytto" name="poissaOlevaTaytto"
+                           ng-model="model.valintatapajono.poissaOlevaTaytto">
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-row-content">
+                <div class="field-container-checkbox">
+                    Jos jonoon jää täyttämättömiä aloituspaikkoja, niitä täytetään jonosta
+                    <select>
+                        <option></option>
+                        <option>1. jono</option>
+                        <option>2. jono</option>
+                        <option>3. jono</option>
+                    </select>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </fieldset>
+
+</div>
+
+
+<div class="form-row">
+    <div class="form-row-label">Jonon muodostumiskriteerit</div>
+    <div class="form-row-content" ng-show="model.valintatapajono.oid">
+
+        <table class="virkailija-table-1 margin-bottom-2" ng-show="model.jarjestyskriteerit">
+            <thead>
+            <tr>
+                <th>Aktiivinen</th>
+                <th>Nimi</th>
+                <th>Metatiedot</th>
+                <th>Peritty</th>
+                <th>Poista</th>
+            </tr>
+            </thead>
+            <tbody ui-sortable class="margin-top-2" ng-model="model.jarjestyskriteerit">
+            <tr ng-repeat="data in model.jarjestyskriteerit">
+                <td><input type="checkbox" ng-model="data.aktiivinen"/></td>
+                <td>
+                    <a ng-class="{true:'', false:'line-through'}[data.aktiivinen]"
+                       ng-click="modifyKriteeri(data.oid)">{{data.nimi}}</a>
+                </td>
+                <td>{{data.metatiedot}}</td>
+                <td>{{data.inheritance}}</td>
+                <td><span auth="crud" ng-show="!data.inheritance" class="btn remove"
+                          ng-click="remove(data.oid)">X</span></td>
+            </tr>
+            </tbody>
+        </table>
+        <span auth="crud" class="button small" ng-click="addKriteeri()"><i class="fa fa-plus"></i> Kriteeri</span>
+        <!--<div><small>Jonojen muodostuskriteereihin liittyvä ohjeteksti.</small></div>-->
     </div>
+    <span ng-show="!model.valintatapajono.oid">Tallenna jono lisätäksesi kriteeri.</span>
+</div>
 
+<div class="clear"></div>
 
-    <div class="form-row">
-        <div class="form-row-label">Jonon muodostumiskriteerit</div>
-        <div class="form-row-content" ng-show="model.valintatapajono.oid">
-
-            <table class="virkailija-table-1 margin-bottom-2" ng-show="model.jarjestyskriteerit">
-                <thead>
-                <tr>
-                    <th>Aktiivinen</th>
-                    <th>Nimi</th>
-                    <th>Metatiedot</th>
-                    <th>Peritty</th>
-                    <th>Poista</th>
-                </tr>
-                </thead>
-                <tbody ui-sortable class="margin-top-2" ng-model="model.jarjestyskriteerit">
-                <tr ng-repeat="data in model.jarjestyskriteerit">
-                    <td><input type="checkbox" ng-model="data.aktiivinen"/></td>
-                    <td>
-                        <a ng-class="{true:'', false:'line-through'}[data.aktiivinen]"
-                           ng-click="modifyKriteeri(data.oid)">{{data.nimi}}</a>
-                    </td>
-                    <td>{{data.metatiedot}}</td>
-                    <td>{{data.inheritance}}</td>
-                    <td><span auth="crud" ng-show="!data.inheritance" class="btn remove" ng-click="remove(data.oid)">X</span></td>
-                </tr>
-                </tbody>
-            </table>
-            <span auth="crud" class="button small" ng-click="addKriteeri()"><i class="fa fa-plus"></i> Kriteeri</span>
-            <!--<div><small>Jonojen muodostuskriteereihin liittyvä ohjeteksti.</small></div>-->
-        </div>
-        <span ng-show="!model.valintatapajono.oid">Tallenna jono lisätäksesi kriteeri.</span>
+<div class="form-row width-100">
+    <div class="form-row-label">Hakijaryhmat</div>
+    <div class="form-row-content width-60" ng-if="!model.valintatapajono.siirretaanSijoitteluun">
+        <span>Valintatapajonoa ei siirretä sijoitteluun. Hakijaryhma ei vaikuta jonoon.</span>
     </div>
-
-    <div class="clear"></div>
-
-    <div class="form-row width-100">
-        <div class="form-row-label">Hakijaryhmat</div>
-        <div class="form-row-content width-60" ng-if="!model.valintatapajono.siirretaanSijoitteluun">
-            <span>Valintatapajonoa ei siirretä sijoitteluun. Hakijaryhma ei vaikuta jonoon.</span>
-        </div>
-        <div class="form-row-content width-60" ng-if="model.valintatapajono.siirretaanSijoitteluun">
-            <table ng-show="model.hakijaryhmat" class="virkailija-table-1 margin-bottom-2 width-60">
-                <thead>
-                <tr>
-                    <th>Aktiivinen</th>
-                    <th>Nimi</th>
-                    <th>Kuvaus</th>
-                    <th>Määrä</th>
-                    <th>Periytyy</th>
-                    <th>Poista</th>
-                </tr>
-                </thead>
-                <tbody ng-model="model.hakijaryhmat ">
-                <tr ng-repeat="data in model.hakijaryhmat">
-                    <td><input type="checkbox" ng-model="data.aktiivinen"/></td>
-                    <td class="align-center">
-                        {{data.hakijaryhma.nimi}}
-                    </td>
-                    <td class="align-center">{{data.hakijaryhma.kuvaus}}</td>
-                    <td class="align-center">{{data.hakijaryhma.kiintio}}</td>
-                    <td class="align-center">{{data.inheritance}}</td>
-                    <td class="align-center">
+    <div class="form-row-content width-60" ng-if="model.valintatapajono.siirretaanSijoitteluun">
+        <table ng-show="model.hakijaryhmat" class="virkailija-table-1 margin-bottom-2 width-60">
+            <thead>
+            <tr>
+                <th>Aktiivinen</th>
+                <th>Nimi</th>
+                <th>Kuvaus</th>
+                <th>Määrä</th>
+                <th>Periytyy</th>
+                <th>Poista</th>
+            </tr>
+            </thead>
+            <tbody ng-model="model.hakijaryhmat ">
+            <tr ng-repeat="data in model.hakijaryhmat">
+                <td><input type="checkbox" ng-model="data.aktiivinen"/></td>
+                <td class="align-center">
+                    {{data.hakijaryhma.nimi}}
+                </td>
+                <td class="align-center">{{data.hakijaryhma.kuvaus}}</td>
+                <td class="align-center">{{data.hakijaryhma.kiintio}}</td>
+                <td class="align-center">{{data.inheritance}}</td>
+                <td class="align-center">
                         <span auth="crud" ng-show="!data.inheritance" class="btn remove"
                               ng-click="model.removeHakijaryhma(data.oid)"></span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <span auth="crud" class="button small" ng-click="addHakijaryhma()">Liitä hakijaryhmä</span>
-        </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <span auth="crud" class="button small" ng-click="addHakijaryhma()">Liitä hakijaryhmä</span>
     </div>
+</div>
 
-    <div class="clear"></div>
+<div class="clear"></div>
 
-    <button auth="update" ng-disabled="!form.$valid" class="button small primary" type="submit"><i class="fa fa-floppy-o"></i>
-        Tallenna
-    </button>
-    <button class="button small float-left margin-right-1" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin
-    </button>
-    <div class="clear"></div>
+<button auth="update" ng-disabled="!form.$valid" class="button small primary" type="submit"><i
+        class="fa fa-floppy-o"></i>
+    Tallenna
+</button>
+<button class="button small float-left margin-right-1" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin
+</button>
+<div class="clear"></div>
 </form>
