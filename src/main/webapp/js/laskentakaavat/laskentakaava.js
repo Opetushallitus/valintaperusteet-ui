@@ -1,8 +1,7 @@
 
 
 
-function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, KaavaValidointi, LaskentakaavaLista, LaskentakaavaService, TemplateService, FunktioService) {
-
+function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValidointi, LaskentakaavaLista, LaskentakaavaService, TemplateService, FunktioService) {
 
     //servicet laskentakaavapuun piirtämiseen
     $scope.templateService = TemplateService;
@@ -17,13 +16,6 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
 
     
 
-    // Tieto laskentakaavan / funktion näyttämisestä ja piilottamisesta täytyy säilyttää tässä (parent) skoopissa
-    // objektissa, jotta childskoopeissa tehdyt muutokset heijastuvat parenttiin ja muihin childskooppeihin 
-    $scope.funktioasetusTemplatePicker = {
-        showFunktioInformation: false,
-        showLaskentakaavaInformation: false
-    }
-
     if($routeParams.valintaryhmaOid) {
         LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, null, false);
     } else if($routeParams.hakukohdeOid) {
@@ -32,18 +24,16 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
         LaskentakaavaLista.refresh(null, null, false);
     }
 
-    
-    
-    var promise = Laskentapuu.refresh($routeParams.laskentakaavaOid);
-    promise.then(function() {
-        $scope.funktio = Laskentapuu.laskentakaavapuu.funktio;
-    });
-
-
+    // Tieto laskentakaavan / funktion näyttämisestä ja piilottamisesta täytyy säilyttää tässä (parent) skoopissa
+    // objektissa, jotta childskoopeissa tehdyt muutokset heijastuvat parenttiin ja muihin childskooppeihin 
+    $scope.funktioasetusTemplatePicker = {
+        showFunktioInformation: false,
+        showLaskentakaavaInformation: false
+    }
 
     $scope.kaavaInformationView = function(funktio, isFunktiokutsu) {
+
         $scope.funktioSelection = funktio;
-        
         if(isFunktiokutsu) {
             $scope.funktioasetusTemplatePicker.showFunktioInformation = true;
             $scope.funktioasetusTemplatePicker.showLaskentakaavaInformation = false;
@@ -51,12 +41,51 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
             $scope.funktioasetusTemplatePicker.showFunktioInformation = false;
             $scope.funktioasetusTemplatePicker.showLaskentakaavaInformation = true;
         }
+        
     }
 
     $scope.syoteparametriTemplate = function(syoteparametri, index) {
         return $scope.templateService.getSyoteparametriTemplate(syoteparametri, index);
     }
 
+    $scope.removeFunktiokutsu = function(funktiokutsu){
+        var funktiokutsuId = funktiokutsu.id;
+
+        $scope.funktioSelection = undefined;
+        $scope.funktioasetusTemplatePicker.showFunktioInformation = false
+        
+        searchTree($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
+
+        //etsitään haluttu funktiokutsu laskentakaavasta ja poistetaan se
+        function searchTree(funktioargumentit) {
+            var searchedNode = undefined;
+
+            //asetetaan haetaan searhedNode-muuttujaan objekti jota etsitään
+            searchedNode = _.find(funktioargumentit, function(funktioargumentti) {
+                if(funktioargumentti.lapsi.id === funktiokutsuId) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            
+            //jatketaan etsimistä puun alemmilta tasoilta, jos haettua objektia ei löytynyt
+            if(_.isEmpty(searchedNode)) {
+                _.forEach(funktioargumentit, function(funktioargumentti) {
+                    searchTree(funktioargumentti.lapsi.funktioargumentit);
+                });
+            //poistetaan löydetty objekti
+            } else {
+                var indexInFunktioargumentit = funktioargumentit.indexOf(searchedNode);
+                funktioargumentit.splice(indexInFunktioargumentit, 1);
+            }
+
+
+        }
+        
+
+       
+    }
 
     $scope.persistLaskentakaava = function() {
 
@@ -66,8 +95,8 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
 
         KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function(result) {
             
-            $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function(result) {
-                Laskentapuu.setKaavaData(result);
+            $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function(result) {}, function(error) {
+                $scope.errors.push(error);
             });
 
         }); 
@@ -116,51 +145,6 @@ function LaskentakaavaController($scope, $location, $routeParams, Laskentapuu, K
         });
     }
     
-    
-
-    $scope.saveKaavaAsCompleted = function() {
-        var kaava = Laskentapuu.laskentakaava().getData();
-        console.log(kaava);
-        var validateKaava = {};
-        angular.copy(kaava, validateKaava);
-        $scope.test = validateKaava;
-        KaavaValidointi.post({}, validateKaava, function(data) {
-
-            Laskentapuu.setKaavaData(data)
-            $scope.selected = null
-            $scope.showTemplate = false
-
-            if(Laskentapuu.laskentakaava().hasErrors()) {
-                $scope.errors = Laskentapuu.laskentakaava().getAllErrors()
-                Laskentapuu.setKaavaData(kaava);   
-                return             
-                
-            } 
-            
-            kaava.onLuonnos = false
-
-            kaava.$save({oid: kaava.id}, function(data) {
-                Laskentapuu.setKaavaData(data);
-            });
-
-            $scope.errors = []    
-            
-            
-        });
-
-    }
-    
-    
-
-    $scope.saveKaavaAsDraft = function() {
-        var kaava = Laskentapuu.laskentakaava().getData()
-        kaava.onLuonnos = true
-        kaava.$save({oid: kaava.id}, function(data) {
-            Laskentapuu.setKaavaData(data)
-            $scope.selected = null
-            $scope.showTemplate = false
-        })
-    }
 
     $scope.goToListing = function() {
         if($routeParams.valintaryhmaOid) {
@@ -187,35 +171,3 @@ app.factory('LaskentakaavaService', function($q, Laskentakaava){
 
     return model;
 });
-
-
-app.factory('Laskentapuu', function($q, Laskentakaava, FunktioKuvausResource) {
-    
-    var LaskentapuuWrapper = new function() {
-        this.laskentakaavapuu = {};
-        this.kuvaus = {};
-
-        this.laskentakaava = function() {
-            return LaskentapuuWrapper.laskentakaavapuu;
-        }
-
-        this.setKaavaData = function(data) {
-            LaskentapuuWrapper.laskentakaavapuu = new Kaava(LaskentapuuWrapper.kuvaus, data);
-        }
-
-        this.refresh = function(id) {
-            var deferred = $q.defer();
-            FunktioKuvausResource.get({}, function(res) {
-                LaskentapuuWrapper.kuvaus = res;
-                Laskentakaava.get({oid: id}, function(kaava) {
-                    LaskentapuuWrapper.laskentakaavapuu = new Kaava(LaskentapuuWrapper.kuvaus,kaava);
-                    deferred.resolve();
-                });
-            });
-            return deferred.promise;
-        }
-    }
-
-    return LaskentapuuWrapper;
-});
-

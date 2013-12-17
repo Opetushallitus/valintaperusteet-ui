@@ -224,8 +224,6 @@
                         <tbody>
                         
                         <tr ng-repeat="syoteparametri in funktioSelection.syoteparametrit">
-
-                            
                             <td>Avain: {{syoteparametri.avain}}</td>
                             <td ng-include="syoteparametriTemplate(funktioSelection, $index)"></td>
                         </tr>
@@ -237,7 +235,7 @@
             <div class="clear"></div>
         </div>
 
-        <span class="button small" ng-click="funktioSelection = undefined; funktioasetusTemplatePicker.showFunktioInformation = false">poista funktiokutsu</span>
+        <span class="button small" ng-click="removeFunktiokutsu(funktioSelection)">poista funktiokutsu</span>
 
     </div>
 

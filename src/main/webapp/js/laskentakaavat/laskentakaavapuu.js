@@ -33,7 +33,7 @@ function treeNodeController($scope, FunktioTemplates) {
 }
 
 function laskentakaavapuuController($scope) {
-
+    
 }
 
 
