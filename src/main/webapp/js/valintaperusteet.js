@@ -1,27 +1,32 @@
-var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'localization', 'ui.bootstrap', 'lodash']);//'ngAnimate' currently breaks valintaperustetree
+"use strict";
+var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'localization', 'ui.bootstrap', 'lodash']).run(function($http){
+    $http.get(SERVICE_URL_BASE + "buildversion.txt?auth");
+});
 
-angular.module('localization', [])
-.filter('i18n', ['$rootScope','$locale',function ($rootScope, $locale) {
-	var localeMapping = {"en-us": "en_US", "fi-fi": "fi_FI", "sv-se": "sv-SE"};
+angular.module('localization', []).run(function($locale) {
+    var localeMapping = {"en-us": "en_US", "fi-fi": "fi_FI", "sv-se": "sv-SE"};
 
-	jQuery.i18n.properties({
-	    name:'messages',
-	    path:'../i18n/',
-	    mode:'map',
-	    language: localeMapping[$locale.id],
-	    callback: function() {
-	    }
-	});
-
+    jQuery.i18n.properties({
+        name:'messages',
+        path:'../i18n/',
+        mode:'map',
+        language: localeMapping[$locale.id],
+        callback: function() {
+        }
+    });
+})
+.filter('i18n', ['$rootScope','$locale',function ($rootScope) {
     return function (text) {
         return jQuery.i18n.prop(text); //$rootScope.i18ndata[text];
     };
-}]); 
+}]);
 
-var underscore = angular.module('lodash', []);
-underscore.factory('_', function() {
-  return window._; // assumes underscore has already been loaded on the page
+var lodash = angular.module('lodash', []);
+lodash.factory('_', function() {
+  return window._; // assumes lodash has already been loaded on the page
 });   
+
+
 
 var SERVICE_URL_BASE = SERVICE_URL_BASE || "";
 var TEMPLATE_URL_BASE = TEMPLATE_URL_BASE || "";
