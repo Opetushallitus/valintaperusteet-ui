@@ -48,7 +48,17 @@ app.factory('TemplateService', function(FunktioService) {
                 default:
                     return ""
             }
-            
+        }
+
+        this.getKonvertteriparametriTemplate = function(konvertteriparametriSelection) {
+            switch(konvertteriparametriSelection) {
+                case "ARVOKONVERTTERI":
+                    return "arvokonvertteri-template";
+                case "ARVOVALIKONVERTTERI":
+                    return "arvovalikonvertteri-template";
+                default: 
+                    return "";
+            }
         }
 
     }

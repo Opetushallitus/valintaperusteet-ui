@@ -41,7 +41,6 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         $scope.funktioSelection = funktio;
         $scope.funktiokuvausForSelection = $scope.funktioService.getFunktiokuvaus(funktio.funktionimi);
 
-        console.log($scope.funktiokuvausForSelection);
         if(isFunktiokutsu) {    
             $scope.setFunktioasetusTemplate(true, false);
         } else {
@@ -50,8 +49,33 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         
     }
 
+    $scope.addFunktiokonvertteriparametri = function(konvertteriparametriSelection) {
+        console.log(konvertteriparametriSelection);
+        var emptyArvokonvertteriparametri = {paluuarvo: '', hylkaysperuste: false, arvo: ''}
+        var emptyArvovalikonvertteriparametri = {paluuarvo: '', hylkaysperuste: false, arvo: ''}
+
+        if(konvertteriparametriSelection == "ARVOKONVERTTERI") {
+            $scope.funktioSelection.arvokonvertteriparametrit.push(emptyArvokonvertteriparametri);
+            console.log($scope.funktioSelection.arvokonvertteriparametrit);
+        } else {
+            $scope.funktioSelection.arvokonvertteriparametrit = [];
+        }
+    }
+
     $scope.syoteparametriTemplate = function(syoteparametri, index) {
         return $scope.templateService.getSyoteparametriTemplate(syoteparametri, index);
+    }
+
+    $scope.konvertteriTemplate = function(konvertteriparametriSelection) {
+        return $scope.templateService.getKonvertteriparametriTemplate(konvertteriparametriSelection);
+    }
+
+    $scope.changeKonvertteriparametriTypeSelection = function(konvertteriparametriSelection) {
+        if(konvertteriparametriSelection == "ARVOKONVERTTERI") {
+            $scope.funktioSelection.arvovalikonvertteriparametrit = [];
+        } else {
+            $scope.funktioSelection.arvokonvertteriparametrit = [];
+        }
     }
 
     $scope.removeFunktiokutsu = function(funktiokutsu){
@@ -65,7 +89,7 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         searchTree($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
 
         //etsitään haluttu funktiokutsu laskentakaavasta ja poistetaan se
-        function searchTree(funktioargumentit) {
+        function searchTree(funktioargumentit) { // TODO huomioi nimetyt funktioargumentit & laskentakaavaviitteet
             var searchedNode = undefined;
 
             //asetetaan haetaan searhedNode-muuttujaan objekti jota etsitään
