@@ -34,28 +34,32 @@
                 <tbody>
                 <tr ng-repeat="parametri in funktioSelection.arvovalikonvertteriparametrit">
                     <td>
-                        <a ng-click="funktioSelection.konvertteri.removeParametri(konvparam)"><i class="fa fa-trash-o"></i></a>
+                        <a ng-click="removeKonvertteriParametri($index, konvertteriparametriSelection)"><i class="fa fa-trash-o"></i></a>
                     </td>
                     <td>
-                        <input type="text" size="1" ng-model="konvparam.data.minValue"/>
+                        <input type="text" size="1" ng-model="parametri.minValue"/>
                     </td>
                     <td>
                         <span ng-show="!$last" class="white-space-nowrap">&le; x &lt;</span>
                         <span ng-show="$last" class="white-space-nowrap">&le; x &le;</span>
                     </td>
                     <td>
-                        <input type="text" size="1" ng-model="konvparam.data.maxValue"/>
+                        <input type="text" size="1" ng-model="parametri.maxValue"/>
                     </td>
-                    <td><input type="text" size="3" ng-disabled="konvparam.data.palautaHaettuArvo == 'true'"
-                               ng-model="konvparam.data.paluuarvo"/></td>
+                    <td><input type="text" size="3" ng-disabled="parametri.palautaHaettuArvo == 'true'"
+                               ng-model="parametri.paluuarvo"/></td>
 
-                    <td><input type="checkbox" ng-model="konvparam.data.palautaHaettuArvo" ng-true-value="true" ng-false-value="false"/></td>
+                    <td><input type="checkbox" ng-model="parametri.palautaHaettuArvo" ng-true-value="true" ng-false-value="false"/></td>
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </script>
+
+
+{{konvertteriparametriSelection}}
+
 
 <!-- ARVOKONVERTTERI template -->
 <script type="text/ng-template" id="arvokonvertteri-template">
@@ -75,7 +79,7 @@
                 <tbody>
                 <tr ng-repeat="parametri in funktioSelection.arvokonvertteriparametrit">
                     <td>
-                        <a ng-click="funktioSelection.konvertteri.removeParametri(konvparam)"><i class="fa fa-trash-o"></i></a>
+                        <a ng-click="removeKonvertteriParametri($index)"><i class="fa fa-trash-o"></i></a>
                     </td>
                     <td><input type="text" size="9" ng-model="parametri.arvo"/></td>
                     <td><input type="text" size="9" ng-model="parametri.paluuarvo"/></td>
@@ -87,9 +91,8 @@
     </div>
 </script>
 
-
 <!-- LASKENTAKAAVAVIITTAUKSEN ASETUKSET -->
-<div style="width:30%;float:right;" ng-if="funktioasetusTemplate.showLaskentakaavaInformation">
+<div style="width:30%;float:right;" ng-if="funktioasetukset.showLaskentakaavaInformation">
     <div class="settingsform">
         <h3>Laskentakaavaviittauksen asetukset</h3>
         
@@ -106,7 +109,7 @@
         </div>
 
 
-        <span class="button small" ng-click="funktioSelection.removeThis(); funktioSelection = null; funktioasetusTemplate.showLaskentakaavaInformation = false">Poista funktiokutsu</span>
+        <span class="button small" ng-click="funktioSelection.removeThis(); funktioSelection = null; funktioasetukset.showLaskentakaavaInformation = false">Poista funktiokutsu</span>
     </div>
 </div>
 
@@ -114,7 +117,7 @@
 
 {{funktioSelection}}
 <!-- FUNKTIOASETUKSET -->
-<div class="" style="width:30%;float:right;" ng-if="funktioasetusTemplate.showFunktioInformation">
+<div class="" style="width:30%;float:right;" ng-if="funktioasetukset.showFunktioInformation">
     <div class="settingsform">
 
         <h3>Funktioasetukset</h3>
@@ -164,38 +167,35 @@
              
             <div ng-if="funktiokuvausForSelection.konvertteri">
                 <label class="form-item-label" style="width:50px;">Arvomuunnin</label>
-                
+
                 <div class="form-item-content">
                     <div class="field-select-containerbox">
 
-                        <!-- ei konvertteriparametreja asetettu -->
-                        <select ng-if="!funktioSelection.arvokonvertteriparametrit && !funktioSelection.arvovalikonvertteriparametrit" ng-change="changeKonvertteriparametriTypeSelection(konvertteriparametriSelection)"
-                                ng-model="konvertteriparametriSelection" ng-options="konvertterityyppi.tyyppi as konvertterityyppi.tyyppi for konvertterityyppi in funktiokuvausForSelection.konvertteri.konvertteriTyypit">
-                            <option value="">A</option>
-                        </select>
-
                         <!-- arvokonvertteriparametrit asetettu -->
-                        <select ng-if="funktioSelection.arvokonvertteriparametrit" ng-init="konvertteriparametriSelection = 'ARVOKONVERTTERI'" ng-change="changeKonvertteriparametriTypeSelection(konvertteriparametriSelection)"
-                                ng-model="konvertteriparametriSelection" ng-options="konvertterityyppi.tyyppi as konvertterityyppi.tyyppi for konvertterityyppi in funktiokuvausForSelection.konvertteri.konvertteriTyypit">
+                        <select ng-if="funktioasetukset.konvertteriType == 'ARVOKONVERTTERI'" ng-change="changeKonvertteriparametriTypeSelection(funktioasetukset.konvertteriType)"
+                                ng-model="funktioasetukset.konvertteriType" ng-options="konvertterityyppi.tyyppi as konvertterityyppi.tyyppi for konvertterityyppi in funktiokuvausForSelection.konvertteri.konvertteriTyypit">
                         </select>
                         
                         <!-- arvovalikonvertteriparametrit asetettu -->
-                        <select ng-if="funktioSelection.arvovalikonvertteriparametrit" ng-init="konvertteriparametriSelection = 'ARVOVALIKONVERTTERI'" ng-change="changeKonvertteriparametriTypeSelection(konvertteriparametriSelection)"
-                                ng-model="konvertteriparametriSelection" ng-options="konvertterityyppi.tyyppi as konvertterityyppi.tyyppi for konvertterityyppi in funktiokuvausForSelection.konvertteri.konvertteriTyypit">
+                        <select ng-if="funktioasetukset.konvertteriType == 'ARVOVALIKONVERTTERI'" ng-change="changeKonvertteriparametriTypeSelection(funktioasetukset.konvertteriType)"
+                                ng-model="funktioasetukset.konvertteriType" ng-options="konvertterityyppi.tyyppi as konvertterityyppi.tyyppi for konvertterityyppi in funktiokuvausForSelection.konvertteri.konvertteriTyypit">
                         </select>
+
                     </div>
                 </div>
                 
                 
                
                 <div class="form-item">
-                    <label ng-if="funktioSelection.arvokonvertteriparametrit || funktioSelection.arvovalikonvertteriparametrit" class="form-item-label" for="" style="width:100px;">Konversiomäärittelyt</label>
-                    <div class="form-item-content" ng-if="funktioSelection.arvokonvertteriparametrit" ng-include="'arvokonvertteri-template'"></div>
-                    <div class="form-item-content" ng-if="funktioSelection.arvovalikonvertteriparametrit" ng-include="'arvovalikonvertteri-template'"></div>
+                    
+                    <label ng-if="funktioSelection.arvokonvertteriparametrit.length > 0 || funktioSelection.arvovalikonvertteriparametrit.length > 0" class="form-item-label" for="" style="width:100px;">Konversiomäärittelyt</label>
+                    
+                    <div class="form-item-content" ng-if="funktioSelection.arvokonvertteriparametrit.length > 0" ng-include="'arvokonvertteri-template'"></div>
+                    <div class="form-item-content" ng-if="funktioSelection.arvovalikonvertteriparametrit.length > 0" ng-include="'arvovalikonvertteri-template'"></div>
                     <div class="clear"></div>
                 </div>
-
-                <span class="button small" ng-click="addFunktiokonvertteriparametri(konvertteriparametriSelection)"><i class="fa fa-plus"></i> Parametri</span>
+                
+                <span class="button small" ng-click="addFunktiokonvertteriparametri()"><i class="fa fa-plus"></i> Parametri</span>
 
             </div>
 

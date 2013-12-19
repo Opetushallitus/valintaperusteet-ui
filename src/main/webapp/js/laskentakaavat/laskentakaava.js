@@ -26,14 +26,21 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
 
     // Tieto laskentakaavan / funktion näyttämisestä ja piilottamisesta täytyy säilyttää tässä (parent) skoopissa
     // objektissa, jotta childskoopeissa tehdyt muutokset heijastuvat parenttiin ja muihin childskooppeihin 
-    $scope.funktioasetusTemplate = {
-        showFunktioInformation: false,
-        showLaskentakaavaInformation: false
+    $scope.funktioasetukset = {
+        showFunktioInformation: false, //näytetäänkö funktiokutsuasetus-näkymä
+        showLaskentakaavaInformation: false, //näytetäänkö laskentakaavaviite-näkymä
+        konvertteriType: ''
     }
 
-    $scope.setFunktioasetusTemplate = function(funktiokutsuVisible, laskentakaavaviiteVisible) {
-        $scope.funktioasetusTemplate.showFunktioInformation = funktiokutsuVisible;
-        $scope.funktioasetusTemplate.showLaskentakaavaInformation = laskentakaavaviiteVisible;
+    $scope.setFunktioasetusView = function(funktiokutsuVisible, laskentakaavaviiteVisible) {
+        $scope.funktioasetukset.showFunktioInformation = funktiokutsuVisible;
+        $scope.funktioasetukset.showLaskentakaavaInformation = laskentakaavaviiteVisible;
+    }
+
+    $scope.setFunktioKonvertteriType = function(arvokonvertteriVisible, arvovalikonvertteriVisible) {
+        $scope.funktioasetukset.arvokonvertteriTypeSelected = arvokonvertteriVisible;
+        $scope.funktioasetukset.arvovalikonvertteriTypeSelected = arvovalikonvertteriVisible;
+
     }
 
     $scope.kaavaInformationView = function(funktio, isFunktiokutsu) {
@@ -41,24 +48,31 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         $scope.funktioSelection = funktio;
         $scope.funktiokuvausForSelection = $scope.funktioService.getFunktiokuvaus(funktio.funktionimi);
 
+        //päätellään funktiolle esivalittu konvertteriparametrityyppi, jos funktiolla on konvertteriparametreja
+        if($scope.funktioSelection.arvokonvertteriparametrit && $scope.funktioSelection.arvovalikonvertteriparametrit.length == 0) {
+            $scope.funktioasetukset.konvertteriType = 'ARVOKONVERTTERI';
+        } else if ($scope.funktioSelection.arvovalikonvertteriparametrit && $scope.funktioSelection.arvokonvertteriparametrit.length == 0) {
+            $scope.funktioasetukset.konvertteriType = 'ARVOVALIKONVERTTERI';
+        }   
+
+        // päätellään kumpi funktioasetusnäkymä tuodaan näkyviin, funktiokutsuille ja laskentakaavaviitteille on omat näkymänsä
         if(isFunktiokutsu) {    
-            $scope.setFunktioasetusTemplate(true, false);
+            $scope.setFunktioasetusView(true, false);
         } else {
-            $scope.setFunktioasetusTemplate(false, true);
+            $scope.setFunktioasetusView(false, true);
         }
         
     }
 
     $scope.addFunktiokonvertteriparametri = function(konvertteriparametriSelection) {
-        console.log(konvertteriparametriSelection);
+
         var emptyArvokonvertteriparametri = {paluuarvo: '', hylkaysperuste: false, arvo: ''}
-        var emptyArvovalikonvertteriparametri = {paluuarvo: '', hylkaysperuste: false, arvo: ''}
+        var emptyArvovalikonvertteriparametri = {paluuarvo: '', palautaHaettuArvo: false, minValue: '',maxValue: ''}
 
         if(konvertteriparametriSelection == "ARVOKONVERTTERI") {
             $scope.funktioSelection.arvokonvertteriparametrit.push(emptyArvokonvertteriparametri);
-            console.log($scope.funktioSelection.arvokonvertteriparametrit);
         } else {
-            $scope.funktioSelection.arvokonvertteriparametrit = [];
+            $scope.funktioSelection.arvovalikonvertteriparametrit.push(emptyArvovalikonvertteriparametri);
         }
     }
 
@@ -70,12 +84,27 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         return $scope.templateService.getKonvertteriparametriTemplate(konvertteriparametriSelection);
     }
 
+    $scope.removeKonvertteriParametri = function(index, konvertteriparametriSelection) {
+        console.log(index);
+        console.log(konvertteriparametriSelection);
+        if(konvertteriparametriSelection == "ARVOKONVERTTERI") {
+            console.log('arvokonvertteri')
+            $scope.funktioSelection.arvokonvertteriparametrit.splice(index, 1);
+        } else {
+            console.log('arvovalikonvertteri')
+            $scope.funktioSelection.arvovalikonvertteriparametrit.splice(index, 1);
+        }
+    }
+
     $scope.changeKonvertteriparametriTypeSelection = function(konvertteriparametriSelection) {
+        
+        //tyhjennetään toinen konvertteriparametrilista tyyppiä vaihdettaessa
         if(konvertteriparametriSelection == "ARVOKONVERTTERI") {
             $scope.funktioSelection.arvovalikonvertteriparametrit = [];
         } else {
             $scope.funktioSelection.arvokonvertteriparametrit = [];
         }
+
     }
 
     $scope.removeFunktiokutsu = function(funktiokutsu){
@@ -83,7 +112,7 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
 
         $scope.funktioSelection = undefined;
         $scope.funktiokuvausForSelection = undefined;
-        $scope.setFunktioasetusTemplate(false, false);
+        $scope.setFunktioasetusView(false, false);
 
         
         searchTree($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
@@ -119,7 +148,7 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
 
     $scope.persistLaskentakaava = function() {
 
-        $scope.setFunktioasetusTemplate(false, false);
+        $scope.setFunktioasetusView(false, false);
         $scope.funktioSelection = undefined;
         $scope.funktiokuvausForSelection = undefined;
 
