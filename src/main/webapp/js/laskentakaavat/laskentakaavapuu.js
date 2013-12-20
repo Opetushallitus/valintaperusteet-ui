@@ -9,15 +9,9 @@ function treeNodeController($scope) {
     
     $scope.funktio = $scope.$parent.farg;
     $scope.parent = $scope.$parent.funktio;
-
     $scope.template = "";
 
 }
-
-function laskentakaavapuuController($scope) {
-    
-}
-
 
 
 app.factory('TemplateService', function(FunktioService) {

@@ -29,7 +29,7 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
     $scope.funktioasetukset = {
         showFunktioInformation: false, //näytetäänkö funktiokutsuasetus-näkymä
         showLaskentakaavaInformation: false, //näytetäänkö laskentakaavaviite-näkymä
-        konvertteriType: ''
+        konvertteriType: '' //mikä konvertterityyppi on valittuna 
     }
 
     $scope.setFunktioasetusView = function(funktiokutsuVisible, laskentakaavaviiteVisible) {
@@ -69,7 +69,7 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         var emptyArvokonvertteriparametri = {paluuarvo: '', hylkaysperuste: false, arvo: ''}
         var emptyArvovalikonvertteriparametri = {paluuarvo: '', palautaHaettuArvo: false, minValue: '',maxValue: ''}
 
-        if(konvertteriparametriSelection == "ARVOKONVERTTERI") {
+        if($scope.funktioasetukset.konvertteriType == "ARVOKONVERTTERI") {
             $scope.funktioSelection.arvokonvertteriparametrit.push(emptyArvokonvertteriparametri);
         } else {
             $scope.funktioSelection.arvovalikonvertteriparametrit.push(emptyArvovalikonvertteriparametri);
@@ -85,13 +85,9 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
     }
 
     $scope.removeKonvertteriParametri = function(index, konvertteriparametriSelection) {
-        console.log(index);
-        console.log(konvertteriparametriSelection);
         if(konvertteriparametriSelection == "ARVOKONVERTTERI") {
-            console.log('arvokonvertteri')
             $scope.funktioSelection.arvokonvertteriparametrit.splice(index, 1);
         } else {
-            console.log('arvovalikonvertteri')
             $scope.funktioSelection.arvovalikonvertteriparametrit.splice(index, 1);
         }
     }
@@ -100,9 +96,9 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         
         //tyhjennetään toinen konvertteriparametrilista tyyppiä vaihdettaessa
         if(konvertteriparametriSelection == "ARVOKONVERTTERI") {
-            $scope.funktioSelection.arvovalikonvertteriparametrit = [];
+            $scope.funktioSelection.arvovalikonvertteriparametrit.length = 0;
         } else {
-            $scope.funktioSelection.arvokonvertteriparametrit = [];
+            $scope.funktioSelection.arvokonvertteriparametrit.length = 0;
         }
 
     }
