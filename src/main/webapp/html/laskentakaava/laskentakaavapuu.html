@@ -109,9 +109,7 @@
     <div class="parameter" ng-class="funktioSelection == funktiowrapper.lapsi ? 'active' : ''">
         <span class="icon">&#8302;</span>
         <span class="label" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">
-            <span ng-if="funktiowrapper.lapsi.valintaperusteviitteet[0].lahde == 'HAETTAVA_ARVO'">Arvo hakemukselta</span> 
-            <span ng-if="funktiowrapper.lapsi.valintaperusteviitteet[0].lahde == 'SYOTETTAVA_ARVO'">Syötettävä arvo</span> 
-            <span ng-if="funktiowrapper.lapsi.valintaperusteviitteet[0].lahde == 'HAKUKOHTEEN_ARVO'">Hakukohteen arvo</span> 
+            <span>{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
             <span ng-if="funktiowrapper.lapsi.valintaperusteviitteet[0].tunniste">({{funktiowrapper.lapsi.valintaperusteviitteet[0].tunniste}})</span>
             <span ng-if="funktiowrapper.lapsi.valintaperusteviitteet[0].kuvaus">- {{funktiowrapper.lapsi.valintaperusteviitteet[0].kuvaus}}</span>
         </span>
@@ -130,10 +128,7 @@
     <div class="function" ng-class="funktioSelection == funktiowrapper.lapsi ? 'active' : ''">
         <span class="icon">&#8302;</span>
         <span ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo" class="label" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">
-            <span ng-if="funktiowrapper.lapsi.nimi == 'NMINIMI'">N huonoin</span>
-            <span ng-if="funktiowrapper.lapsi.funktionimi == 'NMAKSIMI'">N paras</span>
-            <span ng-if="funktiowrapper.lapsi.funktionimi == 'KESKIARVONPARASTA'">N:n suurimman keskiarvo</span>
-            <span ng-if="funktiowrapper.lapsi.funktionimi == 'SUMMANPARASTA'">N:n suurimman summa</span>
+            <span>{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
         </span>
         <span ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)" class="label">
             <span ng-if="funktiowrapper.lapsi.funktionimi == 'NMINIMI'">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} huonoin</span>
@@ -151,7 +146,7 @@
     <div class="frame">
         <span class="icon">&#8302;</span>
         <span class="label"
-              ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} - Nimetty lukuarvo</span>
+              ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} - {{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
     </div>
 </script>
 
@@ -159,7 +154,7 @@
 <script type="text/ng-template" id="nimetty_totuusarvo.html">
     <div class="frame">
         <span class="icon">&#8302;</span>
-        <span class="label" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} - Nimetty totuusarvo</span>
+        <span class="label" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} - {{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
     </div>
 </script>
 
@@ -168,7 +163,7 @@
     <div class="parameter" ng-class="funktioSelection == funktiowrapper.lapsi ? 'active' : ''">
         <span class="icon">&#8302;</span>
         <span class="label" ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo"
-              ng-click="kaavaInformationView(parent, funktiowrapper.lapsi, true)">Vakio {{funktiowrapper.lapsi}}</span>
+              ng-click="kaavaInformationView(parent, funktiowrapper.lapsi, true)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}} {{funktiowrapper.lapsi}}</span>
           
         <span class="label" ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}}</span>
 
@@ -180,7 +175,7 @@
     <div class="parameter" ng-class="funktioSelection == funktiowrapper.lapsi ? 'active' : ''">
         <span class="icon">&#8302;</span>
         <span class="label" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">
-            <span ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo">Totuusarvo</span>
+            <span ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
             <span class="label" ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo !== undefined"
                   ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">
                   <span ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo === 'true'">Tosi</span>
@@ -196,7 +191,7 @@
         <span class="icon">&#8302;</span>
         <span class="label" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">
             <span ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}}. hakutoive</span>
-            <span ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo">Hakutoive</span>
+            <span ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
         </span>
     </div>
 </script>
@@ -205,7 +200,7 @@
 <script type="text/ng-template" id="demografia.html">
     <div class="parameter" ng-class="funktioSelection == funktiowrapper.lapsi ? 'active' : ''">
         <span class="icon">&#8302;</span>
-        <span class="label" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Demografia</span>
+        <span class="label" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
     </div>
 </script>
 
@@ -214,7 +209,7 @@
     <div class="function" ng-class="funktioSelection == funktiowrapper.lapsi ? 'active' : ''">
         <span class="icon">&#8302;</span>
         <span class="label" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">
-        <span>Hylkää arvovälillä: </span>
+        <span>{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}: </span>
         <span ng-if="funktiowrapper.lapsi.syoteparametrit[1].arvo">{{funktiowrapper.lapsi.syoteparametrit[1].arvo}}</span>
         <span ng-if="!funktiowrapper.lapsi.syoteparametrit[1].arvo">?</span>
         <span> - </span>
@@ -259,27 +254,129 @@ YHTASUURI
 <script type="text/ng-template" id="funktio.html">
     <div class="function" ng-class="funktioSelection == funktiowrapper.lapsi ? 'active' : ''">
         <span class="icon">&#8302;</span>
+        <span class="label" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
+    </div>
+</script>
 
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'TULO'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Tulo</span>
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'JOS'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Jos</span>
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'OSAMAARA'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Osamäärä</span>
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'SUUREMPI'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Suurempi</span>
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'YHTASUURI'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Yhtäsuuri</span>
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'TAI'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Tai</span>
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'PIENEMPI'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Pienempi</span>
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'MEDIAANI'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Mediaani</span>
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'PIENEMPITAIYHTASUURI'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Pienempi tai yhtäsuuri</span>
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'SUUREMPITAIYHTASUURI'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Suurempi tai yhtäsuuri</span>
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'EI'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Ei</span>
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'JA'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Ja</span>
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'MAKSIMI'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Maksimi</span>
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'MINIMI'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Minimi</span>
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'NEGAATIO'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Negaatio</span>
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'KESKIARVO'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Keskiarvo</span>
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'KONVERTOILUKUARVO'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Lukuarvon konversio</span>
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'HYLKAA'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Hylkää</span>
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'PYORISTYS'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Pyöristys</span>
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'SKAALAUS'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Skaalaus</span>
-        <span class="label" ng-if="funktiowrapper.lapsi.funktionimi == 'PAINOTETTUKESKIARVO'" ng-click="kaavaInformationView(funktiowrapper.lapsi, true)">Painotettu keskiarvo</span>
+
+
+
+
+
+
+<!-- UUDEN FUNKTIO LISÄYS -->
+<script type="text/ng-template" id="tyhja_template.html">
+    <div class="function">
+        <span class="dropzone">{{funktio.otsikko()}}</span>
+
+        <table class="dropmenu-table" ng-if="funktio.isLukuarvoFunktio()">
+            <thead>
+            <th colspan="2">Lisää uusi funktio</th>
+            </thead>
+            <tbody>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'HAELUKUARVO', funktio.nimi())"><span>Arvo hakemukselta</span></td>
+                <td ng-click="addNewFunktio(parent, 'LUKUARVO', funktio.nimi())"><span>Vakio</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'SUMMA', funktio.nimi())"><span>Summa</span></td>
+                <td ng-click="addNewFunktio(parent, 'JOS', funktio.nimi())"><span>Jos</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'TULO', funktio.nimi())"><span>Tulo</span></td>
+                <td ng-click="addNewFunktio(parent, 'OSAMAARA', funktio.nimi())"><span>Osamäärä</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'KESKIARVO', funktio.nimi())"><span>Keskiarvo</span></td>
+                <td ng-click="addNewFunktio(parent, 'MEDIAANI', funktio.nimi())"><span>Mediaani</span></td>
+
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'MINIMI', funktio.nimi())"><span>Minimi</span></td>
+                <td ng-click="addNewFunktio(parent, 'MAKSIMI', funktio.nimi())"><span>Maksimi</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'SUMMANPARASTA', funktio.nimi())"><span>N parasta summa</span></td>
+                <td ng-click="addNewFunktio(parent, 'KESKIARVONPARASTA', funktio.nimi())">
+                    <span>N parasta keskiarvo</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'NMAKSIMI', funktio.nimi())"><span>N paras</span></td>
+                <td ng-click="addNewFunktio(parent, 'NMINIMI', funktio.nimi())"><span>N huonoin</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'NEGAATIO', funktio.nimi())"><span>Negaatio</span></td>
+                <td ng-click="addNewFunktio(parent, 'PYORISTYS', funktio.nimi())"><span>Pyöristys</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'HYLKAA', funktio.nimi())"><span>Hylkää</span></td>
+                <td ng-click="addNewFunktio(parent, 'HYLKAAARVOVALILLA', funktio.nimi())">
+                    <span>Hylkää arvovälillä</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'KONVERTOILUKUARVO', funktio.nimi())"><span>Konversio</span></td>
+                <td ng-click="addChildLaskentakaava(parent, funktio.nimi())"><span>Viittaus toiseen kaavaan</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAKONVERTOILUKUARVOKSI', funktio.nimi())"><span>Hae merkkijono ja konvertoi lukuarvoksi</span>
+                </td>
+                <td ng-click="addNewFunktio(parent, 'NIMETTYLUKUARVO', funktio.nimi())"><span>Nimetty lukuarvo</span>
+                </td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'SKAALAUS', funktio.nimi())"><span>Skaalaus</span></td>
+                <td ng-click="addNewFunktio(parent, 'PAINOTETTUKESKIARVO', funktio.nimi())">
+                    <span>Painotettu keskiarvo</span></td>
+            </tr>
+
+            </tbody>
+        </table>
+        <table class="dropmenu-table" ng-if="funktio.isTotuusarvoFunktio()">
+            <thead>
+            <th colspan="2">Lisää uusi funktio</th>
+            </thead>
+            <tbody>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'HAETOTUUSARVO', funktio.nimi())"><span>Arvo hakemukselta</span>
+                </td>
+                <td ng-click="addNewFunktio(parent, 'TAI', funktio.nimi())"><span>Tai</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'SUUREMPITAIYHTASUURI', funktio.nimi())"><span>Suurempi tai yhtä suuri</span>
+                </td>
+                <td ng-click="addNewFunktio(parent, 'SUUREMPI', funktio.nimi())"><span>Suurempi</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'YHTASUURI', funktio.nimi())"><span>Yhtä suuri</span></td>
+                <td ng-click="addNewFunktio(parent, 'PIENEMPI', funktio.nimi())"><span>Pienempi</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'PIENEMPITAIYHTASUURI', funktio.nimi())"><span>Pienempi tai yhtä suuri</span>
+                </td>
+                <td ng-click="addNewFunktio(parent, 'EI', funktio.nimi())"><span>Ei</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'TOTUUSARVO', funktio.nimi())"><span>Totuusarvo</span></td>
+                <td ng-click="addNewFunktio(parent, 'JA', funktio.nimi())"><span>Ja</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'DEMOGRAFIA', funktio.nimi())"><span>Demografia</span></td>
+                <td ng-click="addNewFunktio(parent, 'HAKUTOIVE', funktio.nimi())"><span>Hakutoive</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI'
+                    , funktio.nimi())"><span>Hae merkkijono ja konvertoi totuusarvoksi</span></td>
+                <td ng-click="addNewFunktio(parent, 'NIMETTYTOTUUSARVO', funktio.nimi())">
+                    <span>Nimetty totuusarvo</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addNewFunktio(parent, 'HAEMERKKIJONOJAVERTAAYHTASUURUUS', funktio.nimi())"><span>Hae merkkijono ja vertaa yhtäsuuruus</span>
+                </td>
+                <td ng-click="addNewFunktio(parent, 'VALINTAPERUSTEYHTASUURUUS', funktio.nimi())"><span>Valintaperusteyhtasuuruus</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
     </div>
 </script>

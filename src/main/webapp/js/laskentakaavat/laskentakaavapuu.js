@@ -13,6 +13,90 @@ function treeNodeController($scope) {
 
 }
 
+app.factory('FunktioService', function(FunktioKuvausResource) {
+    var model = new function() {
+        this.funktiokuvaukset = {};
+
+        this.getFunktiokuvaukset = function() {
+            return model.funktiokuvaukset;
+        }
+
+        this.getFunktiokuvaus = function(funktionimi) {
+            var result;
+            if(model.funktiokuvaukset) {
+                model.funktiokuvaukset.forEach(function(funktiokuvaus) {
+                    if(funktiokuvaus.nimi === funktionimi) {
+                        result = funktiokuvaus;
+                    }
+                });
+            }
+
+            return result;
+        }
+
+        this.refresh = function() {
+            
+            FunktioKuvausResource.get({}, function(result) {
+                model.funktiokuvaukset = result;
+            });
+            
+        }
+    }
+
+    return model;
+});
+
+app.factory('FunktioNimiService', function() {
+    var nameService = new function() {
+        this.nameMappings = {
+            LUKUARVO: 'Lukuarvo',
+            TOTUUSARVO: 'Totuusarvo',
+            HAKUTOIVE: 'Hakutoive',
+            DEMOGRAFIA: 'Demografia',
+            HAETOTUUSARVO: 'Hae totuusarvo',
+            HAELUKUARVO: 'Hae lukuarvo',
+            HAEMERKKIJONOJAKONVERTOILUKUARVOKSI: 'Hae merkkijono ja konvertoi lukuarvoksi',
+            HAEMERKKIJONOJAVERTAAYHTASUURUUS: 'Hae merkkijono ja vertaa yhtäsuuruus',
+            HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI: 'Hae merkkijono ja konvertoi totuusarvoksi',
+            VALINTAPERUSTEYHTASUURUUS: 'Valintaperusteyhtäsuuruus',
+            SUMMA: 'Summa',
+            TAI: 'Tai',
+            TULO: 'Tulo',
+            JOS: 'Jos',
+            OSAMAARA: 'Osamäärä',
+            SUUREMPI: 'Suurempi',
+            YHTASUURI: 'Yhtäsuuri',
+            PIENEMPI: 'Pienempi',
+            MEDIAANI: 'Mediaani',
+            PIENEMPITAIYHTASUURI: 'Pienempi tai yhtäsuuri',
+            SUUREMPITAIYHTASUURI: 'Suurempi tai yhtäsuuri',
+            EI: 'Ei',
+            JA: 'Ja',
+            MAKSIMI: 'Maksimi',
+            MINIMI: 'Minimi',
+            NEGAATIO: 'Negaatio',
+            KESKIARVO: 'Keskiarvo',
+            PAINOTETTUKESKIARVO: 'Painotettu keskiarvo',
+            KONVERTOILUKUARVO: 'Konvertoi lukuarvo',
+            HYLKAA: 'Hylkää', 
+            PYORISTYS: 'Pyöristys',
+            SKAALAUS: 'Skaalaus',
+            NMINIMI: 'N huonoin',
+            NMAKSIMI: 'N paras',
+            KESKIARVONPARASTA: 'N:n suurimman keskiarvo',
+            SUMMANPARASTA: 'N:n suurimman summa',
+            HYLKAAARVOVALILLA: 'Hylkää arvovälillä',
+            NIMETTYLUKUARVO: 'Nimetty lukuarvo',
+            NIMETTYTOTUUSARVO: 'Nimetty totuusarvo'
+        }
+
+        this.getName = function(funktionimi) {
+            return nameService.nameMappings[funktionimi];
+        }
+    }
+
+    return nameService;
+});
 
 app.factory('TemplateService', function(FunktioService) {
     var templateservice = new function() {
@@ -69,35 +153,4 @@ app.factory('Valintaperusteviitetyypit', function() {
     ];
 });
 
-app.factory('FunktioService', function(FunktioKuvausResource) {
-    var model = new function() {
-        this.funktiokuvaukset = {};
 
-        this.getFunktiokuvaukset = function() {
-            return model.funktiokuvaukset;
-        }
-
-        this.getFunktiokuvaus = function(funktionimi) {
-            var result;
-            if(model.funktiokuvaukset) {
-                model.funktiokuvaukset.forEach(function(funktiokuvaus) {
-                    if(funktiokuvaus.nimi === funktionimi) {
-                        result = funktiokuvaus;
-                    }
-                });
-            }
-
-            return result;
-        }
-
-        this.refresh = function() {
-            
-            FunktioKuvausResource.get({}, function(result) {
-                model.funktiokuvaukset = result;
-            });
-            
-        }
-    }
-
-    return model;
-});

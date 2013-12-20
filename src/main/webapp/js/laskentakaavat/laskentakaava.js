@@ -1,12 +1,13 @@
 
 
 
-function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValidointi, LaskentakaavaLista, LaskentakaavaService, TemplateService, FunktioService, Valintaperusteviitetyypit) {
+function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValidointi, LaskentakaavaLista, LaskentakaavaService, TemplateService, FunktioService, Valintaperusteviitetyypit, FunktioNimiService) {
 
     //servicet laskentakaavapuun piirtämiseen
     $scope.templateService = TemplateService;
     $scope.funktioService = FunktioService;
     $scope.funktioService.refresh();
+    $scope.funktionimiService = FunktioNimiService;
 
     //Laskentakaavapuu datan skooppiin
     $scope.laskentakaavaOid = $routeParams.laskentakaavaOid;
