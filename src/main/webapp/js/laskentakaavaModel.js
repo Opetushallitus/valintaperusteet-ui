@@ -7,8 +7,7 @@ app.factory('LaskentakaavaModel', function(Laskentakaava, ParentValintaryhmas, H
 
         instance.refresh = function(valintaryhmaOid, hakukohdeOid) {
             instance.laskentakaavat = [];
-            console.log("v: " + valintaryhmaOid);
-            console.log("h: " + hakukohdeOid);
+
             //root kaavat
             Laskentakaava.list(function(result) {
                 if(result.length > 0) {

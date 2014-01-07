@@ -37,7 +37,7 @@ app.factory('HakijaryhmaValintatapajonoModel', function($q, ValintatapajonoModel
                     });
                     if(!found) {
                         instance.hakijaryhmat.push(hr);
-                        Laskentakaava.get({oid: hr.laskentakaava_id}, function(result) {
+                        Laskentakaava.get({oid: hr.laskentakaavaId}, function(result) {
                             hr.laskentakaava_nimi = result.nimi;
                         });
                     }
@@ -47,7 +47,7 @@ app.factory('HakijaryhmaValintatapajonoModel', function($q, ValintatapajonoModel
 
         instance.submit = function(valintatapajonoOid) {
             var deferred = $q.defer();
-                console.log(instance.hakijaryhma.oid);
+
             if(instance.hakijaryhma.oid) {
                 ValintatapajonoHakijaryhma.insert({oid: valintatapajonoOid, hakijaryhmaOid: instance.hakijaryhma.oid}, function(result) {
                     deferred.resolve();
@@ -69,8 +69,6 @@ function HakijaryhmaValintatapajonoController($scope, $location, $routeParams, H
 
     ValintatapajonoModel.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid);
     $scope.model = HakijaryhmaValintatapajonoModel;
-    console.log($routeParams.id);
-    console.log( $routeParams.hakukohdeOid);
     $scope.model.refresh($routeParams.id, $routeParams.hakukohdeOid);
 
     $scope.submit = function() {

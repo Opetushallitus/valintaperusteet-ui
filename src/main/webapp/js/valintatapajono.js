@@ -38,7 +38,7 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
             ValintatapajonoJarjestyskriteeri.get({parentOid: oid}, function(result) {
                 model.jarjestyskriteerit = result;
                 model.jarjestyskriteerit.forEach(function(jk){
-                    Laskentakaava.get({oid: jk.laskentakaava_id}, function(result) {
+                    Laskentakaava.get({oid: jk.laskentakaavaId}, function(result) {
                         jk.nimi = result.nimi;
                     });
                 });
@@ -51,16 +51,12 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
             };
 
             if(!model.valintatapajono.alkaenRajattu) {
-                console.log("jee");
                 model.valintatapajono.varasijojaKaytetaanAlkaen = null;
-                console.log(model.valintatapajono.varasijojaKaytetaanAlkaen);
             };
 
             if(!model.valintatapajono.astiRajattu) {
                 model.valintatapajono.varasijojaTaytetaanAsti = null;
             };
-
-            console.log(model.valintatapajono.varasijojaTaytetaanAsti);
 
             if(model.valintatapajono.oid == null) {
                 model.valintatapajono.aktiivinen = true;
@@ -73,7 +69,7 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
                         valintatapajonot.push(result);
                 });
             } else {
-                console.log(model.valintatapajono);
+
                 Valintatapajono.post(model.valintatapajono, function(result) {
                     var i;
                     for(i in valintatapajonot) {
@@ -95,10 +91,17 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
 
                 var promises = [];
                 for(var i = 0 ; i < model.jarjestyskriteerit.length ; ++i) {
-                    console.log(model.jarjestyskriteerit[i]);
+
                     promises[i] = function() {
                         var deferred = $q.defer();
-                        Jarjestyskriteeri.post(model.jarjestyskriteerit[i], function(result){
+
+                        var update = {
+                            oid : model.jarjestyskriteerit[i].oid,
+                            jarjestyskriteeri : model.jarjestyskriteerit[i],
+                            laskentakaavaId : model.jarjestyskriteerit[i].laskentakaavaId
+                        };
+
+                        Jarjestyskriteeri.post(update, function(result){
                             deferred.resolve();
                         });
                         return deferred.promise;
@@ -137,7 +140,7 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
                 JarjestyskriteeriJarjesta.post(getJarjestyskriteeriOids(), function(result) {
                     model.jarjestyskriteerit = result;
                     model.jarjestyskriteerit.forEach(function(jk){
-                        Laskentakaava.get({oid: jk.laskentakaava_id}, function(result) {
+                        Laskentakaava.get({oid: jk.laskentakaavaId}, function(result) {
                             jk.nimi = result.nimi;
                         });
                     });

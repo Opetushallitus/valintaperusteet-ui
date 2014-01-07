@@ -48,8 +48,8 @@
                 <div ng-repeat="data in group.result" class="field-container-radio">
                     <label>
                         <input type="radio" name="laskentakaava" value="{{data.id}}"
-                               ng-model="model.hakijaryhma.laskentakaava_id"
-                               ng-required="!model.hakijaryhma.laskentakaava_id"/>
+                               ng-model="model.hakijaryhma.laskentakaavaId"
+                               ng-required="!model.hakijaryhma.laskentakaavaId"/>
 
                         <span ng-bind="data.nimi"></span>(<span ng-bind="data.id"></span>)
                     </label>
