@@ -9,8 +9,6 @@ function ValinnanVaiheController($scope, $location, $routeParams, HakukohdeValin
     $scope.model.refreshIfNeeded($scope.valinnanvaiheOid);
 
     $scope.submit = function() {
-        console.log($scope.hakukohdeOid);
-        console.log(HakukohdeModel.valinnanvaiheet);
         $scope.model.persistValinnanvaihe($scope.hakukohdeOid, HakukohdeModel.valinnanvaiheet);
     }
 

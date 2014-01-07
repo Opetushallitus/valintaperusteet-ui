@@ -59,7 +59,7 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma,
                 ValintaryhmaHakijaryhma.get({oid: oid}, function(result) {
                     model.hakijaryhmat = result;
                     model.hakijaryhmat.forEach(function(hr){
-                        Laskentakaava.get({oid: hr.laskentakaava_id}, function(result) {
+                        Laskentakaava.get({oid: hr.laskentakaavaId}, function(result) {
                             hr.laskentakaava_nimi = result.nimi;
                         });
                     });

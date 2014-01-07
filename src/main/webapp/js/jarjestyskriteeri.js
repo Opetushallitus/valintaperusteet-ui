@@ -35,10 +35,16 @@ app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskrit
         };
 
         this.submit = function (valintatapajonoOid, jarjestyskriteerit) {
+            var obj = {
+                oid : model.jarjestyskriteeri.oid,
+                jarjestyskriteeri : model.jarjestyskriteeri,
+                laskentakaavaId : model.jarjestyskriteeri.laskentakaavaId
+            };
+
             var deferred = $q.defer();
-            if (model.jarjestyskriteeri.oid == null) {
-                model.jarjestyskriteeri.aktiivinen = "true";
-                ValintatapajonoJarjestyskriteeri.insert({parentOid: valintatapajonoOid}, {jarjestyskriteeri: model.jarjestyskriteeri, laskentakaavaId: model.laskentakaavaId },
+            if (obj.oid == null) {
+                obj.jarjestyskriteeri.aktiivinen = "true";
+                ValintatapajonoJarjestyskriteeri.insert({parentOid: valintatapajonoOid}, obj,
                     function (jk) {
                         Laskentakaava.get({oid: jk.laskentakaavaId}, function (result) {
                             jk.nimi = result.nimi;
@@ -47,7 +53,7 @@ app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskrit
                         deferred.resolve();
                     });
             } else {
-                Jarjestyskriteeri.post(model.jarjestyskriteeri, function (jk) {
+                Jarjestyskriteeri.post(obj, function (jk) {
                     var i;
 
                     for (i in jarjestyskriteerit) {
@@ -80,6 +86,7 @@ function JarjestyskriteeriController($scope, $location, $routeParams, Jarjestysk
 
     $scope.model = JarjestyskriteeriModel;
     $scope.model.refreshIfNeeded($routeParams.jarjestyskriteeriOid, $routeParams.id, $routeParams.hakukohdeOid);
+    ValintatapajonoModel.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid);
 
     $scope.submit = function () {
         var promise = JarjestyskriteeriModel.submit($scope.valintatapajonoOid, ValintatapajonoModel.jarjestyskriteerit);

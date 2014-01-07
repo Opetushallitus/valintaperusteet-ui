@@ -50,7 +50,7 @@ app.factory('HakukohdeModel', function($q, HakukohdeHakukohdekoodi, KoodistoHaku
             HakukohdeHakijaryhma.get({oid: oid}, function(result) {
                 model.hakijaryhmat = result;
                 model.hakijaryhmat.forEach(function(hr){
-                    Laskentakaava.get({oid: hr.laskentakaava_id}, function(result) {
+                    Laskentakaava.get({oid: hr.laskentakaavaId}, function(result) {
                         hr.laskentakaava_nimi = result.nimi;
                     });
                     hr.valintatapajonot = HakijaryhmanValintatapajonot.get({oid: hr.oid});

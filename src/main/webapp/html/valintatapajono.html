@@ -169,6 +169,7 @@
             <thead>
             <tr>
                 <th>Aktiivinen</th>
+                <th>Nimi</th>
                 <th>Metatiedot</th>
                 <th>Peritty</th>
                 <th>Poista</th>
@@ -178,6 +179,9 @@
             <tr ng-repeat="data in model.jarjestyskriteerit">
                 <td><input type="checkbox" ng-model="data.aktiivinen"/></td>
                 <td>
+                    <a ng-class="{true:'', false:'line-through'}[data.aktiivinen]"
+                       ng-click="modifyKriteeri(data.oid)">{{data.nimi}}</a>
+                </td><td>
                     <a ng-class="{true:'', false:'line-through'}[data.aktiivinen]"
                        ng-click="modifyKriteeri(data.oid)">{{data.metatiedot}}</a>
                 </td>
