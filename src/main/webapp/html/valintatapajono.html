@@ -169,7 +169,6 @@
             <thead>
             <tr>
                 <th>Aktiivinen</th>
-                <th>Nimi</th>
                 <th>Metatiedot</th>
                 <th>Peritty</th>
                 <th>Poista</th>
@@ -180,9 +179,8 @@
                 <td><input type="checkbox" ng-model="data.aktiivinen"/></td>
                 <td>
                     <a ng-class="{true:'', false:'line-through'}[data.aktiivinen]"
-                       ng-click="modifyKriteeri(data.oid)">{{data.nimi}}</a>
+                       ng-click="modifyKriteeri(data.oid)">{{data.metatiedot}}</a>
                 </td>
-                <td>{{data.metatiedot}}</td>
                 <td>{{data.inheritance}}</td>
                 <td><span auth="crud" ng-show="!data.inheritance" class="btn remove"
                           ng-click="remove(data.oid)">X</span></td>
