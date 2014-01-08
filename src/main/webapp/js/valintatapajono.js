@@ -28,6 +28,7 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
             if(!oid) {
                 model.valintatapajono = {};
                 model.jarjestyskriteerit = [];
+                model.hakijaryhmat = [];
                 model.valintatapajono.tasapistesaanto = "YLITAYTTO";
             } else if (oid != model.valintatapajono.oid) {
                 this.refresh(oid, valintaryhmaOid, hakukohdeOid);

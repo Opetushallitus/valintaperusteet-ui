@@ -169,7 +169,7 @@
             <thead>
             <tr>
                 <th>Aktiivinen</th>
-                <th>Nimi</th>
+                <th>Laskentakaava</th>
                 <th>Metatiedot</th>
                 <th>Peritty</th>
                 <th>Poista</th>
@@ -204,7 +204,7 @@
     <div class="form-row-content width-60" ng-if="!model.valintatapajono.siirretaanSijoitteluun">
         <span>Valintatapajonoa ei siirretä sijoitteluun. Hakijaryhma ei vaikuta jonoon.</span>
     </div>
-    <div class="form-row-content width-60" ng-if="model.valintatapajono.siirretaanSijoitteluun">
+    <div class="form-row-content width-60" ng-if="model.valintatapajono.siirretaanSijoitteluun && model.valintatapajono.oid">
         <table ng-show="model.hakijaryhmat" class="virkailija-table-1 margin-bottom-2 width-60">
             <thead>
             <tr>
@@ -234,6 +234,7 @@
         </table>
         <span auth="crud" class="button small" ng-click="addHakijaryhma()">Liitä hakijaryhmä</span>
     </div>
+    <span ng-if="model.valintatapajono.siirretaanSijoitteluun && !model.valintatapajono.oid">Tallenna jono lisätäksesi hakijaryhma.</span>
 </div>
 
 <div class="clear"></div>
