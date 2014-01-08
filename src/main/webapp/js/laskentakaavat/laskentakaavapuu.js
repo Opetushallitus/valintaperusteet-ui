@@ -1,17 +1,18 @@
 
 
-/*
-	Käytetään laskentakaavapuun piirtämisessä.
-	Tallennetaan nykyinen funktio ja sen parentti jokaiseen skooppiin, 
-	kun puu rakennetaan rekursiivisesti
-*/ 
-function treeNodeController($scope) {
-    
-    $scope.funktio = $scope.$parent.farg;
-    $scope.parent = $scope.$parent.funktio;
-    $scope.template = "";
+app.factory('LaskentakaavaService', function($q, Laskentakaava){
+    var model = new function() {
+        this.laskentakaavapuu = {};
 
-}
+        this.refresh = function(oid) {
+            Laskentakaava.get({oid: oid}, function(result) {
+                model.laskentakaavapuu = result
+            });
+        }
+    }   
+
+    return model;
+});
 
 app.factory('FunktioService', function(FunktioKuvausResource) {
     var model = new function() {
@@ -34,12 +35,15 @@ app.factory('FunktioService', function(FunktioKuvausResource) {
             return result;
         }
 
+        this.isNimettyFunktioargumentti = function(parentfunktioNimi) {
+            var funktiokuvaus = model.getFunktiokuvaus(parentfunktioNimi);
+            return funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0] != 'n');
+        }
+
         this.refresh = function() {
-            
             FunktioKuvausResource.get({}, function(result) {
                 model.funktiokuvaukset = result;
             });
-            
         }
     }
 

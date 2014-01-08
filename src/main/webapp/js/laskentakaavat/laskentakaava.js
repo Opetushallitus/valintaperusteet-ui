@@ -30,7 +30,8 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
     $scope.funktioasetukset = {
         showFunktioInformation: false, //näytetäänkö funktiokutsuasetus-näkymä
         showLaskentakaavaInformation: false, //näytetäänkö laskentakaavaviite-näkymä
-        konvertteriType: '' //mikä konvertterityyppi on valittuna 
+        konvertteriType: '', //mikä konvertterityyppi on valittuna
+        parentFunktiokutsu: undefined
     }
 
     $scope.setFunktioasetusView = function(funktiokutsuVisible, laskentakaavaviiteVisible) {
@@ -38,15 +39,10 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         $scope.funktioasetukset.showLaskentakaavaInformation = laskentakaavaviiteVisible;
     }
 
-    $scope.setFunktioKonvertteriType = function(arvokonvertteriVisible, arvovalikonvertteriVisible) {
-        $scope.funktioasetukset.arvokonvertteriTypeSelected = arvokonvertteriVisible;
-        $scope.funktioasetukset.arvovalikonvertteriTypeSelected = arvovalikonvertteriVisible;
+    $scope.kaavaInformationView = function(funktio, isFunktiokutsu, parentFunktiokutsu) {
 
-    }
-
-    $scope.kaavaInformationView = function(funktio, isFunktiokutsu) {
-
-        $scope.funktioSelection = funktio;
+        $scope.funktioasetukset.parentFunktiokutsu = parentFunktiokutsu;
+        $scope.funktioSelection = funktio;  
         $scope.funktiokuvausForSelection = $scope.funktioService.getFunktiokuvaus(funktio.funktionimi);
 
         //päätellään funktiolle esivalittu konvertteriparametrityyppi, jos funktiolla on konvertteriparametreja
@@ -91,6 +87,7 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         } else {
             $scope.funktioSelection.arvovalikonvertteriparametrit.splice(index, 1);
         }
+
     }
 
     $scope.changeKonvertteriparametriTypeSelection = function(konvertteriparametriSelection) {
@@ -105,43 +102,73 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
     }
 
     $scope.removeFunktiokutsu = function(funktiokutsu){
-        var funktiokutsuId = funktiokutsu.id;
 
+        var funktiokutsuId = funktiokutsu.id;
+        var funktiokutsuParent = undefined;
         $scope.funktioSelection = undefined;
         $scope.funktiokuvausForSelection = undefined;
         $scope.setFunktioasetusView(false, false);
 
         
-        searchTree($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
+
+        var isNimettyFunktio = $scope.isNimettyFunktioargumentti($scope.funktioasetukset.parentFunktiokutsu);
+
+        searchAndRemove($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
+
+        $scope.funktioasetukset.parentFunktiokutsu = undefined;
 
         //etsitään haluttu funktiokutsu laskentakaavasta ja poistetaan se
-        function searchTree(funktioargumentit) { // TODO huomioi nimetyt funktioargumentit & laskentakaavaviitteet
+        function searchAndRemove(funktioargumentit) { // TODO huomioi nimetyt funktioargumentit & laskentakaavaviitteet
             var searchedNode = undefined;
 
-            //asetetaan haetaan searhedNode-muuttujaan objekti jota etsitään
-            searchedNode = _.find(funktioargumentit, function(funktioargumentti) {
+            //haetaan searhedNode-muuttujaan objekti jota etsitään, jos sellainen löytyy
+            searchedNode = findMatchingFunktioargumentti(funktioargumentit);
+            
+            //jatketaan etsimistä puun alemmilta tasoilta, jos haettua objektia ei löytynyt
+            if(_.isEmpty(searchedNode)) {
+                _.forEach(funktioargumentit, function(funktioargumentti) {
+                    searchAndRemove(funktioargumentti.lapsi.funktioargumentit);
+                });
+            //poistetaan löydetty objekti
+            } else {
+                var indexInFunktioargumentit = funktioargumentit.indexOf(searchedNode);
+                if(isNimettyFunktio) {  
+                    funktioargumentit[indexInFunktioargumentit] = undefined;
+                } else {
+                    funktioargumentit.splice(indexInFunktioargumentit, 1);    
+                }
+                
+            }
+        }
+
+        function findMatchingFunktioargumentti(funktioargumentit) {
+            var result = _.find(funktioargumentit, function(funktioargumentti) {
                 if(funktioargumentti.lapsi.id === funktiokutsuId) {
                     return true;
                 } else {
                     return false;
                 }
             });
-            
-            //jatketaan etsimistä puun alemmilta tasoilta, jos haettua objektia ei löytynyt
-            if(_.isEmpty(searchedNode)) {
-                _.forEach(funktioargumentit, function(funktioargumentti) {
-                    searchTree(funktioargumentti.lapsi.funktioargumentit);
-                });
-            //poistetaan löydetty objekti
-            } else {
-                var indexInFunktioargumentit = funktioargumentit.indexOf(searchedNode);
-                funktioargumentit.splice(indexInFunktioargumentit, 1);
-            }
+            return result;
         }
-       
+
     }
 
+    $scope.isNimettyFunktioargumentti = function(parent) {
+        return $scope.funktioService.isNimettyFunktioargumentti(parent.funktionimi);
+    }
 
+    $scope.isEmptyNimettyFunktioargumentti = function(parent, funktioargumenttiIndex) {
+
+        console.log('isemptyfunkarg:',parent, funktioargumenttiIndex);
+
+        if( $scope.isNimettyFunktioargumentti(parent) && _.isEmpty(parent.funktioargumentit[funktioargumenttiIndex]) ) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
 
     $scope.persistLaskentakaava = function() {
 
@@ -214,16 +241,3 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
 
 }
 
-app.factory('LaskentakaavaService', function($q, Laskentakaava){
-    var model = new function() {
-        this.laskentakaavapuu = {};
-
-        this.refresh = function(oid) {
-            Laskentakaava.get({oid: oid}, function(result) {
-                model.laskentakaavapuu = result
-            });
-        }
-    }   
-
-    return model;
-});
