@@ -9,6 +9,8 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
     $scope.funktioService.refresh();
     $scope.funktionimiService = FunktioNimiService;
 
+
+
     //Laskentakaavapuu datan skooppiin
     $scope.laskentakaavaOid = $routeParams.laskentakaavaOid;
     $scope.model = LaskentakaavaService;
@@ -40,7 +42,6 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
     }
 
     $scope.kaavaInformationView = function(funktio, isFunktiokutsu, parentFunktiokutsu) {
-
         $scope.funktioasetukset.parentFunktiokutsu = parentFunktiokutsu;
         $scope.funktioSelection = funktio;  
         $scope.funktiokuvausForSelection = $scope.funktioService.getFunktiokuvaus(funktio.funktionimi);
@@ -109,12 +110,9 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         $scope.funktiokuvausForSelection = undefined;
         $scope.setFunktioasetusView(false, false);
 
-        
-
         var isNimettyFunktio = $scope.isNimettyFunktioargumentti($scope.funktioasetukset.parentFunktiokutsu);
-
+        
         searchAndRemove($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
-
         $scope.funktioasetukset.parentFunktiokutsu = undefined;
 
         //etsitään haluttu funktiokutsu laskentakaavasta ja poistetaan se
@@ -132,10 +130,13 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
             //poistetaan löydetty objekti
             } else {
                 var indexInFunktioargumentit = funktioargumentit.indexOf(searchedNode);
+
+                // jos funktio on nimetty, niin asetetaan se vain undefined:ksi
                 if(isNimettyFunktio) {  
                     funktioargumentit[indexInFunktioargumentit] = undefined;
                 } else {
-                    funktioargumentit.splice(indexInFunktioargumentit, 1);    
+                    //muussa tapauksessa poistetaan koko elementti taulukosta
+                    funktioargumentit.splice(indexInFunktioargumentit, 1);
                 }
                 
             }
@@ -143,7 +144,7 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
 
         function findMatchingFunktioargumentti(funktioargumentit) {
             var result = _.find(funktioargumentit, function(funktioargumentti) {
-                if(funktioargumentti.lapsi.id === funktiokutsuId) {
+                if(funktioargumentti != undefined && funktioargumentti.lapsi.id === funktiokutsuId) {
                     return true;
                 } else {
                     return false;
@@ -154,14 +155,13 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
 
     }
 
+    //onko käsiteltävä funktioargumentti nimetty
     $scope.isNimettyFunktioargumentti = function(parent) {
         return $scope.funktioService.isNimettyFunktioargumentti(parent.funktionimi);
     }
 
+    //Onko käsiteltävä parentin funktioargumentin paikka tarkoitettu nimettömälle funktiokutsulle/laskentakaavalle ja onko funktioargumentti vielä asettamatta 
     $scope.isEmptyNimettyFunktioargumentti = function(parent, funktioargumenttiIndex) {
-
-        console.log('isemptyfunkarg:',parent, funktioargumenttiIndex);
-
         if( $scope.isNimettyFunktioargumentti(parent) && _.isEmpty(parent.funktioargumentit[funktioargumenttiIndex]) ) {
             return true;
         } else {

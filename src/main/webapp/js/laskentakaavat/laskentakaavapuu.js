@@ -37,7 +37,7 @@ app.factory('FunktioService', function(FunktioKuvausResource) {
 
         this.isNimettyFunktioargumentti = function(parentfunktioNimi) {
             var funktiokuvaus = model.getFunktiokuvaus(parentfunktioNimi);
-            return funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0] != 'n');
+            return funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti != 'n');
         }
 
         this.refresh = function() {
