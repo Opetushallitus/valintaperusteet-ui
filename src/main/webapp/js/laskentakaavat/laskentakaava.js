@@ -1,15 +1,14 @@
 
 
 
-function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValidointi, LaskentakaavaLista, LaskentakaavaService, TemplateService, FunktioService, Valintaperusteviitetyypit, FunktioNimiService) {
+function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValidointi, LaskentakaavaLista, LaskentakaavaService, TemplateService, FunktioService, Valintaperusteviitetyypit, FunktioNimiService, FunktioFactory) {
 
     //servicet laskentakaavapuun piirtämiseen
     $scope.templateService = TemplateService;
     $scope.funktioService = FunktioService;
     $scope.funktioService.refresh();
     $scope.funktionimiService = FunktioNimiService;
-
-
+    $scope.funktioFactory = FunktioFactory;
 
     //Laskentakaavapuu datan skooppiin
     $scope.laskentakaavaOid = $routeParams.laskentakaavaOid;
@@ -43,7 +42,7 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
 
     $scope.kaavaInformationView = function(funktio, isFunktiokutsu, parentFunktiokutsu) {
         $scope.funktioasetukset.parentFunktiokutsu = parentFunktiokutsu;
-        $scope.funktioSelection = funktio;  
+        $scope.funktioSelection = funktio;
         $scope.funktiokuvausForSelection = $scope.funktioService.getFunktiokuvaus(funktio.funktionimi);
 
         //päätellään funktiolle esivalittu konvertteriparametrityyppi, jos funktiolla on konvertteriparametreja
@@ -144,7 +143,7 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
 
         function findMatchingFunktioargumentti(funktioargumentit) {
             var result = _.find(funktioargumentit, function(funktioargumentti) {
-                if(funktioargumentti != undefined && funktioargumentti.lapsi.id === funktiokutsuId) {
+                if(funktioargumentti != undefined && (funktioargumentti.lapsi.id === funktiokutsuId || funktioargumentti.id === funktiokutsuId) ) {
                     return true;
                 } else {
                     return false;
@@ -162,12 +161,11 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
 
     //Onko käsiteltävä parentin funktioargumentin paikka tarkoitettu nimettömälle funktiokutsulle/laskentakaavalle ja onko funktioargumentti vielä asettamatta 
     $scope.isEmptyNimettyFunktioargumentti = function(parent, funktioargumenttiIndex) {
-        if( $scope.isNimettyFunktioargumentti(parent) && _.isEmpty(parent.funktioargumentit[funktioargumenttiIndex]) ) {
-            return true;
-        } else {
-            return false;
-        }
+        return $scope.funktioService.isEmptyNimettyFunktioargumentti(parent, funktioargumenttiIndex);
+    }
 
+    $scope.isLukuarvoFunktioSlot = function(parent, funktioargumenttiIndex) {
+        return $scope.funktioService.isLukuarvoFunktioSlot(parent, funktioargumenttiIndex);
     }
 
     $scope.persistLaskentakaava = function() {
@@ -183,6 +181,10 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
             });
 
         }); 
+    }
+
+    $scope.addFunktio = function(parent, funktionimi, index) {
+        $scope.funktioFactory.createFunktioInstance(parent, funktionimi, index);
     }
     
     $scope.addChildLaskentakaava = function(parentFunktio, argumenttiNimi) {

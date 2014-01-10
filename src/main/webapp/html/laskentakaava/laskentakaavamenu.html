@@ -88,6 +88,9 @@
     </div>
 </script>
 
+
+{{funktioSelection}}
+
 <!-- LASKENTAKAAVAVIITTAUKSEN ASETUKSET -->
 <div style="width:30%;float:right;" ng-if="funktioasetukset.showLaskentakaavaInformation">
     <div class="settingsform">
@@ -106,13 +109,11 @@
         </div>
 
 
-        <span class="button small" ng-click="funktioSelection.removeThis(); funktioSelection = null; funktioasetukset.showLaskentakaavaInformation = false">Poista funktiokutsu</span>
+        <span class="button small" ng-click="removeFunktiokutsu(funktioSelection); funktioSelection = null; funktioasetukset.showLaskentakaavaInformation = false">Poista funktiokutsu</span>
     </div>
 </div>
 
 
-
-{{funktioSelection}}
 <!-- FUNKTIOASETUKSET -->
 <div class="" style="width:30%;float:right;" ng-if="funktioasetukset.showFunktioInformation">
     <div class="settingsform">

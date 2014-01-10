@@ -40,10 +40,31 @@ app.factory('FunktioService', function(FunktioKuvausResource) {
             return funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti != 'n');
         }
 
+        this.isEmptyNimettyFunktioargumentti = function(parent, funktioargumenttiIndex) {
+            if( model.isNimettyFunktioargumentti(parent) && _.isEmpty(parent.funktioargumentit[funktioargumenttiIndex]) ) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        this.isLukuarvoFunktioSlot = function(parent, funktioargumenttiIndex) {
+            var funktiokuvaus = model.getFunktiokuvaus(parent.funktionimi);
+            if(funktiokuvaus.funktioargumentit[funktioargumenttiIndex].tyyppi == 'LUKUARVOFUNKTIO') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         this.refresh = function() {
             FunktioKuvausResource.get({}, function(result) {
                 model.funktiokuvaukset = result;
             });
+        }
+
+        this.addFunktio = function(parent, funktionimi, index) {
+
         }
     }
 
@@ -100,6 +121,47 @@ app.factory('FunktioNimiService', function() {
     }
 
     return nameService;
+});
+
+app.factory('FunktioFactory', function(FunktioService){
+    var factory = new function() {
+        var funktioprototype = {
+            lapsi: {
+                funktionimi: undefined,
+                arvokonvertteriparametrit: [],
+                arvovalikonvertteriparametrit: [],
+                syoteparametrit: [],
+                funktioargumentit: [],
+                valintaperusteviitteet: [],
+                validointivirheet: [],
+                onLuonnos: false,
+                nimi: undefined,
+                kuvaus: undefined,
+                tyyppi: undefined,
+                lapsityyppi: undefined
+            },
+            indeksi: 0
+        }
+        /*
+        function setLapsityyppi = function(funktiokuvaus, funktiotyyppi, index) {
+            if(funktiotyyppi === 'LASKENTAKAAVAVIITE') {
+                funktioprototype.lapsi.lapsityyppi = "laskentakaava"
+            } else {
+                funktioprototype.lapsi.lapsityyppi = "funktiokutsu"
+            }
+        }
+
+        this.createFunktioInstance = function(parentFunktiokutsu, newFunktioType, index) {
+            var funktiokuvaus = FunktioService.getFunktiokuvaus(parentFunktiokutsu.funktionimi);
+            funktioprototype.lapsi.tyyppi = newFunktioType;
+
+            setLapsityyppi(funktiokuvaus, newFunktioType, index);
+
+        }
+        */
+    }
+
+    return factory;
 });
 
 app.factory('TemplateService', function(FunktioService) {
