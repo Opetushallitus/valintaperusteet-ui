@@ -125,40 +125,46 @@ app.factory('FunktioNimiService', function() {
 
 app.factory('FunktioFactory', function(FunktioService){
     var factory = new function() {
-        var funktioprototype = {
-            lapsi: {
-                funktionimi: undefined,
-                arvokonvertteriparametrit: [],
-                arvovalikonvertteriparametrit: [],
-                syoteparametrit: [],
-                funktioargumentit: [],
-                valintaperusteviitteet: [],
-                validointivirheet: [],
-                onLuonnos: false,
-                nimi: undefined,
-                kuvaus: undefined,
-                tyyppi: undefined,
-                lapsityyppi: undefined
-            },
-            indeksi: 0
+
+        function generateFunktioPrototype() {
+            return {
+                lapsi: {
+                    funktionimi: undefined,
+                    arvokonvertteriparametrit: [],
+                    arvovalikonvertteriparametrit: [],
+                    syoteparametrit: [],
+                    funktioargumentit: [],
+                    valintaperusteviitteet: [],
+                    validointivirheet: [],
+                    onLuonnos: false,
+                    nimi: undefined,
+                    kuvaus: undefined,
+                    tyyppi: undefined,
+                    lapsityyppi: undefined
+                },
+                indeksi: 0
+            }
         }
-        /*
-        function setLapsityyppi = function(funktiokuvaus, funktiotyyppi, index) {
+        
+        function setLapsityyppi(funktioprototype, funktiokuvaus, funktiotyyppi, index) {
             if(funktiotyyppi === 'LASKENTAKAAVAVIITE') {
-                funktioprototype.lapsi.lapsityyppi = "laskentakaava"
+                funktioprototype.lapsi.lapsityyppi = "laskentakaava";
             } else {
-                funktioprototype.lapsi.lapsityyppi = "funktiokutsu"
+                funktioprototype.lapsi.lapsityyppi = "funktiokutsu";
             }
         }
 
         this.createFunktioInstance = function(parentFunktiokutsu, newFunktioType, index) {
             var funktiokuvaus = FunktioService.getFunktiokuvaus(parentFunktiokutsu.funktionimi);
+            var funktioprototype = generateFunktioPrototype();
+
             funktioprototype.lapsi.tyyppi = newFunktioType;
+            setLapsityyppi(funktioprototype, funktiokuvaus, newFunktioType, index);
 
-            setLapsityyppi(funktiokuvaus, newFunktioType, index);
 
+            parentFunktiokutsu.lapsi.funktioargumentit[index + 1] = funktioprototype;
         }
-        */
+        
     }
 
     return factory;

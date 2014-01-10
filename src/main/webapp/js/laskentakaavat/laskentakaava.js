@@ -30,9 +30,11 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
     // objektissa, jotta childskoopeissa tehdyt muutokset heijastuvat parenttiin ja muihin childskooppeihin 
     $scope.funktioasetukset = {
         showFunktioInformation: false, //näytetäänkö funktiokutsuasetus-näkymä
+        selectedFunktioIndex: undefined,
         showLaskentakaavaInformation: false, //näytetäänkö laskentakaavaviite-näkymä
         konvertteriType: '', //mikä konvertterityyppi on valittuna
-        parentFunktiokutsu: undefined
+        parentFunktiokutsu: undefined,
+        showNewFunktioList: false
     }
 
     $scope.setFunktioasetusView = function(funktiokutsuVisible, laskentakaavaviiteVisible) {
@@ -40,8 +42,9 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         $scope.funktioasetukset.showLaskentakaavaInformation = laskentakaavaviiteVisible;
     }
 
-    $scope.kaavaInformationView = function(funktio, isFunktiokutsu, parentFunktiokutsu) {
+    $scope.setFunktioSelection = function(funktio, isFunktiokutsu, parentFunktiokutsu, index) {
         $scope.funktioasetukset.parentFunktiokutsu = parentFunktiokutsu;
+        $scope.funktioasetukset.selectedFunktioIndex = index;
         $scope.funktioSelection = funktio;
         $scope.funktiokuvausForSelection = $scope.funktioService.getFunktiokuvaus(funktio.funktionimi);
 
@@ -50,7 +53,7 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
             $scope.funktioasetukset.konvertteriType = 'ARVOKONVERTTERI';
         } else if ($scope.funktioSelection.arvovalikonvertteriparametrit && $scope.funktioSelection.arvokonvertteriparametrit.length == 0) {
             $scope.funktioasetukset.konvertteriType = 'ARVOVALIKONVERTTERI';
-        }   
+        }
 
         // päätellään kumpi funktioasetusnäkymä tuodaan näkyviin, funktiokutsuille ja laskentakaavaviitteille on omat näkymänsä
         if(isFunktiokutsu) {    
@@ -101,57 +104,22 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
 
     }
 
-    $scope.removeFunktiokutsu = function(funktiokutsu){
+    // TODO huomioi laskentakaavaviitteet
+    $scope.removeFunktiokutsu = function(){
 
-        var funktiokutsuId = funktiokutsu.id;
-        var funktiokutsuParent = undefined;
         $scope.funktioSelection = undefined;
-        $scope.funktiokuvausForSelection = undefined;
-        $scope.setFunktioasetusView(false, false);
-
         var isNimettyFunktio = $scope.isNimettyFunktioargumentti($scope.funktioasetukset.parentFunktiokutsu);
-        
-        searchAndRemove($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
+
+        // jos funktio on nimetty, niin asetetaan se vain undefined:ksi
+        if(isNimettyFunktio) {  
+            $scope.funktioasetukset.parentFunktiokutsu.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = undefined;
+        } else {
+            //muussa tapauksessa poistetaan koko elementti taulukosta
+            $scope.funktioasetukset.parentFunktiokutsu.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex, 1);
+        }
+
         $scope.funktioasetukset.parentFunktiokutsu = undefined;
-
-        //etsitään haluttu funktiokutsu laskentakaavasta ja poistetaan se
-        function searchAndRemove(funktioargumentit) { // TODO huomioi nimetyt funktioargumentit & laskentakaavaviitteet
-            var searchedNode = undefined;
-
-            //haetaan searhedNode-muuttujaan objekti jota etsitään, jos sellainen löytyy
-            searchedNode = findMatchingFunktioargumentti(funktioargumentit);
-            
-            //jatketaan etsimistä puun alemmilta tasoilta, jos haettua objektia ei löytynyt
-            if(_.isEmpty(searchedNode)) {
-                _.forEach(funktioargumentit, function(funktioargumentti) {
-                    searchAndRemove(funktioargumentti.lapsi.funktioargumentit);
-                });
-            //poistetaan löydetty objekti
-            } else {
-                var indexInFunktioargumentit = funktioargumentit.indexOf(searchedNode);
-
-                // jos funktio on nimetty, niin asetetaan se vain undefined:ksi
-                if(isNimettyFunktio) {  
-                    funktioargumentit[indexInFunktioargumentit] = undefined;
-                } else {
-                    //muussa tapauksessa poistetaan koko elementti taulukosta
-                    funktioargumentit.splice(indexInFunktioargumentit, 1);
-                }
-                
-            }
-        }
-
-        function findMatchingFunktioargumentti(funktioargumentit) {
-            var result = _.find(funktioargumentit, function(funktioargumentti) {
-                if(funktioargumentti != undefined && (funktioargumentti.lapsi.id === funktiokutsuId || funktioargumentti.id === funktiokutsuId) ) {
-                    return true;
-                } else {
-                    return false;
-                }
-            });
-            return result;
-        }
-
+        $scope.setFunktioasetusView(false, false);
     }
 
     //onko käsiteltävä funktioargumentti nimetty
