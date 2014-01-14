@@ -129,7 +129,7 @@ app.factory('FunktioFactory', function(FunktioService){
         function generateFunktioPrototype() {
             return {
                 lapsi: {
-                    funktionimi: undefined,
+                    funktionimi: null,
                     arvokonvertteriparametrit: [],
                     arvovalikonvertteriparametrit: [],
                     syoteparametrit: [],
@@ -137,16 +137,16 @@ app.factory('FunktioFactory', function(FunktioService){
                     valintaperusteviitteet: [],
                     validointivirheet: [],
                     onLuonnos: false,
-                    nimi: undefined,
-                    kuvaus: undefined,
-                    tyyppi: undefined,
-                    lapsityyppi: undefined
+                    nimi: null,
+                    kuvaus: null,
+                    tyyppi: null,
+                    lapsityyppi: null
                 },
                 indeksi: 0
             }
         }
         
-        function setLapsityyppi(funktioprototype, funktiokuvaus, funktiotyyppi, index) {
+        function setLapsityyppi(funktioprototype, funktiotyyppi) {
             if(funktiotyyppi === 'LASKENTAKAAVAVIITE') {
                 funktioprototype.lapsi.lapsityyppi = "laskentakaava";
             } else {
@@ -154,16 +154,68 @@ app.factory('FunktioFactory', function(FunktioService){
             }
         }
 
+        //huomioi laskentakaavaviitteet
         this.createFunktioInstance = function(parentFunktiokutsu, newFunktioType, index) {
-            var funktiokuvaus = FunktioService.getFunktiokuvaus(parentFunktiokutsu.funktionimi);
+
+            var parentFunktiokuvaus = FunktioService.getFunktiokuvaus(parentFunktiokutsu.lapsi.funktionimi); 
+            var newFunktioFunktiokuvaus = FunktioService.getFunktiokuvaus(newFunktioType);
+            
             var funktioprototype = generateFunktioPrototype();
 
-            funktioprototype.lapsi.tyyppi = newFunktioType;
-            setLapsityyppi(funktioprototype, funktiokuvaus, newFunktioType, index);
+            //Funktionimi
+            funktioprototype.lapsi.funktionimi = newFunktioType;
+            
+            //Lapsityyppi
+            setLapsityyppi(funktioprototype, newFunktioType);
 
+            //Generoidaan syoteparametrit
+            if(newFunktioFunktiokuvaus.syoteparametrit) {
+                populateSyoteparametrit(funktioprototype, newFunktioFunktiokuvaus);
+            }
 
-            parentFunktiokutsu.lapsi.funktioargumentit[index + 1] = funktioprototype;
+            //Generoidaan funktioargumentit
+            if(newFunktioFunktiokuvaus.funktioargumentit) {
+                populateFunktioargumentit(funktioprototype, newFunktioFunktiokuvaus, FunktioService.isNimettyFunktioargumentti(newFunktioType));
+            }
+
+            //Generoidaan valintaperusteviitteet
+            if(newFunktioFunktiokuvaus.valintaperuste) {
+                populateValintaperusteviitteet(funktioprototype, newFunktioFunktiokuvaus);
+            }
+
+            console.log('indeksi uudelle funktiolle:', index);
+
+            parentFunktiokutsu.lapsi.funktioargumentit[index] = funktioprototype;
         }
+
+        //Lisätään funktioprototypeen funktiokuvauksen mukaiset syoteparametrit
+        function populateSyoteparametrit(funktioprototype, funktiokuvaus) {
+            funktiokuvaus.syoteparametrit.forEach(function(item) {
+                funktioprototype.lapsi.syoteparametrit.push(item);
+            });
+        }
+
+        // Lisätään funktioprototypeen tarvittava määrä null objekteja funktioargumenteiksi
+        // funktioparentin ja funktioargumentin mukaiset tekstit muodostetaan templateissa
+        function populateFunktioargumentit(funktioprototype, funktiokuvaus, hasNimetytFunktioargumentit) {
+            if(hasNimetytFunktioargumentit) {
+
+                //Lisätään yhtä monta null objektia, kuin nimettyjä funktioargumentteja. 
+                funktiokuvaus.funktioargumentit.forEach(function() {
+                    funktioprototype.lapsi.funktioargumentit.push(null) 
+                });
+            } else {
+                //jos funktiolla on nimeämätön määrä funktioargumentteja, lisätään listaan yksi null
+                funktioprototype.lapsi.funktioargumentit.push(null);
+            }
+        }
+
+        // Lisätään funktioprototypeen funktiokuvauksen valintaperusteiden mukainen määrä tyhjiä objekteja
+        function populateValintaperusteviitteet(funktioprototype, funktiokuvaus) {
+            funktiokuvaus.valintaperuste.forEach(function(item) {
+                funktioprototype.lapsi.valintaperusteviitteet.push({});
+            });
+        } 
         
     }
 

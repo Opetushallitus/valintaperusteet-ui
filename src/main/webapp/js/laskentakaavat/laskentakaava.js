@@ -132,8 +132,13 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         return $scope.funktioService.isEmptyNimettyFunktioargumentti(parent, funktioargumenttiIndex);
     }
 
+
     $scope.isLukuarvoFunktioSlot = function(parent, funktioargumenttiIndex) {
-        return $scope.funktioService.isLukuarvoFunktioSlot(parent, funktioargumenttiIndex);
+        var isNimetty = $scope.isNimettyFunktioargumentti(parent);
+        var funktiokuvaus = $scope.funktioService.getFunktiokuvaus(parent.funktionimi);
+        var tyyppi = isNimetty ? funktiokuvaus.funktioargumentit[funktioargumenttiIndex].tyyppi : funktiokuvaus.funktioargumentit[0].tyyppi;
+        var result = tyyppi == 'LUKUARVOFUNKTIO' ? true : false;
+        return result;
     }
 
     $scope.persistLaskentakaava = function() {
@@ -141,7 +146,7 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         $scope.setFunktioasetusView(false, false);
         $scope.funktioSelection = undefined;
         $scope.funktiokuvausForSelection = undefined;
-
+        console.log($scope.model.laskentakaavapuu);
         KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function(result) {
             
             $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function(result) {}, function(error) {
@@ -149,6 +154,14 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
             });
 
         }); 
+    }
+
+
+    // index on indeksi nyt käsiteltävälle funktioargumentille (nimetyille funktioargumenteille)
+    $scope.findFunktioSlotIndex = function(parent, index) {
+        var isNimetty = $scope.isNimettyFunktioargumentti(parent);
+        result = isNimetty ? index : parent.funktioargumentit.length;
+        return result;
     }
 
     $scope.addFunktio = function(parent, funktionimi, index) {
@@ -188,6 +201,7 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
     $scope.validoiKaavaData = function() {
         var kaava = Laskentapuu.laskentakaava().getData();
         var validateKaava = {};
+        console.log(kaava);
         angular.copy(kaava, validateKaava);
         KaavaValidointi.post({}, validateKaava, function(data) {
             Laskentapuu.setKaavaData(data);
