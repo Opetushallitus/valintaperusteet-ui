@@ -141,12 +141,8 @@ app.factory('ValintaryhmaValintakoeValinnanvaiheModel', function(Valinnanvaihe, 
 
                 //päivitä valintaryhmän valintakoevalinnanvaiheen valintakokeet
                 for (var i = 0 ; i < model.valintakokeet.length ; i++) {
-                    
                     Valintakoe.update({valintakoeOid: model.valintakokeet[i].oid}, model.valintakokeet[i], function(result) {});
-                      
                 }
-
-                
 
             } else {
                 
@@ -187,7 +183,7 @@ function ValintaryhmaValintakoeValinnanvaiheController($scope, $location, $route
     
 
     $scope.submit = function() {
-        $scope.model.persist($scope.valintaryhmaOid, ValintaryhmaModel.valinnanvaiheet);
+        ValintaryhmaValintakoeValinnanvaiheModel.persist($scope.valintaryhmaOid, ValintaryhmaModel.valinnanvaiheet);
     }
 
     $scope.modifyvalintakoe = function(valintakoeOid) {
