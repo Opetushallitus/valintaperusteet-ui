@@ -264,15 +264,15 @@ YHTASUURI
 
 <!-- Nimetty funktioargumentti, jolle ei ole asetettu arvoa -->
 <script type="text/ng-template" id="nimettyFunktioSlot">
-    <span class="label">
+    <span class="label" ng-init="funktioSlotIndex = findFunktioSlotIndex(parent.lapsi, $index)" ng-click="showNewFunktioList = true">
         
         <div ng-if="parent.lapsi.funktionimi === 'OSAMAARA'">
-            <span ng-if="$index == 0"><i style="font-size: 18px" ng-click="funktioasetukset.showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Osoittaja</span>
-            <span ng-if="$index == 1">Nimittäjä</span>
+            <span ng-if="$index == 0"><i style="font-size: 18px" class="fa fa-plus-square kaavaeditor-blue"></i> Osoittaja </span>
+            <span ng-if="$index == 1"><i style="font-size: 18px" class="fa fa-plus-square kaavaeditor-blue"></i> Nimittäjä</span>
         </div>
         <div ng-if="parent.lapsi.funktionimi === 'PAINOTETTUKESKIARVO'">
-            <span ng-if="$index % 2 == 0"><i style="font-size: 18px" ng-click="funktioasetukset.showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Lukuarvo</span>
-            <span ng-if="$index % 2 == 1"><i style="font-size: 18px" ng-click="funktioasetukset.showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Painotuskerroin</span>
+            <span ng-if="$index % 2 == 0"><i style="font-size: 18px" ng-click="showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Lukuarvo</span>
+            <span ng-if="$index % 2 == 1"><i style="font-size: 18px" ng-click="showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Painotuskerroin</span>
         </div>
         <div ng-if="parent.lapsi.funktionimi === 'SKAALAUS' || 
                     parent.lapsi.funktionimi === 'NEGAATIO' || 
@@ -281,28 +281,31 @@ YHTASUURI
                     parent.lapsi.funktionimi === 'KONVERTOILUKUARVO' ||
                     parent.lapsi.funktionimi === 'PYORISTYS' || 
                     parent.lapsi.funktionimi === 'HYLKAAARVOVALILLA'">
-            <span ng-if="$index == 0"><i style="font-size: 18px" ng-click="funktioasetukset.showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Funktioargumentti</span>
+            <span ng-if="$index == 0"><i style="font-size: 18px" ng-click="showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Funktioargumentti</span>
         </div>
         <div ng-if="parent.lapsi.funktionimi === 'NIMETTYTOTUUSARVO'">
-            <span ng-if="$index == 0"><i style="font-size: 18px" ng-click="funktioasetukset.showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Nimetty totuusarvo</span>
+            <span ng-if="$index == 0"><i style="font-size: 18px" ng-click="showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Nimetty totuusarvo</span>
         </div>
         <div ng-if="parent.lapsi.funktionimi === 'NIMETTYLUKUARVO'">
-            <span ng-if="$index == 0"><i style="font-size: 18px" ng-click="funktioasetukset.showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Nimetty lukuarvo</span>
+            <span ng-if="$index == 0"><i style="font-size: 18px" ng-click="showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Nimetty lukuarvo</span>
         </div>
         <div ng-if="parent.lapsi.funktionimi === 'YHTASUURI' || 
                     parent.lapsi.funktionimi === 'SUUREMPITAIYHTASUURI' ||
                     parent.lapsi.funktionimi === 'PIENEMPITAIYHTASUURI' ||
                     parent.lapsi.funktionimi === 'SUUREMPI' ||
                     parent.lapsi.funktionimi === 'PIENEMPI'">
-            <span ng-if="$index == 0"><i style="font-size: 18px" ng-click="funktioasetukset.showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Vasen operandi</span>
-            <span ng-if="$index == 1"><i style="font-size: 18px" ng-click="funktioasetukset.showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Oikea operandi</span>
+            <span ng-if="$index == 0"><i style="font-size: 18px" ng-click="showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Vasen operandi</span>
+            <span ng-if="$index == 1"><i style="font-size: 18px" ng-click="showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Oikea operandi</span>
         </div>
         <div ng-if="parent.lapsi.funktionimi === 'JOS'">
-            <span ng-if="$index == 0"><i style="font-size: 18px" ng-click="funktioasetukset.showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Ehto</span>
-            <span ng-if="$index == 1"><i style="font-size: 18px" ng-click="funktioasetukset.showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Sitten</span>
-            <span ng-if="$index == 2"><i style="font-size: 18px" ng-click="funktioasetukset.showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Muuten</span>
+            <span ng-if="$index == 0"><i style="font-size: 18px" ng-click="showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Ehto</span>
+            <span ng-if="$index == 1"><i style="font-size: 18px" ng-click="showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Sitten</span>
+            <span ng-if="$index == 2"><i style="font-size: 18px" ng-click="showNewFunktioList = true" class="fa fa-plus-square kaavaeditor-blue"></i> Muuten</span>
         </div>
     </span>
+
+    <div ng-if="showNewFunktioList && isLukuarvoFunktioSlot(parent.lapsi, funktioSlotIndex)" class="function" ng-include="'lukuarvoFunktiot'"></div>
+    <div ng-if="showNewFunktioList && !isLukuarvoFunktioSlot(parent.lapsi, funktioSlotIndex)" class="function" ng-include="'totuusarvoFunktiot'"></div>
 
 </script>
 

@@ -136,7 +136,7 @@ app.factory('FunktioFactory', function(FunktioService){
                     funktioargumentit: [],
                     valintaperusteviitteet: [],
                     validointivirheet: [],
-                    onLuonnos: false,
+                    onLuonnos: null,
                     nimi: null,
                     kuvaus: null,
                     tyyppi: null,
@@ -158,8 +158,7 @@ app.factory('FunktioFactory', function(FunktioService){
         this.createFunktioInstance = function(parentFunktiokutsu, newFunktioType, index) {
 
             var parentFunktiokuvaus = FunktioService.getFunktiokuvaus(parentFunktiokutsu.lapsi.funktionimi); 
-            var newFunktioFunktiokuvaus = FunktioService.getFunktiokuvaus(newFunktioType);
-            
+            var newFunktioFunktiokuvaus = FunktioService.getFunktiokuvaus(newFunktioType);            
             var funktioprototype = generateFunktioPrototype();
 
             //Funktionimi
@@ -182,9 +181,16 @@ app.factory('FunktioFactory', function(FunktioService){
             if(newFunktioFunktiokuvaus.valintaperuste) {
                 populateValintaperusteviitteet(funktioprototype, newFunktioFunktiokuvaus);
             }
+            
+            // jos funktiokutsu on luotu nykyisen kaaveditorikäynnin aikana, niin funktioargumentteissa on oletuksena yksi null, joka täytyy poistaa funktiokutsua lisättäessä   
+            if(arrayWithSingleNull(parentFunktiokutsu.lapsi.funktioargumentit)) {
+               parentFunktiokutsu.lapsi.funktioargumentit[0] = funktioprototype;
+               return parentFunktiokutsu.lapsi.funktioargumentit[0];
+            } 
 
-            parentFunktiokutsu.lapsi.funktioargumentit[index] = funktioprototype;
+            parentFunktiokutsu.lapsi.funktioargumentit[index] = funktioprototype;    
             return parentFunktiokutsu.lapsi.funktioargumentit[index];
+            
         }
 
         //Lisätään funktioprototypeen funktiokuvauksen mukaiset syoteparametrit
@@ -217,6 +223,12 @@ app.factory('FunktioFactory', function(FunktioService){
                 funktioprototype.lapsi.valintaperusteviitteet.push({});
             });
         } 
+
+        //jos arr === [null] -> true
+        function arrayWithSingleNull(arr) {
+            if(arr.length === 1 && arr[0] === null) { return true; } 
+            else { return false; }
+        }
         
     }
 
