@@ -183,15 +183,16 @@ app.factory('FunktioFactory', function(FunktioService){
                 populateValintaperusteviitteet(funktioprototype, newFunktioFunktiokuvaus);
             }
 
-            console.log('indeksi uudelle funktiolle:', index);
-
             parentFunktiokutsu.lapsi.funktioargumentit[index] = funktioprototype;
+            return parentFunktiokutsu.lapsi.funktioargumentit[index];
         }
 
         //Lisätään funktioprototypeen funktiokuvauksen mukaiset syoteparametrit
         function populateSyoteparametrit(funktioprototype, funktiokuvaus) {
             funktiokuvaus.syoteparametrit.forEach(function(item) {
-                funktioprototype.lapsi.syoteparametrit.push(item);
+                funktioprototype.lapsi.syoteparametrit.push({});
+                //täytyy käyttää angular.copya, tai syoteparametrit eri funktiokutsuissa viittaavat samoihin syoteparametriobjekteihin
+                angular.copy(item, funktioprototype.lapsi.syoteparametrit[funktioprototype.lapsi.syoteparametrit.length - 1]);
             });
         }
 

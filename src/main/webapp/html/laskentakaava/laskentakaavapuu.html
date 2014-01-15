@@ -313,74 +313,79 @@ YHTASUURI
 <!-- UUDEN FUNKTIO LISÄYS -->
 <script type="text/ng-template" id="addFunktio">
     <span class="label"><i style="font-size: 18px;" class="fa fa-plus-square kaavaeditor-blue" ng-click="showNewFunktioList = {visible: true}"></i> </span>
-    <div ng-if="showNewFunktioList.visible" class="function" ng-include="'funktiolist'"></div>
+    <div ng-init="funktioSlotIndex = findFunktioSlotIndex(parent.lapsi, $index)" ng-if="showNewFunktioList.visible && isLukuarvoFunktioSlot(parent.lapsi, funktioSlotIndex)" class="function" ng-include="'lukuarvoFunktiot'"></div>
+    <div ng-init="funktioSlotIndex = findFunktioSlotIndex(parent.lapsi, $index)" ng-if="showNewFunktioList.visible && !isLukuarvoFunktioSlot(parent.lapsi, funktioSlotIndex)" class="function" ng-include="'totuusarvoFunktiot'"></div>
 </script>
 
-<!-- FUNKTIOLISTA -->
-<script type="text/ng-template" id="funktiolist">
-    <div ng-init="funktioSlotIndex = findFunktioSlotIndex(parent.lapsi, $index)">
-        <table class="dropmenu-table" ng-if="isLukuarvoFunktioSlot(parent.lapsi,funktioSlotIndex)">
-            <thead>
-                <th colspan="2">Lisää uusi funktio</th>
-            </thead>
-            <tbody>
-                <tr>
-                    <td ng-click="addFunktio(parent, 'HAELUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false"><span>Arvo hakemukselta</span></td>
-                    <td ng-click="addFunktio(parent, 'LUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false"><span>Vakio</span></td>
-                </tr>
-                <tr>
-                    <td ng-click="addFunktio(parent, 'SUMMA', funktioSlotIndex); showNewFunktioList.visible = false"><span>Summa</span></td>
-                    <td ng-click="addFunktio(parent, 'JOS', funktioSlotIndex); showNewFunktioList.visible = false"><span>Jos</span></td>
-                </tr>
-                <tr>
-                    <td ng-click="addFunktio(parent, 'TULO', funktioSlotIndex); showNewFunktioList.visible = false"><span>Tulo</span></td>
-                    <td ng-click="addFunktio(parent, 'OSAMAARA', funktioSlotIndex); showNewFunktioList.visible = false"><span>Osamäärä</span></td>
-                </tr>
-                <tr>
-                    <td ng-click="addFunktio(parent, 'KESKIARVO', funktioSlotIndex); showNewFunktioList.visible = false"><span>Keskiarvo</span></td>
-                    <td ng-click="addFunktio(parent, 'MEDIAANI', funktioSlotIndex); showNewFunktioList.visible = false"><span>Mediaani</span></td>
 
-                </tr>
-                <tr>
-                    <td ng-click="addFunktio(parent, 'MINIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>Minimi</span></td>
-                    <td ng-click="addFunktio(parent, 'MAKSIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>Maksimi</span></td>
-                </tr>
-                <tr>
-                    <td ng-click="addFunktio(parent, 'SUMMANPARASTA', funktioSlotIndex); showNewFunktioList.visible = false"><span>N parasta summa</span></td>
-                    <td ng-click="addFunktio(parent, 'KESKIARVONPARASTA', funktioSlotIndex); showNewFunktioList.visible = false">
-                        <span>N parasta keskiarvo</span></td>
-                </tr>
-                <tr>
-                    <td ng-click="addFunktio(parent, 'NMAKSIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>N paras</span></td>
-                    <td ng-click="addFunktio(parent, 'NMINIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>N huonoin</span></td>
-                </tr>
-                <tr>
-                    <td ng-click="addFunktio(parent, 'NEGAATIO', funktioSlotIndex); showNewFunktioList.visible = false"><span>Negaatio</span></td>
-                    <td ng-click="addFunktio(parent, 'PYORISTYS', funktioSlotIndex); showNewFunktioList.visible = false"><span>Pyöristys</span></td>
-                </tr>
-                <tr>
-                    <td ng-click="addFunktio(parent, 'HYLKAA', funktioSlotIndex); showNewFunktioList.visible = false"><span>Hylkää</span></td>
-                    <td ng-click="addFunktio(parent, 'HYLKAAARVOVALILLA', funktioSlotIndex); showNewFunktioList.visible = false">
-                        <span>Hylkää arvovälillä</span></td>
-                </tr>
-                <tr>
-                    <td ng-click="addFunktio(parent, 'KONVERTOILUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false"><span>Konversio</span></td>
-                    <td ng-click="addFunktio(parent, 'LASKENTAKAAVAVIITE', funktioSlotIndex); showNewFunktioList.visible = false"><span>Viittaus toiseen kaavaan</span></td>
-                </tr>
-                <tr>
-                    <td ng-click="addFunktio(parent, 'HAEMERKKIJONOJAKONVERTOILUKUARVOKSI', funktioSlotIndex); showNewFunktioList.visible = false"><span>Hae merkkijono ja konvertoi lukuarvoksi</span>
-                    </td>
-                    <td ng-click="addFunktio(parent, 'NIMETTYLUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false"><span>Nimetty lukuarvo</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td ng-click="addFunktio(parent, 'SKAALAUS', funktioSlotIndex); showNewFunktioList.visible = false"><span>Skaalaus</span></td>
-                    <td ng-click="addFunktio(parent, 'PAINOTETTUKESKIARVO', funktioSlotIndex); showNewFunktioList.visible = false">
-                        <span>Painotettu keskiarvo</span></td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="dropmenu-table" ng-if="funktio.isTotuusarvoFunktio()">
+<!-- UUSI LUKUARVOFUNKTIO -->
+<script type="text/ng-template" id="lukuarvoFunktiot">
+    <table class="dropmenu-table">
+        <thead>
+            <th colspan="2">Lisää uusi funktio</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td ng-click="addFunktio(parent, 'HAELUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false"><span>Arvo hakemukselta</span></td>
+                <td ng-click="addFunktio(parent, 'LUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false"><span>Vakio</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'SUMMA', funktioSlotIndex); showNewFunktioList.visible = false"><span>Summa</span></td>
+                <td ng-click="addFunktio(parent, 'JOS', funktioSlotIndex); showNewFunktioList.visible = false"><span>Jos</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'TULO', funktioSlotIndex); showNewFunktioList.visible = false"><span>Tulo</span></td>
+                <td ng-click="addFunktio(parent, 'OSAMAARA', funktioSlotIndex); showNewFunktioList.visible = false"><span>Osamäärä</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'KESKIARVO', funktioSlotIndex); showNewFunktioList.visible = false"><span>Keskiarvo</span></td>
+                <td ng-click="addFunktio(parent, 'MEDIAANI', funktioSlotIndex); showNewFunktioList.visible = false"><span>Mediaani</span></td>
+
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'MINIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>Minimi</span></td>
+                <td ng-click="addFunktio(parent, 'MAKSIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>Maksimi</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'SUMMANPARASTA', funktioSlotIndex); showNewFunktioList.visible = false"><span>N parasta summa</span></td>
+                <td ng-click="addFunktio(parent, 'KESKIARVONPARASTA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>N parasta keskiarvo</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'NMAKSIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>N paras</span></td>
+                <td ng-click="addFunktio(parent, 'NMINIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>N huonoin</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'NEGAATIO', funktioSlotIndex); showNewFunktioList.visible = false"><span>Negaatio</span></td>
+                <td ng-click="addFunktio(parent, 'PYORISTYS', funktioSlotIndex); showNewFunktioList.visible = false"><span>Pyöristys</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'HYLKAA', funktioSlotIndex); showNewFunktioList.visible = false"><span>Hylkää</span></td>
+                <td ng-click="addFunktio(parent, 'HYLKAAARVOVALILLA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>Hylkää arvovälillä</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'KONVERTOILUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false"><span>Konversio</span></td>
+                <td ng-click="addFunktio(parent, 'LASKENTAKAAVAVIITE', funktioSlotIndex); showNewFunktioList.visible = false"><span>Viittaus toiseen kaavaan</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'HAEMERKKIJONOJAKONVERTOILUKUARVOKSI', funktioSlotIndex); showNewFunktioList.visible = false"><span>Hae merkkijono ja konvertoi lukuarvoksi</span>
+                </td>
+                <td ng-click="addFunktio(parent, 'NIMETTYLUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false"><span>Nimetty lukuarvo</span>
+                </td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'SKAALAUS', funktioSlotIndex); showNewFunktioList.visible = false"><span>Skaalaus</span></td>
+                <td ng-click="addFunktio(parent, 'PAINOTETTUKESKIARVO', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>Painotettu keskiarvo</span></td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+
+<!-- UUSI TOTUUSARVOFUNKTIO -->
+<script type="text/ng-template" id="totuusarvoFunktiot">
+    <table class="dropmenu-table">
             <thead>
                 <th colspan="2">Lisää uusi funktio</th>
             </thead>
@@ -425,5 +430,5 @@ YHTASUURI
                 </tr>
             </tbody>
         </table>
-    </div>
-</script>   
+</script>
+

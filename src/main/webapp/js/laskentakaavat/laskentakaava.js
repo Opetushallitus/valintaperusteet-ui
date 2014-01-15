@@ -16,7 +16,7 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
     $scope.model.refresh($scope.laskentakaavaOid);
 
     $scope.valintaperusteviitetyypit = Valintaperusteviitetyypit;
-    
+    $scope.errors = [];
 
     if($routeParams.valintaryhmaOid) {
         LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, null, false);
@@ -43,6 +43,7 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
     }
 
     $scope.setFunktioSelection = function(funktio, isFunktiokutsu, parentFunktiokutsu, index) {
+
         $scope.funktioasetukset.parentFunktiokutsu = parentFunktiokutsu;
         $scope.funktioasetukset.selectedFunktioIndex = index;
         $scope.funktioSelection = funktio;
@@ -132,7 +133,6 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         return $scope.funktioService.isEmptyNimettyFunktioargumentti(parent, funktioargumenttiIndex);
     }
 
-
     $scope.isLukuarvoFunktioSlot = function(parent, funktioargumenttiIndex) {
         var isNimetty = $scope.isNimettyFunktioargumentti(parent);
         var funktiokuvaus = $scope.funktioService.getFunktiokuvaus(parent.funktionimi);
@@ -146,13 +146,10 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         $scope.setFunktioasetusView(false, false);
         $scope.funktioSelection = undefined;
         $scope.funktiokuvausForSelection = undefined;
-        console.log($scope.model.laskentakaavapuu);
         KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function(result) {
-            
             $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function(result) {}, function(error) {
                 $scope.errors.push(error);
             });
-
         }); 
     }
 
@@ -165,7 +162,9 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
     }
 
     $scope.addFunktio = function(parent, funktionimi, index) {
-        $scope.funktioFactory.createFunktioInstance(parent, funktionimi, index);
+        var createdFunktio = $scope.funktioFactory.createFunktioInstance(parent, funktionimi, index);
+        //funktio, isFunktiokutsu, parentFunktiokutsu, index
+        $scope.setFunktioSelection(createdFunktio.lapsi, true, parent.lapsi, index);
     }
     
     $scope.addChildLaskentakaava = function(parentFunktio, argumenttiNimi) {
