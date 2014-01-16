@@ -89,7 +89,7 @@
 </script>
 
 
-{{funktioSelection}}
+
 
 <!-- LASKENTAKAAVAVIITTAUKSEN ASETUKSET -->
 <div style="width:30%;float:right;" ng-if="funktioasetukset.showLaskentakaavaInformation">
@@ -203,18 +203,62 @@
                 <div class=" settingsbox">
                     <table class="settingstable">
                         <thead>
-                        <tr>
-                            <td>Määrite</td>
-                            <td>Arvo</td>
-                        </tr>
+                            <tr>
+                                <td>Määrite</td>
+                                <td>Arvo</td>
+                            </tr>
                         </thead>
                         <tbody>
-                        
-                        <tr ng-repeat="syoteparametri in funktioSelection.syoteparametrit">
-                            <td>Avain: {{syoteparametri.avain}}</td>
-                            <td ng-include="syoteparametriTemplate(funktioSelection, $index)"></td>
-                        </tr>
-                       
+                            <tr ng-repeat="syoteparametri in funktioSelection.syoteparametrit">
+                                <td>Avain: {{syoteparametri.avain}}</td>
+                                <td ng-include="syoteparametriTemplate(funktioSelection, $index)"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <!-- 
+        TULOSTEKSTI
+        TULOSTUNNISTE
+        TALLENNATULOS
+        -->
+        <div class="form-item">
+            <label class="form-item-label" style="width:100px;">Tulostunniste, Tallennatulos ja Tulosteksti</label>
+
+            <div class="form-item-content">
+
+                <div class=" settingsbox">
+                    <table class="settingstable">
+                        <thead>
+                            <tr>
+                                <td>Määrite</td>
+                                <td>Arvo</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Tulostunniste</td>
+                                <td><input type="text" ng-model="funktioSelection.tulosTunniste" /></td>
+                            </tr>
+                             <tr>
+                                <td>Tallenna tulos</td>
+                                <td><input type="checkbox" ng-model="funktioSelection.tallennaTulos" /></td>
+                            </tr>
+                             <tr>
+                                <td>Tulosteksti FI</td>
+                                <td><input type="text" ng-model="funktioSelection.tulosTekstiFi" /></td>
+                            </tr>
+                             <tr>
+                                <td>Tulosteksti SV</td>
+                                <td><input type="text" ng-model="funktioSelection.tulosTekstiSv" /></td>
+                            </tr>
+                             <tr>
+                                <td>Tulosteksti EN</td>
+                                <td><input type="text" ng-model="funktioSelection.tulosTekstiEn" /></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
