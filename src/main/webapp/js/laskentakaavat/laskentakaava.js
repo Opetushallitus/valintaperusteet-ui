@@ -27,7 +27,7 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
     }
 
     // Tieto laskentakaavan / funktion näyttämisestä ja piilottamisesta täytyy säilyttää tässä (parent) skoopissa
-    // objektissa, jotta childskoopeissa tehdyt muutokset heijastuvat parenttiin ja muihin childskooppeihin 
+    // objektissa, jotta eri childskoopeissa tehdyt muutokset heijastuvat takaisin parenttiin ja muihin childskooppeihin 
     $scope.funktioasetukset = {
         showFunktioInformation: false, //näytetäänkö funktiokutsuasetus-näkymä
         selectedFunktioIndex: undefined,
@@ -42,27 +42,32 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         $scope.funktioasetukset.showLaskentakaavaInformation = laskentakaavaviiteVisible;
     }
 
-    $scope.setFunktioSelection = function(funktio, isFunktiokutsu, parentFunktiokutsu, index) {
+    $scope.setRootSelection = function(funktiokutsu) {
+        $scope.isRootSelected = true;
+        $scope.funktioSelection = funktiokutsu;
+    }
 
+    $scope.setFunktioSelection = function(funktio, isFunktiokutsu, parentFunktiokutsu, index) {
         $scope.funktioasetukset.parentFunktiokutsu = parentFunktiokutsu;
         $scope.funktioasetukset.selectedFunktioIndex = index;
         $scope.funktioSelection = funktio;
         $scope.funktiokuvausForSelection = $scope.funktioService.getFunktiokuvaus(funktio.funktionimi);
 
         //päätellään funktiolle esivalittu konvertteriparametrityyppi, jos funktiolla on konvertteriparametreja
+        $scope.setKonvertteriType($scope.funktioSelection);
+
+        // päätellään kumpi funktioasetusnäkymä tuodaan näkyviin, funktiokutsuille ja laskentakaavaviitteille on omat näkymänsä
+        isFunktiokutsu ? $scope.setFunktioasetusView(true, false) : $scope.setFunktioasetusView(false, true);
+
+        $scope.isRootSelected = false;
+    }
+
+    $scope.setKonvertteriType = function(funktio) {
         if($scope.funktioSelection.arvokonvertteriparametrit && $scope.funktioSelection.arvovalikonvertteriparametrit.length == 0) {
             $scope.funktioasetukset.konvertteriType = 'ARVOKONVERTTERI';
         } else if ($scope.funktioSelection.arvovalikonvertteriparametrit && $scope.funktioSelection.arvokonvertteriparametrit.length == 0) {
             $scope.funktioasetukset.konvertteriType = 'ARVOVALIKONVERTTERI';
         }
-
-        // päätellään kumpi funktioasetusnäkymä tuodaan näkyviin, funktiokutsuille ja laskentakaavaviitteille on omat näkymänsä
-        if(isFunktiokutsu) {    
-            $scope.setFunktioasetusView(true, false);
-        } else {
-            $scope.setFunktioasetusView(false, true);
-        }
-        
     }
 
     $scope.addFunktiokonvertteriparametri = function(konvertteriparametriSelection) {

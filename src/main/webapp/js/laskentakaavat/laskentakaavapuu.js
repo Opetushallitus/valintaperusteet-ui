@@ -37,7 +37,7 @@ app.factory('FunktioService', function(FunktioKuvausResource) {
 
         this.isNimettyFunktioargumentti = function(parentfunktioNimi) {
             var funktiokuvaus = model.getFunktiokuvaus(parentfunktioNimi);
-            return funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti != 'n');
+            return funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti != 'n' && parentfunktioNimi !== 'PAINOTETTUKESKIARVO' );
         }
 
         this.isEmptyNimettyFunktioargumentti = function(parent, funktioargumenttiIndex) {
@@ -57,15 +57,16 @@ app.factory('FunktioService', function(FunktioKuvausResource) {
             }
         }
 
+        this.getKonvertteriType = function() {
+            
+        }
+
         this.refresh = function() {
             FunktioKuvausResource.get({}, function(result) {
                 model.funktiokuvaukset = result;
             });
         }
 
-        this.addFunktio = function(parent, funktionimi, index) {
-
-        }
     }
 
     return model;
@@ -188,7 +189,8 @@ app.factory('FunktioFactory', function(FunktioService){
                return parentFunktiokutsu.lapsi.funktioargumentit[0];
             } 
 
-            parentFunktiokutsu.lapsi.funktioargumentit[index] = funktioprototype;    
+            parentFunktiokutsu.lapsi.funktioargumentit[index] = funktioprototype;
+            console.log(funktioprototype);
             return parentFunktiokutsu.lapsi.funktioargumentit[index];
             
         }
@@ -205,12 +207,16 @@ app.factory('FunktioFactory', function(FunktioService){
         // Lisätään funktioprototypeen tarvittava määrä null objekteja funktioargumenteiksi
         // funktioparentin ja funktioargumentin mukaiset tekstit muodostetaan templateissa
         function populateFunktioargumentit(funktioprototype, funktiokuvaus, hasNimetytFunktioargumentit) {
+
             if(hasNimetytFunktioargumentit) {
 
                 //Lisätään yhtä monta null objektia, kuin nimettyjä funktioargumentteja. 
                 funktiokuvaus.funktioargumentit.forEach(function() {
                     funktioprototype.lapsi.funktioargumentit.push(null) 
                 });
+            } else if(funktiokuvaus.nimi === 'PAINOTETTUKESKIARVO') {
+                funktioprototype.lapsi.funktioargumentit.push({});
+                funktioprototype.lapsi.funktioargumentit.push({});
             } else {
                 //jos funktiolla on nimeämätön määrä funktioargumentteja, lisätään listaan yksi null
                 funktioprototype.lapsi.funktioargumentit.push(null);
@@ -229,6 +235,10 @@ app.factory('FunktioFactory', function(FunktioService){
             if(arr.length === 1 && arr[0] === null) { return true; } 
             else { return false; }
         }
+
+
+
+
         
     }
 

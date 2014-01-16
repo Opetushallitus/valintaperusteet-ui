@@ -179,7 +179,6 @@ function UusiHakukohdeController($scope, $location, UusiHakukohdeModel, Ylavalin
     }
 
     $scope.setHakukohdeoid = function(item) {
-        console.log(item);
         $scope.model.hakukohde.oid = item.hakukohdeOid;
         $scope.model.hakukohde.tila = item.hakukohdeTila;
         $scope.model.hakukohde.nimi = item.tarjoajaNimi.fi + ', ' + item.hakukohdeNimi.fi
@@ -197,7 +196,6 @@ function UusiHakukohdeController($scope, $location, UusiHakukohdeModel, Ylavalin
             promise.then(function(result) {
                 $location.path("/hakukohde/" + $scope.model.hakukohde.oid);
             }, function(result) {
-                console.log(result);
                 alert("Hakukohdetta ei saatu luotua.");
             });
         });

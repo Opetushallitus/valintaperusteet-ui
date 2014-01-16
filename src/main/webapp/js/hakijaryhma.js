@@ -26,7 +26,7 @@ app.factory('HakijaryhmaModel', function($q, Hakijaryhma, LaskentakaavaModel,
 
         instance.submit = function(valintaryhmaOid, hakukohdeOid) {
             var deferred = $q.defer();
-            console.log(instance.hakijaryhma);
+
             if(instance.hakijaryhma.oid) {
                 Hakijaryhma.update({oid: instance.hakijaryhma.oid}, instance.hakijaryhma, function(result) {
                     instance.hakijaryhma = result;
