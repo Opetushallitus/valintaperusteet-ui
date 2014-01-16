@@ -47,7 +47,15 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         $scope.funktioSelection = funktiokutsu;
     }
 
+
+    /*
+        funktio = valittu funktiokutsu tai laskentakaavaviite
+        isFunktiokutsu = onko funktio-parametri funktiokutsu vai laskentakavaaviite
+        parentFunktiokutsu = parentFunktiokutsu tai laskentakaavan juuri
+        index = monesko funktio-parametri on funktioargumenttilistassa, juurifunktiokutsulla ei ole indeksiä
+    */
     $scope.setFunktioSelection = function(funktio, isFunktiokutsu, parentFunktiokutsu, index) {
+        console.log(parentFunktiokutsu);
         $scope.funktioasetukset.parentFunktiokutsu = parentFunktiokutsu;
         $scope.funktioasetukset.selectedFunktioIndex = index;
         $scope.funktioSelection = funktio;
@@ -60,6 +68,12 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         isFunktiokutsu ? $scope.setFunktioasetusView(true, false) : $scope.setFunktioasetusView(false, true);
 
         $scope.isRootSelected = false;
+    }
+
+    // Kaikissa tapauksissa funktiokutsuilla ja laskentakaavaviitteillä on parent, mutta juuresta seuraavalla tasolla ei ole parent.lapsi -muuttujaa, 
+    // jolloin sama, tarvittava tieto saadaan suoraan parent-muuttujasta
+    $scope.getParent = function(parent) {
+        return parent.lapsi || parent;
     }
 
     $scope.setKonvertteriType = function(funktio) {
@@ -112,9 +126,12 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
 
     // TODO huomioi laskentakaavaviitteet
     $scope.removeFunktiokutsu = function(){
+        console.log($scope.funktioSelection);
+        
 
+
+        var isNimettyFunktio = $scope.isNimettyFunktioargumentti($scope.funktioSelection);
         $scope.funktioSelection = undefined;
-        var isNimettyFunktio = $scope.isNimettyFunktioargumentti($scope.funktioasetukset.parentFunktiokutsu);
 
         // jos funktio on nimetty, niin asetetaan se vain undefined:ksi
         if(isNimettyFunktio) {  
@@ -128,9 +145,9 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         $scope.setFunktioasetusView(false, false);
     }
 
-    //onko käsiteltävä funktioargumentti nimetty
-    $scope.isNimettyFunktioargumentti = function(parent) {
-        return $scope.funktioService.isNimettyFunktioargumentti(parent.funktionimi);
+    //onko käsiteltävä funktiokutsun lapset nimettyjä funktioargumentteja
+    $scope.isNimettyFunktioargumentti = function(funktiokutsu) {
+        return $scope.funktioService.isNimettyFunktioargumentti(funktiokutsu.funktionimi);
     }
 
     //Onko käsiteltävä parentin funktioargumentin paikka tarkoitettu nimettömälle funktiokutsulle/laskentakaavalle ja onko funktioargumentti vielä asettamatta 
