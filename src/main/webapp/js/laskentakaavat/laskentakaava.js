@@ -76,9 +76,9 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
     }
 
     $scope.setKonvertteriType = function(funktio) {
-        if($scope.funktioSelection.arvokonvertteriparametrit && $scope.funktioSelection.arvovalikonvertteriparametrit.length == 0) {
+        if($scope.funktioSelection.lapsi.arvokonvertteriparametrit && $scope.funktioSelection.lapsi.arvovalikonvertteriparametrit.length == 0) {
             $scope.funktioasetukset.konvertteriType = 'ARVOKONVERTTERI';
-        } else if ($scope.funktioSelection.arvovalikonvertteriparametrit && $scope.funktioSelection.arvokonvertteriparametrit.length == 0) {
+        } else if ($scope.funktioSelection.lapsi.arvovalikonvertteriparametrit && $scope.funktioSelection.lapsi.arvokonvertteriparametrit.length == 0) {
             $scope.funktioasetukset.konvertteriType = 'ARVOVALIKONVERTTERI';
         }
     }
@@ -89,9 +89,9 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         var emptyArvovalikonvertteriparametri = {paluuarvo: '', palautaHaettuArvo: false, minValue: '',maxValue: ''}
 
         if($scope.funktioasetukset.konvertteriType == "ARVOKONVERTTERI") {
-            $scope.funktioSelection.arvokonvertteriparametrit.push(emptyArvokonvertteriparametri);
+            $scope.funktioSelection.lapsi.arvokonvertteriparametrit.push(emptyArvokonvertteriparametri);
         } else {
-            $scope.funktioSelection.arvovalikonvertteriparametrit.push(emptyArvovalikonvertteriparametri);
+            $scope.funktioSelection.lapsi.arvovalikonvertteriparametrit.push(emptyArvovalikonvertteriparametri);
         }
     }
 
@@ -105,9 +105,9 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
 
     $scope.removeKonvertteriParametri = function(index, konvertteriparametriSelection) {
         if(konvertteriparametriSelection == "ARVOKONVERTTERI") {
-            $scope.funktioSelection.arvokonvertteriparametrit.splice(index, 1);
+            $scope.funktioSelection.lapsi.arvokonvertteriparametrit.splice(index, 1);
         } else {
-            $scope.funktioSelection.arvovalikonvertteriparametrit.splice(index, 1);
+            $scope.funktioSelection.lapsi.arvovalikonvertteriparametrit.splice(index, 1);
         }
 
     }
@@ -116,9 +116,9 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         
         //tyhjennetään toinen konvertteriparametrilista tyyppiä vaihdettaessa
         if(konvertteriparametriSelection == "ARVOKONVERTTERI") {
-            $scope.funktioSelection.arvovalikonvertteriparametrit.length = 0;
+            $scope.funktioSelection.lapsi.arvovalikonvertteriparametrit.length = 0;
         } else {
-            $scope.funktioSelection.arvokonvertteriparametrit.length = 0;
+            $scope.funktioSelection.lapsi.arvokonvertteriparametrit.length = 0;
         }
 
     }
@@ -135,11 +135,35 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
             $scope.funktioasetukset.parentFunktiokutsu.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = undefined;
         } else {
             //muussa tapauksessa poistetaan koko elementti taulukosta
-            $scope.funktioasetukset.parentFunktiokutsu.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex, 1);
+            if($scope.isFirstChildForRoot($scope.funktioasetukset.parentFunktiokutsu)) {
+                //jos ei olla heti laskentakaavan juuren alla  
+                $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex, 1);
+            } else {
+                //jos ollaan heti laskentakaavan juuren alla (laskentakaavan 'ensimmäisellä kerroksella' ei ole lapsi-wrapperia)
+                $scope.funktioasetukset.parentFunktiokutsu.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex, 1);
+            }
         }
 
         $scope.funktioasetukset.parentFunktiokutsu = undefined;
         $scope.setFunktioasetusView(false, false);
+    }
+
+    $scope.removeLaskentakaavaviite = function() {
+        //jos ei olla heti laskentakaavan juuren alla  
+        if($scope.isFirstChildForRoot($scope.funktioasetukset.parentFunktiokutsu)) {
+            $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex,1)}
+        //jos ollaan heti laskentakaavan juuren alla (laskentakaavan 'ensimmäisellä kerroksella' ei ole lapsi-wrapperia)
+        else {$scope.funktioasetukset.parentFunktiokutsu.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex,1)}
+        $scope.funktioSelection = undefined; 
+        $scope.funktioasetukset.showLaskentakaavaInformation = false;
+    }
+
+    $scope.isFirstChildForRoot = function(parent) {
+        return parent.lapsi ? true : false;
+    }
+
+    $scope.isFunktiokutsu = function(funktiokutsu) {
+        return funktiokutsu.lapsi.tyyppi === 'LUKUARVOFUNKTIO' || funktiokutsu.lapsi.tyyppi === 'TOTUUSARVOFUNKTIO';
     }
 
     //onko käsiteltävä funktiokutsun lapset nimettyjä funktioargumentteja
@@ -175,27 +199,19 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
 
     // index on indeksi nyt käsiteltävälle funktioargumentille (nimetyille funktioargumenteille)
     $scope.findFunktioSlotIndex = function(parent, index) {
-        console.log('in findFunktioSlotIndex: ', parent);
         var isNimetty = $scope.isNimettyFunktioargumentti(parent);
         result = isNimetty ? index : parent.lapsi.funktioargumentit.length;
         return result;
     }
 
     $scope.addFunktio = function(parent, funktionimi, index) {
-        console.log(parent);
         var createdFunktio = $scope.funktioFactory.createFunktioInstance(parent, funktionimi, index);
-        //funktio, isFunktiokutsu, parentFunktiokutsu, index
         $scope.setFunktioSelection(createdFunktio, true, parent, index);
     }
     
     $scope.addChildLaskentakaava = function(parentFunktio, argumenttiNimi) {
         var newKaava = parentFunktio.addNewLaskentakaavaReference(argumenttiNimi, $routeParams.valintaryhmaOid);
         $scope.showKaavaDetails(newKaava);
-    }
-
-    $scope.addNewFunktio = function(parentFunktio, funktioNimi, argumenttiNimi) {
-        var newFunc = parentFunktio.addNewFunktiokutsu(parentFunktio, funktioNimi, argumenttiNimi);
-        $scope.showDetails(newFunc);
     }
 
     $scope.kaavaDragged = function(funktio, oldParent, newParent, index) {
