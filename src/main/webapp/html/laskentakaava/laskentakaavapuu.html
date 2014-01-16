@@ -25,14 +25,14 @@
     
     <!-- käydään rekursiivisesti nykyisen funktion lapset läpi -->
     <ul ng-if="funktiowrapper.lapsi.funktioargumentit" ng-init="parent = funktiowrapper">
-        <li ng-if="parent.lapsi.funktioargumentit.length > 0 && parent.lapsi.funktioargumentit[0] !== null || isNimettyFunktioargumentti(parent.lapsi)" class="item" ng-repeat="funktiowrapper in parent.lapsi.funktioargumentit track by $index">
+        <li ng-if="parent.lapsi.funktioargumentit.length > 0 && parent.lapsi.funktioargumentit[0] !== null || isNimettyFunktioargumentti(parent)" class="item" ng-repeat="funktiowrapper in parent.lapsi.funktioargumentit track by $index">
             
             <div ng-if="funktiowrapper.lapsi.lapsityyppi === 'funktiokutsu'" ng-include="'funktiokutsu'"></div>
             <div ng-if="funktiowrapper.lapsi.lapsityyppi === 'laskentakaava'" ng-include="'laskentakaavaviite'"></div>
             <div ng-if="funktiowrapper.lapsi == undefined" ng-include="'nimettyFunktioSlot'"></div>
         </li>
 
-        <li ng-if="!isNimettyFunktioargumentti(parent.lapsi)" ng-include="'addFunktio'"></li>
+        <li ng-if="!isNimettyFunktioargumentti(parent)" ng-include="'addFunktio'"></li>
     </ul>
 </script>
 
@@ -92,11 +92,11 @@
 
 <!-- Laskentakaavaviite-->
 <script type="text/ng-template" id="laskentakaavaviite">
-    <div class="frame" ng-class="funktioSelection == funktiowrapper.lapsi ? 'active' : ''">
+    <div class="frame" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon">&#8302;</span>
 
         
-        <span class="label" ng-click="setFunktioSelection(funktiowrapper.lapsi, false, parent.lapsi, $index)">{{funktiowrapper.lapsi.nimi}}</span>
+        <span class="label" ng-click="setFunktioSelection(funktiowrapper, false, parent, $index)">{{funktiowrapper.lapsi.nimi}}</span>
     </div>
 </script>
 
@@ -111,10 +111,10 @@
     VALINTAPERUSTEYHTASUURUUS
  -->
 <script type="text/ng-template" id="haettava_arvo">
-    <div class="parameter" ng-class="funktioSelection == funktiowrapper.lapsi ? 'active' : ''">
+    <div class="parameter" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon">&#8302;</span>
 
-        <span class="label" ng-click="setFunktioSelection(funktiowrapper.lapsi, true, getParent(parent), $index)">
+        <span class="label" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">
             <span>{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
             <span ng-if="funktiowrapper.lapsi.valintaperusteviitteet[0].tunniste">({{funktiowrapper.lapsi.valintaperusteviitteet[0].tunniste}})</span>
             <span ng-if="funktiowrapper.lapsi.valintaperusteviitteet[0].kuvaus">- {{funktiowrapper.lapsi.valintaperusteviitteet[0].kuvaus}}</span>
@@ -131,17 +131,16 @@
 -->
 <script type="text/ng-template" id="fargumentticount_funktio_handle">
 
-    <div class="function" ng-class="funktioSelection == funktiowrapper.lapsi ? 'active' : ''">
+    <div class="function" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon">&#8302;</span>
-        <span ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo" class="label" ng-click="setFunktioSelection(funktiowrapper.lapsi, true, getParent(parent), $index)">
+        <span ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo" class="label" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">
             <span>{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
         </span>
-        <span ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo" ng-click="setFunktioSelection(funktiowrapper.lapsi, true, getParent(parent), $index)" class="label">
+        <span ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)" class="label">
             <span ng-if="funktiowrapper.lapsi.funktionimi == 'NMINIMI'">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} huonoin</span>
             <span ng-if="funktiowrapper.lapsi.funktionimi == 'NMAKSIMI'">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} paras</span>
             <span ng-if="funktiowrapper.lapsi.funktionimi == 'KESKIARVONPARASTA'">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} suurimman keskiarvo</span>
             <span ng-if="funktiowrapper.lapsi.funktionimi == 'SUMMANPARASTA'">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} suurimman summa</span>
-
         </span>
     </div>
 </script>
@@ -151,7 +150,7 @@
 <script type="text/ng-template" id="nimetty_lukuarvo">
     <div class="frame">
         <span class="icon">&#8302;</span>
-        <span class="label" ng-click="setFunktioSelection(funktiowrapper.lapsi, true, getParent(parent), $index)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} - {{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
+        <span class="label" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} - {{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
     </div>
 </script>
 
@@ -159,30 +158,30 @@
 <script type="text/ng-template" id="nimetty_totuusarvo">
     <div class="frame">
         <span class="icon">&#8302;</span>
-        <span class="label" ng-click="setFunktioSelection(funktiowrapper.lapsi, true, getParent(parent), $index)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} - {{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
+        <span class="label" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} - {{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
     </div>
 </script>
 
 <!-- LUKUARVO -->
 <script type="text/ng-template" id="lukuarvo">
-    <div class="parameter" ng-class="funktioSelection == funktiowrapper.lapsi ? 'active' : ''">
+    <div class="parameter" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon">&#8302;</span>
         <span class="label" ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo"
-              ng-click="setFunktioSelection(funktiowrapper.lapsi, true, getParent(parent), $index)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>  
-        <span class="label" ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo" ng-click="setFunktioSelection(funktiowrapper.lapsi, true, getParent(parent), $index)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}}</span>
+              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>  
+        <span class="label" ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}}</span>
 
     </div>
 </script>
 
 <!-- TOTUUSARVO -->
 <script type="text/ng-template" id="totuusarvo">
-    <div class="parameter" ng-class="funktioSelection == funktiowrapper.lapsi ? 'active' : ''">
+    <div class="parameter" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon">&#8302;</span>
         
-        <span class="label" ng-click="setFunktioSelection(funktiowrapper.lapsi, true, getParent(parent), $index)">
+        <span class="label" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">
             <span ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
             <span class="label" ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo !== undefined"
-                  ng-click="setFunktioSelection(funktiowrapper.lapsi, true, getParent(parent), $index)">
+                  ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">
                   <span ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo === 'true'">Tosi</span>
                   <span ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo === 'false'">Epätosi</span>
             </span>
@@ -192,9 +191,9 @@
 
 <!-- HAKUTOIVE -->
 <script type="text/ng-template" id="hakutoive">
-    <div class="parameter" ng-class="funktioSelection == funktiowrapper.lapsi ? 'active' : ''">
+    <div class="parameter" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon">&#8302;</span>
-        <span class="label" ng-click="setFunktioSelection(funktiowrapper.lapsi, true, getParent(parent), $index)">
+        <span class="label" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">
             <span ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}}. hakutoive</span>
             <span ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
         </span>
@@ -203,17 +202,17 @@
 
 <!-- DEMOGRAFIA -->
 <script type="text/ng-template" id="demografia">
-    <div class="parameter" ng-class="funktioSelection == funktiowrapper.lapsi ? 'active' : ''">
+    <div class="parameter" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon">&#8302;</span>
-        <span class="label" ng-click="setFunktioSelection(funktiowrapper.lapsi, true, getParent(parent), $index)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
+        <span class="label" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
     </div>
 </script>
 
 <!-- HYLKÄÄ ARVOVÄLILLÄ -->
 <script type="text/ng-template" id="hylkaa_arvovalilla">
-    <div class="function" ng-class="funktioSelection == funktiowrapper.lapsi ? 'active' : ''">
+    <div class="function" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon">&#8302;</span>
-        <span class="label" ng-click="setFunktioSelection(funktiowrapper.lapsi, true, getParent(parent), $index)">
+        <span class="label" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">
         <span>{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}: </span>
         <span ng-if="funktiowrapper.lapsi.syoteparametrit[1].arvo">{{funktiowrapper.lapsi.syoteparametrit[1].arvo}}</span>
         <span ng-if="!funktiowrapper.lapsi.syoteparametrit[1].arvo">?</span>
@@ -226,9 +225,9 @@
 
 <!-- SUMMA -->
 <script type="text/ng-template" id="summa">
-    <div class="function" ng-class="funktioSelection == funktiowrapper.lapsi ? 'active' : ''">
+    <div class="function" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon sum">&#8302;</span>
-        <span class="label" ng-click="setFunktioSelection(funktiowrapper.lapsi, true, getParent(parent), $index)">Summa</span>
+        <span class="label" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">Summa</span>
     </div>
 </script>
 
@@ -257,9 +256,9 @@ PIENEMPI
 YHTASUURI
 -->
 <script type="text/ng-template" id="funktio">
-    <div class="function" ng-class="funktioSelection == funktiowrapper.lapsi ? 'active' : ''">
+    <div class="function" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon">&#8302;</span>
-        <span class="label" ng-click="setFunktioSelection(funktiowrapper.lapsi, true, parent.lapsi, $index)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
+        <span class="label" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
     </div>
 </script>
 
@@ -267,7 +266,7 @@ YHTASUURI
 
 <!-- Nimetty funktioargumentti, jolle ei ole asetettu arvoa -->
 <script type="text/ng-template" id="nimettyFunktioSlot">
-    <span class="label" ng-init="funktioSlotIndex = findFunktioSlotIndex(parent.lapsi, $index)" ng-click="showNewFunktioList = true">
+    <span class="label" ng-init="funktioSlotIndex = findFunktioSlotIndex(parent, $index)" ng-click="showNewFunktioList = true">
         
         <div ng-if="parent.lapsi.funktionimi === 'OSAMAARA'">
             <span ng-if="$index == 0"><i style="font-size: 18px" class="fa fa-plus-square kaavaeditor-blue"></i> Osoittaja </span>
@@ -307,8 +306,8 @@ YHTASUURI
         </div>
     </span>
 
-    <div ng-if="showNewFunktioList && isLukuarvoFunktioSlot(parent.lapsi, funktioSlotIndex)" class="function" ng-include="'lukuarvoFunktiot'"></div>
-    <div ng-if="showNewFunktioList && !isLukuarvoFunktioSlot(parent.lapsi, funktioSlotIndex)" class="function" ng-include="'totuusarvoFunktiot'"></div>
+    <div ng-if="showNewFunktioList && isLukuarvoFunktioSlot(parent, funktioSlotIndex)" class="function" ng-include="'lukuarvoFunktiot'"></div>
+    <div ng-if="showNewFunktioList && !isLukuarvoFunktioSlot(parent, funktioSlotIndex)" class="function" ng-include="'totuusarvoFunktiot'"></div>
 
 </script>
 
@@ -324,10 +323,9 @@ YHTASUURI
 
 <!-- UUDEN FUNKTION LISÄYS -->
 <script type="text/ng-template" id="addFunktio">
-    
     <span class="label"><i style="font-size: 18px;" class="fa fa-plus-square kaavaeditor-blue" ng-click="showNewFunktioList = {visible: true}"></i> </span>
-    <div ng-init="funktioSlotIndex = findFunktioSlotIndex(parent.lapsi, $index)" ng-if="showNewFunktioList.visible && isLukuarvoFunktioSlot(parent.lapsi, funktioSlotIndex)" class="function" ng-include="'lukuarvoFunktiot'"></div>
-    <div ng-init="funktioSlotIndex = findFunktioSlotIndex(parent.lapsi, $index)" ng-if="showNewFunktioList.visible && !isLukuarvoFunktioSlot(parent.lapsi, funktioSlotIndex)" class="function" ng-include="'totuusarvoFunktiot'"></div>
+    <div ng-init="funktioSlotIndex = findFunktioSlotIndex(parent, $index)" ng-if="showNewFunktioList.visible && isLukuarvoFunktioSlot(parent, funktioSlotIndex)" class="function" ng-include="'lukuarvoFunktiot'"></div>
+    <div ng-init="funktioSlotIndex = findFunktioSlotIndex(parent, $index)" ng-if="showNewFunktioList.visible && !isLukuarvoFunktioSlot(parent, funktioSlotIndex)" class="function" ng-include="'totuusarvoFunktiot'"></div>
 </script>
 
 

@@ -55,7 +55,6 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         index = monesko funktio-parametri on funktioargumenttilistassa, juurifunktiokutsulla ei ole indeksiä
     */
     $scope.setFunktioSelection = function(funktio, isFunktiokutsu, parentFunktiokutsu, index) {
-        console.log(parentFunktiokutsu);
         $scope.funktioasetukset.parentFunktiokutsu = parentFunktiokutsu;
         $scope.funktioasetukset.selectedFunktioIndex = index;
         $scope.funktioSelection = funktio;
@@ -96,8 +95,8 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         }
     }
 
-    $scope.syoteparametriTemplate = function(syoteparametri, index) {
-        return $scope.templateService.getSyoteparametriTemplate(syoteparametri, index);
+    $scope.syoteparametriTemplate = function(funktiokutsu, index) {
+        return $scope.templateService.getSyoteparametriTemplate(funktiokutsu, index);
     }
 
     $scope.konvertteriTemplate = function(konvertteriparametriSelection) {
@@ -126,8 +125,6 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
 
     // TODO huomioi laskentakaavaviitteet
     $scope.removeFunktiokutsu = function(){
-        console.log($scope.funktioSelection);
-        
 
 
         var isNimettyFunktio = $scope.isNimettyFunktioargumentti($scope.funktioSelection);
@@ -147,7 +144,7 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
 
     //onko käsiteltävä funktiokutsun lapset nimettyjä funktioargumentteja
     $scope.isNimettyFunktioargumentti = function(funktiokutsu) {
-        return $scope.funktioService.isNimettyFunktioargumentti(funktiokutsu.funktionimi);
+        return $scope.funktioService.isNimettyFunktioargumentti(funktiokutsu.lapsi.funktionimi);
     }
 
     //Onko käsiteltävä parentin funktioargumentin paikka tarkoitettu nimettömälle funktiokutsulle/laskentakaavalle ja onko funktioargumentti vielä asettamatta 
@@ -157,7 +154,7 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
 
     $scope.isLukuarvoFunktioSlot = function(parent, funktioargumenttiIndex) {
         var isNimetty = $scope.isNimettyFunktioargumentti(parent);
-        var funktiokuvaus = $scope.funktioService.getFunktiokuvaus(parent.funktionimi);
+        var funktiokuvaus = $scope.funktioService.getFunktiokuvaus(parent.lapsi.funktionimi);
         var tyyppi = isNimetty ? funktiokuvaus.funktioargumentit[funktioargumenttiIndex].tyyppi : funktiokuvaus.funktioargumentit[0].tyyppi;
         var result = tyyppi == 'LUKUARVOFUNKTIO' ? true : false;
         return result;
@@ -178,15 +175,17 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
 
     // index on indeksi nyt käsiteltävälle funktioargumentille (nimetyille funktioargumenteille)
     $scope.findFunktioSlotIndex = function(parent, index) {
+        console.log('in findFunktioSlotIndex: ', parent);
         var isNimetty = $scope.isNimettyFunktioargumentti(parent);
-        result = isNimetty ? index : parent.funktioargumentit.length;
+        result = isNimetty ? index : parent.lapsi.funktioargumentit.length;
         return result;
     }
 
     $scope.addFunktio = function(parent, funktionimi, index) {
+        console.log(parent);
         var createdFunktio = $scope.funktioFactory.createFunktioInstance(parent, funktionimi, index);
         //funktio, isFunktiokutsu, parentFunktiokutsu, index
-        $scope.setFunktioSelection(createdFunktio.lapsi, true, parent.lapsi, index);
+        $scope.setFunktioSelection(createdFunktio, true, parent, index);
     }
     
     $scope.addChildLaskentakaava = function(parentFunktio, argumenttiNimi) {

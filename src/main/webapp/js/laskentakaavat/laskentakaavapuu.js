@@ -253,7 +253,7 @@ app.factory('TemplateService', function(FunktioService) {
         this.getSyoteparametriTemplate = function(funktio, syoteparametriIndex) {
             var funktioservice = FunktioService;
 
-            var funktiokuvaus = funktioservice.getFunktiokuvaus(funktio.funktionimi);
+            var funktiokuvaus = funktioservice.getFunktiokuvaus(funktio.lapsi.funktionimi);
             var syoteparametrityyppi = "";
             if(funktiokuvaus.syoteparametrit[0].avain === 'n') {
                 syoteparametrityyppi = funktiokuvaus.syoteparametrit[0].tyyppi;

@@ -32,7 +32,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="parametri in funktioSelection.arvovalikonvertteriparametrit">
+                <tr ng-repeat="parametri in funktioSelection.lapsi.arvovalikonvertteriparametrit">
                     <td>
                         <a ng-click="removeKonvertteriParametri($index, konvertteriparametriSelection)"><i class="fa fa-trash-o"></i></a>
                     </td>
@@ -74,7 +74,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="parametri in funktioSelection.arvokonvertteriparametrit">
+                <tr ng-repeat="parametri in funktioSelection.lapsi.arvokonvertteriparametrit">
                     <td>
                         <a ng-click="removeKonvertteriParametri($index)"><i class="fa fa-trash-o"></i></a>
                     </td>
@@ -101,8 +101,8 @@
                 <h3>{{valintaryhma.nimi}}</h3>
                 <div ng-repeat="kaava in valintaryhma.laskentakaavat">
                     <div class="margin-bottom-1" ng-hide="kaava.id == fetched">
-                        <input type="radio" name="kaava" value="{{kaava.id}}" ng-model="funktioSelection.data.id"/>
-                        {{kaava.nimi}}
+                        <input type="radio" name="kaava" value="{{kaava.id}}" ng-model="funktioSelection.lapsi.data.id"/>
+                        {{kaava.nimi}} TODO -> template ng-model= ???
                     </div>
                 </div>
             </div>
@@ -124,7 +124,7 @@
 
             <div class="form-item-content">
                 <div class="field-text-containerbox">
-                    <input type="text" ng-model="funktioSelection.getNimiParametri().data.arvo"/>
+                    <input type="text" ng-model="funktioSelection.lapsi.funktionimi"/>
                 </div>
             </div>
             <div class="clear"></div>
@@ -132,7 +132,7 @@
         
         <!-- Valintaperusteviitteet -->
         <div class="form-item" >
-            <div ng-if="funktioSelection.valintaperusteviitteet" ng-repeat="valintaperusteviite in funktioSelection.valintaperusteviitteet">
+            <div ng-if="funktioSelection.lapsi.valintaperusteviitteet" ng-repeat="valintaperusteviite in funktioSelection.lapsi.valintaperusteviitteet">
                 <label class="form-item-label" style="width:50px;">Tyyppi</label>
                 <div class="form-item-content">
                     <div class="field-select-containerbox">
@@ -181,9 +181,9 @@
                 </div>
                
                 <div class="form-item">
-                    <label ng-if="funktioSelection.arvokonvertteriparametrit.length > 0 || funktioSelection.arvovalikonvertteriparametrit.length > 0" class="form-item-label" for="" style="width:100px;">Konversiomäärittelyt</label>
-                    <div class="form-item-content" ng-if="funktioSelection.arvokonvertteriparametrit.length > 0" ng-include="'arvokonvertteri-template'"></div>
-                    <div class="form-item-content" ng-if="funktioSelection.arvovalikonvertteriparametrit.length > 0" ng-include="'arvovalikonvertteri-template'"></div>
+                    <label ng-if="funktioSelection.lapsi.arvokonvertteriparametrit.length > 0 || funktioSelection.lapsi.arvovalikonvertteriparametrit.length > 0" class="form-item-label" for="" style="width:100px;">Konversiomäärittelyt</label>
+                    <div class="form-item-content" ng-if="funktioSelection.lapsi.arvokonvertteriparametrit.length > 0" ng-include="'arvokonvertteri-template'"></div>
+                    <div class="form-item-content" ng-if="funktioSelection.lapsi.arvovalikonvertteriparametrit.length > 0" ng-include="'arvovalikonvertteri-template'"></div>
                     <div class="clear"></div>
                 </div>
                 
@@ -195,7 +195,7 @@
         </div>
 
         <!-- SYÖTEPARAMETRIT -->
-        <div class="form-item" ng-if="funktioSelection.syoteparametrit.length > 0">
+        <div class="form-item" ng-if="funktioSelection.lapsi.syoteparametrit.length > 0">
             <label class="form-item-label" style="width:100px;">Arvon määrittelyt</label>
 
             <div class="form-item-content">
@@ -209,7 +209,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="syoteparametri in funktioSelection.syoteparametrit">
+                            <tr ng-repeat="syoteparametri in funktioSelection.lapsi.syoteparametrit">
                                 <td>Avain: {{syoteparametri.avain}}</td>
                                 <td ng-include="syoteparametriTemplate(funktioSelection, $index)"></td>
                             </tr>
@@ -241,23 +241,23 @@
                         <tbody>
                             <tr>
                                 <td>Tulostunniste</td>
-                                <td><input type="text" ng-model="funktioSelection.tulosTunniste" /></td>
+                                <td><input type="text" ng-model="funktioSelection.lapsi.tulosTunniste" /></td>
                             </tr>
                              <tr>
                                 <td>Tallenna tulos</td>
-                                <td><input type="checkbox" ng-model="funktioSelection.tallennaTulos" /></td>
+                                <td><input type="checkbox" ng-model="funktioSelection.lapsi.tallennaTulos" /></td>
                             </tr>
                              <tr>
                                 <td>Tulosteksti FI</td>
-                                <td><input type="text" ng-model="funktioSelection.tulosTekstiFi" /></td>
+                                <td><input type="text" ng-model="funktioSelection.lapsi.tulosTekstiFi" /></td>
                             </tr>
                              <tr>
                                 <td>Tulosteksti SV</td>
-                                <td><input type="text" ng-model="funktioSelection.tulosTekstiSv" /></td>
+                                <td><input type="text" ng-model="funktioSelection.lapsi.tulosTekstiSv" /></td>
                             </tr>
                              <tr>
                                 <td>Tulosteksti EN</td>
-                                <td><input type="text" ng-model="funktioSelection.tulosTekstiEn" /></td>
+                                <td><input type="text" ng-model="funktioSelection.lapsi.tulosTekstiEn" /></td>
                             </tr>
                         </tbody>
                     </table>
