@@ -137,10 +137,10 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
             //muussa tapauksessa poistetaan koko elementti taulukosta
             if($scope.isFirstChildForRoot($scope.funktioasetukset.parentFunktiokutsu)) {
                 //jos ei olla heti laskentakaavan juuren alla  
-                $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex, 1);
+                $scope.funktioasetukset.parentFunktiokutsu.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex, 1);
             } else {
                 //jos ollaan heti laskentakaavan juuren alla (laskentakaavan 'ensimmäisellä kerroksella' ei ole lapsi-wrapperia)
-                $scope.funktioasetukset.parentFunktiokutsu.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex, 1);
+                $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex, 1);
             }
         }
 
@@ -151,15 +151,15 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
     $scope.removeLaskentakaavaviite = function() {
         //jos ei olla heti laskentakaavan juuren alla  
         if($scope.isFirstChildForRoot($scope.funktioasetukset.parentFunktiokutsu)) {
-            $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex,1)}
+            $scope.funktioasetukset.parentFunktiokutsu.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex,1)}
         //jos ollaan heti laskentakaavan juuren alla (laskentakaavan 'ensimmäisellä kerroksella' ei ole lapsi-wrapperia)
-        else {$scope.funktioasetukset.parentFunktiokutsu.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex,1)}
+        else {$scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex,1)}
         $scope.funktioSelection = undefined; 
         $scope.funktioasetukset.showLaskentakaavaInformation = false;
     }
 
     $scope.isFirstChildForRoot = function(parent) {
-        return parent.lapsi ? true : false;
+        return parent.lapsi ? false : true;
     }
 
     $scope.isFunktiokutsu = function(funktiokutsu) {
@@ -205,7 +205,8 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
     }
 
     $scope.addFunktio = function(parent, funktionimi, index) {
-        var createdFunktio = $scope.funktioFactory.createFunktioInstance(parent, funktionimi, index);
+        var firstChildForRoot = $scope.isFirstChildForRoot(parent);
+        var createdFunktio = firstChildForRoot ? $scope.funktioFactory.createFirstChildFunktio(parent, funktionimi, index) : $scope.funktioFactory.createFunktioInstance(parent, funktionimi, index);
         $scope.setFunktioSelection(createdFunktio, true, parent, index);
     }
     

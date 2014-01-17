@@ -48,6 +48,15 @@ app.factory('FunktioService', function(FunktioKuvausResource) {
             }
         }
 
+        this.getFunktionimi = function(funktio) {
+            //laskentakaavan juurifunktiolla ei ole lapsi-objektia
+            if(funktio.lapsi) {
+                return funktio.lapsi.funktionimi;
+            } else {
+                return funktio.funktionimi;
+            }
+        }
+
         this.isLukuarvoFunktioSlot = function(parent, funktioargumenttiIndex) {
             var funktiokuvaus = model.getFunktiokuvaus(parent.funktionimi);
             if(funktiokuvaus.funktioargumentit[funktioargumenttiIndex].tyyppi == 'LUKUARVOFUNKTIO') {
@@ -143,6 +152,11 @@ app.factory('FunktioFactory', function(FunktioService){
                     tyyppi: null,
                     lapsityyppi: null
                 },
+                tulosTunniste: null,
+                tallennaTulos: null,
+                tulosTekstiFi: null,
+                tulosTekstiSv: null,
+                tulosTekstiEn: null,
                 indeksi: 0
             }
         }
@@ -153,6 +167,44 @@ app.factory('FunktioFactory', function(FunktioService){
             } else {
                 funktioprototype.lapsi.lapsityyppi = "funktiokutsu";
             }
+        }
+
+        //parentFunktiokutsu -objektista puuttuu lapsi-wrapperi, joten funktiokutsun luominen juureen toteutetaan erikseen
+        this.createFirstChildFunktio = function(parentFunktiokutsu, newFunktioType, index) {
+            var parentFunktiokuvaus = FunktioService.getFunktiokuvaus(parentFunktiokutsu.funktionimi);
+            var newFunktioFunktiokuvaus = FunktioService.getFunktiokuvaus(newFunktioType);
+            var funktioprototype = generateFunktioPrototype();
+
+            //Funktionimi
+            funktioprototype.lapsi.funktionimi = newFunktioType;
+
+            //Lapsityyppi
+            setLapsityyppi(funktioprototype, newFunktioType);
+
+            //Generoidaan syoteparametrit
+            if(newFunktioFunktiokuvaus.syoteparametrit) {
+                populateSyoteparametrit(funktioprototype, newFunktioFunktiokuvaus);
+            }
+
+            //Generoidaan funktioargumentit
+            if(newFunktioFunktiokuvaus.funktioargumentit) {
+                populateFunktioargumentit(funktioprototype, newFunktioFunktiokuvaus, FunktioService.isNimettyFunktioargumentti(newFunktioType));
+            }
+
+            //Generoidaan valintaperusteviitteet
+            if(newFunktioFunktiokuvaus.valintaperuste) {
+                populateValintaperusteviitteet(funktioprototype, newFunktioFunktiokuvaus);
+            }
+            
+            // jos funktiokutsu on luotu nykyisen kaaveditorikäynnin aikana, niin funktioargumentteissa on oletuksena yksi null, joka täytyy poistaa funktiokutsua lisättäessä   
+            if(arrayWithSingleNull(parentFunktiokutsu.funktioargumentit)) {
+               parentFunktiokutsu.funktioargumentit[0] = funktioprototype;
+               return parentFunktiokutsu.funktioargumentit[0];
+            } 
+
+            parentFunktiokutsu.funktioargumentit[index] = funktioprototype;
+            return parentFunktiokutsu.funktioargumentit[index];
+
         }
 
         //huomioi laskentakaavaviitteet
@@ -184,16 +236,18 @@ app.factory('FunktioFactory', function(FunktioService){
             }
             
             // jos funktiokutsu on luotu nykyisen kaaveditorikäynnin aikana, niin funktioargumentteissa on oletuksena yksi null, joka täytyy poistaa funktiokutsua lisättäessä   
+            
             if(arrayWithSingleNull(parentFunktiokutsu.lapsi.funktioargumentit)) {
+
                parentFunktiokutsu.lapsi.funktioargumentit[0] = funktioprototype;
                return parentFunktiokutsu.lapsi.funktioargumentit[0];
             } 
 
             parentFunktiokutsu.lapsi.funktioargumentit[index] = funktioprototype;
-            console.log(funktioprototype);
             return parentFunktiokutsu.lapsi.funktioargumentit[index];
-            
         }
+
+
 
         //Lisätään funktioprototypeen funktiokuvauksen mukaiset syoteparametrit
         function populateSyoteparametrit(funktioprototype, funktiokuvaus) {
@@ -251,9 +305,8 @@ app.factory('TemplateService', function(FunktioService) {
         
 
         this.getSyoteparametriTemplate = function(funktio, syoteparametriIndex) {
-            var funktioservice = FunktioService;
 
-            var funktiokuvaus = funktioservice.getFunktiokuvaus(funktio.lapsi.funktionimi);
+            var funktiokuvaus = FunktioService.getFunktiokuvaus(FunktioService.getFunktionimi(funktio));
             var syoteparametrityyppi = "";
             if(funktiokuvaus.syoteparametrit[0].avain === 'n') {
                 syoteparametrityyppi = funktiokuvaus.syoteparametrit[0].tyyppi;

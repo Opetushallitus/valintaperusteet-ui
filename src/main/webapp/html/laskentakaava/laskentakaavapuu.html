@@ -1,6 +1,6 @@
 {{funktioSelection}}
 
-<!-- kaava root needed for drag & drop -->
+
 <div class="gradingformula dd" style="width:60%;float:left;">
 
     <div class="frame" ng-class="isRootSelected ? 'active' : ''">
@@ -12,7 +12,7 @@
         <li class="item" ng-repeat="funktiowrapper in model.laskentakaavapuu.funktiokutsu.funktioargumentit" ng-init="parent = model.laskentakaavapuu.funktiokutsu">
             <div ng-include="'funktiokutsu'"></div>
         </li>
-        <li class="item" ng-init="laskentakaavatyyppi = model.laskentakaavapuu.tyyppi;" ng-if="model.laskentakaavapuu.funktiokutsu.funktioargumentit.length === 0" ng-include="'addFunktioToRoot'"></li>
+        <li class="item" ng-init="laskentakaavatyyppi = model.laskentakaavapuu.tyyppi; parent = model.laskentakaavapuu.funktiokutsu" ng-if="model.laskentakaavapuu.funktiokutsu.funktioargumentit.length === 0" ng-include="'addFunktioToRoot'"></li>
     </ul>
 </div>
 
@@ -31,7 +31,6 @@
             <div ng-if="funktiowrapper.lapsi.lapsityyppi === 'laskentakaava'" ng-include="'laskentakaavaviite'"></div>
             <div ng-if="funktiowrapper.lapsi == undefined" ng-include="'nimettyFunktioSlot'"></div>
         </li>
-
         <li ng-if="!isNimettyFunktioargumentti(parent)" ng-include="'addFunktio'"></li>
     </ul>
 </script>
