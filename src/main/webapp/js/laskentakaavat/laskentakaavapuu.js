@@ -150,14 +150,41 @@ app.factory('FunktioFactory', function(FunktioService){
                     nimi: null,
                     kuvaus: null,
                     tyyppi: null,
-                    lapsityyppi: null
+                    lapsityyppi: null,
+                    tulosTunniste: null,
+                    tallennaTulos: false,
+                    tulosTekstiFi: null,
+                    tulosTekstiSv: null,
+                    tulosTekstiEn: null
                 },
-                tulosTunniste: null,
-                tallennaTulos: null,
-                tulosTekstiFi: null,
-                tulosTekstiSv: null,
-                tulosTekstiEn: null,
+                
                 indeksi: 0
+            }
+        }
+
+        function generateLaskentakaavaviitePrototype() {
+            return {
+                lapsi: {
+                    funktionimi: null,
+                    arvokonvertteriparametrit: [],
+                    arvovalikonvertteriparametrit: [],
+                    syoteparametrit: [],
+                    funktioargumentit: [],
+                    valintaperusteviitteet: [],
+                    validointivirheet: [],
+                    onLuonnos: false,
+                    nimi: "lk1",
+                    kuvaus: null,
+                    tyyppi: "LUKUARVOFUNKTIO",
+                    id: 2494612,
+                    lapsityyppi: "laskentakaava",
+                    tulosTunniste: null,
+                    tulosTekstiFi: null,
+                    tulosTekstiSv: null,
+                    tulosTekstiEn: null,
+                    tallennaTulos: null
+                },
+                indeksi: 1
             }
         }
         
