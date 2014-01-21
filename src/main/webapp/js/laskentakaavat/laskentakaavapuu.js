@@ -35,9 +35,25 @@ app.factory('FunktioService', function(FunktioKuvausResource) {
             return result;
         }
 
-        this.isNimettyFunktioargumentti = function(parentfunktioNimi) {
-            var funktiokuvaus = model.getFunktiokuvaus(parentfunktioNimi);
-            return funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti != 'n' && parentfunktioNimi !== 'PAINOTETTUKESKIARVO' );
+        this.isNimettyFunktioargumentti = function(parent) {
+            var parentFunktionimi = model.getFunktionimi(parent)
+            var funktiokuvaus = model.getFunktiokuvaus(parentFunktionimi);
+            return funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti !== 'n' && !model.isPainotettukeskiarvoChildByParentNimi(parentFunktionimi) );
+        }
+
+        this.isNimettyFunktioargumenttiByFunktionimi = function(parentFunktionimi) {
+            var funktiokuvaus = model.getFunktiokuvaus(parentFunktionimi);
+            return funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti !== 'n' && !model.isPainotettukeskiarvoChildByParentNimi(parentFunktionimi) );
+        }
+
+        this.isPainotettukeskiarvoChild = function(parent) {
+            var funktiokuvaus = model.getFunktiokuvaus(model.getFunktionimi(parent));
+            return funktiokuvaus.funktioargumentit && funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'lista_pareja';
+        }
+
+        this.isPainotettukeskiarvoChildByParentNimi = function(parentFunktionimi) {
+            var funktiokuvaus = model.getFunktiokuvaus(parentFunktionimi);
+            return funktiokuvaus.funktioargumentit && funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'lista_pareja';
         }
 
         this.isEmptyNimettyFunktioargumentti = function(parent, funktioargumenttiIndex) {
@@ -49,10 +65,11 @@ app.factory('FunktioService', function(FunktioKuvausResource) {
         }
 
         this.getFunktionimi = function(funktio) {
-            //laskentakaavan juurifunktiolla ei ole lapsi-objektia
             if(funktio.lapsi) {
+                //jos funktio-parametri ei ole laskentakaavan ensimmäinen lapsi, niin funktiolla on lapsi-kääre
                 return funktio.lapsi.funktionimi;
             } else {
+                //laskentakaavan juurifunktiolla ei ole lapsi-objektia
                 return funktio.funktionimi;
             }
         }
@@ -63,6 +80,15 @@ app.factory('FunktioService', function(FunktioKuvausResource) {
                 return true;
             } else {
                 return false;
+            }
+        }
+
+        //Montako funktioargumenttia funktiokutsulle luotu
+        this.getDefinedFunktioargumenttiCount = function(funktiokutsu) {
+            if(funktiokutsu.lapsi) {
+                return _.filter(funktiokutsu.lapsi.funktioargumentit, function(item) {return !_.isEmpty(item)}).length;
+            } else {
+                return _.filter(funktiokutsu.funktioargumentit, function(item) {return !_.isEmpty(item)}).length;
             }
         }
 
@@ -163,6 +189,7 @@ app.factory('FunktioFactory', function(FunktioService){
         }
 
         function generateLaskentakaavaviitePrototype() {
+            
             return {
                 lapsi: {
                     funktionimi: null,
@@ -209,19 +236,13 @@ app.factory('FunktioFactory', function(FunktioService){
             setLapsityyppi(funktioprototype, newFunktioType);
 
             //Generoidaan syoteparametrit
-            if(newFunktioFunktiokuvaus.syoteparametrit) {
-                populateSyoteparametrit(funktioprototype, newFunktioFunktiokuvaus);
-            }
+            if(newFunktioFunktiokuvaus.syoteparametrit) { populateSyoteparametrit(funktioprototype, newFunktioFunktiokuvaus)}
 
             //Generoidaan funktioargumentit
-            if(newFunktioFunktiokuvaus.funktioargumentit) {
-                populateFunktioargumentit(funktioprototype, newFunktioFunktiokuvaus, FunktioService.isNimettyFunktioargumentti(newFunktioType));
-            }
+            if(newFunktioFunktiokuvaus.funktioargumentit) { populateFunktioargumentit(funktioprototype, newFunktioFunktiokuvaus, FunktioService.isNimettyFunktioargumenttiByFunktionimi(newFunktioType)) }
 
             //Generoidaan valintaperusteviitteet
-            if(newFunktioFunktiokuvaus.valintaperuste) {
-                populateValintaperusteviitteet(funktioprototype, newFunktioFunktiokuvaus);
-            }
+            if(newFunktioFunktiokuvaus.valintaperuste) { populateValintaperusteviitteet(funktioprototype, newFunktioFunktiokuvaus) }
             
             // jos funktiokutsu on luotu nykyisen kaaveditorikäynnin aikana, niin funktioargumentteissa on oletuksena yksi null, joka täytyy poistaa funktiokutsua lisättäessä   
             if(arrayWithSingleNull(parentFunktiokutsu.funktioargumentit)) {
@@ -244,60 +265,54 @@ app.factory('FunktioFactory', function(FunktioService){
             //Funktionimi
             funktioprototype.lapsi.funktionimi = newFunktioType;
             
-            //Lapsityyppi
+            //Asetetaan lapsityyppi
             setLapsityyppi(funktioprototype, newFunktioType);
 
             //Generoidaan syoteparametrit
-            if(newFunktioFunktiokuvaus.syoteparametrit) {
-                populateSyoteparametrit(funktioprototype, newFunktioFunktiokuvaus);
-            }
+            if(newFunktioFunktiokuvaus.syoteparametrit) { populateSyoteparametrit(funktioprototype, newFunktioFunktiokuvaus) }
 
             //Generoidaan funktioargumentit
-            if(newFunktioFunktiokuvaus.funktioargumentit) {
-                populateFunktioargumentit(funktioprototype, newFunktioFunktiokuvaus, FunktioService.isNimettyFunktioargumentti(newFunktioType));
+            if(newFunktioFunktiokuvaus.funktioargumentit) { 
+                populateFunktioargumentit(funktioprototype, newFunktioFunktiokuvaus, FunktioService.isNimettyFunktioargumenttiByFunktionimi(newFunktioType), FunktioService.isPainotettukeskiarvoChildByParentNimi(newFunktioType) );
             }
+
+            
 
             //Generoidaan valintaperusteviitteet
-            if(newFunktioFunktiokuvaus.valintaperuste) {
-                populateValintaperusteviitteet(funktioprototype, newFunktioFunktiokuvaus);
-            }
+            if(newFunktioFunktiokuvaus.valintaperuste) { populateValintaperusteviitteet(funktioprototype, newFunktioFunktiokuvaus);}
             
             // jos funktiokutsu on luotu nykyisen kaaveditorikäynnin aikana, niin funktioargumentteissa on oletuksena yksi null, joka täytyy poistaa funktiokutsua lisättäessä   
-            
             if(arrayWithSingleNull(parentFunktiokutsu.lapsi.funktioargumentit)) {
-
                parentFunktiokutsu.lapsi.funktioargumentit[0] = funktioprototype;
                return parentFunktiokutsu.lapsi.funktioargumentit[0];
-            } 
+            }
 
             parentFunktiokutsu.lapsi.funktioargumentit[index] = funktioprototype;
             return parentFunktiokutsu.lapsi.funktioargumentit[index];
         }
 
-
-
         //Lisätään funktioprototypeen funktiokuvauksen mukaiset syoteparametrit
         function populateSyoteparametrit(funktioprototype, funktiokuvaus) {
             funktiokuvaus.syoteparametrit.forEach(function(item) {
                 funktioprototype.lapsi.syoteparametrit.push({});
-                //täytyy käyttää angular.copya, tai syoteparametrit eri funktiokutsuissa viittaavat samoihin syoteparametriobjekteihin
+                //täytyy käyttää angular.copya, tai syoteparametrit luoduissa eri funktiokutsuissa viittaavat samoihin syoteparametriobjekteihin
                 angular.copy(item, funktioprototype.lapsi.syoteparametrit[funktioprototype.lapsi.syoteparametrit.length - 1]);
             });
         }
 
         // Lisätään funktioprototypeen tarvittava määrä null objekteja funktioargumenteiksi
         // funktioparentin ja funktioargumentin mukaiset tekstit muodostetaan templateissa
-        function populateFunktioargumentit(funktioprototype, funktiokuvaus, hasNimetytFunktioargumentit) {
-
+        function populateFunktioargumentit(funktioprototype, funktiokuvaus, hasNimetytFunktioargumentit, isPainotettukeskiarvoChild) {
             if(hasNimetytFunktioargumentit) {
 
                 //Lisätään yhtä monta null objektia, kuin nimettyjä funktioargumentteja. 
                 funktiokuvaus.funktioargumentit.forEach(function() {
                     funktioprototype.lapsi.funktioargumentit.push(null) 
                 });
-            } else if(funktiokuvaus.nimi === 'PAINOTETTUKESKIARVO') {
+            } else if(isPainotettukeskiarvoChild) {
                 funktioprototype.lapsi.funktioargumentit.push({});
                 funktioprototype.lapsi.funktioargumentit.push({});
+
             } else {
                 //jos funktiolla on nimeämätön määrä funktioargumentteja, lisätään listaan yksi null
                 funktioprototype.lapsi.funktioargumentit.push(null);
@@ -311,16 +326,13 @@ app.factory('FunktioFactory', function(FunktioService){
             });
         } 
 
-        //jos arr === [null] -> true
         function arrayWithSingleNull(arr) {
             if(arr.length === 1 && arr[0] === null) { return true; } 
             else { return false; }
         }
 
-
-
-
         
+
     }
 
     return factory;

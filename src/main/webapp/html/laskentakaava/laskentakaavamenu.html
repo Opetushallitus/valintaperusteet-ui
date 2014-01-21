@@ -96,13 +96,14 @@
     <div class="settingsform">
         <h3>Laskentakaavaviittauksen asetukset</h3>
         
-        <div ng-repeat="valintaryhmaList in kaavaLista.valintaryhmaList()">
+        <div ng-repeat="valintaryhmaList in laskentakaavalista.valintaryhmaList()">
             <div ng-repeat="valintaryhma in valintaryhmaList" ng-if="valintaryhma.laskentakaavat.length > 0">
                 <h3>{{valintaryhma.nimi}}</h3>
                 <div ng-repeat="kaava in valintaryhma.laskentakaavat">
+                   
                     <div class="margin-bottom-1" ng-hide="kaava.id == fetched">
-                        <input type="radio" name="kaava" value="{{kaava.id}}" ng-model="funktioSelection.lapsi.data.id"/>
-                        {{kaava.nimi}} TODO -> template ng-model= ???
+                        <input type="radio" name="kaava" value="{{kaava}}" ng-model="funktioSelection.lapsi"/>
+                       
                     </div>
                 </div>
             </div>

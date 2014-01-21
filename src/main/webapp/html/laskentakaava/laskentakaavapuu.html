@@ -22,16 +22,18 @@
 <script type="text/ng-template" id="funktiokutsu">
     <!-- piirretään laskentakaavan funktiokutsu jossa ollaan -->
     <div ng-if="funktiowrapper.lapsi" ng-include="'template_selector'"></div>
-    
+
     <!-- käydään rekursiivisesti nykyisen funktion lapset läpi -->
     <ul ng-if="funktiowrapper.lapsi.funktioargumentit" ng-init="parent = funktiowrapper">
+
         <li ng-if="parent.lapsi.funktioargumentit.length > 0 && parent.lapsi.funktioargumentit[0] !== null || isNimettyFunktioargumentti(parent)" class="item" ng-repeat="funktiowrapper in parent.lapsi.funktioargumentit track by $index">
-            
             <div ng-if="funktiowrapper.lapsi.lapsityyppi === 'funktiokutsu'" ng-include="'funktiokutsu'"></div>
             <div ng-if="funktiowrapper.lapsi.lapsityyppi === 'laskentakaava'" ng-include="'laskentakaavaviite'"></div>
             <div ng-if="funktiowrapper.lapsi == undefined" ng-include="'nimettyFunktioSlot'"></div>
         </li>
-        <li ng-if="!isNimettyFunktioargumentti(parent)" ng-include="'addFunktio'"></li>
+
+        <li ng-if="!isNimettyFunktioargumentti(parent) && !isPainotettukeskiarvoChild(parent)" ng-include="'addFunktio'"></li>
+            
     </ul>
 </script>
 
@@ -71,11 +73,11 @@
     <div ng-if="funktiowrapper.lapsi.funktionimi == 'MINIMI'" ng-include="'funktio'"></div>
     <div ng-if="funktiowrapper.lapsi.funktionimi == 'NEGAATIO'" ng-include="'funktio'"></div>
     <div ng-if="funktiowrapper.lapsi.funktionimi == 'KESKIARVO'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'PAINOTETTUKESKIARVO'" ng-include="'funktio'"></div>
     <div ng-if="funktiowrapper.lapsi.funktionimi == 'KONVERTOILUKUARVO'" ng-include="'funktio'"></div>
     <div ng-if="funktiowrapper.lapsi.funktionimi == 'HYLKAA'" ng-include="'funktio'"></div>
     <div ng-if="funktiowrapper.lapsi.funktionimi == 'PYORISTYS'" ng-include="'funktio'"></div>
     <div ng-if="funktiowrapper.lapsi.funktionimi == 'SKAALAUS'" ng-include="'funktio'"></div>
+    <div ng-if="funktiowrapper.lapsi.funktionimi == 'PAINOTETTUKESKIARVO'" ng-include="'funktio'"></div>
 
     <div ng-if="funktiowrapper.lapsi.funktionimi == 'NMINIMI'" ng-include="'fargumentticount_funktio_handle'"></div>
     <div ng-if="funktiowrapper.lapsi.funktionimi == 'NMAKSIMI'" ng-include="'fargumentticount_funktio_handle'"></div>
@@ -262,10 +264,10 @@ YHTASUURI
 </script>
 
 
-
 <!-- Nimetty funktioargumentti, jolle ei ole asetettu arvoa -->
 <script type="text/ng-template" id="nimettyFunktioSlot">
-    <span class="label" ng-init="funktioSlotIndex = findFunktioSlotIndex(parent, $index)" ng-click="showNewFunktioList = {visible: true}">
+
+    <span class="label" ng-init="funktioSlotIndex = findFunktioSlotIndex(parent, $index)" ng-click="showNewFunktioList = {visible: true}; hideFunktioMenu()">
         <div ng-if="parent.lapsi.funktionimi === 'OSAMAARA'">
             <span ng-if="$index == 0"><i style="font-size: 18px" class="fa fa-plus-square kaavaeditor-blue"></i> Osoittaja </span>
             <span ng-if="$index == 1"><i style="font-size: 18px" class="fa fa-plus-square kaavaeditor-blue"></i> Nimittäjä</span>
@@ -321,7 +323,7 @@ YHTASUURI
 
 <!-- UUDEN FUNKTION LISÄYS -->
 <script type="text/ng-template" id="addFunktio">
-    <span class="label" ng-click="showNewFunktioList = {visible: true}"><i style="font-size: 18px;" class="fa fa-plus-square kaavaeditor-blue" ></i> Funktioargumentti</span>
+    <span class="label" ng-click="showNewFunktioList = {visible: true}; hideFunktioMenu()"><i style="font-size: 18px;" class="fa fa-plus-square kaavaeditor-blue" ></i> Funktioargumentti</span>
     <div ng-init="funktioSlotIndex = findFunktioSlotIndex(parent, $index)" ng-if="showNewFunktioList.visible && isLukuarvoFunktioSlot(parent, funktioSlotIndex)" class="function" ng-include="'lukuarvoFunktiot'"></div>
     <div ng-init="funktioSlotIndex = findFunktioSlotIndex(parent, $index)" ng-if="showNewFunktioList.visible && !isLukuarvoFunktioSlot(parent, funktioSlotIndex)" class="function" ng-include="'totuusarvoFunktiot'"></div>
 </script>
@@ -329,7 +331,7 @@ YHTASUURI
 
 <!-- UUSI LUKUARVOFUNKTIO -->
 <script type="text/ng-template" id="lukuarvoFunktiot">
-    <table class="dropmenu-table">
+    <table class="dropmenu-table" ng-controller="funktioMenuController">
         <thead>
             <th colspan="2">Lisää uusi funktio <span class="float-right" ng-click="showNewFunktioList.visible = false"><i style="font-size: 18px;" class="fa fa-times-circle-o" ></i></span></th>
         </thead>
@@ -388,7 +390,7 @@ YHTASUURI
 
 <!-- UUSI TOTUUSARVOFUNKTIO -->
 <script type="text/ng-template" id="totuusarvoFunktiot">
-    <table class="dropmenu-table">
+    <table class="dropmenu-table" ng-controller="funktioMenuController">
             <thead>
                 <th colspan="2">Lisää uusi funktio <span class="float-right" ng-click="showNewFunktioList.visible = false"><i style="font-size: 18px;" class="fa fa-times-circle-o" ></i></span></th>
             </thead>
