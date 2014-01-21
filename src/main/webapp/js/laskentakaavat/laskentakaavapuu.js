@@ -1,12 +1,14 @@
 
 
-app.factory('LaskentakaavaService', function($q, Laskentakaava){
+app.factory('LaskentakaavaService', function($q, Laskentakaava, FunktioService){
     var model = new function() {
         this.laskentakaavapuu = {};
 
         this.refresh = function(oid) {
             Laskentakaava.get({oid: oid}, function(result) {
-                model.laskentakaavapuu = result
+                model.laskentakaavapuu = result;
+                //laskentakaavan painotettu keskiarvo -funktiokutsuihin lisätään tyhjät objektit, jotta niihin pystytään lisäämään funktioargumentteja
+                FunktioService.addPKObjects(model.laskentakaavapuu.funktiokutsu.funktioargumentit);
             });
         }
     }   
@@ -100,6 +102,42 @@ app.factory('FunktioService', function(FunktioKuvausResource) {
             FunktioKuvausResource.get({}, function(result) {
                 model.funktiokuvaukset = result;
             });
+        }
+
+
+        this.cleanLaskentakaavaPKObjects = function(funktioargumentit) {
+            if(funktioargumentit) {
+                _.forEach(funktioargumentit, function(item) {
+                    if(item.lapsi) { item.lapsi.funktioargumentit = model.cleanLaskentakaavaPKObjects(item.lapsi.funktioargumentit); }
+                });
+            }
+            return model.filterEmptyObjects(funktioargumentit);
+        }
+
+        this.filterEmptyObjects = function(arr) {
+            return arr.filter(function(item) {
+                return !_.isEmpty(item);
+            });
+        }
+
+        this.addPKObjects = function(funktioargumentit) {
+            if(funktioargumentit) {
+                _.forEach(funktioargumentit, function(item) {
+                    if(item.lapsi) {
+                        model.addPKObjects(item.lapsi.funktioargumentit);
+                        if(item.lapsi.funktionimi === 'PAINOTETTUKESKIARVO') {
+                            item.lapsi.funktioargumentit = model.addPainotettukeskiarvoParametrit(item.lapsi.funktioargumentit);     
+                        }
+                    }
+                }); 
+            }
+            return funktioargumentit;
+        }
+
+        this.addPainotettukeskiarvoParametrit = function(arr) {
+            arr.push({});
+            arr.push({});
+            return arr;
         }
 
     }
@@ -232,14 +270,16 @@ app.factory('FunktioFactory', function(FunktioService){
             //Funktionimi
             funktioprototype.lapsi.funktionimi = newFunktioType;
 
-            //Lapsityyppi
+            //Asetetaan lapsityyppi
             setLapsityyppi(funktioprototype, newFunktioType);
 
             //Generoidaan syoteparametrit
             if(newFunktioFunktiokuvaus.syoteparametrit) { populateSyoteparametrit(funktioprototype, newFunktioFunktiokuvaus)}
 
             //Generoidaan funktioargumentit
-            if(newFunktioFunktiokuvaus.funktioargumentit) { populateFunktioargumentit(funktioprototype, newFunktioFunktiokuvaus, FunktioService.isNimettyFunktioargumenttiByFunktionimi(newFunktioType)) }
+            if(newFunktioFunktiokuvaus.funktioargumentit) { 
+                populateFunktioargumentit(funktioprototype, newFunktioFunktiokuvaus, FunktioService.isNimettyFunktioargumenttiByFunktionimi(newFunktioType), FunktioService.isPainotettukeskiarvoChildByParentNimi(newFunktioType) );
+            }
 
             //Generoidaan valintaperusteviitteet
             if(newFunktioFunktiokuvaus.valintaperuste) { populateValintaperusteviitteet(funktioprototype, newFunktioFunktiokuvaus) }
@@ -276,8 +316,6 @@ app.factory('FunktioFactory', function(FunktioService){
                 populateFunktioargumentit(funktioprototype, newFunktioFunktiokuvaus, FunktioService.isNimettyFunktioargumenttiByFunktionimi(newFunktioType), FunktioService.isPainotettukeskiarvoChildByParentNimi(newFunktioType) );
             }
 
-            
-
             //Generoidaan valintaperusteviitteet
             if(newFunktioFunktiokuvaus.valintaperuste) { populateValintaperusteviitteet(funktioprototype, newFunktioFunktiokuvaus);}
             
@@ -303,6 +341,7 @@ app.factory('FunktioFactory', function(FunktioService){
         // Lisätään funktioprototypeen tarvittava määrä null objekteja funktioargumenteiksi
         // funktioparentin ja funktioargumentin mukaiset tekstit muodostetaan templateissa
         function populateFunktioargumentit(funktioprototype, funktiokuvaus, hasNimetytFunktioargumentit, isPainotettukeskiarvoChild) {
+
             if(hasNimetytFunktioargumentit) {
 
                 //Lisätään yhtä monta null objektia, kuin nimettyjä funktioargumentteja. 

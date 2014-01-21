@@ -130,7 +130,13 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
 
     $scope.removeFunktiokutsu = function(){
         var isNimettyFunktio = $scope.isNimettyFunktioargumentti($scope.funktioasetukset.parentFunktiokutsu);
-        var isPainotettukeskiarvoChild = $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktionimi === 'PAINOTETTUKESKIARVO';
+        var isPainotettukeskiarvoChild = undefined;
+        if($scope.funktioasetukset.parentFunktiokutsu.lapsi) {
+            isPainotettukeskiarvoChild = $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktionimi === 'PAINOTETTUKESKIARVO';
+        } else {
+            isPainotettukeskiarvoChild = $scope.funktioasetukset.parentFunktiokutsu.funktionimi === 'PAINOTETTUKESKIARVO';
+        }
+         
         $scope.funktioSelection = undefined;
 
         if($scope.isFirstChildForRoot($scope.funktioasetukset.parentFunktiokutsu)) {
@@ -202,29 +208,24 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         $scope.setFunktioasetusView(false, false);
         $scope.funktioSelection = undefined;
         $scope.funktiokuvausForSelection = undefined;
-        $scope.parseFunktioargumentit($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
+
+        //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
+        $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = $scope.funktioService.cleanLaskentakaavaPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
+
+
         KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function(result) {
-            $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function(result) {}, function(error) {
+            $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function(result) {
+                $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = $scope.funktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
+            }, function(error) {
                 $scope.errors.push(error);
             });
         }); 
+
+        
     }
 
-    $scope.parseFunktioargumentit = function(funktioargumentit) {
-        console.log("parseFunktioargumentit");
-        if(funktioargumentit) {
-            $scope.filterEmptyObjects(funktioargumentit);
-            _.forEach(function(item) {
-                console.log('funkarg item', item);
-                parseFunktioargumentit(item.lapsi.funktioargumentit);
-            })
-        }
+    
 
-    }
-
-    $scope.filterEmptyObjects = function(arr) {
-        arr.filter(function(item) {_.isEmpty(item)});
-    }
 
     // index on indeksi nyt käsiteltävälle funktioargumentille (nimetyille funktioargumenteille)
     $scope.findFunktioSlotIndex = function(parent, index) {
