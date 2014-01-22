@@ -149,17 +149,19 @@
 
 <!-- NIMETTY LUKUARVO -->
 <script type="text/ng-template" id="nimetty_lukuarvo">
-    <div class="frame">
+    <div class="frame" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon">&#8302;</span>
-        <span class="label" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} - {{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
+        <span class="label" ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">Nimetty lukuarvo</span>
+        <span class="label" ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}}</span>
     </div>
 </script>
 
 <!-- NIMETTY TOTUUSARVO -->
 <script type="text/ng-template" id="nimetty_totuusarvo">
-    <div class="frame">
+    <div class="frame" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon">&#8302;</span>
-        <span class="label" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} - {{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
+        <span class="label" ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">Nimetty totuusarvo</span>
+        <span class="label" ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}}</span>
     </div>
 </script>
 
@@ -264,7 +266,7 @@ YHTASUURI
 </script>
 
 
-<!-- Nimetty funktioargumentti, jolle ei ole asetettu arvoa -->
+<!-- Temnplatet nimetty funktioargumentti -tyyppisille funktiokutsuille, joille ei ole asetettu arvoa -->
 <script type="text/ng-template" id="nimettyFunktioSlot">
 
     <span class="label" ng-init="funktioSlotIndex = findFunktioSlotIndex(parent, $index)" ng-click="showNewFunktioList = {visible: true}; hideFunktioMenu()">
@@ -286,10 +288,10 @@ YHTASUURI
             <span ng-if="$index == 0"><i style="font-size: 18px" class="fa fa-plus-square kaavaeditor-blue"></i> Funktioargumentti</span>
         </div>
         <div ng-if="parent.lapsi.funktionimi === 'NIMETTYTOTUUSARVO'">
-            <span ng-if="$index == 0"><i style="font-size: 18px" class="fa fa-plus-square kaavaeditor-blue"></i> Nimetty totuusarvo</span>
+            <span ng-if="$index == 0"><i style="font-size: 18px" class="fa fa-plus-square kaavaeditor-blue"></i> Funktioargumentti</span>
         </div>
         <div ng-if="parent.lapsi.funktionimi === 'NIMETTYLUKUARVO'">
-            <span ng-if="$index == 0"><i style="font-size: 18px" class="fa fa-plus-square kaavaeditor-blue"></i> Nimetty lukuarvo</span>
+            <span ng-if="$index == 0"><i style="font-size: 18px" class="fa fa-plus-square kaavaeditor-blue"></i> Funktioargumentti</span>
         </div>
         <div ng-if="parent.lapsi.funktionimi === 'YHTASUURI' || 
                     parent.lapsi.funktionimi === 'SUUREMPITAIYHTASUURI' ||
@@ -374,7 +376,7 @@ YHTASUURI
             </tr>
             <tr>
                 <td ng-click="addFunktio(parent, 'KONVERTOILUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false"><span>Konversio</span></td>
-                <td ng-click="addFunktio(parent, 'LASKENTAKAAVAVIITE', funktioSlotIndex); showNewFunktioList.visible = false"><span>Viittaus toiseen kaavaan</span></td>
+                <td ng-click="addLaskentakaavaviite(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>Viittaus toiseen kaavaan</span></td>
             </tr>
             <tr>
                 <td ng-click="addFunktio(parent, 'HAEMERKKIJONOJAKONVERTOILUKUARVOKSI', funktioSlotIndex); showNewFunktioList.visible = false"><span>Hae merkkijono ja konvertoi lukuarvoksi</span></td>

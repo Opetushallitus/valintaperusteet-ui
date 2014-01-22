@@ -94,10 +94,6 @@ app.factory('FunktioService', function(FunktioKuvausResource) {
             }
         }
 
-        this.getKonvertteriType = function() {
-            
-        }
-
         this.refresh = function() {
             FunktioKuvausResource.get({}, function(result) {
                 model.funktiokuvaukset = result;
@@ -111,13 +107,7 @@ app.factory('FunktioService', function(FunktioKuvausResource) {
                     if(item.lapsi) { item.lapsi.funktioargumentit = model.cleanLaskentakaavaPKObjects(item.lapsi.funktioargumentit); }
                 });
             }
-            return model.filterEmptyObjects(funktioargumentit);
-        }
-
-        this.filterEmptyObjects = function(arr) {
-            return arr.filter(function(item) {
-                return !_.isEmpty(item);
-            });
+            return _.filter(funktioargumentit, function(item) {return !_.isEmpty(item)});
         }
 
         this.addPKObjects = function(funktioargumentit) {
@@ -225,33 +215,6 @@ app.factory('FunktioFactory', function(FunktioService){
                 indeksi: 0
             }
         }
-
-        function generateLaskentakaavaviitePrototype() {
-            
-            return {
-                lapsi: {
-                    funktionimi: null,
-                    arvokonvertteriparametrit: [],
-                    arvovalikonvertteriparametrit: [],
-                    syoteparametrit: [],
-                    funktioargumentit: [],
-                    valintaperusteviitteet: [],
-                    validointivirheet: [],
-                    onLuonnos: false,
-                    nimi: "lk1",
-                    kuvaus: null,
-                    tyyppi: "LUKUARVOFUNKTIO",
-                    id: 2494612,
-                    lapsityyppi: "laskentakaava",
-                    tulosTunniste: null,
-                    tulosTekstiFi: null,
-                    tulosTekstiSv: null,
-                    tulosTekstiEn: null,
-                    tallennaTulos: null
-                },
-                indeksi: 1
-            }
-        }
         
         function setLapsityyppi(funktioprototype, funktiotyyppi) {
             if(funktiotyyppi === 'LASKENTAKAAVAVIITE') {
@@ -261,8 +224,61 @@ app.factory('FunktioFactory', function(FunktioService){
             }
         }
 
+        this.createLaskentakaavaviite = function(laskentakaavaviite) {
+            
+            if(laskentakaavaviite) {
+                return {
+                    lapsi: {
+                        funktionimi: null,
+                        arvokonvertteriparametrit: [],
+                        arvovalikonvertteriparametrit: [],
+                        syoteparametrit: [],
+                        funktioargumentit: [],
+                        valintaperusteviitteet: [],
+                        validointivirheet: [],
+                        onLuonnos: laskentakaavaviite.onLuonnos,
+                        nimi: laskentakaavaviite.nimi,
+                        kuvaus: laskentakaavaviite.kuvaus,
+                        tyyppi: laskentakaavaviite.tyyppi,
+                        id: laskentakaavaviite.id,
+                        lapsityyppi: "laskentakaava",
+                        tulosTunniste: null,
+                        tulosTekstiFi: null,
+                        tulosTekstiSv: null,
+                        tulosTekstiEn: null,
+                        tallennaTulos: false
+                    },
+                    indeksi: 0
+                }
+            } else {
+                return {
+                    lapsi: {
+                        funktionimi: null,
+                        arvokonvertteriparametrit: [],
+                        arvovalikonvertteriparametrit: [],
+                        syoteparametrit: [],
+                        funktioargumentit: [],
+                        valintaperusteviitteet: [],
+                        validointivirheet: [],
+                        onLuonnos: false,
+                        nimi: 'Valitse laskentakaava',
+                        kuvaus: null,
+                        tyyppi: null,
+                        id: null,
+                        lapsityyppi: "laskentakaava",
+                        tulosTunniste: null,
+                        tulosTekstiFi: null,
+                        tulosTekstiSv: null,
+                        tulosTekstiEn: null,
+                        tallennaTulos: false
+                    },
+                    indeksi: 0
+                }
+            } 
+        }
+
         //parentFunktiokutsu -objektista puuttuu lapsi-wrapperi, joten funktiokutsun luominen juureen toteutetaan erikseen
-        this.createFirstChildFunktio = function(parentFunktiokutsu, newFunktioType, index) {
+        this.createFirstChildFunktio = function(parentFunktiokutsu, newFunktioType) {
             var parentFunktiokuvaus = FunktioService.getFunktiokuvaus(parentFunktiokutsu.funktionimi);
             var newFunktioFunktiokuvaus = FunktioService.getFunktiokuvaus(newFunktioType);
             var funktioprototype = generateFunktioPrototype();
@@ -284,19 +300,12 @@ app.factory('FunktioFactory', function(FunktioService){
             //Generoidaan valintaperusteviitteet
             if(newFunktioFunktiokuvaus.valintaperuste) { populateValintaperusteviitteet(funktioprototype, newFunktioFunktiokuvaus) }
             
-            // jos funktiokutsu on luotu nykyisen kaaveditorikäynnin aikana, niin funktioargumentteissa on oletuksena yksi null, joka täytyy poistaa funktiokutsua lisättäessä   
-            if(arrayWithSingleNull(parentFunktiokutsu.funktioargumentit)) {
-               parentFunktiokutsu.funktioargumentit[0] = funktioprototype;
-               return parentFunktiokutsu.funktioargumentit[0];
-            } 
-
-            parentFunktiokutsu.funktioargumentit[index] = funktioprototype;
-            return parentFunktiokutsu.funktioargumentit[index];
+            return funktioprototype;
 
         }
 
         //huomioi laskentakaavaviitteet
-        this.createFunktioInstance = function(parentFunktiokutsu, newFunktioType, index) {
+        this.createFunktioInstance = function(parentFunktiokutsu, newFunktioType) {
 
             var parentFunktiokuvaus = FunktioService.getFunktiokuvaus(parentFunktiokutsu.lapsi.funktionimi); 
             var newFunktioFunktiokuvaus = FunktioService.getFunktiokuvaus(newFunktioType);            
@@ -319,14 +328,7 @@ app.factory('FunktioFactory', function(FunktioService){
             //Generoidaan valintaperusteviitteet
             if(newFunktioFunktiokuvaus.valintaperuste) { populateValintaperusteviitteet(funktioprototype, newFunktioFunktiokuvaus);}
             
-            // jos funktiokutsu on luotu nykyisen kaaveditorikäynnin aikana, niin funktioargumentteissa on oletuksena yksi null, joka täytyy poistaa funktiokutsua lisättäessä   
-            if(arrayWithSingleNull(parentFunktiokutsu.lapsi.funktioargumentit)) {
-               parentFunktiokutsu.lapsi.funktioargumentit[0] = funktioprototype;
-               return parentFunktiokutsu.lapsi.funktioargumentit[0];
-            }
-
-            parentFunktiokutsu.lapsi.funktioargumentit[index] = funktioprototype;
-            return parentFunktiokutsu.lapsi.funktioargumentit[index];
+            return funktioprototype;
         }
 
         //Lisätään funktioprototypeen funktiokuvauksen mukaiset syoteparametrit

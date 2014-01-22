@@ -10,6 +10,11 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
     $scope.funktionimiService = FunktioNimiService;
     $scope.funktioFactory = FunktioFactory;
 
+
+    //Pidetään laskentakaaviitevalinta objektissa. Laskentakaavaviitettä kaavaan liitettäessä radio-inputit iteroidaan ng-repeatissa, 
+    //joka luo uuden skoopin joka itemille, jolloin laskentakaavaviitteen tallentaminen  suoraan skoopissa olevaan muuttujaan ei toimi oikein
+    $scope.laskentakaavaviite = { selection: null }
+
     //Laskentakaavapuu datan skooppiin
     $scope.laskentakaavaOid = $routeParams.laskentakaavaOid;
     $scope.model = LaskentakaavaService;
@@ -59,7 +64,6 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         $scope.funktioasetukset.parentFunktiokutsu = parentFunktiokutsu;
         $scope.funktioasetukset.selectedFunktioIndex = index;
         $scope.funktioSelection = funktio;
-        $scope.funktiokuvausForSelection = $scope.funktioService.getFunktiokuvaus(funktio.funktionimi);
 
         //päätellään funktiolle esivalittu konvertteriparametrityyppi, jos funktiolla on konvertteriparametreja
         $scope.setKonvertteriType($scope.funktioSelection);
@@ -67,7 +71,64 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         // päätellään kumpi funktioasetusnäkymä tuodaan näkyviin, funktiokutsuille ja laskentakaavaviitteille on omat näkymänsä
         isFunktiokutsu ? $scope.setFunktioasetusView(true, false) : $scope.setFunktioasetusView(false, true);
 
+        $scope.laskentakaavaviite.selection = funktio || null;
         $scope.isRootSelected = false;
+    }
+
+    $scope.setLaskentakaavaviite = function(kaava) {
+        $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = $scope.funktioFactory.createLaskentakaavaviite(kaava);
+    }
+
+    $scope.addLaskentakaavaviite = function(parent, index) {
+        var firstChildForRoot = $scope.isFirstChildForRoot(parent);
+
+        $scope.funktioasetukset.parentFunktiokutsu = parent;
+        $scope.funktioasetukset.selectedFunktioIndex = index;
+
+        $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = $scope.funktioFactory.createLaskentakaavaviite();
+        $scope.laskentakaavaviite.selection = '-';
+        $scope.setFunktioasetusView(false, true);
+    }
+
+    $scope.addFunktio = function(parent, funktionimi, index) {
+        var firstChildForRoot = $scope.isFirstChildForRoot(parent);
+        var createdFunktio = firstChildForRoot ? $scope.funktioFactory.createFirstChildFunktio(parent, funktionimi, index) : $scope.funktioFactory.createFunktioInstance(parent, funktionimi, index);
+        
+        if(firstChildForRoot) { parent.funktioargumentit[index] = createdFunktio;
+        } else { parent.lapsi.funktioargumentit[index] = createdFunktio; }
+        
+        $scope.setFunktioSelection(createdFunktio, true, parent, index);
+        
+        //lisätään uusi pari funktioargumentteja, kun edelliset on täytetty
+        if($scope.getFunktionimi(parent) === 'PAINOTETTUKESKIARVO') {
+            var argCount = $scope.getDefinedFunktioargumenttiCount(parent);
+            if(argCount % 2 == 0) {
+                parent.lapsi.funktioargumentit.push({});
+                parent.lapsi.funktioargumentit.push({});
+            } 
+        }
+    }
+    
+    // index on indeksi nyt käsiteltävälle funktioargumentille (nimetyille funktioargumenteille)
+    $scope.findFunktioSlotIndex = function(parent, index) {
+        var isNimetty = $scope.isNimettyFunktioargumentti(parent);
+        var resultIndex = undefined;
+        var isPainotettukeskiarvoChild = isPainotettukeskiarvoChild = $scope.funktioService.isPainotettukeskiarvoChild(parent);
+        if(isNimetty || isPainotettukeskiarvoChild) {
+            resultIndex = index;
+        } else {
+            if( $scope.isFirstChildForRoot(parent) ) {
+                resultIndex = $scope.noFunktioarguments(parent.funktioargumentit) ? 0 : parent.lapsi.funktioargumentit.length;
+            } else {
+                resultIndex = $scope.noFunktioarguments(parent.lapsi.funktioargumentit) ? 0 : parent.lapsi.funktioargumentit.length;
+            }
+        }
+        return resultIndex;
+    }
+    
+
+    $scope.noFunktioarguments = function(funktioargumentit) {
+        return funktioargumentit.length == 1 && _.isEmpty(funktioargumentit[0]);
     }
 
     // Kaikissa tapauksissa funktiokutsuilla ja laskentakaavaviitteillä on parent, mutta juuresta seuraavalla tasolla ei ole parent.lapsi -muuttujaa, 
@@ -207,7 +268,6 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
 
         $scope.setFunktioasetusView(false, false);
         $scope.funktioSelection = undefined;
-        $scope.funktiokuvausForSelection = undefined;
 
         //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
         $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = $scope.funktioService.cleanLaskentakaavaPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
@@ -224,37 +284,8 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         
     }
 
+
     
-
-
-    // index on indeksi nyt käsiteltävälle funktioargumentille (nimetyille funktioargumenteille)
-    $scope.findFunktioSlotIndex = function(parent, index) {
-        var isNimetty = $scope.isNimettyFunktioargumentti(parent);
-        var isPainotettukeskiarvoChild = isPainotettukeskiarvoChild = $scope.funktioService.isPainotettukeskiarvoChild(parent);
-        result = isNimetty || isPainotettukeskiarvoChild ? index : parent.lapsi.funktioargumentit.length;
-        return result;
-
-    }
-
-    $scope.addFunktio = function(parent, funktionimi, index) {
-        var firstChildForRoot = $scope.isFirstChildForRoot(parent);
-        var createdFunktio = firstChildForRoot ? $scope.funktioFactory.createFirstChildFunktio(parent, funktionimi, index) : $scope.funktioFactory.createFunktioInstance(parent, funktionimi, index);
-        $scope.setFunktioSelection(createdFunktio, true, parent, index);
-        
-        //lisätään uusi pari funktioargumentteja, kun edelliset on täytetty
-        if($scope.getFunktionimi(parent) === 'PAINOTETTUKESKIARVO') {
-            var argCount = $scope.getDefinedFunktioargumenttiCount(parent);
-            if(argCount % 2 == 0) {
-                parent.lapsi.funktioargumentit.push({});
-                parent.lapsi.funktioargumentit.push({});
-            } 
-        }
-    }
-    
-    $scope.addChildLaskentakaava = function(parentFunktio, argumenttiNimi) {
-        var newKaava = parentFunktio.addNewLaskentakaavaReference(argumenttiNimi, $routeParams.valintaryhmaOid);
-        $scope.showKaavaDetails(newKaava);
-    }
 
     $scope.kaavaDragged = function(funktio, oldParent, newParent, index) {
 
@@ -279,21 +310,6 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         $scope.kaavaDragged(paramObject.draggedFunktio, paramObject.oldParentFunktio, paramObject.newParentFunktio, paramObject.index);
     });
 
-    
-    $scope.validoiKaavaData = function() {
-        var kaava = Laskentapuu.laskentakaava().getData();
-        var validateKaava = {};
-        angular.copy(kaava, validateKaava);
-        KaavaValidointi.post({}, validateKaava, function(data) {
-            Laskentapuu.setKaavaData(data);
-            if(Laskentapuu.laskentakaava().hasErrors()) {
-                $scope.errors = Laskentapuu.laskentakaava().getAllErrors()
-                Laskentapuu.setKaavaData();
-            }   
-        });
-    }
-    
-
     $scope.goToListing = function() {
         if($routeParams.valintaryhmaOid) {
             $location.path("/valintaryhma/" + $routeParams.valintaryhmaOid + "/laskentakaava")
@@ -315,3 +331,4 @@ function funktioMenuController($scope) {
     });
 
 }
+

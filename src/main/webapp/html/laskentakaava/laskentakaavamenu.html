@@ -95,16 +95,11 @@
 <div style="width:30%;float:right;" ng-if="funktioasetukset.showLaskentakaavaInformation">
     <div class="settingsform">
         <h3>Laskentakaavaviittauksen asetukset</h3>
-        
         <div ng-repeat="valintaryhmaList in laskentakaavalista.valintaryhmaList()">
-            <div ng-repeat="valintaryhma in valintaryhmaList" ng-if="valintaryhma.laskentakaavat.length > 0">
-                <h3>{{valintaryhma.nimi}}</h3>
-                <div ng-repeat="kaava in valintaryhma.laskentakaavat">
-                   
-                    <div class="margin-bottom-1" ng-hide="kaava.id == fetched">
-                        <input type="radio" name="kaava" value="{{kaava}}" ng-model="funktioSelection.lapsi"/>
-                       
-                    </div>
+            <div ng-repeat="valintaryhma in valintaryhmaList" >
+                <h3>Valintaryhmä: {{valintaryhma.nimi}}</h3>
+                <div ng-repeat="kaava in valintaryhma.laskentakaavat" ng-if="kaava.id !== model.laskentakaavapuu.id">
+                    <input type="radio" name="laskentakaavaviite" ng-value="kaava" ng-change="setLaskentakaavaviite(kaava)" ng-model="laskentakaavaviite.selection" /><label name="laskentakaavaviite"> {{kaava.nimi}}</label>
                 </div>
             </div>
         </div>
