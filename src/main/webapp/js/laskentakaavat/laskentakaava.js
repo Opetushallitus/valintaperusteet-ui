@@ -64,7 +64,10 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         $scope.funktioasetukset.parentFunktiokutsu = parentFunktiokutsu;
         $scope.funktioasetukset.selectedFunktioIndex = index;
         $scope.funktioSelection = funktio;
-
+        if(isFunktiokutsu) {
+            $scope.funktiokuvausForSelection = $scope.funktioService.getFunktiokuvaus(funktio.lapsi.funktionimi);
+        }
+            
         //päätellään funktiolle esivalittu konvertteriparametrityyppi, jos funktiolla on konvertteriparametreja
         $scope.setKonvertteriType($scope.funktioSelection);
 
@@ -91,10 +94,10 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
     }
 
     $scope.addFunktio = function(parent, funktionimi, index) {
-        var firstChildForRoot = $scope.isFirstChildForRoot(parent);
-        var createdFunktio = firstChildForRoot ? $scope.funktioFactory.createFirstChildFunktio(parent, funktionimi, index) : $scope.funktioFactory.createFunktioInstance(parent, funktionimi, index);
+        var isDirectChildForRoot = $scope.isFirstChildForRoot(parent);
+        var createdFunktio =  $scope.funktioFactory.createFunktioInstance(parent, funktionimi, isDirectChildForRoot);
         
-        if(firstChildForRoot) { parent.funktioargumentit[index] = createdFunktio;
+        if(isDirectChildForRoot) { parent.funktioargumentit[index] = createdFunktio;
         } else { parent.lapsi.funktioargumentit[index] = createdFunktio; }
         
         $scope.setFunktioSelection(createdFunktio, true, parent, index);
@@ -109,7 +112,7 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
         }
     }
     
-    // index on indeksi nyt käsiteltävälle funktioargumentille (nimetyille funktioargumenteille)
+    // index on indeksi nyt käsiteltävälle funktioargumentille (vain nimetyille funktioargumenteille)
     $scope.findFunktioSlotIndex = function(parent, index) {
         var isNimetty = $scope.isNimettyFunktioargumentti(parent);
         var resultIndex = undefined;
