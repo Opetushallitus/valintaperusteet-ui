@@ -1,21 +1,5 @@
 
 
-app.factory('LaskentakaavaService', function($q, Laskentakaava, FunktioService){
-    var model = new function() {
-        this.laskentakaavapuu = {};
-
-        this.refresh = function(oid) {
-            Laskentakaava.get({oid: oid}, function(result) {
-                model.laskentakaavapuu = result;
-                //laskentakaavan painotettu keskiarvo -funktiokutsuihin lisätään tyhjät objektit, jotta niihin pystytään lisäämään funktioargumentteja
-                FunktioService.addPKObjects(model.laskentakaavapuu.funktiokutsu.funktioargumentit);
-            });
-        }
-    }   
-
-    return model;
-});
-
 app.factory('FunktioService', function(FunktioKuvausResource) {
     var model = new function() {
         this.funktiokuvaukset = {};

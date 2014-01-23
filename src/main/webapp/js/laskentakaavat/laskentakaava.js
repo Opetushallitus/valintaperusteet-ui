@@ -1,7 +1,7 @@
 
 
 
-function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValidointi, LaskentakaavaLista, LaskentakaavaService, TemplateService, FunktioService, Valintaperusteviitetyypit, FunktioNimiService, FunktioFactory) {
+function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValidointi, Laskentakaava, LaskentakaavaLista, TemplateService, FunktioService, Valintaperusteviitetyypit, FunktioNimiService, FunktioFactory) {
 
     //servicet laskentakaavapuun piirtämiseen
     $scope.templateService = TemplateService;
@@ -14,11 +14,16 @@ function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValido
     //Pidetään laskentakaaviitevalinta objektissa. Laskentakaavaviitettä kaavaan liitettäessä radio-inputit iteroidaan ng-repeatissa, 
     //joka luo uuden skoopin joka itemille, jolloin laskentakaavaviitteen tallentaminen  suoraan skoopissa olevaan muuttujaan ei toimi oikein
     $scope.laskentakaavaviite = { selection: null }
+    
 
     //Laskentakaavapuu datan skooppiin
+    $scope.model = {};
     $scope.laskentakaavaOid = $routeParams.laskentakaavaOid;
-    $scope.model = LaskentakaavaService;
-    $scope.model.refresh($scope.laskentakaavaOid);
+    Laskentakaava.get({oid: $scope.laskentakaavaOid}, function(result) {
+        $scope.model.laskentakaavapuu = result;
+        //laskentakaavan painotettu keskiarvo -funktiokutsuihin lisätään tyhjät objektit, jotta niihin pystytään lisäämään funktioargumentteja
+        FunktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
+    });
 
     $scope.valintaperusteviitetyypit = Valintaperusteviitetyypit;
     $scope.errors = [];

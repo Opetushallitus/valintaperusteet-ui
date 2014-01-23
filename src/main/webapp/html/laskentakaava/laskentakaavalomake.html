@@ -22,9 +22,7 @@
     <div class="clear"></div>
 
     <div class="notification warning margin-top-2" ng-show="errors.length > 0">
-        <ul>
-            <li ng-repeat="error in errors">{{error.virheviesti}}</li>
-        </ul>
+        <p ng-if="errors">Laskentakaavassa on virheitä, tarkista että olet täyttänyt kaikki pakolliset kentät</p>
     </div>
 
     <!-- Laskentakaavapuu -->
@@ -32,10 +30,6 @@
 
     <!-- Laskentakaavan tai funktion asetukset -->
     <div ng-include="'laskentakaava/laskentakaavamenu.html'"></div>
-    
-
-
 
     <div class="clear"></div>
-    <h5>{{model.laskentakaavapuu.funktiokutsu}}</h5>
 </div>
