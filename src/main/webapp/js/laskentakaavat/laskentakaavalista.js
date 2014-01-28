@@ -94,7 +94,7 @@ function LaskentakaavaListController($scope, $location, $routeParams, Laskentaka
         $scope.valintaryhmat = LaskentakaavaLista;
     }
 
-    var queryParams = $.extend({all: true}, params);
+    var queryParams = $.extend({myosLuonnos: true}, params);
     $scope.laskentakaavat = Laskentakaava.list(queryParams);
     $scope.showForm = false;
 
