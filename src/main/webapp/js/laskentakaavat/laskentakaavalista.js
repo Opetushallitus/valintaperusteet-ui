@@ -150,5 +150,9 @@ function LaskentakaavaListController($scope, $location, $routeParams, Laskentaka
             });
         }
     }
+
+    $scope.cancel = function() {
+        $location.path("/");
+    }
 }
 
