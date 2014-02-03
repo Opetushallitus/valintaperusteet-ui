@@ -1,5 +1,5 @@
 
-
+'use strict';
 
 function LaskentakaavaController($scope, _, $location, $routeParams, KaavaValidointi, Laskentakaava, LaskentakaavaLista, TemplateService, FunktioService, Valintaperusteviitetyypit, FunktioNimiService, FunktioFactory) {
 

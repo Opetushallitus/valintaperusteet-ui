@@ -1,4 +1,4 @@
-
+'use strict';
 
 app.factory('FunktioService', function(FunktioKuvausResource) {
     var model = new function() {

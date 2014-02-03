@@ -1,3 +1,4 @@
+'use strict';
 
 function LaskentakaavaMenuController($scope, $routeParams) {
     $scope.menuitems = [

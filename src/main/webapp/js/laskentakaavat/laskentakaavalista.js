@@ -1,3 +1,5 @@
+'use strict';
+
 app.factory('LaskentakaavaLista', function (Laskentakaava, ParentValintaryhmas, Hakukohde, Valintaryhma) {
     var valintaryhmaList = [];
     var hakukohde = [];
