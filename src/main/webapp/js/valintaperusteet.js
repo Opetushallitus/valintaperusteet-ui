@@ -1,7 +1,8 @@
 "use strict";
-var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'localization', 'ui.bootstrap', 'lodash']).run(function($http){
+var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'localization', 'ui.bootstrap', 'lodash', 'LaskentakaavaEditor']).run(function($http){
     $http.get(SERVICE_URL_BASE + "buildversion.txt?auth");
 });
+
 
 angular.module('localization', []).run(function($locale) {
     var localeMapping = {"en-us": "en_US", "fi-fi": "fi_FI", "sv-se": "sv-SE"};

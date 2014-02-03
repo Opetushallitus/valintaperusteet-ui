@@ -1,6 +1,6 @@
 'use strict';
 
-app.factory('FunktioService', function(FunktioKuvausResource) {
+laskentakaavaEditor.factory('FunktioService', function(FunktioKuvausResource) {
     var model = new function() {
         this.funktiokuvaukset = {};
 
@@ -119,7 +119,7 @@ app.factory('FunktioService', function(FunktioKuvausResource) {
     return model;
 });
 
-app.factory('FunktioNimiService', function() {
+laskentakaavaEditor.factory('FunktioNimiService', function() {
     var nameService = new function() {
         this.nameMappings = {
             LUKUARVO: 'Lukuarvo',
@@ -173,7 +173,7 @@ app.factory('FunktioNimiService', function() {
     return nameService;
 });
 
-app.factory('FunktioFactory', function(FunktioService){
+laskentakaavaEditor.factory('FunktioFactory', function(FunktioService){
     var factory = new function() {
 
         function generateFunktioPrototype() {
@@ -330,7 +330,7 @@ app.factory('FunktioFactory', function(FunktioService){
     return factory;
 });
 
-app.factory('TemplateService', function(FunktioService) {
+laskentakaavaEditor.factory('TemplateService', function(FunktioService) {
     var templateservice = new function() {
 
         
@@ -376,7 +376,7 @@ app.factory('TemplateService', function(FunktioService) {
 });
 
 
-app.factory('Valintaperusteviitetyypit', function() {
+laskentakaavaEditor.factory('Valintaperusteviitetyypit', function() {
     return [
         { key: 'HAETTAVA_ARVO', text: 'Arvo hakemukselta' },
         { key: 'SYOTETTAVA_ARVO', text: 'Syötettävä arvo' },

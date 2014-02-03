@@ -1,6 +1,6 @@
 'use strict';
 
-app.factory('LaskentakaavaLista', function (Laskentakaava, ParentValintaryhmas, Hakukohde, Valintaryhma) {
+laskentakaavaEditor.factory('LaskentakaavaLista', function (Laskentakaava, ParentValintaryhmas, Hakukohde, Valintaryhma) {
     var valintaryhmaList = [];
     var hakukohde = [];
     var valintaryhma = null;

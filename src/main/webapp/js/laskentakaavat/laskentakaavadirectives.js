@@ -1,6 +1,6 @@
 'use strict';
 
-app.directive('kaavadrag', function() {
+laskentakaavaEditor.directive('kaavadrag', function() {
   return {
     restrict: 'A',
     link: function($scope, iElm, iAttrs, controller) {
@@ -45,12 +45,4 @@ app.directive('kaavadrag', function() {
 
     }
   };
-});
-
-app.directive('funktioClasses', function() {
-  return {
-    link: function($scope, iElement, iAttrs) {
-
-    }
-  }
 });
