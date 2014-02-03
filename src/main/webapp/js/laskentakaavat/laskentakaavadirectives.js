@@ -1,3 +1,5 @@
+'use strict';
+
 app.directive('kaavadrag', function() {
   return {
     restrict: 'A',
