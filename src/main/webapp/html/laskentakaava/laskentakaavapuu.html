@@ -215,13 +215,16 @@
     <div class="function" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon">&#8302;</span>
         <span class="label" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">
-        <span>{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}: </span>
+        <span>{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}
+
+        <!--: </span>
         <span ng-if="funktiowrapper.lapsi.syoteparametrit[1].arvo">{{funktiowrapper.lapsi.syoteparametrit[1].arvo}}</span>
         <span ng-if="!funktiowrapper.lapsi.syoteparametrit[1].arvo">?</span>
         <span> - </span>
         <span ng-if="funktiowrapper.lapsi.syoteparametrit[2].arvo">{{funktiowrapper.lapsi.syoteparametrit[2].arvo}}</span>
         <span ng-if="!funktiowrapper.lapsi.syoteparametrit[2].arvo">?</span>
         <span ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo"> ({{funktiowrapper.lapsi.syoteparametrit[0].arvo}})</span>
+    -->
     </div>
 </script>
 
