@@ -134,8 +134,10 @@ function LaskentakaavaListController($scope, $location, $routeParams, Laskentaka
                     onLuonnos: true,
                     nimi: kaavaData.nimi,
                     kuvaus: kaavaData.kuvaus,
+
                     funktiokutsu: {
                         funktionimi: kaavaData.tyyppi,
+                        tallennaTulos: false,
                         syoteparametrit: [
                             {
                                 avain: "nimi",
@@ -146,6 +148,7 @@ function LaskentakaavaListController($scope, $location, $routeParams, Laskentaka
                 }};
 
             kaava = $.extend(kaava, saveParams);
+
 
             Laskentakaava.insert({}, kaava, function (result) {
                 $location.path($scope.linkprefix + "/laskentakaava/" + result.id);
