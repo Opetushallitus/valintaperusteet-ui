@@ -1,8 +1,7 @@
 'use strict';
 
 
-angular.module('LaskentakaavaEditor').controller(
-    'LaskentakaavaController', 
+angular.module('LaskentakaavaEditor').controller( 'LaskentakaavaController', 
     ['$scope', '_', '$location', '$routeParams', 'KaavaValidointi', 'Laskentakaava', 'LaskentakaavaLista', 
     'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'FunktioNimiService', 'FunktioFactory', 
     function ($scope, _, $location, $routeParams, KaavaValidointi, Laskentakaava, LaskentakaavaLista, TemplateService, FunktioService, Valintaperusteviitetyypit, FunktioNimiService, FunktioFactory) {
@@ -332,7 +331,7 @@ angular.module('LaskentakaavaEditor').controller(
     }
 }]);
 
-angular.module('Laskentakaaeditor').controller('funktioMenuController', ['$scope', function ($scope) {
+angular.module('LaskentakaavaEditor').controller('funktioMenuController', ['$scope', function ($scope) {
     $scope.$on('hideFunktioMenu', function() {
         $scope.showNewFunktioList.visible = false;
     });

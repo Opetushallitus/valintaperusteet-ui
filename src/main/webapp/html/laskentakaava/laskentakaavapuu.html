@@ -19,7 +19,7 @@
 <!-- template jota käytetään kaikkien funktioiden piirtämiseen -->
 <script type="text/ng-template" id="funktiokutsu">
     <!-- piirretään laskentakaavan funktiokutsu jossa ollaan -->
-    <div ng-if="funktiowrapper.lapsi" ng-include="'template_selector'"></div>
+    <div ng-if="funktiowrapper.lapsi" ng-include="templateService.getTemplateName(funktiowrapper.lapsi.funktionimi)"></div>
 
     <!-- käydään rekursiivisesti nykyisen funktion lapset läpi -->
     <ul ng-if="funktiowrapper.lapsi.funktioargumentit" ng-init="parent = funktiowrapper">
@@ -35,59 +35,6 @@
     </ul>
 </script>
 
-
-
-<!-- Valitaan funktion nimen perusteella, mitä templatea piirtämiseen käytetään -->
-<script type="text/ng-template" id="template_selector">
-
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'LUKUARVO'" ng-include="'lukuarvo'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'TOTUUSARVO'" ng-include="'totuusarvo'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'HAKUTOIVE'" ng-include="'hakutoive'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'DEMOGRAFIA'" ng-include="'demografia'"></div>
-
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'HAETOTUUSARVO'" ng-include="'haettava_arvo'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'HAELUKUARVO'" ng-include="'haettava_arvo'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'HAEMERKKIJONOJAKONVERTOILUKUARVOKSI'" ng-include="'haettava_arvo'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'HAEMERKKIJONOJAVERTAAYHTASUURUUS'" ng-include="'haettava_arvo'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI'" ng-include="'haettava_arvo'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'VALINTAPERUSTEYHTASUURUUS'" ng-include="'haettava_arvo'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'HAELUKUARVOEHDOLLA'" ng-include="'haettava_arvo'"></div>
-
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'SUMMA'" ng-include="'summa'"></div>
-
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'TAI'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'TULO'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'JOS'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'OSAMAARA'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'SUUREMPI'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'YHTASUURI'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'PIENEMPI'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'MEDIAANI'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'PIENEMPITAIYHTASUURI'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'SUUREMPITAIYHTASUURI'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'EI'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'JA'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'MAKSIMI'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'MINIMI'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'NEGAATIO'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'KESKIARVO'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'KONVERTOILUKUARVO'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'HYLKAA'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'PYORISTYS'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'SKAALAUS'" ng-include="'funktio'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'PAINOTETTUKESKIARVO'" ng-include="'funktio'"></div>
-
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'NMINIMI'" ng-include="'fargumentticount_funktio_handle'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'NMAKSIMI'" ng-include="'fargumentticount_funktio_handle'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'KESKIARVONPARASTA'" ng-include="'fargumentticount_funktio_handle'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'SUMMANPARASTA'" ng-include="'fargumentticount_funktio_handle'"></div>
-
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'HYLKAAARVOVALILLA'" ng-include="'hylkaa_arvovalilla'"></div>
-
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'NIMETTYLUKUARVO'" ng-include="'nimetty_lukuarvo'"></div>
-    <div ng-if="funktiowrapper.lapsi.funktionimi == 'NIMETTYTOTUUSARVO'" ng-include="'nimetty_totuusarvo'"></div>
-
-</script>
 
 <!-- Laskentakaavaviite-->
 <script type="text/ng-template" id="laskentakaavaviite">

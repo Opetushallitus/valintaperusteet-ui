@@ -369,6 +369,57 @@ angular.module('LaskentakaavaEditor').factory('TemplateService', function(Funkti
                     return "";
             }
         }
+        
+        this.getTemplateName = function(key) {
+            var map = {
+                LUKUARVO: 'lukuarvo',
+                TOTUUSARVO: 'totuusarvo',
+                HAKUTOIVE: 'hakutoive',
+                DEMOGRAFIA: 'demografia',
+
+                HAETOTUUSARVO: 'haettava_arvo',
+                HAELUKUARVO: 'haettava_arvo',
+                HAELUKUARVOEHDOLLA: 'haettava_arvo',
+                HAEMERKKIJONOJAKONVERTOILUKUARVOKSI: 'haettava_arvo',
+                HAEMERKKIJONOJAVERTAAYHTASUURUUS: 'haettava_arvo',
+                HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI: 'haettava_arvo',
+                VALINTAPERUSTEYHTASUURUUS: 'haettava_arvo',
+
+                SUMMA: 'summa',
+                
+                TAI: 'funktio',
+                TULO: 'funktio',
+                JOS: 'funktio',
+                OSAMAARA: 'funktio',
+                SUUREMPI: 'funktio',
+                YHTASUURI: 'funktio',
+                PIENEMPI: 'funktio',
+                MEDIAANI: 'funktio',
+                PIENEMPITAIYHTASUURI: 'funktio',
+                SUUREMPITAIYHTASUURI: 'funktio',
+                EI: 'funktio',
+                JA: 'funktio',
+                MAKSIMI: 'funktio',
+                MINIMI: 'funktio',
+                NEGAATIO: 'funktio',
+                KESKIARVO: 'funktio',
+                KONVERTOILUKUARVO: 'funktio',
+                HYLKAA: 'funktio', 
+                PYORISTYS: 'funktio',
+                SKAALAUS: 'funktio',
+                PAINOTETTUKESKIARVO: 'funktio',
+
+                NMINIMI: 'fargumentticount_funktio_handle',
+                NMAKSIMI: 'fargumentticount_funktio_handle',
+                KESKIARVONPARASTA: 'fargumentticount_funktio_handle',
+                SUMMANPARASTA: 'fargumentticount_funktio_handle',
+
+                HYLKAAARVOVALILLA: 'hylkaa_arvovalilla',
+                NIMETTYLUKUARVO: 'nimetty_lukuarvo',
+                NIMETTYTOTUUSARVO: 'nimetty_totuusarvo'
+            }
+            return map[key];
+        }
 
     }
 
