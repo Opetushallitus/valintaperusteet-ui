@@ -1,6 +1,6 @@
 'use strict';
 
-laskentakaavaEditor.directive('kaavadrag', function() {
+angular.module('LaskentakaavaEditor').directive('kaavadrag', function() {
   return {
     restrict: 'A',
     link: function($scope, iElm, iAttrs, controller) {
