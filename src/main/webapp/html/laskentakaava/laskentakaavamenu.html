@@ -34,7 +34,7 @@
                 <tbody>
                 <tr ng-repeat="parametri in funktioSelection.lapsi.arvovalikonvertteriparametrit">
                     <td>
-                        <a ng-click="removeKonvertteriParametri($index, konvertteriparametriSelection)"><i class="fa fa-trash-o"></i></a>
+                        <a ng-click="removeKonvertteriParametri($index, 'ARVOVALIKONVERTTERI')"><i class="fa fa-trash-o"></i></a>
                     </td>
                     <td>
                         <input type="text" size="1" ng-model="parametri.minValue"/>
@@ -76,7 +76,7 @@
                 <tbody>
                 <tr ng-repeat="parametri in funktioSelection.lapsi.arvokonvertteriparametrit">
                     <td>
-                        <a ng-click="removeKonvertteriParametri($index)"><i class="fa fa-trash-o"></i></a>
+                        <a ng-click="removeKonvertteriParametri($index, 'ARVOKONVERTTERI')"><i class="fa fa-trash-o"></i></a>
                     </td>
                     <td><input type="text" size="9" ng-model="parametri.arvo"/></td>
                     <td><input type="text" size="9" ng-model="parametri.paluuarvo"/></td>
