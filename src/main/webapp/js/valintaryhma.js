@@ -94,13 +94,7 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma,
                     Valinnanvaihe.post(model.valinnanvaiheet[i], function(){});
                 }
             }
-            /*
-            if(model.valintaryhma.hakukohdekoodit.length > 0) {
-                ValintaryhmaHakukohdekoodi.post({valintaryhmaOid: model.valintaryhma.oid}, model.valintaryhma.hakukohdekoodit, function(result) {
-                    console.log(result);
-                });
-            }
-            */
+           
             if(model.hakijaryhmat.length > 0) {
                 HakijaryhmaJarjesta.post(getHakijaryhmaOids(), function(result) {
                 });

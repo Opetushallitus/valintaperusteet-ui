@@ -184,11 +184,7 @@ function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra,
 
 	$scope.move = function(index, hakukohdeOid, valintaryhmaOid, item) {
 
-      //  console.log("siirto");
-	  //  console.log(index);
-	   // console.log("Hakukohde oid :"  + hakukohdeOid);
-	   // console.log("Valintaryhmaoidi olisi sit :" + valintaryhmaOid);
-	   // console.log(item);
+     
 
         HakukohdeSiirra.siirra({hakukohdeOid: hakukohdeOid}, valintaryhmaOid, function(result) {
             //var hakukohde = Treemodel.getHakukohde(hakukohdeOid);
