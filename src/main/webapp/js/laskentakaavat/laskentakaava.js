@@ -167,6 +167,17 @@ angular.module('LaskentakaavaEditor').controller( 'LaskentakaavaController',
         }
     }
 
+    $scope.getSyoteparametriArvo = function(syoteparametrit, key) {
+        var result;
+         _.some(syoteparametrit, function(syoteparametri) {
+            if(syoteparametri.avain === key) {
+                result = syoteparametri.arvo;
+                return true;
+            }
+         });
+         return result;
+    }
+
     $scope.syoteparametriTemplate = function(funktiokutsu, index) {
         return $scope.templateService.getSyoteparametriTemplate(funktiokutsu, index);
     }
@@ -289,13 +300,8 @@ angular.module('LaskentakaavaEditor').controller( 'LaskentakaavaController',
             }, function(error) {
                 $scope.errors.push(error);
             });
-        }); 
-
-        
+        });    
     }
-
-
-    
 
     $scope.kaavaDragged = function(funktio, oldParent, newParent, index) {
 

@@ -164,14 +164,13 @@
         <span class="label" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">
         <span>{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}
 
-        <!--: </span>
-        <span ng-if="funktiowrapper.lapsi.syoteparametrit[1].arvo">{{funktiowrapper.lapsi.syoteparametrit[1].arvo}}</span>
-        <span ng-if="!funktiowrapper.lapsi.syoteparametrit[1].arvo">?</span>
+        : </span>
+        <span ng-if="getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'arvovaliMin')">{{getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'arvovaliMin')}}</span>
+        <span ng-if="!getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'arvovaliMin')">?</span>
         <span> - </span>
-        <span ng-if="funktiowrapper.lapsi.syoteparametrit[2].arvo">{{funktiowrapper.lapsi.syoteparametrit[2].arvo}}</span>
-        <span ng-if="!funktiowrapper.lapsi.syoteparametrit[2].arvo">?</span>
-        <span ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo"> ({{funktiowrapper.lapsi.syoteparametrit[0].arvo}})</span>
-    -->
+        <span ng-if="getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'arvovaliMax')">{{getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'arvovaliMax')}}</span>
+        <span ng-if="!getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'arvovaliMax')">?</span>
+        <span ng-if="getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'hylkaysperustekuvaus')"> ({{getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'hylkaysperustekuvaus')}})</span>
     </div>
 </script>
 
