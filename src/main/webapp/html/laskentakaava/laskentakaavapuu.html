@@ -183,6 +183,13 @@
     </div>
 </script>
 
+<!-- HYLKAA -->
+<script type="text/ng-template" id="hylkaa">
+    <div class="function" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
+        <span class="icon">&#8302;</span>
+        <span class="label" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}} <span ng-if="funktiowrapper.lapsi.syoteparametrit[0].avain === 'hylkaysperustekuvaus' && funktiowrapper.lapsi.syoteparametrit[0].arvo">- {{funktiowrapper.lapsi.syoteparametrit[0].arvo}}</span></span>
+    </div>
+</script>
 
 <!-- 
 TAI
@@ -193,7 +200,6 @@ SUUREMPI
 SKAALAUS 
 PYORISTYS
 PAINOTETTUKESKIARVO
-HYLKAA
 KONVERTOILUKUARVO
 KESKIARVO
 NEGAATIO

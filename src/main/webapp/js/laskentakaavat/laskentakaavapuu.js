@@ -387,6 +387,8 @@ angular.module('LaskentakaavaEditor').factory('TemplateService', function(Funkti
 
                 SUMMA: 'summa',
                 
+                HYLKAA: 'hylkaa', 
+
                 TAI: 'funktio',
                 TULO: 'funktio',
                 JOS: 'funktio',
@@ -404,7 +406,7 @@ angular.module('LaskentakaavaEditor').factory('TemplateService', function(Funkti
                 NEGAATIO: 'funktio',
                 KESKIARVO: 'funktio',
                 KONVERTOILUKUARVO: 'funktio',
-                HYLKAA: 'funktio', 
+                
                 PYORISTYS: 'funktio',
                 SKAALAUS: 'funktio',
                 PAINOTETTUKESKIARVO: 'funktio',
