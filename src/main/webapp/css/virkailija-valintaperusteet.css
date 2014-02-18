@@ -3919,8 +3919,7 @@ div.tilaParial:after, div.henkiloPartial:after {
   opacity: 1; }
 
 body {
-  font-size: 13px;
-  min-width: 960px; }
+  font-size: 13px; }
 
 .form-horizontal .form-group .control-content {
   padding-top: 12px; }
