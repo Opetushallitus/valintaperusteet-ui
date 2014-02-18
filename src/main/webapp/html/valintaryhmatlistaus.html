@@ -1,8 +1,8 @@
 <!-- Node template -->
 <script type="text/ng-template" id="valintaryhma_node.html">
 
-    <span class="label">
-            <i class="fa fa-users valintaryhma"  ng-class="{ kiinni: domain.isCollapsed(data), eilapsia: domain.isFile(data), auki: domain.isExpanded(data)}" ng-click="expandNode(data)"></i>
+    <span class="node">
+            <i class="fa fa-users"  ng-class="{ kiinni: domain.isCollapsed(data), eilapsia: domain.isFile(data), auki: domain.isExpanded(data)}" ng-click="expandNode(data)"></i>
         <a href="#/valintaryhma/{{data.oid}}">{{data.nimi}}
             <i ng-if="!data.access" class="fa fa-lock"></i>
         </a>
@@ -23,7 +23,7 @@
 
 <!--Leaf template -->
 <script type="text/ng-template" id="hakukohde_leaf.html">
-    <div class="label"><i class="fa fa-building-o"></i><a href="#/hakukohde/{{data.oid}}"> {{data.nimi}} ({{data.tila}})</a></div>
+    <div class="node"><i class="fa fa-building-o"></i><a href="#/hakukohde/{{data.oid}}">{{data.nimi}} ({{data.tila}})</a></div>
 </script>
 
 <h1>Valintaperusteet</h1>
@@ -68,7 +68,7 @@
     <br><br>
     <div class="results">
         <div>Haku palautti {{domain.tilasto.valintaryhmia}} valintaryhmää ja {{domain.tilasto.hakukohteita}} hakukohdetta </div>
-        <ol ng-if="!domain.search.vainHakukohteet" class="sortable treelist collapsible multiselect" nestedsortable="">
+        <ol ng-if="!domain.search.vainHakukohteet" id="valintaryhmapuu" class="sortable collapsible" nestedsortable="">
             <li ng-repeat="data in domain.valintaperusteList | orderBy:predicate"
                 data-oid="{{data.oid}}"
                 ng-model="data"
