@@ -3151,6 +3151,8 @@ dl.dl-horizontal {
       position: absolute;
       left: -30px;
       top: 0px; }
+    .selectlist li a .node {
+      line-height: 2em; }
   .selectlist li:nth-child(even) a {
     background-color: #f6f6f6;
     position: relative; }
@@ -3938,3 +3940,6 @@ body {
   color: #000000; }
 .gradingformula .frame:active .label, .gradingformula .frame.active .label, .gradingformula .function:active .label, .gradingformula .function.active .label, .gradingformula .parameter:active .label, .gradingformula .parameter.active .label {
   background-color: #e6f8fe; }
+
+.selectlist li a:hover {
+  text-decoration: none; }

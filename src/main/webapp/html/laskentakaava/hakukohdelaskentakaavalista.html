@@ -13,46 +13,47 @@
     
     <h2>Laskentakaavalista</h2>
     
-    <span ng-click="createKaava()" class="button small margin-top-2">Luo uusi laskentakaava</span>
+    <span ng-click="createKaava()" class="button small"><i class="fa fa-plus"></i> Uusi laskentakaava</span>
    
     <div ng-show="showForm">
-        <form name="kaavaForm" novalidate>
-        <div class="form-row">
-            <div class="form-row-label">Laskentakaavan nimi</div>
+        <form class="form-horizontal" name="kaavaForm" novalidate>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Laskentakaavan nimi</label>
 
-            <div class="form-row-content">
-                <input type="text" ng-model="kaava.nimi" required />
+                <div class="col-md-10 control-content">
+                    <input type="text" ng-model="kaava.nimi" required />
+                </div>
             </div>
-            <div class="clear"></div>
-        </div>
-        <div class="form-row">
-            <div class="form-row-label">Laskentakaavan kuvaus</div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Laskentakaavan kuvaus</label>
 
-            <div class="form-row-content">
-                <textarea ng-model="kaava.kuvaus"></textarea>
+                <div class="col-md-10 control-content">
+                    <textarea ng-model="kaava.kuvaus"></textarea>
+                </div>
             </div>
-            <div class="clear"></div>
-        </div>
-        <div class="form-row" ng-show="!kaava.id">
-            <div class="form-row-label">Laskentakaavan tyyppi</div>
+            <div class="form-group" ng-show="!kaava.id">
+                <label class="control-label col-md-2">Laskentakaavan tyyppi</label>
 
-            <div class="form-row-content">
-                <input type="radio" name="tyyppi" value="NIMETTYTOTUUSARVO" ng-model="kaava.tyyppi" /> Totuusarvofunktio
-                <br />
-                <input type="radio" name="tyyppi" value="NIMETTYLUKUARVO" ng-model="kaava.tyyppi" /> Lukuarvofunktio
+                <div class="control-content col-md-10">
+                    <input type="radio" name="tyyppi" value="NIMETTYTOTUUSARVO" ng-model="kaava.tyyppi" /> Totuusarvofunktio
+                    <br />
+                    <input type="radio" name="tyyppi" value="NIMETTYLUKUARVO" ng-model="kaava.tyyppi" /> Lukuarvofunktio
+                </div>
             </div>
-            <div class="clear"></div>
-        </div>
-        <div class="form-row">
-            <button class="button small primary"
-                  ng-click="saveKaava(kaava)"
-                  ng-disabled="kaavaForm.$invalid">Tallenna</button>
-            <span class="button small" ng-click="cancelEdit(kaava)">Peruuta</span>
-        </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    <button class="button small primary"
+                          ng-click="saveKaava(kaava)"
+                          ng-disabled="kaavaForm.$invalid"><i
+                            class="fa fa-floppy-o"></i> Tallenna</button>
+                    <span class="button small" ng-click="cancelEdit(kaava)"><i
+                            class="fa fa-arrow-left"></i> Peruuta</span>
+                </div>
+            </div>
         </form>
     </div>
 
-    <div class="width-60" ng-repeat="hakukohde in hakukohdeLaskentakaavaLista.hakukohdeList()">
+    <div class="col-md-12" ng-repeat="hakukohde in hakukohdeLaskentakaavaLista.hakukohdeList()">
 
 
         <h3>{{hakukohde.nimi}}</h3>
@@ -89,7 +90,7 @@
         </table>
     </div>
 
-    <div class="width-60" ng-repeat="valintaryhmaList in hakukohdeLaskentakaavaLista.valintaryhmaList()">
+    <div class="col-md-12" ng-repeat="valintaryhmaList in hakukohdeLaskentakaavaLista.valintaryhmaList()">
         <div ng-repeat="valintaryhma in valintaryhmaList">
             <h3>{{valintaryhma.nimi}}</h3>
             <div class="notification info margin-bottom-2" ng-show="!valintaryhma.laskentakaavat || valintaryhma.laskentakaavat.length == 0">
@@ -125,4 +126,5 @@
             </table>
         </div>
     </div>
+    <div class="clear"></div>
 </div>
