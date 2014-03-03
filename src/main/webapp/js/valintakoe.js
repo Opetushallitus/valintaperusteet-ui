@@ -8,9 +8,6 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 			if(!oid) {
 				model.valintakoe = {};
 				model.valintakoe.laskentakaavaId = "";
-				Laskentakaava.list({tyyppi: "TOTUUSARVOFUNKTIO"},function(result) {
-                	model.laskentakaavat = result;
-                });
 			} else {
 				Valintakoe.get({valintakoeOid: oid}, function(result) {
 					
@@ -19,12 +16,11 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 						model.valintakoe.laskentakaavaId = "";
 					}
 				});
-				
-				Laskentakaava.list({tyyppi: "TOTUUSARVOFUNKTIO"},function(result) {
-                	model.laskentakaavat = result;
-                });
-
 			}
+
+			Laskentakaava.list({tyyppi: "TOTUUSARVOFUNKTIO"},function(result) {
+				model.laskentakaavat = result;
+			});
 		}
 
 		this.refreshIfNeeded = function(oid) {
