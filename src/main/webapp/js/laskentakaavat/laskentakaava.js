@@ -3,8 +3,8 @@
 
 angular.module('LaskentakaavaEditor').controller( 'LaskentakaavaController', 
     ['$scope', '_', '$location', '$routeParams', 'KaavaValidointi', 'Laskentakaava', 'LaskentakaavaLista', 
-    'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'FunktioNimiService', 'FunktioFactory', 
-    function ($scope, _, $location, $routeParams, KaavaValidointi, Laskentakaava, LaskentakaavaLista, TemplateService, FunktioService, Valintaperusteviitetyypit, FunktioNimiService, FunktioFactory) {
+    'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'Arvokonvertterikuvauskielet','FunktioNimiService', 'FunktioFactory',
+    function ($scope, _, $location, $routeParams, KaavaValidointi, Laskentakaava, LaskentakaavaLista, TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet, FunktioNimiService, FunktioFactory) {
     //servicet laskentakaavapuun piirtämiseen
     $scope.templateService = TemplateService;
     $scope.funktioService = FunktioService;
@@ -28,6 +28,7 @@ angular.module('LaskentakaavaEditor').controller( 'LaskentakaavaController',
     });
 
     $scope.valintaperusteviitetyypit = Valintaperusteviitetyypit;
+    $scope.arvokonvertterikuvauskielet = Arvokonvertterikuvauskielet;
     $scope.errors = [];
 
     if($routeParams.valintaryhmaOid) {
@@ -167,6 +168,17 @@ angular.module('LaskentakaavaEditor').controller( 'LaskentakaavaController',
         }
     }
 
+    $scope.addArvokonvertterikuvaus = function(konvertterikuvausSelection) {
+
+        if(konvertterikuvausSelection.kuvaukset == null) {
+            konvertterikuvausSelection.kuvaukset = {tekstit:[]};
+        }
+        var emptyKuvaus = {kieli: 'FI', teksti: ''}
+
+        konvertterikuvausSelection.kuvaukset.tekstit.push(emptyKuvaus);
+
+    }
+
     $scope.getSyoteparametriArvo = function(syoteparametrit, key) {
         var result;
          _.some(syoteparametrit, function(syoteparametri) {
@@ -192,6 +204,11 @@ angular.module('LaskentakaavaEditor').controller( 'LaskentakaavaController',
         } else {
             $scope.funktioSelection.lapsi.arvovalikonvertteriparametrit.splice(index, 1);
         }
+
+    }
+
+    $scope.removeKonvertteriParametriKuvaus = function(index, konvertteriparametriSelection) {
+        konvertteriparametriSelection.kuvaukset.tekstit.splice(index, 1);
 
     }
 

@@ -63,27 +63,52 @@
 
     <div class="form-item-content">
 
-        <div class=" settingsbox">
-            <table class="settingstable">
-                <thead>
-                <tr>
-                    <td></td>
-                    <td>Arvo</td>
-                    <td>Pisteet</td>
-                    <td>Hylkäysperuste</td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="parametri in funktioSelection.lapsi.arvokonvertteriparametrit">
-                    <td>
-                        <a ng-click="removeKonvertteriParametri($index, 'ARVOKONVERTTERI')"><i class="fa fa-trash-o"></i></a>
-                    </td>
-                    <td><input type="text" size="9" ng-model="parametri.arvo"/></td>
-                    <td><input type="text" size="9" ng-model="parametri.paluuarvo"/></td>
-                    <td><input type="checkbox" ng-model="parametri.hylkaysperuste" ng-true-value="true" ng-false-value="false" /></td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="settingsbox">
+            <form ng-repeat="parametri in funktioSelection.lapsi.arvokonvertteriparametrit" class="form-horizontal arvokonvertteri-form" role="form">
+                <div class="pull-left"><a ng-click="removeKonvertteriParametri($index, 'ARVOKONVERTTERI')"><i class="fa fa-trash-o"></i></a></div>
+                <div class="clearfix" />
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Arvo</label>
+                    <div class="col-sm-7">
+                        <input type="text" size="9" ng-model="parametri.arvo" placeholder="Arvo" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Pisteet</label>
+                    <div class="col-sm-7">
+                        <input type="text" size="9" ng-model="parametri.paluuarvo" placeholder="Pisteet" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-5 col-sm-7">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="parametri.hylkaysperuste" ng-true-value="true" ng-false-value="false" /> Hylkäysperuste
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div id="arvokonvertteri-kuvaukset" ng-if="parametri.hylkaysperuste">
+                    <div><b>Hylkäysperustekuvaukset</b></div>
+                    <table class="table" ng-if="parametri.kuvaukset.tekstit.length > 0">
+                        <thead>
+                            <tr>
+                                <td>Kieli</td>
+                                <td>Kuvaus</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="kuvaus in parametri.kuvaukset.tekstit">
+                                <td><select ng-model="kuvaus.kieli" ng-options="item.key as item.text for item in arvokonvertterikuvauskielet"></select></td>
+                                <td><input type="text" size="15" ng-model="kuvaus.teksti" /></td>
+                                <td><a ng-click="removeKonvertteriParametriKuvaus($index, parametri)"><i class="fa fa-trash-o"></i></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <span class="button small" ng-click="addArvokonvertterikuvaus(parametri)"><i class="fa fa-plus"></i> Kuvaus</span>
+                </div>
+            </form>
         </div>
     </div>
 </script>

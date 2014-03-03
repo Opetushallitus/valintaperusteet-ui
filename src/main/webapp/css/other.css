@@ -216,4 +216,11 @@
     color: #AAAAAA;
 }
 
+.arvokonvertteri-form {
+    background-color: rgb(242, 242, 242);
+    padding: 10px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+}
+
 
