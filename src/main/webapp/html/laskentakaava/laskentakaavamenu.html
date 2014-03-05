@@ -20,39 +20,102 @@
     <div class="form-item-content">
 
         <div class="settingsbox">
-            <table class="settingstable">
-                <thead>
-                <tr>
-                    <td></td>
-                    <td>Min</td>
-                    <td></td>
-                    <td>Max</td>
-                    <td>Pisteet</td>
-                    <td>Palauta haettu arvo</td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="parametri in funktioSelection.lapsi.arvovalikonvertteriparametrit">
-                    <td>
-                        <a ng-click="removeKonvertteriParametri($index, 'ARVOVALIKONVERTTERI')"><i class="fa fa-trash-o"></i></a>
-                    </td>
-                    <td>
-                        <input type="text" size="1" ng-model="parametri.minValue"/>
-                    </td>
-                    <td>
+            <form ng-repeat="parametri in funktioSelection.lapsi.arvovalikonvertteriparametrit" class="form-horizontal arvovalikonvertteri-form" role="form">
+                <div class="pull-left"><a ng-click="removeKonvertteriParametri($index, 'ARVOVALIKONVERTTERI')"><i class="fa fa-trash-o"></i></a></div>
+                <div class="clearfix" />
+                <div class="form-group">
+                    <div class="col-sm-5 right-align">
+                        <input type="text" size="10" ng-model="parametri.minValue" placeholder="Min"/>
+                    </div>
+                    <div class="col-sm-2 center-align">
                         <span ng-show="!$last" class="white-space-nowrap">&le; x &lt;</span>
                         <span ng-show="$last" class="white-space-nowrap">&le; x &le;</span>
-                    </td>
-                    <td>
-                        <input type="text" size="1" ng-model="parametri.maxValue"/>
-                    </td>
-                    <td><input type="text" size="3" ng-disabled="parametri.palautaHaettuArvo == 'true'"
-                               ng-model="parametri.paluuarvo"/></td>
+                    </div>
+                    <div class="col-sm-5">
+                        <input type="text" size="10" ng-model="parametri.maxValue" placeholder="Max" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-5 col-sm-7">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="parametri.palautaHaettuArvo" ng-true-value="true" ng-false-value="false"/> Palauta haettu arvo
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">Pisteet</label>
+                    <div class="col-sm-7">
+                        <input type="text" size="10" ng-model="parametri.paluuarvo" placeholder="Pisteet" ng-disabled="parametri.palautaHaettuArvo == 'true'" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-5 col-sm-7">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="parametri.hylkaysperuste" ng-true-value="true" ng-false-value="false" /> Hylkäysperuste
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div id="arvovalikonvertteri-kuvaukset" ng-if="parametri.hylkaysperuste">
+                    <div><b>Hylkäysperustekuvaukset</b></div>
+                    <table class="table" ng-if="parametri.kuvaukset.tekstit.length > 0">
+                        <thead>
+                        <tr>
+                            <td>Kieli</td>
+                            <td>Kuvaus</td>
+                            <td></td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="kuvaus in parametri.kuvaukset.tekstit">
+                            <td><select ng-model="kuvaus.kieli" ng-options="item.key as item.text for item in arvokonvertterikuvauskielet"></select></td>
+                            <td><input type="text" size="15" ng-model="kuvaus.teksti" /></td>
+                            <td><a ng-click="removeKonvertteriParametriKuvaus($index, parametri)"><i class="fa fa-trash-o"></i></a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <span class="button small" ng-click="addArvokonvertterikuvaus(parametri)"><i class="fa fa-plus"></i> Kuvaus</span>
+                </div>
+            </form>
 
-                    <td><input type="checkbox" ng-model="parametri.palautaHaettuArvo" ng-true-value="true" ng-false-value="false"/></td>
-                </tr>
-                </tbody>
-            </table>
+
+
+            <!--<table class="settingstable">-->
+                <!--<thead>-->
+                <!--<tr>-->
+                    <!--<td></td>-->
+                    <!--<td>Min</td>-->
+                    <!--<td></td>-->
+                    <!--<td>Max</td>-->
+                    <!--<td>Pisteet</td>-->
+                    <!--<td>Palauta haettu arvo</td>-->
+                <!--</tr>-->
+                <!--</thead>-->
+                <!--<tbody>-->
+                <!--<tr ng-repeat="parametri in funktioSelection.lapsi.arvovalikonvertteriparametrit">-->
+                    <!--<td>-->
+                        <!--<a ng-click="removeKonvertteriParametri($index, 'ARVOVALIKONVERTTERI')"><i class="fa fa-trash-o"></i></a>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<input type="text" size="1" ng-model="parametri.minValue"/>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<span ng-show="!$last" class="white-space-nowrap">&le; x &lt;</span>-->
+                        <!--<span ng-show="$last" class="white-space-nowrap">&le; x &le;</span>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<input type="text" size="1" ng-model="parametri.maxValue"/>-->
+                    <!--</td>-->
+                    <!--<td><input type="text" size="3" ng-disabled="parametri.palautaHaettuArvo == 'true'"-->
+                               <!--ng-model="parametri.paluuarvo"/></td>-->
+
+                    <!--<td><input type="checkbox" ng-model="parametri.palautaHaettuArvo" ng-true-value="true" ng-false-value="false"/></td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
         </div>
     </div>
 </script>
