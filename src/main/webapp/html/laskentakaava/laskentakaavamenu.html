@@ -1,17 +1,17 @@
 
 <!-- Arvojen syöttö -templatet -->
 <script type="text/ng-template" id="desimaaliluku-template">
-    <input type="text" size="9" ng-model="syoteparametri.arvo"/>
+    <input type="text" size="15" ng-model="syoteparametri.arvo"/>
 </script>
 <script type="text/ng-template" id="kokonaisluku-template">
-    <input type="text" size="9" ng-model="syoteparametri.arvo"/>
+    <input type="text" size="15" ng-model="syoteparametri.arvo"/>
 </script>
 <script type="text/ng-template" id="totuusarvo-template">
-    <input type="radio" size="9" ng-model="syoteparametri.arvo" value="true"/> Tosi
-    <input type="radio" size="9" ng-model="syoteparametri.arvo" value="false"/> Epätosi
+    <input type="radio" size="15" ng-model="syoteparametri.arvo" value="true"/> Tosi
+    <input type="radio" size="15" ng-model="syoteparametri.arvo" value="false"/> Epätosi
 </script>
 <script type="text/ng-template" id="merkkijono-template">
-    <input type="text" size="9" ng-model="syoteparametri.arvo"/>
+    <input type="text" size="15" ng-model="syoteparametri.arvo"/>
 </script>
 
 
@@ -280,12 +280,12 @@
 
         <!-- SYÖTEPARAMETRIT -->
         <div class="form-item" ng-if="funktioSelection.lapsi.syoteparametrit.length > 0">
-            <label class="form-item-label" style="width:100px;">Arvon määrittelyt</label>
+            <label class="form-item-label" style="width:150px;">Arvon määrittelyt</label>
 
             <div class="form-item-content">
 
                 <div class=" settingsbox">
-                    <table class="settingstable">
+                    <table class="settingstable table table-striped">
                         <thead>
                             <tr>
                                 <td>Määrite</td>
@@ -300,23 +300,23 @@
                             </tr>
                             <tr>
                                 <td>Tallenna tulos</td>
-                                <td><input type="checkbox" ng-model="funktioSelection.lapsi.tallennaTulos" ng-false-value="false" ng-true-value="true"/></td>
+                                <td><input type="checkbox" size="15" ng-model="funktioSelection.lapsi.tallennaTulos" ng-false-value="false" ng-true-value="true"/></td>
                             </tr>
                             <tr>
                                 <td>Tulostunniste</td>
-                                <td><input type="text" ng-model="funktioSelection.lapsi.tulosTunniste" /></td>
+                                <td><input type="text" size="15" ng-model="funktioSelection.lapsi.tulosTunniste" /></td>
                             </tr>
                              <tr>
                                 <td>Tulosteksti FI</td>
-                                <td><input type="text" ng-model="funktioSelection.lapsi.tulosTekstiFi" /></td>
+                                <td><input type="text" size="15" ng-model="funktioSelection.lapsi.tulosTekstiFi" /></td>
                             </tr>
                              <tr>
                                 <td>Tulosteksti SV</td>
-                                <td><input type="text" ng-model="funktioSelection.lapsi.tulosTekstiSv" /></td>
+                                <td><input type="text" size="15" ng-model="funktioSelection.lapsi.tulosTekstiSv" /></td>
                             </tr>
                              <tr>
                                 <td>Tulosteksti EN</td>
-                                <td><input type="text" ng-model="funktioSelection.lapsi.tulosTekstiEn" /></td>
+                                <td><input type="text" size="15" ng-model="funktioSelection.lapsi.tulosTekstiEn" /></td>
                             </tr>
                         </tbody>
                     </table>

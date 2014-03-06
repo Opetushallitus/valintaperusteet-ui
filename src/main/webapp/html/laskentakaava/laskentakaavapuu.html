@@ -170,7 +170,7 @@
         <span> - </span>
         <span ng-if="getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'arvovaliMax')">{{getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'arvovaliMax')}}</span>
         <span ng-if="!getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'arvovaliMax')">?</span>
-        <span ng-if="getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'hylkaysperustekuvaus')"> ({{getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'hylkaysperustekuvaus')}})</span>
+        <span ng-if="getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'hylkaysperustekuvaus_FI')"> ({{getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'hylkaysperustekuvaus_FI')}})</span>
     </div>
 </script>
 
@@ -186,7 +186,7 @@
 <script type="text/ng-template" id="hylkaa">
     <div class="function" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon">&#8302;</span>
-        <span class="node" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}} <span ng-if="funktiowrapper.lapsi.syoteparametrit[0].avain === 'hylkaysperustekuvaus' && funktiowrapper.lapsi.syoteparametrit[0].arvo">- {{funktiowrapper.lapsi.syoteparametrit[0].arvo}}</span></span>
+        <span class="node" ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}} <span ng-if="funktiowrapper.lapsi.syoteparametrit[0].avain === 'hylkaysperustekuvaus_FI' && funktiowrapper.lapsi.syoteparametrit[0].arvo">- {{funktiowrapper.lapsi.syoteparametrit[0].arvo}}</span></span>
     </div>
 </script>
 

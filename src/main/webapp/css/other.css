@@ -231,4 +231,8 @@
     text-align: center;
 }
 
+table.table td {
+    border-right: none;
+}
+
 
