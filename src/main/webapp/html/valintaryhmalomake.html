@@ -108,7 +108,6 @@
     <div class="clear"></div>
 </div>
 
-
 <!-- VALINTAKOEKOODIEN LISÄYS -->
 <div class="form-row" ng-show="model.valintaryhma.oid" auth="update" >
     <label class="form-row-label">Lisää valintakoekoodi</label>
@@ -117,7 +116,7 @@
 
         <div filterable-list ng-show="showValintakoeKoodit" class="autocomplete">
             <div class="form-row">
-                <button type="button" class="margin-bottom-0 small" ng-click="addValintakoeUri(selectedId)"
+                <button type="button" class="btn btn-sm btn-default" ng-click="addValintakoeUri(selectedId)"
                         ng-disabled="!selectedId"><i class="fa fa-plus"></i> Valintakoekoodi
                 </button>
             </div>
@@ -140,7 +139,7 @@
         </div>
 
         <button ng-click="showValintakoeKoodit = !showValintakoeKoodit" ng-model="showValintakoeKoodit" type="button"
-                class="margin-bottom-0 small">
+                class="btn btn-sm btn-default">
             <span ng-show="!showValintakoeKoodit"><i class="fa fa-eye"></i> Valintakoekoodit</span>
             <span ng-show="showValintakoeKoodit"><i class="fa fa-eye-slash"></i> Valintakoekoodit</span>
         </button>
@@ -190,7 +189,7 @@
 
         <div filterable-list ng-show="showHakukohdekoodit" class="autocomplete">
             <div class="form-row">
-                <button type="button" class="margin-bottom-0 small" ng-click="addHakukohdeUri(selectedId)"
+                <button type="button" class="btn btn-sm btn-default" ng-click="addHakukohdeUri(selectedId)"
                         ng-disabled="!selectedId"><i class="fa fa-plus"></i> Hakukohdekoodi
                 </button>
             </div>
@@ -213,7 +212,7 @@
         </div>
 
         <button ng-click="showHakukohdekoodit = !showHakukohdekoodit" ng-model="showHakukohdekoodit" type="button"
-                class="margin-bottom-0 small">
+                class="btn btn-sm btn-default">
             <span ng-show="!showHakukohdekoodit"><i class="fa fa-eye"></i> Hakukohdekoodit</span>
             <span ng-show="showHakukohdekoodit"><i class="fa fa-eye-slash"></i> Hakukohdekoodit</span>
         </button>
@@ -258,8 +257,8 @@
         <div class="clear"></div>
 
         <div ng-show="model.valintaryhma.oid" class="form-row">
-            <span auth="crud" type="button" class="button small" ng-click="lisaaValinnanVaihe()"><i class="fa fa-plus"></i> {{'valintaryhmalomake.valinnanvaihe' | i18n}}</span>
-            <span auth="crud" type="button" class="button small" ng-click="lisaaValintakoeValinnanVaihe()"><i
+            <span auth="crud" type="button" class="btn btn-sm btn-default" ng-click="lisaaValinnanVaihe()"><i class="fa fa-plus"></i> {{'valintaryhmalomake.valinnanvaihe' | i18n}}</span>
+            <span auth="crud" type="button" class="btn btn-sm btn-default" ng-click="lisaaValintakoeValinnanVaihe()"><i
                     class="fa fa-plus"></i> {{'valintaryhmalomake.koekutsuvaihe' | i18n}}</span>
         </div>
     </div>
@@ -297,17 +296,17 @@
         <div class="clear"></div>
 
         <div ng-show="model.valintaryhma.oid" class="form-row">
-            <span auth="crud" class="button small" ng-click="lisaaHakijaryhma()"><i class="fa fa-plus"></i> Hakijaryhma</span>
+            <span auth="crud" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()"><i class="fa fa-plus"></i> Hakijaryhma</span>
         </div>
     </div>
 </div>
 
 
-<div class="grid16-16">
-    <button auth="update" ng-disabled="!form.$valid" class="button small primary" type="submit"><i class="fa fa-floppy-o"></i>
+<div class="col-md-12">
+    <button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i class="fa fa-floppy-o"></i>
         Tallenna
     </button>
-    <button type="button" class="float-left margin-right-1 button small" ng-click="cancel()"><i
+    <button type="button" class="float-left margin-right-1 btn btn-sm btn-default" ng-click="cancel()"><i
             class="fa fa-arrow-left"></i> Takaisin
     </button>
 </div>
