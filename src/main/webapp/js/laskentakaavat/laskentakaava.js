@@ -124,7 +124,7 @@ angular.module('LaskentakaavaEditor').controller( 'LaskentakaavaController',
     $scope.findFunktioSlotIndex = function(parent, index) {
         var isNimetty = $scope.isNimettyFunktioargumentti(parent);
         var resultIndex = undefined;
-        var isPainotettukeskiarvoChild = isPainotettukeskiarvoChild = $scope.funktioService.isPainotettukeskiarvoChild(parent);
+        var isPainotettukeskiarvoChild = $scope.funktioService.isPainotettukeskiarvoChild(parent);
         if(isNimetty || isPainotettukeskiarvoChild) {
             resultIndex = index;
         } else {
@@ -190,8 +190,19 @@ angular.module('LaskentakaavaEditor').controller( 'LaskentakaavaController',
          return result;
     }
 
-    $scope.syoteparametriTemplate = function(funktiokutsu, index) {
-        return $scope.templateService.getSyoteparametriTemplate(funktiokutsu, index);
+	$scope.getSyoteparametri = function (syoteparametrit, funktiokuvausSyoteparametri) {
+		var result = _.find(syoteparametrit, function(syoteparametri) {
+			return syoteparametri.avain == funktiokuvausSyoteparametri.avain;
+		});
+		if(result === undefined) {
+			result = {avain: funktiokuvausSyoteparametri.avain, arvo: "", tyyppi: funktiokuvausSyoteparametri.tyyppi};
+		}
+		return result;
+	}
+
+
+	$scope.getSyoteparametriTemplate = function(syoteparametrityyppi) {
+        return $scope.templateService.getSyoteparametriTemplate(syoteparametrityyppi);
     }
 
     $scope.konvertteriTemplate = function(konvertteriparametriSelection) {
@@ -309,7 +320,6 @@ angular.module('LaskentakaavaEditor').controller( 'LaskentakaavaController',
 
         //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
         $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = $scope.funktioService.cleanLaskentakaavaPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
-
 
         KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function(result) {
             $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function(result) {

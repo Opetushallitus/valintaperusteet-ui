@@ -83,39 +83,6 @@
 
 
 
-            <!--<table class="settingstable">-->
-                <!--<thead>-->
-                <!--<tr>-->
-                    <!--<td></td>-->
-                    <!--<td>Min</td>-->
-                    <!--<td></td>-->
-                    <!--<td>Max</td>-->
-                    <!--<td>Pisteet</td>-->
-                    <!--<td>Palauta haettu arvo</td>-->
-                <!--</tr>-->
-                <!--</thead>-->
-                <!--<tbody>-->
-                <!--<tr ng-repeat="parametri in funktioSelection.lapsi.arvovalikonvertteriparametrit">-->
-                    <!--<td>-->
-                        <!--<a ng-click="removeKonvertteriParametri($index, 'ARVOVALIKONVERTTERI')"><i class="fa fa-trash-o"></i></a>-->
-                    <!--</td>-->
-                    <!--<td>-->
-                        <!--<input type="text" size="1" ng-model="parametri.minValue"/>-->
-                    <!--</td>-->
-                    <!--<td>-->
-                        <!--<span ng-show="!$last" class="white-space-nowrap">&le; x &lt;</span>-->
-                        <!--<span ng-show="$last" class="white-space-nowrap">&le; x &le;</span>-->
-                    <!--</td>-->
-                    <!--<td>-->
-                        <!--<input type="text" size="1" ng-model="parametri.maxValue"/>-->
-                    <!--</td>-->
-                    <!--<td><input type="text" size="3" ng-disabled="parametri.palautaHaettuArvo == 'true'"-->
-                               <!--ng-model="parametri.paluuarvo"/></td>-->
-
-                    <!--<td><input type="checkbox" ng-model="parametri.palautaHaettuArvo" ng-true-value="true" ng-false-value="false"/></td>-->
-                <!--</tr>-->
-                <!--</tbody>-->
-            <!--</table>-->
         </div>
     </div>
 </script>
@@ -293,11 +260,17 @@
                             </tr>
                         </thead>
                         <tbody>
-
-                            <tr ng-repeat="syoteparametri in funktioSelection.lapsi.syoteparametrit">
-                                <td>Avain: {{syoteparametri.avain}}</td>
-                                <td ng-include="syoteparametriTemplate(funktioSelection, $index)"></td>
+                            <tr ng-repeat="funktiokuvausSyoteparametri in funktiokuvausForSelection.syoteparametrit">
+                                <td>Avain: {{funktiokuvausSyoteparametri.avain}} </td>
+                                <td ng-init="syoteparametri = getSyoteparametri(funktioSelection.lapsi.syoteparametrit, funktiokuvausSyoteparametri)"
+                                    ng-include="getSyoteparametriTemplate(funktiokuvausSyoteparametri.tyyppi)"></td>
                             </tr>
+        <!--
+                            <tr ng-repeat="syoteparametri in funktioSelection.lapsi.syoteparametrit">
+                                <td ng-class="{{ syoteparametri.pakollinen }} == true ? 'mandatory' : ''">Avain: {{syoteparametri.avain}} </td>
+                                <td ng-include="getSyoteparametriTemplate(funktioSelection, $index)"></td>
+                            </tr>
+                            -->
                             <tr>
                                 <td>Tallenna tulos</td>
                                 <td><input type="checkbox" size="15" ng-model="funktioSelection.lapsi.tallennaTulos" ng-false-value="false" ng-true-value="true"/></td>

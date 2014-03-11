@@ -335,29 +335,48 @@ angular.module('LaskentakaavaEditor').factory('TemplateService', function(Funkti
 
         
 
-        this.getSyoteparametriTemplate = function(funktio, syoteparametriIndex) {
-
-            var funktiokuvaus = FunktioService.getFunktiokuvaus(FunktioService.getFunktionimi(funktio));
-            var syoteparametrityyppi = "";
-            if(funktiokuvaus.syoteparametrit[0].avain === 'n') {
-                syoteparametrityyppi = funktiokuvaus.syoteparametrit[0].tyyppi;
-            } else {
-                syoteparametrityyppi = funktiokuvaus.syoteparametrit[syoteparametriIndex].tyyppi;
-            }
+        this.getSyoteparametriTemplate = function(syoteparametrityyppi) {
 
             switch(syoteparametrityyppi) {
-                case "DESIMAALILUKU":
-                    return "desimaaliluku-template";
-                case "KOKONAISLUKU":
-                    return "kokonaisluku-template";
-                case "TOTUUSARVO":
-                    return "totuusarvo-template";
-                case "MERKKIJONO":
-                    return "merkkijono-template";
-                default:
-                    return ""
-            }
+				case "DESIMAALILUKU":
+					return "desimaaliluku-template";
+				case "KOKONAISLUKU":
+					return "kokonaisluku-template";
+				case "TOTUUSARVO":
+					return "totuusarvo-template";
+				case "MERKKIJONO":
+					return "merkkijono-template";
+				default:
+					return ""
+			}
         }
+
+
+		/*
+		this.getSyoteparametriTemplate = function(funktio, syoteparametriIndex) {
+
+			var funktiokuvaus = FunktioService.getFunktiokuvaus(FunktioService.getFunktionimi(funktio));
+			var syoteparametrityyppi = "";
+			if(funktiokuvaus.syoteparametrit[0].avain === 'n') {
+				syoteparametrityyppi = funktiokuvaus.syoteparametrit[0].tyyppi;
+			} else {
+				syoteparametrityyppi = funktiokuvaus.syoteparametrit[syoteparametriIndex].tyyppi;
+			}
+
+			switch(syoteparametrityyppi) {
+				case "DESIMAALILUKU":
+					return "desimaaliluku-template";
+				case "KOKONAISLUKU":
+					return "kokonaisluku-template";
+				case "TOTUUSARVO":
+					return "totuusarvo-template";
+				case "MERKKIJONO":
+					return "merkkijono-template";
+				default:
+					return ""
+			}
+		}
+		*/
 
         this.getKonvertteriparametriTemplate = function(konvertteriparametriSelection) {
             switch(konvertteriparametriSelection) {
