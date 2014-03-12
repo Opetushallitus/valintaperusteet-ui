@@ -57,7 +57,7 @@
 
 
         <h3>{{hakukohde.nimi}}</h3>
-        <div class="notification info" ng-show="hakukohde.laskentakaavat.length == 0">
+        <div class="alert alert-info" ng-show="hakukohde.laskentakaavat.length == 0">
             <p>Tälle hakukohteelle ei ole luotu yhtään laskentakaavaa.</p>
         </div>
 
@@ -93,7 +93,7 @@
     <div class="col-md-12" ng-repeat="valintaryhmaList in hakukohdeLaskentakaavaLista.valintaryhmaList()">
         <div ng-repeat="valintaryhma in valintaryhmaList">
             <h3>{{valintaryhma.nimi}}</h3>
-            <div class="notification info margin-bottom-2" ng-show="!valintaryhma.laskentakaavat || valintaryhma.laskentakaavat.length == 0">
+            <div class="alert alert-info margin-bottom-2" ng-show="!valintaryhma.laskentakaavat || valintaryhma.laskentakaavat.length == 0">
                 <p ng-show="!valintaryhma.oid">Yhtään laskentakaavaa ei ole luotu.</p>
                 <p ng-show="valintaryhma.oid">Tälle valintaryhmälle ei ole luotu yhtään laskentakaavaa.</p>
             </div>
