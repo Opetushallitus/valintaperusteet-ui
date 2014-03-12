@@ -1,7 +1,7 @@
 <!-- Node template -->
 <script type="text/ng-template" id="node.html">
 
-    <span class="label" ng-if="data.nimi | filter:domain.search.q">
+    <span class="node" ng-if="data.nimi | filter:domain.search.q">
         <i class="fa fa-users valintaryhma"  ng-class="{ kiinni: domain.isCollapsed(data), eilapsia: !(data.alavalintaryhmat.length > 0), auki: domain.isExpanded(data)}" ng-click="domain.expandNode(data)"></i>
         <input ng-if="data.access" name="valintaryhmaOid" type="radio" ng-model="model.parentOid" value="{{data.oid}}" id="{{data.oid}}"/> <label for="{{data.oid}}">{{data.nimi}}</label>
     </span>
@@ -19,7 +19,7 @@
 <div class="valintaryhmaSelector">
     <ol class="treelist collapsible">
         <li>
-            <span class="label">
+            <span class="node">
             <i class="fa fa-users valintaryhma auki"></i>
             <input name="valintaryhmaOid" type="radio" ng-model="model.parentOid" value="" id="root"/> <label for="root">Juuri</label>
             </span>
