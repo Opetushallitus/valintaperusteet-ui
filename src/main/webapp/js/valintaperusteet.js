@@ -1,5 +1,5 @@
 "use strict";
-var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'localization', 'ui.bootstrap', 'lodash', 'LaskentakaavaEditor']).run(function($http){
+var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'localization', 'ui.bootstrap', 'underscore', 'LaskentakaavaEditor']).run(function($http){
     $http.get(SERVICE_URL_BASE + "buildversion.txt?auth");
 });
 
@@ -22,7 +22,7 @@ angular.module('localization', []).run(function($locale) {
     };
 }]);
 
-var lodash = angular.module('lodash', []);
+var lodash = angular.module('underscore', []);
 lodash.factory('_', function() {
   return window._; // assumes lodash has already been loaded on the page
 });   

@@ -3,7 +3,7 @@
 *
 * Description
 */
-angular.module('LaskentakaavaEditor', ['ngResource', 'loading', 'ngRoute', 'localization', 'lodash']);
+angular.module('LaskentakaavaEditor', ['ngResource', 'loading', 'ngRoute', 'localization', 'underscore']);
 
 angular.module('LaskentakaavaEditor').config(function($routeProvider) {
 	//laskentakaava
