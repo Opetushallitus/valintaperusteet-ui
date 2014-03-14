@@ -1,6 +1,5 @@
 'use strict';
 
-
 angular.module('LaskentakaavaEditor').controller( 'LaskentakaavaController', 
     ['$scope', '_', '$location', '$routeParams', 'KaavaValidointi', 'Laskentakaava', 'LaskentakaavaLista', 
     'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'Arvokonvertterikuvauskielet','FunktioNimiService', 'FunktioFactory',
