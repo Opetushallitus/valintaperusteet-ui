@@ -2,7 +2,9 @@ var gulp = require('gulp'),
 	concat = require('gulp-concat'),
 	uglify = require('gulp-uglify'),
 	runSequence = require('run-sequence'),
-	clean = require('gulp-clean');
+	clean = require('gulp-clean'),
+	watch = require('gulp-watch'),
+	livereload = require('gulp-livereload');
 
 
 var paths = {
@@ -35,6 +37,12 @@ var paths = {
 		'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
 
 		'bower_components/angular-ui-tinymce/src/tinymce.js'
+	],
+	sources: [
+		'src/main/webapp/css/virkailija.css',
+		'src/main/webapp/css/other.css',
+		'src/main/webapp/html/**',
+		'src/main/webapp/js/**'
 	]
 }
 
@@ -47,4 +55,11 @@ gulp.task('scripts', function() {
     return gulp
 		.src(paths.bower_components)
 		.pipe(gulp.dest(paths.jslib));
+});
+
+gulp.task('livereload', function() {
+	return gulp
+		.src(paths.sources)
+		.pipe(watch())
+		.pipe(livereload());
 });
