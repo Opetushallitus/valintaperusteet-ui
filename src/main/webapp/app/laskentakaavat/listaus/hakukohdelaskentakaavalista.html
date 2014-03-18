@@ -13,7 +13,7 @@
     
     <h2>Laskentakaavalista</h2>
     
-    <span ng-click="createKaava()" class="button small"><i class="fa fa-plus"></i> Uusi laskentakaava</span>
+    <span ng-click="createKaava()" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> Uusi laskentakaava</span>
    
     <div ng-show="showForm">
         <form class="form-horizontal" name="kaavaForm" novalidate>
@@ -42,11 +42,11 @@
             </div>
             <div class="form-group">
                 <div class="col-md-2">
-                    <button class="button small primary"
+                    <button class="btn btn-default btn-sm"
                           ng-click="saveKaava(kaava)"
                           ng-disabled="kaavaForm.$invalid"><i
                             class="fa fa-floppy-o"></i> Tallenna</button>
-                    <span class="button small" ng-click="cancelEdit(kaava)"><i
+                    <span class="btn btn-default btn-sm" ng-click="cancelEdit(kaava)"><i
                             class="fa fa-arrow-left"></i> Peruuta</span>
                 </div>
             </div>

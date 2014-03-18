@@ -4,7 +4,8 @@ var gulp = require('gulp'),
 	runSequence = require('run-sequence'),
 	clean = require('gulp-clean'),
 	watch = require('gulp-watch'),
-	livereload = require('gulp-livereload');
+	livereload = require('gulp-livereload'),
+	karma = require('gulp-karma');
 
 
 var paths = {
@@ -48,19 +49,31 @@ var paths = {
 }
 
 // DEFAULT
-gulp.task('default', function(callback) {
+gulp.task('default', function (callback) {
 	runSequence('scripts', callback);
 });
 
-gulp.task('scripts', function() {
-    return gulp
+gulp.task('scripts', function () {
+	return gulp
 		.src(paths.bower_components)
 		.pipe(gulp.dest(paths.jslib));
 });
 
-gulp.task('livereload', function() {
+gulp.task('livereload', function () {
 	return gulp
 		.src(paths.sources)
 		.pipe(watch())
 		.pipe(livereload());
+});
+
+// Run tests
+gulp.task('test', function () {
+	return gulp.src(paths.unitTests)
+		.pipe(karma({
+			configFile: 'src/test/ui/valintaperusteet-test.conf.js',
+			action: 'run'
+		})
+		.on('error', function (err) {
+			throw err;
+		}));
 });

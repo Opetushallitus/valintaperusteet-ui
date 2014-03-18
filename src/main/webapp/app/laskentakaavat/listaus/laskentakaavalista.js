@@ -83,6 +83,7 @@ angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (La
 });
 
 function LaskentakaavaListController($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista) {
+
     $scope.linkprefix = '';
     var params = {};
     var saveParams = {};
