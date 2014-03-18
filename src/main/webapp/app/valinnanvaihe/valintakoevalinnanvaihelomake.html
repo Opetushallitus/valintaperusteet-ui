@@ -43,15 +43,14 @@
                 </tr>
                 </tbody>
             </table>
-            <span auth="crud" class="button small" ng-click="addValintakoe()"><i class="fa fa-plus"></i> Valintakoe</span>
+            <span auth="crud" class="btn btn-sm btn-default" ng-click="addValintakoe()"><i class="fa fa-plus"></i> Valintakoe</span>
         </div>
     </div>
     <div class="clear"></div>
-
-
-    <button auth="update" ng-disabled="!form.$valid" class="button small primary" type="submit"><i class="fa fa-floppy-o"></i>
+    <span><button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i class="fa fa-floppy-o"></i>
         Tallenna
-    </button>
-    <button class="button small float-left margin-right-1" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin
-    </button>
+    </button></span>
+
+    <span><button class="btn btn-sm btn-default float-left margin-right-1" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin
+    </button></span>
 </form>
