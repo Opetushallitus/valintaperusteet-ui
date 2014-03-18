@@ -15,10 +15,6 @@
 
     <div class="form-row-content width-60">
         <input class="width-60" type="text" name="" id="" ng-model="model.valintaryhma.nimi" required/>
-        <!--
-      <br/>
-      <div><small>Valintaryhmän nimeen liittyvä ohjeteksti.</small></div>
-         -->
     </div>
     <div class="clear"></div>
 </div>
@@ -303,12 +299,13 @@
 
 
 <div class="col-md-12">
-    <button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i class="fa fa-floppy-o"></i>
-        Tallenna
-    </button>
     <button type="button" class="float-left margin-right-1 btn btn-sm btn-default" ng-click="cancel()"><i
             class="fa fa-arrow-left"></i> Takaisin
     </button>
+    <button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i class="fa fa-floppy-o"></i>
+        Tallenna
+    </button>
+
 </div>
 <div class="clear"></div>
 </form>
