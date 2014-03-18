@@ -40,11 +40,12 @@ var paths = {
 
 		'bower_components/angular-ui-tinymce/src/tinymce.js'
 	],
-	sources: [
-		'src/main/webapp/css/virkailija.css',
-		'src/main/webapp/css/other.css',
-		'src/main/webapp/html/**',
-		'src/main/webapp/js/**'
+	livereloadSources: [
+		'src/main/webapp/app/**/*.*',
+		'src/main/webapp/common/css/other.css',
+		'src/main/webapp/common/css/virkailija.css',
+		'src/main/webapp/common/js/**/*.*',
+		'src/main/webapp/commonpartials/**/*.*'
 	]
 }
 
@@ -61,7 +62,7 @@ gulp.task('scripts', function () {
 
 gulp.task('livereload', function () {
 	return gulp
-		.src(paths.sources)
+		.src(paths.livereloadSources)
 		.pipe(watch())
 		.pipe(livereload());
 });
