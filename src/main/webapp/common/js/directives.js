@@ -314,3 +314,11 @@ app.directive(
             }
         };
     });
+
+
+app.directive('breadcrumb', function () {
+	return {
+		templateUrl: '../common/partials/breadcrumb.html',
+		restrict: 'E'
+	}
+});

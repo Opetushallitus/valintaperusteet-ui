@@ -9,7 +9,7 @@ var gulp = require('gulp'),
 
 
 var paths = {
-	jslib: 'src/main/webapp/jslib/',
+	jslib: 'src/main/webapp/common/jslib/',
 	bower_components: [
 		'bower_components/angular/angular.js',
 		'bower_components/angular/angular.min.js',
@@ -38,7 +38,11 @@ var paths = {
 
 		'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
 
-		'bower_components/angular-ui-tinymce/src/tinymce.js'
+		'bower_components/angular-ui-tinymce/src/tinymce.js',
+
+		'bower_components/angular-breadcrumbs-simple/dist/js/ng-breadcrumbs.js'
+
+
 	],
 	livereloadSources: [
 		'src/main/webapp/app/**/*.*',

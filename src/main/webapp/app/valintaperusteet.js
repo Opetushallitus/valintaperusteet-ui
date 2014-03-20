@@ -1,5 +1,5 @@
 "use strict";
-var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'localization', 'ui.bootstrap', 'underscore', 'LaskentakaavaEditor']).run(function($http){
+var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'localization', 'ui.bootstrap', 'underscore', 'LaskentakaavaEditor', 'ng-breadcrumbs']).run(function($http){
     $http.get(SERVICE_URL_BASE + "buildversion.txt?auth");
 });
 
@@ -8,7 +8,12 @@ var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute'
 var underscore = angular.module('underscore', []);
 underscore.factory('_', function() {
   return window._; // assumes lodash has already been loaded on the page
-});   
+});
+
+
+function mainCtrl($scope, breadcrumbs) {
+	$scope.breadcrumbs = breadcrumbs;
+}
 
 
 

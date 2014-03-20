@@ -11,6 +11,7 @@
 
 <div class="tabsheets">
 
+<breadcrumb></breadcrumb>
 
 <form name="form" ng-submit="submit()">
 
@@ -107,7 +108,7 @@
 </div>
 
 <!-- VALINTAKOEKOODIEN LISÄYS -->
-<div class="form-row" ng-show="model.valintaryhma.oid" auth="update" >
+<div class="form-row" ng-show="model.valintaryhma.oid" auth="update">
     <label class="form-row-label">Lisää valintakoekoodi</label>
 
     <div class="form-row-content width-60">
@@ -180,7 +181,7 @@
 </div>
 
 <!-- HAKUKOHDEKOODIEN LISÄYS -->
-<div class="form-row" ng-show="model.valintaryhma.oid" auth="update" >
+<div class="form-row" ng-show="model.valintaryhma.oid" auth="update">
     <label class="form-row-label">Lisää hakukohdekoodeja</label>
 
     <div class="form-row-content width-60">
@@ -244,8 +245,8 @@
                 <td class="align-center">{{'valintaperusteet.periytyy.' + data.inheritance | i18n}}</td>
                 <td class="align-center">{{'valintaperusteet.tyyppi.' + data.valinnanVaiheTyyppi | i18n}}</td>
                 <td class="align-center">
-                            <i auth="crud" ng-show="!data.inheritance" class="fa fa-trash-o"
-                                  ng-click="model.removeValinnanvaihe(data)"></i>
+                    <i auth="crud" ng-show="!data.inheritance" class="fa fa-trash-o"
+                       ng-click="model.removeValinnanvaihe(data)"></i>
                 </td>
             </tr>
             </tbody>
@@ -255,9 +256,11 @@
         <div class="clear"></div>
 
         <div ng-show="model.valintaryhma.oid" class="form-row">
-            <span auth="crud" type="button" class="btn btn-sm btn-default" ng-click="lisaaValinnanVaihe()"><i class="fa fa-plus"></i> {{'valintaryhmalomake.valinnanvaihe' | i18n}}</span>
-            <span auth="crud" type="button" class="btn btn-sm btn-default" ng-click="lisaaValintakoeValinnanVaihe()"><i
-                    class="fa fa-plus"></i> {{'valintaryhmalomake.koekutsuvaihe' | i18n}}</span>
+                <span auth="crud" type="button" class="btn btn-sm btn-default" ng-click="lisaaValinnanVaihe()"><i
+                        class="fa fa-plus"></i> {{'valintaryhmalomake.valinnanvaihe' | i18n}}</span>
+                <span auth="crud" type="button" class="btn btn-sm btn-default"
+                      ng-click="lisaaValintakoeValinnanVaihe()"><i
+                        class="fa fa-plus"></i> {{'valintaryhmalomake.koekutsuvaihe' | i18n}}</span>
         </div>
     </div>
 </div>
@@ -285,7 +288,8 @@
                 <td class="align-center">{{data.inheritance}}</td>
                 <td class="align-center">
 
-                    <i auth="crud" ng-show="!data.inheritance" class="fa fa-trash-o" ng-click="removeHakijaryhma(data.oid)"></i>
+                    <i auth="crud" ng-show="!data.inheritance" class="fa fa-trash-o"
+                       ng-click="removeHakijaryhma(data.oid)"></i>
                 </td>
             </tr>
             </tbody>
@@ -304,7 +308,8 @@
     <button type="button" class="float-left margin-right-1 btn btn-sm btn-default" ng-click="cancel()"><i
             class="fa fa-arrow-left"></i> Takaisin
     </button>
-    <button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i class="fa fa-floppy-o"></i>
+    <button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i
+            class="fa fa-floppy-o"></i>
         Tallenna
     </button>
 

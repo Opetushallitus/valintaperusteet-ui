@@ -250,8 +250,11 @@ app.factory('ValintaryhmaModel', function($q, Valintaryhma,
     return model;
 });
 
-function ValintaryhmaController($scope, $location, $routeParams, $timeout, ValintaryhmaModel) {
-    $scope.valintaryhmaOid = $routeParams.id;
+function ValintaryhmaController($scope, $location, $routeParams, ValintaryhmaModel) {
+
+
+
+	$scope.valintaryhmaOid = $routeParams.id;
     $scope.model = ValintaryhmaModel;
     $scope.model.refreshIfNeeded($scope.valintaryhmaOid);
 
