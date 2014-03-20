@@ -1,10 +1,12 @@
-<h1>Valintaryhmän muokkaus</h1>
+<h1>Uuden valintaryhmän luonti</h1>
 
 
 <div class="tabs">
-    <a href="#/valintaryhma/{{model.valintaryhma.oid}}/" class="tab current"><span>Valintaryhmän perustiedot</span></a>
+    <a href="#/etusivu" class="tab"><span>Valintaryhmät ja hakukohteet</span></a>
+    <a href="#/valintaryhma/{{model.valintaryhma.oid}}/" class="tab current"><span>Valintaryhmän tiedot</span></a>
     <a ng-show="model.valintaryhma.oid" href="#/valintaryhma/{{model.valintaryhma.oid}}/laskentakaava"
        class="tab"><span>Laskentakaavat</span></a>
+    <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
 </div>
 <div class="tabsheets">
 
@@ -13,7 +15,7 @@
             <label class="form-row-label">Ylävalintaryhmä</label>
 
             <div class="form-row-content width-60">
-                <div ng-include="'partials/valintaryhmaSelector.html'" />
+                <div ng-include="'../common/partials/valintaryhmaSelector.html'" />
                 <div class="clear"></div>
             </div>
             <div class="clear"></div>

@@ -83,10 +83,13 @@ angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (La
 });
 
 function LaskentakaavaListController($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista) {
-
+	
+	$scope.valintaryhmaOid = $routeParams.valintaryhmaOid;
     $scope.linkprefix = '';
     var params = {};
     var saveParams = {};
+
+
 
     if ($routeParams.valintaryhmaOid) {
         LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, null, true);
@@ -96,6 +99,7 @@ function LaskentakaavaListController($scope, $location, $routeParams, Laskentaka
         $scope.linkprefix = '/valintaryhma/' + $scope.valintaryhmaOid;
         $scope.valintaryhmat = LaskentakaavaLista;
     }
+
 
     var queryParams = $.extend({myosLuonnos: true}, params);
     $scope.laskentakaavat = Laskentakaava.list(queryParams);
