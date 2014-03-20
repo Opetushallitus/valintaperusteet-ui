@@ -5,8 +5,10 @@
 
 <h1>Laskentakaavojen hallinta</h1>
 
-<div class="tabs" ng-controller="LaskentakaavaMenuController">
-    <a ng-repeat="menuitem in menuitems" href="{{menuitem.url}}" ng-class="cssClass(menuitem)"><span>{{menuitem.title}}</span></a>
+<div class="tabs">
+    <a href="#/etusivu" class="tab"><span>Valintaryhmät ja hakukohteet</span></a>
+    <a href="#/laskentakaava" class="tab current"><span>Laskentakaavat</span></a>
+    <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
 </div>
 
 <div class="tabsheets">
