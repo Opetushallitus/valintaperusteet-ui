@@ -47,7 +47,7 @@ app.config(function($routeProvider) {
 
 
 		//Tarjonta import
-		when('/import', {controller: ImportController, templateUrl:TEMPLATE_URL_BASE + 'yhteisvalinnanhallinta/yhteisvalinnanhallinta.html'}).
+		when('/import', {controller: ImportController, templateUrl:TEMPLATE_URL_BASE + 'yhteisvalinnanhallinta/yhteisvalinnanhallinta.html', label: 'Yhteisvalinnahallinta'}).
 
 		//else
 		otherwise({redirectTo:'/etusivu'});
