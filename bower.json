@@ -9,8 +9,7 @@
 		"jquery": "2.1.0",
 		"jquery-ui": "latest",
 		"underscore": "1.6.0",
-		"jquery.i18n.properites": "1.2.0",
-		"angular-breadcrumbs-simple": "0.0.5"
+		"jquery.i18n.properites": "1.2.0"
 
 	},
 	"devDependencies": {

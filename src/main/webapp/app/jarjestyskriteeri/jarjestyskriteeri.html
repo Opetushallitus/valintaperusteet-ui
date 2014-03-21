@@ -1,5 +1,14 @@
 ﻿<h1>Järjestyskriteerin muokkaus</h1>
 
+
+<div class="tabs">
+    <a href="#/hakukohde/{{model.hakukohde.oid}}/" class="tab current"><span>Hakukohteen perustiedot</span></a>
+    <a ng-show="model.hakukohde" href="#/hakukohde/{{model.hakukohde.oid}}/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
+    <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
+</div>
+
+<div class="tabsheets">
+    <breadcrumb></breadcrumb>
 <form name="form" ng-submit="submit()">
     <div class="form-row">
         <label class="form-row-label" for="metatiedot">Metatiedot</label>
@@ -40,7 +49,12 @@
 
     </div>
 
-    <button auth="update" ng-disabled="!form.$valid" class="button small primary" type="submit">
+
+
+    <button class="btn btn-sm btn-default" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin
+    </button>
+
+    <button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit">
         <div ng-show="!model.jarjestyskriteeri.oid">
             <i class="fa fa-floppy-o"></i> Lisää
         </div>
@@ -48,7 +62,5 @@
             <i class="fa fa-floppy-o"></i> Muokkaa
         </div>
     </button>
-
-    <button class="button small float-left margin-right-2" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin
-    </button>
 </form>
+</div>

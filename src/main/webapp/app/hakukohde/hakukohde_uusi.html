@@ -36,7 +36,7 @@
         <div class="form-row-content width-60">
             <input ng-disabled="!(haut.length)" ng-required="true" class="width-60" type="text" typeahead-on-select="setHakuoid($item)" ng-model="model.haku" typeahead-editable="false"
                    typeahead-min-length="0" typeahead="haku as haku.nimi.kieli_fi for haku in haut| filter:$viewValue | limitTo:20 | orderBy:'nimi.kieli_fi'">
-            <a ng-click="model.haku = undefined; model.hakukohde.hakuoid = undefined; model.hakukohde.oid = undefined">Tyhjennä</a>
+            <a class="btn btn-sm btn-default" ng-click="model.haku = undefined; model.hakukohde.hakuoid = undefined; model.hakukohde.oid = undefined">Tyhjennä</a>
         </div>
         <div class="clear"></div>
     </div>
@@ -47,7 +47,7 @@
         <div class="form-row-content width-60">
             <input ng-disabled="!(hakukohteet.length)" ng-required="true" class="width-60" type="text" typeahead-on-select="setHakukohdeoid($item)" ng-model="model.selectedHakukohde" typeahead-editable="false"
                    typeahead="hakukohde as (hakukohde.tarjoajaNimi.fi || 'Ei nimeä')+ ', ' + hakukohde.hakukohdeNimi.fi for hakukohde in hakukohteet| filter:$viewValue | limitTo:20 | orderBy:'hakukohde.kokoNimi'">
-            <a ng-click="model.selectedHakukohde = undefined; model.hakukohde.oid = undefined">Tyhjennä</a>
+            <a class="btn btn-sm btn-default" ng-click="model.selectedHakukohde = undefined; model.hakukohde.oid = undefined">Tyhjennä</a>
             <!--<br />{{model.hakukohde.oid}}-->
         </div>
         <div class="clear"></div>
@@ -71,7 +71,8 @@
         <div class="clear"></div>
     </div>
 
-    <button auth="crud" ng-disabled="!form.$valid" class="button small primary" type="submit">Tallenna</button>
-    <button type="button" class="float-left margin-right-1 button small" ng-click="cancel()">Takaisin</button>
+    <button type="button" class="btn btn-sm btn-default" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin</button>
+    <button auth="crud" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i class="fa fa-floppy-o"></i> Tallenna</button>
+
 </form>
 </div>

@@ -198,8 +198,8 @@
                        ng-click="modifyKriteeri(data.oid)">{{data.metatiedot}}</a>
                 </td>
                 <td>{{data.inheritance}}</td>
-                <td><span auth="crud" ng-show="!data.inheritance" class="btn remove"
-                          ng-click="remove(data.oid)">X</span></td>
+                <td><i auth="crud" ng-show="!data.inheritance" class="fa fa-trash-o"
+                          ng-click="remove(data.oid)"></i></td>
             </tr>
             </tbody>
         </table>

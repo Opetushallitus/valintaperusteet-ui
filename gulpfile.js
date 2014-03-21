@@ -38,10 +38,7 @@ var paths = {
 
 		'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
 
-		'bower_components/angular-ui-tinymce/src/tinymce.js',
-
-		'bower_components/angular-breadcrumbs-simple/dist/js/ng-breadcrumbs.js'
-
+		'bower_components/angular-ui-tinymce/src/tinymce.js'
 
 	],
 	livereloadSources: [

@@ -3,6 +3,7 @@
 <div class="tabs">
     <a href="#/hakukohde/{{model.hakukohde.oid}}/" class="tab current"><span>Hakukohteen perustiedot</span></a>
     <a ng-show="model.hakukohde" href="#/hakukohde/{{model.hakukohde.oid}}/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
+    <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
 </div>
 
 
@@ -46,7 +47,7 @@
                 <input type="text" ng-model="uusiHakukohdeUri"
                        typeahead-editable="false"
                        typeahead="koodi as koodi.metadata[0].nimi + ' (' + koodi.koodiUri + ')' for koodi in model.hakukohdekoodit| filter:$viewValue | orderBy:'metadata[0].nimi' | limitTo :10 ">
-                <button class="primary" auth="update" type="button" ng-click="addHakukohdeUri()"
+                <button class="btn btn-sm btn-primary" auth="update" type="button" ng-click="addHakukohdeUri()"
                         ng-disabled="!uusiHakukohdeUri"><i class="fa fa-refresh"></i> Päivitä
                 </button>
             </div>
@@ -137,9 +138,9 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10" ng-show="model.hakukohde.oid">
-                <span auth="crud" class="button small" ng-click="lisaaValinnanVaihe()"><i
+                <span auth="crud" class="btn btn-sm btn-default" ng-click="lisaaValinnanVaihe()"><i
                         class="fa fa-plus"></i> Valinnanvaihe</span>
-                <span auth="crud" class="button small" ng-click="lisaaValintakoeValinnanVaihe()"><i
+                <span auth="crud" class="btn btn-sm btn-default" ng-click="lisaaValintakoeValinnanVaihe()"><i
                         class="fa fa-plus"></i> Valintakoevalinnanvaihe</span>
             </div>
         </div>
@@ -174,8 +175,8 @@
                         </span>
                         </td>
                         <td class="align-center">
-                            <span auth="crud" ng-show="!data.inheritance" class="btn remove"
-                                  ng-click="removeHakijaryhma(data.oid)"></span>
+                            <i auth="crud" ng-show="!data.inheritance" class="fa fa-trash-o"
+                                  ng-click="removeHakijaryhma(data.oid)"></i>
                         </td>
                     </tr>
                     </tbody>
@@ -183,7 +184,7 @@
 
 
                 <div ng-show="model.hakukohde.oid">
-                    <span auth="crud" class="button small" ng-click="lisaaHakijaryhma()"><i
+                    <span auth="crud" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()"><i
                             class="fa fa-plus"></i> Hakijaryhma</span>
                 </div>
             </div>
@@ -191,13 +192,14 @@
 
         <div class="form-group">
             <div class="col-md-2">
-                <button auth="update" ng-disabled="!form.$valid" class="button small primary" type="submit"><i
+                <button type="button" class="btn btn-sm btn-default" ng-click="cancel()"><i
+                        class="fa fa-arrow-left"></i> Takaisin
+                </button>
+                <button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i
                         class="fa fa-floppy-o"></i>
                     Tallenna
                 </button>
-                <button type="button" class="button small" ng-click="cancel()"><i
-                        class="fa fa-arrow-left"></i> Takaisin
-                </button>
+
             </div>
         </div>
     </form>
