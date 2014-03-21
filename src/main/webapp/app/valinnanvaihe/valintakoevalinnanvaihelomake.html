@@ -1,56 +1,68 @@
 <h1>{{'koekutsuvaihe.header' | i18n}}</h1>
 
-<form name="form" ng-submit="submit()">
+<div class="tabs">
+    <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
+    <a href="#/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
+    <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
+</div>
 
-    <div class="form-row">
-        <label class="form-row-label" for="nimi">Nimi</label>
+<div class="tabsheets">
+    <breadcrumb></breadcrumb>
+    <form name="form" ng-submit="submit()">
 
-        <div class="form-row-content">
-            <input name="nimi" ng-model="model.valintakoevalinnanvaihe.nimi" required/>
+        <div class="form-row">
+            <label class="form-row-label" for="nimi">Nimi</label>
+
+            <div class="form-row-content">
+                <input name="nimi" ng-model="model.valintakoevalinnanvaihe.nimi" required/>
+            </div>
+
+            <div class="clear"></div>
+
+            <label class="form-row-label" for="kuvaus">Kuvaus</label>
+
+            <div class="form-row-content">
+                <textarea name="kuvaus" ng-model="model.valintakoevalinnanvaihe.kuvaus"/>
+            </div>
         </div>
 
+        <div class="form-row width-100" ng-show="model.valintakoevalinnanvaihe.oid">
+
+            <div class="form-row-label">Valintakokeet</div>
+
+            <div class="form-row-content width-80">
+                <table class="virkailija-table-1 margin-bottom-2" ng-show="model.valintakokeet">
+                    <thead>
+                    <tr>
+                        <th>Aktiivinen</th>
+                        <th>Tunniste</th>
+                        <th>Nimi</th>
+                        <th>Kuvaus</th>
+                        <th>Poista</th>
+                    </tr>
+                    </thead>
+                    <tbody ng-model="model.valintakokeet" class="margin-top-2">
+                    <tr ng-repeat="valintakoe in model.valintakokeet">
+                        <td><input type="checkbox" ng-model="valintakoe.aktiivinen"/></td>
+                        <td>{{valintakoe.tunniste}}</td>
+                        <td><a ng-click="modifyvalintakoe(valintakoe.oid)">{{valintakoe.nimi}}</a></td>
+                        <td>{{valintakoe.kuvaus}}</td>
+                        <td><span auth="crud" class="btn remove" ng-click="model.removeValintakoe(valintakoe)"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <span auth="crud" class="btn btn-sm btn-default" ng-click="addValintakoe()"><i class="fa fa-plus"></i> Valintakoe</span>
+            </div>
+        </div>
         <div class="clear"></div>
-
-        <label class="form-row-label" for="kuvaus">Kuvaus</label>
-
-        <div class="form-row-content">
-            <textarea name="kuvaus" ng-model="model.valintakoevalinnanvaihe.kuvaus"/>
-        </div>
-    </div>
-
-    <div class="form-row width-100" ng-show="model.valintakoevalinnanvaihe.oid">
-
-        <div class="form-row-label">Valintakokeet</div>
-
-        <div class="form-row-content width-80">
-            <table class="virkailija-table-1 margin-bottom-2" ng-show="model.valintakokeet">
-                <thead>
-                <tr>
-                    <th>Aktiivinen</th>
-                    <th>Tunniste</th>
-                    <th>Nimi</th>
-                    <th>Kuvaus</th>
-                    <th>Poista</th>
-                </tr>
-                </thead>
-                <tbody ng-model="model.valintakokeet" class="margin-top-2">
-                <tr ng-repeat="valintakoe in model.valintakokeet">
-                    <td><input type="checkbox" ng-model="valintakoe.aktiivinen"/></td>
-                    <td>{{valintakoe.tunniste}}</td>
-                    <td><a ng-click="modifyvalintakoe(valintakoe.oid)">{{valintakoe.nimi}}</a></td>
-                    <td>{{valintakoe.kuvaus}}</td>
-                    <td><span auth="crud" class="btn remove" ng-click="model.removeValintakoe(valintakoe)"></span></td>
-                </tr>
-                </tbody>
-            </table>
-            <span auth="crud" class="btn btn-sm btn-default" ng-click="addValintakoe()"><i class="fa fa-plus"></i> Valintakoe</span>
-        </div>
-    </div>
-    <div class="clear"></div>
-    <span><button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i class="fa fa-floppy-o"></i>
+    <span><button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i
+            class="fa fa-floppy-o"></i>
         Tallenna
     </button></span>
 
-    <span><button class="btn btn-sm btn-default float-left margin-right-1" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin
+    <span><button class="btn btn-sm btn-default float-left margin-right-1" ng-click="cancel()"><i
+            class="fa fa-arrow-left"></i> Takaisin
     </button></span>
-</form>
+    </form>
+</div>

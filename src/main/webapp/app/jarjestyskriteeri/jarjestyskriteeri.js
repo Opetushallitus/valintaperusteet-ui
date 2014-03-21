@@ -79,11 +79,12 @@ app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskrit
 
 });
 
-function JarjestyskriteeriController($scope, $location, $routeParams, JarjestyskriteeriModel, ValintatapajonoModel, ValintaryhmaModel) {
-	$scope.valintaryhmaoid = ValintaryhmaModel;
+function JarjestyskriteeriController($scope, $location, $routeParams, JarjestyskriteeriModel, ValintatapajonoModel) {
+	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
+	$scope.valintaryhmaoid = $routeParams.oid;
     $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
     $scope.valintatapajonoOid = $routeParams.valintatapajonoOid;
-
+	
     $scope.model = JarjestyskriteeriModel;
     $scope.model.refreshIfNeeded($routeParams.jarjestyskriteeriOid, $routeParams.id, $routeParams.hakukohdeOid);
     ValintatapajonoModel.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid);

@@ -3,12 +3,13 @@
 <h1>Hakukohteen luonti</h1>
 
 <div class="tabs">
-    <a class="tab current"><span>Hakukohteen perustiedot</span></a>
+    <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
+    <a ng-show="model.hakukohde" href="#/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
+    <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
 </div>
 
-
-
 <div class="tabsheets">
+    <breadcrumb></breadcrumb>
 <form name="form" ng-submit="submit()">
 
     <div class="form-row">

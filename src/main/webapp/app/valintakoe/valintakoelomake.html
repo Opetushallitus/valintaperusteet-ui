@@ -1,67 +1,79 @@
 <h1>Valintakokeen muokkaus</h1>
 
-<form name="form" ng-submit="submit()">
+<div class="tabs">
+    <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
+    <a href="#/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
+    <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
+</div>
 
-    <div class="form-row">
+<div class="tabsheets">
+    <breadcrumb></breadcrumb>
 
-        <label class="form-row-label">Tunniste</label>
+    <form name="form" ng-submit="submit()">
 
-        <div class="form-row-content">
-            <input name="tunniste" ng-model="model.valintakoe.tunniste" required/>
-        </div>
-        <div class="clear"></div>
+        <div class="form-row">
 
-        <label class="form-row-label" for="nimi">Nimi</label>
+            <label class="form-row-label">Tunniste</label>
 
-        <div class="form-row-content">
-            <input name="nimi" ng-model="model.valintakoe.nimi" required/>
-        </div>
-        <div class="clear"></div>
-
-        <label class="form-row-label" for="kuvaus">Kuvaus</label>
-
-        <div class="form-row-content">
-            <textarea name="kuvaus" ng-model="model.valintakoe.kuvaus"/>
-        </div>
-        <div class="clear"></div>
-
-        <label class="form-row-label" for="lahetetaankoKoekutsut">Lähetetäänkö koekutsut</label>
-
-        <div class="form-row-content">
-            <input type="checkbox" name="lahetetaankoKoekutsut" ng-model="model.valintakoe.lahetetaankoKoekutsut" />
-        </div>
-    </div>
-
-
-    <div class="form-row" ng-model="model.laskentakaavat">
-
-        <div class="form-row-label">Laskentakaava</div>
-        <div class="form-row-content">
-            <label>
-                <input type="radio" name="laskentakaava" value=""
-                       ng-model="model.valintakoe.laskentakaavaId"/>
-                <span>Aina pakollinen</span>
-
-            </label>
-
-            <div ng-repeat="data in model.laskentakaavat" class="field-container-radio">
-                <label>
-                    <input type="radio" name="laskentakaava" value="{{data.id}}"
-                           ng-model="model.valintakoe.laskentakaavaId"/>
-
-                    <span ng-bind="data.nimi"></span>(<span ng-bind="data.id"></span>)
-                </label>
+            <div class="form-row-content">
+                <input name="tunniste" ng-model="model.valintakoe.tunniste" required/>
             </div>
+            <div class="clear"></div>
 
+            <label class="form-row-label" for="nimi">Nimi</label>
+
+            <div class="form-row-content">
+                <input name="nimi" ng-model="model.valintakoe.nimi" required/>
+            </div>
+            <div class="clear"></div>
+
+            <label class="form-row-label" for="kuvaus">Kuvaus</label>
+
+            <div class="form-row-content">
+                <textarea name="kuvaus" ng-model="model.valintakoe.kuvaus"/>
+            </div>
+            <div class="clear"></div>
+
+            <label class="form-row-label" for="lahetetaankoKoekutsut">Lähetetäänkö koekutsut</label>
+
+            <div class="form-row-content">
+                <input type="checkbox" name="lahetetaankoKoekutsut" ng-model="model.valintakoe.lahetetaankoKoekutsut"/>
+            </div>
         </div>
+
+
+        <div class="form-row" ng-model="model.laskentakaavat">
+
+            <div class="form-row-label">Laskentakaava</div>
+            <div class="form-row-content">
+                <label>
+                    <input type="radio" name="laskentakaava" value=""
+                           ng-model="model.valintakoe.laskentakaavaId"/>
+                    <span>Aina pakollinen</span>
+
+                </label>
+
+                <div ng-repeat="data in model.laskentakaavat" class="field-container-radio">
+                    <label>
+                        <input type="radio" name="laskentakaava" value="{{data.id}}"
+                               ng-model="model.valintakoe.laskentakaavaId"/>
+
+                        <span ng-bind="data.nimi"></span>(<span ng-bind="data.id"></span>)
+                    </label>
+                </div>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+
         <div class="clear"></div>
-    </div>
 
-    <div class="clear"></div>
-
-    <button auth="update" ng-disabled="!form.$valid" class="button small primary" type="submit"><i class="fa fa-floppy-o"></i>
-        Tallenna
-    </button>
-    <button class="button small float-left margin-right-1" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin
-    </button>
-</form>
+        <button auth="update" ng-disabled="!form.$valid" class="button small primary" type="submit"><i
+                class="fa fa-floppy-o"></i>
+            Tallenna
+        </button>
+        <button class="button small float-left margin-right-1" ng-click="cancel()"><i class="fa fa-arrow-left"></i>
+            Takaisin
+        </button>
+    </form>
+</div>

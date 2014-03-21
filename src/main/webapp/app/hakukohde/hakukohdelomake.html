@@ -1,13 +1,13 @@
 ﻿<h1>Hakukohteen muokkaus</h1>
 
 <div class="tabs">
-    <a href="#/hakukohde/{{model.hakukohde.oid}}/" class="tab current"><span>Hakukohteen perustiedot</span></a>
+    <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
     <a ng-show="model.hakukohde" href="#/hakukohde/{{model.hakukohde.oid}}/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
     <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
 </div>
 
-
 <div class="tabsheets">
+    <breadcrumb></breadcrumb>
     <form class="form-horizontal" name="form" ng-submit="submit()">
         <div class="form-group">
             <label class="col-md-2 control-label">Hakukohteen nimi</label>
@@ -176,7 +176,7 @@
                         </td>
                         <td class="align-center">
                             <i auth="crud" ng-show="!data.inheritance" class="fa fa-trash-o"
-                                  ng-click="removeHakijaryhma(data.oid)"></i>
+                               ng-click="removeHakijaryhma(data.oid)"></i>
                         </td>
                     </tr>
                     </tbody>
