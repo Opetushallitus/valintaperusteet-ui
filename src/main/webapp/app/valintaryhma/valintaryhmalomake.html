@@ -109,10 +109,9 @@
 <!-- VALINTAKOEKOODIEN LISÄYS -->
 <div class="form-row" ng-show="model.valintaryhma.oid" auth="update">
     <label class="form-row-label">Lisää valintakoekoodi</label>
-
     <div class="form-row-content width-60">
 
-        <div filterable-list ng-show="showValintakoeKoodit" class="autocomplete">
+        <div filterable-list ng-show="toggleValintakoeKoodit" class="autocomplete">
             <div class="form-row">
                 <button type="button" class="btn btn-sm btn-default" ng-click="addValintakoeUri(selectedId)"
                         ng-disabled="!selectedId"><i class="fa fa-plus"></i> Valintakoekoodi
@@ -136,10 +135,10 @@
 
         </div>
 
-        <button ng-click="showValintakoeKoodit = !showValintakoeKoodit" ng-model="showValintakoeKoodit" type="button"
+        <button ng-click="showValintakoeKoodit()" type="button"
                 class="btn btn-sm btn-default">
-            <span ng-show="!showValintakoeKoodit"><i class="fa fa-eye"></i> Valintakoekoodit</span>
-            <span ng-show="showValintakoeKoodit"><i class="fa fa-eye-slash"></i> Valintakoekoodit</span>
+            <span ng-if="!toggleValintakoeKoodit"><i class="fa fa-eye"></i> Valintakoekoodit</span>
+            <span ng-if="toggleValintakoeKoodit"><i class="fa fa-eye-slash"></i> Valintakoekoodit</span>
         </button>
 
 
@@ -185,7 +184,7 @@
 
     <div class="form-row-content width-60">
 
-        <div filterable-list ng-show="showHakukohdekoodit" class="autocomplete">
+        <div filterable-list ng-if="toggleHakukohdeKoodit" class="autocomplete">
             <div class="form-row">
                 <button type="button" class="btn btn-sm btn-default" ng-click="addHakukohdeUri(selectedId)"
                         ng-disabled="!selectedId"><i class="fa fa-plus"></i> Hakukohdekoodi
@@ -208,11 +207,10 @@
             </ul>
 
         </div>
-
-        <button ng-click="showHakukohdekoodit = !showHakukohdekoodit" ng-model="showHakukohdekoodit" type="button"
+        <button ng-click="showHakukohdeKoodit()" ng-model="showHakukohdekoodit" type="button"
                 class="btn btn-sm btn-default">
-            <span ng-show="!showHakukohdekoodit"><i class="fa fa-eye"></i> Hakukohdekoodit</span>
-            <span ng-show="showHakukohdekoodit"><i class="fa fa-eye-slash"></i> Hakukohdekoodit</span>
+            <span ng-show="!toggleHakukohdeKoodit"><i class="fa fa-eye"></i> Hakukohdekoodit</span>
+            <span ng-show="toggleHakukohdeKoodit"><i class="fa fa-eye-slash"></i> Hakukohdekoodit</span>
         </button>
 
 
