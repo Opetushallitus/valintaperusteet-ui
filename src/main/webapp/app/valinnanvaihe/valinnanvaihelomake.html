@@ -9,23 +9,7 @@
 
     <breadcrumb></breadcrumb>
     <form name="form" ng-submit="submit()">
-        <!--
-        <div class="form-row">
-            <label class="form-row-label" for="">Valinnan vaihe</label>
 
-            <div class="form-row-content">
-                <select ng-model="vaihe.tyyppi">
-                    <option>Esivalinta</option>
-                    <option>Varsinainen valinta</option>
-                    <option>Täydennysvalinta</option>
-                    <option>Lisävalinta</option>
-                </select>
-                <br/>
-                <div><small>Valinnan vaiheen tyyppiin liittyvä ohjeteksti.</small></div>
-            </div>
-            <div class="clear"></div>
-        </div>
-        -->
 
 
         <div class="form-row" ng-show="model.valinnanvaihe.kuuluuSijoitteluun">
@@ -51,30 +35,7 @@
                 <textarea name="kuvaus" ng-model="model.valinnanvaihe.kuvaus"/>
             </div>
         </div>
-        <!--
-        <div class="form-row">
-            <label class="form-row-label" for="kuvaus">Kuvaus</label>
 
-            <div class="form-row-content">
-                <input name="nimi" ng-model="valinnanvaihe.nimi" >
-                <textarea name="kuvaus"  ng-model="valinnanvaihe.kuvaus" /></textarea>
-
-                <div class="field-container-checkbox">
-                    <input type="checkbox" name="kvvs" ng-model="valinnanvaihe.sijoittelu" id="kvvs" value="" />
-                    <label for="kvvs">Käytetään valinnan vaihekohtaista sijoittelua</label><br/>
-                </div>
-                <div class="field-container-checkbox">
-                    <input type="checkbox" name="vvor" ng-model="valinnanvaihe.rajaava" id="vvor" value="" />
-                    <label for="vvor">Valinnan vaihe on rajaava</label><br/>
-                </div>
-
-
-             <div><small>Jotain ohjetekstiä.</small></div>
-
-            </div>
-            <div class="clear"></div>
-        </div>
-                 -->
         <div class="form-row" ng-show="model.valinnanvaihe.oid">
             <div class="form-row-label">Valintatapajonot</div>
 
@@ -97,8 +58,8 @@
                         </td>
                         <td>{{'valintaperusteet.periytyy.' + jono.inheritance | i18n}}</td>
                         <td class="align-center">
-                        <span auth="crud" ng-show="!jono.inheritance" class="btn remove"
-                              ng-click="model.remove(jono)"></span>
+                        <i auth="crud" ng-show="!jono.inheritance" class="fa fa-trash-o"
+                              ng-click="model.remove(jono)"></i>
                         </td>
                     </tr>
                     </tbody>
