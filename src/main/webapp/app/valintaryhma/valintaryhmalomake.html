@@ -76,97 +76,10 @@
 </div>
 
 <!-- VALINTAKOEKOODIEN LISTAUS -->
-<div ng-controller="ValintakoekoodiController" class="form-row">
-    <label class="form-row-label" for="">Valintakoekoodit</label>
-
-    <div class="row">
-        <button ng-click="toggleValintakokeet()" class="btn btn-sm btn-default">
-            <i ng-if="toggleValintaryhmaValintakokeet" class="fa fa-eye-slash"></i>
-            <i ng-if="!toggleValintaryhmaValintakokeet" class="fa fa-eye"></i> Valintakoekoodit
-        </button>
-        <button ng-click="showValintakoeKoodit()" type="button"
-                class="btn btn-sm btn-default">
-            <span><i class="fa fa-plus"></i> Uusi valintakoekoodi</span>
-        </button>
-        <modal modal-template="../common/partials/valintakoekoodinValinta.html" auth="update">
-            <modal-open></modal-open>
-        </modal>
-    </div>
-    <label class="form-row-label"></label>
-    <div class="row">
-        <table ng-if="toggleValintaryhmaValintakokeet" class="virkailija-table-1 width-60">
-            <thead>
-            <tr>
-                <th>Koodi</th>
-                <th>Arvo</th>
-                <th>Nimi</th>
-                <th>Poista</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="valintakoekoodit in model.valintaryhma.valintakoekoodit">
-                <td class="align-center">{{valintakoekoodit.uri}}</td>
-                <td class="align-center">{{valintakoekoodit.arvo}}</td>
-                <td class="align-center">{{valintakoekoodit.nimiFi}}</td>
-                <td class="align-center">
-                    <i class="fa fa-trash-o" ng-click="removeValintakoeKoodi(valintakoekoodit)"></i>
-                </td>
-            </tr>
-
-            </tbody>
-
-        </table>
-    </div>
-    <div class="clear"></div>
-</div>
-
+<div ng-include="'valintaryhma/valintakoekoodit.html'" ng-controller="ValintakoekoodiController" class="form-row"></div>
 
 <!-- HAKUKOHDEKOODIEN LISTAUS -->
-<div ng-controller="HakukohdekoodiController" class="form-row">
-    <label class="form-row-label" for="">Hakukohdekoodit</label>
-
-    <div class="row">
-        <button class="btn btn-sm btn-default" ng-click="toggleHakukohdekoodit()">
-            <i ng-if="!toggleValintaryhmaHakukohdekoodit" class="fa fa-eye"></i>
-            <i ng-if="toggleValintaryhmaHakukohdekoodit" class="fa fa-eye-slash"></i> Hakukohdekoodit
-        </button>
-        <button ng-click="showHakukohdeKoodit()" type="button" class="btn btn-sm btn-default">
-            <i class="fa fa-plus"></i> Uusi hakukohdekoodi
-        </button>
-
-        <modal modal-template="../common/partials/hakukohdekoodinValinta.html" auth="update">
-            <modal-open></modal-open>
-        </modal>
-    </div>
-
-
-    <label class="form-row-label"></label>
-    <div class="form-row-content">
-        <table ng-if="toggleValintaryhmaHakukohdekoodit" class="virkailija-table-1 width-60">
-            <thead>
-            <tr>
-                <th>koodi</th>
-                <th>arvo</th>
-                <th>nimi</th>
-                <th>poista</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="hakukohdekoodi in model.valintaryhma.hakukohdekoodit">
-                <td class="align-center">{{hakukohdekoodi.uri}}</td>
-                <td class="align-center">{{hakukohdekoodi.arvo}}</td>
-                <td class="align-center">{{hakukohdekoodi.nimiFi}}</td>
-                <td class="align-center">
-                    <i class="fa fa-trash-o" ng-click="removeHakukohdeKoodi(hakukohdekoodi)"></i>
-                </td>
-            </tr>
-
-            </tbody>
-
-        </table>
-    </div>
-    <div class="clear"></div>
-</div>
+<div ng-include="'valintaryhma/hakukohdekoodit.html'" ng-controller="HakukohdekoodiController" class="form-row"></div>
 
 <!-- VALINNANVAIHEIDEN LISTAUS -->
 <div class="form-row width-100">

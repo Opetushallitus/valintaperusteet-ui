@@ -1,0 +1,45 @@
+
+<label class="form-row-label" for="">Valintakoekoodit</label>
+<div class="row">
+    <button ng-click="toggleValintakokeet()" class="btn btn-sm btn-default">
+        <i ng-if="toggleValintaryhmaValintakokeet" class="fa fa-eye-slash"></i>
+        <i ng-if="!toggleValintaryhmaValintakokeet" class="fa fa-eye"></i> Valintakoekoodit
+    </button>
+    <button ng-click="showValintakoeKoodit()" type="button"
+            class="btn btn-sm btn-default">
+        <span><i class="fa fa-plus"></i> Uusi valintakoekoodi</span>
+    </button>
+    <modal modal-template="../common/partials/valintakoekoodinValinta.html" auth="update">
+        <modal-open></modal-open>
+    </modal>
+</div>
+
+<label class="form-row-label"></label>
+<div class="form-row-content">
+    <div ng-if="toggleValintaryhmaValintakokeet && !model.valintaryhma.valintakoekoodit" class="alert alert-info">Tähän
+        valintaryhmään ei ole vielä liitetty yhtään valintakoekoodia
+    </div>
+    <table ng-if="toggleValintaryhmaValintakokeet && model.valintaryhma.valintakoekoodit" class="virkailija-table-1">
+        <thead>
+        <tr>
+            <th>Koodi</th>
+            <th>Arvo</th>
+            <th>Nimi</th>
+            <th>Poista</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="valintakoekoodit in model.valintaryhma.valintakoekoodit">
+            <td class="align-center">{{valintakoekoodit.uri}}</td>
+            <td class="align-center">{{valintakoekoodit.arvo}}</td>
+            <td class="align-center">{{valintakoekoodit.nimiFi}}</td>
+            <td class="align-center">
+                <i class="fa fa-trash-o" ng-click="removeValintakoeKoodi(valintakoekoodit)"></i>
+            </td>
+        </tr>
+
+        </tbody>
+
+    </table>
+</div>
+<div class="clear"></div>
