@@ -254,10 +254,6 @@ function ValintaryhmaController($scope, $location, $routeParams, ValintaryhmaMod
 	$scope.model = ValintaryhmaModel;
 	$scope.model.refreshIfNeeded($scope.valintaryhmaOid);
 
-	$scope.toggleValintakoeKoodiList = false;
-
-	$scope.toggleHakukohdeKoodit = false;
-	$scope.toggleHakukohdeKoodiList = false;
 
 	$scope.submit = function () {
 		$scope.model.persistValintaryhma($scope.valintaryhmaOid);
@@ -275,55 +271,10 @@ function ValintaryhmaController($scope, $location, $routeParams, ValintaryhmaMod
 		$location.path("/valintaryhma/" + $scope.valintaryhmaOid + "/valintakoevalinnanvaihe/");
 	}
 
-	$scope.addHakukohdeUri = function (newHakukohdeUri) {
-		$scope.model.addHakukohdeUri(newHakukohdeUri);
-	}
-
-	$scope.addValintakoeUri = function (newValintakoeUri) {
-		$scope.model.addValintakoeUri(newValintakoeUri);
-	}
-
 	$scope.toValintaryhmaForm = function () {
 		$location.path("/valintaryhma/" + $scope.valintaryhmaOid);
 	}
 
-	$scope.showValintakoeKooditList = function () {
-		$scope.toggleValintakoeKoodiList = !$scope.toggleValintakoeKoodiList;
-	}
-
-
-	$scope.showValintakoeKoodit = function () {
-		var promise = $scope.model.getValintakoeKoodit();
-		$scope.toggleValintakoeKoodiList = true;
-		promise.then(function () {});
-		promise.finally(function () {
-			$scope.show();
-		});
-	}
-
-	$scope.showHakukohdeKoodit = function () {
-		if (_.isEmpty($scope.model.hakukohdekoodit)) {
-			var promise = $scope.model.getHakukohdekoodit();
-			promise.then(function () {
-				$scope.toggleHakukohdeKoodit = !$scope.toggleHakukohdeKoodit;
-			});
-		} else {
-			$scope.toggleHakukohdeKoodit = !$scope.toggleHakukohdeKoodit;
-		}
-	}
-
-
-	$scope.removeHakukohdeKoodi = function (hakukohdekoodi) {
-		$scope.model.removeHakukohdeKoodi(hakukohdekoodi);
-	}
-
-	$scope.removeValintakoeKoodi = function (valintakoekoodi) {
-		$scope.model.removeValintakoeKoodi(valintakoekoodi);
-	}
-
-	$scope.setHakukohdeUri = function (newUri) {
-		$scope.newHakukohdeUri = newUri;
-	}
 
 	$scope.lisaaHakijaryhma = function () {
 		$location.path("/valintaryhma/" + $routeParams.id + "/hakijaryhma/");
@@ -350,3 +301,60 @@ function ValintaryhmaController($scope, $location, $routeParams, ValintaryhmaMod
 		}
 	}
 }
+
+function ValintakoekoodiController($scope) {
+	$scope.toggleValintaryhmaValintakokeet = false;
+
+	$scope.toggleValintakokeet = function () {
+		$scope.toggleValintaryhmaValintakokeet = !$scope.toggleValintaryhmaValintakokeet;
+	}
+
+	$scope.showValintakoeKoodit = function () {
+		var promise = $scope.model.getValintakoeKoodit();
+		$scope.toggleValintaryhmaValintakokeet = true;
+		promise.finally(function () {
+			$scope.show();
+		});
+	}
+
+	$scope.addValintakoeUri = function (newValintakoeUri) {
+		$scope.model.addValintakoeUri(newValintakoeUri);
+	}
+
+	$scope.removeValintakoeKoodi = function (valintakoekoodi) {
+		$scope.model.removeValintakoeKoodi(valintakoekoodi);
+	}
+}
+
+
+
+
+function HakukohdekoodiController($scope) {
+	$scope.toggleValintaryhmaHakukohdekoodit = false;
+
+	$scope.toggleHakukohdekoodit = function () {
+		$scope.toggleValintaryhmaHakukohdekoodit = !$scope.toggleValintaryhmaHakukohdekoodit;
+	}
+
+	$scope.showHakukohdeKoodit = function () {
+		var promise = $scope.model.getHakukohdekoodit();
+		$scope.toggleValintaryhmaHakukohdekoodit = true;
+		promise.finally(function () {
+			$scope.show();
+		});
+	}
+
+	$scope.setHakukohdeUri = function (newUri) {
+		$scope.newHakukohdeUri = newUri;
+	}
+
+	$scope.addHakukohdeUri = function (newHakukohdeUri) {
+		$scope.model.addHakukohdeUri(newHakukohdeUri);
+	}
+
+	$scope.removeHakukohdeKoodi = function (hakukohdekoodi) {
+		$scope.model.removeHakukohdeKoodi(hakukohdekoodi);
+	}
+
+}
+
