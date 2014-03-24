@@ -10,9 +10,7 @@ app.directive('modal', function ($modal) {
 		link: function ($scope, $elems, $attrs) {
 			var template = $attrs.modalTemplate;
 			var windowClass = $attrs.windowClass;
-
-			$scope.show = function()
-			{
+			$scope.show = function() {
 				$modal.open({
 					scope: $scope,
 					templateUrl: template,
@@ -21,17 +19,9 @@ app.directive('modal', function ($modal) {
 						$scope.sulje = function () {
 							$modalInstance.dismiss('cancel');
 						};
-
 					},
-					resolve: {
-
-					}
-				}).result.then(function () {
-
-					}, function () {
-
-					}
-				);
+					resolve: {}
+				}).result.then(function () {}, function () {});
 			};
 		}
 	};

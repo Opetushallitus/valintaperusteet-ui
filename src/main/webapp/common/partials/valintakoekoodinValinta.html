@@ -1,0 +1,29 @@
+<div class="modal-header"><h3>Valintakoekoodin lisäys</h3></div>
+<div class="modal-body">
+    <div filterable-list class="autocomplete">
+        <div class="form-row">
+            <button type="button" class="btn btn-sm btn-default" ng-click="addValintakoeUri(selectedId)"
+                    ng-disabled="!selectedId"><i class="fa fa-plus"></i> Valintakoekoodi
+            </button>
+        </div>
+
+        <div class="ac-selection">
+            <h3 class="margin-top-0">Valittu valintakoekoodi: {{selectedId}}</h3>
+        </div>
+
+        <input class="width-60 ac-filter search" type="text" placeholder="Suodata valintakoekoodeja"
+               ng-model="valintakoekoodifilter"/>
+
+        <ul class="ac-options" ng-show="model.valintakoekoodit">
+            <li fl-option="{{valintakoekoodi.koodiUri}}" class="ac-option" ng-click="setHakukohdeUri()"
+                ng-repeat="valintakoekoodi in model.valintakoekoodit | filter:valintakoekoodifilter | valintakoekoodiFullMatchFilter">
+                <span>{{valintakoekoodi.metadata[0].nimi}}</span>
+                <span class="float-right">{{valintakoekoodi.koodiUri}}</span>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="modal-footer">
+    <a class="btn btn-default btn-sm" ng-click="sulje();"
+       role="button">Sulje</a>
+</div>

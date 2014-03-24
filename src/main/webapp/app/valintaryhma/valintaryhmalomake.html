@@ -76,11 +76,25 @@
 </div>
 
 <!-- VALINTAKOEKOODIEN LISTAUS -->
-<div ng-show="model.valintaryhma.valintakoekoodit" class="form-row">
+<div class="form-row">
     <label class="form-row-label" for="">Valintakoekoodit</label>
 
-    <div class="form-row-content">
-        <table class="virkailija-table-1 width-60">
+    <div class="row">
+        <button ng-click="showValintakoeKooditList()" class="btn btn-sm btn-default">
+            <i ng-if="toggleValintakoeKoodiList" class="fa fa-eye-slash"></i>
+            <i ng-if="!toggleValintakoeKoodiList" class="fa fa-eye"></i> Valintakoekoodit
+        </button>
+        <button ng-click="showValintakoeKoodit()" type="button"
+                class="btn btn-sm btn-default">
+            <span><i class="fa fa-plus"></i> Uusi valintakoekoodi</span>
+        </button>
+        <modal modal-template="../common/partials/valintakoekoodinValinta.html" auth="update">
+            <modal-open></modal-open>
+        </modal>
+    </div>
+    <label class="form-row-label"></label>
+    <div class="row">
+        <table ng-if="toggleValintakoeKoodiList" class="virkailija-table-1 width-60">
             <thead>
             <tr>
                 <th>Koodi</th>
@@ -106,50 +120,10 @@
     <div class="clear"></div>
 </div>
 
-<!-- VALINTAKOEKOODIEN LISÄYS -->
-<div class="form-row" ng-show="model.valintaryhma.oid" auth="update">
-    <label class="form-row-label">Lisää valintakoekoodi</label>
-    <div class="form-row-content width-60">
-
-        <div filterable-list ng-show="toggleValintakoeKoodit" class="autocomplete">
-            <div class="form-row">
-                <button type="button" class="btn btn-sm btn-default" ng-click="addValintakoeUri(selectedId)"
-                        ng-disabled="!selectedId"><i class="fa fa-plus"></i> Valintakoekoodi
-                </button>
-            </div>
-
-            <div class="ac-selection">
-                <h3 class="margin-top-0">Valittu valintakoekoodi: {{selectedId}}</h3>
-            </div>
-
-            <input class="width-60 ac-filter search" type="text" placeholder="Suodata valintakoekoodeja"
-                   ng-model="valintakoekoodifilter"/>
-
-            <ul class="ac-options" ng-show="model.valintakoekoodit">
-                <li fl-option="{{valintakoekoodi.koodiUri}}" class="ac-option" ng-click="setHakukohdeUri()"
-                    ng-repeat="valintakoekoodi in model.valintakoekoodit | filter:valintakoekoodifilter | valintakoekoodiFullMatchFilter">
-                    <span>{{valintakoekoodi.metadata[0].nimi}}</span>
-                    <span class="float-right">{{valintakoekoodi.koodiUri}}</span>
-                </li>
-            </ul>
-
-        </div>
-
-        <button ng-click="showValintakoeKoodit()" type="button"
-                class="btn btn-sm btn-default">
-            <span ng-if="!toggleValintakoeKoodit"><i class="fa fa-eye"></i> Valintakoekoodit</span>
-            <span ng-if="toggleValintakoeKoodit"><i class="fa fa-eye-slash"></i> Valintakoekoodit</span>
-        </button>
-
-
-    </div>
-    <div class="clear"></div>
-</div>
-
 
 <!-- HAKUKOHDEKOODIEN LISTAUS -->
 <div ng-show="model.valintaryhma.hakukohdekoodit" class="form-row">
-    <label class="form-row-label" for="">Hakukohde koodit</label>
+    <label class="form-row-label" for="">Hakukohdekoodit</label>
 
     <div class="form-row-content">
         <table class="virkailija-table-1 width-60">

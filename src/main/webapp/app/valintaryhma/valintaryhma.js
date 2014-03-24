@@ -55,24 +55,19 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 
 		this.getHakukohdekoodit = function () {
 			var deferred = $q.defer();
-
-			if (_.isEmpty(model.valintakoekoodit)) {
-				KoodistoHakukohdekoodi.get(function (result) {
-					model.hakukohdekoodit = result;
-					deferred.resolve();
-				});
-			}
+			KoodistoHakukohdekoodi.get(function (result) {
+				model.hakukohdekoodit = result;
+				deferred.resolve();
+			});
 			return deferred.promise;
 		}
 
 		this.getValintakoeKoodit = function () {
 			var deferred = $q.defer();
-			if (_.isEmpty(model.valintakoekoodit)) {
-				KoodistoValintakoekoodi.get(function (result) {
-					model.valintakoekoodit = result;
-					deferred.resolve();
-				});
-			}
+			KoodistoValintakoekoodi.get(function (result) {
+				model.valintakoekoodit = result;
+				deferred.resolve();
+			});
 			return deferred.promise;
 		}
 
@@ -258,8 +253,11 @@ function ValintaryhmaController($scope, $location, $routeParams, ValintaryhmaMod
 	$scope.valintaryhmaOid = $routeParams.id;
 	$scope.model = ValintaryhmaModel;
 	$scope.model.refreshIfNeeded($scope.valintaryhmaOid);
-	$scope.toggleValintakoeKoodit = false;
+
+	$scope.toggleValintakoeKoodiList = false;
+
 	$scope.toggleHakukohdeKoodit = false;
+	$scope.toggleHakukohdeKoodiList = false;
 
 	$scope.submit = function () {
 		$scope.model.persistValintaryhma($scope.valintaryhmaOid);
@@ -289,15 +287,18 @@ function ValintaryhmaController($scope, $location, $routeParams, ValintaryhmaMod
 		$location.path("/valintaryhma/" + $scope.valintaryhmaOid);
 	}
 
+	$scope.showValintakoeKooditList = function () {
+		$scope.toggleValintakoeKoodiList = !$scope.toggleValintakoeKoodiList;
+	}
+
+
 	$scope.showValintakoeKoodit = function () {
-		if (_.isEmpty($scope.model.valintakoekoodit)) {
-			var promise = $scope.model.getValintakoeKoodit();
-			promise.then(function () {
-				$scope.toggleValintakoeKoodit = !$scope.toggleValintakoeKoodit;
-			});
-		} else {
-			$scope.toggleValintakoeKoodit = !$scope.toggleValintakoeKoodit;
-		}
+		var promise = $scope.model.getValintakoeKoodit();
+		$scope.toggleValintakoeKoodiList = true;
+		promise.then(function () {});
+		promise.finally(function () {
+			$scope.show();
+		});
 	}
 
 	$scope.showHakukohdeKoodit = function () {
