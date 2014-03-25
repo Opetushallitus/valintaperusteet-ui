@@ -20,25 +20,11 @@
 
 
 <div ng-controller="OrganisaatioTreeController">
-    <button type="button" class="btn btn-sm btn-default" ng-model="orgSelector" ng-show="!orgSelector" ng-click="show()"><i
+    <button type="button" class="btn btn-sm btn-default" ng-click="show()"><i
             class="fa fa-plus"></i> Organisaatio
     </button>
-    <div ng-show="orgSelector">
-        <div class="modal-backdrop" ng-click="close()"></div>
 
-        <div class="orgSearch">
-            <input type="text" class="search" placeholder="Lisää organisaatioita" ng-model="orgTree.searchStr"/>
-            <i class="fa fa-trash-o organisaatio" ng-click="clear()"></i>
-            <br/>
-            <span>Hakutuloksia: {{orgTree.model.numHits || 0}}</span>
-        </div>
-        <div class="clear"></div>
-        <div class="orgSelector">
-            <ol class="treelist collapsible">
-                <li ng-repeat="data in orgTree.model.organisaatiot" ng-include="'organisaatio.html'">
-                </li>
-            </ol>
-        </div>
+    <modal modal-template="../common/partials/organisaatio.html"></modal>
+    
 
-    </div>
 </div>

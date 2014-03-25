@@ -78,7 +78,6 @@ function OrganisaatioTreeController($scope, $timeout, OrganisaatioTreeModel) {
 
     $scope.orgTree = OrganisaatioTreeModel;
 
-    $scope.orgSelector = false;
 
     $scope.$watch('orgTree.searchStr', debounce(function() {
         if($scope.orgTree.searchStr.length > 2) {
@@ -108,11 +107,5 @@ function OrganisaatioTreeController($scope, $timeout, OrganisaatioTreeModel) {
         OrganisaatioTreeModel.searchStr = '';
     }
 
-    $scope.close = function(){
-        $scope.orgSelector = false;
-    }
 
-    $scope.show = function(){
-        $scope.orgSelector = true;
-    }
 }

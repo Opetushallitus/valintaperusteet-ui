@@ -1,5 +1,6 @@
-
+<div ng-controller="ValintakoekoodiController">
 <label class="form-row-label" for="">Valintakoekoodit</label>
+
 <div class="row">
     <button ng-click="toggleValintakokeet()" class="btn btn-sm btn-default">
         <i ng-if="toggleValintaryhmaValintakokeet" class="fa fa-eye-slash"></i>
@@ -15,11 +16,14 @@
 </div>
 
 <label class="form-row-label"></label>
+
 <div class="form-row-content">
-    <div ng-if="toggleValintaryhmaValintakokeet && !model.valintaryhma.valintakoekoodit" class="alert alert-info">Tähän
+    <div ng-if="toggleValintaryhmaValintakokeet && !model.valintaryhma.valintakoekoodit" class="alert alert-info">
+        Tähän
         valintaryhmään ei ole vielä liitetty yhtään valintakoekoodia
     </div>
-    <table ng-if="toggleValintaryhmaValintakokeet && model.valintaryhma.valintakoekoodit" class="virkailija-table-1">
+    <table ng-if="toggleValintaryhmaValintakokeet && model.valintaryhma.valintakoekoodit"
+           class="virkailija-table-1">
         <thead>
         <tr>
             <th>Koodi</th>
@@ -43,3 +47,4 @@
     </table>
 </div>
 <div class="clear"></div>
+</div>
