@@ -43,7 +43,6 @@ function HakukohdeLaskentakaavaListController($scope, $location, $routeParams, L
             });
         } else {
             var kaava = {
-                onLuonnos: true,
                 nimi: kaavaData.nimi,
                 kuvaus: kaavaData.kuvaus,
                 funktiokutsu: {

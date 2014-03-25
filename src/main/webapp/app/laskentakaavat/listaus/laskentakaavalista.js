@@ -5,26 +5,26 @@ angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (La
     var hakukohde = [];
     var valintaryhma = null;
 
-    var findWithValintaryhma = function (valintaryhmaId, myosLuonnos) {
+    var findWithValintaryhma = function (valintaryhmaId) {
         var list = [];
         ParentValintaryhmas.get({parentOid: valintaryhmaId}, function (data) {
             for (var i in data) {
                 var valintaryhma = data[i];
-                valintaryhma['laskentakaavat'] = Laskentakaava.list({valintaryhma: valintaryhma.oid, myosLuonnos: myosLuonnos});
+                valintaryhma['laskentakaavat'] = Laskentakaava.list({valintaryhma: valintaryhma.oid});
             }
 
-            var paataso = findRootLevelLaskentakaavas(myosLuonnos);
+            var paataso = findRootLevelLaskentakaavas();
             list.push.apply(list, data);
             list.push(paataso);
         });
         return list;
     }
 
-    var findWithHakukohde = function (hakukohdeOid, myosLuonnos) {
+    var findWithHakukohde = function (hakukohdeOid) {
         var list = [];
 
         Hakukohde.get({oid: hakukohdeOid}, function (hakukohdeData) {
-            hakukohdeData['laskentakaavat'] = Laskentakaava.list({hakukohde: hakukohdeOid, myosLuonnos: myosLuonnos});
+            hakukohdeData['laskentakaavat'] = Laskentakaava.list({hakukohde: hakukohdeOid});
             hakukohde[0] = hakukohdeData;
 
             if (hakukohdeData.valintaryhma_id) {
@@ -33,10 +33,10 @@ angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (La
                     ParentValintaryhmas.get({parentOid: valintaryhmaData.oid}, function (data) {
                         for (var i in data) {
                             var valintaryhma = data[i];
-                            valintaryhma['laskentakaavat'] = Laskentakaava.list({valintaryhma: valintaryhma.oid, myosLuonnos: myosLuonnos});
+                            valintaryhma['laskentakaavat'] = Laskentakaava.list({valintaryhma: valintaryhma.oid});
                         }
 
-                        var paataso = findRootLevelLaskentakaavas(myosLuonnos);
+                        var paataso = findRootLevelLaskentakaavas( );
                         list.push.apply(list, data);
                         list.push(paataso);
                     });
@@ -49,12 +49,12 @@ angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (La
         return list;
     }
 
-    var findRootLevelLaskentakaavas = function (myosLuonnos) {
+    var findRootLevelLaskentakaavas = function () {
         var paataso = {
             nimi: "Yleiset kaavat",
             laskentakaavat: []
         };
-        Laskentakaava.list({myosLuonnos: myosLuonnos}, function (data) {
+        Laskentakaava.list({}, function (data) {
             paataso.laskentakaavat = data;
         });
 
@@ -68,15 +68,15 @@ angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (La
         hakukohdeList: function () {
             return hakukohde;
         },
-        refresh: function (valintaryhmaId, hakukohdeOid, myosLuonnos) {
+        refresh: function (valintaryhmaId, hakukohdeOid) {
             hakukohde = [];
             valintaryhma = null;
             if (valintaryhmaId) {
-                valintaryhmaList[0] = findWithValintaryhma(valintaryhmaId, myosLuonnos);
+                valintaryhmaList[0] = findWithValintaryhma(valintaryhmaId);
             } else if (hakukohdeOid) {
-                valintaryhmaList[0] = findWithHakukohde(hakukohdeOid, myosLuonnos);
+                valintaryhmaList[0] = findWithHakukohde(hakukohdeOid);
             } else {
-                valintaryhmaList[0] = findRootLevelLaskentakaavas(myosLuonnos);
+                valintaryhmaList[0] = findRootLevelLaskentakaavas();
             }
         }
     }
@@ -101,8 +101,7 @@ function LaskentakaavaListController($scope, $location, $routeParams, Laskentaka
     }
 
 
-    var queryParams = $.extend({myosLuonnos: true}, params);
-    $scope.laskentakaavat = Laskentakaava.list(queryParams);
+    $scope.laskentakaavat = Laskentakaava.list(params);
     $scope.showForm = false;
 
     $scope.createKaava = function () {
@@ -136,7 +135,6 @@ function LaskentakaavaListController($scope, $location, $routeParams, Laskentaka
         } else {
             var kaava = {
                 laskentakaava: {
-                    onLuonnos: true,
                     nimi: kaavaData.nimi,
                     kuvaus: kaavaData.kuvaus,
 
