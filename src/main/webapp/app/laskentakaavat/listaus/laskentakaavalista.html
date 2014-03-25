@@ -73,7 +73,6 @@
                     <tr>
                         <th>Nimi</th>
                         <th>Kuvaus</th>
-                        <th>Tila</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -84,10 +83,6 @@
                         </td>
                         <td>
                             {{kaava.kuvaus}}
-                        </td>
-                        <td>
-                            <span ng-show="kaava.onLuonnos">LUONNOS</span>
-                            <span ng-show="!kaava.onLuonnos">VALMIS</span>
                         </td>
                         <td>
                             <a ng-click="editKaava(kaava)"><i class="fa fa-pencil"></i></a>
