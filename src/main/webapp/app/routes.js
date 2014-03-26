@@ -6,7 +6,7 @@ app.config(function($routeProvider) {
 	$routeProvider.
 
 		//front page
-		when('/etusivu', {controller:ValintaryhmaHakukohdeTreeController, templateUrl:TEMPLATE_URL_BASE + 'valintaryhmalistaus/valintaryhmatlistaus.html', label: 'Valintaryhmät ja hakukohteet'}).
+		when('/etusivu', {controller:ValintaryhmaHakukohdeTreeController, templateUrl:TEMPLATE_URL_BASE + 'valintaryhmalistaus/valintaryhmatlistaus.html'}).
 
 		//edit valintaryhma
 		when('/valintaryhma/', {controller:UusiValintaryhmaController, templateUrl:TEMPLATE_URL_BASE + 'valintaryhma/valintaryhmalomake_uusi.html', label: 'valintaryhmä'}).
