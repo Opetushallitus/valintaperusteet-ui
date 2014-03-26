@@ -12,10 +12,13 @@
 <div class="tabsheets">
 
     <breadcrumb></breadcrumb>
-    <h2>Laskentakaavalista</h2>
+
+    <button type="button" class="btn btn-sm btn-default" ng-click="cancel()"><i
+            class="fa fa-arrow-left"></i> Takaisin
+    </button>
     <span ng-click="createKaava()" class="btn btn-sm btn-default"><i class="fa fa-plus"></i> Laskentakaava</span>
 
-
+    <h2>Laskentakaavalista</h2>
     <div ng-show="showForm">
         <form name="kaavaForm" novalidate>
             <div class="form-row">
@@ -95,8 +98,6 @@
     </div>
 
 
-    <button type="button" class="btn btn-sm btn-default" ng-click="cancel()"><i
-            class="fa fa-arrow-left"></i> Takaisin
-    </button>
+
 
 </div>

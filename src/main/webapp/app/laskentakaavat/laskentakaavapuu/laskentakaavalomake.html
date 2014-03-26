@@ -9,11 +9,11 @@
 </div>
 
 <div class="tabsheets">
-
-    <!-- LASKENTAKAAVAN MUOKKAUS -->
+    <breadcrumb></breadcrumb>
     <span class="btn btn-sm btn-default" ng-click="goToListing()"><i class="fa fa-arrow-left"></i> Palaa</span>
     <span class="btn btn-sm btn-default" ng-click="persistLaskentakaava()"><i class="fa fa-floppy-o"></i> Tallenna</span>
 
+    <!-- LASKENTAKAAVAN MUOKKAUS -->
     <div class="alert alert-danger margin-top-2" ng-show="errors.length > 0">
         <p ng-if="errors">Laskentakaavassa on virheitä, tarkista että olet täyttänyt kaikki pakolliset kentät</p>
     </div>
