@@ -2,7 +2,8 @@
 
 <div class="tabs">
     <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
-    <a href="#/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
+    <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
+    <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
     <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
 </div>
 
@@ -56,13 +57,14 @@
             </div>
         </div>
         <div class="clear"></div>
+        <span><button class="btn btn-sm btn-default" ng-click="cancel()"><i
+                class="fa fa-arrow-left"></i> Takaisin
+        </button></span>
     <span><button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i
             class="fa fa-floppy-o"></i>
         Tallenna
     </button></span>
 
-    <span><button class="btn btn-sm btn-default" ng-click="cancel()"><i
-            class="fa fa-arrow-left"></i> Takaisin
-    </button></span>
+
     </form>
 </div>

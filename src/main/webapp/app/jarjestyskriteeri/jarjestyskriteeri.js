@@ -81,7 +81,7 @@ app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskrit
 
 function JarjestyskriteeriController($scope, $location, $routeParams, JarjestyskriteeriModel, ValintatapajonoModel) {
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
-	$scope.valintaryhmaoid = $routeParams.oid;
+	$scope.valintaryhmaOid = $routeParams.id;
     $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
     $scope.valintatapajonoOid = $routeParams.valintatapajonoOid;
 	

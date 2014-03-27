@@ -92,7 +92,7 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 });
 
 function ValintaryhmaValintakoeController($scope, $location, $routeParams, ValintakoeModel, ValintaryhmaValintakoeValinnanvaiheModel, HakukohdeValintakoeValinnanvaiheModel) {
-	$scope.parentGroupOid = $routeParams.id; 
+	$scope.valintaryhmaOid = $routeParams.id;
 	$scope.valintakoeValinnanvaiheOid = $routeParams.valintakoevalinnanvaiheOid;
 	$scope.valintakoeOid = $routeParams.valintakoeOid;
 	$scope.model = ValintakoeModel;
@@ -101,18 +101,18 @@ function ValintaryhmaValintakoeController($scope, $location, $routeParams, Valin
 	$scope.submit = function() {
 		var promise = $scope.model.persistValintakoe($scope.valintakoeValinnanvaiheOid, ValintaryhmaValintakoeValinnanvaiheModel.valintakokeet);
 		promise.then(function(){
-			$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.parentGroupOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid);	
+			$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.valintaryhmaOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid);
 		});
 		
 	}
 
 	$scope.cancel = function () {
-		$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.parentGroupOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid );
+		$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.valintaryhmaOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid );
 	}
 }
 
 function HakukohdeValintakoeController($scope, $location, $routeParams, ValintakoeModel, ValintaryhmaValintakoeValinnanvaiheModel, HakukohdeValintakoeValinnanvaiheModel) {
-	$scope.parentGroupOid = $routeParams.hakukohdeOid; 
+	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
 	$scope.valintakoeValinnanvaiheOid = $routeParams.valintakoevalinnanvaiheOid;
 	$scope.valintakoeOid = $routeParams.id;
 	$scope.model = ValintakoeModel;
@@ -121,12 +121,12 @@ function HakukohdeValintakoeController($scope, $location, $routeParams, Valintak
 	$scope.submit = function() {
 		var promise = $scope.model.persistValintakoe($scope.valintakoeValinnanvaiheOid, HakukohdeValintakoeValinnanvaiheModel.valintakokeet);
 		promise.then(function() {
-			$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.parentGroupOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid);	
+			$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.hakukohdeOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid);
 		});
 		
 	}
 
 	$scope.cancel = function () {
-		$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.parentGroupOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid );
+		$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.hakukohdeOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid );
 	}
 }

@@ -2,7 +2,8 @@
 
 <div class="tabs">
     <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
-    <a href="#/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
+    <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
+    <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
     <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
 </div>
 
