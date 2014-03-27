@@ -22,7 +22,7 @@
             <form ng-repeat="parametri in funktioSelection.lapsi.arvovalikonvertteriparametrit"
                   class="form-horizontal arvovalikonvertteri-form " role="form">
                 <div><a class="btn btn-sm btn-default"
-                                          ng-click="removeKonvertteriParametri($index, 'ARVOVALIKONVERTTERI')"><i
+                        ng-click="removeKonvertteriParametri($index, 'ARVOVALIKONVERTTERI')"><i
                         class="fa fa-trash-o"></i> Poista parametri</a></div>
                 <div>
                     <span>
@@ -93,94 +93,71 @@
 <script type="text/ng-template" id="arvokonvertteri-template">
 
 
+    <div class="settingsbox">
+        <form ng-repeat="parametri in funktioSelection.lapsi.arvokonvertteriparametrit"
+              class="form-horizontal arvokonvertteri-form" role="form">
+            <div class="pull-left"><a ng-click="removeKonvertteriParametri($index, 'ARVOKONVERTTERI')"><i
+                    class="fa fa-trash-o"></i></a></div>
+            <div class="clearfix"/>
+            <div class="form-group">
+                <label class="col-sm-5 control-label">Arvo</label>
 
-        <div class="settingsbox">
-            <form ng-repeat="parametri in funktioSelection.lapsi.arvokonvertteriparametrit"
-                  class="form-horizontal arvokonvertteri-form" role="form">
-                <div class="pull-left"><a ng-click="removeKonvertteriParametri($index, 'ARVOKONVERTTERI')"><i
-                        class="fa fa-trash-o"></i></a></div>
-                <div class="clearfix"/>
-                <div class="form-group">
-                    <label class="col-sm-5 control-label">Arvo</label>
+                <div class="col-sm-7">
+                    <input type="text" size="9" ng-model="parametri.arvo" placeholder="Arvo"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-5 control-label">Pisteet</label>
 
-                    <div class="col-sm-7">
-                        <input type="text" size="9" ng-model="parametri.arvo" placeholder="Arvo"/>
+                <div class="col-sm-7">
+                    <input type="text" size="9" ng-model="parametri.paluuarvo" placeholder="Pisteet"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-5 col-sm-7">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="parametri.hylkaysperuste" ng-true-value="true"
+                                   ng-false-value="false"/> Hylkäysperuste
+                        </label>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-5 control-label">Pisteet</label>
-
-                    <div class="col-sm-7">
-                        <input type="text" size="9" ng-model="parametri.paluuarvo" placeholder="Pisteet"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-5 col-sm-7">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" ng-model="parametri.hylkaysperuste" ng-true-value="true"
-                                       ng-false-value="false"/> Hylkäysperuste
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div id="arvokonvertteri-kuvaukset" ng-if="parametri.hylkaysperuste">
-                    <div><b>Hylkäysperustekuvaukset</b></div>
-                    <table class="table" ng-if="parametri.kuvaukset.tekstit.length > 0">
-                        <thead>
-                        <tr>
-                            <td>Kieli</td>
-                            <td>Kuvaus</td>
-                            <td></td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="kuvaus in parametri.kuvaukset.tekstit">
-                            <td><select ng-model="kuvaus.kieli"
-                                        ng-options="item.key as item.text for item in arvokonvertterikuvauskielet"></select>
-                            </td>
-                            <td><input type="text" size="15" ng-model="kuvaus.teksti"/></td>
-                            <td><a ng-click="removeKonvertteriParametriKuvaus($index, parametri)"><i
-                                    class="fa fa-trash-o"></i></a></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <span class="button small" ng-click="addArvokonvertterikuvaus(parametri)"><i class="fa fa-plus"></i> Kuvaus</span>
-                </div>
-            </form>
-        </div>
+            </div>
+            <div id="arvokonvertteri-kuvaukset" ng-if="parametri.hylkaysperuste">
+                <div><b>Hylkäysperustekuvaukset</b></div>
+                <table class="table" ng-if="parametri.kuvaukset.tekstit.length > 0">
+                    <thead>
+                    <tr>
+                        <td>Kieli</td>
+                        <td>Kuvaus</td>
+                        <td></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="kuvaus in parametri.kuvaukset.tekstit">
+                        <td><select ng-model="kuvaus.kieli"
+                                    ng-options="item.key as item.text for item in arvokonvertterikuvauskielet"></select>
+                        </td>
+                        <td><input type="text" size="15" ng-model="kuvaus.teksti"/></td>
+                        <td><a ng-click="removeKonvertteriParametriKuvaus($index, parametri)"><i
+                                class="fa fa-trash-o"></i></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <span class="button small" ng-click="addArvokonvertterikuvaus(parametri)"><i class="fa fa-plus"></i> Kuvaus</span>
+            </div>
+        </form>
+    </div>
 
 </script>
 
 
-<!-- LASKENTAKAAVAVIITTAUKSEN ASETUKSET -->
-<div style="width:30%;float:right;" ng-if="funktioasetukset.showLaskentakaavaInformation">
-    <div class="settingsform">
-        <h3>Laskentakaavaviittauksen asetukset</h3>
-
-        <div ng-repeat="valintaryhmaList in laskentakaavalista.valintaryhmaList()">
-            <div ng-repeat="valintaryhma in valintaryhmaList">
-                <h3>Valintaryhmä: {{valintaryhma.nimi}}</h3>
-
-                <div ng-repeat="kaava in valintaryhma.laskentakaavat" ng-if="kaava.id !== model.laskentakaavapuu.id">
-                    <input type="radio" name="laskentakaavaviite" ng-value="kaava"
-                           ng-change="setLaskentakaavaviite(kaava)" ng-model="laskentakaavaviite.selection"/><label
-                        name="laskentakaavaviite"> {{kaava.nimi}}</label>
-                </div>
-            </div>
-        </div>
-
-
-        <span class="button small" ng-click="removeLaskentakaavaviite()">Poista laskentakaavaviite</span>
-    </div>
+<div class="modal-header">
+    <h3>Funktioasetukset</h3>
 </div>
-
-
-<!-- FUNKTIOASETUKSET -->
-<div class="" style="width:30%;float:right;" ng-if="funktioasetukset.showFunktioInformation">
+<div class="modal-body">
     <div class="settingsform">
 
-        <h3>Funktioasetukset</h3>
 
         <div class="form-item" ng-if="funktioSelection.isNimettava()">
             <label class="form-item-label" for="">Nimi</label>
@@ -314,10 +291,10 @@
             </div>
             <div class="clear"></div>
         </div>
-
-        <span class="btn btn-sm btn-default" ng-click="removeFunktiokutsu()"><i class="fa fa-trash-o"></i> Poista funktiokutsu</span>
-
     </div>
-
 </div>
-
+<div class="modal-footer">
+    <span class="btn btn-sm btn-default" ng-click="removeFunktiokutsu(); sulje()"><i class="fa fa-trash-o"></i> Poista funktiokutsu</span>
+    <a class="btn btn-default btn-sm" ng-click="sulje();"
+       role="button">Sulje</a>
+</div>

@@ -9,7 +9,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioKuvausResource', function(
 angular.module('LaskentakaavaEditor').factory('KaavaValidointi', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/laskentakaava/validoi", {}, {
         post: {method: "POST"}
-    })
+    });
 });
 
 angular.module('LaskentakaavaEditor').factory('Laskentakaava', function($resource) {
@@ -25,6 +25,6 @@ angular.module('LaskentakaavaEditor').factory('Laskentakaava', function($resourc
 angular.module('LaskentakaavaEditor').factory('HakukohdeLaskentakaavat', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeOid/laskentakaava", {hakukohdeOid: "@hakukohdeOid"}, {
         get: {method: "GET"}
-    })
+    });
 });
 

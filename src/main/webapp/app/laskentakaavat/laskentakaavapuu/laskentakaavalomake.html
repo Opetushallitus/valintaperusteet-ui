@@ -21,8 +21,21 @@
     <!-- Laskentakaavapuu -->
     <div ng-include="'laskentakaavat/laskentakaavapuu/laskentakaavapuu.html'"></div>
 
-    <!-- Laskentakaavan tai funktion asetukset -->
-    <div ng-include="'laskentakaavat/laskentakaavapuu/funktioasetukset.html'"></div>
+    <!-- FUNKTIOASETUKSET -->
+    <div ng-controller="funktiokutsuAsetuksetController">
+        <modal modal-template="laskentakaavat/laskentakaavapuu/funktioasetukset/funktiokutsuAsetuksetModal.html">
+            <modal-open></modal-open>
+        </modal>
+    </div>
+
+
+    <div ng-controller="laskentakaavaviiteAsetuksetController">
+        <modal modal-template="laskentakaavat/laskentakaavapuu/funktioasetukset/laskentakaavaviiteAsetuksetModal.html">
+            <modal-open></modal-open>
+        </modal>
+    </div>
+
+
 
     <div class="clear"></div>
 </div>
