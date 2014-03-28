@@ -15,6 +15,8 @@ angular.module('LaskentakaavaEditor').factory('TemplateService', function(Funkti
 					return "totuusarvo-template";
 				case "MERKKIJONO":
 					return "merkkijono-template";
+                case "ARVOJOUKKO":
+                    return "arvojoukko-template";
 				default:
 					return ""
 			}
@@ -47,6 +49,7 @@ angular.module('LaskentakaavaEditor').factory('TemplateService', function(Funkti
 				HAEMERKKIJONOJAVERTAAYHTASUURUUS: 'haettava_arvo',
 				HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI: 'haettava_arvo',
 				VALINTAPERUSTEYHTASUURUUS: 'haettava_arvo',
+                HAEYOARVOSANA: 'haettava_arvo',
 
 				SUMMA: 'summa',
 

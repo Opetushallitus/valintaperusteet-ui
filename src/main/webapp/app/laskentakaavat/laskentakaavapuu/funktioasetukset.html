@@ -12,6 +12,9 @@
 <script type="text/ng-template" id="merkkijono-template">
     <input type="text" size="15" ng-model="syoteparametri.arvo"/>
 </script>
+<script type="text/ng-template" id="arvojoukko-template">
+    <select ng-model="syoteparametri.arvo" ng-options="value as value for (key, value) in syoteparametri.arvojoukko"></select>
+</script>
 
 
 <!-- ARVOVÄLIKONVERTTERI template -->
@@ -283,7 +286,8 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="funktiokuvausSyoteparametri in funktiokuvausForSelection.syoteparametrit">
-                            <td>Avain: {{funktiokuvausSyoteparametri.avain}}</td>
+                            <td ng-if="funktiokuvausSyoteparametri.kuvaus.length <= 0">Avain: {{funktiokuvausSyoteparametri.avain}}</td>
+                            <td ng-if="funktiokuvausSyoteparametri.kuvaus.length > 0">{{funktiokuvausSyoteparametri.kuvaus}}</td>
                             <td ng-init="syoteparametri = getSyoteparametri(funktioSelection.lapsi.syoteparametrit, funktiokuvausSyoteparametri)"
                                 ng-include="getSyoteparametriTemplate(funktiokuvausSyoteparametri.tyyppi)"></td>
                         </tr>

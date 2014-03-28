@@ -161,7 +161,8 @@ angular.module('LaskentakaavaEditor').factory('FunktioNimiService', function() {
             SUMMANPARASTA: 'N:n suurimman summa',
             HYLKAAARVOVALILLA: 'Hylkää arvovälillä',
             NIMETTYLUKUARVO: 'Nimetty lukuarvo',
-            NIMETTYTOTUUSARVO: 'Nimetty totuusarvo'
+            NIMETTYTOTUUSARVO: 'Nimetty totuusarvo',
+            HAEYOARVOSANA: 'YO-arvosana'
             
         }
 

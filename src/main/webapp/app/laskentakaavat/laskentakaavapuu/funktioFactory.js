@@ -114,8 +114,8 @@ angular.module('LaskentakaavaEditor').factory('FunktioFactory', function(Funktio
 		function populateParameters(funktioprototype, funktiokuvaus) {
 
 			// Lisätään funktioprototypeen funktiokuvauksen valintaperusteiden mukainen määrä tyhjiä objekteja
-			if(funktiokuvaus.valintaperuste) {
-				funktiokuvaus.valintaperuste.forEach(function(item) {
+			if(funktiokuvaus.valintaperusteviitteet) {
+				funktiokuvaus.valintaperusteviitteet.forEach(function(item) {
 					funktioprototype.lapsi.valintaperusteviitteet.push({});
 				});
 			}
