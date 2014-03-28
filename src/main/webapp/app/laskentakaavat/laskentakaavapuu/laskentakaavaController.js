@@ -17,7 +17,7 @@ angular.module('LaskentakaavaEditor').controller( 'LaskentakaavaController',
     $scope.laskentakaavaviite = { selection: null }
     
 
-    //Laskentakaavapuu datan skooppiin
+    //Laskentakaavapuun data skooppiin
     $scope.model = {};
     $scope.laskentakaavaOid = $routeParams.laskentakaavaOid;
     Laskentakaava.get({oid: $scope.laskentakaavaOid}, function(result) {
@@ -40,20 +40,12 @@ angular.module('LaskentakaavaEditor').controller( 'LaskentakaavaController',
 
     $scope.laskentakaavalista = LaskentakaavaLista;
 
-    // Tieto laskentakaavan / funktion näyttämisestä ja piilottamisesta täytyy säilyttää tässä (parent) skoopissa
-    // objektissa, jotta eri childskoopeissa tehdyt muutokset heijastuvat takaisin parenttiin ja muihin childskooppeihin 
+    // Valitun funktio/laskentakaavaviitteen tietoja
     $scope.funktioasetukset = {
-        showFunktioInformation: false, //näytetäänkö funktiokutsuasetus-näkymä
         selectedFunktioIndex: undefined,
-        showLaskentakaavaInformation: false, //näytetäänkö laskentakaavaviite-näkymä
         konvertteriType: '', //mikä konvertterityyppi on valittuna
         parentFunktiokutsu: undefined,
         showNewFunktioList: false
-    }
-
-    $scope.setFunktioasetusView = function(funktiokutsuVisible, laskentakaavaviiteVisible) {
-        $scope.funktioasetukset.showFunktioInformation = funktiokutsuVisible;
-        $scope.funktioasetukset.showLaskentakaavaInformation = laskentakaavaviiteVisible;
     }
 
     $scope.setRootSelection = function(funktiokutsu) {
@@ -79,13 +71,21 @@ angular.module('LaskentakaavaEditor').controller( 'LaskentakaavaController',
         $scope.setKonvertteriType($scope.funktioSelection);
 
         // päätellään kumpi funktioasetusnäkymä tuodaan näkyviin, funktiokutsuille ja laskentakaavaviitteille on omat näkymänsä
-        isFunktiokutsu ? $scope.setFunktioasetusView(true, false) : $scope.setFunktioasetusView(false, true);
+		// jos kyseessä on funktiokutsu, jolle ei ole asetuksia, niin ei avata muokkausnäkymää
+		if($scope.hasEditableOptions($scope.funktiokuvausForSelection)) {
+			isFunktiokutsu ? $scope.$broadcast('showFunktiokutsuAsetukset') : $scope.$broadcast('showLaskentakaavaviiteAsetukset');
+		}
 
         $scope.laskentakaavaviite.selection = funktio || null;
         $scope.isRootSelected = false;
     }
 
-    $scope.setLaskentakaavaviite = function(kaava) {
+	$scope.hasEditableOptions = function (funktiokuvaus) {
+		return funktiokuvaus.syoteparametrit || funktiokuvaus.valintaperuste || funktiokuvaus.konvertteri;
+	}
+
+
+		$scope.setLaskentakaavaviite = function(kaava) {
         $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = $scope.funktioFactory.createLaskentakaavaviite(kaava);
     }
 
@@ -97,7 +97,6 @@ angular.module('LaskentakaavaEditor').controller( 'LaskentakaavaController',
 
         $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = $scope.funktioFactory.createLaskentakaavaviite();
         $scope.laskentakaavaviite.selection = '-';
-        $scope.setFunktioasetusView(false, true);
     }
 
     $scope.addFunktio = function(parent, funktionimi, index) {
@@ -238,7 +237,7 @@ angular.module('LaskentakaavaEditor').controller( 'LaskentakaavaController',
     }
 
     $scope.removeFunktiokutsu = function(){
-        var isNimettyFunktio = $scope.isNimettyFunktioargumentti($scope.funktioasetukset.parentFunktiokutsu);
+		var isNimettyFunktio = $scope.isNimettyFunktioargumentti($scope.funktioasetukset.parentFunktiokutsu);
         var isPainotettukeskiarvoChild = undefined;
         if($scope.funktioasetukset.parentFunktiokutsu.lapsi) {
             isPainotettukeskiarvoChild = $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktionimi === 'PAINOTETTUKESKIARVO';
@@ -261,7 +260,6 @@ angular.module('LaskentakaavaEditor').controller( 'LaskentakaavaController',
         }
 
         $scope.funktioasetukset.parentFunktiokutsu = undefined;
-        $scope.setFunktioasetusView(false, false);
     }
 
     $scope.removeLaskentakaavaviite = function() {
@@ -271,7 +269,6 @@ angular.module('LaskentakaavaEditor').controller( 'LaskentakaavaController',
         //jos ollaan heti laskentakaavan juuren alla (laskentakaavan 'ensimmäisellä kerroksella' ei ole lapsi-wrapperia)
         else {$scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex,1)}
         $scope.funktioSelection = undefined; 
-        $scope.funktioasetukset.showLaskentakaavaInformation = false;
     }
 
     $scope.isFirstChildForRoot = function(parent) {
@@ -314,7 +311,6 @@ angular.module('LaskentakaavaEditor').controller( 'LaskentakaavaController',
 
     $scope.persistLaskentakaava = function() {
 
-        $scope.setFunktioasetusView(false, false);
         $scope.funktioSelection = undefined;
 
         //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
@@ -368,4 +364,5 @@ angular.module('LaskentakaavaEditor').controller('funktioMenuController', ['$sco
         $scope.showNewFunktioList.visible = false;
     });
 }]);
+
 

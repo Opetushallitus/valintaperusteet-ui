@@ -66,7 +66,8 @@ app.factory('HakijaryhmaValintatapajonoModel', function($q, ValintatapajonoModel
 });
 
 function HakijaryhmaValintatapajonoController($scope, $location, $routeParams, HakijaryhmaValintatapajonoModel, ValintatapajonoModel) {
-
+	$scope.valintaryhmaOid = $routeParams.id;
+	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
     ValintatapajonoModel.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid);
     $scope.model = HakijaryhmaValintatapajonoModel;
     $scope.model.refresh($routeParams.id, $routeParams.hakukohdeOid);

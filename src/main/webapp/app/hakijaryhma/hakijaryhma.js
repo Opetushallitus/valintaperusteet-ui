@@ -58,7 +58,8 @@ app.factory('HakijaryhmaModel', function($q, Hakijaryhma, LaskentakaavaModel,
 });
 
 function HakijaryhmaController($scope, $location, $routeParams, HakijaryhmaModel, HakukohdeModel, ValintaryhmaModel) {
-
+	$scope.valintaryhmaOid = $routeParams.id;
+	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakijaryhmaModel;
     $scope.model.refresh($routeParams.hakijaryhmaOid, $routeParams.id, $routeParams.hakukohdeOid);
 

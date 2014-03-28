@@ -1,66 +1,65 @@
 ﻿<h1>Järjestyskriteerin muokkaus</h1>
 
-
 <div class="tabs">
     <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
-    <a href="#/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
+    <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
+    <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
     <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
 </div>
 
 <div class="tabsheets">
     <breadcrumb></breadcrumb>
-<form name="form" ng-submit="submit()">
-    <div class="form-row">
-        <label class="form-row-label" for="metatiedot">Metatiedot</label>
+    <form name="form" ng-submit="submit()">
+        <div class="form-row">
+            <label class="form-row-label" for="metatiedot">Metatiedot</label>
 
-        <div class="form-row-content">
-            <input type="text" name="metatiedot" id="metatiedot" ng-model="model.jarjestyskriteeri.metatiedot"/>
-            <!--
-            <div><small>Jonon nimeen liittyvä ohjeteksti.</small></div>
-            -->
-        </div>
-        <div class="clear"></div>
-    </div>
-
-    <div class="form-row" ng-model="model.laskentakaavaModel.laskentakaavat">
-
-        <div class="form-row-label">Laskentakaava<br/></div>
-        <div class="form-row-content">&nbsp;<br/></div>
-        <div class="clear"></div>
-        <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat" class="field-container-radio">
-            <div class="form-row-label">{{group.name}}<br/></div>
             <div class="form-row-content">
-                <!--<span >{{model.laskentakaavat}}</span>-->
-
-                <div ng-repeat="data in group.result" class="field-container-radio">
-                    <label>
-                        <input type="radio" name="laskentakaava" value="{{data.id}}"
-                               ng-model="model.jarjestyskriteeri.laskentakaavaId"
-                               ng-required="!model.jarjestyskriteeri.laskentakaavaId"/>
-
-                        <span ng-bind="data.nimi"></span>(<span ng-bind="data.id"></span>)
-                    </label>
-                </div>
-                <br/>
+                <input type="text" name="metatiedot" id="metatiedot" ng-model="model.jarjestyskriteeri.metatiedot"/>
+                <!--
+                <div><small>Jonon nimeen liittyvä ohjeteksti.</small></div>
+                -->
             </div>
-
             <div class="clear"></div>
         </div>
 
-    </div>
+        <div class="form-row" ng-model="model.laskentakaavaModel.laskentakaavat">
 
+            <div class="form-row-label">Laskentakaava<br/></div>
+            <div class="form-row-content">&nbsp;<br/></div>
+            <div class="clear"></div>
+            <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat" class="field-container-radio">
+                <div class="form-row-label">{{group.name}}<br/></div>
+                <div class="form-row-content">
+                    <!--<span >{{model.laskentakaavat}}</span>-->
 
+                    <div ng-repeat="data in group.result" class="field-container-radio">
+                        <label>
+                            <input type="radio" name="laskentakaava" value="{{data.id}}"
+                                   ng-model="model.jarjestyskriteeri.laskentakaavaId"
+                                   ng-required="!model.jarjestyskriteeri.laskentakaavaId"/>
 
-    <button class="btn btn-sm btn-default" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin
-    </button>
+                            <span ng-bind="data.nimi"></span>(<span ng-bind="data.id"></span>)
+                        </label>
+                    </div>
+                    <br/>
+                </div>
 
-    <button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit">
-        <div ng-show="!model.jarjestyskriteeri.oid">
-            <i class="fa fa-floppy-o"></i> Lisää
+                <div class="clear"></div>
+            </div>
+
         </div>
-        <div ng-show="model.jarjestyskriteeri.oid">
-            <i class="fa fa-floppy-o"></i> Muokkaa
-        </div>
-    </button>
-</form>
+
+
+        <button class="btn btn-sm btn-default" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin
+        </button>
+
+        <button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit">
+            <div ng-show="!model.jarjestyskriteeri.oid">
+                <i class="fa fa-floppy-o"></i> Lisää
+            </div>
+            <div ng-show="model.jarjestyskriteeri.oid">
+                <i class="fa fa-floppy-o"></i> Muokkaa
+            </div>
+        </button>
+    </form>
 </div>
