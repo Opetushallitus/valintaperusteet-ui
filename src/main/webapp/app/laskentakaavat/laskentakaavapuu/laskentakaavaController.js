@@ -66,13 +66,13 @@ angular.module('LaskentakaavaEditor').controller( 'LaskentakaavaController',
         if(isFunktiokutsu) {
             $scope.funktiokuvausForSelection = $scope.funktioService.getFunktiokuvaus(funktio.lapsi.funktionimi);
         }
-            
+
         //päätellään funktiolle esivalittu konvertteriparametrityyppi, jos funktiolla on konvertteriparametreja
         $scope.setKonvertteriType($scope.funktioSelection);
 
         // päätellään kumpi funktioasetusnäkymä tuodaan näkyviin, funktiokutsuille ja laskentakaavaviitteille on omat näkymänsä
 		// jos kyseessä on funktiokutsu, jolle ei ole asetuksia, niin ei avata muokkausnäkymää
-		if($scope.hasEditableOptions($scope.funktiokuvausForSelection)) {
+		if(!isFunktiokutsu || $scope.hasEditableOptions($scope.funktiokuvausForSelection) ) {
 			isFunktiokutsu ? $scope.$broadcast('showFunktiokutsuAsetukset') : $scope.$broadcast('showLaskentakaavaviiteAsetukset');
 		}
 
