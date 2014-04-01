@@ -1,0 +1,38 @@
+<div ng-controller="UusiLaskentakaavaController">
+    <form name="kaavaForm" novalidate>
+        <div class="form-row">
+            <div class="form-row-label">Laskentakaavan nimi</div>
+
+            <div class="form-row-content">
+                <input type="text" ng-model="kaava.nimi" required/>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="form-row">
+            <div class="form-row-label">Laskentakaavan kuvaus</div>
+
+            <div class="form-row-content">
+                <textarea ng-model="kaava.kuvaus"></textarea>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="form-row" ng-show="!kaava.id">
+            <div class="form-row-label">Laskentakaavan tyyppi</div>
+
+            <div class="form-row-content">
+                <input type="radio" name="tyyppi" value="NIMETTYTOTUUSARVO" ng-model="kaava.tyyppi"/>
+                Totuusarvofunktio
+                <br/>
+                <input type="radio" name="tyyppi" value="NIMETTYLUKUARVO" ng-model="kaava.tyyppi"/> Lukuarvofunktio
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="form-row">
+            <button class="btn btn-sm btn-primary"
+                    ng-click="createKaava(kaava)"
+                    ng-disabled="kaavaForm.$invalid"><i class="fa fa-floppy-o"></i> Tallenna
+            </button>
+
+        </div>
+    </form>
+</div>

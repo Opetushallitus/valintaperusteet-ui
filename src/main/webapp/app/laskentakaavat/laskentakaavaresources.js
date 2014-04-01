@@ -13,7 +13,7 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidointi', function($resou
 });
 
 angular.module('LaskentakaavaEditor').factory('Laskentakaava', function($resource) {
- return $resource(SERVICE_URL_BASE + "resources/laskentakaava/:oid", {oid: "@oid"}, {
+ return $resource(SERVICE_URL_BASE + "resources/laskentakaava/:oid", {oid: "@oid", myosLuonnos: true}, {
      list: {method: "GET", isArray: true},
      get: {method: "GET"},
      insert: {method: "PUT"},

@@ -13,51 +13,13 @@
 
     <breadcrumb></breadcrumb>
 
-    <button type="button" class="btn btn-sm btn-default" ng-click="cancel()"><i
-            class="fa fa-arrow-left"></i> Takaisin
+    <button type="button" class="btn btn-sm btn-default" ng-click="cancel()">
+        <i class="fa fa-arrow-left"></i> Takaisin
     </button>
     <span ng-click="createKaava()" class="btn btn-sm btn-default"><i class="fa fa-plus"></i> Laskentakaava</span>
 
     <h2>Laskentakaavalista</h2>
-    <div ng-show="showForm">
-        <form name="kaavaForm" novalidate>
-            <div class="form-row">
-                <div class="form-row-label">Laskentakaavan nimi</div>
 
-                <div class="form-row-content">
-                    <input type="text" ng-model="kaava.nimi" required/>
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div class="form-row">
-                <div class="form-row-label">Laskentakaavan kuvaus</div>
-
-                <div class="form-row-content">
-                    <textarea ng-model="kaava.kuvaus"></textarea>
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div class="form-row" ng-show="!kaava.id">
-                <div class="form-row-label">Laskentakaavan tyyppi</div>
-
-                <div class="form-row-content">
-                    <input type="radio" name="tyyppi" value="NIMETTYTOTUUSARVO" ng-model="kaava.tyyppi"/>
-                    Totuusarvofunktio
-                    <br/>
-                    <input type="radio" name="tyyppi" value="NIMETTYLUKUARVO" ng-model="kaava.tyyppi"/> Lukuarvofunktio
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div class="form-row">
-                <span class="btn btn-sm btn-default" ng-click="cancelEdit(kaava)"><i class="fa fa-arrow-left"></i> Peruuta</span>
-                <button class="btn btn-sm btn-primary"
-                        ng-click="saveKaava(kaava)"
-                        ng-disabled="kaavaForm.$invalid"><i class="fa fa-floppy-o"></i> Tallenna
-                </button>
-
-            </div>
-        </form>
-    </div>
 
     <div class="width-60">
 

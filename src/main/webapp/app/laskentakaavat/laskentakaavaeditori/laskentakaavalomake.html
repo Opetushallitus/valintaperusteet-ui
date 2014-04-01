@@ -1,0 +1,29 @@
+<!-- LASKENTAKAAVAPAGE CONTENT -->
+<h1>Laskentakaavan muokkaus</h1>
+
+
+<div class="tabs">
+    <a href="#/etusivu" class="tab"><span>Valintaryhmät ja hakukohteet</span></a>
+    <a href="#/laskentakaava" class="tab current"><span>Laskentakaavat</span></a>
+    <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
+</div>
+
+<div class="tabsheets">
+    <breadcrumb></breadcrumb>
+    <span class="btn btn-sm btn-default" ng-click="back()"><i class="fa fa-arrow-left"></i> Takaisin</span>
+    <span class="btn btn-sm btn-default" ng-click="persist()"><i class="fa fa-floppy-o"></i> Tallenna</span>
+
+    <!-- LASKENTAKAAVAN MUOKKAUS -->
+    <div class="alert alert-danger margin-top-2" ng-show="errors.length > 0">
+        <p ng-if="errors">Laskentakaavassa on virheitä, tarkista että olet täyttänyt kaikki pakolliset kentät</p>
+    </div>
+
+    <!-- Uusi laskentakaava -->
+    <div ng-show="showNewLaskentakaavaForm" ng-include="'laskentakaavat/laskentakaavaeditori/uusilaskentakaava.html'"></div>
+
+    <!-- Laskentakaavapuu -->
+    <div ng-show="!showNewLaskentakaavaForm" ng-include="'laskentakaavat/laskentakaavaeditori/laskentakaavapuu.html'"></div>
+
+
+    <div class="clear"></div>
+</div>

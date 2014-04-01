@@ -1,7 +1,21 @@
 
-<div class="gradingformula dd" style="width:60%;float:left;">
-
+<div ng-controller="LaskentakaavaController" class="gradingformula dd" style="width:60%;float:left;">
+{{model.laskentakaavapuu}}
     <h2>Laskentakaava</h2>
+    <!-- FUNKTIOASETUKSET -->
+    <div ng-controller="funktiokutsuAsetuksetController">
+        <modal modal-template="laskentakaavat/laskentakaavaeditori/funktioasetukset/funktiokutsuAsetuksetModal.html">
+            <modal-open></modal-open>
+        </modal>
+    </div>
+
+    <!-- Laskentakaavaviitteen valinta -->
+    <div ng-controller="laskentakaavaviiteAsetuksetController">
+        <modal modal-template="laskentakaavat/laskentakaavaeditori/funktioasetukset/laskentakaavaviiteAsetuksetModal.html">
+            <modal-open></modal-open>
+        </modal>
+    </div>
+
     <div class="frame" ng-class="isRootSelected ? 'active' : ''">
         <span class="icon">&#8302;</span>
         <span class="node bold" ng-click="setRootSelection(model.laskentakaavapuu.funktiokutsu)">{{model.laskentakaavapuu.nimi}}</span>
@@ -14,6 +28,7 @@
         <li class="item" ng-init="laskentakaavatyyppi = model.laskentakaavapuu.tyyppi; parent = model.laskentakaavapuu.funktiokutsu" ng-if="model.laskentakaavapuu.funktiokutsu.funktioargumentit.length === 0" ng-include="'addFunktioToRoot'"></li>
     </ul>
 </div>
+
 
 
 

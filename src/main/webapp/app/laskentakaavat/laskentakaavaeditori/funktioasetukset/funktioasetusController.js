@@ -6,7 +6,13 @@ angular.module('LaskentakaavaEditor').controller('funktiokutsuAsetuksetControlle
 
 
 angular.module('LaskentakaavaEditor').controller('laskentakaavaviiteAsetuksetController', ['$scope', function ($scope) {
-	$scope.$on('showLaskentakaavaviiteAsetukset', function () {
+	$scope.$on('showLaskentakaavaviiteAsetukset', function (event) {
 		$scope.show();
+	});
+}]);
+
+angular.module('LaskentakaavaEditor').controller('funktioMenuController', ['$scope', function ($scope) {
+	$scope.$on('hideFunktioMenu', function() {
+		$scope.showNewFunktioList.visible = false;
 	});
 }]);
