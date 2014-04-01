@@ -248,7 +248,7 @@
         </div>
 
         <!-- SYÖTEPARAMETRIT -->
-        <div class="form-item" ng-if="funktioSelection.lapsi.syoteparametrit.length > 0">
+        <div class="form-item">
             <label class="form-item-label" style="width:150px;">Arvon määrittelyt</label>
 
             <div class="form-item-content">
@@ -262,7 +262,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="funktiokuvausSyoteparametri in funktiokuvausForSelection.syoteparametrit">
+                        <tr ng-repeat="funktiokuvausSyoteparametri in funktiokuvausForSelection.syoteparametrit" ng-if="funktioSelection.lapsi.syoteparametrit.length > 0">
                             <td ng-if="funktiokuvausSyoteparametri.kuvaus.length <= 0">Avain: {{funktiokuvausSyoteparametri.avain}}</td>
                             <td ng-if="funktiokuvausSyoteparametri.kuvaus.length > 0">{{funktiokuvausSyoteparametri.kuvaus}}</td>
                             <td ng-init="syoteparametri = getSyoteparametri(funktioSelection.lapsi.syoteparametrit, funktiokuvausSyoteparametri)"
