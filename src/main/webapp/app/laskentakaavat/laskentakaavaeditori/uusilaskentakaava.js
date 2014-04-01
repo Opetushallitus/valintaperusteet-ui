@@ -11,7 +11,7 @@ angular.module('LaskentakaavaEditor').controller('UusiLaskentakaavaController', 
         var laskentakaava = {
             nimi: kaavaData.nimi,
             kuvaus: kaavaData.kuvaus,
-            onLuonnos: true,
+            onLuonnos: false,
             tyyppi: funktiokuvaus.funktioargumentit[0].tyyppi,
             kardinaliteetti: funktiokuvaus.funktioargumentit[0].kardinaliteetti,
             funktiokutsu: {
