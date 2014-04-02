@@ -5,8 +5,7 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
-
+    basePath: '../..',
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
@@ -15,13 +14,21 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'unit/**/*.js'
+      'main/webapp/common/jslib/angular.js',
+      'main/webapp/common/jslib/jquery.js',
+      'main/webapp/common/jslib/*.js',
+      'main/webapp/app/valintaperusteet.js',
+      'main/webapp/app/**/*.js',
+      'main/webapp/common/js/**/*.js',
+      'test/ui/angular-mocks.js',
+      'test/ui/unit/**/*.js'
     ],
 
 
     // list of files to exclude
     exclude: [
-      
+        'main/webapp/common/jslib/**/*.min.js',
+        'main/webapp/common/jslib/ui-bootstrap-tpls-0.7.0.js'
     ],
 
 
@@ -52,12 +59,12 @@ module.exports = function(config) {
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
+    autoWatch: true,
 
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome', 'Firefox'],
+    browsers: ['Chrome'],
 
 
     // Continuous Integration mode
