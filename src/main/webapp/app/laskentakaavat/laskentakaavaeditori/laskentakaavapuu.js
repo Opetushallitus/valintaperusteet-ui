@@ -353,15 +353,13 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     hakukohdeOid: $routeParams.hakukohdeOid,
                     laskentakaava: $scope.model.laskentakaavapuu
                 }
-
+                
                 if (!$scope.createNewKaava) {
                     $scope.funktioSelection = undefined;
+
                     //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
-                    //$scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = $scope.funktioService.cleanLaskentakaavaPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
-
-                    $scope.funktioService.cleanLaskentakaavaPKObjects(kaava.laskentakaava.funktiokutsu.funktioargumentit);
-
-                    KaavaValidointi.post({}, kaava, function (result) {
+                    $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = $scope.funktioService.cleanLaskentakaavaPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
+                    KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function (result) {
                         kaava.$save({oid: $scope.model.laskentakaavapuu.id}, function (result) {
                             kaava.funktiokutsu.funktioargumentit = $scope.funktioService.addPKObjects(kaava.funktiokutsu.funktioargumentit);
                         }, function (error) {
@@ -371,7 +369,6 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 } else {
                     Laskentakaava.insert({}, kaava, function (result) {
                         $scope.createNewKaava = false;
-                        $location.path($scope.linkprefix + "/laskentakaava/" + result.id);
                     });
 
                 }
