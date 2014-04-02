@@ -29,7 +29,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 });
             }
 
-            $scope.$on('newkaava', function() {
+            $scope.$on('newkaava', function () {
                 $scope.model.laskentakaavapuu = $scope.$parent.$parent.newKaavaTemplate;
             });
 
@@ -347,21 +347,21 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
              });
              */
 
-            $scope.$on('persistKaava', function() {
+            $scope.$on('persistKaava', function () {
                 var kaava = {
                     valintaryhmaOid: $routeParams.valintaryhmaOid,
                     hakukohdeOid: $routeParams.hakukohdeOid,
                     laskentakaava: $scope.model.laskentakaavapuu
                 }
-                
+
                 if (!$scope.createNewKaava) {
                     $scope.funktioSelection = undefined;
 
                     //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
                     $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = $scope.funktioService.cleanLaskentakaavaPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
                     KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function (result) {
-                        kaava.$save({oid: $scope.model.laskentakaavapuu.id}, function (result) {
-                            kaava.funktiokutsu.funktioargumentit = $scope.funktioService.addPKObjects(kaava.funktiokutsu.funktioargumentit);
+                        $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function (result) {
+                            $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = $scope.funktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
                         }, function (error) {
                             $scope.errors.push(error);
                         });
