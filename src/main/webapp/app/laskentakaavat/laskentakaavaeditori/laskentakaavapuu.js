@@ -76,9 +76,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 // päätellään kumpi muokkausnäkymä tuodaan näkyviin, funktiokutsuille ja laskentakaavaviitteille on omat näkymänsä
                 // jos kyseessä on funktiokutsu, jolle ei ole muokattavia asetuksia, niin ei avata muokkausnäkymää
                 if (isFunktiokutsu) {
-                    if ($scope.hasEditableOptions($scope.funktiokuvausForSelection)) {
-                        $scope.$broadcast('showFunktiokutsuAsetukset')
-                    }
+                    $scope.$broadcast('showFunktiokutsuAsetukset')
                 } else {
                     $scope.$broadcast('showLaskentakaavaviiteAsetukset');
                 }
@@ -87,11 +85,6 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 $scope.laskentakaavaviite.selection = funktio || null;
                 $scope.isRootSelected = false;
             }
-
-            $scope.hasEditableOptions = function (funktiokuvaus) {
-                return funktiokuvaus.syoteparametrit || funktiokuvaus.valintaperuste || funktiokuvaus.konvertteri;
-            }
-
 
             $scope.setLaskentakaavaviite = function (kaava) {
                 $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = $scope.funktioFactory.createLaskentakaavaviite(kaava);
