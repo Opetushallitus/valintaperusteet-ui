@@ -4,6 +4,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
     ['$scope', '_', '$location', '$routeParams', 'KaavaValidointi', 'Laskentakaava', 'LaskentakaavaLista',
         'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'Arvokonvertterikuvauskielet', 'FunktioNimiService', 'FunktioFactory',
         function ($scope, _, $location, $routeParams, KaavaValidointi, Laskentakaava, LaskentakaavaLista, TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet, FunktioNimiService, FunktioFactory) {
+
             //servicet laskentakaavapuun piirtämiseen
             $scope.templateService = TemplateService;
             $scope.funktioService = FunktioService;
@@ -15,6 +16,8 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             $scope.arvokonvertterikuvauskielet = Arvokonvertterikuvauskielet;
             $scope.errors = [];
             $scope.model = {};
+
+
             //Pidetään laskentakaaviitevalinta objektissa. Laskentakaavaviitettä kaavaan liitettäessä radio-inputit iteroidaan ng-repeatissa,
             //joka luo uuden skoopin joka itemille, jolloin laskentakaavaviitteen tallentaminen  suoraan skoopissa olevaan muuttujaan ei toimi oikein
             $scope.laskentakaavaviite = { selection: null }
@@ -84,6 +87,8 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
                 $scope.laskentakaavaviite.selection = funktio || null;
                 $scope.isRootSelected = false;
+                $scope.errors.length = 0;
+                $scope.saved = false;
             }
 
             $scope.setLaskentakaavaviite = function (kaava) {
@@ -349,21 +354,28 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
                 if (!$scope.createNewKaava) {
                     $scope.funktioSelection = undefined;
+                    FunktioService.checkForEmptyTallennaTulosValues($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit, $scope.errors);
 
-                    //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
-                    $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = $scope.funktioService.cleanLaskentakaavaPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
-                    KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function (result) {
-                        $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function (result) {
-                            $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = $scope.funktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
-                        }, function (error) {
-                            $scope.errors.push(error);
+                    if (!($scope.errors.length > 0)) {
+                        //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
+                        $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.cleanLaskentakaavaPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
+                        KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function (result) {
+                            $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function (result) {
+                                $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
+                                $scope.saved = true;
+                            }, function (error) {
+                                $scope.errors.push(error);
+                            });
                         });
-                    });
+                    }
                 } else {
-                    Laskentakaava.insert({}, kaava, function (result) {
-                        $scope.createNewKaava = false;
-                    });
-
+                    FunktioService.checkForEmptyTallennaTulosValues(kaava.laskentakaava.funktioargumentit, $scope.errors);
+                    if (!($scope.errors.length > 0)) {
+                        Laskentakaava.insert({}, kaava, function (result) {
+                            $scope.createNewKaava = false;
+                            $scope.saved = true;
+                        });
+                    }
                 }
             });
         }]);

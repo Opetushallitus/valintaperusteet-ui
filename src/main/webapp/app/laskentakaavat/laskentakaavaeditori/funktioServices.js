@@ -41,7 +41,6 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
         }
 
         this.isPainotettukeskiarvoChild = function (parent) {
-            if(!parent || !parent.funktiokuvaukset) {asdf}
             var funktiokuvaus = model.getFunktiokuvaus(model.getFunktionimi(parent));
             return funktiokuvaus.funktioargumentit && funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'lista_pareja';
         }
@@ -91,6 +90,20 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
             }
         }
 
+        this.checkForEmptyTallennaTulosValues = function(funktioargumentit, errors) {
+            if(funktioargumentit) {
+                _.forEach(funktioargumentit, function(funktiokutsu) {
+                    if(funktiokutsu.lapsi.tallennaTulos === true && _.isEmpty(funktiokutsu.lapsi.tulosTunniste)) {
+                        errors.push("virhe");
+                    }
+
+                    if(funktiokutsu.lapsi.funktioargumentit) {
+                        model.checkForEmptyTallennaTulosValues(funktiokutsu.lapsi.funktioargumentit, errors);
+                    }
+                });
+            }
+        }
+
         this.cleanLaskentakaavaPKObjects = function (funktioargumentit) {
             if (funktioargumentit) {
                 _.forEach(funktioargumentit, function (item) {
@@ -123,6 +136,8 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
             arr.push({});
             return arr;
         }
+
+
     }
 
     return model;

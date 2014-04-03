@@ -13,11 +13,6 @@
     <span class="btn btn-sm btn-default" ng-click="back()"><i class="fa fa-arrow-left"></i> Takaisin</span>
     <span class="btn btn-sm btn-default" ng-click="persist()"><i class="fa fa-floppy-o"></i> Tallenna</span>
 
-    <!-- LASKENTAKAAVAN MUOKKAUS -->
-    <div class="alert alert-danger margin-top-2" ng-show="errors.length > 0">
-        <p ng-if="errors">Laskentakaavassa on virheitä, tarkista että olet täyttänyt kaikki pakolliset kentät</p>
-    </div>
-
     <!-- Uusi laskentakaava -->
     <div ng-show="showNewLaskentakaavaForm" ng-include="'laskentakaavat/laskentakaavaeditori/uusilaskentakaava.html'"></div>
 
