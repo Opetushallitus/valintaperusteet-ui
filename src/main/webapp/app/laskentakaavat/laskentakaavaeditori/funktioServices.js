@@ -37,10 +37,11 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
 
         this.isNimettyFunktioargumenttiByFunktionimi = function (parentFunktionimi) {
             var funktiokuvaus = model.getFunktiokuvaus(parentFunktionimi);
-            return funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti !== 'n' && !model.isPainotettukeskiarvoChildByParentNimi(parentFunktionimi) );
+            return funktiokuvaus.funktioargumentit !== undefined && funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti !== 'n' && !model.isPainotettukeskiarvoChildByParentNimi(parentFunktionimi) );
         }
 
         this.isPainotettukeskiarvoChild = function (parent) {
+            if(!parent || !parent.funktiokuvaukset) {asdf}
             var funktiokuvaus = model.getFunktiokuvaus(model.getFunktionimi(parent));
             return funktiokuvaus.funktioargumentit && funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'lista_pareja';
         }
