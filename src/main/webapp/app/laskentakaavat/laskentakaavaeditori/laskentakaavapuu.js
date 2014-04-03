@@ -346,6 +346,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
              */
 
             $scope.$on('persistKaava', function () {
+                
                 var kaava = {
                     valintaryhmaOid: $routeParams.valintaryhmaOid,
                     hakukohdeOid: $routeParams.hakukohdeOid,
@@ -354,9 +355,9 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
                 if (!$scope.createNewKaava) {
                     $scope.funktioSelection = undefined;
-                    FunktioService.checkForEmptyTallennaTulosValues($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit, $scope.errors);
+                    FunktioService.checkForEmptyTallennaTulosValues($scope.model.laskentakaavapuu.funktiokutsu, $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit, 0, $scope.errors);
 
-                    if (!($scope.errors.length > 0)) {
+                    if ($scope.errors.length === 0) {
                         //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
                         $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.cleanLaskentakaavaPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
                         KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function (result) {
@@ -370,7 +371,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     }
                 } else {
                     FunktioService.checkForEmptyTallennaTulosValues(kaava.laskentakaava.funktioargumentit, $scope.errors);
-                    if (!($scope.errors.length > 0)) {
+                    if ($scope.errors.length === 0) {
                         Laskentakaava.insert({}, kaava, function (result) {
                             $scope.createNewKaava = false;
                             $scope.saved = true;

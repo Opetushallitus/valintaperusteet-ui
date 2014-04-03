@@ -1,15 +1,20 @@
 
 <div ng-controller="LaskentakaavaController" class="gradingformula dd" style="width:60%;float:left;">
-    <h2>Laskentakaava</h2>
 
     <!-- Laskentakaavassa olevat virheet-->
     <div class="alert alert-danger margin-top-2" ng-if="errors.length > 0">
-        <p>Laskentakaavaa ei voitu tallentaa. Tarkista että olet täyttänyt kaikki pakolliset kentät</p>
+        <h3>Laskentakaavaa ei voitu tallentaa.</h3>
+        <p>Siirry virheellisten funktiokutsujen muokkaukseen alla olevasta listasta</p>
+        <ol class="margin-top-2">
+            <li ng-repeat="error in errors"><span add-class-on-mouseover="bold" ng-click="setFunktioSelection(error.funktiokutsu, error.isFunktiokutsu, error.parent, error.index)">{{error.nimi}} -funktiokutsussa on virhe: {{error.kuvaus}}</span></li>
+        </ol>
     </div>
 
     <div class="alert alert-success margin-top-2" ng-if="saved">
-        <p>Laskentakaava tallennettu</p>
+        <p>Laskentakaavan tallentaminen onnistui</p>
     </div>
+
+    <h2>Laskentakaava</h2>
 
     <!-- FUNKTIOASETUKSET -->
     <div ng-controller="funktiokutsuAsetuksetController">

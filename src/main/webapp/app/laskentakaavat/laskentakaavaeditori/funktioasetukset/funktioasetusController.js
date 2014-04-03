@@ -1,7 +1,15 @@
-angular.module('LaskentakaavaEditor').controller('funktiokutsuAsetuksetController', ['$scope', function ($scope) {
+angular.module('LaskentakaavaEditor').controller('funktiokutsuAsetuksetController', ['$scope', 'FunktioNimiService', function ($scope, FunktioNimiService) {
 	$scope.$on('showFunktiokutsuAsetukset', function () {
 		$scope.show();
 	});
+
+    $scope.getFunktiokutsuName = function(funktiokutsu) {
+        if(funktiokutsu.lapsi) {
+            return FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi);
+        } else {
+            return FunktioNimiService.getName(funktiokutsu.funktionimi);
+        }
+    }
 }]);
 
 

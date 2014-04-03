@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('LaskentakaavaEditor').factory('FunktioService', function (FunktioKuvausResource) {
+angular.module('LaskentakaavaEditor').factory('FunktioService', function (FunktioKuvausResource, FunktioNimiService) {
     var model = new function () {
         this.funktiokuvaukset = {};
 
@@ -90,17 +90,52 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
             }
         }
 
-        this.checkForEmptyTallennaTulosValues = function(funktioargumentit, errors) {
+        this.checkForEmptyTallennaTulosValues = function(parentFunktio, funktioargumentit, index, errors) {
             if(funktioargumentit) {
-                _.forEach(funktioargumentit, function(funktiokutsu) {
-                    if(funktiokutsu.lapsi.tallennaTulos === true && _.isEmpty(funktiokutsu.lapsi.tulosTunniste)) {
-                        errors.push("virhe");
+                _.forEach(funktioargumentit, function(funktiokutsu, index) {
+
+                    if(funktiokutsu.lapsi) {
+                        if(funktiokutsu.lapsi.tallennaTulos === true && _.isEmpty(funktiokutsu.lapsi.tulosTunniste)) {
+                            errors.push({
+                                nimi: FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi),
+                                kuvaus: "tulostunniste täytyy määritellä, jos Tallenna tulos -kenttä on valittu",
+                                funktiokutsu: funktiokutsu,
+                                parent: parentFunktio,
+                                isFunktiokutsu: model.isFunktiokutsu(funktiokutsu),
+                                index: index
+                            });
+                        }
+
+                        if(funktiokutsu.lapsi.funktioargumentit) {
+                            model.checkForEmptyTallennaTulosValues(funktiokutsu.lapsi.funktioargumentit, errors);
+                        }
+                    } else {
+                        if(funktiokutsu.tallennaTulos === true && _.isEmpty(funktiokutsu.lapsi.tulosTunniste)) {
+                            errors.push({
+                                nimi: FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi),
+                                kuvaus: "tulostunniste täytyy määritellä, jos tallennaTulos on asetettu",
+                                funktiokutsu: funktiokutsu,
+                                parent: parentFunktio,
+                                isFunktiokutsu: model.isFunktiokutsu(funktiokutsu),
+                                index: index
+                            });
+                        }
+
+                        if(funktiokutsu.funktioargumentit) {
+                            model.checkForEmptyTallennaTulosValues(funktiokutsu.lapsi.funktioargumentit, errors);
+                        }
                     }
 
-                    if(funktiokutsu.lapsi.funktioargumentit) {
-                        model.checkForEmptyTallennaTulosValues(funktiokutsu.lapsi.funktioargumentit, errors);
-                    }
+
                 });
+            }
+        }
+        
+        this.isFunktiokutsu =  function(funktiokutsu) {
+            if(!funktiokutsu.lapsi) {
+                return FunktioNimiService.getName(funktiokutsu.funktionimi) !== undefined;
+            } else {
+                return FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi) !== undefined;
             }
         }
 
