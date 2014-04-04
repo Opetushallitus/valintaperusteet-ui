@@ -10,14 +10,14 @@
 
 <div class="tabsheets">
     <breadcrumb></breadcrumb>
-    <span class="btn btn-sm btn-default" ng-click="back()"><i class="fa fa-arrow-left"></i> Takaisin</span>
-    <span class="btn btn-sm btn-default" ng-click="persist()"><i class="fa fa-floppy-o"></i> Tallenna</span>
+
+    <!-- Laskentakaavapuu -->
+    <div ng-show="!showNewLaskentakaavaForm" ng-include="'laskentakaavat/laskentakaavaeditori/laskentakaavapuu.html'"></div>
 
     <!-- Uusi laskentakaava -->
     <div ng-show="showNewLaskentakaavaForm" ng-include="'laskentakaavat/laskentakaavaeditori/uusilaskentakaava.html'"></div>
 
-    <!-- Laskentakaavapuu -->
-    <div ng-show="!showNewLaskentakaavaForm" ng-include="'laskentakaavat/laskentakaavaeditori/laskentakaavapuu.html'"></div>
+
 
 
     <div class="clear"></div>

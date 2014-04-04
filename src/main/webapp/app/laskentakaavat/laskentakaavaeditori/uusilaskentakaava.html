@@ -1,5 +1,13 @@
 <div ng-controller="UusiLaskentakaavaController">
-    <form name="kaavaForm" novalidate>
+    <span class="btn btn-sm btn-default" ng-click="back()"><i class="fa fa-arrow-left"></i> Takaisin</span>
+    <button class="btn btn-sm btn-primary"
+            ng-click="createKaava(kaava)"
+            ng-disabled="kaavaForm.$invalid"><i class="fa fa-plus"></i> Luo uusi laskentakaava
+    </button>
+
+    <h2>Uuden laskentakaavan luonti</h2>
+
+    <form name="kaavaForm" class="margin-top-2" novalidate>
         <div class="form-row">
             <div class="form-row-label">Laskentakaavan nimi</div>
 
@@ -27,12 +35,6 @@
             </div>
             <div class="clear"></div>
         </div>
-        <div class="form-row">
-            <button class="btn btn-sm btn-primary"
-                    ng-click="createKaava(kaava)"
-                    ng-disabled="kaavaForm.$invalid"><i class="fa fa-floppy-o"></i> Tallenna
-            </button>
 
-        </div>
     </form>
 </div>

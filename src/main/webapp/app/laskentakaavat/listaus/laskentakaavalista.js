@@ -117,7 +117,7 @@ function LaskentakaavaListController($scope, $location, $routeParams, Laskentaka
 
 
     $scope.cancel = function() {
-        $location.path("/");
+        $location.path("/valintaryhma/" + $routeParams.valintaryhmaOid);
     }
 }
 

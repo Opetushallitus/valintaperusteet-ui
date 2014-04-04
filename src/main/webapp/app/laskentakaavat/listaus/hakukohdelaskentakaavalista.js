@@ -13,20 +13,12 @@ function HakukohdeLaskentakaavaListController($scope, $location, $routeParams, L
     var saveParams = {}; 
     saveParams.hakukohde = {oid: $routeParams.hakukohdeOid};
 
-    $scope.createKaava = function() {
-
-        $scope.kaava = {
-            tyyppi: "NIMETTYLUKUARVO"
-        };
-        $scope.originalKaava = angular.copy($scope.kaava)
-        $scope.showForm = true;
+    $scope.createKaava = function () {
+        $location.path("/hakukohde/" + $routeParams.hakukohdeOid + "/laskentakaava")
     }
 
-    $scope.editKaava = function(kaava) {
-        $scope.showForm = true;
-        $scope.kaava = kaava;
-        $scope.originalKaava = angular.copy(kaava);
+    $scope.cancel = function() {
+        $location.path("/hakukohde/" + $routeParams.hakukohdeOid);
     }
-
 
 }
