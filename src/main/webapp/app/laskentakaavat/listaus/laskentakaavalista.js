@@ -106,7 +106,7 @@ function LaskentakaavaListController($scope, $location, $routeParams, Laskentaka
     $scope.showForm = false;
 
     $scope.createKaava = function () {
-		$location.path("/valintaryhma/" + $routeParams.valintaryhmaOid + "/laskentakaava")
+		$location.path("/valintaryhma/" + $routeParams.valintaryhmaOid + "/laskentakaavalista/laskentakaava")
     }
 
     $scope.editKaava = function (kaava) {

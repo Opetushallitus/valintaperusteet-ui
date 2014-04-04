@@ -14,7 +14,7 @@ function HakukohdeLaskentakaavaListController($scope, $location, $routeParams, L
     saveParams.hakukohde = {oid: $routeParams.hakukohdeOid};
 
     $scope.createKaava = function () {
-        $location.path("/hakukohde/" + $routeParams.hakukohdeOid + "/laskentakaava")
+        $location.path("/hakukohde/" + $routeParams.hakukohdeOid + "/laskentakaavalista/laskentakaava")
     }
 
     $scope.cancel = function() {
