@@ -235,4 +235,6 @@ table.table td {
     border-right: none;
 }
 
-
+input[type="date"] {
+    height: 40px;
+}
