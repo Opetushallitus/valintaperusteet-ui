@@ -22,6 +22,16 @@ angular.module('LaskentakaavaEditor').factory('TemplateService', function(Funkti
 			}
 		}
 
+        this.getValintaperusteTemplate = function(syoteparametrityyppi) {
+
+            switch(syoteparametrityyppi) {
+                case "ARVOJOUKKO":
+                    return "valintaperuste-arvojoukko-template";
+                default:
+                    return "valintaperuste-default-template"
+            }
+        }
+
 
 
 		this.getKonvertteriparametriTemplate = function(konvertteriparametriSelection) {
@@ -50,6 +60,7 @@ angular.module('LaskentakaavaEditor').factory('TemplateService', function(Funkti
 				HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI: 'haettava_arvo',
 				VALINTAPERUSTEYHTASUURUUS: 'haettava_arvo',
                 HAEYOARVOSANA: 'haettava_arvo',
+                HAEOSAKOEARVOSANA: 'haettava_arvo',
 
 				SUMMA: 'summa',
 

@@ -13,7 +13,50 @@
     <input type="text" size="15" ng-model="syoteparametri.arvo"/>
 </script>
 <script type="text/ng-template" id="arvojoukko-template">
-    <select ng-model="syoteparametri.arvo" ng-options="value as value for (key, value) in syoteparametri.arvojoukko"></select>
+    <select ng-model="syoteparametri.arvo" ng-options="key as value for (key, value) in funktiokuvausSyoteparametri.arvojoukko"></select>
+</script>
+
+<!-- Valintaperuste default template -->
+<script type="text/ng-template" id="valintaperuste-default-template">
+    <div class="form-item-content">
+        <form class="form-horizontal valintaperuste-form" role="form">
+            <h3 ng-if="valintaperusteviite.kuvaus">{{valintaperusteviite.kuvaus}}</h3>
+            <h3 ng-if="!valintaperusteviite.kuvaus">{{valintaperusteviite.nimi}}</h3>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Tyyppi</label>
+                <div class="col-sm-9">
+                    <select ng-model="valintaperuste.lahde"
+                            ng-options="item.key as item.text for item in valintaperusteviitetyypit">
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Pakollinen tieto</label>
+                <div class="col-sm-9">
+                    <input type="checkbox" id="requiredparam" ng-model="valintaperuste.onPakollinen"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Kuvaus</label>
+                <div class="col-sm-9">
+                    <textarea style="width: 330px" ng-model="valintaperuste.kuvaus"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Tunniste</label>
+                <div class="col-sm-9" ng-if="valintaperusteviite.tyyppi != 'ARVOJOUKKO'">
+                    <input type="text" ng-model="valintaperuste.tunniste" required="required"/>
+                </div>
+                <div class="col-sm-9" ng-if="valintaperusteviite.tyyppi == 'ARVOJOUKKO'">
+                    <select ng-model="valintaperuste.tunniste" ng-options="key as value for (key, value) in valintaperusteviite.arvojoukko"></select>
+                </div>
+            </div>
+        </form>
+    </div>
 </script>
 
 
@@ -176,37 +219,13 @@
 
         <!-- Valintaperusteviitteet -->
         <div class="form-item">
-            <div ng-if="funktioSelection.lapsi.valintaperusteviitteet"
-                 ng-repeat="valintaperusteviite in funktioSelection.lapsi.valintaperusteviitteet">
-                <label class="form-item-label" style="width:50px;">Tyyppi</label>
+            <div ng-if="funktiokuvausForSelection.valintaperusteviitteet">
+                <label class="form-item-label" style="width:50px;">Valintaperusteviitteet</label>
+                <div ng-if="funktioSelection.lapsi.valintaperusteviitteet"
+                     ng-repeat="valintaperusteviite in funktiokuvausForSelection.valintaperusteviitteet" class="valintaperusteviite-form"
+                     ng-init="valintaperuste = getValintaperuste(funktioSelection.lapsi.valintaperusteviitteet, $index)"
+                     ng-include="'valintaperuste-default-template'">
 
-                <div class="form-item-content">
-                    <div class="field-select-containerbox">
-                        <select ng-model="valintaperusteviite.lahde"
-                                ng-options="item.key as item.text for item in valintaperusteviitetyypit">
-                        </select>
-                    </div>
-                    <div class="field-container-checkbox">
-                        <input type="checkbox" id="requiredparam" ng-model="valintaperusteviite.onPakollinen"/>
-                        <label for="requiredparam">Pakollinen tieto</label>
-                    </div>
-                </div>
-
-                <label class="form-item-label" style="width:50px;">Kuvaus</label>
-
-                <div class="form-item-content">
-                    <textarea style="width: 330px" ng-model="valintaperusteviite.kuvaus"></textarea>
-                </div>
-
-                <div class="form-item">
-                    <label class="form-item-label" for="">Tunniste</label>
-
-                    <div class="form-item-content">
-                        <div class="field-text-containerbox">
-                            <input type="text" ng-model="valintaperusteviite.tunniste" required="required"/>
-                        </div>
-                    </div>
-                    <div class="clear"></div>
                 </div>
             </div>
         </div>

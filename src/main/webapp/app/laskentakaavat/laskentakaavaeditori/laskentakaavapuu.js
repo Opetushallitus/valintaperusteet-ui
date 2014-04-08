@@ -207,6 +207,14 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 return result;
             }
 
+            $scope.getValintaperuste = function (viitteet, indeksi) {
+                var result = viitteet[indeksi];
+                if (result === undefined) {
+                    result = {tunniste: "", kuvaus: "", lahde: "", onPakollinen: false};
+                }
+                return result;
+            }
+
 
             $scope.getSyoteparametriTemplate = function (syoteparametrityyppi) {
                 return $scope.templateService.getSyoteparametriTemplate(syoteparametrityyppi);

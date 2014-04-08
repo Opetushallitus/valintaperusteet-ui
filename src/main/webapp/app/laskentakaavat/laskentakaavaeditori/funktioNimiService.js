@@ -41,7 +41,8 @@ angular.module('LaskentakaavaEditor').factory('FunktioNimiService', function() {
 			HYLKAAARVOVALILLA: 'Hylkää arvovälillä',
 			NIMETTYLUKUARVO: 'Nimetty lukuarvo',
 			NIMETTYTOTUUSARVO: 'Nimetty totuusarvo',
-            HAEYOARVOSANA: 'Hae YO-arvosana'
+            HAEYOARVOSANA: 'Hae YO-arvosana',
+            HAEOSAKOEARVOSANA: 'Hae YO-osakoearvosana'
 
 		}
 

@@ -223,6 +223,13 @@
     margin-bottom: 10px;
 }
 
+.valintaperuste-form {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+}
+
 .right-align {
     text-align: right;
 }
@@ -233,6 +240,10 @@
 
 table.table td {
     border-right: none;
+}
+
+.form-group label {
+    line-height: inherit;
 }
 
 
