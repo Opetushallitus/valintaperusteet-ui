@@ -247,3 +247,6 @@ table.table td {
 }
 
 
+input[type="date"] {
+    height: 40px;
+}
