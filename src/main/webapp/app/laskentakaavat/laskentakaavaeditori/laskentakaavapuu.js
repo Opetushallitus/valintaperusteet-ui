@@ -67,6 +67,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
              */
             $scope.setFunktioSelection = function (funktio, isFunktiokutsu, parentFunktiokutsu, index) {
                 $scope.funktioasetukset.parentFunktiokutsu = parentFunktiokutsu;
+
                 $scope.funktioasetukset.selectedFunktioIndex = index;
                 $scope.funktioSelection = funktio;
                 if (isFunktiokutsu) {
@@ -262,8 +263,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     isPainotettukeskiarvoChild = $scope.funktioasetukset.parentFunktiokutsu.funktionimi === 'PAINOTETTUKESKIARVO';
                 }
 
-                $scope.funktioSelection = undefined;
-
+                $scope.funktioasetukset.funktioSelection = undefined;
                 if ($scope.isFirstChildForRoot($scope.funktioasetukset.parentFunktiokutsu)) {
                     //jos ollaan heti laskentakaavan juuren alla (laskentakaavan 'ensimmäisellä kerroksella' ei ole lapsi-wrapperia)
                     //sama myös nimetyille funktioargumenteille tai funktioargumenttitaulukkoon jää yksi null-objekti
@@ -277,6 +277,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 }
 
                 $scope.funktioasetukset.parentFunktiokutsu = undefined;
+
             }
 
             $scope.removeLaskentakaavaviite = function () {
@@ -369,6 +370,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                         //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
                         $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.cleanLaskentakaavaPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
                         KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function (result) {
+                            console.log($scope.model);
                             $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function (result) {
                                 $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
                                 $scope.saved = true;
