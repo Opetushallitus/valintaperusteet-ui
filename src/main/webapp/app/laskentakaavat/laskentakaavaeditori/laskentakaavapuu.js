@@ -363,7 +363,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
                 if (!$scope.createNewKaava) {
                     $scope.funktioSelection = undefined;
-                    FunktioService.checkForEmptyTallennaTulosValues($scope.model.laskentakaavapuu.funktiokutsu, $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit, 0, $scope.errors);
+                    FunktioService.validateTallennaTulosValues($scope.model.laskentakaavapuu.funktiokutsu, $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit, 0, $scope.errors);
 
                     if ($scope.errors.length === 0) {
                         //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
@@ -378,7 +378,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                         });
                     }
                 } else {
-                    FunktioService.checkForEmptyTallennaTulosValues(kaava.laskentakaava.funktioargumentit, $scope.errors);
+                    FunktioService.validateTallennaTulosValues(kaava.laskentakaava.funktioargumentit, $scope.errors);
                     if ($scope.errors.length === 0) {
                         Laskentakaava.insert({}, kaava, function (result) {
                             $scope.createNewKaava = false;

@@ -233,7 +233,7 @@ app.directive('auth', function($q, $animate, $routeParams, $timeout, AuthService
                 $animate.addClass(element, 'ng-hide');
                 var defer = $q.defer();
                 var orgs = [];
-                if($routeParams.id) {
+                if($routeParams.id) {
                     ValintaryhmaModel.refreshIfNeeded($routeParams.id);
                     ValintaryhmaModel.loaded.promise.then(function(){
                         "use strict";
@@ -246,7 +246,7 @@ app.directive('auth', function($q, $animate, $routeParams, $timeout, AuthService
                         defer.resolve(orgs);
                     });
 
-                } else if($routeParams.hakukohdeOid) {
+                } else if($routeParams.hakukohdeOid) {
                     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
                     HakukohdeModel.loaded.promise.then(function(){
                         "use strict";

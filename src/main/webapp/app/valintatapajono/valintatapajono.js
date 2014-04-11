@@ -46,7 +46,7 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
             });
         };
 
-        this.submit = function(valinnanvaiheOid, valintatapajonot) {
+        this.submit = function(valinnanvaiheOid, valintatapajonot) {
             if(!model.valintatapajono.rajattu) {
                 model.valintatapajono.varasijat = 0;
             };
