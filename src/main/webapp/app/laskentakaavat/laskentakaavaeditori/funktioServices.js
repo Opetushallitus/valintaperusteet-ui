@@ -41,27 +41,47 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
         };
 
         this.isPainotettukeskiarvoChild = function (parent) {
-            if(_.isEmpty(parent)) {return undefined}
+            if (_.isEmpty(parent)) {
+                return undefined
+            }
+
             var funktiokuvaus = model.getFunktiokuvaus(model.getFunktionimi(parent));
             return funktiokuvaus.funktioargumentit && funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'lista_pareja';
         };
 
         this.isPainotettukeskiarvoChildByParentNimi = function (parentFunktionimi) {
+            if (_.isEmpty(parentFunktionimi)) {
+                return false
+            }
             var funktiokuvaus = model.getFunktiokuvaus(parentFunktionimi);
             return funktiokuvaus.funktioargumentit && funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'lista_pareja';
         };
 
         this.isEmptyNimettyFunktioargumentti = function (parent, funktioargumenttiIndex) {
-            if (model.isNimettyFunktioargumentti(parent) && _.isEmpty(parent.funktioargumentit[funktioargumenttiIndex])) {
-                return true;
+            if (parent === undefined || funktioargumenttiIndex === undefined) {
+                return undefined;
+            }
+
+            if (model.isRootFunktiokutsu(parent)) {
+                return model.isNimettyFunktioargumentti(parent) && _.isEmpty(parent.funktioargumentit[funktioargumenttiIndex]) ? true : false;
             } else {
-                return false;
+                return model.isNimettyFunktioargumentti(parent) && _.isEmpty(parent.lapsi.funktioargumentit[funktioargumenttiIndex]) ? true : false;
             }
         };
 
+        this.isRootFunktiokutsu = function (funktiokutsu) {
+            if (_.isEmpty(funktiokutsu)) {
+                return undefined;
+            }
+            return _.isEmpty(funktiokutsu.lapsi) ? true : false;
+        };
+
+
         this.getFunktionimi = function (funktiokutsu) {
-            if(_.isEmpty(funktiokutsu)) {return undefined}
-            if(model.isRootFunktiokutsu(funktiokutsu)) {
+            if (_.isEmpty(funktiokutsu)) {
+                return undefined
+            }
+            if (model.isRootFunktiokutsu(funktiokutsu)) {
                 //laskentakaavan juurifunktiolla ei ole lapsi-objektia
                 return funktiokutsu.funktionimi;
             } else {
@@ -70,6 +90,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
             }
         };
 
+        /*
         this.isLukuarvoFunktioSlot = function (parent, funktioargumenttiIndex) {
             var funktiokuvaus = model.getFunktiokuvaus(parent.funktionimi);
             if (funktiokuvaus.funktioargumentit[funktioargumenttiIndex].tyyppi == 'LUKUARVOFUNKTIO') {
@@ -78,6 +99,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
                 return false;
             }
         };
+        */
 
         //Montako funktioargumenttia funktiokutsulle luotu
         this.getDefinedFunktioargumenttiCount = function (funktiokutsu) {
@@ -92,17 +114,13 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
             }
         };
 
-        this.isRootFunktiokutsu = function(funktiokutsu) {
-            if(_.isEmpty(funktiokutsu)) {return undefined}
-            return _.isEmpty(funktiokutsu.lapsi) ? true : false;
-        };
 
-        this.validateTallennaTulosValues = function(parentFunktio, funktioargumentit, index, errors) {
-            if(funktioargumentit) {
-                _.forEach(funktioargumentit, function(funktiokutsu, index) {
+        this.validateTallennaTulosValues = function (parentFunktio, funktioargumentit, index, errors) {
+            if (funktioargumentit) {
+                _.forEach(funktioargumentit, function (funktiokutsu, index) {
 
-                    if(!model.isRootFunktiokutsu(funktiokutsu)) {
-                        if(funktiokutsu.lapsi.tallennaTulos === true && _.isEmpty(funktiokutsu.lapsi.tulosTunniste)) {
+                    if (!model.isRootFunktiokutsu(funktiokutsu)) {
+                        if (funktiokutsu.lapsi.tallennaTulos === true && _.isEmpty(funktiokutsu.lapsi.tulosTunniste)) {
                             errors.push({
                                 nimi: FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi),
                                 kuvaus: "tulostunniste täytyy määritellä, jos Tallenna tulos -kenttä on valittu",
@@ -113,13 +131,13 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
                             });
                         }
 
-                        if(funktiokutsu.lapsi.funktioargumentit) {
+                        if (funktiokutsu.lapsi.funktioargumentit) {
                             model.validateTallennaTulosValues(funktiokutsu.lapsi.funktioargumentit, errors);
                         }
 
                     } else {
 
-                        if(funktiokutsu.tallennaTulos === true && _.isEmpty(funktiokutsu.lapsi.tulosTunniste)) {
+                        if (funktiokutsu.tallennaTulos === true && _.isEmpty(funktiokutsu.lapsi.tulosTunniste)) {
                             errors.push({
                                 nimi: FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi),
                                 kuvaus: "tulostunniste täytyy määritellä, jos tallennaTulos on asetettu",
@@ -130,7 +148,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
                             });
                         }
 
-                        if(funktiokutsu.funktioargumentit) {
+                        if (funktiokutsu.funktioargumentit) {
                             model.validateTallennaTulosValues(funktiokutsu.lapsi.funktioargumentit, errors);
                         }
                     }
@@ -138,8 +156,9 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
             }
         };
 
-        this.isFunktiokutsu =  function(funktiokutsu) {
-            if(!funktiokutsu.lapsi) {
+        this.isFunktiokutsu = function (funktiokutsu) {
+            if(funktiokutsu === undefined) {return undefined}
+            if(model.isRootFunktiokutsu(funktiokutsu)) {
                 return FunktioNimiService.getName(funktiokutsu.funktionimi) !== undefined;
             } else {
                 return FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi) !== undefined;
@@ -148,9 +167,15 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
 
         this.cleanLaskentakaavaPKObjects = function (funktioargumentit) {
             if (funktioargumentit) {
+                var isRootFunktiokutsu;
                 _.forEach(funktioargumentit, function (item) {
-                    if (item.lapsi) {
-                        item.lapsi.funktioargumentit = model.cleanLaskentakaavaPKObjects(item.lapsi.funktioargumentit);
+                    isRootFunktiokutsu = model.isRootFunktiokutsu(item);
+                    if (isRootFunktiokutsu === true) {
+                        item.funktioargumentit = model.cleanLaskentakaavaPKObjects(item.funktioargumentit);
+                    } else {
+                        if (item && item.lapsi) {
+                            item.lapsi.funktioargumentit = model.cleanLaskentakaavaPKObjects(item.lapsi.funktioargumentit);
+                        }
                     }
                 });
             }

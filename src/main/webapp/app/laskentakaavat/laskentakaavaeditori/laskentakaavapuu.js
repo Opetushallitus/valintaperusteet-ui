@@ -323,6 +323,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             }
 
             $scope.isLukuarvoFunktioSlot = function (parent, funktioargumenttiIndex) {
+
                 var isNimetty = $scope.isNimettyFunktioargumentti(parent);
                 var funktiokuvaus = $scope.funktioService.getFunktiokuvaus(parent.lapsi.funktionimi);
                 var tyyppi = isNimetty ? funktiokuvaus.funktioargumentit[funktioargumenttiIndex].tyyppi : funktiokuvaus.funktioargumentit[0].tyyppi;
@@ -370,7 +371,6 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                         //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
                         $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.cleanLaskentakaavaPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
                         KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function (result) {
-                            console.log($scope.model);
                             $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function (result) {
                                 $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
                                 $scope.saved = true;

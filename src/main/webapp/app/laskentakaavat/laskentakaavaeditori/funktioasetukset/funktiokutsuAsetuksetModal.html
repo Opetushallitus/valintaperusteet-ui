@@ -205,18 +205,6 @@
     <h2>{{getFunktiokutsuName(funktioSelection)}}</h2>
     <div class="settingsform">
 
-
-        <div class="form-item" ng-if="funktioSelection.isNimettava()">
-            <label class="form-item-label" for="">Nimi</label>
-
-            <div class="form-item-content">
-                <div class="field-text-containerbox">
-                    <input type="text" ng-model="funktioSelection.lapsi.funktionimi"/>
-                </div>
-            </div>
-            <div class="clear"></div>
-        </div>
-
         <!-- Valintaperusteviitteet -->
         <div class="form-item">
             <div ng-if="funktiokuvausForSelection.valintaperusteviitteet">
