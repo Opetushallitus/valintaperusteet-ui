@@ -250,3 +250,8 @@ table.table td {
 input[type="date"] {
     height: 40px;
 }
+
+.settingstable select, .settingstable option {
+    width: 50%;
+    overflow: hidden;
+}
