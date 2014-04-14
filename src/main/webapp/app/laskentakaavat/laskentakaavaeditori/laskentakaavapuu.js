@@ -349,6 +349,10 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 $scope.$broadcast('hideFunktioMenu');
             }
 
+            $scope.editLaskentakaavaviite = function(valintaryhmaOid, laskentakaavaOid) {
+                $location.path('/valintaryhma' + valintaryhmaOid + '/laskentakaavalista/laskentakaava/' + laskentakaavaOid);
+            }
+
             /* called from kaavaeditor -directive when an item has been moved in kaavaeditor
              $scope.$on('kaavadrag', function (event, paramObject) {
              $scope.kaavaDragged(paramObject.draggedFunktio, paramObject.oldParentFunktio, paramObject.newParentFunktio, paramObject.index);
