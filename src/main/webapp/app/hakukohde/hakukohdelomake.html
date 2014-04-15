@@ -80,15 +80,27 @@
             </div>
         </div>
 
+
+
         <div class="form-group" ng-show="model.parentValintaryhma.nimi">
-            <div class="col-md-2 control-label">Valintaryhmä</div>
+            <label class="col-md-2 control-label">Valintaryhmä:</label>
 
             <div class="control-content">
                 <!--{{model.hakukohde.oid}}-->
-                {{model.parentValintaryhma.nimi}}
-                <!--
-                <input type="text" ng-model="hakukohde.oid" disabled />
-                -->
+                <span>{{model.parentValintaryhma.nimi}}</span>
+
+                <!-- VALINTARYHMÄN SIIRTO -->
+
+                <div ng-controller="ValintaryhmanSiirtoController" class="modal-controller-div">
+                    <modal modal-template="hakukohde/valintaryhmanSiirtoModal.html">
+                        <modal-open></modal-open>
+                    </modal>
+                    <button auth="update" class="btn btn-sm btn-primary" type="button" ng-click="openValintaryhmaModal()"><i
+                            class="fa fa-arrows"></i>
+                        Siirrä
+                    </button>
+                </div>
+
             </div>
         </div>
 
