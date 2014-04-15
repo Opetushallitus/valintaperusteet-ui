@@ -367,6 +367,8 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     laskentakaava: $scope.model.laskentakaavapuu
                 }
 
+                var urlEnd = _.reduce(_.last($location.path(), 14), function(result, current) {return result+current}, "");
+
                 if (!$scope.createNewKaava) {
                     $scope.funktioSelection = undefined;
                     FunktioService.validateTallennaTulosValues($scope.model.laskentakaavapuu.funktiokutsu, $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit, 0, $scope.errors);
@@ -378,6 +380,11 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                             $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function (result) {
                                 $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
                                 $scope.saved = true;
+
+                                if(urlEnd === 'laskentakaava/') {
+                                    $location.path($location.path() + result.id);
+                                }
+
                             }, function (error) {
                                 $scope.errors.push(error);
                             });
@@ -389,6 +396,11 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                         Laskentakaava.insert({}, kaava, function (result) {
                             $scope.createNewKaava = false;
                             $scope.saved = true;
+
+                            if(urlEnd === 'laskentakaava/') {
+                                $location.path($location.path() + result.id);
+                            }
+
                         });
                     }
                 }
