@@ -5,6 +5,8 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
         'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'Arvokonvertterikuvauskielet', 'FunktioNimiService', 'FunktioFactory',
         function ($scope, _, $location, $routeParams, KaavaValidointi, Laskentakaava, LaskentakaavaLista, TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet, FunktioNimiService, FunktioFactory) {
 
+
+
             //servicet laskentakaavapuun piirtämiseen
             $scope.templateService = TemplateService;
             $scope.funktioService = FunktioService;
@@ -58,6 +60,8 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 $scope.isRootSelected = true;
                 $scope.funktioSelection = funktiokutsu;
             }
+
+
 
             /*
              funktio = valittu funktiokutsu tai laskentakaavaviite
@@ -236,7 +240,6 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
             $scope.removeKonvertteriParametriKuvaus = function (index, konvertteriparametriSelection) {
                 konvertteriparametriSelection.kuvaukset.tekstit.splice(index, 1);
-
             }
 
             $scope.getDefinedFunktioargumenttiCount = function (parent) {
@@ -275,7 +278,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     //jos ei olla heti laskentakaavan juuren alla, niin koko slotti voidaan poistaa funktioargumenttitaulukosta
                     $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex, 1);
                 }
-
+                $scope.funktioService.cleanExtraPKArgumenttiSlots($scope.funktioasetukset.parentFunktiokutsu);
                 $scope.funktioasetukset.parentFunktiokutsu = undefined;
 
             }
@@ -323,27 +326,10 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             }
 
             $scope.isLukuarvoFunktioSlot = function (parent, funktioargumenttiIndex) {
-
-                var isNimetty = $scope.isNimettyFunktioargumentti(parent);
-                var funktiokuvaus = $scope.funktioService.getFunktiokuvaus(parent.lapsi.funktionimi);
-                var tyyppi = isNimetty ? funktiokuvaus.funktioargumentit[funktioargumenttiIndex].tyyppi : funktiokuvaus.funktioargumentit[0].tyyppi;
-                var result = tyyppi == 'LUKUARVOFUNKTIO' ? true : false;
-                return result;
+                return $scope.funktioService.isLukuarvoFunktioSlot(parent, funktioargumenttiIndex);
             }
 
-            $scope.kaavaDragged = function (funktio, oldParent, newParent, index) {
 
-                var kaavaBeforeDrag = Laskentapuu.laskentakaava().getData();
-                var oldIndex = oldParent.funktioargumentit.indexOf(funktio);
-
-                var func = funktio;
-
-                newParent.addChildAt(func, index);
-                newParent.init();
-                oldParent.init();
-
-                func = oldParent.removeChildFunktio(funktio);
-            }
 
             $scope.hideFunktioMenu = function () {
                 $scope.$broadcast('hideFunktioMenu');
@@ -353,14 +339,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 $location.path('/valintaryhma' + valintaryhmaOid + '/laskentakaavalista/laskentakaava/' + laskentakaavaOid);
             }
 
-            /* called from kaavaeditor -directive when an item has been moved in kaavaeditor
-             $scope.$on('kaavadrag', function (event, paramObject) {
-             $scope.kaavaDragged(paramObject.draggedFunktio, paramObject.oldParentFunktio, paramObject.newParentFunktio, paramObject.index);
-             });
-             */
-
             $scope.$on('persistKaava', function () {
-                
                 var kaava = {
                     valintaryhmaOid: $routeParams.valintaryhmaOid,
                     hakukohdeOid: $routeParams.hakukohdeOid,
@@ -369,6 +348,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
                 if (!$scope.createNewKaava) {
                     $scope.funktioSelection = undefined;
+                    $scope.test = $scope.model.laskentakaavapuu.funktiokutsu;
                     FunktioService.validateTallennaTulosValues($scope.model.laskentakaavapuu.funktiokutsu, $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit, 0, $scope.errors);
 
                     if ($scope.errors.length === 0) {
@@ -393,6 +373,27 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     }
                 }
             });
+
+
+            /* called from kaavaeditor -directive when an item has been moved in kaavaeditor
+             $scope.$on('kaavadrag', function (event, paramObject) {
+             $scope.kaavaDragged(paramObject.draggedFunktio, paramObject.oldParentFunktio, paramObject.newParentFunktio, paramObject.index);
+             });
+
+             $scope.kaavaDragged = function (funktio, oldParent, newParent, index) {
+
+             var kaavaBeforeDrag = Laskentapuu.laskentakaava().getData();
+             var oldIndex = oldParent.funktioargumentit.indexOf(funktio);
+
+             var func = funktio;
+
+             newParent.addChildAt(func, index);
+             newParent.init();
+             oldParent.init();
+
+             func = oldParent.removeChildFunktio(funktio);
+             }
+             */
         }]);
 
 
