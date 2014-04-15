@@ -166,8 +166,8 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
             $scope.addFunktiokonvertteriparametri = function (konvertteriparametriSelection) {
 
-                var emptyArvokonvertteriparametri = {paluuarvo: '', hylkaysperuste: false, arvo: ''}
-                var emptyArvovalikonvertteriparametri = {paluuarvo: '', palautaHaettuArvo: false, minValue: '', maxValue: ''}
+                var emptyArvokonvertteriparametri = {paluuarvo: '', hylkaysperuste: false, arvo: ''};
+                var emptyArvovalikonvertteriparametri = {paluuarvo: '', palautaHaettuArvo: false, minValue: '', maxValue: '', hylkaysperuste: false};
 
                 if ($scope.funktioasetukset.konvertteriType == "ARVOKONVERTTERI") {
                     $scope.funktioSelection.lapsi.arvokonvertteriparametrit.push(emptyArvokonvertteriparametri);
