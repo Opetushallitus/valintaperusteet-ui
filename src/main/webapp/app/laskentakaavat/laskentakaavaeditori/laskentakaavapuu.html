@@ -172,7 +172,7 @@
         <span class="icon">&#8302;</span>
         <span add-class-on-mouseover="bold" class="node" ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo"
               ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
-        <span add-class-on-mouseover="bold" class="node" ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo"
+        <span add-class-on-mouseover="bold" class="node" ng-if="funktiowrapper.lapsi.syoteparametrit[0]"
               ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}}</span>
 
     </div>
