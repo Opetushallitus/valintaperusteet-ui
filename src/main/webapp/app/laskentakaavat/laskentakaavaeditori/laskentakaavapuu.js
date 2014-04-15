@@ -336,7 +336,11 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 $location.path('/valintaryhma' + valintaryhmaOid + '/laskentakaavalista/laskentakaava/' + laskentakaavaOid);
             }
 
-            $scope.persist = function () {
+            $scope.persist = function() {
+                $scope.$broadcast('persist');
+            }
+
+            $scope.$on('persist', function () {
                 var kaava = {
                     valintaryhmaOid: $routeParams.valintaryhmaOid,
                     hakukohdeOid: $routeParams.hakukohdeOid,
@@ -368,7 +372,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                         });
                     }
                 } else {
-                    FunktioService.validateTallennaTulosValues(kaava.laskentakaava.funktioargumentit, $scope.errors);
+                    KaavaValidationService.validateTallennaTulosValues(kaava.laskentakaava.funktioargumentit, $scope.errors);
                     if ($scope.errors.length === 0) {
                         Laskentakaava.insert({}, kaava, function (result) {
                             $scope.createNewKaava = false;
@@ -381,7 +385,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                         });
                     }
                 }
-            };
+            });
 
 
             /* called from kaavaeditor -directive when an item has been moved in kaavaeditor
