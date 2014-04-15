@@ -14,8 +14,8 @@
 
             <p>Siirry virheellisten funktiokutsujen muokkaukseen alla olevasta listasta</p>
             <ol class="margin-top-2">
-                <li ng-repeat="error in errors"><span add-class-on-mouseover="bold"
-                                                      ng-click="setFunktioSelection(error.funktiokutsu, error.isFunktiokutsu, error.parent, error.index)">{{error.nimi}} -funktiokutsussa on virhe: {{error.kuvaus}}</span>
+                <li ng-repeat="error in errors">
+                    <span add-class-on-mouseover="bold" ng-click="setFunktioSelection(error.funktiokutsu, error.isFunktiokutsu, error.parent, error.index)">{{error.nimi}} -funktiokutsussa on virhe. {{error.kuvaus}}</span>
                 </li>
             </ol>
         </div>
@@ -451,7 +451,8 @@ YHTASUURI
         <tr>
             <td ng-click="addFunktio(parent, 'HAEOSAKOEARVOSANA', funktioSlotIndex); showNewFunktioList.visible = false">
                 <span>YO-osakoearvosana</span></td>
-            <td</td>
+            <td
+            </td>
         </tr>
         </tbody>
     </table>

@@ -62,7 +62,6 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             }
 
 
-
             /*
              funktio = valittu funktiokutsu tai laskentakaavaviite
              isFunktiokutsu = onko funktio-parametri funktiokutsu vai laskentakavaaviite
@@ -92,7 +91,6 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
                 $scope.laskentakaavaviite.selection = funktio || null;
                 $scope.isRootSelected = false;
-                $scope.errors.length = 0;
                 $scope.saved = false;
             }
 
@@ -278,7 +276,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     //jos ei olla heti laskentakaavan juuren alla, niin koko slotti voidaan poistaa funktioargumenttitaulukosta
                     $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex, 1);
                 }
-                $scope.funktioService.cleanExtraPKArgumenttiSlots($scope.funktioasetukset.parentFunktiokutsu);
+                KaavaValidationService.cleanExtraPKArgumenttiSlots($scope.funktioasetukset.parentFunktiokutsu);
                 $scope.funktioasetukset.parentFunktiokutsu = undefined;
 
             }
@@ -330,16 +328,15 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             }
 
 
-
             $scope.hideFunktioMenu = function () {
                 $scope.$broadcast('hideFunktioMenu');
             }
 
-            $scope.editLaskentakaavaviite = function(valintaryhmaOid, laskentakaavaOid) {
+            $scope.editLaskentakaavaviite = function (valintaryhmaOid, laskentakaavaOid) {
                 $location.path('/valintaryhma' + valintaryhmaOid + '/laskentakaavalista/laskentakaava/' + laskentakaavaOid);
             }
 
-            $scope.$on('persistKaava', function () {
+            $scope.persist = function () {
                 var kaava = {
                     valintaryhmaOid: $routeParams.valintaryhmaOid,
                     hakukohdeOid: $routeParams.hakukohdeOid,
@@ -350,8 +347,9 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
                 if (!$scope.createNewKaava) {
                     $scope.funktioSelection = undefined;
-                    $scope.test = $scope.model.laskentakaavapuu.funktiokutsu;
+                    $scope.errors.length = 0;
                     KaavaValidationService.validateTallennaTulosValues($scope.model.laskentakaavapuu.funktiokutsu, $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit, 0, $scope.errors);
+                    KaavaValidationService.ValidateEmptyNimetytFunktioargumentit($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
 
                     if ($scope.errors.length === 0) {
                         //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
@@ -366,7 +364,6 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                                 }
 
                             }, function (error) {
-                                $scope.errors.push(error);
                             });
                         });
                     }
@@ -384,7 +381,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                         });
                     }
                 }
-            });
+            };
 
 
             /* called from kaavaeditor -directive when an item has been moved in kaavaeditor
