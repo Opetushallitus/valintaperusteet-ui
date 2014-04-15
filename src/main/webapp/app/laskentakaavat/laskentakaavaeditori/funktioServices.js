@@ -172,22 +172,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
         };
 
 
-        this.cleanExtraPKArgumenttiSlots = function (funktiokutsu) {
-            if (funktiokutsu.lapsi && funktiokutsu.lapsi.funktionimi === 'PAINOTETTUKESKIARVO') {
-                model.cleanExtraArguments(funktiokutsu.lapsi.funktioargumentit);
-            }
-            return funktiokutsu;
-        };
 
-        this.cleanExtraArguments = function (funktioargumentit) {
-            if (!(funktioargumentit.length < 4)) {
-                var hasExtraPair = _.every(_.last(funktioargumentit, 4), _.isEmpty);
-                if (hasExtraPair) {
-                    funktioargumentit.length = funktioargumentit.length - 2;
-                    model.cleanExtraArguments(funktioargumentit);
-                }
-            }
-        };
 
 
     }

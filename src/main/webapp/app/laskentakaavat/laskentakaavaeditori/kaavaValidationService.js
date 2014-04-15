@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('LaskentakaavaEditor').factory('KaavaValidationService', function (FunktioKuvausResource, FunktioNimiService, FunktioService) {
-    var validationService = new function() {
+angular.module('LaskentakaavaEditor').factory('KaavaValidationService', function (FunktioService, FunktioNimiService) {
 
+    var validationService = new function () {
 
         this.validateTallennaTulosValues = function (parentFunktio, funktioargumentit, index, errors) {
             if (funktioargumentit) {
@@ -45,6 +45,48 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', function
             }
         };
 
+
+        //clear edit-time extra funktioargumenttislots from painotettukeskiarvo -funktiokutsu
+        this.cleanExtraPKArgumenttiSlots = function (funktiokutsu) {
+            if (funktiokutsu.lapsi && funktiokutsu.lapsi.funktionimi === 'PAINOTETTUKESKIARVO') {
+                validationService.cleanExtraArguments(funktiokutsu.lapsi.funktioargumentit);
+            }
+            return funktiokutsu;
+        };
+
+        this.cleanExtraArguments = function (funktioargumentit) {
+            if (!(funktioargumentit.length < 4)) {
+                var hasExtraPair = _.every(_.last(funktioargumentit, 4), _.isEmpty);
+                if (hasExtraPair) {
+                    funktioargumentit.length = funktioargumentit.length - 2;
+                    validationService.cleanExtraArguments(funktioargumentit);
+                }
+            }
+        };
+
+        this.ValidateEmptyNimetytFunktioargumentit = function (rootFunktiokutsu, errors) {
+            validationService.checkFunktioargumentit(undefined, rootFunktiokutsu, rootFunktiokutsu.funktioargumentit, 1, errors);
+        };
+
+        this.checkFunktioargumentit = function (parentFunktiokutsu, funktiokutsu, funktioargumentit, index, errors) {
+            _.forEach(funktioargumentit, function (funktioargumentti, itemIndx) {
+                var realIndex = itemIndx + 1;
+                if(FunktioService.isNimettyFunktioargumentti(funktiokutsu) && _.isEmpty(funktioargumentti)) {
+                    errors.push({
+                        nimi: FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi),
+                        kuvaus: "Nimetyt funktioargumentit ovat pakollisia, järjestyksessä " + realIndex + " funktioargumentti puuttuu",
+                        funktiokutsu: funktiokutsu,
+                        parent: parentFunktiokutsu,
+                        isFunktiokutsu: FunktioService.isFunktiokutsu(funktiokutsu),
+                        index: index
+                    });
+                }
+                if(!(_.isEmpty(funktioargumentti))) {
+                    validationService.checkFunktioargumentit(funktiokutsu, funktioargumentti, funktioargumentti.lapsi.funktioargumentit, itemIndx, errors);
+                }
+            });
+
+        };
 
     }
 

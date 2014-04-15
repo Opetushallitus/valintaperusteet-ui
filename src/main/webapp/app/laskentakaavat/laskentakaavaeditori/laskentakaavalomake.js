@@ -11,11 +11,11 @@ angular.module('LaskentakaavaEditor').
             $scope.showNewLaskentakaavaForm = false;
             $scope.$broadcast('newkaava');
         }
-        
+        /*
         $scope.persist = function() {
             $scope.$broadcast('persistKaava');
         }
-
+*/
         $scope.back = function () {
             if ($routeParams.valintaryhmaOid) {
                 $location.path("/valintaryhma/" + $routeParams.valintaryhmaOid + "/laskentakaavalista")
