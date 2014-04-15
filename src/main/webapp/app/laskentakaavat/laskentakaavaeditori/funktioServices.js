@@ -119,46 +119,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
         };
 
 
-        this.validateTallennaTulosValues = function (parentFunktio, funktioargumentit, index, errors) {
-            if (funktioargumentit) {
-                _.forEach(funktioargumentit, function (funktiokutsu, index) {
 
-                    if (!model.isRootFunktiokutsu(funktiokutsu)) {
-                        if (funktiokutsu.lapsi.tallennaTulos === true && _.isEmpty(funktiokutsu.lapsi.tulosTunniste)) {
-                            errors.push({
-                                nimi: FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi),
-                                kuvaus: "tulostunniste täytyy määritellä, jos Tallenna tulos -kenttä on valittu",
-                                funktiokutsu: funktiokutsu,
-                                parent: parentFunktio,
-                                isFunktiokutsu: model.isFunktiokutsu(funktiokutsu),
-                                index: index
-                            });
-                        }
-
-                        if (funktiokutsu.lapsi.funktioargumentit) {
-                            model.validateTallennaTulosValues(funktiokutsu.lapsi.funktioargumentit, errors);
-                        }
-
-                    } else {
-
-                        if (funktiokutsu.tallennaTulos === true && _.isEmpty(funktiokutsu.lapsi.tulosTunniste)) {
-                            errors.push({
-                                nimi: FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi),
-                                kuvaus: "tulostunniste täytyy määritellä, jos tallennaTulos on asetettu",
-                                funktiokutsu: funktiokutsu,
-                                parent: parentFunktio,
-                                isFunktiokutsu: model.isFunktiokutsu(funktiokutsu),
-                                index: index
-                            });
-                        }
-
-                        if (funktiokutsu.funktioargumentit) {
-                            model.validateTallennaTulosValues(funktiokutsu.lapsi.funktioargumentit, errors);
-                        }
-                    }
-                });
-            }
-        };
 
         this.isFunktiokutsu = function (funktiokutsu) {
             if (funktiokutsu === undefined) {
@@ -205,8 +166,8 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
         };
 
         this.addPainotettukeskiarvoParametrit = function (arr) {
-            arr.push({});
-            arr.push({});
+            arr.push(null);
+            arr.push(null);
             return arr;
         };
 
@@ -215,7 +176,6 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
             if (funktiokutsu.lapsi && funktiokutsu.lapsi.funktionimi === 'PAINOTETTUKESKIARVO') {
                 model.cleanExtraArguments(funktiokutsu.lapsi.funktioargumentit);
             }
-
             return funktiokutsu;
         };
 
