@@ -19,6 +19,9 @@ app.directive('modal', function ($modal) {
 						$scope.sulje = function () {
 							$modalInstance.dismiss('cancel');
 						};
+                        $scope.$on('suljevalintaryhmamodal', function(){
+                            $modalInstance.dismiss('cancel');
+                        });
 					},
 					resolve: {}
 				}).result.then(function () {}, function () {});

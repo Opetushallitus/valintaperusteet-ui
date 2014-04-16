@@ -213,9 +213,13 @@ function HakukohdeController($q, $timeout, $scope, $location, $routeParams, Haku
         $scope.model.removeHakijaryhma(hakijaryhmaOid);
     }
 
+    $scope.$on('valintaryhmansiirto', function(){
+        $scope.model.refresh($scope.hakukohdeOid);
+    });
+
 }
 
-app.factory('ValintaryhmaSiirtoModel', function($resource, $location, $routeParams, $route, Valintaryhma, ChildValintaryhmas, Treemodel, HakukohdeSiirra) {
+app.factory('ValintaryhmaSiirtoModel', function($resource, $location, $routeParams, Valintaryhma, ChildValintaryhmas, Treemodel, HakukohdeSiirra) {
 
     var model = new function() {
         this.valintaryhma = {};
@@ -236,7 +240,7 @@ app.factory('ValintaryhmaSiirtoModel', function($resource, $location, $routePara
                 console.log("Valintaryhmää ei ole valittu.");
             } else {
                 HakukohdeSiirra.siirra({hakukohdeOid: $routeParams.hakukohdeOid}, model.parentOid, function(result) {
-                    $route.reload();
+
                 });
             }
 
@@ -246,7 +250,7 @@ app.factory('ValintaryhmaSiirtoModel', function($resource, $location, $routePara
     return model;
 });
 
-function ValintaryhmanSiirtoController($scope, $location, $routeParams, ValintaryhmaSiirtoModel, Ylavalintaryhma) {
+function ValintaryhmanSiirtoController($scope, $resource, $routeParams, ValintaryhmaSiirtoModel, Ylavalintaryhma, HakukohdeSiirra) {
     $scope.valintaryhmaOid = $routeParams.id;
     $scope.model = ValintaryhmaSiirtoModel;
     $scope.model.refreshIfNeeded($scope.valintaryhmaOid);
@@ -256,7 +260,14 @@ function ValintaryhmanSiirtoController($scope, $location, $routeParams, Valintar
 
 
     $scope.siirra = function() {
-        $scope.model.move();
+        if(!$scope.model.parentOid) {
+            console.log("Valintaryhmää ei ole valittu.");
+        } else {
+            HakukohdeSiirra.siirra({hakukohdeOid: $routeParams.hakukohdeOid}, $scope.model.parentOid, function(result) {
+                $scope.$emit('valintaryhmansiirto');
+                $scope.$broadcast('suljevalintaryhmamodal');
+            });
+        }
     };
 
     $scope.openValintaryhmaModal = function () {
