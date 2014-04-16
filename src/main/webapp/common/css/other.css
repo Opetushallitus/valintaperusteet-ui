@@ -255,3 +255,7 @@ input[type="date"] {
     width: 50%;
     overflow: hidden;
 }
+
+.modal-controller-div {
+    display: inline-block;
+}

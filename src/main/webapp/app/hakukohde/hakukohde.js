@@ -205,3 +205,52 @@ function HakukohdeController($q, $timeout, $scope, $location, $routeParams, Haku
     }
 
 }
+
+app.factory('ValintaryhmaSiirtoModel', function($resource, $location, $routeParams, $route, Valintaryhma, ChildValintaryhmas, Treemodel, HakukohdeSiirra) {
+
+    var model = new function() {
+        this.valintaryhma = {};
+
+        this.refresh = function() {
+            model.valintaryhma = {};
+            model.parentOid  = "";
+
+        };
+
+        this.refreshIfNeeded = function() {
+            this.refresh();
+        };
+
+        this.move = function() {
+
+            if(!model.parentOid) {
+                console.log("Valintaryhmää ei ole valittu.");
+            } else {
+                HakukohdeSiirra.siirra({hakukohdeOid: $routeParams.hakukohdeOid}, model.parentOid, function(result) {
+                    $route.reload();
+                });
+            }
+
+        };
+    }
+
+    return model;
+});
+
+function ValintaryhmanSiirtoController($scope, $location, $routeParams, ValintaryhmaSiirtoModel, Ylavalintaryhma) {
+    $scope.valintaryhmaOid = $routeParams.id;
+    $scope.model = ValintaryhmaSiirtoModel;
+    $scope.model.refreshIfNeeded($scope.valintaryhmaOid);
+
+    $scope.domain = Ylavalintaryhma;
+    Ylavalintaryhma.refresh();
+
+
+    $scope.siirra = function() {
+        $scope.model.move();
+    };
+
+    $scope.openValintaryhmaModal = function () {
+        $scope.show();
+    };
+}
