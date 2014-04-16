@@ -256,7 +256,7 @@ function ValintaryhmanSiirtoController($scope, $resource, $routeParams, Valintar
         } else {
             HakukohdeSiirra.siirra({hakukohdeOid: $routeParams.hakukohdeOid}, $scope.model.parentOid, function(result) {
                 $scope.$emit('valintaryhmansiirto');
-                $scope.$broadcast('suljevalintaryhmamodal');
+                $scope.$broadcast('suljemodal');
             });
         }
     };
