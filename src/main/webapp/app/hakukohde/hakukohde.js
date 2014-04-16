@@ -4,15 +4,17 @@ app.factory('HakukohdeModel', function($q, HakukohdeHakukohdekoodi, KoodistoHaku
                                         HakijaryhmaJarjesta, Hakijaryhma, Haku, TarjontaHaku, HaunTiedot, HakukohdeNimi,
                                         HakijaryhmanValintatapajonot) {
     var model = new function()  {
-
+        this.hakukohdeOid = "";
         this.loaded = $q.defer();
         this.parentValintaryhma = {};
         this.hakukohde = {};
         this.valinnanvaiheet = [];
         this.hakukohdekoodit = [];
         this.hakijaryhmat = [];
+        this.kuuluuSijoitteluun = {};
 
         this.refresh = function(oid) {
+            model.hakukohdeOid = oid;
             model.parentValintaryhma = {};
             model.hakukohde = {};
             model.valinnanvaiheet = [];
@@ -35,7 +37,9 @@ app.factory('HakukohdeModel', function($q, HakukohdeHakukohdekoodi, KoodistoHaku
                    model.hakukohdeNimi = result;
                });
 
-               kuuluuSijoitteluun(oid);
+                HakukohdeKuuluuSijoitteluun.get({oid: oid}, function(result) {
+                    model.kuuluuSijoitteluun = result.sijoitteluun;
+                });
 
                 model.loaded.resolve();
             }, function(){
@@ -57,21 +61,15 @@ app.factory('HakukohdeModel', function($q, HakukohdeHakukohdekoodi, KoodistoHaku
                 });
             });
 
-            model.refreshValinnanvaiheet(oid);
-        };
-        this.refreshIfNeeded = function(oid) {
-            if(oid != model.hakukohde.oid) {
-
-                this.refresh(oid);
-            } else {
-                kuuluuSijoitteluun(oid);
-            }
-        };
-
-        this.refreshValinnanvaiheet = function(oid) {
             HakukohdeValinnanvaihe.get({parentOid: oid}, function(result) {
                 model.valinnanvaiheet = result;
             });
+        };
+
+        this.refreshIfNeeded = function(oid) {
+            if(oid !== model.hakukohdeOid) { //use hakukohdeOid -variable to prevent multiple refresh calls
+                this.refresh(oid);
+            }
         };
 
         this.persistHakukohde = function() {
@@ -171,18 +169,11 @@ app.factory('HakukohdeModel', function($q, HakukohdeHakukohdekoodi, KoodistoHaku
         return oids;
     }
 
-    function kuuluuSijoitteluun(oid) {
-        if(oid) {
-            HakukohdeKuuluuSijoitteluun.get({oid: oid}, function(result) {
-                model.kuuluuSijoitteluun = result.sijoitteluun;
-            });
-        }
-    }
-
     return model;
 });
 
 function HakukohdeController($q, $timeout, $scope, $location, $routeParams, HakukohdeModel) {
+
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakukohdeModel;
     $scope.model.refreshIfNeeded($scope.hakukohdeOid);
