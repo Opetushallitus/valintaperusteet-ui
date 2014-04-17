@@ -1,24 +1,4 @@
 "use strict";
-/*
-describe('UusiLaskentakaavaController', function () {
-
-    var scope, uusilaskentakaavaCtrl;
-
-    beforeEach(module('LaskentakaavaEditor'));
-    beforeEach(inject(function ($rootScope, $controller) {
-        scope = $rootScope.$new;
-        uusilaskentakaavaCtrl = $controller('UusiLaskentakaavaController', {$scope: scope});
-    }));
-
-    describe('funktioservice', function () {
-
-    });
-
-    describe('createlaskentakaava', function () {
-    });
-
-});
-*/
 
 describe("FunktioService", function () {
     var funktioservice;
@@ -252,21 +232,6 @@ describe("FunktioService", function () {
         });
     });
 
-    //getDefinedFunktioargumenttiCount
-    describe("getDefinedFunktioargumenttiCount(funktiokutsu)", function () {
-        it("should return 2 for JOS with 2 defined funktioargumenttia", function () {
-            expect(funktioservice.getDefinedFunktioargumenttiCount(funktiokutsuJos)).toBe(2)
-        });
-
-        it("should return 5 for SUMMA with 5 defined funktioargumentti", function() {
-            expect(funktioservice.getDefinedFunktioargumenttiCount(funktiokutsuSumma)).toBe(5);
-        });
-
-        it("should return 2 for PAINOTETTUKESKIARVO with 2 defined funktioargumentti", function() {
-            expect(funktioservice.getDefinedFunktioargumenttiCount(funktiokutsuPainotettukeskiarvo)).toBe(2);
-        });
-    });
-
     //isLukuarvoFunktioSlot
     describe("isLukuarvoFunktioSlot(funktiokutsu, index)", function () {
         it("should return true for JOS-funktiokutsu and 2nd index", function () {
@@ -294,6 +259,21 @@ describe("FunktioService", function () {
         });
     });
 
+    //getDefinedFunktioargumenttiCount
+    describe("getDefinedFunktioargumenttiCount(funktiokutsu)", function () {
+        it("should return 2 for JOS with 2 defined funktioargumenttia", function () {
+            expect(funktioservice.getDefinedFunktioargumenttiCount(funktiokutsuJos)).toBe(2)
+        });
+
+        it("should return 5 for SUMMA with 5 defined funktioargumentti", function() {
+            expect(funktioservice.getDefinedFunktioargumenttiCount(funktiokutsuSumma)).toBe(5);
+        });
+
+        it("should return 2 for PAINOTETTUKESKIARVO with 2 defined funktioargumentti", function() {
+            expect(funktioservice.getDefinedFunktioargumenttiCount(funktiokutsuPainotettukeskiarvo)).toBe(2);
+        });
+    });
+
     //isFunktiokutsu
     describe("isFunktiokutsu(parameter)", function () {
         it("should return true if given a funktiokutsu", function () {
@@ -312,15 +292,5 @@ describe("FunktioService", function () {
            expect(funktioservice.isFunktiokutsu()).toBe(undefined);
         });
     });
-
-    //clearExtraFunktiokutsuSlots
-    /*
-    describe("cleanExtraPKArgumenttiSlotsFromTree", function () {
-        it("painotettukeskiarvo -funktiokutsu should have 2 empty slots in the end of list after clear", function () {
-            expect(funktiokutsuPainotettukeskiarvoWith2EmptySlots).toEqual(funktioservice.cleanExtraPKArgumenttiSlots(funktiokutsuPainotettukeskiarvoWith4EmptySlots));
-        });
-    });
-    */
-
 
 });

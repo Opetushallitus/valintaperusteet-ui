@@ -30,6 +30,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
         };
 
         this.isNimettyFunktioargumentti = function (parent) {
+            if(_.isEmpty(parent)) {return undefined}
             var parentFunktionimi = model.getFunktionimi(parent);
             var funktiokuvaus = model.getFunktiokuvaus(parentFunktionimi);
             return funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti !== 'n' && !model.isPainotettukeskiarvoChildByParentNimi(parentFunktionimi) );
@@ -41,9 +42,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
         };
 
         this.isPainotettukeskiarvoChild = function (parent) {
-            if (_.isEmpty(parent)) {
-                return undefined
-            }
+            if (_.isEmpty(parent)) {return undefined}
 
             var funktiokuvaus = model.getFunktiokuvaus(model.getFunktionimi(parent));
             return funktiokuvaus.funktioargumentit && funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'lista_pareja';
@@ -170,10 +169,6 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
             arr.push(null);
             return arr;
         };
-
-
-
-
 
     }
 

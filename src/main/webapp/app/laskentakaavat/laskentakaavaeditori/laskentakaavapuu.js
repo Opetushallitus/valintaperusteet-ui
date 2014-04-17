@@ -5,8 +5,6 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
         'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'Arvokonvertterikuvauskielet', 'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService',
         function ($scope, _, $location, $routeParams, KaavaValidointi, Laskentakaava, LaskentakaavaLista, TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet, FunktioNimiService, FunktioFactory, KaavaValidationService) {
 
-
-
             //servicet laskentakaavapuun piirtämiseen
             $scope.templateService = TemplateService;
             $scope.funktioService = FunktioService;
@@ -352,8 +350,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 if (!$scope.createNewKaava) {
                     $scope.funktioSelection = undefined;
                     $scope.errors.length = 0;
-                    KaavaValidationService.validateTallennaTulosValues($scope.model.laskentakaavapuu.funktiokutsu, $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit, 0, $scope.errors);
-                    KaavaValidationService.ValidateEmptyNimetytFunktioargumentit($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
+                    KaavaValidationService.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
 
                     if ($scope.errors.length === 0) {
                         //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
@@ -372,7 +369,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                         });
                     }
                 } else {
-                    KaavaValidationService.validateTallennaTulosValues(kaava.laskentakaava.funktioargumentit, $scope.errors);
+                    KaavaValidationService.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
                     if ($scope.errors.length === 0) {
                         Laskentakaava.insert({}, kaava, function (result) {
                             $scope.createNewKaava = false;
