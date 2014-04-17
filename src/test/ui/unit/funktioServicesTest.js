@@ -144,6 +144,26 @@ describe("FunktioService", function () {
 
     });
 
+    //getNimettyFunktioargumenttiCount
+    describe("getNimettyFunktioargumenttiCount(parent)", function () {
+        it("should return undefined if parent is undefined", function () {
+            expect(funktioservice.getNimettyFunktioargumenttiCount(undefined)).toBe(undefined);
+        });
+
+        it("should return 3 for JOS", function() {
+            expect(funktioservice.getNimettyFunktioargumenttiCount(funktiokutsuJos)).toBe(3);
+        });
+
+        it("should return 0 for SUMMA", function() {
+            expect(funktioservice.getNimettyFunktioargumenttiCount(funktiokutsuSumma)).toBe(0);
+        });
+
+        it("should return 0 for SUMMA", function() {
+            expect(funktioservice.getNimettyFunktioargumenttiCount(funktiokutsuHylkaaarvovalilla)).toBe(1);
+        });
+    });
+
+
     //isPainotettukeskiarvoChild
     describe("isPainotettukeskiarvoChild(name)", function () {
 

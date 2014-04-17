@@ -5,8 +5,8 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', function
     var validationService = new function () {
 
         this.validateTree = function (rootFunktiokutsu, errors) {
-            validationService.checkRootEmptyNimetytFunktioargumentit(rootFunktiokutsu, errors);
-            validationService.validateRootTallennaValues(rootFunktiokutsu, errors);
+            validationService.makeRootValidations(rootFunktiokutsu, errors);
+
             _.forEach(rootFunktiokutsu.funktioargumentit, function (funktioargumentti, funktioargumenttiIndex) {
                 validationService.validateNode(rootFunktiokutsu, funktioargumentti, funktioargumenttiIndex, errors);
             });
@@ -15,9 +15,7 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', function
 
         this.validateNode = function (parent, funktiokutsu, funktiokutsuIndex, errors) {
             if (!(_.isEmpty(funktiokutsu))) {
-                validationService.checkEmptyNimetytFunktioargumentit(parent, funktiokutsu, funktiokutsuIndex, errors);
-                validationService.validateTallennaValues(parent, funktiokutsu, funktiokutsuIndex, errors);
-
+                validationService.makeNodeValidations(parent, funktiokutsu, funktiokutsuIndex, errors);
                 _.forEach(funktiokutsu.lapsi.funktioargumentit, function (funktioargumentti, funktioargumenttiIndex) {
                     validationService.validateNode(funktiokutsu, funktioargumentti, funktioargumenttiIndex, errors);
                 });
@@ -34,8 +32,10 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', function
                 isFunktiokutsu: isFunktiokutsu
             });
         }
+        
+        this.makeRootValidations = function(rootFunktiokutsu, errors) {
 
-        this.validateRootTallennaValues = function (rootFunktiokutsu, errors) {
+            // tallennatulos valittu -> tulostunniste must be defined
             if (rootFunktiokutsu.tallennaTulos === true && _.isEmpty(rootFunktiokutsu.tulosTunniste)) {
                 var nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu;
                 nimi = FunktioNimiService.getName(rootFunktiokutsu.funktionimi);
@@ -47,24 +47,8 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', function
 
                 validationService.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
             }
-        };
 
-        this.validateTallennaValues = function (parent, funktiokutsu, index, errors) {
-            _.forEach(funktiokutsu.lapsi.funktioargumentit, function (funktioargumentti, funktioargumenttiIndex) {
-                if (funktiokutsu.lapsi.tallennaTulos === true && _.isEmpty(funktiokutsu.lapsi.tulosTunniste)) {
-                    var nimi, kuvaus, parent, funktiokutsuIndex, isFunktiokutsu;
-                    nimi = FunktioNimiService.getName(rootFunktiokutsu.funktionimi);
-                    kuvaus = "tulostunniste täytyy määritellä, jos Tallenna tulos -kenttä on valittu";
-                    parent = parent;
-                    isFunktiokutsu = FunktioService.isFunktiokutsu(funktiokutsu);
-                    funktiokutsuIndex = index;
-
-                    validationService.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
-                }
-            });
-        };
-
-        this.checkRootEmptyNimetytFunktioargumentit = function (rootFunktiokutsu, errors) {
+            // tarkistetaan onko kaikki nimetyt funktioargumentit määritelty
             if (_.isEmpty(rootFunktiokutsu.funktioargumentit[0])) {
                 var nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu;
                 nimi = FunktioNimiService.getName(rootFunktiokutsu.funktionimi);
@@ -78,21 +62,37 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', function
             }
         }
 
-        this.checkEmptyNimetytFunktioargumentit = function (parentFunktiokutsu, funktiokutsu, index, errors) {
+        this.makeNodeValidations = function(parent, funktiokutsu, funktiokutsuIndex, errors) {
+            var definedFunktioargumenttiCount = 0;
             _.forEach(funktiokutsu.lapsi.funktioargumentit, function (funktioargumentti, funktioargumenttiIndex) {
-                var realIndex = funktioargumenttiIndex + 1;
-                if (FunktioService.isNimettyFunktioargumentti(funktiokutsu) && _.isEmpty(funktioargumentti)) {
+
+                if (funktiokutsu.lapsi.tallennaTulos === true && _.isEmpty(funktiokutsu.lapsi.tulosTunniste)) {
                     var nimi, kuvaus, parent, funktiokutsuIndex, isFunktiokutsu;
-                    nimi = FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi);
-                    kuvaus = "Nimetyt funktioargumentit ovat pakollisia, järjestyksessä " + realIndex + " funktioargumentti puuttuu";
+                    nimi = FunktioNimiService.getName(rootFunktiokutsu.funktionimi);
+                    kuvaus = "tulostunniste täytyy määritellä, jos Tallenna tulos -kenttä on valittu";
                     parent = parent;
                     isFunktiokutsu = FunktioService.isFunktiokutsu(funktiokutsu);
                     funktiokutsuIndex = index;
 
                     validationService.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
                 }
+
+                if (FunktioService.isNimettyFunktioargumentti(funktiokutsu) && !(_.isEmpty(funktioargumentti))) {
+                    definedFunktioargumenttiCount += 1;
+                }
+
             });
-        };
+
+            if (FunktioService.isNimettyFunktioargumentti(funktiokutsu) && definedFunktioargumenttiCount !== FunktioService.getNimettyFunktioargumenttiCount(funktiokutsu)) {
+                var nimi, kuvaus, isFunktiokutsu;
+                nimi = FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi);
+                kuvaus = 'Funktiokutsulle on määritelty ' + definedFunktioargumenttiCount + "/" + FunktioService.getNimettyFunktioargumenttiCount(funktiokutsu) + " pakollista funktioargumenttia";
+                isFunktiokutsu = FunktioService.isFunktiokutsu(funktiokutsu);
+
+                validationService.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
+            }
+
+        }
 
         //clear edit-time extra funktioargumenttislots from painotettukeskiarvo -funktiokutsu
         this.cleanExtraPKArgumenttiSlots = function (funktiokutsu) {

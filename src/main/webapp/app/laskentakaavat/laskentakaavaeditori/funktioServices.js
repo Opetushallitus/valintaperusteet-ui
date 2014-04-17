@@ -31,15 +31,28 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
 
         this.isNimettyFunktioargumentti = function (parent) {
             if(_.isEmpty(parent)) {return undefined}
+            if(!(model.isFunktiokutsu(parent))) {return false;}
             var parentFunktionimi = model.getFunktionimi(parent);
             var funktiokuvaus = model.getFunktiokuvaus(parentFunktionimi);
             return funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti !== 'n' && !model.isPainotettukeskiarvoChildByParentNimi(parentFunktionimi) );
         };
-
+        
         this.isNimettyFunktioargumenttiByFunktionimi = function (parentFunktionimi) {
             var funktiokuvaus = model.getFunktiokuvaus(parentFunktionimi);
             return funktiokuvaus.funktioargumentit !== undefined && funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti !== 'n' && !model.isPainotettukeskiarvoChildByParentNimi(parentFunktionimi) );
         };
+
+        this.getNimettyFunktioargumenttiCount = function(parent) {
+            if(_.isEmpty(parent)) {return undefined}
+            if(model.isNimettyFunktioargumentti(parent)) {
+                var funktiokuvaus = model.getFunktiokuvaus(model.getFunktionimi(parent));
+                return funktiokuvaus.funktioargumentit.length;
+            } else {
+                return 0;
+            }
+        }
+
+
 
         this.isPainotettukeskiarvoChild = function (parent) {
             if (_.isEmpty(parent)) {return undefined}
