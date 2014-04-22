@@ -52,11 +52,19 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
             }
         }
 
-
+        this.isFunktiokutsuWithFunktioargumenttiSizeN = function(parent) {
+            if(_.isEmpty(parent)) {return undefined}
+            if(model.isFunktiokutsu(parent) && model.getFunktiokuvaus(model.getFunktionimi(parent).funktioargumentit)) {
+                var funktiokuvaus = model.getFunktiokuvaus(model.getFunktionimi(parent));
+                return funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'n';
+            } else {
+                return false;
+            }
+        }
 
         this.isPainotettukeskiarvoChild = function (parent) {
             if (_.isEmpty(parent)) {return undefined}
-
+            if(!(model.isFunktiokutsu(parent))) {return false}
             var funktiokuvaus = model.getFunktiokuvaus(model.getFunktionimi(parent));
             return funktiokuvaus.funktioargumentit && funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'lista_pareja';
         };
@@ -130,19 +138,21 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
             }
         };
 
-
-
-
         this.isFunktiokutsu = function (funktiokutsu) {
             if (funktiokutsu === undefined) {
                 return undefined
             }
             if (model.isRootFunktiokutsu(funktiokutsu)) {
-                return FunktioNimiService.getName(funktiokutsu.funktionimi) !== undefined;
+                return funktiokutsu.lapsityyppi === 'funktiokutsu';
             } else {
-                return FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi) !== undefined;
+                return funktiokutsu.lapsi.lapsityyppi === 'funktiokutsu';
             }
         };
+
+        this.isLaskentakaavaviite = function(param) {
+            if(_.isEmpty(param)) {return undefined}
+            return param.lapsi.lapsityyppi === 'laskentakaava' ? true : false;
+        }
 
         this.cleanLaskentakaavaPKObjects = function (funktioargumentit) {
             if (funktioargumentit) {

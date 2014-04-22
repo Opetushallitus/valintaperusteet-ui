@@ -60,12 +60,10 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             }
 
 
-            /*
-             funktio = valittu funktiokutsu tai laskentakaavaviite
-             isFunktiokutsu = onko funktio-parametri funktiokutsu vai laskentakavaaviite
-             parentFunktiokutsu = parentFunktiokutsu tai laskentakaavan juuri
-             index = monesko funktio-parametri on funktioargumenttilistassa, juurifunktiokutsulla ei ole indeksiä
-             */
+             // funktio = valittu funktiokutsu tai laskentakaavaviite
+             // isFunktiokutsu = onko funktio-parametri funktiokutsu vai laskentakavaaviite
+             // parentFunktiokutsu = parentFunktiokutsu tai laskentakaavan juuri
+             // index = monesko funktio-parametri on funktioargumenttilistassa, juurifunktiokutsulla ei ole indeksiä
             $scope.setFunktioSelection = function (funktio, isFunktiokutsu, parentFunktiokutsu, index) {
                 $scope.funktioasetukset.parentFunktiokutsu = parentFunktiokutsu;
 
@@ -85,7 +83,6 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 } else {
                     $scope.$broadcast('showLaskentakaavaviiteAsetukset');
                 }
-
 
                 $scope.laskentakaavaviite.selection = funktio || null;
                 $scope.isRootSelected = false;
@@ -364,7 +361,9 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                                     $location.path($location.path() + result.id);
                                 }
 
-                            }, function (error) {
+                            },
+                            function (error) {
+
                             });
                         });
                     }

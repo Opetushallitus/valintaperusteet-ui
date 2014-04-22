@@ -162,7 +162,29 @@ describe("FunktioService", function () {
             expect(funktioservice.getNimettyFunktioargumenttiCount(funktiokutsuHylkaaarvovalilla)).toBe(1);
         });
     });
+    
+    //isFunktiokutsuWithFunktioargumenttiSizeN
+    describe("isFunktiokutsuWithFunktioargumenttiSizeN(parent)", function () {
+        it("should return undefined if parent is undefined", function () {
+            expect(funktioservice.getNimettyFunktioargumenttiCount(undefined)).toBe(undefined);
+        });
 
+        it("should return true for funktiokutsu SUMMA", function () {
+            expect(funktioservice.isFunktiokutsuWithFunktioargumenttiSizeN(funktiokutsuSumma)).toBe(true);
+        });
+
+        it("should return true for funktiokutsu KESKIARVO", function () {
+            expect(funktioservice.isFunktiokutsuWithFunktioargumenttiSizeN(funktiokutsuKeskiarvo)).toBe(true);
+        });
+
+        it("should return false for funktiokutsu PAINOTETTUKESKIARVO", function () {
+            expect(funktioservice.isFunktiokutsuWithFunktioargumenttiSizeN(funktiokutsuPainotettukeskiarvo)).toBe(false);
+        });
+
+        it("should return false for laskentakaavaviite", function() {
+            expect(funktioservice.isFunktiokutsuWithFunktioargumenttiSizeN(laskentakaavaviite)).toBe(false);
+        })
+    });
 
     //isPainotettukeskiarvoChild
     describe("isPainotettukeskiarvoChild(name)", function () {
@@ -312,5 +334,30 @@ describe("FunktioService", function () {
            expect(funktioservice.isFunktiokutsu()).toBe(undefined);
         });
     });
+
+    //isLaskentakaavaviite
+    describe("isLaskentakaavaviite(param)", function () {
+        it("should return undefined for undefined param", function () {
+            expect(funktioservice.isLaskentakaavaviite()).toBe(undefined);
+        });
+
+        it("should return false for hylkää arvovälillä -funktiokutsulla", function () {
+            expect(funktioservice.isLaskentakaavaviite(funktiokutsuHylkaaarvovalilla)).toBe(false);
+        });
+
+        it("should return false for keskiarvo -funktiokutsulla", function () {
+            expect(funktioservice.isLaskentakaavaviite(funktiokutsuKeskiarvo)).toBe(false);
+        });
+
+        it("should return false for painotettukeskiarvo -funktiokutsulla", function () {
+            expect(funktioservice.isLaskentakaavaviite(funktiokutsuPainotettukeskiarvo)).toBe(false);
+        });
+
+        it("should return true for a laskentakaavaviite", function () {
+            expect(funktioservice.isLaskentakaavaviite(laskentakaavaviite)).toBe(true);
+        });
+
+    });
+
 
 });
