@@ -53,10 +53,16 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
         }
 
         this.isFunktiokutsuWithFunktioargumenttiSizeN = function(parent) {
+            console.log(parent);
             if(_.isEmpty(parent)) {return undefined}
-            if(model.isFunktiokutsu(parent) && model.getFunktiokuvaus(model.getFunktionimi(parent).funktioargumentit)) {
+            if(model.isFunktiokutsu(parent) && !(_.isEmpty(model.getFunktiokuvaus(model.getFunktionimi(parent)).funktioargumentit)) ) {
+
                 var funktiokuvaus = model.getFunktiokuvaus(model.getFunktionimi(parent));
-                return funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'n';
+                if(funktiokuvaus.funktioargumentit) {
+                    return funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'n';
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }

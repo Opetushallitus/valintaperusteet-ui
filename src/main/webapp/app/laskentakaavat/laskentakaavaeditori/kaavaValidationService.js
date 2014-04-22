@@ -49,6 +49,8 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', function
             }
 
             //tallennatulos valittu -tarkistus (yllä) rootin lapsille
+            //tallennatulosvalidointi tehdään aina funktiokutsun funktioargumenteille, jotta funktioargumentin indeksi saadaan mukaan virheilmoitukseen
+            //tästä syystä validointi tehdään rootissa erikseen juuren funktiokutsulle ja sen funktioargument(e)ille
             _.forEach(rootFunktiokutsu.funktioargumentit, function(funktioargumentti, funktioargumenttiIndex) {
                 if (funktioargumentti.lapsi.tallennaTulos === true && _.isEmpty(funktioargumentti.lapsi.tulosTunniste)) {
                     var nimi, kuvaus, parent, funktiokutsuIndex, isFunktiokutsu;
@@ -88,8 +90,8 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', function
 
             });
 
-            validationService.atLeastOneFunktioargumenttiDefined(parent, funktiokutsu, funktiokutsuIndex, errors);
-            validationService.allNimettyargumenttiDefined(parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount, errors);
+            validationService.atLeastOneFunktioargumenttiDefined(parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount, errors);
+            validationService.allNimettyargumenttiDefined(parent, funktiokutsu, funktiokutsuIndex, errors);
         };
 
         // tallennatulos valittu -> tulostunniste täytyy olla määritelty
@@ -107,7 +109,9 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', function
         }
 
         // Funktiokutsulle voidaan määritellä N määrä funktioargumentteja - vähintään yksi on määriteltävä
-        this.atLeastOneFunktioargumenttiDefined = function () {
+        this.atLeastOneFunktioargumenttiDefined = function (parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount, errors ) {
+            console.log(funktiokutsu);
+            console.log(FunktioService.isFunktiokutsuWithFunktioargumenttiSizeN(funktiokutsu));
             if (FunktioService.isFunktiokutsuWithFunktioargumenttiSizeN(funktiokutsu) && definedFunktioargumenttiCount === 0) {
                 var nimi, kuvaus, isFunktiokutsu;
                 nimi = FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi);
