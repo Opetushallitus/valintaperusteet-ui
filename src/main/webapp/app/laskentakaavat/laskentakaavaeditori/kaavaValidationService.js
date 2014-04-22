@@ -89,9 +89,9 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', function
                 }
 
             });
-
             validationService.atLeastOneFunktioargumenttiDefined(parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount, errors);
             validationService.allNimettyargumenttiDefined(parent, funktiokutsu, funktiokutsuIndex, errors);
+            validationService.painotettukeskiarvoValidation(parent, funktiokutsu, funktiokutsuIndex, errors);
         };
 
         // tallennatulos valittu -> tulostunniste täytyy olla määritelty
@@ -106,7 +106,7 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', function
 
                 validationService.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
             }
-        }
+        };
 
         // Funktiokutsulle voidaan määritellä N määrä funktioargumentteja - vähintään yksi on määriteltävä
         this.atLeastOneFunktioargumenttiDefined = function (parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount, errors ) {
@@ -119,7 +119,7 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', function
             }
         };
 
-        // tarkistetaan onko kaikki nimetyt funktioargumentit määritelty
+        // Tarkistetaan onko kaikki nimetyt funktioargumentit määritelty
         this.allNimettyargumenttiDefined = function(parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount, errors) {
             if (FunktioService.isNimettyFunktioargumentti(funktiokutsu) && definedFunktioargumenttiCount !== FunktioService.getNimettyFunktioargumenttiCount(funktiokutsu)) {
                 var nimi, kuvaus, isFunktiokutsu;
@@ -129,7 +129,41 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', function
 
                 validationService.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
             }
-        }
+        };
+
+        this.painotettukeskiarvoValidation = function(parent, funktiokutsu, funktiokutsuIndex, errors) {
+
+            if(funktiokutsu.lapsi.funktionimi === 'PAINOTETTUKESKIARVO' ) {
+                var definedFunktioargumenttiCount = 0;
+                var hasUndefinedFunktioargumentti = false;
+                _.forEach(funktiokutsu.lapsi.funktioargumentit, function(funktioargumentti, funktioargumenttiIndex, funktioargumentit) {
+                    if(!(_.isEmpty(funktioargumentti))) {
+                        definedFunktioargumenttiCount += 1;
+                    } else if(_.isEmpty(funktioargumentti) && funktioargumenttiIndex < funktioargumentit.length - 2) {
+                        hasUndefinedFunktioargumentti = true;
+                    }
+                });
+
+                var kuvaus = undefined;
+                if(definedFunktioargumenttiCount < 2) {
+                    kuvaus = "Painotetulla keskiarvolla täytyy määritellä vähintään kaksi funktioargumenttia";
+                } else if(hasUndefinedFunktioargumentti) {
+                    kuvaus = "Painotetun keskiarvon funktioargumenttilistan keskellä ei voi olla määrittelemättömiä funktioargumentteja";
+                } else if(definedFunktioargumenttiCount % 2 !== 0) {
+                    kuvaus = "Painotetulla keskiarvolla täytyy olla parillinen määrä funktioargumentteja";
+                }
+
+                if(definedFunktioargumenttiCount % 2 !== 0 || hasUndefinedFunktioargumentti) {
+                    var nimi, isFunktiokutsu;
+                    nimi = FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi);
+                    isFunktiokutsu = FunktioService.isFunktiokutsu(funktiokutsu);
+
+                    validationService.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
+                }
+                
+
+            }
+        };
 
         //clear edit-time extra funktioargumenttislots from painotettukeskiarvo -funktiokutsu
         this.cleanExtraPKArgumenttiSlots = function (funktiokutsu) {
