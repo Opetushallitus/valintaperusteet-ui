@@ -110,8 +110,6 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', function
 
         // Funktiokutsulle voidaan määritellä N määrä funktioargumentteja - vähintään yksi on määriteltävä
         this.atLeastOneFunktioargumenttiDefined = function (parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount, errors ) {
-            console.log(funktiokutsu);
-            console.log(FunktioService.isFunktiokutsuWithFunktioargumenttiSizeN(funktiokutsu));
             if (FunktioService.isFunktiokutsuWithFunktioargumenttiSizeN(funktiokutsu) && definedFunktioargumenttiCount === 0) {
                 var nimi, kuvaus, isFunktiokutsu;
                 nimi = FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi);

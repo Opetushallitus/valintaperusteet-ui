@@ -53,7 +53,6 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
         }
 
         this.isFunktiokutsuWithFunktioargumenttiSizeN = function(parent) {
-            console.log(parent);
             if(_.isEmpty(parent)) {return undefined}
             if(model.isFunktiokutsu(parent) && !(_.isEmpty(model.getFunktiokuvaus(model.getFunktionimi(parent)).funktioargumentit)) ) {
 
