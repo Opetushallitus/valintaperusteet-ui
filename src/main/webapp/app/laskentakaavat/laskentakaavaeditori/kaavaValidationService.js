@@ -90,7 +90,7 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', function
 
             });
             validationService.atLeastOneFunktioargumenttiDefined(parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount, errors);
-            validationService.allNimettyargumenttiDefined(parent, funktiokutsu, funktiokutsuIndex, errors);
+            validationService.allNimettyargumenttiDefined(parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount, errors);
             validationService.painotettukeskiarvoValidation(parent, funktiokutsu, funktiokutsuIndex, errors);
         };
 
@@ -160,8 +160,6 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', function
 
                     validationService.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
                 }
-                
-
             }
         };
 
