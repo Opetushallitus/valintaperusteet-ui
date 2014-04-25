@@ -1,15 +1,20 @@
 <div class="modal-header">
-    <h3>Laskentakaavaviitteen valinta</h3>
+    <h3 ng-if="alikaavaValues.hasParentAlikaava !== true">Laskentakaavaviitteen valinta</h3>
+    <h3 ng-if="alikaavaValues.hasParentAlikaava === true">Alikaavan laskentakaavaviite</h3>
 </div>
 
 <div class="modal-body">
-    <div ng-repeat="valintaryhmaList in laskentakaavalista.valintaryhmaList()">
+
+    <span>Valitun laskentakaavaviitteen nimi: {{laskentakaavaviite.selection.lapsi.nimi}}</span>
+    <div ng-if="alikaavaValues.hasParentAlikaava === true" class="alert alert-info margin-top-2">Alikaavan laskentakaavaviitteitä ei voi vaihtaa. Voit kuitenkin siirtyä suoraan valitsemasi laskentakaavan muokkaukseen kynä-ikonista.</div>
+
+    <div class="margin-top-2" ng-repeat="valintaryhmaList in laskentakaavalista.valintaryhmaList()">
 
         <div ng-repeat="valintaryhma in valintaryhmaList">
             <div ng-if="valintaryhma.laskentakaavat" class="settingsform laskentakaavaviitteet">
                 <h3>Valintaryhmä: {{valintaryhma.nimi}}</h3>
                 <div ng-if="kaava.id !== model.laskentakaavapuu.id" ng-repeat="kaava in valintaryhma.laskentakaavat">
-                <input id="{{kaava.id}}" type="radio" name="laskentakaavaviite" ng-value="kaava.id"
+                    <input ng-disabled="alikaavaValues.hasParentAlikaava === true" id="{{kaava.id}}" type="radio" name="laskentakaavaviite" ng-value="kaava.id"
                            ng-change="setLaskentakaavaviite(kaava)" ng-model="laskentakaavaviite.selection.lapsi.id"/>
                     <label for="{{kaava.id}}" name="laskentakaavaviite">
                         {{kaava.nimi}} <a ng-click="sulje()" ng-href="#/valintaryhma/{{valintaryhma.oid}}/laskentakaavalista/laskentakaava/{{kaava.id}}"><i class="fa fa-pencil"></i></a>
@@ -22,7 +27,7 @@
     </div>
 </div>
 <div class="modal-footer">
-    <span class="btn btn-sm btn-default" ng-click="removeLaskentakaavaviite()"><i class="fa fa-trash-o"></i> Poista laskentakaavaviite</span>
+    <span ng-if="alikaavaValues.hasParentAlikaava !== true" class="btn btn-sm btn-default" ng-click="removeLaskentakaavaviite()"><i class="fa fa-trash-o"></i> Poista laskentakaavaviite</span>
     <a class="btn btn-default btn-sm" ng-click="sulje();"
        role="button">Sulje</a>
 </div>

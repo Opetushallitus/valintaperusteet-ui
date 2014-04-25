@@ -64,22 +64,14 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             // parentFunktiokutsu = parentFunktiokutsu tai laskentakaavan juuri
             // index = monesko funktio-parametri on funktioargumenttilistassa, juurifunktiokutsulla ei ole indeksiä
             $scope.setFunktioSelection = function (funktio, isFunktiokutsu, parentFunktiokutsu, index, isAlikaava, hasParentAlikaava) {
-                if (isAlikaava) {
-                    if (isFunktiokutsu) {
-                        $scope.$broadcast('showAlikaavaFunktiokutsuAsetukset')
-                        return;
-                    } else {
-                        if (hasParentAlikaava) {
-                            $scope.$broadcast('showAlikaavaLaskentakaavaviiteAsetukset')
-                            return;
-                        }
-                    }
-                }
-
                 $scope.funktioasetukset.parentFunktiokutsu = parentFunktiokutsu;
 
                 $scope.funktioasetukset.selectedFunktioIndex = index;
                 $scope.funktioSelection = funktio;
+                $scope.alikaavaValues = {};
+                $scope.alikaavaValues.isAlikaava = isAlikaava;
+                $scope.alikaavaValues.hasParentAlikaava = hasParentAlikaava;
+
                 if (isFunktiokutsu) {
                     $scope.funktiokuvausForSelection = $scope.funktioService.getFunktiokuvaus(funktio.lapsi.funktionimi);
                 }
@@ -87,13 +79,40 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 //päätellään funktiolle esivalittu konvertteriparametrityyppi, jos funktiolla on konvertteriparametreja
                 $scope.setKonvertteriType();
 
-                // päätellään kumpi muokkausnäkymä tuodaan näkyviin, funktiokutsuille ja laskentakaavaviitteille on omat näkymänsä
-                // jos kyseessä on funktiokutsu, jolle ei ole muokattavia asetuksia, niin ei avata muokkausnäkymää
-                if (isFunktiokutsu) {
-                    $scope.$broadcast('showFunktiokutsuAsetukset')
+                // päätellään mikä muokkausnäkymä tuodaan näkyviin. Funktiokutsuille, alikaavan funktiokutsuille,
+                // laskentakaavaviitteille ja alikaavan laskentakaavaviitteille on omat muokkausnäkymänsä
+                /*
+                if (isAlikaava) {
+                    if (hasParentAlikaava) {
+                        if(isFunktiokutsu) {
+                            $scope.$broadcast('showAlikaavaFunktiokutsuAsetukset');
+                        } else {
+                            $scope.$broadcast('showAlikaavaLaskentakaavaviiteAsetukset');
+                        }
+                    } else {
+                        if (isFunktiokutsu) {
+                            $scope.$broadcast('showAlikaavaFunktiokutsuAsetukset');
+                        } else {
+                            $scope.$broadcast('showLaskentakaavaviiteAsetukset');
+                        }
+                    }
+                } else {
+                    if(isFunktiokutsu) {
+                        $scope.$broadcast('showFunktiokutsuAsetukset');
+                    } else {
+                        $scope.$broadcast('showLaskentakaavaviiteAsetukset');
+
+                    }
+                }
+                */
+                if(isFunktiokutsu) {
+                    $scope.$broadcast('showFunktiokutsuAsetukset');
                 } else {
                     $scope.$broadcast('showLaskentakaavaviiteAsetukset');
+
                 }
+
+
                 $scope.laskentakaavaviite.selection = funktio || undefined;
                 $scope.isRootSelected = false;
                 $scope.saved = false;
@@ -111,6 +130,8 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
                 $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = $scope.funktioFactory.createLaskentakaavaviite();
                 $scope.laskentakaavaviite.selection = undefined;
+
+                $scope.alikaavaValues = {};
             };
 
             $scope.addFunktio = function (parent, funktionimi, index) {
@@ -123,7 +144,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     parent.lapsi.funktioargumentit[index] = createdFunktio;
                 }
 
-                $scope.setFunktioSelection(createdFunktio, true, parent, index);
+                $scope.setFunktioSelection(createdFunktio, true, parent, index, undefined, undefined);
 
                 //lisätään uusi pari funktioargumentteja, kun edelliset on täytetty
                 if ($scope.getFunktionimi(parent) === 'PAINOTETTUKESKIARVO') {
@@ -270,6 +291,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 }
 
                 $scope.funktioasetukset.funktioSelection = undefined;
+                $scope.alikaavaValues = {};
                 if ($scope.isFirstChildForRoot($scope.funktioasetukset.parentFunktiokutsu)) {
                     //jos ollaan heti laskentakaavan juuren alla (laskentakaavan 'ensimmäisellä kerroksella' ei ole lapsi-wrapperia)
                     //sama myös nimetyille funktioargumenteille tai funktioargumenttitaulukkoon jää yksi null-objekti
@@ -296,6 +318,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex, 1)
                 }
                 $scope.funktioSelection = undefined;
+                $scope.alikaavaValues = {};
             };
 
             $scope.isFirstChildForRoot = function (parent) {
@@ -358,6 +381,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
                 if (!$scope.createNewKaava) {
                     $scope.funktioSelection = undefined;
+                    $scope.alikaavaValues = {};
                     $scope.errors.length = 0;
                     KaavaValidationService.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
 
