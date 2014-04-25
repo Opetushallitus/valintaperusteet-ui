@@ -322,3 +322,30 @@ app.directive('breadcrumb', function () {
 		restrict: 'E'
 	}
 });
+
+/*
+app.directive('toggleCollapse', [function () {
+    return {
+        restrict: 'A',
+        transclude: true,
+        controller: function($scope) {
+            $scope.toggleExtendedView = function() {
+                if($scope.showExtension == 'close') {
+                    if(!$scope.extendedLO) {
+                        $scope.fetchLOData();
+                        $scope.showExtension = 'open';
+                    } else {
+                        $scope.showExtension = 'open';
+                    }
+                } else {
+                    $scope.showExtension = 'close';
+                }
+            }
+        },
+        link: function (scope, iElement, iAttrs) {
+            scope.showExtension = "close";
+        }
+
+    };
+}]);
+    */

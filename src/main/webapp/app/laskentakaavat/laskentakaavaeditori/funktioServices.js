@@ -50,7 +50,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
             } else {
                 return 0;
             }
-        }
+        };
 
         this.isFunktiokutsuWithFunktioargumenttiSizeN = function(parent) {
             if(_.isEmpty(parent)) {return undefined}
@@ -65,7 +65,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
             } else {
                 return false;
             }
-        }
+        };
 
         this.isPainotettukeskiarvoChild = function (parent) {
             if (_.isEmpty(parent)) {return undefined}
@@ -121,11 +121,11 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
             if (model.isRootFunktiokutsu(parent)) {
                 var funktiokuvaus = model.getFunktiokuvaus(parent.funktionimi);
                 var tyyppi = isOnNimettySlot ? funktiokuvaus.funktioargumentit[funktioargumenttiIndex].tyyppi : funktiokuvaus.funktioargumentit[0].tyyppi;
-                return tyyppi === 'LUKUARVOFUNKTIO' ? true : false;
+                return tyyppi === 'LUKUARVOFUNKTIO';
             } else {
                 var funktiokuvaus = model.getFunktiokuvaus(parent.lapsi.funktionimi);
                 var tyyppi = isOnNimettySlot ? funktiokuvaus.funktioargumentit[funktioargumenttiIndex].tyyppi : funktiokuvaus.funktioargumentit[0].tyyppi;
-                return tyyppi === 'LUKUARVOFUNKTIO' ? true : false;
+                return tyyppi === 'LUKUARVOFUNKTIO';
             }
         };
 
@@ -197,8 +197,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
             arr.push(null);
             return arr;
         };
-
-    }
+    };
 
     return model;
 });

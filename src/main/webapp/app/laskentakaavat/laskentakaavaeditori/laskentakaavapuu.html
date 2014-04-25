@@ -6,7 +6,7 @@
     </div>
     <div class="clear"></div>
 
-    <div class="gradingformula dd" style="width:60%;float:left;">
+    <div class="gradingformula" style="float:left;">
 
         <!-- Laskentakaavassa olevat virheet-->
         <div class="alert alert-danger margin-top-2" ng-if="errors.length > 0">
@@ -15,7 +15,8 @@
             <p>Siirry virheellisten funktiokutsujen muokkaukseen alla olevasta listasta</p>
             <ol class="margin-top-2">
                 <li ng-repeat="error in errors">
-                    <span add-class-on-mouseover="bold" ng-click="setFunktioSelection(error.funktiokutsu, error.isFunktiokutsu, error.parent, error.index)">{{error.nimi}} -funktiokutsussa on virhe. {{error.kuvaus}}</span>
+                    <span add-class-on-mouseover="bold"
+                          ng-click="setFunktioSelection(error.funktiokutsu, error.isFunktiokutsu, error.parent, error.index)">{{error.nimi}} -funktiokutsussa on virhe. {{error.kuvaus}}</span>
                 </li>
             </ol>
         </div>
@@ -40,7 +41,8 @@
             </modal>
         </div>
 
-        <div class="frame" ng-class="isRootSelected ? 'active' : ''">
+        <!-- Laskentakaavapuun juuri -->
+        <div class="frame open" ng-class="isRootSelected ? 'active' : ''">
             <span class="icon">&#8302;</span>
             <span class="node bold" ng-click="setRootSelection(model.laskentakaavapuu.funktiokutsu)">{{model.laskentakaavapuu.nimi}}</span>
         </div>
@@ -87,10 +89,18 @@
 
 <!-- Laskentakaavaviite-->
 <script type="text/ng-template" id="laskentakaavaviite">
-    <div class="frame" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
-        <span class="icon">&#8302;</span>
-        <span add-class-on-mouseover="bold" class="node"
-              ng-click="setFunktioSelection(funktiowrapper, false, parent, $index)">{{funktiowrapper.lapsi.nimi}}</span>
+    <div ng-controller="AlikaavaController">
+        <div class="frame" ng-class="showAlikaava ? 'open':''">
+            <span ng-click="toggleAlikaava(funktiowrapper.lapsi.id)" class="icon">&#8302;</span>
+            <span add-class-on-mouseover="bold" class="node"
+                  ng-click="setFunktioSelection(funktiowrapper, false, parent, $index)">{{funktiowrapper.lapsi.nimi}}</span>
+        </div>
+        <ul ng-if="showAlikaava" class="alikaava">
+            <li ng-if="alikaava" class="item" ng-repeat="funktiowrapper in alikaava.funktiokutsu.funktioargumentit"
+                ng-init="parent = alikaava.funktiokutsu">
+                <div ng-include="'funktiokutsu'"></div>
+            </li>
+        </ul>
     </div>
 </script>
 
@@ -222,7 +232,7 @@
     <div class="function" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon">&#8302;</span>
         <span add-class-on-mouseover="bold" class="node"
-              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)">
+              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index)"></span>
         <span>{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}
 
         : </span>
@@ -287,7 +297,6 @@ YHTASUURI
 
 <!-- Temnplatet nimetty funktioargumentti -tyyppisille funktiokutsuille, joille ei ole asetettu arvoa -->
 <script type="text/ng-template" id="nimettyFunktioSlot">
-
     <span add-class-on-mouseover="bold" class="node" ng-init="funktioSlotIndex = findFunktioSlotIndex(parent, $index)"
           ng-click="showNewFunktioList = {visible: true}; hideFunktioMenu()">
         <div ng-if="parent.lapsi.funktionimi === 'OSAMAARA'">
@@ -450,8 +459,7 @@ YHTASUURI
         </tr>
         <tr>
             <td ng-click="addFunktio(parent, 'HAEOSAKOEARVOSANA', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>YO-osakoearvosana</span></td>
-            <td
+                <span>YO-osakoearvosana</span>
             </td>
         </tr>
         </tbody>

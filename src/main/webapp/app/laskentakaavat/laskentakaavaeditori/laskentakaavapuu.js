@@ -17,7 +17,6 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             $scope.errors = [];
             $scope.model = {};
 
-
             //Pidetään laskentakaaviitevalinta objektissa. Laskentakaavaviitettä kaavaan liitettäessä radio-inputit iteroidaan ng-repeatissa,
             //joka luo uuden skoopin joka itemille, jolloin laskentakaavaviitteen tallentaminen  suoraan skoopissa olevaan muuttujaan ei toimi oikein
             $scope.laskentakaavaviite = { selection: null }
@@ -60,10 +59,10 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             }
 
 
-             // funktio = valittu funktiokutsu tai laskentakaavaviite
-             // isFunktiokutsu = onko funktio-parametri funktiokutsu vai laskentakavaaviite
-             // parentFunktiokutsu = parentFunktiokutsu tai laskentakaavan juuri
-             // index = monesko funktio-parametri on funktioargumenttilistassa, juurifunktiokutsulla ei ole indeksiä
+            // funktio = valittu funktiokutsu tai laskentakaavaviite
+            // isFunktiokutsu = onko funktio-parametri funktiokutsu vai laskentakavaaviite
+            // parentFunktiokutsu = parentFunktiokutsu tai laskentakaavan juuri
+            // index = monesko funktio-parametri on funktioargumenttilistassa, juurifunktiokutsulla ei ole indeksiä
             $scope.setFunktioSelection = function (funktio, isFunktiokutsu, parentFunktiokutsu, index) {
                 $scope.funktioasetukset.parentFunktiokutsu = parentFunktiokutsu;
 
@@ -83,24 +82,24 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 } else {
                     $scope.$broadcast('showLaskentakaavaviiteAsetukset');
                 }
-
-                $scope.laskentakaavaviite.selection = funktio || null;
+                $scope.laskentakaavaviite.selection = funktio || undefined;
                 $scope.isRootSelected = false;
                 $scope.saved = false;
             }
 
             $scope.setLaskentakaavaviite = function (kaava) {
+                //lähetetään skooppihierarkiassa alaspäin viesti, jossa kulkee uuden kaavan id ja vanhan kaavan id.
+                $scope.$broadcast('changeAlikaava', kaava.id, $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex].id)
                 $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = $scope.funktioFactory.createLaskentakaavaviite(kaava);
             }
 
             $scope.addLaskentakaavaviite = function (parent, index) {
                 var firstChildForRoot = $scope.isFirstChildForRoot(parent);
-
                 $scope.funktioasetukset.parentFunktiokutsu = parent;
                 $scope.funktioasetukset.selectedFunktioIndex = index;
 
                 $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = $scope.funktioFactory.createLaskentakaavaviite();
-                $scope.laskentakaavaviite.selection = '-';
+                $scope.laskentakaavaviite.selection = undefined;
             }
 
             $scope.addFunktio = function (parent, funktionimi, index) {
@@ -331,7 +330,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 $location.path('/valintaryhma' + valintaryhmaOid + '/laskentakaavalista/laskentakaava/' + laskentakaavaOid);
             }
 
-            $scope.persist = function() {
+            $scope.persist = function () {
                 $scope.$broadcast('persist');
             }
 
@@ -342,7 +341,9 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     laskentakaava: $scope.model.laskentakaavapuu
                 }
 
-                var urlEnd = _.reduce(_.last($location.path(), 14), function(result, current) {return result+current}, "");
+                var urlEnd = _.reduce(_.last($location.path(), 14), function (result, current) {
+                    return result + current
+                }, "");
 
                 if (!$scope.createNewKaava) {
                     $scope.funktioSelection = undefined;
@@ -354,17 +355,17 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                         $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.cleanLaskentakaavaPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
                         KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function (result) {
                             $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function (result) {
-                                $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
-                                $scope.saved = true;
+                                    $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
+                                    $scope.saved = true;
 
-                                if(urlEnd === 'laskentakaava/') {
-                                    $location.path($location.path() + result.id);
-                                }
+                                    if (urlEnd === 'laskentakaava/') {
+                                        $location.path($location.path() + result.id);
+                                    }
 
-                            },
-                            function (error) {
+                                },
+                                function (error) {
 
-                            });
+                                });
                         });
                     }
                 } else {
@@ -374,7 +375,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                             $scope.createNewKaava = false;
                             $scope.saved = true;
 
-                            if(urlEnd === 'laskentakaava/') {
+                            if (urlEnd === 'laskentakaava/') {
                                 $location.path($location.path() + result.id);
                             }
 
@@ -383,26 +384,6 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 }
             });
 
-
-            /* called from kaavaeditor -directive when an item has been moved in kaavaeditor
-             $scope.$on('kaavadrag', function (event, paramObject) {
-             $scope.kaavaDragged(paramObject.draggedFunktio, paramObject.oldParentFunktio, paramObject.newParentFunktio, paramObject.index);
-             });
-
-             $scope.kaavaDragged = function (funktio, oldParent, newParent, index) {
-
-             var kaavaBeforeDrag = Laskentapuu.laskentakaava().getData();
-             var oldIndex = oldParent.funktioargumentit.indexOf(funktio);
-
-             var func = funktio;
-
-             newParent.addChildAt(func, index);
-             newParent.init();
-             oldParent.init();
-
-             func = oldParent.removeChildFunktio(funktio);
-             }
-             */
         }]);
 
 

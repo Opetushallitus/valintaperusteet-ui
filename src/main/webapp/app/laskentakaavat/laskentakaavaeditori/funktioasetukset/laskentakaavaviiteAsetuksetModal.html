@@ -8,12 +8,10 @@
         <div ng-repeat="valintaryhma in valintaryhmaList">
             <div ng-if="valintaryhma.laskentakaavat" class="settingsform laskentakaavaviitteet">
                 <h3>Valintaryhmä: {{valintaryhma.nimi}}</h3>
-
-                <div ng-repeat="kaava in valintaryhma.laskentakaavat"
-                     ng-if="kaava.id !== model.laskentakaavapuu.id">
-                    <input type="radio" name="laskentakaavaviite" ng-value="kaava"
-                           ng-change="setLaskentakaavaviite(kaava)" ng-model="laskentakaavaviite.selection"/>
-                    <label name="laskentakaavaviite">
+                <div ng-if="kaava.id !== model.laskentakaavapuu.id" ng-repeat="kaava in valintaryhma.laskentakaavat">
+                <input id="{{kaava.id}}" type="radio" name="laskentakaavaviite" ng-value="kaava.id"
+                           ng-change="setLaskentakaavaviite(kaava)" ng-model="laskentakaavaviite.selection.lapsi.id"/>
+                    <label for="{{kaava.id}}" name="laskentakaavaviite">
                         {{kaava.nimi}} <a ng-click="sulje()" ng-href="#/valintaryhma/{{valintaryhma.oid}}/laskentakaavalista/laskentakaava/{{kaava.id}}"><i class="fa fa-pencil"></i></a>
                     </label>
                 </div>
