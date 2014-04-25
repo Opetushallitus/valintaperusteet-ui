@@ -41,6 +41,20 @@
             </modal>
         </div>
 
+        <!-- alikaavan funktiokutsuasetusmodal -->
+        <div ng-controller="alikaavaFunktiokutsuAsetuksetController">
+            <modal modal-template="laskentakaavat/laskentakaavaeditori/funktioasetukset/alikaavaFunktiokutsuAsetuksetModal.html">
+                <modal-open></modal-open>
+            </modal>
+        </div>
+
+        <!-- alikaavan laskentakaavaviiteasetusmodal-->
+        <div ng-controller="alikaavaLaskentakaavaviiteAsetuksetController">
+            <modal modal-template="laskentakaavat/laskentakaavaeditori/funktioasetukset/alikaavaLaskentakaavaviiteAsetuksetModal.html">
+                <modal-open></modal-open>
+            </modal>
+        </div>
+
         <!-- Laskentakaavapuun juuri -->
         <div class="frame open" ng-class="isRootSelected ? 'active' : ''">
             <span class="icon">&#8302;</span>
@@ -93,7 +107,7 @@
         <div class="frame" ng-class="showAlikaava ? 'open':''">
             <span ng-click="toggleAlikaava(funktiowrapper.lapsi.id)" class="icon">&#8302;</span>
             <span add-class-on-mouseover="bold" class="node"
-                  ng-click="setFunktioSelection(funktiowrapper, false, parent, $index)">{{funktiowrapper.lapsi.nimi}}</span>
+                  ng-click="setFunktioSelection(funktiowrapper, false, parent, $index, isAlikaava, hasParentAlikaava)">{{funktiowrapper.lapsi.nimi}}</span>
         </div>
         <ul ng-if="showAlikaava" class="alikaava">
             <li ng-if="alikaava" class="item" ng-repeat="funktiowrapper in alikaava.funktiokutsu.funktioargumentit"

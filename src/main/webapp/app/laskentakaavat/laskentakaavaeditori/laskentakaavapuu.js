@@ -19,7 +19,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
             //Pidetään laskentakaaviitevalinta objektissa. Laskentakaavaviitettä kaavaan liitettäessä radio-inputit iteroidaan ng-repeatissa,
             //joka luo uuden skoopin joka itemille, jolloin laskentakaavaviitteen tallentaminen  suoraan skoopissa olevaan muuttujaan ei toimi oikein
-            $scope.laskentakaavaviite = { selection: null }
+            $scope.laskentakaavaviite = { selection: null };
 
             //Haetaan laskentakaavan data
             if ($routeParams.laskentakaavaOid) {
@@ -51,19 +51,31 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 konvertteriType: '', //mikä konvertterityyppi on valittuna
                 parentFunktiokutsu: undefined,
                 showNewFunktioList: false
-            }
+            };
 
             $scope.setRootSelection = function (funktiokutsu) {
                 $scope.isRootSelected = true;
                 $scope.funktioSelection = funktiokutsu;
-            }
+            };
 
 
             // funktio = valittu funktiokutsu tai laskentakaavaviite
             // isFunktiokutsu = onko funktio-parametri funktiokutsu vai laskentakavaaviite
             // parentFunktiokutsu = parentFunktiokutsu tai laskentakaavan juuri
             // index = monesko funktio-parametri on funktioargumenttilistassa, juurifunktiokutsulla ei ole indeksiä
-            $scope.setFunktioSelection = function (funktio, isFunktiokutsu, parentFunktiokutsu, index) {
+            $scope.setFunktioSelection = function (funktio, isFunktiokutsu, parentFunktiokutsu, index, isAlikaava, hasParentAlikaava) {
+                if (isAlikaava) {
+                    if (isFunktiokutsu) {
+                        $scope.$broadcast('showAlikaavaFunktiokutsuAsetukset')
+                        return;
+                    } else {
+                        if (hasParentAlikaava) {
+                            $scope.$broadcast('showAlikaavaLaskentakaavaviiteAsetukset')
+                            return;
+                        }
+                    }
+                }
+
                 $scope.funktioasetukset.parentFunktiokutsu = parentFunktiokutsu;
 
                 $scope.funktioasetukset.selectedFunktioIndex = index;
@@ -73,7 +85,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 }
 
                 //päätellään funktiolle esivalittu konvertteriparametrityyppi, jos funktiolla on konvertteriparametreja
-                $scope.setKonvertteriType($scope.funktioSelection);
+                $scope.setKonvertteriType();
 
                 // päätellään kumpi muokkausnäkymä tuodaan näkyviin, funktiokutsuille ja laskentakaavaviitteille on omat näkymänsä
                 // jos kyseessä on funktiokutsu, jolle ei ole muokattavia asetuksia, niin ei avata muokkausnäkymää
@@ -85,22 +97,21 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 $scope.laskentakaavaviite.selection = funktio || undefined;
                 $scope.isRootSelected = false;
                 $scope.saved = false;
-            }
+            };
 
             $scope.setLaskentakaavaviite = function (kaava) {
                 //lähetetään skooppihierarkiassa alaspäin viesti, jossa kulkee uuden kaavan id ja vanhan kaavan id.
-                $scope.$broadcast('changeAlikaava', kaava.id, $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex].id)
+                $scope.$broadcast('changeAlikaava', kaava.id, $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex].id);
                 $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = $scope.funktioFactory.createLaskentakaavaviite(kaava);
-            }
+            };
 
             $scope.addLaskentakaavaviite = function (parent, index) {
-                var firstChildForRoot = $scope.isFirstChildForRoot(parent);
                 $scope.funktioasetukset.parentFunktiokutsu = parent;
                 $scope.funktioasetukset.selectedFunktioIndex = index;
 
                 $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = $scope.funktioFactory.createLaskentakaavaviite();
                 $scope.laskentakaavaviite.selection = undefined;
-            }
+            };
 
             $scope.addFunktio = function (parent, funktionimi, index) {
                 var isDirectChildForRoot = $scope.isFirstChildForRoot(parent);
@@ -122,7 +133,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                         parent.lapsi.funktioargumentit.push({});
                     }
                 }
-            }
+            };
 
             // index on indeksi nyt käsiteltävälle funktioargumentille (vain nimetyille funktioargumenteille)
             $scope.findFunktioSlotIndex = function (parent, index) {
@@ -139,28 +150,28 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     }
                 }
                 return resultIndex;
-            }
+            };
 
 
             $scope.noFunktioarguments = function (funktioargumentit) {
                 return funktioargumentit.length == 1 && _.isEmpty(funktioargumentit[0]);
-            }
+            };
 
             // Kaikissa tapauksissa funktiokutsuilla ja laskentakaavaviitteillä on parent, mutta juuresta seuraavalla tasolla ei ole parent.lapsi -muuttujaa,
             // jolloin sama, tarvittava tieto saadaan suoraan parent-muuttujasta
             $scope.getParent = function (parent) {
                 return parent.lapsi || parent;
-            }
+            };
 
-            $scope.setKonvertteriType = function (funktio) {
+            $scope.setKonvertteriType = function () {
                 if ($scope.funktioSelection.lapsi.arvokonvertteriparametrit && $scope.funktioSelection.lapsi.arvovalikonvertteriparametrit.length == 0) {
                     $scope.funktioasetukset.konvertteriType = 'ARVOKONVERTTERI';
                 } else if ($scope.funktioSelection.lapsi.arvovalikonvertteriparametrit && $scope.funktioSelection.lapsi.arvokonvertteriparametrit.length == 0) {
                     $scope.funktioasetukset.konvertteriType = 'ARVOVALIKONVERTTERI';
                 }
-            }
+            };
 
-            $scope.addFunktiokonvertteriparametri = function (konvertteriparametriSelection) {
+            $scope.addFunktiokonvertteriparametri = function () {
 
                 var emptyArvokonvertteriparametri = {paluuarvo: '', hylkaysperuste: false, arvo: ''};
                 var emptyArvovalikonvertteriparametri = {paluuarvo: '', palautaHaettuArvo: false, minValue: '', maxValue: '', hylkaysperuste: false};
@@ -170,18 +181,18 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 } else {
                     $scope.funktioSelection.lapsi.arvovalikonvertteriparametrit.push(emptyArvovalikonvertteriparametri);
                 }
-            }
+            };
 
             $scope.addArvokonvertterikuvaus = function (konvertterikuvausSelection) {
 
                 if (konvertterikuvausSelection.kuvaukset == null) {
                     konvertterikuvausSelection.kuvaukset = {tekstit: []};
                 }
-                var emptyKuvaus = {kieli: 'FI', teksti: ''}
+                var emptyKuvaus = {kieli: 'FI', teksti: ''};
 
                 konvertterikuvausSelection.kuvaukset.tekstit.push(emptyKuvaus);
 
-            }
+            };
 
             $scope.getSyoteparametriArvo = function (syoteparametrit, key) {
                 var result;
@@ -192,7 +203,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     }
                 });
                 return result;
-            }
+            };
 
             $scope.getSyoteparametri = function (syoteparametrit, funktiokuvausSyoteparametri) {
                 var result = _.find(syoteparametrit, function (syoteparametri) {
@@ -202,7 +213,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     result = {avain: funktiokuvausSyoteparametri.avain, arvo: "", tyyppi: funktiokuvausSyoteparametri.tyyppi};
                 }
                 return result;
-            }
+            };
 
             $scope.getValintaperuste = function (viitteet, indeksi) {
                 var result = viitteet[indeksi];
@@ -210,16 +221,16 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     result = {tunniste: "", kuvaus: "", lahde: "", onPakollinen: false};
                 }
                 return result;
-            }
+            };
 
 
             $scope.getSyoteparametriTemplate = function (syoteparametrityyppi) {
                 return $scope.templateService.getSyoteparametriTemplate(syoteparametrityyppi);
-            }
+            };
 
             $scope.konvertteriTemplate = function (konvertteriparametriSelection) {
                 return $scope.templateService.getKonvertteriparametriTemplate(konvertteriparametriSelection);
-            }
+            };
 
             $scope.removeKonvertteriParametri = function (index, konvertteriparametriSelection) {
                 if (konvertteriparametriSelection == "ARVOKONVERTTERI") {
@@ -228,15 +239,15 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     $scope.funktioSelection.lapsi.arvovalikonvertteriparametrit.splice(index, 1);
                 }
 
-            }
+            };
 
             $scope.removeKonvertteriParametriKuvaus = function (index, konvertteriparametriSelection) {
                 konvertteriparametriSelection.kuvaukset.tekstit.splice(index, 1);
-            }
+            };
 
             $scope.getDefinedFunktioargumenttiCount = function (parent) {
                 return $scope.funktioService.getDefinedFunktioargumenttiCount(parent);
-            }
+            };
 
             $scope.changeKonvertteriparametriTypeSelection = function (konvertteriparametriSelection) {
 
@@ -247,7 +258,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     $scope.funktioSelection.lapsi.arvokonvertteriparametrit.length = 0;
                 }
 
-            }
+            };
 
             $scope.removeFunktiokutsu = function () {
                 var isNimettyFunktio = $scope.isNimettyFunktioargumentti($scope.funktioasetukset.parentFunktiokutsu);
@@ -273,7 +284,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 KaavaValidationService.cleanExtraPKArgumenttiSlots($scope.funktioasetukset.parentFunktiokutsu);
                 $scope.funktioasetukset.parentFunktiokutsu = undefined;
 
-            }
+            };
 
             $scope.removeLaskentakaavaviite = function () {
                 //jos ei olla heti laskentakaavan juuren alla
@@ -285,24 +296,24 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex, 1)
                 }
                 $scope.funktioSelection = undefined;
-            }
+            };
 
             $scope.isFirstChildForRoot = function (parent) {
                 return parent.lapsi ? false : true;
-            }
+            };
 
             $scope.isFunktiokutsu = function (funktiokutsu) {
                 return funktiokutsu.lapsi.tyyppi === 'LUKUARVOFUNKTIO' || funktiokutsu.lapsi.tyyppi === 'TOTUUSARVOFUNKTIO';
-            }
+            };
 
             $scope.getFunktionimi = function (funktiokutsu) {
                 return $scope.funktioService.getFunktionimi(funktiokutsu);
-            }
+            };
 
             //onko käsiteltävä funktiokutsun lapset nimettyjä funktioargumentteja
             $scope.isNimettyFunktioargumentti = function (funktiokutsu) {
                 return $scope.funktioService.isNimettyFunktioargumentti(funktiokutsu);
-            }
+            };
 
             $scope.isPainotettukeskiarvoChild = function (funktiokutsu) {
                 if (funktiokutsu) {
@@ -310,36 +321,36 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 } else {
                     return false;
                 }
-            }
+            };
 
             //Onko käsiteltävä parentin funktioargumentin paikka tarkoitettu nimettömälle funktiokutsulle/laskentakaavalle ja onko funktioargumentti vielä asettamatta
             $scope.isEmptyNimettyFunktioargumentti = function (parent, funktioargumenttiIndex) {
                 return $scope.funktioService.isEmptyNimettyFunktioargumentti(parent, funktioargumenttiIndex);
-            }
+            };
 
             $scope.isLukuarvoFunktioSlot = function (parent, funktioargumenttiIndex) {
                 return $scope.funktioService.isLukuarvoFunktioSlot(parent, funktioargumenttiIndex);
-            }
+            };
 
 
             $scope.hideFunktioMenu = function () {
                 $scope.$broadcast('hideFunktioMenu');
-            }
+            };
 
             $scope.editLaskentakaavaviite = function (valintaryhmaOid, laskentakaavaOid) {
                 $location.path('/valintaryhma' + valintaryhmaOid + '/laskentakaavalista/laskentakaava/' + laskentakaavaOid);
-            }
+            };
 
             $scope.persist = function () {
                 $scope.$broadcast('persist');
-            }
+            };
 
             $scope.$on('persist', function () {
                 var kaava = {
                     valintaryhmaOid: $routeParams.valintaryhmaOid,
                     hakukohdeOid: $routeParams.hakukohdeOid,
                     laskentakaava: $scope.model.laskentakaavapuu
-                }
+                };
 
                 var urlEnd = _.reduce(_.last($location.path(), 14), function (result, current) {
                     return result + current
@@ -353,7 +364,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     if ($scope.errors.length === 0) {
                         //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
                         $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.cleanLaskentakaavaPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
-                        KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function (result) {
+                        KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function () {
                             $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function (result) {
                                     $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
                                     $scope.saved = true;
