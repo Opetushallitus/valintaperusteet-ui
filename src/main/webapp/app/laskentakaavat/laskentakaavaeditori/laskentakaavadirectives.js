@@ -16,19 +16,3 @@ angular.module('LaskentakaavaEditor').directive('addClassOnMouseover', function 
         });
     }
 });
-
-
-angular.module('LaskentakaavaEditor').directive('alikaava', ['Laskentakaava', function (Laskentakaava) {
-    return {
-
-        link: function (scope, elem, attrs) {
-
-
-
-
-
-        }
-
-    };
-}]);
-
