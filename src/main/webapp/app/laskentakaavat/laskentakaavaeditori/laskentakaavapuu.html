@@ -95,8 +95,8 @@
             <span add-class-on-mouseover="bold" class="node"
                   ng-click="setFunktioSelection(funktiowrapper, false, parent, $index, isAlikaava, hasParentAlikaava)">{{funktiowrapper.lapsi.nimi}}</span>
         </div>
-        <ul ng-if="showAlikaava" class="alikaava">
-            <li ng-if="alikaava" class="item" ng-repeat="funktiowrapper in alikaava.funktiokutsu.funktioargumentit"
+        <ul collapse="!showAlikaava" class="alikaava">
+            <li class="item" ng-repeat="funktiowrapper in alikaava.funktiokutsu.funktioargumentit"
                 ng-init="parent = alikaava.funktiokutsu">
                 <div ng-include="'funktiokutsu'"></div>
             </li>
