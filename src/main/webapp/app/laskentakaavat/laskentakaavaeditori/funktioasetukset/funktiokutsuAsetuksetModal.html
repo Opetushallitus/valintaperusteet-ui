@@ -271,7 +271,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="funktiokuvausSyoteparametri in funktiokuvausForSelection.syoteparametrit" ng-if="funktioSelection.lapsi.syoteparametrit.length > 0">
+                        <tr ng-repeat="funktiokuvausSyoteparametri in funktiokuvausForSelection.syoteparametrit">
                             <td ng-if="funktiokuvausSyoteparametri.kuvaus.length <= 0">Avain: {{funktiokuvausSyoteparametri.avain}}</td>
                             <td ng-if="funktiokuvausSyoteparametri.kuvaus.length > 0">{{funktiokuvausSyoteparametri.kuvaus}}</td>
                             <td ng-init="syoteparametri = getSyoteparametri(funktioSelection.lapsi.syoteparametrit, funktiokuvausSyoteparametri)"
