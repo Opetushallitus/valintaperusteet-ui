@@ -142,7 +142,8 @@
             <span>{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
         </span>
         <span add-class-on-mouseover="bold" ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo"
-              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)" class="node">
+              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)"
+              class="node">
             <span ng-if="funktiowrapper.lapsi.funktionimi == 'NMINIMI'">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} huonoin</span>
             <span ng-if="funktiowrapper.lapsi.funktionimi == 'NMAKSIMI'">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} paras</span>
             <span ng-if="funktiowrapper.lapsi.funktionimi == 'KESKIARVONPARASTA'">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} suurimman keskiarvo</span>
@@ -336,9 +337,9 @@ YHTASUURI
         </div>
     </span>
 
-    <div ng-if="showNewFunktioList.visible && isLukuarvoFunktioSlot(parent, funktioSlotIndex)" class="function"
+    <div ng-if="showNewFunktioList.visible && isLukuarvoFunktioSlot(parent, funktioSlotIndex) && !isAlikaava" class="function"
          ng-include="'lukuarvoFunktiot'"></div>
-    <div ng-if="showNewFunktioList.visible && !isLukuarvoFunktioSlot(parent, funktioSlotIndex)" class="function"
+    <div ng-if="showNewFunktioList.visible && !isLukuarvoFunktioSlot(parent, funktioSlotIndex) && !isAlikaava" class="function"
          ng-include="'totuusarvoFunktiot'"></div>
 
 </script>
@@ -348,10 +349,10 @@ YHTASUURI
 <script type="text/ng-template" id="addFunktioToRoot">
     <span add-class-on-mouseover="bold" class="node" ng-click="showNewFunktioList = {visible: true}"><i
             style="font-size: 18px;" class="fa fa-plus-square kaavaeditor-blue"></i> </span>
-    <div ng-init="funktioSlotIndex = 0" ng-if="showNewFunktioList.visible && laskentakaavatyyppi === 'LUKUARVOFUNKTIO'"
+    <div ng-init="funktioSlotIndex = 0" ng-if="showNewFunktioList.visible && laskentakaavatyyppi === 'LUKUARVOFUNKTIO' && !alikaava"
          ng-include="'lukuarvoFunktiot'"></div>
     <div ng-init="funktioSlotIndex = 0"
-         ng-if="showNewFunktioList.visible && laskentakaavatyyppi === 'TOTUUSARVOFUNKTIO'"
+         ng-if="showNewFunktioList.visible && laskentakaavatyyppi === 'TOTUUSARVOFUNKTIO' && !isAlikaava"
          ng-include="'totuusarvoFunktiot'"></div>
 </script>
 
@@ -360,17 +361,20 @@ YHTASUURI
 <script type="text/ng-template" id="addFunktio">
     <span add-class-on-mouseover="bold" class="node" ng-click="showNewFunktioList = {visible: true}; hideFunktioMenu()"><i
             style="font-size: 18px;" class="fa fa-plus-square kaavaeditor-blue"></i> Funktioargumentti</span>
+
     <div ng-init="funktioSlotIndex = findFunktioSlotIndex(parent, $index)"
-         ng-if="showNewFunktioList.visible && isLukuarvoFunktioSlot(parent, funktioSlotIndex)" class="function"
+         ng-if="showNewFunktioList.visible && isLukuarvoFunktioSlot(parent, funktioSlotIndex) && !isAlikaava" class="function"
          ng-include="'lukuarvoFunktiot'"></div>
     <div ng-init="funktioSlotIndex = findFunktioSlotIndex(parent, $index)"
-         ng-if="showNewFunktioList.visible && !isLukuarvoFunktioSlot(parent, funktioSlotIndex)" class="function"
+         ng-if="showNewFunktioList.visible && !isLukuarvoFunktioSlot(parent, funktioSlotIndex) && !isAlikaava" class="function"
          ng-include="'totuusarvoFunktiot'"></div>
+
 </script>
 
 
 <!-- UUSI LUKUARVOFUNKTIO -->
 <script type="text/ng-template" id="lukuarvoFunktiot">
+
     <table class="dropmenu-table" ng-controller="funktioMenuController">
         <thead>
         <th colspan="2">Lisää uusi funktio <span class="float-right" ng-click="showNewFunktioList.visible = false"><i

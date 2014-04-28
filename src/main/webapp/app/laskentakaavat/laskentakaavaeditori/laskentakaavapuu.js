@@ -81,35 +81,10 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
                 // päätellään mikä muokkausnäkymä tuodaan näkyviin. Funktiokutsuille, alikaavan funktiokutsuille,
                 // laskentakaavaviitteille ja alikaavan laskentakaavaviitteille on omat muokkausnäkymänsä
-                /*
-                if (isAlikaava) {
-                    if (hasParentAlikaava) {
-                        if(isFunktiokutsu) {
-                            $scope.$broadcast('showAlikaavaFunktiokutsuAsetukset');
-                        } else {
-                            $scope.$broadcast('showAlikaavaLaskentakaavaviiteAsetukset');
-                        }
-                    } else {
-                        if (isFunktiokutsu) {
-                            $scope.$broadcast('showAlikaavaFunktiokutsuAsetukset');
-                        } else {
-                            $scope.$broadcast('showLaskentakaavaviiteAsetukset');
-                        }
-                    }
-                } else {
-                    if(isFunktiokutsu) {
-                        $scope.$broadcast('showFunktiokutsuAsetukset');
-                    } else {
-                        $scope.$broadcast('showLaskentakaavaviiteAsetukset');
-
-                    }
-                }
-                */
                 if(isFunktiokutsu) {
                     $scope.$broadcast('showFunktiokutsuAsetukset');
                 } else {
                     $scope.$broadcast('showLaskentakaavaviiteAsetukset');
-
                 }
 
 

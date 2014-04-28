@@ -48,22 +48,5 @@ angular.module('LaskentakaavaEditor').controller('AlikaavaController', ['$scope'
         $scope.alikaava = undefined;
         $scope.getAlikaava(kaavaId);
     });
-    /*
-    $scope.showAlikaavaFunktioSelection = function() {
-        $scope.$emit('showLaskentakaavaviiteAsetukset');
-    };
-    */
 
-    /*
-    //ilmoitetaan mahdollisille alikaavan alikaavoille ja alikaavan funktiokutsuille, että ollaan alikaavassa, eikä alkuperäisessä laskentakaavassa
-    $scope.$on('doIHaveParentAlikaava', function () {
-        $scope.$broadcast('parentAlikaavaFound', $scope.$id);
-    });
-
-    $scope.$on('parentAlikaavaFound', function (event, parentScopeId) {
-        if ($scope.$id !== parentScopeId) {
-            $scope.alikaava.isAlikaava = true;
-        }
-    });
-    */
 }]);
