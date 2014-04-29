@@ -81,7 +81,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
                 // päätellään mikä muokkausnäkymä tuodaan näkyviin. Funktiokutsuille, alikaavan funktiokutsuille,
                 // laskentakaavaviitteille ja alikaavan laskentakaavaviitteille on omat muokkausnäkymänsä
-                if(isFunktiokutsu) {
+                if (isFunktiokutsu) {
                     $scope.$broadcast('showFunktiokutsuAsetukset');
                 } else {
                     $scope.$broadcast('showLaskentakaavaviiteAsetukset');
@@ -97,6 +97,19 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 //lähetetään skooppihierarkiassa alaspäin viesti, jossa kulkee uuden kaavan id ja vanhan kaavan id.
                 $scope.$broadcast('changeAlikaava', kaava.id, $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex].id);
                 $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = $scope.funktioFactory.createLaskentakaavaviite(kaava);
+            };
+
+            $scope.saveAsNewLaskentakaava = function (parent, funktiokutsu) {
+                var viiteInitializer = {
+                    onLuonnos: false,
+                    nimi: "Uusi laskentakaavaviite",
+                    kuvaus: "kuvaus",
+                    tyyppi: funktiokutsu.lapsi.tyyppi,
+                    id: funktiokutsu.lapsi.id
+                };
+
+                var newLaskentakaava = $scope.funktioFactory.createLaskentakaavaviite(viiteInitializer);
+console.log(newLaskentakaava);
             };
 
             $scope.addLaskentakaavaviite = function (parent, index) {

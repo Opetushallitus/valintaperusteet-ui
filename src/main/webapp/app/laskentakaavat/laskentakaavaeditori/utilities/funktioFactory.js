@@ -86,7 +86,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioFactory', function(Funktio
 					indeksi: 0
 				}
 			}
-		}
+		};
 
 		this.createFunktioInstance = function(parentFunktiokutsu, newFunktioType, isDirectChildForRoot) {
 

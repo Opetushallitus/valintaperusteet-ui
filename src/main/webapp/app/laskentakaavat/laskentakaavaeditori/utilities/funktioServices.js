@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('LaskentakaavaEditor').factory('FunktioService', function (FunktioKuvausResource, FunktioNimiService) {
+angular.module('LaskentakaavaEditor').
+
+factory('FunktioService', function (FunktioKuvausResource, FunktioNimiService) {
     var model = new function () {
         this.funktiokuvaukset = {};
 
@@ -197,22 +199,22 @@ angular.module('LaskentakaavaEditor').factory('FunktioService', function (Funkti
             arr.push(null);
             return arr;
         };
+
     };
 
     return model;
-});
+}).
 
-
-angular.module('LaskentakaavaEditor').factory('Valintaperusteviitetyypit', function () {
+factory('Valintaperusteviitetyypit', function () {
     return [
         { key: 'HAETTAVA_ARVO', text: 'Arvo hakemukselta' },
         { key: 'SYOTETTAVA_ARVO', text: 'Syötettävä arvo' },
         { key: 'HAKUKOHTEEN_ARVO', text: 'Hakukohteen arvo' },
         { key: 'HAKUKOHTEEN_SYOTETTAVA_ARVO', text: 'Hakukohteen syötettävä arvo' }
     ];
-});
+}).
 
-angular.module('LaskentakaavaEditor').factory('Arvokonvertterikuvauskielet', function () {
+factory('Arvokonvertterikuvauskielet', function () {
     return [
         { key: 'FI', text: 'Suomi' },
         { key: 'SV', text: 'Ruotsi' },

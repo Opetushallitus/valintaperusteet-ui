@@ -306,7 +306,8 @@
     </div>
 </div>
 <div class="modal-footer">
+    <button class="btn btn-default btn-sm" ng-disabled="alikaavaValues.isAlikaava || funktioasetukset.parentFunktiokutsu === model.laskentakaavapuu.funktiokutsu" ng-click="saveAsNewLaskentakaava(funktioasetukset.parentFunktiokutsu, funktioSelection)">Tallenna uutena laskentakaavana</button>
     <button ng-disabled="alikaavaValues.isAlikaava" class="btn btn-sm btn-default" ng-click="removeFunktiokutsu(); sulje()"><i class="fa fa-trash-o"></i> Poista funktiokutsu</button>
-    <a class="btn btn-default btn-sm" ng-click="sulje();"
-       role="button">Sulje</a>
+    <button class="btn btn-default btn-sm" ng-click="sulje();"
+       role="button">Sulje</button>
 </div>
