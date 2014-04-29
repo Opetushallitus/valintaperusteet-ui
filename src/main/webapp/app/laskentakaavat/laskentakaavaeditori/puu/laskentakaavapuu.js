@@ -99,7 +99,8 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = $scope.funktioFactory.createLaskentakaavaviite(kaava);
             };
 
-            $scope.saveAsNewLaskentakaava = function (parent, funktiokutsu) {
+            $scope.saveAsNewLaskentakaava = function (parent, funktiokutsu, settings) {
+                settings.toggle = !settings.toggle;
                 var viiteInitializer = {
                     onLuonnos: false,
                     nimi: "Uusi laskentakaavaviite",
@@ -109,9 +110,8 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 };
 
                 var newLaskentakaava = $scope.funktioFactory.createLaskentakaavaviite(viiteInitializer);
-console.log(newLaskentakaava);
             };
-
+            
             $scope.addLaskentakaavaviite = function (parent, index) {
                 $scope.funktioasetukset.parentFunktiokutsu = parent;
                 $scope.funktioasetukset.selectedFunktioIndex = index;

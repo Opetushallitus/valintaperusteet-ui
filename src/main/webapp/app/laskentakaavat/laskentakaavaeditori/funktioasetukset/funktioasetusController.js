@@ -12,8 +12,10 @@ angular.module('LaskentakaavaEditor')
             return FunktioNimiService.getName(funktiokutsu.funktionimi);
         }
     }
-}])
 
+        $scope.settings = {toggle: false}
+
+}])
 
 .controller('laskentakaavaviiteAsetuksetController', ['$scope', function ($scope) {
     $scope.$on('showLaskentakaavaviiteAsetukset', function () {
@@ -27,14 +29,8 @@ angular.module('LaskentakaavaEditor')
     });
 }])
 
-.controller('alikaavaLaskentakaavaviiteAsetuksetController', ['$scope', function ($scope) {
-    $scope.$on('showAlikaavaLaskentakaavaviiteAsetukset', function () {
-        $scope.show();
-    });
-}])
-
-.controller('alikaavaFunktiokutsuAsetuksetController', ['$scope', function ($scope) {
-    $scope.$on('showAlikaavaFunktiokutsuAsetukset', function () {
+.controller('funktiokutsunTallentaminenLaskentakaavanaController', ['$scope', function($scope) {
+    $scope.$on('showTallennaFunktiokutsuLaskentakaavanaModal', function() {
         $scope.show();
     });
 }]);

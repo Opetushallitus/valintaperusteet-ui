@@ -6,14 +6,17 @@
     <input ng-disabled="alikaavaValues.isAlikaava" type="text" size="15" ng-model="syoteparametri.arvo"/>
 </script>
 <script type="text/ng-template" id="totuusarvo-template">
-    <input ng-disabled="alikaavaValues.isAlikaava" type="radio" size="15" ng-model="syoteparametri.arvo" value="true"/> Tosi
-    <input ng-disabled="alikaavaValues.isAlikaava" type="radio" size="15" ng-model="syoteparametri.arvo" value="false"/> Epätosi
+    <input ng-disabled="alikaavaValues.isAlikaava" type="radio" size="15" ng-model="syoteparametri.arvo"
+           value="true"/> Tosi
+    <input ng-disabled="alikaavaValues.isAlikaava" type="radio" size="15" ng-model="syoteparametri.arvo"
+           value="false"/> Epätosi
 </script>
 <script type="text/ng-template" id="merkkijono-template">
     <input ng-disabled="alikaavaValues.isAlikaava" type="text" size="15" ng-model="syoteparametri.arvo"/>
 </script>
 <script type="text/ng-template" id="arvojoukko-template">
-    <select ng-disabled="alikaavaValues.isAlikaava" ng-model="syoteparametri.arvo" ng-options="key as value for (key, value) in funktiokuvausSyoteparametri.arvojoukko"></select>
+    <select ng-disabled="alikaavaValues.isAlikaava" ng-model="syoteparametri.arvo"
+            ng-options="key as value for (key, value) in funktiokuvausSyoteparametri.arvojoukko"></select>
 </script>
 
 <!-- Valintaperuste default template -->
@@ -21,10 +24,12 @@
     <div class="form-item-content">
         <form class="form-horizontal valintaperuste-form" role="form">
             <h3 ng-if="valintaperusteviite.kuvaus">{{valintaperusteviite.kuvaus}}</h3>
+
             <h3 ng-if="!valintaperusteviite.kuvaus">{{valintaperusteviite.nimi}}</h3>
 
             <div class="form-group">
                 <label class="col-sm-3 control-label">Tyyppi</label>
+
                 <div class="col-sm-9">
                     <select ng-disabled="alikaavaValues.isAlikaava" ng-model="valintaperuste.lahde"
                             ng-options="item.key as item.text for item in valintaperusteviitetyypit">
@@ -34,25 +39,32 @@
 
             <div class="form-group">
                 <label class="col-sm-3 control-label">Pakollinen tieto</label>
+
                 <div class="col-sm-9">
-                    <input ng-disabled="alikaavaValues.isAlikaava" type="checkbox" id="requiredparam" ng-model="valintaperuste.onPakollinen"/>
+                    <input ng-disabled="alikaavaValues.isAlikaava" type="checkbox" id="requiredparam"
+                           ng-model="valintaperuste.onPakollinen"/>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-sm-3 control-label">Kuvaus</label>
+
                 <div class="col-sm-9">
-                    <textarea ng-disabled="alikaavaValues.isAlikaava" style="width: 330px" ng-model="valintaperuste.kuvaus"></textarea>
+                    <textarea ng-disabled="alikaavaValues.isAlikaava" style="width: 330px"
+                              ng-model="valintaperuste.kuvaus"></textarea>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-sm-3 control-label">Tunniste</label>
+
                 <div class="col-sm-9" ng-if="valintaperusteviite.tyyppi != 'ARVOJOUKKO'">
-                    <input ng-disabled="alikaavaValues.isAlikaava" type="text" ng-model="valintaperuste.tunniste" required="required"/>
+                    <input ng-disabled="alikaavaValues.isAlikaava" type="text" ng-model="valintaperuste.tunniste"
+                           required="required"/>
                 </div>
                 <div class="col-sm-9" ng-if="valintaperusteviite.tyyppi == 'ARVOJOUKKO'">
-                    <select ng-disabled="alikaavaValues.isAlikaava" ng-model="valintaperuste.tunniste" ng-options="key as value for (key, value) in valintaperusteviite.arvojoukko"></select>
+                    <select ng-disabled="alikaavaValues.isAlikaava" ng-model="valintaperuste.tunniste"
+                            ng-options="key as value for (key, value) in valintaperusteviite.arvojoukko"></select>
                 </div>
             </div>
         </form>
@@ -67,24 +79,30 @@
         <div class="settingsbox">
             <form ng-repeat="parametri in funktioSelection.lapsi.arvovalikonvertteriparametrit"
                   class="form-horizontal arvovalikonvertteri-form " role="form">
-                <div><button ng-disabled="alikaavaValues.isAlikaava" class="btn btn-sm btn-default"
-                        ng-click="removeKonvertteriParametri($index, 'ARVOVALIKONVERTTERI')"><i
-                        class="fa fa-trash-o"></i> Poista parametri</button></div>
+                <div>
+                    <button ng-disabled="alikaavaValues.isAlikaava" class="btn btn-sm btn-default"
+                            ng-click="removeKonvertteriParametri($index, 'ARVOVALIKONVERTTERI')"><i
+                            class="fa fa-trash-o"></i> Poista parametri
+                    </button>
+                </div>
                 <div>
                     <span>
-                        <input ng-disabled="alikaavaValues.isAlikaava" type="text" size="10" ng-model="parametri.minValue" placeholder="Min"/>
+                        <input ng-disabled="alikaavaValues.isAlikaava" type="text" size="10"
+                               ng-model="parametri.minValue" placeholder="Min"/>
                    </span>
 
                     <span ng-show="!$last" class="white-space-nowrap">&le; x &lt;</span>
                     <span ng-show="$last" class="white-space-nowrap">&le; x &le;</span>
 
                    <span>
-                        <input ng-disabled="alikaavaValues.isAlikaava" type="text" size="10" ng-model="parametri.maxValue" placeholder="Max"/>
+                        <input ng-disabled="alikaavaValues.isAlikaava" type="text" size="10"
+                               ng-model="parametri.maxValue" placeholder="Max"/>
                    </span>
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input ng-disabled="alikaavaValues.isAlikaava" type="checkbox" ng-model="parametri.palautaHaettuArvo" ng-true-value="true"
+                        <input ng-disabled="alikaavaValues.isAlikaava" type="checkbox"
+                               ng-model="parametri.palautaHaettuArvo" ng-true-value="true"
                                ng-false-value="false"/> Palauta haettu arvo
                     </label>
                 </div>
@@ -97,8 +115,9 @@
                     <div class="col-sm-offset-5 col-sm-7">
                         <div class="checkbox">
                             <label>
-                                <input ng-disabled="alikaavaValues.isAlikaava" type="checkbox" ng-model="parametri.hylkaysperuste" ng-true-value="true"
-                                       ng-false-value="false" /> Hylkäysperuste
+                                <input ng-disabled="alikaavaValues.isAlikaava" type="checkbox"
+                                       ng-model="parametri.hylkaysperuste" ng-true-value="true"
+                                       ng-false-value="false"/> Hylkäysperuste
                             </label>
                         </div>
                     </div>
@@ -118,14 +137,20 @@
                             <td><select ng-disabled="alikaavaValues.isAlikaava" ng-model="kuvaus.kieli"
                                         ng-options="item.key as item.text for item in arvokonvertterikuvauskielet"></select>
                             </td>
-                            <td><input ng-disabled="alikaavaValues.isAlikaava" type="text" size="15" ng-model="kuvaus.teksti"/></td>
-                            <td><button ng-disabled="alikaavaValues.isAlikaava" ng-click="removeKonvertteriParametriKuvaus($index, parametri)"><i
-                                    class="fa fa-trash-o"></i></button></td>
+                            <td><input ng-disabled="alikaavaValues.isAlikaava" type="text" size="15"
+                                       ng-model="kuvaus.teksti"/></td>
+                            <td>
+                                <button ng-disabled="alikaavaValues.isAlikaava"
+                                        ng-click="removeKonvertteriParametriKuvaus($index, parametri)"><i
+                                        class="fa fa-trash-o"></i></button>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
-                    <button ng-disabled="alikaavaValues.isAlikaava" class="btn btn-sm btn-default" ng-click="addArvokonvertterikuvaus(parametri)"><i
-                            class="fa fa-plus"></i> Kuvaus</button>
+                    <button ng-disabled="alikaavaValues.isAlikaava" class="btn btn-sm btn-default"
+                            ng-click="addArvokonvertterikuvaus(parametri)"><i
+                            class="fa fa-plus"></i> Kuvaus
+                    </button>
                 </div>
             </form>
 
@@ -142,28 +167,34 @@
     <div class="settingsbox">
         <form ng-repeat="parametri in funktioSelection.lapsi.arvokonvertteriparametrit"
               class="form-horizontal arvokonvertteri-form" role="form">
-            <div class="pull-left"><button ng-disabled="alikaavaValues.isAlikaava" ng-click="removeKonvertteriParametri($index, 'ARVOKONVERTTERI')"><i
-                    class="fa fa-trash-o"></i></button></div>
+            <div class="pull-left">
+                <button ng-disabled="alikaavaValues.isAlikaava"
+                        ng-click="removeKonvertteriParametri($index, 'ARVOKONVERTTERI')"><i
+                        class="fa fa-trash-o"></i></button>
+            </div>
             <div class="clearfix"/>
             <div class="form-group">
                 <label class="col-sm-5 control-label">Arvo</label>
 
                 <div class="col-sm-7">
-                    <input ng-disabled="alikaavaValues.isAlikaava" type="text" size="9" ng-model="parametri.arvo" placeholder="Arvo"/>
+                    <input ng-disabled="alikaavaValues.isAlikaava" type="text" size="9" ng-model="parametri.arvo"
+                           placeholder="Arvo"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-5 control-label">Pisteet</label>
 
                 <div class="col-sm-7">
-                    <input ng-disabled="alikaavaValues.isAlikaava" type="text" size="9" ng-model="parametri.paluuarvo" placeholder="Pisteet"/>
+                    <input ng-disabled="alikaavaValues.isAlikaava" type="text" size="9" ng-model="parametri.paluuarvo"
+                           placeholder="Pisteet"/>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-5 col-sm-7">
                     <div class="checkbox">
                         <label>
-                            <input ng-disabled="alikaavaValues.isAlikaava" type="checkbox" ng-model="parametri.hylkaysperuste" ng-true-value="true"
+                            <input ng-disabled="alikaavaValues.isAlikaava" type="checkbox"
+                                   ng-model="parametri.hylkaysperuste" ng-true-value="true"
                                    ng-false-value="false"/> Hylkäysperuste
                         </label>
                     </div>
@@ -185,12 +216,17 @@
                                     ng-options="item.key as item.text for item in arvokonvertterikuvauskielet"></select>
                         </td>
                         <td><input type="text" size="15" ng-model="kuvaus.teksti"/></td>
-                        <td><button ng-disabled="alikaavaValues.isAlikaava" ng-click="removeKonvertteriParametriKuvaus($index, parametri)"><i
-                                class="fa fa-trash-o"></i></button></td>
+                        <td>
+                            <button ng-disabled="alikaavaValues.isAlikaava"
+                                    ng-click="removeKonvertteriParametriKuvaus($index, parametri)"><i
+                                    class="fa fa-trash-o"></i></button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
-                <button ng-disabled="alikaavaValues.isAlikaava" class="button small" ng-click="addArvokonvertterikuvaus(parametri)"><i class="fa fa-plus"></i> Kuvaus</button>
+                <button ng-disabled="alikaavaValues.isAlikaava" class="button small"
+                        ng-click="addArvokonvertterikuvaus(parametri)"><i class="fa fa-plus"></i> Kuvaus
+                </button>
             </div>
         </form>
     </div>
@@ -199,115 +235,202 @@
 
 
 <div class="modal-header">
-    <h3>Funktioasetukset</h3>
+    <!-- Funktiokutsun asetukset -->
+    <h3 ng-if="!settings.toggle">Funktioasetukset</h3>
+
+    <!-- tallenna funktiokutsu laskentakaavana -->
+    <h3 ng-if="settings.toggle">Funktiokutsun tallentaminen laskentakaavana</h3>
+
 </div>
 <div class="modal-body">
-    <div ng-if="alikaavaValues.isAlikaava" class="alert alert-info margin-top-2">Alikaavan funktiokutsuja ei voi muokata.</div>
-    <h2>{{getFunktiokutsuName(funktioSelection)}}</h2>
-    <div class="settingsform">
 
-        <!-- Valintaperusteviitteet -->
-        <div class="form-item">
-            <div ng-if="funktiokuvausForSelection.valintaperusteviitteet">
-                <label class="form-item-label" style="width:50px;">Valintaperusteviitteet</label>
-                <div ng-if="funktioSelection.lapsi.valintaperusteviitteet"
-                     ng-repeat="valintaperusteviite in funktiokuvausForSelection.valintaperusteviitteet" class="valintaperusteviite-form"
-                     ng-init="valintaperuste = getValintaperuste(funktioSelection.lapsi.valintaperusteviitteet, $index)"
-                     ng-include="'valintaperuste-default-template'">
-
-                </div>
-            </div>
+    <!-- Funktiokutsun asetukset -->
+    <div collapse="settings.toggle">
+        <div ng-if="alikaavaValues.isAlikaava" class="alert alert-info margin-top-2">Alikaavan funktiokutsuja ei voi
+            muokata.
         </div>
+        <h2>{{getFunktiokutsuName(funktioSelection)}}</h2>
 
-        <!-- Konvertterit -->
-        <div class="form-item">
+        <div class="settingsform">
 
-            <div ng-if="funktiokuvausForSelection.konvertteri">
-                <label class="form-item-label" style="width:50px;">Arvomuunnin</label>
+            <!-- Valintaperusteviitteet -->
+            <div class="form-item">
+                <div ng-if="funktiokuvausForSelection.valintaperusteviitteet">
+                    <label class="form-item-label" style="width:50px;">Valintaperusteviitteet</label>
 
-                <div class="form-item-content">
-                    <div class="field-select-containerbox">
-
-                        <select ng-disabled="alikaavaValues.isAlikaava" ng-change="changeKonvertteriparametriTypeSelection(funktioasetukset.konvertteriType)"
-                                ng-model="funktioasetukset.konvertteriType"
-                                ng-options="konvertterityyppi.tyyppi as konvertterityyppi.tyyppi for konvertterityyppi in funktiokuvausForSelection.konvertteri.konvertteriTyypit">
-                        </select>
+                    <div ng-if="funktioSelection.lapsi.valintaperusteviitteet"
+                         ng-repeat="valintaperusteviite in funktiokuvausForSelection.valintaperusteviitteet"
+                         class="valintaperusteviite-form"
+                         ng-init="valintaperuste = getValintaperuste(funktioSelection.lapsi.valintaperusteviitteet, $index)"
+                         ng-include="'valintaperuste-default-template'">
 
                     </div>
                 </div>
-
-                <div class="form-item">
-                    <label ng-if="funktioSelection.lapsi.arvokonvertteriparametrit.length > 0 || funktioSelection.lapsi.arvovalikonvertteriparametrit.length > 0"
-                           class="form-item-label" for="" style="width:100px;">Konversiomäärittelyt</label>
-
-                    <div class="form-item-content" ng-if="funktioSelection.lapsi.arvokonvertteriparametrit.length > 0"
-                         ng-include="'arvokonvertteri-template'"></div>
-                    <div class="form-item-content"
-                         ng-if="funktioSelection.lapsi.arvovalikonvertteriparametrit.length > 0"
-                         ng-include="'arvovalikonvertteri-template'"></div>
-                    <div class="clear"></div>
-                </div>
-
-                <button ng-disabled="alikaavaValues.isAlikaava" class="btn btn-sm btn-default" ng-click="addFunktiokonvertteriparametri()"><i
-                        class="fa fa-plus"></i> Parametri</button >
-
             </div>
 
-            <div class="clear"></div>
-        </div>
+            <!-- Konvertterit -->
+            <div class="form-item">
 
-        <!-- SYÖTEPARAMETRIT -->
-        <div class="form-item">
-            <label class="form-item-label" style="width:150px;">Arvon määrittelyt</label>
+                <div ng-if="funktiokuvausForSelection.konvertteri">
+                    <label class="form-item-label" style="width:50px;">Arvomuunnin</label>
 
-            <div class="form-item-content">
+                    <div class="form-item-content">
+                        <div class="field-select-containerbox">
 
-                <div class="settingsbox">
-                    <table class="settingstable table table-striped">
-                        <thead>
-                        <tr>
-                            <td>Määrite</td>
-                            <td>Arvo</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="funktiokuvausSyoteparametri in funktiokuvausForSelection.syoteparametrit">
-                            <td ng-if="funktiokuvausSyoteparametri.kuvaus.length <= 0">Avain: {{funktiokuvausSyoteparametri.avain}}</td>
-                            <td ng-if="funktiokuvausSyoteparametri.kuvaus.length > 0">{{funktiokuvausSyoteparametri.kuvaus}}</td>
-                            <td ng-init="syoteparametri = getSyoteparametri(funktioSelection.lapsi.syoteparametrit, funktiokuvausSyoteparametri)"
-                                ng-include="getSyoteparametriTemplate(funktiokuvausSyoteparametri.tyyppi)"></td>
-                        </tr>
-                        <tr>
-                            <td>Tallenna tulos</td>
-                            <td><input ng-disabled="alikaavaValues.isAlikaava" type="checkbox" size="25" ng-model="funktioSelection.lapsi.tallennaTulos"/></td>
-                        </tr>
-                        <tr ng-show="funktioSelection.lapsi.tallennaTulos">
-                            <td>Tulostunniste</td>
-                            <td><input ng-disabled="alikaavaValues.isAlikaava" type="text" size="25" placeholder="Tulostunniste on pakollinen" ng-model="funktioSelection.lapsi.tulosTunniste"/><i class="margin-left-1 fa fa-exclamation red"></i></td>
-                        </tr>
-                        <tr ng-show="funktioSelection.lapsi.tallennaTulos">
-                            <td>Tulosteksti FI</td>
-                            <td><input ng-disabled="alikaavaValues.isAlikaava" type="text" size="25" ng-model="funktioSelection.lapsi.tulosTekstiFi"/></td>
-                        </tr>
-                        <tr ng-show="funktioSelection.lapsi.tallennaTulos">
-                            <td>Tulosteksti SV</td>
-                            <td><input ng-disabled="alikaavaValues.isAlikaava" type="text" size="25" ng-model="funktioSelection.lapsi.tulosTekstiSv"/></td>
-                        </tr>
-                        <tr ng-show="funktioSelection.lapsi.tallennaTulos">
-                            <td>Tulosteksti EN</td>
-                            <td><input ng-disabled="alikaavaValues.isAlikaava" type="text" size="25" ng-model="funktioSelection.lapsi.tulosTekstiEn"/></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                            <select ng-disabled="alikaavaValues.isAlikaava"
+                                    ng-change="changeKonvertteriparametriTypeSelection(funktioasetukset.konvertteriType)"
+                                    ng-model="funktioasetukset.konvertteriType"
+                                    ng-options="konvertterityyppi.tyyppi as konvertterityyppi.tyyppi for konvertterityyppi in funktiokuvausForSelection.konvertteri.konvertteriTyypit">
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="form-item">
+                        <label ng-if="funktioSelection.lapsi.arvokonvertteriparametrit.length > 0 || funktioSelection.lapsi.arvovalikonvertteriparametrit.length > 0"
+                               class="form-item-label" for="" style="width:100px;">Konversiomäärittelyt</label>
+
+                        <div class="form-item-content"
+                             ng-if="funktioSelection.lapsi.arvokonvertteriparametrit.length > 0"
+                             ng-include="'arvokonvertteri-template'"></div>
+                        <div class="form-item-content"
+                             ng-if="funktioSelection.lapsi.arvovalikonvertteriparametrit.length > 0"
+                             ng-include="'arvovalikonvertteri-template'"></div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <button ng-disabled="alikaavaValues.isAlikaava" class="btn btn-sm btn-default"
+                            ng-click="addFunktiokonvertteriparametri()"><i
+                            class="fa fa-plus"></i> Parametri
+                    </button>
+
                 </div>
+
+                <div class="clear"></div>
             </div>
-            <div class="clear"></div>
+
+            <!-- SYÖTEPARAMETRIT -->
+            <div class="form-item">
+                <label class="form-item-label" style="width:150px;">Arvon määrittelyt</label>
+
+                <div class="form-item-content">
+
+                    <div class="settingsbox">
+                        <table class="settingstable table table-striped">
+                            <thead>
+                            <tr>
+                                <td>Määrite</td>
+                                <td>Arvo</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="funktiokuvausSyoteparametri in funktiokuvausForSelection.syoteparametrit">
+                                <td ng-if="funktiokuvausSyoteparametri.kuvaus.length <= 0">Avain:
+                                    {{funktiokuvausSyoteparametri.avain}}
+                                </td>
+                                <td ng-if="funktiokuvausSyoteparametri.kuvaus.length > 0">
+                                    {{funktiokuvausSyoteparametri.kuvaus}}
+                                </td>
+                                <td ng-init="syoteparametri = getSyoteparametri(funktioSelection.lapsi.syoteparametrit, funktiokuvausSyoteparametri)"
+                                    ng-include="getSyoteparametriTemplate(funktiokuvausSyoteparametri.tyyppi)"></td>
+                            </tr>
+                            <tr>
+                                <td>Tallenna tulos</td>
+                                <td><input ng-disabled="alikaavaValues.isAlikaava" type="checkbox" size="25"
+                                           ng-model="funktioSelection.lapsi.tallennaTulos"/></td>
+                            </tr>
+                            <tr ng-show="funktioSelection.lapsi.tallennaTulos">
+                                <td>Tulostunniste</td>
+                                <td><input ng-disabled="alikaavaValues.isAlikaava" type="text" size="25"
+                                           placeholder="Tulostunniste on pakollinen"
+                                           ng-model="funktioSelection.lapsi.tulosTunniste"/><i
+                                        class="margin-left-1 fa fa-exclamation red"></i></td>
+                            </tr>
+                            <tr ng-show="funktioSelection.lapsi.tallennaTulos">
+                                <td>Tulosteksti FI</td>
+                                <td><input ng-disabled="alikaavaValues.isAlikaava" type="text" size="25"
+                                           ng-model="funktioSelection.lapsi.tulosTekstiFi"/></td>
+                            </tr>
+                            <tr ng-show="funktioSelection.lapsi.tallennaTulos">
+                                <td>Tulosteksti SV</td>
+                                <td><input ng-disabled="alikaavaValues.isAlikaava" type="text" size="25"
+                                           ng-model="funktioSelection.lapsi.tulosTekstiSv"/></td>
+                            </tr>
+                            <tr ng-show="funktioSelection.lapsi.tallennaTulos">
+                                <td>Tulosteksti EN</td>
+                                <td><input ng-disabled="alikaavaValues.isAlikaava" type="text" size="25"
+                                           ng-model="funktioSelection.lapsi.tulosTekstiEn"/></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
         </div>
     </div>
+
+
+    <!-- tallenna funktiokutsu laskentakaavana -->
+    <div collapse="!settings.toggle">
+        <form name="kaavaForm" class="margin-top-2" novalidate>
+            <div class="form-row">
+                <div class="form-row-label">Laskentakaavan nimi</div>
+
+                <div class="form-row-content">
+                    <input type="text" ng-model="kaava.nimi" required/>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="form-row">
+                <div class="form-row-label">Laskentakaavan kuvaus</div>
+
+                <div class="form-row-content">
+                    <textarea ng-model="kaava.kuvaus"></textarea>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="form-row" ng-show="!kaava.id">
+                <div class="form-row-label">Laskentakaavan tyyppi</div>
+
+                <div class="form-row-content">
+                    <input type="radio" name="tyyppi" value="NIMETTYTOTUUSARVO" ng-model="kaava.tyyppi"/>
+                    Totuusarvofunktio
+                    <br/>
+                    <input type="radio" name="tyyppi" value="NIMETTYLUKUARVO" ng-model="kaava.tyyppi"/> Lukuarvofunktio
+                </div>
+                <div class="clear"></div>
+            </div>
+
+        </form>
+    </div>
 </div>
+
+
 <div class="modal-footer">
-    <button class="btn btn-default btn-sm" ng-disabled="alikaavaValues.isAlikaava || funktioasetukset.parentFunktiokutsu === model.laskentakaavapuu.funktiokutsu" ng-click="saveAsNewLaskentakaava(funktioasetukset.parentFunktiokutsu, funktioSelection)">Tallenna uutena laskentakaavana</button>
-    <button ng-disabled="alikaavaValues.isAlikaava" class="btn btn-sm btn-default" ng-click="removeFunktiokutsu(); sulje()"><i class="fa fa-trash-o"></i> Poista funktiokutsu</button>
-    <button class="btn btn-default btn-sm" ng-click="sulje();"
-       role="button">Sulje</button>
+    <!-- Funktiokutsun asetukset -->
+    <div ng-if="!settings.toggle">
+        <button class="btn btn-default btn-sm"
+                ng-disabled="alikaavaValues.isAlikaava || funktioasetukset.parentFunktiokutsu === model.laskentakaavapuu.funktiokutsu"
+                ng-click="saveAsNewLaskentakaava(funktioasetukset.parentFunktiokutsu, funktioSelection, settings)">Tallenna uutena
+            laskentakaavana
+        </button>
+        <button ng-disabled="alikaavaValues.isAlikaava" class="btn btn-sm btn-default"
+                ng-click="removeFunktiokutsu(); sulje()"><i class="fa fa-trash-o"></i> Poista funktiokutsu
+        </button>
+        <button class="btn btn-default btn-sm" ng-click="sulje();"
+                role="button">Sulje
+        </button>
+    </div>
+
+    <!-- tallenna funktiokutsu laskentakaavana -->
+    <div ng-if="settings.toggle">
+
+        <button class="btn btn-default btn-sm" ng-click="settings.toggle = !settings.toggle">Palaa funktioasetuksiin</button>
+        <button class="btn btn-default btn-sm" ng-click="sulje();">Sulje</button>
+    </div>
 </div>
+
+
+
+

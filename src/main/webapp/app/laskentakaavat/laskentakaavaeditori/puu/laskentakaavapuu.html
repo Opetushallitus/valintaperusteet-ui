@@ -34,18 +34,19 @@
             </modal>
         </div>
 
-        <!-- Laskentakaavaviitteen valinta -->
+        <!-- LASKENTAKAAVAVIITTEEN VALINTA -->
         <div ng-controller="laskentakaavaviiteAsetuksetController">
             <modal modal-template="laskentakaavat/laskentakaavaeditori/funktioasetukset/laskentakaavaviiteAsetuksetModal.html">
                 <modal-open></modal-open>
             </modal>
         </div>
 
-        <!-- Laskentakaavapuun juuri -->
+        <!-- LASKENTAKAAVAPUUN JUURI -->
         <div class="frame open" ng-class="isRootSelected ? 'active' : ''">
             <span class="icon">&#8302;</span>
             <span class="node bold" ng-click="setRootSelection(model.laskentakaavapuu.funktiokutsu)">{{model.laskentakaavapuu.nimi}}</span>
         </div>
+
 
 
         <!-- piirretään laskentakaavapuu, oletetaan että kaavan sisältö ei voi olla pelkästään yksi laskentakaavaviite -->
