@@ -35,6 +35,36 @@ angular.module('LaskentakaavaEditor').factory('FunktioFactory', function(Funktio
 			}
 		}
 
+        this.createEmptyLaskentakaava = function(funktiokutsu, routeParams, kaavaNimi, kaavaKuvaus) {
+            var kaava = {
+                valintaryhmaOid: routeParams.valintaryhmaOid,
+                hakukohdeOid: routeParams.hakukohdeOid,
+                laskentakaava: {
+                    funktiokutsu: {
+                        funktioargumentit: [],
+                        funktionimi: undefined,
+                        arvokonvertteriparametrit: [],
+                        arvovalikonvertteriparametrit: [],
+                        syoteparametrit: [{arvo: undefined, avain: undefined}],
+                        tulosTunniste: null,
+                        tulosTekstiFi: null,
+                        tulosTekstiSv: null,
+                        tulosTekstiEn: null,
+                        tallennaTulos: false,
+                        validointivirheet: [],
+                        valintaperusteviitteet: []
+                    },
+                    id: undefined,
+                    onLuonnos: false,
+                    tyyppi: funktiokutsu.lapsi.tyyppi,
+                    kuvaus: kaavaKuvaus,
+                    nimi: kaavaNimi
+                }
+            };
+
+            return kaava;
+        };
+
 		this.createLaskentakaavaviite = function(laskentakaavaviite) {
 
 			if(laskentakaavaviite) {

@@ -236,20 +236,20 @@
 
 <div class="modal-header">
     <!-- Funktiokutsun asetukset -->
-    <h3 ng-if="!settings.toggle">Funktioasetukset</h3>
+    <h3 ng-show="!toggle">Funktioasetukset</h3>
 
     <!-- tallenna funktiokutsu laskentakaavana -->
-    <h3 ng-if="settings.toggle">Funktiokutsun tallentaminen laskentakaavana</h3>
+    <h3 ng-show="toggle">Funktiokutsun tallentaminen laskentakaavana</h3>
 
 </div>
 <div class="modal-body">
 
     <!-- Funktiokutsun asetukset -->
-    <div collapse="settings.toggle">
+    <div collapse="toggle">
         <div ng-if="alikaavaValues.isAlikaava" class="alert alert-info margin-top-2">Alikaavan funktiokutsuja ei voi
             muokata.
         </div>
-        <h2>{{getFunktiokutsuName(funktioSelection)}}</h2>
+        <h2>Funktiokutsun tyyppi: {{getFunktiokutsuName(funktioSelection)}}</h2>
 
         <div class="settingsform">
 
@@ -372,32 +372,37 @@
 
 
     <!-- tallenna funktiokutsu laskentakaavana -->
-    <div collapse="!settings.toggle">
-        <form name="kaavaForm" class="margin-top-2" novalidate>
-            <div class="form-row">
-                <div class="form-row-label">Laskentakaavan nimi</div>
+    <div collapse="!toggle">
+        <form name="kaavaForm" class="form-horizontal margin-top-2">
 
-                <div class="form-row-content">
-                    <input type="text" ng-model="kaava.nimi" required/>
-                </div>
-                <div class="clear"></div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Laskentakaavaksi tallennettava funktiokutsu</label>
+                <span class="col-sm-8 control-content">{{getFunktiokutsuName(funktioSelection)}}</span>
             </div>
-            <div class="form-row">
-                <div class="form-row-label">Laskentakaavan kuvaus</div>
 
-                <div class="form-row-content">
-                    <textarea ng-model="kaava.kuvaus"></textarea>
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Laskentakaavan nimi</label>
+                <div class="col-sm-8">
+                    <input type="text" ng-model="newKaavaNimi" required/>
                 </div>
-                <div class="clear"></div>
             </div>
-            <div class="form-row" ng-show="!kaava.id">
-                <div class="form-row-label">Laskentakaavan tyyppi</div>
 
-                <div class="form-row-content">
-                    <input type="radio" name="tyyppi" value="NIMETTYTOTUUSARVO" ng-model="kaava.tyyppi"/>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Laskentakaavan kuvaus</label>
+
+                <div class="col-sm-8">
+                    <textarea ng-model="newKaavaKuvaus"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Laskentakaavan tyyppi</label>
+                <div class="col-sm-8">
+                    <input ng-disabled="true" type="radio" name="tyyppi" value="TOTUUSARVOFUNKTIO" ng-model="funktioSelection.lapsi.tyyppi"/>
                     Totuusarvofunktio
                     <br/>
-                    <input type="radio" name="tyyppi" value="NIMETTYLUKUARVO" ng-model="kaava.tyyppi"/> Lukuarvofunktio
+                    <input ng-disabled="true" type="radio" name="tyyppi" value="LUKUARVOFUNKTIO" ng-model="funktioSelection.lapsi.tyyppi"/> Lukuarvofunktio
                 </div>
                 <div class="clear"></div>
             </div>
@@ -409,25 +414,25 @@
 
 <div class="modal-footer">
     <!-- Funktiokutsun asetukset -->
-    <div ng-if="!settings.toggle">
+    <div ng-show="!toggle">
         <button class="btn btn-default btn-sm"
                 ng-disabled="alikaavaValues.isAlikaava || funktioasetukset.parentFunktiokutsu === model.laskentakaavapuu.funktiokutsu"
-                ng-click="saveAsNewLaskentakaava(funktioasetukset.parentFunktiokutsu, funktioSelection, settings)">Tallenna uutena
-            laskentakaavana
+                ng-click="toggle = !toggle; ">Kaavan osan tallennus
         </button>
         <button ng-disabled="alikaavaValues.isAlikaava" class="btn btn-sm btn-default"
                 ng-click="removeFunktiokutsu(); sulje()"><i class="fa fa-trash-o"></i> Poista funktiokutsu
         </button>
-        <button class="btn btn-default btn-sm" ng-click="sulje();"
+        <button class="btn btn-default btn-sm" ng-click="sulje()"
                 role="button">Sulje
         </button>
     </div>
 
     <!-- tallenna funktiokutsu laskentakaavana -->
-    <div ng-if="settings.toggle">
+    <div ng-show="toggle">
 
-        <button class="btn btn-default btn-sm" ng-click="settings.toggle = !settings.toggle">Palaa funktioasetuksiin</button>
-        <button class="btn btn-default btn-sm" ng-click="sulje();">Sulje</button>
+        <button class="btn btn-default btn-sm" ng-click="toggle = !toggle"><i class="fa fa-arrow-left"></i> Palaa funktioasetuksiin</button>
+        <button class="btn btn-primary btn-sm" ng-disabled="!newKaavaNimi" ng-click="saveAsNewLaskentakaava(funktioasetukset.parentFunktiokutsu, funktioSelection, newKaavaNimi, newKaavaKuvaus)"><i class="fa fa-floppy-o"></i> Tallenna uutena laskentakaavana</button>
+        <button class="btn btn-default btn-sm" ng-click="sulje()">Sulje</button>
     </div>
 </div>
 
