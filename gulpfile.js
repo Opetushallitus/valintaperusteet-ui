@@ -69,12 +69,12 @@ var paths = {
 
 // Default
 gulp.task('default', function (callback) {
-    runSequence('scripts', callback);
+    runSequence('test-singlerun', callback);
 });
 
 // Development
 gulp.task('dev', function (callback) {
-    runSequence(['test', 'livereload'], callback);
+    runSequence(['test-watch', 'livereload'], callback);
 });
 
 
@@ -91,16 +91,26 @@ gulp.task('livereload', function () {
         .pipe(livereload());
 });
 
-// Run tests
-gulp.task('test', function () {
+gulp.task('test-singlerun', function () {
     return gulp.src(paths.testfiles)
-    .pipe(karma({
-        configFile: 'src/test/ui/valintaperusteet.conf.js',
-        action: 'watch'
-    }).on('error', function (err) {
-        // Make sure failed tests cause gulp to exit non-zero
-        throw err;
-    }));
+        .pipe(karma({
+            configFile: 'src/test/ui/valintaperusteet.conf.js'
+        }).on('error', function (err) {
+            // Make sure failed tests cause gulp to exit non-zero
+            throw err;
+        }));
+});
+
+// Run tests
+gulp.task('test-watch', function () {
+    return gulp.src(paths.testfiles)
+        .pipe(karma({
+            configFile: 'src/test/ui/valintaperusteet.conf.js',
+            action: 'watch'
+        }).on('error', function (err) {
+            // Make sure failed tests cause gulp to exit non-zero
+            throw err;
+        }));
 });
 
 

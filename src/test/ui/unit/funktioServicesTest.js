@@ -358,20 +358,6 @@ describe("FunktioService", function () {
         });
     });
     
-    //isAlikaava
-    describe("isAlikaava(kaava)", function () {
-        it("should return true if kaava.isAlivaaka is true", function () {
-            expect(funktioservice.isAlikaava({isAlikaava: true})).toBe(true);
-        });
-
-        it("should return false for if kaava.isAlikaava is undefined", function() {
-            expect(funktioservice.isAlikaava({})).toBe(false);
-        });
-
-        it("should return false for if kaava.isAlikaava is false", function() {
-            expect(funktioservice.isAlikaava({isAlikaava: false})).toBe(false);
-        });
-    });
 
 
 });
