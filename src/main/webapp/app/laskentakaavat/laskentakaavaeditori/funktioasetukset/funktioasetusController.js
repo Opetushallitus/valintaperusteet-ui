@@ -1,6 +1,6 @@
 angular.module('LaskentakaavaEditor')
 
-    .controller('funktiokutsuAsetuksetController', ['$scope', '$routeParams', 'FunktioNimiService', 'FunktioFactory',  function ($scope, $routeParams, FunktioNimiService, FunktioFactory) {
+    .controller('funktiokutsuAsetuksetController', ['$scope', '$routeParams', '$location', '$timeout', 'Laskentakaava', 'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', function ($scope, $routeParams, $location, $timeout, Laskentakaava, FunktioNimiService, FunktioFactory, KaavaValidationService) {
         $scope.funktioFactory = FunktioFactory;
 
         $scope.$on('showFunktiokutsuAsetukset', function () {
@@ -13,12 +13,21 @@ angular.module('LaskentakaavaEditor')
             } else {
                 return FunktioNimiService.getName(funktiokutsu.funktionimi);
             }
-        }
+        };
 
-        $scope.saveAsNewLaskentakaava = function (parent, funktiokutsu, newKaavaNimi, newKaavaKuvaus) {
-            console.log('Nykyinen laskentakaavamodel', $scope.model.laskentakaavapuu);
-            var kaava = $scope.funktioFactory.createEmptyLaskentakaava($scope.funktioSelection, $routeParams, newKaavaNimi, newKaavaKuvaus);
-            console.log('tallennettava laskentakaava:', kaava);
+        $scope.saveAsNewLaskentakaava = function (parent, funktiokutsu, newKaavaNimi, newKaavaKuvaus, closeModal) {
+            var osakaava = FunktioFactory.createEmptyLaskentakaava($scope.funktioSelection, $routeParams, newKaavaNimi, newKaavaKuvaus);
+            $scope.persistOsakaava(osakaava, funktiokutsu, closeModal);
+        };
+
+        $scope.persistOsakaava = function (osakaava, funktiokutsu, closeModal) {
+            //KaavaValidationService.validateTree(osakaava.funktiokutsu, errors);
+            if ($scope.errors.length === 0) {
+                Laskentakaava.insert({}, osakaava, function (savedKaava) {
+                    closeModal();
+                    funktiokutsu = FunktioFactory.getLaskentakaavaviiteFromLaskentakaava(savedKaava);
+                }, function (error) {});
+            }
         };
 
         $scope.toggle = false;

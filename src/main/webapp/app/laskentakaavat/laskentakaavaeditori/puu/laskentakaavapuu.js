@@ -267,7 +267,6 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     isPainotettukeskiarvoChild = $scope.funktioasetukset.parentFunktiokutsu.funktionimi === 'PAINOTETTUKESKIARVO';
                 }
 
-                $scope.funktioasetukset.funktioSelection = undefined;
                 $scope.alikaavaValues = {};
                 if ($scope.isFirstChildForRoot($scope.funktioasetukset.parentFunktiokutsu)) {
                     //jos ollaan heti laskentakaavan juuren alla (laskentakaavan 'ensimmäisellä kerroksella' ei ole lapsi-wrapperia)

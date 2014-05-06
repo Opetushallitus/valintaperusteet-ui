@@ -36,16 +36,21 @@ angular.module('LaskentakaavaEditor').factory('FunktioFactory', function(Funktio
 		}
 
         this.createEmptyLaskentakaava = function(funktiokutsu, routeParams, kaavaNimi, kaavaKuvaus) {
+            var kaavatree = {};
+            var newfunktioFunktionimi = funktiokutsu.lapsi.tyyppi === 'LUKUARVOFUNKTIO' ? 'NIMETTYLUKUARVO' : 'NIMETTYTOTUUSARVO';
+
+            angular.copy(funktiokutsu, kaavatree);
+
             var kaava = {
                 valintaryhmaOid: routeParams.valintaryhmaOid,
                 hakukohdeOid: routeParams.hakukohdeOid,
                 laskentakaava: {
                     funktiokutsu: {
-                        funktioargumentit: [],
-                        funktionimi: undefined,
+                        funktioargumentit: [kaavatree],
+                        funktionimi: newfunktioFunktionimi,
                         arvokonvertteriparametrit: [],
                         arvovalikonvertteriparametrit: [],
-                        syoteparametrit: [{arvo: undefined, avain: undefined}],
+                        syoteparametrit: [{arvo: kaavaNimi, avain: "nimi"}],
                         tulosTunniste: null,
                         tulosTekstiFi: null,
                         tulosTekstiSv: null,
@@ -58,11 +63,38 @@ angular.module('LaskentakaavaEditor').factory('FunktioFactory', function(Funktio
                     onLuonnos: false,
                     tyyppi: funktiokutsu.lapsi.tyyppi,
                     kuvaus: kaavaKuvaus,
-                    nimi: kaavaNimi
+                    nimi: kaavaNimi,
+                    kardinaliteetti: 1
                 }
             };
 
             return kaava;
+        };
+
+        this.getLaskentakaavaviiteFromLaskentakaava = function(laskentakaava) {
+            return {
+                indeksi: 0,
+                lapsi: {
+                    funktionimi: laskentakaava.funktiokutsu.funktionimi,
+                    arvokonvertteriparametrit: [],
+                    arvovalikonvertteriparametrit: [],
+                    syoteparametrit: [],
+                    funktioargumentit: [],
+                    valintaperusteviitteet: [],
+                    validointivirheet: [],
+                    onLuonnos: laskentakaava.onLuonnos,
+                    nimi: laskentakaava.nimi,
+                    kuvaus: laskentakaava.kuvaus,
+                    tyyppi: laskentakaava.tyyppi,
+                    id: laskentakaava.id,
+                    lapsityyppi: "laskentakaava",
+                    tulosTunniste: null,
+                    tulosTekstiFi: null,
+                    tulosTekstiSv: null,
+                    tulosTekstiEn: null,
+                    tallennaTulos: null
+                }
+            }
         };
 
 		this.createLaskentakaavaviite = function(laskentakaavaviite) {
