@@ -26,9 +26,6 @@
 
         <h2>Laskentakaava</h2>
 
-        id: {{$id}}
-        Funktioselection: {{funktioSelection}}
-
         <!-- FUNKTIOASETUKSET -->
         <div ng-controller="funktiokutsuAsetuksetController">
             <modal modal-template="laskentakaavat/laskentakaavaeditori/funktioasetukset/funktiokutsuAsetuksetModal.html">
@@ -48,9 +45,6 @@
             <span class="icon">&#8302;</span>
             <span class="node bold" ng-click="setRootSelection(model.laskentakaavapuu.funktiokutsu)">{{model.laskentakaavapuu.nimi}}</span>
         </div>
-
-            <button class="btn btn-default btn-sm" ng-click="refresh()">refresh</button>
-
 
         <!-- piirretään laskentakaavapuu, oletetaan että kaavan sisältö ei voi olla pelkästään yksi laskentakaavaviite -->
         <ul class="frame-content">

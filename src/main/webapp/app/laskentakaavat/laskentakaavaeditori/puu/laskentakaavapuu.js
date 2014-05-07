@@ -403,9 +403,8 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 }
             });
 
-            $scope.refresh = function() {
-                //$scope.funktioSelection.indeksi = "hello";
-                $scope.funktioSelection.lapsi.tallennaTulos = true;
+            $scope.funktiokutsuSavedAsLaskentakaava = function(savedKaava) {
+                $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = savedKaava;
             }
 
         }]);
