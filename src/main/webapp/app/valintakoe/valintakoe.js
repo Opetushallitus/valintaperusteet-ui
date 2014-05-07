@@ -1,10 +1,11 @@
-app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe, Laskentakaava) {
+app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe, Laskentakaava, LaskentakaavaModel) {
 
 	var model = new function() {
 		this.valintakoe = {};
 		this.laskentakaavat = [];
+        this.laskentakaavaModel = {};
 
-		this.refresh = function(oid) {
+		this.refresh = function(oid, valintaryhmaOid, hakukohdeOid) {
 			if(!oid) {
 				model.valintakoe = {};
 				model.valintakoe.laskentakaavaId = "";
@@ -18,14 +19,18 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 				});
 			}
 
-			Laskentakaava.list({tyyppi: "TOTUUSARVOFUNKTIO"},function(result) {
+			Laskentakaava.list({},function(result) {
 				model.laskentakaavat = result;
 			});
+
+            LaskentakaavaModel.refresh(valintaryhmaOid, hakukohdeOid);
+            model.laskentakaavaModel = LaskentakaavaModel;
+
 		}
 
-		this.refreshIfNeeded = function(oid) {
+		this.refreshIfNeeded = function(oid, valintaryhmaOid, hakukohdeOid) {
 			if(model.valintakoe.oid !== oid) {
-				model.refresh(oid);
+				model.refresh(oid, valintaryhmaOid, hakukohdeOid);
 			}
 		}
 
@@ -96,7 +101,7 @@ function ValintaryhmaValintakoeController($scope, $location, $routeParams, Valin
 	$scope.valintakoeValinnanvaiheOid = $routeParams.valintakoevalinnanvaiheOid;
 	$scope.valintakoeOid = $routeParams.valintakoeOid;
 	$scope.model = ValintakoeModel;
-	$scope.model.refreshIfNeeded($scope.valintakoeOid);
+	$scope.model.refreshIfNeeded($scope.valintakoeOid, $scope.valintaryhmaOid, undefined);
 
 	$scope.submit = function() {
 		var promise = $scope.model.persistValintakoe($scope.valintakoeValinnanvaiheOid, ValintaryhmaValintakoeValinnanvaiheModel.valintakokeet);
@@ -116,7 +121,7 @@ function HakukohdeValintakoeController($scope, $location, $routeParams, Valintak
 	$scope.valintakoeValinnanvaiheOid = $routeParams.valintakoevalinnanvaiheOid;
 	$scope.valintakoeOid = $routeParams.id;
 	$scope.model = ValintakoeModel;
-	$scope.model.refreshIfNeeded($scope.valintakoeOid);
+	$scope.model.refreshIfNeeded($scope.valintakoeOid, undefined, $scope.hakukohdeOid);
 
 	$scope.submit = function() {
 		var promise = $scope.model.persistValintakoe($scope.valintakoeValinnanvaiheOid, HakukohdeValintakoeValinnanvaiheModel.valintakokeet);
