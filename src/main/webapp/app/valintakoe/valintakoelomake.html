@@ -70,21 +70,21 @@
 
         <div class="form-row">
 
-            <div class="form-row-label">Laskentakaava</div>
+            <label class="form-row-label">Laskentakaava</label>
             <div class="form-row-content">&nbsp;</div>
             <div class="clear"></div>
             <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat" class="field-container-radio">
-                <div class="form-row-label">{{group.name}}</div>
+                <label class="form-row-label">{{group.name}}</label>
                 <div class="form-row-content">
                     <!--<span >{{model.laskentakaavat}}</span>-->
 
-                    <div ng-repeat="data in group.result" class="field-container-radio">
+                    <div ng-repeat="data in group.result | filter:'TOTUUSARVOFUNKTIO'" class="field-container-radio">
                         <label>
                             <input type="radio" name="laskentakaava" value="{{data.id}}"
                                    ng-model="model.valintakoe.laskentakaavaId"
                                    ng-required="!model.valintakoe.laskentakaavaId"/>
 
-                            <span ng-bind="data.nimi"></span>
+                            <span>{{data.nimi}}</span>
                         </label>
                     </div>
                 </div>
