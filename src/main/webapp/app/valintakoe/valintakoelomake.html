@@ -2,7 +2,8 @@
 <div class="tabs">
     <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
     <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaavalista" class="tab"><span>Laskentakaavat</span></a>
-    <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaavalista" class="tab"><span>Laskentakaavat</span></a>
+    <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaavalista"
+       class="tab"><span>Laskentakaavat</span></a>
     <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
 </div>
 
@@ -39,34 +40,52 @@
             <div class="form-row-content">
                 <input type="checkbox" name="lahetetaankoKoekutsut" ng-model="model.valintakoe.lahetetaankoKoekutsut"/>
             </div>
+            <div class="clear"></div>
+
+            <label class="form-row-label" for="kutsutaankoKaikki">Kutsutaanko kaikki</label>
+
+            <div class="form-row-content">
+                <input type="checkbox" name="kutsutaankoKaikki" ng-model="model.valintakoe.kutsutaankoKaikki"/>
+            </div>
         </div>
 
+        <div class="form-row">
 
-        <div class="form-row" ng-model="model.laskentakaavat">
+            <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat | filter:'TOTUUSARVO'"
+                 class="field-container-radio">
+                <label class="form-row-label">Valintakokeen laskentakaava</label>
 
-            <div class="form-row-label">Laskentakaava</div>
-            <div class="form-row-content">
-                <label>
-                    <input type="radio" name="laskentakaava" value=""
-                           ng-model="model.valintakoe.laskentakaavaId"/>
-                    <span>Aina pakollinen</span>
 
-                </label>
+                <div class="form-row-content">
+                    <table class="virkailija-table-1">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Laskentakaava</th>
+                            <th>Valintaryhmä / Hakukohde</th>
+                        </tr>
+                        </thead>
+                        <tbody ng-repeat="group in model.laskentakaavaModel.laskentakaavat">
+                            <tr ng-repeat="data in group.result | filter: 'TOTUUSARVOFUNKTIO'">
 
-                <div ng-repeat="data in model.laskentakaavat" class="field-container-radio">
-                    <label>
-                        <input type="radio" name="laskentakaava" value="{{data.id}}"
-                               ng-model="model.valintakoe.laskentakaavaId"/>
+                                <td><input type="radio" name="laskentakaava" value="{{data.id}}"
+                                           ng-model="model.valintakoe.laskentakaavaId"/></td>
+                                <td>{{data.nimi}}</td>
+                                <td>{{group.name}}</td>
+                            </tr>
+                        </tbody>
 
-                        <span ng-bind="data.nimi"></span>(<span ng-bind="data.id"></span>)
-                    </label>
+                    </table>
                 </div>
 
+                <div class="clear"></div>
             </div>
-            <div class="clear"></div>
+
+
+
         </div>
 
-        <div class="clear"></div>
+
         <button class="btn btn-sm btn-default" ng-click="cancel()"><i class="fa fa-arrow-left"></i>
             Takaisin
         </button>
