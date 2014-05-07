@@ -2,7 +2,8 @@
 <div class="tabs">
     <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
     <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaavalista" class="tab"><span>Laskentakaavat</span></a>
-    <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaavalista" class="tab"><span>Laskentakaavat</span></a>
+    <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaavalista"
+       class="tab"><span>Laskentakaavat</span></a>
     <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
 </div>
 
@@ -70,19 +71,21 @@
 
         <div class="form-row">
 
-            <label class="form-row-label">Laskentakaava</label>
+            <label class="form-row-label">Valintakokeen laskentakaava</label>
+
             <div class="form-row-content">&nbsp;</div>
             <div class="clear"></div>
-            <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat" class="field-container-radio">
+            <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat | filter:'TOTUUSARVO'"
+                 class="field-container-radio">
                 <label class="form-row-label">{{group.name}}</label>
+
                 <div class="form-row-content">
-                    <!--<span >{{model.laskentakaavat}}</span>-->
+                    <!--<span>{{model.laskentakaavat}}</span>-->
 
                     <div ng-repeat="data in group.result | filter:'TOTUUSARVOFUNKTIO'" class="field-container-radio">
                         <label>
                             <input type="radio" name="laskentakaava" value="{{data.id}}"
-                                   ng-model="model.valintakoe.laskentakaavaId"
-                                   ng-required="!model.valintakoe.laskentakaavaId"/>
+                                   ng-model="model.valintakoe.laskentakaavaId"/>
 
                             <span>{{data.nimi}}</span>
                         </label>
@@ -93,7 +96,6 @@
             </div>
 
         </div>
-
 
 
         <button class="btn btn-sm btn-default" ng-click="cancel()"><i class="fa fa-arrow-left"></i>

@@ -19,10 +19,6 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 				});
 			}
 
-			Laskentakaava.list({},function(result) {
-				model.laskentakaavat = result;
-			});
-
             LaskentakaavaModel.refresh(valintaryhmaOid, hakukohdeOid);
             model.laskentakaavaModel = LaskentakaavaModel;
 
