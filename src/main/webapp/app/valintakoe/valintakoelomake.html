@@ -49,33 +49,6 @@
             </div>
         </div>
 
-        <!--
-        <div class="form-row" ng-model="model.laskentakaavat">
-
-            <div class="form-row-label">Laskentakaava</div>
-            <div class="form-row-content">
-                <label>
-                    <input type="radio" name="laskentakaava" value=""
-                           ng-model="model.valintakoe.laskentakaavaId"/>
-                    <span>Aina pakollinen</span>
-
-                </label>
-
-                <div ng-repeat="data in model.laskentakaavat" class="field-container-radio">
-                    <label>
-                        <input type="radio" name="laskentakaava" value="{{data.id}}"
-                               ng-model="model.valintakoe.laskentakaavaId"/>
-
-                        <span ng-bind="data.nimi"></span>
-                    </label>
-                </div>
-
-            </div>
-            <div class="clear"></div>
-        </div>
-
--->
-
         <div class="form-row">
 
             <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat | filter:'TOTUUSARVO'"
