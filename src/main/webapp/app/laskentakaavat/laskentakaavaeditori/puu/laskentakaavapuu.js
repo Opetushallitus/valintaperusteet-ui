@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
-    ['$scope', '_', '$location', '$routeParams', 'KaavaValidointi', 'Laskentakaava', 'LaskentakaavaLista',
+    ['$scope', '_', '$location', '$routeParams', '$timeout', 'KaavaValidointi', 'Laskentakaava', 'LaskentakaavaLista',
         'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'Arvokonvertterikuvauskielet', 'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService',
-        function ($scope, _, $location, $routeParams, KaavaValidointi, Laskentakaava, LaskentakaavaLista, TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet, FunktioNimiService, FunktioFactory, KaavaValidationService) {
+        function ($scope, _, $location, $routeParams, $timeout, KaavaValidointi, Laskentakaava, LaskentakaavaLista, TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet, FunktioNimiService, FunktioFactory, KaavaValidationService) {
 
             //servicet laskentakaavapuun piirtämiseen
             $scope.templateService = TemplateService;
@@ -344,6 +344,14 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 $scope.$broadcast('persist');
             };
 
+            $scope.$on('changeFunktiokutsuToLaskentakaava', function(event, savedKaava) {
+                console.log('before', $scope.funktioSelection);
+
+                $scope.funktioSelection = savedKaava;
+                console.log('after', $scope.funktioSelection);
+                $timeout(function() {$scope.$apply()}, 5000);
+            });
+
             $scope.$on('persist', function () {
                 var kaava = {
                     valintaryhmaOid: $routeParams.valintaryhmaOid,
@@ -394,6 +402,11 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     }
                 }
             });
+
+            $scope.refresh = function() {
+                //$scope.funktioSelection.indeksi = "hello";
+                $scope.funktioSelection.lapsi.tallennaTulos = true;
+            }
 
         }]);
 

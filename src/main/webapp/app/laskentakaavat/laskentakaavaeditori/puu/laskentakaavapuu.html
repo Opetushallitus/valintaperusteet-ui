@@ -7,7 +7,6 @@
     <div class="clear"></div>
 
     <div class="gradingformula" style="float:left;">
-
         <!-- Laskentakaavassa olevat virheet-->
         <div class="alert alert-danger margin-top-2" ng-if="errors.length > 0">
             <h3>Laskentakaavaa ei voitu tallentaa.</h3>
@@ -26,6 +25,9 @@
         </div>
 
         <h2>Laskentakaava</h2>
+
+        id: {{$id}}
+        Funktioselection: {{funktioSelection}}
 
         <!-- FUNKTIOASETUKSET -->
         <div ng-controller="funktiokutsuAsetuksetController">
@@ -47,6 +49,7 @@
             <span class="node bold" ng-click="setRootSelection(model.laskentakaavapuu.funktiokutsu)">{{model.laskentakaavapuu.nimi}}</span>
         </div>
 
+            <button class="btn btn-default btn-sm" ng-click="refresh()">refresh</button>
 
 
         <!-- piirretään laskentakaavapuu, oletetaan että kaavan sisältö ei voi olla pelkästään yksi laskentakaavaviite -->

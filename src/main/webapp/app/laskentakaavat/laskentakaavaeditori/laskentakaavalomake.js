@@ -10,11 +10,11 @@ angular.module('LaskentakaavaEditor').
             $scope.newKaavaTemplate = laskentakaava;
             $scope.showNewLaskentakaavaForm = false;
             $scope.$broadcast('newkaava');
-        }
+        };
 
         $scope.persist = function() {
             $scope.$broadcast('persistKaava');
-        }
+        };
 
         $scope.back = function () {
             if ($routeParams.valintaryhmaOid) {
@@ -24,7 +24,13 @@ angular.module('LaskentakaavaEditor').
             } else {
                 $location.path("/laskentakaava")
             }
-        }
+        };
+
+        $scope.funktiokutsuSavedAsLaskentakaava = function(savedKaava) {
+            $scope.$broadcast('changeFunktiokutsuToLaskentakaava', savedKaava);
+        };
+
+
 
 
 

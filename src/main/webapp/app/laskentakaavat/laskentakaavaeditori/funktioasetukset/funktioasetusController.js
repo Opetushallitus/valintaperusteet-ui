@@ -25,8 +25,10 @@ angular.module('LaskentakaavaEditor')
             if ($scope.errors.length === 0) {
                 Laskentakaava.insert({}, osakaava, function (savedKaava) {
                     closeModal();
-                    funktiokutsu = FunktioFactory.getLaskentakaavaviiteFromLaskentakaava(savedKaava);
-                }, function (error) {});
+                    $scope.funktiokutsuSavedAsLaskentakaava(FunktioFactory.getLaskentakaavaviiteFromLaskentakaava(savedKaava));
+                }, function (error) {
+
+                });
             }
         };
 
