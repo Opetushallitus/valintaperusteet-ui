@@ -78,29 +78,37 @@
 
         <div class="form-row">
 
-            <label class="form-row-label">Valintakokeen laskentakaava</label>
-
-            <div class="form-row-content">&nbsp;</div>
-            <div class="clear"></div>
             <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat | filter:'TOTUUSARVO'"
                  class="field-container-radio">
-                <label class="form-row-label">{{group.name}}</label>
+                <label class="form-row-label">Valintakokeen laskentakaava</label>
+
 
                 <div class="form-row-content">
-                    <!--<span>{{model.laskentakaavat}}</span>-->
+                    <table class="virkailija-table-1">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Laskentakaava</th>
+                            <th>Valintaryhmä / Hakukohde</th>
+                        </tr>
+                        </thead>
+                        <tbody ng-repeat="group in model.laskentakaavaModel.laskentakaavat">
+                            <tr ng-repeat="data in group.result | filter: 'TOTUUSARVOFUNKTIO'">
 
-                    <div ng-repeat="data in group.result | filter:'TOTUUSARVOFUNKTIO'" class="field-container-radio">
-                        <label>
-                            <input type="radio" name="laskentakaava" value="{{data.id}}"
-                                   ng-model="model.valintakoe.laskentakaavaId"/>
+                                <td><input type="radio" name="laskentakaava" value="{{data.id}}"
+                                           ng-model="model.valintakoe.laskentakaavaId"/></td>
+                                <td>{{data.nimi}}</td>
+                                <td>{{group.name}}</td>
+                            </tr>
+                        </tbody>
 
-                            <span>{{data.nimi}}</span>
-                        </label>
-                    </div>
+                    </table>
                 </div>
 
                 <div class="clear"></div>
             </div>
+
+
 
         </div>
 
