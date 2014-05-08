@@ -17,6 +17,8 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             $scope.errors = [];
             $scope.model = {};
 
+
+
             //Pidetään laskentakaaviitevalinta objektissa. Laskentakaavaviitettä kaavaan liitettäessä radio-inputit iteroidaan ng-repeatissa,
             //joka luo uuden skoopin joka itemille, jolloin laskentakaavaviitteen tallentaminen  suoraan skoopissa olevaan muuttujaan ei toimi oikein
             $scope.laskentakaavaviite = { selection: null };
@@ -31,19 +33,24 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 });
             }
 
+
             $scope.$on('newkaava', function () {
                 $scope.model.laskentakaavapuu = $scope.$parent.$parent.newKaavaTemplate;
             });
 
-            if ($routeParams.valintaryhmaOid) {
-                LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, null, false);
-            } else if ($routeParams.hakukohdeOid) {
-                LaskentakaavaLista.refresh(null, $routeParams.hakukohdeOid, false);
-            } else {
-                LaskentakaavaLista.refresh(null, null, false);
-            }
+            $scope.reloadLaskentakaavaLista = function () {
+                if ($routeParams.valintaryhmaOid) {
+                    LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, null, false);
+                } else if ($routeParams.hakukohdeOid) {
+                    LaskentakaavaLista.refresh(null, $routeParams.hakukohdeOid, false);
+                } else {
+                    LaskentakaavaLista.refresh(null, null, false);
+                }
+            };
 
             $scope.laskentakaavalista = LaskentakaavaLista;
+            $scope.reloadLaskentakaavaLista();
+
 
             // Valitun funktio/laskentakaavaviitteen tietoja
             $scope.funktioasetukset = {
@@ -100,7 +107,6 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             };
 
 
-            
             $scope.addLaskentakaavaviite = function (parent, index) {
                 $scope.funktioasetukset.parentFunktiokutsu = parent;
                 $scope.funktioasetukset.selectedFunktioIndex = index;
@@ -344,14 +350,6 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 $scope.$broadcast('persist');
             };
 
-            $scope.$on('changeFunktiokutsuToLaskentakaava', function(event, savedKaava) {
-                console.log('before', $scope.funktioSelection);
-
-                $scope.funktioSelection = savedKaava;
-                console.log('after', $scope.funktioSelection);
-                $timeout(function() {$scope.$apply()}, 5000);
-            });
-
             $scope.$on('persist', function () {
                 var kaava = {
                     valintaryhmaOid: $routeParams.valintaryhmaOid,
@@ -403,7 +401,8 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 }
             });
 
-            $scope.funktiokutsuSavedAsLaskentakaava = function(savedKaava) {
+            $scope.funktiokutsuSavedAsLaskentakaava = function (savedKaava) {
+                $scope.reloadLaskentakaavaLista();
                 $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = savedKaava;
             }
 

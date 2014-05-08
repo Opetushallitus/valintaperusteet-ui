@@ -26,12 +26,4 @@ angular.module('LaskentakaavaEditor').
             }
         };
 
-        $scope.funktiokutsuSavedAsLaskentakaava = function(savedKaava) {
-            $scope.$broadcast('changeFunktiokutsuToLaskentakaava', savedKaava);
-        };
-
-
-
-
-
     }]);
