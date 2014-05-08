@@ -8,6 +8,8 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 		this.refresh = function(oid, valintaryhmaOid, hakukohdeOid) {
 			if(!oid) {
 				model.valintakoe = {};
+                model.valintakoe.kutsutaankoKaikki = false;
+                model.valintakoe.lahetetaankoKoekutsut = false;
 				model.valintakoe.laskentakaavaId = "";
 			} else {
 				Valintakoe.get({valintakoeOid: oid}, function(result) {
@@ -25,7 +27,7 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 		}
 
 		this.refreshIfNeeded = function(oid, valintaryhmaOid, hakukohdeOid) {
-			if(model.valintakoe.oid !== oid) {
+			if(oid === undefined || model.valintakoe.oid !== oid) {
 				model.refresh(oid, valintaryhmaOid, hakukohdeOid);
 			}
 		}
@@ -47,8 +49,10 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 					nimi: model.valintakoe.nimi,
 					kuvaus: model.valintakoe.kuvaus,
 					laskentakaavaId: laskentakaavaId,
-					aktiivinen: true
-				}
+					aktiivinen: true,
+                    kutsutaankoKaikki: model.valintakoe.kutsutaankoKaikki,
+                    lahetetaankoKoekutsut: model.valintakoe.lahetetaankoKoekutsut
+				};
 
 				ValinnanvaiheValintakoe.insert({valinnanvaiheOid: parentValintakoeValinnanvaiheOid},valintakoe, function(result) {
 					var index;
