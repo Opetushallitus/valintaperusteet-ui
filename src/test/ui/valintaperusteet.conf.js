@@ -21,6 +21,7 @@ module.exports = function(config) {
       'main/webapp/app/**/*.js',
       'main/webapp/common/js/**/*.js',
       'test/ui/angular-mocks.js',
+      'test/ui/mockdata/*.*',
       'test/ui/unit/**/*.js'
     ],
 
