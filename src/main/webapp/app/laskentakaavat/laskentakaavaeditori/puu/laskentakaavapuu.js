@@ -99,6 +99,14 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 $scope.saved = false;
             };
 
+            $scope.removeFunktioSelection = function() {
+                $scope.funktioasetukset.konvertteriType = '';
+                $scope.isRootSelected = false;
+                $scope.saved = false;
+                $scope.alikaavaValues = {};
+                $scope.funktioSelection = undefined;
+            };
+
             $scope.setLaskentakaavaviite = function (kaava) {
                 //lähetetään skooppihierarkiassa alaspäin viesti, jossa kulkee uuden kaavan id ja vanhan kaavan id.
                 $scope.$broadcast('changeAlikaava', kaava.id, $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex].id);
@@ -127,7 +135,6 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 }
 
                 $scope.setFunktioSelection(createdFunktio, true, parent, index, undefined, undefined);
-
                 //lisätään uusi pari funktioargumentteja, kun edelliset on täytetty
                 if ($scope.getFunktionimi(parent) === 'PAINOTETTUKESKIARVO') {
                     var argCount = $scope.getDefinedFunktioargumenttiCount(parent);
@@ -401,7 +408,10 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 }
             });
 
+
+
             $scope.funktiokutsuSavedAsLaskentakaava = function (savedKaava) {
+                $scope.removeFunktioSelection();
                 $scope.reloadLaskentakaavaLista();
                 $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = savedKaava;
                 $scope.persist();

@@ -39,6 +39,8 @@ angular.module('LaskentakaavaEditor').factory('FunktioFactory', function(Funktio
             var kaavatree = {};
             var newfunktioFunktionimi = funktiokutsu.lapsi.tyyppi === 'LUKUARVOFUNKTIO' ? 'NIMETTYLUKUARVO' : 'NIMETTYTOTUUSARVO';
 
+            var funktiokuvaus = FunktioService.getFunktiokuvaus(funktiokutsu.lapsi.funktionimi);
+
             angular.copy(funktiokutsu, kaavatree);
 
             var kaava = {
@@ -61,7 +63,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioFactory', function(Funktio
                     },
                     id: undefined,
                     onLuonnos: false,
-                    tyyppi: funktiokutsu.lapsi.tyyppi,
+                    tyyppi: funktiokuvaus.tyyppi,
                     kuvaus: kaavaKuvaus,
                     nimi: kaavaNimi,
                     kardinaliteetti: 1
@@ -158,6 +160,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioFactory', function(Funktio
 
 			//Funktionimi
 			funktioprototype.lapsi.funktionimi = newFunktioType;
+            funktioprototype.lapsi.tyyppi = newFunktioFunktiokuvaus.tyyppi;
 
 			//Asetetaan lapsityyppi
 			setLapsityyppi(funktioprototype, newFunktioType);

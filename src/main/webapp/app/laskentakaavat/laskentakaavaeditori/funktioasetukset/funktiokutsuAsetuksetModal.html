@@ -249,7 +249,8 @@
         <div ng-if="alikaavaValues.isAlikaava" class="alert alert-info margin-top-2">Alikaavan funktiokutsuja ei voi
             muokata.
         </div>
-        <h2>Funktiokutsun tyyppi: {{getFunktiokutsuName(funktioSelection)}}</h2>
+
+        <h2 ng-if="funktioSelection">Funktiokutsun tyyppi: {{getFunktiokutsuName(funktioSelection)}}</h2>
 
         <div class="settingsform">
 
@@ -377,7 +378,7 @@
 
             <div class="form-group">
                 <label class="col-sm-4 control-label">Laskentakaavaksi tallennettava funktiokutsu</label>
-                <span class="col-sm-8 control-content">{{getFunktiokutsuName(funktioSelection)}}</span>
+                <span class="col-sm-8 control-content" ng-if="funktioSelection">{{getFunktiokutsuName(funktioSelection)}}</span>
             </div>
 
 

@@ -21,10 +21,10 @@ angular.module('LaskentakaavaEditor')
         };
 
         $scope.persistOsakaava = function (osakaava, funktiokutsu, closeModal) {
-            //KaavaValidationService.validateTree(osakaava.funktiokutsu, errors);
+            KaavaValidationService.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
             if ($scope.errors.length === 0) {
+                closeModal();
                 Laskentakaava.insert({}, osakaava, function (savedKaava) {
-                    closeModal();
                     $scope.funktiokutsuSavedAsLaskentakaava(FunktioFactory.getLaskentakaavaviiteFromLaskentakaava(savedKaava));
                 }, function (error) {
 
