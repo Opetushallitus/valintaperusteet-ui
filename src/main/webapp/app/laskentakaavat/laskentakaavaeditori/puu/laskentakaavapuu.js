@@ -4,14 +4,13 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
     ['$scope', '_', '$location', '$routeParams', '$timeout', 'KaavaValidointi', 'Laskentakaava', 'LaskentakaavaLista',
         'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'Arvokonvertterikuvauskielet', 'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService',
         function ($scope, _, $location, $routeParams, $timeout, KaavaValidointi, Laskentakaava, LaskentakaavaLista, TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet, FunktioNimiService, FunktioFactory, KaavaValidationService) {
-
+            
             //servicet laskentakaavapuun piirtämiseen
             $scope.templateService = TemplateService;
             $scope.funktioService = FunktioService;
             $scope.funktioService.refresh();
             $scope.funktionimiService = FunktioNimiService;
             $scope.funktioFactory = FunktioFactory;
-            $scope.createNewLaskentakaava = false;
             $scope.valintaperusteviitetyypit = Valintaperusteviitetyypit;
             $scope.arvokonvertterikuvauskielet = Arvokonvertterikuvauskielet;
             $scope.errors = [];
@@ -386,6 +385,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                         });
                     }
                 } else {
+                    $scope.errors.length = 0;
                     KaavaValidationService.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
                     if ($scope.errors.length === 0) {
                         Laskentakaava.insert({}, kaava, function (result) {
@@ -404,8 +404,10 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             $scope.funktiokutsuSavedAsLaskentakaava = function (savedKaava) {
                 $scope.reloadLaskentakaavaLista();
                 $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = savedKaava;
-            }
-
+                $scope.persist();
+            };
+                
+            
         }]);
 
 
