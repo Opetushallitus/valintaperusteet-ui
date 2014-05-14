@@ -1,5 +1,7 @@
 angular.module('LaskentakaavaEditor').
-    controller('LaskentakaavaLomakeController', ['$scope', '$routeParams', '$location', 'Laskentakaava', '$timeout', function ($scope, $routeParams, $location, Laskentakaava, $timeout) {
+    controller('LaskentakaavaLomakeController', ['$scope', '$routeParams', '$location', 'Laskentakaava', 'KaavaVirheTyypit', function ($scope, $routeParams, $location, Laskentakaava, KaavaVirheTyypit) {
+
+        $scope.kaavaVirheTyypit = KaavaVirheTyypit;
 
         if (!$routeParams.laskentakaavaOid) {
             $scope.showNewLaskentakaavaForm = true;

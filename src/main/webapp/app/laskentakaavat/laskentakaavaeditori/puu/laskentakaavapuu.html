@@ -8,19 +8,30 @@
 
     <div class="gradingformula" style="float:left;">
         <!-- Laskentakaavassa olevat virheet-->
-        <div class="alert alert-danger margin-top-2" ng-if="errors.length > 0">
+        <div class="alert alert-danger margin-top-2" collapse="errors.length === 0 && commonErrors.length === 0">
             <h3>Laskentakaavaa ei voitu tallentaa.</h3>
 
-            <p>Siirry virheellisten funktiokutsujen muokkaukseen alla olevasta listasta</p>
+            <p>Alla olevasta listasta saat vihjeitä kaavan virheistä ja virheellisen funktiokutsun tapauksessa pääset
+                muokkaamaan sitä suoraan klikkaamalla virheilmoitusta. Yritä laskentakaavan tallennusta uudestaan heti
+                virheet korjattuasi. </p>
+
             <ol class="margin-top-2">
                 <li ng-repeat="error in errors">
                     <span add-class-on-mouseover="bold"
                           ng-click="setFunktioSelection(error.funktiokutsu, error.isFunktiokutsu, error.parent, error.index)">{{error.nimi}} -funktiokutsussa on virhe. {{error.kuvaus}}</span>
                 </li>
+
+                <li ng-repeat="commonerr in commonErrors">
+                    <span>{{commonerr.kuvaus}}</span>
+                </li>
+
+
             </ol>
+
+
         </div>
 
-        <div class="alert alert-success margin-top-2" ng-if="saved">
+        <div class="alert alert-success margin-top-2" collapse="!saved">
             <p>Laskentakaavan tallentaminen onnistui</p>
         </div>
 
@@ -335,9 +346,11 @@ YHTASUURI
         </div>
     </span>
 
-    <div ng-if="showNewFunktioList.visible && isLukuarvoFunktioSlot(parent, funktioSlotIndex) && !isAlikaava" class="function"
+    <div ng-if="showNewFunktioList.visible && isLukuarvoFunktioSlot(parent, funktioSlotIndex) && !isAlikaava"
+         class="function"
          ng-include="'lukuarvoFunktiot'"></div>
-    <div ng-if="showNewFunktioList.visible && !isLukuarvoFunktioSlot(parent, funktioSlotIndex) && !isAlikaava" class="function"
+    <div ng-if="showNewFunktioList.visible && !isLukuarvoFunktioSlot(parent, funktioSlotIndex) && !isAlikaava"
+         class="function"
          ng-include="'totuusarvoFunktiot'"></div>
 
 </script>
@@ -347,7 +360,8 @@ YHTASUURI
 <script type="text/ng-template" id="addFunktioToRoot">
     <span add-class-on-mouseover="bold" class="node" ng-click="showNewFunktioList = {visible: true}"><i
             style="font-size: 18px;" class="fa fa-plus-square kaavaeditor-blue"></i> </span>
-    <div ng-init="funktioSlotIndex = 0" ng-if="showNewFunktioList.visible && laskentakaavatyyppi === 'LUKUARVOFUNKTIO' && !alikaava"
+    <div ng-init="funktioSlotIndex = 0"
+         ng-if="showNewFunktioList.visible && laskentakaavatyyppi === 'LUKUARVOFUNKTIO' && !alikaava"
          ng-include="'lukuarvoFunktiot'"></div>
     <div ng-init="funktioSlotIndex = 0"
          ng-if="showNewFunktioList.visible && laskentakaavatyyppi === 'TOTUUSARVOFUNKTIO' && !isAlikaava"
@@ -361,10 +375,12 @@ YHTASUURI
             style="font-size: 18px;" class="fa fa-plus-square kaavaeditor-blue"></i> Funktioargumentti</span>
 
     <div ng-init="funktioSlotIndex = findFunktioSlotIndex(parent, $index)"
-         ng-if="showNewFunktioList.visible && isLukuarvoFunktioSlot(parent, funktioSlotIndex) && !isAlikaava" class="function"
+         ng-if="showNewFunktioList.visible && isLukuarvoFunktioSlot(parent, funktioSlotIndex) && !isAlikaava"
+         class="function"
          ng-include="'lukuarvoFunktiot'"></div>
     <div ng-init="funktioSlotIndex = findFunktioSlotIndex(parent, $index)"
-         ng-if="showNewFunktioList.visible && !isLukuarvoFunktioSlot(parent, funktioSlotIndex) && !isAlikaava" class="function"
+         ng-if="showNewFunktioList.visible && !isLukuarvoFunktioSlot(parent, funktioSlotIndex) && !isAlikaava"
+         class="function"
          ng-include="'totuusarvoFunktiot'"></div>
 
 </script>

@@ -2,9 +2,9 @@
 
 angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
     ['$scope', '_', '$location', '$routeParams', '$timeout', 'KaavaValidointi', 'Laskentakaava', 'LaskentakaavaLista',
-        'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'Arvokonvertterikuvauskielet', 'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService',
+        'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'Arvokonvertterikuvauskielet', 'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'KaavaVirheService',
         function ($scope, _, $location, $routeParams, $timeout, KaavaValidointi, Laskentakaava, LaskentakaavaLista, TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet, FunktioNimiService, FunktioFactory, KaavaValidationService) {
-            
+
             //servicet laskentakaavapuun piirtämiseen
             $scope.templateService = TemplateService;
             $scope.funktioService = FunktioService;
@@ -14,8 +14,8 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             $scope.valintaperusteviitetyypit = Valintaperusteviitetyypit;
             $scope.arvokonvertterikuvauskielet = Arvokonvertterikuvauskielet;
             $scope.errors = [];
+            $scope.commonErrors = [];
             $scope.model = {};
-
 
 
             //Pidetään laskentakaaviitevalinta objektissa. Laskentakaavaviitettä kaavaan liitettäessä radio-inputit iteroidaan ng-repeatissa,
@@ -99,7 +99,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 $scope.saved = false;
             };
 
-            $scope.removeFunktioSelection = function() {
+            $scope.removeFunktioSelection = function () {
                 $scope.funktioasetukset.konvertteriType = '';
                 $scope.isRootSelected = false;
                 $scope.saved = false;
@@ -367,32 +367,38 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     return result + current
                 }, "");
 
+                $scope.errors.length = 0;
+                $scope.commonErrors.length = 0;
+
                 if (!$scope.createNewKaava) {
                     $scope.funktioSelection = undefined;
                     $scope.alikaavaValues = {};
-                    $scope.errors.length = 0;
+
                     KaavaValidationService.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
 
                     if ($scope.errors.length === 0) {
                         //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
                         $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.cleanLaskentakaavaPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
                         KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function () {
-                            $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function (result) {
-                                    $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
-                                    $scope.saved = true;
+                                $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function (result) {
+                                        $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
+                                        $scope.saved = true;
 
-                                    if (urlEnd === 'laskentakaava/') {
-                                        $location.path($location.path() + result.id);
-                                    }
+                                        if (urlEnd === 'laskentakaava/') {
+                                            $location.path($location.path() + result.id);
+                                        }
 
-                                },
-                                function (error) {
-
-                                });
-                        });
+                                    },
+                                    function (error) {
+                                       
+                                        $scope.commonErrors.push({virhetyyppi: $scope.kaavaVirheTyypit['MuuVirhe'], kuvaus: 'Laskentakaavan tallennus epäonnistui '});
+                                    });
+                            },
+                            function (error) {
+                                $scope.commonErrors.push({virhetyyppi: $scope.kaavaVirheTyypit['MuuVirhe'], kuvaus: 'Laskentakaavan tallennus epäonnistui'});
+                            });
                     }
                 } else {
-                    $scope.errors.length = 0;
                     KaavaValidationService.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
                     if ($scope.errors.length === 0) {
                         Laskentakaava.insert({}, kaava, function (result) {
@@ -403,11 +409,12 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                                 $location.path($location.path() + result.id);
                             }
 
+                        }, function (error) {
+                            $scope.commonErrors.push({virhetyyppi: $scope.kaavaVirheTyypit['MuuVirhe'], kuvaus: 'Laskentakaavan tallennus epäonnistui'});
                         });
                     }
                 }
             });
-
 
 
             $scope.funktiokutsuSavedAsLaskentakaava = function (savedKaava) {
@@ -416,8 +423,8 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = savedKaava;
                 $scope.persist();
             };
-                
-            
+
+
         }]);
 
 
