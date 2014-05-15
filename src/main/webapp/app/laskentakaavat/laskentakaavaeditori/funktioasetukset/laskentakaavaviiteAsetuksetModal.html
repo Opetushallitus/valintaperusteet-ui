@@ -13,7 +13,7 @@
         <div ng-repeat="valintaryhma in valintaryhmaList">
             <div ng-if="valintaryhma.laskentakaavat" class="settingsform laskentakaavaviitteet">
                 <h3>Valintaryhmä: {{valintaryhma.nimi}}</h3>
-                <div ng-if="kaava.id !== model.laskentakaavapuu.id" ng-repeat="kaava in valintaryhma.laskentakaavat">
+                <div ng-if="kaava.id !== model.laskentakaavapuu.id" ng-repeat="kaava in valintaryhma.laskentakaavat | filter:getFunktioargumenttiSlotTyyppi(funktioasetukset.parentFunktiokutsu, funktioasetukset.selectedFunktioIndex)">
                     <input ng-disabled="alikaavaValues.hasParentAlikaava === true" id="{{kaava.id}}" type="radio" name="laskentakaavaviite" ng-value="kaava.id"
                            ng-change="setLaskentakaavaviite(kaava)" ng-model="laskentakaavaviite.selection.lapsi.id"/>
                     <label for="{{kaava.id}}" name="laskentakaavaviite">

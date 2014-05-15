@@ -36,10 +36,16 @@ angular.module('LaskentakaavaEditor')
 
     }])
 
-    .controller('laskentakaavaviiteAsetuksetController', ['$scope', function ($scope) {
+    .controller('laskentakaavaviiteAsetuksetController', ['$scope', 'FunktioService', function ($scope, FunktioService) {
         $scope.$on('showLaskentakaavaviiteAsetukset', function () {
             $scope.show();
         });
+
+        $scope.getFunktioargumenttiSlotTyyppi = function(parent, funktioargumenttiSlotIndex) {
+            return FunktioService.isLukuarvoFunktioSlot(parent, funktioargumenttiSlotIndex) === true ? "LUKUARVOFUNKTIO" : "TOTUUSARVOFUNKTIO";
+        };
+
+
     }])
 
     .controller('funktioMenuController', ['$scope', function ($scope) {
