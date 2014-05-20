@@ -102,8 +102,8 @@
                     <a ng-class="{true:'', false:'line-through'}[data.aktiivinen]"
                        ng-href="#/valintaryhma/{{model.valintaryhma.oid}}/{{model.getValinnanvaiheType(data)}}/{{data.oid}}">{{data.nimi}}</a>
                 </td>
-                <td class="align-center">{{'valintaperusteet.periytyy.' + data.inheritance | i18n}}</td>
-                <td class="align-center">{{'valintaperusteet.tyyppi.' + data.valinnanVaiheTyyppi | i18n}}</td>
+                <td class="align-center">{{'valintaperusteet.periytyy.' + data.inheritance | translate}}</td>
+                <td class="align-center">{{'valintaperusteet.tyyppi.' + data.valinnanVaiheTyyppi | translate}}</td>
                 <td class="align-center">
                     <i auth="crud" ng-show="!data.inheritance" class="fa fa-trash-o"
                        ng-click="model.removeValinnanvaihe(data)"></i>
@@ -117,10 +117,10 @@
 
         <div ng-show="model.valintaryhma.oid" class="form-row">
                 <span auth="crud" type="button" class="btn btn-sm btn-default" ng-click="lisaaValinnanVaihe()"><i
-                        class="fa fa-plus"></i> {{'valintaryhmalomake.valinnanvaihe' | i18n}}</span>
+                        class="fa fa-plus"></i> {{'valintaryhmalomake.valinnanvaihe' | translate}}</span>
                 <span auth="crud" type="button" class="btn btn-sm btn-default"
                       ng-click="lisaaValintakoeValinnanVaihe()"><i
-                        class="fa fa-plus"></i> {{'valintaryhmalomake.koekutsuvaihe' | i18n}}</span>
+                        class="fa fa-plus"></i> {{'valintaryhmalomake.koekutsuvaihe' | translate}}</span>
         </div>
     </div>
 </div>

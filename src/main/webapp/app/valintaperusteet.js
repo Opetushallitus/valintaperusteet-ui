@@ -1,5 +1,5 @@
 "use strict";
-var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'localization', 'ui.bootstrap', 'underscore', 'LaskentakaavaEditor', 'ng-breadcrumbs']).run(function($http){
+var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'pascalprecht.translate', 'ui.bootstrap', 'underscore', 'LaskentakaavaEditor', 'ng-breadcrumbs']).run(function($http){
     $http.get(SERVICE_URL_BASE + "buildversion.txt?auth");
 });
 

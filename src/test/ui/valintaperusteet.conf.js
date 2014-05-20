@@ -21,7 +21,6 @@ module.exports = function(config) {
       'main/webapp/app/**/*.js',
       'main/webapp/common/js/**/*.js',
       'test/ui/angular-mocks.js',
-      'test/ui/mockdata/*.*',
       'test/ui/unit/**/*.js'
     ],
 
@@ -30,6 +29,12 @@ module.exports = function(config) {
     exclude: [
         'main/webapp/common/jslib/**/*.min.js',
         'main/webapp/common/jslib/ui-bootstrap-tpls-0.7.0.js'
+    ],
+
+    plugins: [
+        'karma-jasmine',
+        'karma-phantomjs-launcher'
+
     ],
 
 
@@ -65,7 +70,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['PhantomJS'],
 
 
     // Continuous Integration mode
