@@ -1,11 +1,17 @@
 angular.module('LaskentakaavaEditor')
 
-    .controller('funktiokutsuAsetuksetController', ['$scope', '$routeParams', '$location', '$timeout', 'Laskentakaava', 'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', function ($scope, $routeParams, $location, $timeout, Laskentakaava, FunktioNimiService, FunktioFactory, KaavaValidationService) {
+    .controller('funktiokutsuAsetuksetController', ['$scope', '$routeParams', '$location', '$timeout', 'Laskentakaava', 'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'GuidGenerator', function ($scope, $routeParams, $location, $timeout, Laskentakaava, FunktioNimiService, FunktioFactory, KaavaValidationService, GuidGenerator) {
         $scope.funktioFactory = FunktioFactory;
 
         $scope.$on('showFunktiokutsuAsetukset', function () {
             $scope.show();
         });
+
+        $scope.guidGenerator = GuidGenerator;
+
+        $scope.generateSyoteId = function(valintaperuste) {
+            valintaperuste.tunniste = $scope.guidGenerator();
+        };
 
         $scope.getFunktiokutsuName = function (funktiokutsu) {
             if (funktiokutsu.lapsi) {
