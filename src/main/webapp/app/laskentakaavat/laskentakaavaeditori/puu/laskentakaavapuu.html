@@ -450,7 +450,8 @@ YHTASUURI
         <tr>
             <td ng-click="addFunktio(parent, 'KONVERTOILUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false">
                 <span>Konversio</span></td>
-            <td ng-click="addLaskentakaavaviite(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>Viittaus toiseen kaavaan</span>
+            <td ng-click="addFunktio(parent, 'HAEOSAKOEARVOSANA', funktioSlotIndex); showNewFunktioList.visible = false">
+                <span>YO-osakoearvosana</span>
             </td>
         </tr>
         <tr>
@@ -471,9 +472,8 @@ YHTASUURI
             <td ng-click="addFunktio(parent, 'HAEYOARVOSANA', funktioSlotIndex); showNewFunktioList.visible = false">
                 <span>YO-arvosana</span></td>
         </tr>
-        <tr>
-            <td ng-click="addFunktio(parent, 'HAEOSAKOEARVOSANA', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>YO-osakoearvosana</span>
+        <tr ng-if="parent.lapsi">
+            <td ng-click="addLaskentakaavaviite(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>Viittaus toiseen kaavaan</span>
             </td>
         </tr>
         </tbody>
@@ -536,7 +536,7 @@ YHTASUURI
             <td ng-click="addFunktio(parent, 'VALINTAPERUSTEYHTASUURUUS', funktioSlotIndex); showNewFunktioList.visible = false">
                 <span>Valintaperusteyhtasuuruus</span></td>
         </tr>
-        <tr>
+        <tr ng-if="parent.lapsi">
             <td ng-click="addLaskentakaavaviite(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>Viittaus toiseen kaavaan</span>
             </td>
         </tr>
