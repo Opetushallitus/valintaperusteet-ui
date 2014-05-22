@@ -299,11 +299,11 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             $scope.removeLaskentakaavaviite = function () {
                 //jos ei olla heti laskentakaavan juuren alla
                 if ($scope.isFirstChildForRoot($scope.funktioasetukset.parentFunktiokutsu)) {
-                    $scope.funktioasetukset.parentFunktiokutsu.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex, 1)
+                    $scope.funktioasetukset.parentFunktiokutsu.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = {};
                 }
                 //jos ollaan heti laskentakaavan juuren alla (laskentakaavan 'ensimmäisellä kerroksella' ei ole lapsi-wrapperia)
                 else {
-                    $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex, 1)
+                    $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = {};
                 }
                 $scope.funktioSelection = undefined;
                 $scope.alikaavaValues = {};
