@@ -11,9 +11,6 @@ underscore.factory('_', function() {
 });
 
 
-function mainCtrl($scope, breadcrumbs) {
-	$scope.breadcrumbs = breadcrumbs;
-}
 
 
 
@@ -21,6 +18,13 @@ var SERVICE_URL_BASE = SERVICE_URL_BASE || "";
 var TEMPLATE_URL_BASE = TEMPLATE_URL_BASE || "";
 var KOODISTO_URL_BASE = KOODISTO_URL_BASE || "";
 var ORGANIZATION_SERVICE_URL_BASE = ORGANIZATION_SERVICE_URL_BASE || "/organisaatio-service/";
+var LOKALISOINTIPALVELU_URL_BASE = LOKALISOINTIPALVELU_URL_BASE || "";
+
+
+function mainCtrl($scope, breadcrumbs, $http) {
+    $scope.breadcrumbs = breadcrumbs;
+
+}
 
 
 
