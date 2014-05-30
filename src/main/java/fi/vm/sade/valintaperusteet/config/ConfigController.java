@@ -33,6 +33,9 @@ public class ConfigController {
     @Value("${valintalaskenta-ui.cas.url:/cas/myroles}")
     private String casUrl;
 
+    @Value("${valintaperusteet-ui.lokalisointi-service-url}")
+    private String lokalisointiServiceUrl;
+
     @RequestMapping(value = "/configuration.js", method = RequestMethod.GET, produces = "text/javascript")
     @ResponseBody
     public String index() {
@@ -42,7 +45,7 @@ public class ConfigController {
         append(b, "TARJONTA_URL_BASE", tarjontaServiceRestURL);
         append(b, "ORGANIZATION_SERVICE_URL_BASE", organisaatioServiceURL);
         append(b, "VALINTALASKENTAKOOSTE_URL_BASE", valintalaskentakoostepalvelu);
-
+        append(b, "LOKALISOINTIPALVELU_URL_BASE", lokalisointiServiceUrl);
         append(b, "TEMPLATE_URL_BASE", "");
 
         append(b, "CAS_URL", casUrl);
