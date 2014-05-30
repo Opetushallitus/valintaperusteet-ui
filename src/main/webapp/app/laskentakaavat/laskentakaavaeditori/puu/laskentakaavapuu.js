@@ -204,6 +204,18 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
             };
 
+            $scope.addValintaperusteviitekuvaus = function (viiteselection) {
+
+                if (viiteselection.kuvaukset == null) {
+                    viiteselection.kuvaukset = {tekstit: []};
+                }
+
+                var emptyKuvaus = {kieli: 'FI', teksti: ''};
+
+                viiteselection.kuvaukset.tekstit.push(emptyKuvaus);
+
+            };
+
             $scope.getSyoteparametriArvo = function (syoteparametrit, key) {
                 var result;
                 _.some(syoteparametrit, function (syoteparametri) {
@@ -227,9 +239,11 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
             $scope.getValintaperuste = function (viitteet, indeksi) {
                 var result = viitteet[indeksi];
+
                 if (result === undefined) {
-                    result = {tunniste: "", kuvaus: "", lahde: "", onPakollinen: false};
+                    result = {tunniste: "", kuvaus: "", lahde: "", onPakollinen: false, kuvaukset: {tekstit: []}};
                 }
+
                 return result;
             };
 
@@ -253,6 +267,10 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
             $scope.removeKonvertteriParametriKuvaus = function (index, konvertteriparametriSelection) {
                 konvertteriparametriSelection.kuvaukset.tekstit.splice(index, 1);
+            };
+
+            $scope.removeValintaperusteviiteKuvaus = function (index, selection) {
+                selection.kuvaukset.tekstit.splice(index, 1);
             };
 
             $scope.getDefinedFunktioargumenttiCount = function (parent) {

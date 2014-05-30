@@ -70,6 +70,37 @@
                 </div>
             </div>
 
+            <div id="valintaperusteviite-kuvaukset">
+                <div><b>Hylkäysperustekuvaukset</b></div>
+                <table class="table" ng-if="valintaperuste.kuvaukset.tekstit.length > 0">
+                    <thead>
+                    <tr>
+                        <td>Kieli</td>
+                        <td>Kuvaus</td>
+                        <td></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="kuvaus in valintaperuste.kuvaukset.tekstit">
+                        <td><select ng-disabled="alikaavaValues.isAlikaava" ng-model="kuvaus.kieli"
+                                    ng-options="item.key as item.text for item in arvokonvertterikuvauskielet"></select>
+                        </td>
+                        <td><input ng-disabled="alikaavaValues.isAlikaava" type="text" size="15"
+                                   ng-model="kuvaus.teksti"/></td>
+                        <td>
+                            <button ng-disabled="alikaavaValues.isAlikaava"
+                                    ng-click="removeValintaperusteviiteKuvaus($index, valintaperuste)"><i
+                                    class="fa fa-trash-o"></i></button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button ng-disabled="alikaavaValues.isAlikaava" class="btn btn-sm btn-default"
+                        ng-click="addValintaperusteviitekuvaus(valintaperuste)"><i
+                        class="fa fa-plus"></i> Kuvaus
+                </button>
+            </div>
+
         </form>
     </div>
 </script>
