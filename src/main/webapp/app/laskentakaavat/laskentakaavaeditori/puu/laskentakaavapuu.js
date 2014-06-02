@@ -137,7 +137,10 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 //lisätään uusi pari funktioargumentteja, kun edelliset on täytetty
                 if ($scope.getFunktionimi(parent) === 'PAINOTETTUKESKIARVO') {
                     var argCount = $scope.getDefinedFunktioargumenttiCount(parent);
-                    if (argCount % 2 == 0) {
+                    var argListLength = parent.lapsi.funktioargumentit.length;
+
+                    //tarkistetaan, että funktioargumentteja on parillinen määrä ja että kaksi viimeistä funktioargumenttislottia on täytetty, jottei lisätä ylimääräisiä slotteja
+                    if (argCount % 2 == 0 && !(_.isEmpty(parent.lapsi.funktioargumentit[argListLength - 1])) && !(_.isEmpty(parent.lapsi.funktioargumentit[argCount - 2])) ) {
                         parent.lapsi.funktioargumentit.push({});
                         parent.lapsi.funktioargumentit.push({});
                     }
@@ -418,7 +421,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 } else {
                     KaavaValidationService.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
                     kaava.laskentakaava.funktiokutsu.funktioargumentit = FunktioService.cleanLaskentakaavaPKObjects(kaava.laskentakaava.funktiokutsu.funktioargumentit);
-                    
+
                     if ($scope.errors.length === 0) {
                         Laskentakaava.insert({}, kaava, function (result) {
                             $scope.createNewKaava = false;
