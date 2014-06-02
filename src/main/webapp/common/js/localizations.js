@@ -34,7 +34,7 @@ app.config(function ($translateProvider) {
     });
 
 
-    $translateProvider.translations('en', {
+    $translateProvider.translations('sv', {
         valintaryhmalistaus: {
             add: {
                 valintaryhma: "Valintaryhmä",
