@@ -17,7 +17,6 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             $scope.commonErrors = [];
             $scope.model = {};
 
-
             //Pidetään laskentakaaviitevalinta objektissa. Laskentakaavaviitettä kaavaan liitettäessä radio-inputit iteroidaan ng-repeatissa,
             //joka luo uuden skoopin joka itemille, jolloin laskentakaavaviitteen tallentaminen  suoraan skoopissa olevaan muuttujaan ei toimi oikein
             $scope.laskentakaavaviite = { selection: null };
@@ -418,6 +417,8 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     }
                 } else {
                     KaavaValidationService.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
+                    kaava.laskentakaava.funktiokutsu.funktioargumentit = FunktioService.cleanLaskentakaavaPKObjects(kaava.laskentakaava.funktiokutsu.funktioargumentit);
+                    
                     if ($scope.errors.length === 0) {
                         Laskentakaava.insert({}, kaava, function (result) {
                             $scope.createNewKaava = false;
