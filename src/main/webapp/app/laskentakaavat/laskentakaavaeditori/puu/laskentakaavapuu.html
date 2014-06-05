@@ -130,8 +130,8 @@
         <span add-class-on-mouseover="bold" class="node"
               ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">
             <span>{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
-            <span ng-if="funktiowrapper.lapsi.valintaperusteviitteet[0].tunniste">({{funktiowrapper.lapsi.valintaperusteviitteet[0].tunniste}})</span>
-            <span ng-if="funktiowrapper.lapsi.valintaperusteviitteet[0].kuvaus">- {{funktiowrapper.lapsi.valintaperusteviitteet[0].kuvaus}}</span>
+            <span ng-repeat="valintaperusteviite in funktiowrapper.lapsi.valintaperusteviitteet" ng-if="valintaperusteviite.tunniste">({{valintaperusteviite.tunniste}}<span ng-if="valintaperusteviite.kuvaus"> - {{valintaperusteviite.kuvaus}}</span>) </span>
+
         </span>
     </div>
 </script>
