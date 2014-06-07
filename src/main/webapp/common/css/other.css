@@ -251,7 +251,11 @@ input[type="date"] {
     height: 40px;
 }
 
-.settingstable select, .settingstable option {
+.settingstable select {
+    width: 100%;
+}
+
+.settingstable option {
     overflow: hidden;
 }
 
