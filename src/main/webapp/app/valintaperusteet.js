@@ -133,6 +133,13 @@ app.factory('KoodistoValintakoekoodi', function($resource) {
   });
 });
 
+app.factory('KoodistoHaunKohdejoukko', function($resource) {
+    return $resource(KOODISTO_URL_BASE + "json/haunkohdejoukko/koodi", {}, {
+    //return $resource(KOODISTO_URL_BASE + "codeelement/codes/haunkohdejoukko/0", {}, {
+        get: {method: "get", isArray: true}
+    });
+});
+
 
 //Hakukohde
 app.factory('RootHakukohde', function($resource) {

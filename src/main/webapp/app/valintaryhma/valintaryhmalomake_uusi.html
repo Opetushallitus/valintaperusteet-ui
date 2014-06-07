@@ -30,6 +30,17 @@
         </div>
 
         <div class="form-row">
+            <label class="form-row-label" for="">Kohdejoukko</label>
+
+            <div class="form-row-content width-60">
+                <select ng-model="model.valintaryhma.kohdejoukko"
+                        ng-options="k.koodiUri as k.metadata[0].nimi for k in model.kohdejoukot">
+                </select>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="form-row">
             <label class="form-row-label" for="">Organisaatiot:</label>
 
             <div class="form-row-content  width-60">

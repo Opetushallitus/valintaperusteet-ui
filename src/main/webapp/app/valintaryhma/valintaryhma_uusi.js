@@ -1,11 +1,16 @@
-app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routeParams, Valintaryhma, ChildValintaryhmas, Treemodel ) {
+app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routeParams, Valintaryhma, KoodistoHaunKohdejoukko, ChildValintaryhmas, Treemodel ) {
 
     var model = new function() {
         this.valintaryhma = {};
+        this.kohdejoukot = [];
 
         this.refresh = function() {
             model.valintaryhma = {};
             model.parentOid  = "";
+
+            KoodistoHaunKohdejoukko.get(function (result) {
+                model.kohdejoukot = result;
+            })
 
         };
 

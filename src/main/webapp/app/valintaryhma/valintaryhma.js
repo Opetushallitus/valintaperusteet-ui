@@ -1,4 +1,4 @@
-app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, HakijaryhmaJarjesta, KoodistoHakukohdekoodi, KoodistoValintakoekoodi, Laskentakaava, Treemodel, ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe, ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma, OrganizationByOid) {
+app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, HakijaryhmaJarjesta, KoodistoHakukohdekoodi, KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel, ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe, ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma, OrganizationByOid) {
 
 	var model = new function () {
 		this.loaded = $q.defer();
@@ -6,6 +6,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 		this.valinnanvaiheet = [];
 		this.hakukohdekoodit = [];
 		this.valintakoekoodit = [];
+        this.kohdejoukot = [];
 		this.hakijaryhmat = [];
 
 		this.refresh = function (oid) {
@@ -50,7 +51,14 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 						});
 					});
 				});
-			}
+
+                KoodistoHaunKohdejoukko.get(function (result) {
+                    model.kohdejoukot = result;
+                });
+
+
+
+            }
 		};
 
 		this.getHakukohdekoodit = function () {
@@ -79,6 +87,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 		};
 
 		this.persistValintaryhma = function (oid) {
+            console.log(model.valintaryhma);
 			Valintaryhma.post(model.valintaryhma, function (result) {
 				model.valintaryhma = result;
 				Treemodel.refresh();
