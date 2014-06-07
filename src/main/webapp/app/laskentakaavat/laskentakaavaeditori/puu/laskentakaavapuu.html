@@ -205,8 +205,7 @@
               ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">
             <span ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
             <span add-class-on-mouseover="bold" class="node"
-                  ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo !== undefined"
-                  ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">
+                  ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo !== undefined">
                   <span ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo === 'true'">Tosi</span>
                   <span ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo === 'false'">Epätosi</span>
             </span>
