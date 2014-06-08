@@ -207,7 +207,7 @@ factory('FunktioService', function (FunktioKuvausResource, FunktioNimiService) {
         };
         
         this.addSyoteparametrit = function(funktiokuvaus, syoteparametrit) {
-            if(funktiokuvaus.syoteparametrit.length > syoteparametrit.length) {
+            if(funktiokuvaus && funktiokuvaus.syoteparametrit && funktiokuvaus.syoteparametrit.length > syoteparametrit.length) {
                 _.forEach(funktiokuvaus.syoteparametrit, function(kuvausSyoteparametri) {
                     var found = false;
                     _.forEach(syoteparametrit, function(funktioSyoteparametri) {
