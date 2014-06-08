@@ -194,6 +194,34 @@ factory('FunktioService', function (FunktioKuvausResource, FunktioNimiService) {
             return funktioargumentit;
         };
 
+        this.addMissingSyoteparametrit = function(funktiokutsu) {
+            var funktiokuvaus = model.getFunktiokuvaus(model.getFunktionimi(funktiokutsu));
+            model.addSyoteparametrit(funktiokuvaus, funktiokutsu.lapsi.syoteparametrit);
+            if(funktiokutsu.lapsi.funktioargumentit) {
+                _.forEach(funktiokutsu.funktioargumentit, function(funktioargumentti) {
+                    if(funktioargumentti.lapsi) {
+                        model.addMissingSyoteparametrit(funktioargumentti);
+                    }
+                });
+            }
+        };
+        
+        this.addSyoteparametrit = function(funktiokuvaus, syoteparametrit) {
+            if(funktiokuvaus.syoteparametrit.length > syoteparametrit.length) {
+                _.forEach(funktiokuvaus.syoteparametrit, function(kuvausSyoteparametri) {
+                    var found = false;
+                    _.forEach(syoteparametrit, function(funktioSyoteparametri) {
+                        if(kuvausSyoteparametri.avain === funktioSyoteparametri.avain) {
+                            found = true;
+                        }
+                    });
+                    if(!found) {
+                        syoteparametrit.push({avain: kuvausSyoteparametri.avain, arvo: ""})
+                    }
+                });
+            }
+        };
+
         this.addPainotettukeskiarvoParametrit = function (arr) {
             arr.push(null);
             arr.push(null);

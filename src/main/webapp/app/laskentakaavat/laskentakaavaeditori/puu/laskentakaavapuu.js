@@ -28,6 +28,9 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     $scope.model.laskentakaavapuu = result;
                     //laskentakaavan painotettu keskiarvo -funktiokutsuihin lisätään tyhjät objektit, jotta niihin pystytään lisäämään funktioargumentteja
                     FunktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
+
+                    //käydään rekursiivisesti laskentakaavapuu läpi ja lisätään puuttuvat syöteparametriobjektit
+                    FunktioService.addMissingSyoteparametrit($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit[0]);
                 });
             }
 
