@@ -12,7 +12,7 @@ app.factory('LaskentakaavaModel', function(Laskentakaava, ParentValintaryhmas, H
             Laskentakaava.list(function(result) {
                 if(result.length > 0) {
                     var obj = {
-                        name: 'root',
+                        name: 'Juurikaavat',
                         result: result
                     }
                     instance.laskentakaavat.push(obj);
@@ -24,7 +24,8 @@ app.factory('LaskentakaavaModel', function(Laskentakaava, ParentValintaryhmas, H
                 Laskentakaava.list({hakukohde: hakukohdeOid}, function(result) {
                     if(result.length > 0) {
                         var obj = {
-                            name: 'current',
+                            hakukohdeOid: hakukohdeOid,
+                            name: 'Hakukohteen laskentakaavat',
                             result: result
                         }
                         instance.laskentakaavat.push(obj);
@@ -48,6 +49,7 @@ app.factory('LaskentakaavaModel', function(Laskentakaava, ParentValintaryhmas, H
                     Laskentakaava.list({valintaryhma: temp.oid}, function(result) {
                         if(result.length > 0) {
                             var obj = {
+                                valintaryhmaOid: temp.oid,
                                 name: temp.nimi,
                                 result: result
                             }

@@ -15,23 +15,19 @@
 
             <div class="form-row-content">
                 <input type="text" name="metatiedot" id="metatiedot" ng-model="model.jarjestyskriteeri.metatiedot"/>
-                <!--
-                <div><small>Jonon nimeen liittyvä ohjeteksti.</small></div>
-                -->
             </div>
             <div class="clear"></div>
         </div>
 
         <div class="form-row" ng-model="model.laskentakaavaModel.laskentakaavat">
 
-            <div class="form-row-label">Laskentakaava<br/></div>
-            <div class="form-row-content">&nbsp;<br/></div>
+            <div class="form-row-label"><h3>Laskentakaavan valinta <span></span></h3><br/></div>
             <div class="clear"></div>
+
             <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat" class="field-container-radio">
                 <div class="form-row-label">{{group.name}}<br/></div>
                 <div class="form-row-content">
                     <!--<span >{{model.laskentakaavat}}</span>-->
-
                     <div ng-repeat="data in group.result" class="field-container-radio">
                         <label>
                             <input type="radio" name="laskentakaava" value="{{data.id}}"
@@ -39,6 +35,10 @@
                                    ng-required="!model.jarjestyskriteeri.laskentakaavaId"/>
 
                             <span ng-bind="data.nimi"></span>(<span ng-bind="data.id"></span>)
+
+                            <a ng-if="group.valintaryhmaOid" target="_blank" ng-href="#/valintaryhma/{{group.valintaryhmaOid}}/laskentakaavalista/laskentakaava/{{data.id}}">Näytä kaava</a>
+                            <!--<a ng-if="group.name === 'Juurikaavat'" target="_blank" ng-href="#/valintaryhma/{{group.valintaryhmaOid}}/laskentakaavalista/laskentakaava/{{data.id}}">näytä kaava</a>-->
+                            <a ng-if="group.hakukohdeOid" target="_blank" ng-href="#/hakukohde/{{group.hakukohdeOid}}/laskentakaavalista/laskentakaava/{{data.id}}">Näytä kaava</a>
                         </label>
                     </div>
                     <br/>
