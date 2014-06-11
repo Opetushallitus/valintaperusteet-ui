@@ -16,7 +16,7 @@
 </script>
 <script type="text/ng-template" id="arvojoukko-template">
     <select ng-disabled="alikaavaValues.isAlikaava" ng-model="syoteparametri.arvo"
-            ng-options="key as value for (key, value) in funktiokuvausSyoteparametri.arvojoukko"></select>
+            ng-options="arvo.avain as arvo.arvo for arvo in funktiokuvausSyoteparametri.arvojoukko | orderBy:'arvo'"></select>
 </script>
 
 <!-- Valintaperuste default template -->
