@@ -24,6 +24,7 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
                 lapsihakukohde: false,
                 lapsivalintaryhma: false,
                 nimi: model.valintaryhma.nimi,
+                kohdejoukko: model.valintaryhma.kohdejoukko,
                 organisaatiot: model.valintaryhma.organisaatiot
             };
 
