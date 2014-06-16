@@ -169,7 +169,7 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
 });
 
 
-function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra, HakuModel) {
+function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra, HakuModel, toaster) {
 	$scope.predicate = 'nimi';
 	$scope.domain = Treemodel;
 
@@ -179,16 +179,17 @@ function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra,
     $scope.hakukohteetListingLimit = 100;
     $scope.lazyLoading = function() {
         $scope.hakukohteetListingLimit +=100;
-    }
+    };
 
-	$scope.expandGroup = function($event) {
-		$($event.target).closest('li').toggleClass('uiCollapsed').toggleClass('uiExpanded');
-	}
+    $scope.showMessage = function(){
+        toaster.add({
+            type:'success',
+            title: "title",
+            message: "text"
+        });
+    };
 
 	$scope.move = function(index, hakukohdeOid, valintaryhmaOid, item) {
-
-     
-
         HakukohdeSiirra.siirra({hakukohdeOid: hakukohdeOid}, valintaryhmaOid, function(result) {
             //var hakukohde = Treemodel.getHakukohde(hakukohdeOid);
             //var parentNode = hakukohde.ylavalintaryhma;
@@ -196,8 +197,7 @@ function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra,
     	}, function() {
               // show error
     	});
-
-	}
+	};
 
 	$scope.addClass = function(cssClass, ehto) {
 		if(ehto) {
@@ -205,7 +205,7 @@ function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra,
 		} else {
 			return "";
 		}
-	}
+	};
 	
     $scope.expandNode = function(node) {
         if( (node.alavalintaryhmat && node.alavalintaryhmat.length > 0)  ||

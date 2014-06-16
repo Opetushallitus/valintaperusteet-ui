@@ -43,7 +43,7 @@
             <a class="btn btn-sm btn-default" ng-click="domain.expandTree()"> <i class="fa fa-expand"></i> Avaa puu</a>
         </div>
 
-        <br>
+        <br />
 
         <div class="margin-bottom-3">
             <label class="margin-right-2" for="haku">Haku</label>
@@ -69,12 +69,12 @@
     <br><br>
     <div class="results">
         <div>Haku palautti {{domain.tilasto.valintaryhmia}} valintaryhmää ja {{domain.tilasto.hakukohteita}} hakukohdetta </div>
-        <ol ng-if="!domain.search.vainHakukohteet" id="valintaryhmapuu" class="sortable collapsible" nestedsortable="">
+        <ol ng-if="!domain.search.vainHakukohteet" id="valintaryhmapuu" class="sortable collapsible">
             <li ng-repeat="data in domain.valintaperusteList | orderBy:predicate"
                 data-oid="{{data.oid}}"
                 ng-model="data"
                 ng-show="!(!data.sisaltaaHakukohteita&&domain.search.vainHakukohteitaSisaltavatRyhmat)"
-                class="{{addClass('noNesting',domain.isHakukohde(data))}} {{addClass('uiExpanded',domain.isExpanded(data))}} {{addClass('uiCollapsed',domain.isCollapsed(data))}}"
+                class="{{addClass('noNesting',domain.isHakukohde(data))}}"
                 ng-include="domain.getTemplate(data)">
             </li>
         </ol>
@@ -105,5 +105,6 @@
         </table>
         <div ng-if="hakukohteetListingLimit < domain.hakukohteet.length && domain.search.vainHakukohteet">Näytetty: {{hakukohteetListingLimit}} / {{domain.hakukohteet.length}}</div>
     </div>
+
 </div>
 
