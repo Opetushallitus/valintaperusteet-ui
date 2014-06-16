@@ -48,7 +48,8 @@ app.factory('ValintaperusteetPuu', function($resource) {
 return $resource(SERVICE_URL_BASE + "resources/puu", {
       q: "@q",
       hakuOid: "@hakuOid",
-      tila: "@tila"
+      tila: "@tila",
+      kohdejoukko: "@kohdejoukko"
     }, {
         get: {method: "GET", isArray: true  }
       });

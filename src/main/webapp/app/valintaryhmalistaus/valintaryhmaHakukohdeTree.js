@@ -54,8 +54,10 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
     	},
         refresh:function() {
             var hakuoid = null;
+            var kohdejoukko = "";
             if(this.search.haku) {
                 hakuoid = this.search.haku.oid;
+                kohdejoukko = this.search.haku.kohdejoukkoUri.split("#")[0];
             }
             var tila=null;
             if(this.search.vainValmiitJaJulkaistut) {
@@ -64,7 +66,8 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
             ValintaperusteetPuu.get({
                 q: this.search.q,
                 hakuOid: hakuoid,
-                tila: tila
+                tila: tila,
+                kohdejoukko: kohdejoukko
             },function(result) {
             	modelInterface.valintaperusteList = result;
             	modelInterface.update();
