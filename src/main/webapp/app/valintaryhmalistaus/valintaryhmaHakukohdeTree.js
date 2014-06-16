@@ -169,7 +169,7 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
 });
 
 
-function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra, HakuModel, toaster) {
+function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra, HakuModel) {
 	$scope.predicate = 'nimi';
 	$scope.domain = Treemodel;
 
@@ -181,13 +181,13 @@ function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra,
         $scope.hakukohteetListingLimit +=100;
     };
 
-    $scope.showMessage = function(){
-        toaster.add({
-            type:'success',
-            title: "title",
-            message: "text"
-        });
-    };
+//    $scope.showMessage = function(){
+//        toaster.add({
+//            type:'success',
+//            title: "title",
+//            message: "text"
+//        });
+//    };
 
 	$scope.move = function(index, hakukohdeOid, valintaryhmaOid, item) {
         HakukohdeSiirra.siirra({hakukohdeOid: hakukohdeOid}, valintaryhmaOid, function(result) {
