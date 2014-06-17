@@ -30,6 +30,7 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
                 model.jarjestyskriteerit = [];
                 model.hakijaryhmat = [];
                 model.valintatapajono.tasapistesaanto = "YLITAYTTO";
+                model.valintatapajono.kaytetaanValintalaskentaa = false;
             } else if (oid != model.valintatapajono.oid) {
                 this.refresh(oid, valintaryhmaOid, hakukohdeOid);
             }
@@ -67,7 +68,6 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
                         model.valintatapajono.rajattu = model.valintatapajono.varasijat > 0;
                         model.valintatapajono.alkaenRajattu = !!model.valintatapajono.varasijojaKaytetaanAlkaen;
                         model.valintatapajono.astiRajattu = !!model.valintatapajono.varasijojaTaytetaanAsti;
-                        model.valintatapajono.kaytetaanValintalaskentaa = false;
                         valintatapajonot.push(result);
                 });
             } else {
