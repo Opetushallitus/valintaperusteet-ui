@@ -14,7 +14,7 @@ underscore.factory('_', function() {
 
 
 
-var SERVICE_URL_BASE = SERVICE_URL_BASE || "";
+var SERVICE_URL_BASwE = SERVICE_URL_BASE || "";
 var TEMPLATE_URL_BASE = TEMPLATE_URL_BASE || "";
 var KOODISTO_URL_BASE = KOODISTO_URL_BASE || "";
 var ORGANIZATION_SERVICE_URL_BASE = ORGANIZATION_SERVICE_URL_BASE || "/organisaatio-service/";
