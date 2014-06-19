@@ -124,9 +124,10 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
                 };
 
                 if(item.tyyppi == 'VALINTARYHMA') {
+
                   modelInterface.tilasto.valintaryhmia++;
-                  AuthService.getOrganizations("APP_VALINTAPERUSTEET").then(function(organisations){
-                      "use strict";
+                  /*
+                    AuthService.getOrganizations("APP_VALINTAPERUSTEET").then(function(organisations){
                       item.access = false;
                       organisations.forEach(function(org){
                           if(item.organisaatiot.length > 0) {
@@ -142,6 +143,8 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
                       });
                   });
                 }
+                */
+
                 if(item.tyyppi == 'HAKUKOHDE') {
                    modelInterface.tilasto.hakukohteita++;
                    modelInterface.hakukohteet.push(item);
@@ -181,14 +184,6 @@ function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra,
         $scope.hakukohteetListingLimit +=100;
     };
 
-//    $scope.showMessage = function(){
-//        toaster.add({
-//            type:'success',
-//            title: "title",
-//            message: "text"
-//        });
-//    };
-
 	$scope.move = function(index, hakukohdeOid, valintaryhmaOid, item) {
         HakukohdeSiirra.siirra({hakukohdeOid: hakukohdeOid}, valintaryhmaOid, function(result) {
             //var hakukohde = Treemodel.getHakukohde(hakukohdeOid);
@@ -216,7 +211,6 @@ function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra,
                 // aukaisee alitason, jos ei ole liikaa tavaraa
                 var iter = function(ala) {
                     ala.forEach(function(ala){
-                        "use strict";
                         if(!ala.alavalintaryhmat || ala.alavalintaryhmat.length < 4) {
                             ala.isVisible = true;
                             iter(ala.alavalintaryhmat);
