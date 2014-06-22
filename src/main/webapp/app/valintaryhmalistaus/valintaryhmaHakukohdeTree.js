@@ -2,65 +2,65 @@
 app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
 
     //and return interface for manipulating the model
-    var modelInterface =  {
-       //models
-       valintaperusteList: [],
-       hakukohteet: [],
-       search : {   q: null,
-                    haku: null,
-                    vainValmiitJaJulkaistut: true,
-                    vainHakukohteitaSisaltavatRyhmat: true,
-                    vainHakukohteet: null,
-                    valintaryhmatAuki: null
+    var modelInterface = {
+        //models
+        valintaperusteList: [],
+        hakukohteet: [],
+        search: {   q: null,
+            haku: null,
+            vainValmiitJaJulkaistut: true,
+            vainHakukohteitaSisaltavatRyhmat: true,
+            vainHakukohteet: null,
+            valintaryhmatAuki: null
         },
         tilasto: {
-                    valintaryhmia: 0,
-                    hakukohteita: 0,
-                    valintaryhmiaNakyvissa: 0,
-                    hakukohteitaNakyvissa: 0
+            valintaryhmia: 0,
+            hakukohteita: 0,
+            valintaryhmiaNakyvissa: 0,
+            hakukohteitaNakyvissa: 0
         },
         //methods
-    	isFile: function(data) {
-    		return data.hakukohdeViitteet == 0 && data.alavalintaryhmat == 0;
-    	},
-    	isHakukohde: function(data) { 
-    	   return data.tyyppi == 'HAKUKOHDE';
-    	},
-    	noNesting: function(data) {
-    		if(this.isHakukohde(data)) {
-    			return "noNesting";
-    		} else {
-    			return "";
-    		}
-    	},
-    	isExpanded: function(data) {
-    		if(this.isFile(data)) { // force file always open!
-    			return true;
-    		}
-    		return data.isVisible;
-    	},
-    	isCollapsed: function(data) {
-    		return !this.isExpanded(data);
-    	},
-    	getTemplate: function(data) {
-    		if(data) {
-    			if(data.tyyppi == 'VALINTARYHMA') {
-    				return "valintaryhma_node.html";
-    			} else {
-    				return "hakukohde_leaf.html";
-    			}
-    		}
-    		return "";
-    	},
-        refresh:function() {
+        isFile: function (data) {
+            return data.hakukohdeViitteet == 0 && data.alavalintaryhmat == 0;
+        },
+        isHakukohde: function (data) {
+            return data.tyyppi == 'HAKUKOHDE';
+        },
+        noNesting: function (data) {
+            if (this.isHakukohde(data)) {
+                return "noNesting";
+            } else {
+                return "";
+            }
+        },
+        isExpanded: function (data) {
+            if (this.isFile(data)) { // force file always open!
+                return true;
+            }
+            return data.isVisible;
+        },
+        isCollapsed: function (data) {
+            return !this.isExpanded(data);
+        },
+        getTemplate: function (data) {
+            if (data) {
+                if (data.tyyppi == 'VALINTARYHMA') {
+                    return "valintaryhma_node.html";
+                } else {
+                    return "hakukohde_leaf.html";
+                }
+            }
+            return "";
+        },
+        refresh: function () {
             var hakuoid = null;
             var kohdejoukko = "";
-            if(this.search.haku) {
+            if (this.search.haku) {
                 hakuoid = this.search.haku.oid;
                 kohdejoukko = this.search.haku.kohdejoukkoUri.split("#")[0];
             }
-            var tila=null;
-            if(this.search.vainValmiitJaJulkaistut) {
+            var tila = null;
+            if (this.search.vainValmiitJaJulkaistut) {
                 tila = ["VALMIS", "JULKAISTU"];
             }
             ValintaperusteetPuu.get({
@@ -68,38 +68,38 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
                 hakuOid: hakuoid,
                 tila: tila,
                 kohdejoukko: kohdejoukko
-            },function(result) {
-            	modelInterface.valintaperusteList = result;
-            	modelInterface.update();
+            }, function (result) {
+                modelInterface.valintaperusteList = result;
+                modelInterface.update();
             });
         },
-        expandTree:function() {
-            modelInterface.forEachValintaryhma(function(item) {
+        expandTree: function () {
+            modelInterface.forEachValintaryhma(function (item) {
                 item.isVisible = true;
             });
         },
-        forEachValintaryhma:function(f) {
-            var recursion = function(item, f) {
+        forEachValintaryhma: function (f) {
+            var recursion = function (item, f) {
                 f(item);
-                if(item.alavalintaryhmat) for(var i=0; i<item.alavalintaryhmat.length;i++)  recursion(item.alavalintaryhmat[i],  f);
+                if (item.alavalintaryhmat) for (var i = 0; i < item.alavalintaryhmat.length; i++)  recursion(item.alavalintaryhmat[i], f);
             }
-           for(var i=0; i<modelInterface.valintaperusteList.length;i++) recursion(modelInterface.valintaperusteList[i],  f);
+            for (var i = 0; i < modelInterface.valintaperusteList.length; i++) recursion(modelInterface.valintaperusteList[i], f);
         },
-        getHakukohde:function(oid) {
-            for(i=0;i<modelInterface.hakukohteet.length;i++) {
-                if(oid == modelInterface.hakukohteet[i].oid) {
+        getHakukohde: function (oid) {
+            for (i = 0; i < modelInterface.hakukohteet.length; i++) {
+                if (oid == modelInterface.hakukohteet[i].oid) {
                     return modelInterface.hakukohteet[i];
                 }
             }
         },
-       getValintaryhma:function(oid) {
+        getValintaryhma: function (oid) {
             var valintaryhma = null;
-            modelInterface.forEachValintaryhma(function(item) {
-                if(item.oid == oid) valintaryhma = item;
+            modelInterface.forEachValintaryhma(function (item) {
+                if (item.oid == oid) valintaryhma = item;
             });
             return valintaryhma;
         },
-        update:function() {
+        update: function () {
             var list = modelInterface.valintaperusteList;
             modelInterface.valintaperusteList = [];
             modelInterface.hakukohteet = [];
@@ -109,63 +109,64 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
             modelInterface.tilasto.hakukohteitaNakyvissa = 0;
 
 
-            var recursion = function(item, previousItem) {
-                if(previousItem != null) {
+            var recursion = function (item, previousItem) {
+                if (previousItem != null) {
                     item.ylavalintaryhma = previousItem;
                 }
-                item.getParents = function() {
-                  i = this.ylavalintaryhma;
-                  arr = [];
-                  while(i != null) {
-                     arr.unshift(i);
-                     i = i.ylavalintaryhma;
-                  }
-                  return arr;
+                item.getParents = function () {
+                    i = this.ylavalintaryhma;
+                    arr = [];
+                    while (i != null) {
+                        arr.unshift(i);
+                        i = i.ylavalintaryhma;
+                    }
+                    return arr;
                 };
 
-                if(item.tyyppi == 'VALINTARYHMA') {
+                if (item.tyyppi == 'VALINTARYHMA') {
 
-                  modelInterface.tilasto.valintaryhmia++;
-                  /*
-                    AuthService.getOrganizations("APP_VALINTAPERUSTEET").then(function(organisations){
-                      item.access = false;
-                      organisations.forEach(function(org){
-                          if(item.organisaatiot.length > 0) {
-                              item.organisaatiot.forEach(function(org2) {
+                    modelInterface.tilasto.valintaryhmia++;
+                    /*
+                     AuthService.getOrganizations("APP_VALINTAPERUSTEET").then(function(organisations){
+                     item.access = false;
+                     organisations.forEach(function(org){
+                     if(item.organisaatiot.length > 0) {
+                     item.organisaatiot.forEach(function(org2) {
 
-                                  if(org2.parentOidPath != null && org2.parentOidPath.indexOf(org) > -1) {
-                                      item.access = true;
-                                  }
-                              });
-                          } else {
-                              item.access = true;
-                          }
-                      });
-                  });
+                     if(org2.parentOidPath != null && org2.parentOidPath.indexOf(org) > -1) {
+                     item.access = true;
+                     }
+                     });
+                     } else {
+                     item.access = true;
+                     }
+                     });
+                     });
+                     }
+                     */
+
+                    if (item.tyyppi == 'HAKUKOHDE') {
+                        modelInterface.tilasto.hakukohteita++;
+                        modelInterface.hakukohteet.push(item);
+                    }
+                    if (item.alavalintaryhmat)  for (var i = 0; i < item.alavalintaryhmat.length; i++)  recursion(item.alavalintaryhmat[i], item);
+                    if (item.hakukohdeViitteet) for (var i = 0; i < item.hakukohdeViitteet.length; i++) recursion(item.hakukohdeViitteet[i], item);
                 }
-                */
+                for (var i = 0; i < list.length; i++) recursion(list[i]);
 
-                if(item.tyyppi == 'HAKUKOHDE') {
-                   modelInterface.tilasto.hakukohteita++;
-                   modelInterface.hakukohteet.push(item);
-                }
-                if(item.alavalintaryhmat)  for(var i=0; i<item.alavalintaryhmat.length;i++)  recursion(item.alavalintaryhmat[i],  item);
-                if(item.hakukohdeViitteet) for(var i=0; i<item.hakukohdeViitteet.length;i++) recursion(item.hakukohdeViitteet[i], item);
+                modelInterface.hakukohteet.forEach(function (hakukohde) {
+                    hakukohde.sisaltaaHakukohteita = true;
+                    var parent = hakukohde.ylavalintaryhma;
+                    while (parent != null) {
+                        parent.sisaltaaHakukohteita = true;
+                        parent = parent.ylavalintaryhma;
+                    }
+                });
+
+                modelInterface.valintaperusteList = list;
             }
-            for(var i=0; i<list.length;i++) recursion(list[i]);
 
-            modelInterface.hakukohteet.forEach(function(hakukohde){
-              hakukohde.sisaltaaHakukohteita = true;
-              var parent = hakukohde.ylavalintaryhma;
-              while(parent != null) {
-                parent.sisaltaaHakukohteita = true;
-                parent = parent.ylavalintaryhma;
-              }
-            });
-
-          modelInterface.valintaperusteList = list;
         }
-
     };
     modelInterface.refresh();
     return modelInterface;
