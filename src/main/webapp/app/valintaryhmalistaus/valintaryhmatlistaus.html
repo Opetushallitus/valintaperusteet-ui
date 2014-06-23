@@ -12,10 +12,10 @@
             ng-show="!(!data.sisaltaaHakukohteita&&domain.search.vainHakukohteitaSisaltavatRyhmat)"
             ng-include="domain.getTemplate(data)">
         </li>
-         <li ng-repeat="data in data.hakukohdeViitteet | orderBy:predicate"
-             data-oid="{{data.oid}}"
-             ng-include="domain.getTemplate(data)">
-         </li>
+        <li ng-repeat="data in data.hakukohdeViitteet | orderBy:predicate"
+            data-oid="{{data.oid}}"
+            ng-include="domain.getTemplate(data)">
+        </li>
     </ol>
 
 </script>
@@ -82,25 +82,25 @@
         <div ng-if="hakukohteetListingLimit < domain.hakukohteet.length && domain.search.vainHakukohteet">Näytetty: {{hakukohteetListingLimit}} / {{domain.hakukohteet.length}}</div>
         <table ng-if="domain.search.vainHakukohteet" class="virkailija-table-1 hakukohde-table"  item-on-screen>
             <thead>
-                <tr>
-                    <th>Hakukohde</th>
-                    <th>Valintaryhmä</th>
-                </tr>
+            <tr>
+                <th>Hakukohde</th>
+                <th>Valintaryhmä</th>
+            </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="data in domain.hakukohteet | limitTo:hakukohteetListingLimit">
-                    <td>
+            <tr ng-repeat="data in domain.hakukohteet | limitTo:hakukohteetListingLimit">
+                <td>
                         <span class="float-left">
                              <i class="fa fa-building-o"></i>
                              <a href="#/hakukohde/{{data.oid}}"> {{data.nimi}} ({{data.tila}})</a>
                         </span>
-                    </td>
-                    <td>
+                </td>
+                <td>
                         <span class="float-left">
                             <a href="#/valintaryhma/{{parent.oid}}" ng-repeat="parent in data.getParents()" >{{parent.nimi}} / </a>
                         </span>
-                    </td>
-                </tr>
+                </td>
+            </tr>
             </tbody>
         </table>
         <div ng-if="hakukohteetListingLimit < domain.hakukohteet.length && domain.search.vainHakukohteet">Näytetty: {{hakukohteetListingLimit}} / {{domain.hakukohteet.length}}</div>
