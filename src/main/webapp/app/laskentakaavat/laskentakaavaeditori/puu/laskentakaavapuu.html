@@ -129,9 +129,16 @@
         <span class="icon">&#8302;</span>
         <span add-class-on-mouseover="bold" class="node"
               ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">
-            <span>{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
-            <span ng-repeat="valintaperusteviite in funktiowrapper.lapsi.valintaperusteviitteet" ng-if="valintaperusteviite.tunniste">({{valintaperusteviite.tunniste}}<span ng-if="valintaperusteviite.kuvaus"> - {{valintaperusteviite.kuvaus}}</span>) </span>
-
+            <span>{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}
+                <span ng-if="funktiowrapper.lapsi.valintaperusteviitteet" ng-repeat="valintaperusteviite in funktiowrapper.lapsi.valintaperusteviitteet">
+                    <span ng-if="valintaperusteviiteDefined(valintaperusteviite)">(</span>
+                    {{getValintaperusteviitetyyppiText(valintaperusteviite)}}<span ng-if="getValintaperusteviitetyyppiText(valintaperusteviite)">,</span>
+                    <span>{{valintaperusteviite.tunniste}}</span>
+                    <span ng-if="valintaperusteviite.tunniste && valintaperusteviite.kuvaus"> - </span>
+                    <span ng-if="valintaperusteviite.kuvaus">{{valintaperusteviite.kuvaus}}</span>
+                        <span ng-if="valintaperusteviiteDefined(valintaperusteviite)">) </span>
+                </span>
+            </span>
         </span>
     </div>
 </script>
@@ -394,7 +401,7 @@ YHTASUURI
         <tbody>
         <tr>
             <td ng-click="addFunktio(parent, 'HAELUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>Arvo hakemukselta</span></td>
+                <span>Hae lukuarvo</span></td>
             <td ng-click="addFunktio(parent, 'LUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false"><span>Vakio</span>
             </td>
         </tr>
@@ -489,7 +496,7 @@ YHTASUURI
         <tbody>
         <tr>
             <td ng-click="addFunktio(parent, 'HAETOTUUSARVO', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>Arvo hakemukselta</span></td>
+                <span>Hae totuusarvo</span></td>
             <td ng-click="addFunktio(parent, 'TAI', funktioSlotIndex); showNewFunktioList.visible = false">
                 <span>Tai</span></td>
         </tr>
