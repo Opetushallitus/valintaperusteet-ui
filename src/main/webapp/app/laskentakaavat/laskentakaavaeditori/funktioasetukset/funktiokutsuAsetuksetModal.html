@@ -451,21 +451,21 @@
     <div ng-show="!toggle">
         <button class="btn btn-default btn-sm"
                 ng-disabled="alikaavaValues.isAlikaava || funktioasetukset.parentFunktiokutsu === model.laskentakaavapuu.funktiokutsu"
-                ng-click="toggle = !toggle; ">Kaavan osan tallennus
+                ng-click="toggle = !toggle">Kaavan osan tallennus
         </button>
         <button ng-disabled="alikaavaValues.isAlikaava" class="btn btn-sm btn-default"
-                ng-click="removeFunktiokutsu(); sulje()"><i class="fa fa-trash-o"></i> Poista funktiokutsu
+                ng-click="removeFunktiokutsu(); sulje()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä"><i class="fa fa-trash-o"></i> Poista funktiokutsu
         </button>
         <button class="btn btn-default btn-sm" ng-click="sulje()"
-                role="button">Sulje
+            role="button" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä">Sulje
         </button>
     </div>
 
     <!-- tallenna funktiokutsu laskentakaavana -->
     <div ng-show="toggle">
-        <button class="btn btn-default btn-sm" ng-click="toggle = !toggle"><i class="fa fa-arrow-left"></i> Palaa funktioasetuksiin</button>
+        <button class="btn btn-default btn-sm" ng-click="toggle = !toggle" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä"><i class="fa fa-arrow-left"></i> Palaa funktioasetuksiin</button>
         <button class="btn btn-primary btn-sm" ng-disabled="!newKaavaNimi" ng-click="saveAsNewLaskentakaava(funktioasetukset.parentFunktiokutsu, funktioSelection, newKaavaNimi, newKaavaKuvaus, sulje)"><i class="fa fa-floppy-o"></i> Tallenna uutena laskentakaavana</button>
-        <button class="btn btn-default btn-sm" ng-click="sulje()">Sulje</button>
+        <button class="btn btn-default btn-sm" ng-click="sulje()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä">Sulje</button>
     </div>
 </div>
 

@@ -1,7 +1,7 @@
 <div ng-controller="LaskentakaavaController">
 
     <div class="float-left">
-        <span class="btn btn-sm btn-default" ng-click="back()"><i class="fa fa-arrow-left"></i> Takaisin</span>
+        <span class="btn btn-sm btn-default" ng-click="back()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="Muista tallentaa muutoksesi"><i class="fa fa-arrow-left"></i> Takaisin</span>
         <span class="btn btn-sm btn-primary" ng-click="persist()"><i class="fa fa-floppy-o"></i> Tallenna</span>
     </div>
     <div class="clear"></div>
@@ -25,10 +25,7 @@
                     <span>{{commonerr.kuvaus}}</span>
                 </li>
 
-
             </ol>
-
-
         </div>
 
         <div class="alert alert-success margin-top-2" collapse="!saved">
@@ -132,7 +129,7 @@
             <span>{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}
                 <span ng-if="funktiowrapper.lapsi.valintaperusteviitteet" ng-repeat="valintaperusteviite in funktiowrapper.lapsi.valintaperusteviitteet">
                     <span ng-if="valintaperusteviiteDefined(valintaperusteviite)">(</span>
-                    {{getValintaperusteviitetyyppiText(valintaperusteviite)}}<span ng-if="getValintaperusteviitetyyppiText(valintaperusteviite)">,</span>
+                    {{getValintaperusteviitetyyppiText(valintaperusteviite)}}<span ng-if="getValintaperusteviitetyyppiText(valintaperusteviite) && valintaperusteviite.tunniste || valintaperusteviite.kuvaus">,</span>
                     <span>{{valintaperusteviite.tunniste}}</span>
                     <span ng-if="valintaperusteviite.tunniste && valintaperusteviite.kuvaus"> - </span>
                     <span ng-if="valintaperusteviite.kuvaus">{{valintaperusteviite.kuvaus}}</span>

@@ -1,5 +1,5 @@
 <div ng-controller="UusiLaskentakaavaController">
-    <span class="btn btn-sm btn-default" ng-click="back()"><i class="fa fa-arrow-left"></i> Takaisin</span>
+    <span class="btn btn-sm btn-default" ng-click="back()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="Muista tallentaa muutoksesi"><i class="fa fa-arrow-left"></i> Takaisin</span>
     <button class="btn btn-sm btn-primary"
             ng-click="createKaava(kaava)"
             ng-disabled="kaavaForm.$invalid"><i class="fa fa-plus"></i> Alusta uusi laskentakaava
