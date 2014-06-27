@@ -4,7 +4,7 @@
  * Description
  */
 
-angular.module('LaskentakaavaEditor', ['ngResource', 'loading', 'ngRoute', 'underscore', 'ng-breadcrumbs']);
+angular.module('LaskentakaavaEditor', ['ngResource', 'loading', 'ngRoute', 'lodash', 'ng-breadcrumbs']);
 
 angular.module('LaskentakaavaEditor').config(function ($routeProvider) {
 	//laskentakaava
