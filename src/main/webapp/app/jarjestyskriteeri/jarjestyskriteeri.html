@@ -39,11 +39,21 @@
 
                                 <span ng-bind="data.nimi"></span>(<span ng-bind="data.id"></span>)
 
-                                <a ng-if="group.valintaryhmaOid" target="_blank"
+                                <a popover-popup-delay="500"
+                                   popover-placement="right"
+                                   popover-trigger="mouseenter"
+                                   popover="Kaava avataan uuteen välilehteen"
+                                   ng-if="group.valintaryhmaOid"
+                                   target="_blank"
                                    ng-href="#/valintaryhma/{{group.valintaryhmaOid}}/laskentakaavalista/laskentakaava/{{data.id}}">Näytä
                                     kaava</a>
                                 <!--<a ng-if="group.name === 'Juurikaavat'" target="_blank" ng-href="#/valintaryhma/{{group.valintaryhmaOid}}/laskentakaavalista/laskentakaava/{{data.id}}">näytä kaava</a>-->
-                                <a ng-if="group.hakukohdeOid" target="_blank"
+                                <a popover-popup-delay="500"
+                                   popover-placement="right"
+                                   popover-trigger="mouseenter"
+                                   popover="Kaava avataan uuteen välilehteen"
+                                   ng-if="group.hakukohdeOid"
+                                   target="_blank"
                                    ng-href="#/hakukohde/{{group.hakukohdeOid}}/laskentakaavalista/laskentakaava/{{data.id}}">Näytä
                                     kaava</a>
                             </p>
