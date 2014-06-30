@@ -7,7 +7,6 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 		this.hakukohdekoodit = [];
 		this.valintakoekoodit = [];
         this.kohdejoukot = [];
-		this.hakijaryhmat = [];
 
 		this.refresh = function (oid) {
 
@@ -41,15 +40,6 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 
 				ValintaryhmaValinnanvaihe.get({oid: oid}, function (result) {
 					model.valinnanvaiheet = result;
-				});
-
-				ValintaryhmaHakijaryhma.get({oid: oid}, function (result) {
-					model.hakijaryhmat = result;
-					model.hakijaryhmat.forEach(function (hr) {
-						Laskentakaava.get({oid: hr.laskentakaavaId}, function (result) {
-							hr.laskentakaava_nimi = result.nimi;
-						});
-					});
 				});
 
                 KoodistoHaunKohdejoukko.get(function (result) {
@@ -87,7 +77,6 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 		};
 
 		this.persistValintaryhma = function (oid) {
-            console.log(model.valintaryhma);
 			Valintaryhma.post(model.valintaryhma, function (result) {
 				model.valintaryhma = result;
 				Treemodel.refresh();
@@ -102,11 +91,6 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 				}
 			}
 
-			if (model.hakijaryhmat.length > 0) {
-				HakijaryhmaJarjesta.post(getHakijaryhmaOids(), function (result) {
-				});
-			}
-
 
 		};
 
@@ -119,14 +103,6 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 				}
 			});
 		};
-
-		function getHakijaryhmaOids() {
-			var oids = [];
-			for (var i = 0; i < model.hakijaryhmat.length; ++i) {
-				oids.push(model.hakijaryhmat[i].oid);
-			}
-			return oids;
-		}
 
 		function getValinnanvaiheOids() {
 			var oids = [];
@@ -240,17 +216,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 					model.valintaryhma.valintakoekoodit = undefined;
 				}
 			});
-		}
-
-		this.removeHakijaryhma = function (hakijaryhmaOid) {
-			Hakijaryhma.delete({oid: hakijaryhmaOid}, function () {
-				for (i in model.hakijaryhmat) {
-					if (hakijaryhmaOid === model.hakijaryhmat[i].oid) {
-						model.hakijaryhmat.splice(i, 1);
-					}
-				}
-			});
-		}
+		};
 
 	}
 
@@ -282,15 +248,6 @@ function ValintaryhmaController($scope, $location, $routeParams, ValintaryhmaMod
 
 	$scope.toValintaryhmaForm = function () {
 		$location.path("/valintaryhma/" + $scope.valintaryhmaOid);
-	}
-
-
-	$scope.lisaaHakijaryhma = function () {
-		$location.path("/valintaryhma/" + $routeParams.id + "/hakijaryhma/");
-	}
-
-	$scope.removeHakijaryhma = function (hakijaryhmaOid) {
-		$scope.model.removeHakijaryhma(hakijaryhmaOid);
 	}
 
 	$scope.organisaatioSelector = function (data) {
