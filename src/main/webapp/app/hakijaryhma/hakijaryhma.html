@@ -3,110 +3,104 @@
 <div class="tabs">
     <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
     <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaavalista" class="tab"><span>Laskentakaavat</span></a>
-    <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaavalista" class="tab"><span>Laskentakaavat</span></a>
+    <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaavalista"
+       class="tab"><span>Laskentakaavat</span></a>
     <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
 </div>
 
 <div class="tabsheets">
     <breadcrumb></breadcrumb>
-    <form name="form" ng-submit="submit()">
+    <form class="form-horizontal" name="form" ng-submit="submit()">
 
-        <div class="form-row">
-            <label class="form-row-label" for="nimi">OID</label>
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="nimi">OID</label>
 
-            <div class="form-row-content">
-                <span>{{model.hakijaryhma.oid}}</span>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <div class="form-row">
-            <label class="form-row-label" for="nimi">Nimi</label>
-
-            <div class="form-row-content">
-                <input type="text" id="nimi" required ng-model="model.hakijaryhma.nimi"/>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <div class="form-row">
-            <label class="form-row-label" for="kuvaus">Kuvaus</label>
-
-            <div class="form-row-content">
-                <input type="text" id="kuvaus" ng-model="model.hakijaryhma.kuvaus"/>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <div class="form-row">
-            <label class="form-row-label" for="kiintio">Määrä</label>
-
-            <div class="form-row-content">
-                <input type="number" min="0" required id="kiintio" ng-model="model.hakijaryhma.kiintio"/>
-            </div>
-            <div class="clear"></div>
+            <p class="col-md-4 form-control-static">{{model.hakijaryhma.oid}}</p>
         </div>
 
-        <div class="form-row" ng-model="model.laskentakaavaModel.laskentakaavat">
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="nimi">Nimi</label>
 
-            <div class="form-row-label">Laskentakaava<br/></div>
-            <div class="form-row-content">&nbsp;<br/></div>
-            <div class="clear"></div>
-            <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat" class="field-container-radio">
-                <div class="form-row-label">{{group.name}}<br/></div>
-                <div class="form-row-content">
-                    <!--<span >{{model.laskentakaavat}}</span>-->
+            <div class="col-md-4">
+                <input class="form-control" type="text" id="nimi" required ng-model="model.hakijaryhma.nimi"/>
+            </div>
+        </div>
 
-                    <div ng-repeat="data in group.result" class="field-container-radio">
-                        <label>
-                            <input type="radio" name="laskentakaava" value="{{data.id}}"
-                                   ng-model="model.hakijaryhma.laskentakaavaId"
-                                   ng-required="!model.hakijaryhma.laskentakaavaId"/>
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="kuvaus">Kuvaus</label>
 
-                            <span ng-bind="data.nimi"></span>(<span ng-bind="data.id"></span>)
-                        </label>
-                    </div>
-                    <br/>
+            <div class="col-md-4">
+                <input class="form-control" type="text" id="kuvaus" ng-model="model.hakijaryhma.kuvaus"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="kiintio">Määrä</label>
+
+            <div class="col-md-4">
+                <input class="form-control" type="number" min="0" required id="kiintio"
+                       ng-model="model.hakijaryhma.kiintio"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2 text-right"><label>Laskentakaava:</label></div>
+            <div class="col-md-10">&nbsp;</div>
+        </div>
+        <div class="form-group" ng-repeat="group in model.laskentakaavaModel.laskentakaavat">
+            <label class="col-md-2 control-label">{{group.name}}</label>
+
+            <div class="col-md-10">
+                <div class="radio" ng-repeat="data in group.result">
+                    <label>
+                        <input type="radio" name="laskentakaava" value="{{data.id}}"
+                               ng-model="model.hakijaryhma.laskentakaavaId"
+                               ng-required="!model.hakijaryhma.laskentakaavaId"> {{data.nimi}} (<span
+                            ng-bind="data.id"></span>)
+                    </label>
                 </div>
-
-                <div class="clear"></div>
             </div>
 
         </div>
 
-        <div class="form-row" ng-show="model.hakijaryhma.oid">
-            <div class="form-row-label">Liitetyt valintatapajonot</div>
+        <!--<div class="form-group" ng-show="model.hakijaryhma.oid">-->
+            <!--<label class="col-md-2 control-label">Liitetyt valintatapajonot</label>-->
 
-            <div class="form-row-content">
-                <table class="virkailija-table-1 margin-bottom-2">
-                    <thead>
-                    <tr>
-                        <th>Aktiivinen</th>
-                        <th>Nimi</th>
-                        <th>Periytyminen</th>
-                    </tr>
-                    </thead>
-                    <tbody class="margin-top-2">
-                    <tr ng-repeat="jono in model.valintatapajonot">
-                        <td>{{jono.valintatapajono.aktiivinen ? 'Kyllä' : 'Ei'}}</td>
-                        <td>
-                            <span ng-class="{true:'', false:'line-through'}[jono.valintatapajono.aktiivinen]">{{jono.valintatapajono.nimi}}</span>
-                        </td>
-                        <td>{{'valintaperusteet.periytyy.' + jono.valintatapajono.inheritance | translate}}</td>
-                    </tr>
-                    </tbody>
-                </table>
+            <!--<div class="col-md-10">-->
+                <!--<table class="virkailija-table-1 margin-bottom-2">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>Aktiivinen</th>-->
+                        <!--<th>Nimi</th>-->
+                        <!--<th>Periytyminen</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody class="margin-top-2">-->
+                    <!--<tr ng-repeat="jono in model.valintatapajonot">-->
+                        <!--<td>{{jono.valintatapajono.aktiivinen ? 'Kyllä' : 'Ei'}}</td>-->
+                        <!--<td>-->
+                            <!--<span ng-class="{true:'', false:'line-through'}[jono.valintatapajono.aktiivinen]">{{jono.valintatapajono.nimi}}</span>-->
+                        <!--</td>-->
+                        <!--<td>{{'valintaperusteet.periytyy.' + jono.valintatapajono.inheritance | translate}}</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
 
-            </div>
-            <div class="clear"></div>
-        </div>
+            <!--</div>-->
+            <!--<div class="clear"></div>-->
+        <!--</div>-->
 
         <div class="col-sm-2">
-            <button class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="Muista tallentaa muutoksesi"><i class="fa fa-arrow-left"></i> Takaisin
+            <button class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top"
+                    popover-trigger="mouseenter" popover="Muista tallentaa muutoksesi"><i class="fa fa-arrow-left"></i>
+                Takaisin
             </button>
             <button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit">
                 <div ng-show="!model.hakijaryhma.oid"><i class="fa fa-floppy-o"></i>
                     Lisää
                 </div>
                 <div ng-show="model.hakijaryhma.oid"><i class="fa fa-floppy-o"></i>
-                    Muokkaa
+                    Tallenna
                 </div>
             </button>
         </div>
