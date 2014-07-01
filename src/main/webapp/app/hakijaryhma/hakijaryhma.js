@@ -10,7 +10,10 @@ app.factory('HakijaryhmaModel', function($q, Hakijaryhma, LaskentakaavaModel,
 
         instance.refresh = function(oid, valintaryhmaOid, hakukohdeOid) {
             instance.hakijaryhma = {};
+            instance.hakijaryhma.kaytaKaikki = false;
+            instance.hakijaryhma.tarkkaKiintio = false;
             instance.valintatapajonot.length = 0;
+
             if(oid) {
                 Hakijaryhma.get({oid: oid}, function(result) {
                     instance.hakijaryhma = result;
