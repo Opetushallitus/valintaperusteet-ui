@@ -26,7 +26,6 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 						model.valintaryhma.valintakoekoodit = undefined;
 					}
 					model.valintaryhma.organisaatiot.forEach(function (org, index) {
-						"use strict";
 						OrganizationByOid.get(org, function (result) {
 							model.valintaryhma.organisaatiot[index] = result;
 						});
@@ -34,8 +33,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 
 					model.loaded.resolve();
 				}, function () {
-					"use strict";
-					loaded.reject();
+					model.loaded.reject();
 				});
 
 				ValintaryhmaValinnanvaihe.get({oid: oid}, function (result) {
