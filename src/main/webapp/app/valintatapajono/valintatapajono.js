@@ -24,7 +24,7 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
             this.refreshJK(oid);
         };
 
-        this.refreshIfNeeded = function(oid, valintaryhmaOid, hakukohdeOid) {
+        this.refreshIfNeeded = function(oid) {
             if(!oid) {
                 model.valintatapajono = {};
                 model.jarjestyskriteerit = [];
@@ -32,7 +32,7 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
                 model.valintatapajono.tasapistesaanto = "YLITAYTTO";
                 model.valintatapajono.kaytetaanValintalaskentaa = false;
             } else if (oid != model.valintatapajono.oid) {
-                this.refresh(oid, valintaryhmaOid, hakukohdeOid);
+                this.refresh(oid);
             }
         };
 
@@ -174,7 +174,7 @@ function HakukohdeValintatapajonoController($scope, $location, $routeParams, Val
     //$scope.valintatapajonoOid =  $routeParams.valintatapajonoOid;
 
     $scope.model = ValintatapajonoModel;
-    $scope.model.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid);
+    $scope.model.refreshIfNeeded($routeParams.valintatapajonoOid);
 
     $scope.submit = function() {
         $scope.model.submit($scope.valinnanvaiheOid, HakukohdeValinnanVaiheModel.valintatapajonot);
