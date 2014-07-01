@@ -36,7 +36,7 @@ public class ConfigController {
     @Value("${valintaperusteet-ui.lokalisointi-service-url}")
     private String lokalisointiServiceUrl;
 
-    @RequestMapping(value = "/configuration.js", method = RequestMethod.GET, produces = "text/javascript")
+    @RequestMapping(value = "/configuration.js", method = RequestMethod.GET, produces = "text/javascript", headers="Accept=*/*")
     @ResponseBody
     public String index() {
         StringBuilder b = new StringBuilder();
