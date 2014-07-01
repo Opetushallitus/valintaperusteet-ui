@@ -1,4 +1,4 @@
-﻿<h1>Hakijaryhman muokkaus</h1>
+﻿<h1>Hakijaryhman liittäminen</h1>
 
 <div class="tabs">
     <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
@@ -74,7 +74,7 @@
                    popover="Otetaanko tästä hakijaryhmästä kaikki hyväksytyt">Käytä kaikki hyväksytyt</label>
 
             <div class="col-md-2 ">
-                <div class="checkbox" >
+                <div class="checkbox">
                     <input type="checkbox"
                            ng-model="model.hakijaryhma.kaytaKaikki"
                            id="kaytaKaikki"
@@ -113,33 +113,6 @@
 
         </div>
 
-        <!--<div class="form-group" ng-show="model.hakijaryhma.oid">-->
-        <!--<label class="col-md-2 control-label">Liitetyt valintatapajonot</label>-->
-
-        <!--<div class="col-md-10">-->
-        <!--<table class="virkailija-table-1 margin-bottom-2">-->
-        <!--<thead>-->
-        <!--<tr>-->
-        <!--<th>Aktiivinen</th>-->
-        <!--<th>Nimi</th>-->
-        <!--<th>Periytyminen</th>-->
-        <!--</tr>-->
-        <!--</thead>-->
-        <!--<tbody class="margin-top-2">-->
-        <!--<tr ng-repeat="jono in model.valintatapajonot">-->
-        <!--<td>{{jono.valintatapajono.aktiivinen ? 'Kyllä' : 'Ei'}}</td>-->
-        <!--<td>-->
-        <!--<span ng-class="{true:'', false:'line-through'}[jono.valintatapajono.aktiivinen]">{{jono.valintatapajono.nimi}}</span>-->
-        <!--</td>-->
-        <!--<td>{{'valintaperusteet.periytyy.' + jono.valintatapajono.inheritance | translate}}</td>-->
-        <!--</tr>-->
-        <!--</tbody>-->
-        <!--</table>-->
-
-        <!--</div>-->
-        <!--<div class="clear"></div>-->
-        <!--</div>-->
-
         <div class="col-sm-2">
             <button class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top"
                     popover-trigger="mouseenter" popover="Muista tallentaa muutoksesi"><i class="fa fa-arrow-left"></i>
@@ -157,4 +130,5 @@
         <div class="clear"></div>
 
     </form>
+
 </div>

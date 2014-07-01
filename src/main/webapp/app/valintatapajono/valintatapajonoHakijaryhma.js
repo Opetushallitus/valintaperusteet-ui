@@ -1,5 +1,5 @@
 // Valintaryhma Järjestyskriteerit
-app.factory('HakijaryhmaValintatapajonoModel', function($q, ValintatapajonoModel, ValintaryhmaHakijaryhma,
+angular.module('valintaperusteet').factory('HakijaryhmaValintatapajonoModel', function($q, ValintatapajonoModel, ValintaryhmaHakijaryhma,
                                                     HakukohdeHakijaryhma, ValintatapajonoHakijaryhma,
                                                     Laskentakaava) {
     
@@ -20,12 +20,13 @@ app.factory('HakijaryhmaValintatapajonoModel', function($q, ValintatapajonoModel
                     temp = result;
                     deferred.resolve();
                 });
-            } else if(valintaryhmaOid) {
-                ValintaryhmaHakijaryhma.get({oid: valintaryhmaOid}, function(result) {
-                    temp = result;
-                    deferred.resolve();
-                });
             }
+//          else if(valintaryhmaOid) {
+//                ValintaryhmaHakijaryhma.get({oid: valintaryhmaOid}, function(result) {
+//                    temp = result;
+//                    deferred.resolve();
+//                });
+//            }
 
             deferred.promise.then(function(){
                 temp.forEach(function(hr){
@@ -65,8 +66,8 @@ app.factory('HakijaryhmaValintatapajonoModel', function($q, ValintatapajonoModel
     
 });
 
-function HakijaryhmaValintatapajonoController($scope, $location, $routeParams, HakijaryhmaValintatapajonoModel, ValintatapajonoModel) {
-	$scope.valintaryhmaOid = $routeParams.id;
+function ValintatapajonoHakijaryhmaController($scope, $location, $routeParams, HakijaryhmaValintatapajonoModel, ValintatapajonoModel) {
+	//$scope.valintaryhmaOid = $routeParams.id;
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
     ValintatapajonoModel.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid);
     $scope.model = HakijaryhmaValintatapajonoModel;
