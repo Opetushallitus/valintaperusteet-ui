@@ -280,7 +280,7 @@ app.factory('HakukohdeHakijaryhma', function($resource) {
 app.factory('ValintatapajonoHakijaryhma', function($resource) {
  return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:oid/hakijaryhma/:hakijaryhmaOid", {oid: "@oid", hakijaryhmaOid: "@hakijaryhmaOid"}, {
      get: {method: "GET", isArray: true},
-     insert: {method: "POST"}
+     insert: {method: "PUT"}
    });
 });
 

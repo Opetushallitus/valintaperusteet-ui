@@ -50,15 +50,15 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
         this.submit = function(valinnanvaiheOid, valintatapajonot) {
             if(!model.valintatapajono.rajattu) {
                 model.valintatapajono.varasijat = 0;
-            };
+            }
 
             if(!model.valintatapajono.alkaenRajattu) {
                 model.valintatapajono.varasijojaKaytetaanAlkaen = null;
-            };
+            }
 
             if(!model.valintatapajono.astiRajattu) {
                 model.valintatapajono.varasijojaTaytetaanAsti = null;
-            };
+            }
 
             if(!model.valintatapajono.aloituspaikat && model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan) {
                 model.valintatapajono.aloituspaikat = 0;
