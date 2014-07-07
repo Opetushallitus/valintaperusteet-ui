@@ -1,18 +1,18 @@
-<h1>Yhteisvalinnan hallinta</h1>
+<h1>{{ t('yhteisvalinnanhallinta.header') || 'Yhteisvalinnan hallinta' }}</h1>
 
 <div class="tabs">
-    <a href="#/etusivu" class="tab"><span>Valintaryhmät ja hakukohteet</span></a>
-    <a href="#/laskentakaava" class="tab"><span>Laskentakaavat</span></a>
-    <a auth="crudOph" href="#/import" class="tab float-right current"><span>Yhteisvalinnan hallinta</span></a>
+    <a href="#/etusivu" class="tab"><span>{{ t('yhteisvalinnanhallinta.etusivu') || 'Valintaryhmät ja hakukohteet' }}</span></a>
+    <a href="#/laskentakaava" class="tab"><span>{{ t('yhteisvalinnanhallinta.laskentakaava') || 'Laskentakaavat' }}</span></a>
+    <a auth="crudOph" href="#/import" class="tab float-right current"><span>{{ t('yhteisvalinnanhallinta.import') || 'Yhteisvalinnan hallinta' }}</span></a>
 </div>
 <div class="tabsheets">
 
     <breadcrumb></breadcrumb>
-    <h2>Synkronoi tarjonta</h2>
+    <h2>{{ t('yhteisvalinnanhallinta.synkronoi') || 'Synkronoi tarjonta' }}</h2>
 
     <div>
         <select ng-model="model.hakuOid" ng-options="haku.nimi.kieli_fi for haku in model.haut | orderBy:'nimi.kieli_fi'"></select>
-        <a auth="crudOph" ng-click="aktivoi()" class="btn btn-primary btn-sm">Synkronoi tarjonta</a>
+        <a auth="crudOph" ng-click="aktivoi()" class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.synkronoi') || 'Synkronoi tarjonta' }}</a>
     </div>
 
 </div>
