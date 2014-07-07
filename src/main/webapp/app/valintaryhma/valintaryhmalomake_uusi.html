@@ -1,17 +1,17 @@
-<h1>Uuden valintaryhmän luonti</h1>
+<h1>{{ t('valintaryhmalomakeuusi.header') || 'Uuden valintaryhmän luonti' }}</h1>
 
 
 <div class="tabs">
-    <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
+    <a href="#/etusivu" class="tab current"><span>{{ t('common.etusivu') || 'Valintaryhmät ja hakukohteet' }}</span></a>
     <a href="#/laskentakaavalista"
-       class="tab"><span>Laskentakaavat</span></a>
-    <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
+       class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
+    <a auth="crudOph" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
 </div>
 <div class="tabsheets">
     <breadcrumb></breadcrumb>
     <form name="form" ng-submit="submit()">
         <div class="form-row">
-            <label class="form-row-label">Ylävalintaryhmä</label>
+            <label class="form-row-label">{{ t('valintaryhmalomakeuusi.ylavalintaryhma') || 'Ylävalintaryhmä' }}</label>
 
             <div class="form-row-content width-60">
                 <div ng-include="'../common/partials/valintaryhmaSelector.html'" />
@@ -21,7 +21,7 @@
         </div>
 
         <div class="form-row">
-            <label class="form-row-label" for="">Nimi</label>
+            <label class="form-row-label" for="">{{ t('valintaryhmalomakeuusi.nimi') || 'Nimi' }}</label>
 
             <div class="form-row-content width-60">
                 <input class="width-60" type="text" name="" id="" ng-model="model.valintaryhma.nimi" required/>
@@ -30,7 +30,7 @@
         </div>
 
         <div class="form-row">
-            <label class="form-row-label" for="">Kohdejoukko</label>
+            <label class="form-row-label" for="">{{ t('valintaryhmalomakeuusi.kohdejoukko') || 'Kohdejoukko' }}</label>
 
             <div class="form-row-content width-60">
                 <select ng-model="model.valintaryhma.kohdejoukko"
@@ -41,17 +41,17 @@
         </div>
 
         <div class="form-row">
-            <label class="form-row-label" for="">Organisaatiot:</label>
+            <label class="form-row-label" for="">{{ t('valintaryhmalomakeuusi.organisaatiot') || 'Organisaatiot' }}:</label>
 
             <div class="form-row-content  width-60">
 
                 <table class="virkailija-table-1">
                     <thead>
                     <tr>
-                        <th>nimi</th>
-                        <th>tyyppi</th>
-                        <th>oid</th>
-                        <th>poista</th>
+                        <th>{{ t('valintaryhmalomakeuusi.nimipieni') || 'nimi' }}</th>
+                        <th>{{ t('valintaryhmalomakeuusi.tyyppi') || 'tyyppi' }}</th>
+                        <th>{{ t('valintaryhmalomakeuusi.oid') || 'oid' }}</th>
+                        <th>{{ t('valintaryhmalomakeuusi.poista') || 'poista' }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -80,8 +80,8 @@
         </div>
 
         <div class="col-sm-2">
-            <button type="button" class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="Muista tallentaa muutoksesi"><i class="fa fa-arrow-left"></i> Takaisin</button>
-            <button auth="crud" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i class="fa fa-floppy-o"></i> Tallenna</button>
+            <button type="button" class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('valintaryhmalomakeuusi.muista') || 'Muista tallentaa muutoksesi' }}"><i class="fa fa-arrow-left"></i> {{ t('valintaryhmalomakeuusi.takaisin') || 'Takaisin' }}</button>
+            <button auth="crud" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i class="fa fa-floppy-o"></i> {{ t('valintaryhmalomakeuusi.tallenna') || 'Tallenna' }}</button>
         </div>
         <div class="clear"></div>
     </form>

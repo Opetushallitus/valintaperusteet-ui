@@ -1,14 +1,14 @@
 <div ng-controller="ValintakoekoodiController">
-<label class="form-row-label">Valintakoekoodit</label>
+<label class="form-row-label">{{ t('valintakoekoodit.header') || 'Valintakoekoodit' }}</label>
 
 <div class="row">
     <button ng-click="toggleValintakokeet()" class="btn btn-sm btn-default">
         <i ng-if="toggleValintaryhmaValintakokeet" class="fa fa-eye-slash"></i>
-        <i ng-if="!toggleValintaryhmaValintakokeet" class="fa fa-eye"></i> Valintakoekoodit
+        <i ng-if="!toggleValintaryhmaValintakokeet" class="fa fa-eye"></i> {{ t('valintakoekoodit.header') || 'Valintakoekoodit' }}
     </button>
     <button ng-click="showValintakoeKoodit()" type="button"
             class="btn btn-sm btn-default">
-        <span><i class="fa fa-plus"></i> Uusi valintakoekoodi</span>
+        <span><i class="fa fa-plus"></i> {{ t('valintakoekoodit.uusi') || 'Uusi valintakoekoodi' }}</span>
     </button>
     <modal modal-template="../common/partials/valintakoekoodinValinta.html" auth="update">
         <modal-open></modal-open>
@@ -19,17 +19,16 @@
 
 <div class="form-row-content">
     <div ng-if="toggleValintaryhmaValintakokeet && !model.valintaryhma.valintakoekoodit" class="alert alert-info">
-        Tähän
-        valintaryhmään ei ole vielä liitetty yhtään valintakoekoodia
+        {{ t('valintakoekoodit.virhe') || 'Tähän valintaryhmään ei ole vielä liitetty yhtään valintakoekoodia' }}
     </div>
     <table ng-if="toggleValintaryhmaValintakokeet && model.valintaryhma.valintakoekoodit"
            class="virkailija-table-1">
         <thead>
         <tr>
-            <th>Koodi</th>
-            <th>Arvo</th>
-            <th>Nimi</th>
-            <th>Poista</th>
+            <th>{{ t('valintakoekoodit.koodi') || 'Koodi' }}</th>
+            <th>{{ t('valintakoekoodit.arvo') || 'Arvo' }}</th>
+            <th>{{ t('valintakoekoodit.nimi') || 'Nimi' }}</th>
+            <th>{{ t('valintakoekoodit.poista') || 'Poista' }}</th>
         </tr>
         </thead>
         <tbody>

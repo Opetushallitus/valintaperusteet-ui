@@ -1,10 +1,10 @@
-<h1>Valintaryhmän muokkaus</h1>
+<h1>{{ t('valintaryhmalomake.header') || 'Valintaryhmän muokkaus' }}</h1>
 
 
 <div class="tabs">
-    <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
-    <a href="#/valintaryhma/{{model.valintaryhma.oid}}/laskentakaavalista" class="tab"><span>Laskentakaavat</span></a>,
-    <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
+    <a href="#/etusivu" class="tab current"><span>{{ t('common.etusivu') || 'Valintaryhmät ja hakukohteet' }}</span></a>
+    <a href="#/valintaryhma/{{model.valintaryhma.oid}}/laskentakaavalista" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>,
+    <a auth="crudOph" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
 
 </div>
 
@@ -15,7 +15,7 @@
 <form name="form" ng-submit="submit()">
 
 <div class="form-row">
-    <label class="form-row-label" for="">Nimi</label>
+    <label class="form-row-label" for="">{{ t('valintaryhmalomake.nimi') || 'Nimi' }}</label>
 
     <div class="form-row-content width-60">
         <input class="width-60" type="text" name="" id="" ng-model="model.valintaryhma.nimi" required/>
@@ -24,7 +24,7 @@
 </div>
 
 <div class="form-row">
-    <label class="form-row-label" for="">Tunniste(oid):</label>
+    <label class="form-row-label" for="">{{ t('valintaryhmalomake.tunniste') || 'Tunniste(oid)' }}:</label>
 
     <div class="form-row-content">
         <span class="nofield">{{model.valintaryhma.oid}}</span>
@@ -33,7 +33,7 @@
 </div>
 
 <div class="form-row">
-    <label class="form-row-label" for="">Kohdejoukko</label>
+    <label class="form-row-label" for="">{{ t('valintaryhmalomake.kohdejoukko') || 'Kohdejoukko' }}</label>
 
     <div class="form-row-content width-60">
         <select ng-model="model.valintaryhma.kohdejoukko"
@@ -44,17 +44,17 @@
 </div>
 
 <div class="form-row">
-    <label class="form-row-label" for="">Organisaatiot:</label>
+    <label class="form-row-label" for="">{{ t('valintaryhmalomake.organisaatiot') || 'Organisaatiot' }}:</label>
 
     <div class="form-row-content  width-60">
 
         <table class="virkailija-table-1">
             <thead>
             <tr>
-                <th>Nimi</th>
-                <th>Tyyppi</th>
-                <th>oid</th>
-                <th>Poista</th>
+                <th>{{ t('valintaryhmalomake.nimi') || 'Nimi' }}</th>
+                <th>{{ t('valintaryhmalomake.tyyppi') || 'Tyyppi' }}</th>
+                <th>{{ t('valintaryhmalomake.oid') || 'oid' }}</th>
+                <th>{{ t('valintaryhmalomake.poista') || 'Poista' }}</th>
             </tr>
             </thead>
             <tbody>
@@ -94,16 +94,16 @@
 
 <!-- VALINNANVAIHEIDEN LISTAUS -->
 <div class="form-row width-100">
-    <div class="form-row-label">Valinnan vaiheet</div>
+    <div class="form-row-label">{{ t('valintaryhmalomake.valinnanvaiheet') || 'Valinnan vaiheet' }}</div>
     <div class="form-row-content width-60">
         <table ng-show="model.valinnanvaiheet" class="virkailija-table-1 margin-bottom-2 width-60">
             <thead>
             <tr>
-                <th>Aktiivinen</th>
-                <th>Nimi</th>
-                <th>Periytyy</th>
-                <th>Tyyppi</th>
-                <th>Poista</th>
+                <th>{{ t('valintaryhmalomake.aktiivinen') || 'Aktiivinen' }}</th>
+                <th>{{ t('valintaryhmalomake.nimi') || 'Nimi' }}</th>
+                <th>{{ t('valintaryhmalomake.periytyy') || 'Periytyy' }}</th>
+                <th>{{ t('valintaryhmalomake.tyyppi') || 'Tyyppi' }}</th>
+                <th>{{ t('valintaryhmalomake.poista') || 'Poista' }}</th>
             </tr>
             </thead>
             <tbody ui-sortable ng-model="model.valinnanvaiheet">
@@ -137,16 +137,16 @@
 </div>
 
 <div class="form-row width-100">
-    <div class="form-row-label">Hakijaryhmat</div>
+    <div class="form-row-label">{{ t('valintaryhmalomake.hakijaryhmat') || 'Hakijaryhmät' }}</div>
     <div class="form-row-content width-60">
         <table ng-show="model.hakijaryhmat" class="virkailija-table-1 margin-bottom-2 width-60">
             <thead>
             <tr>
-                <th>Nimi</th>
-                <th>Laskentakaava</th>
-                <th>Kiintiö</th>
-                <th>Periytyy</th>
-                <th>Poista</th>
+                <th>{{ t('valintaryhmalomake.nimi') || 'Nimi' }}</th>
+                <th>{{ t('valintaryhmalomake.laskentakaava') || 'Laskentakaava' }}</th>
+                <th>{{ t('valintaryhmalomake.kiintio') || 'Kiintiö' }}</th>
+                <th>{{ t('valintaryhmalomake.periytyy') || 'Periytyy' }}</th>
+                <th>{{ t('valintaryhmalomake.poista') || 'Poista' }}</th>
             </tr>
             </thead>
             <tbody ui-sortable ng-model="model.hakijaryhmat">
@@ -169,19 +169,19 @@
         <div class="clear"></div>
 
         <div ng-show="model.valintaryhma.oid" class="form-row">
-            <span auth="crud" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()"><i class="fa fa-plus"></i> Hakijaryhma</span>
+            <span auth="crud" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()"><i class="fa fa-plus"></i> {{ t('valintaryhmalomake.hakijaryhma') || 'Hakijaryhmä' }}</span>
         </div>
     </div>
 </div>
 
 
 <div class="col-md-12">
-    <button type="button" class="float-left margin-right-1 btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="Muista tallentaa muutoksesi"><i
-            class="fa fa-arrow-left"></i> Takaisin
+    <button type="button" class="float-left margin-right-1 btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('valintaryhmalomake.muista') || 'Muista tallentaa muutoksesi' }}"><i
+            class="fa fa-arrow-left"></i> {{ t('valintaryhmalomake.takaisin') || 'Takaisin' }}
     </button>
     <button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i
             class="fa fa-floppy-o"></i>
-        Tallenna
+        {{ t('valintaryhmalomake.tallenna') || 'Tallenna' }}
     </button>
 
 </div>
