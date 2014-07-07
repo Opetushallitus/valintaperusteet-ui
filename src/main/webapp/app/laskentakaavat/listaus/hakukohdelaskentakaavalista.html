@@ -3,35 +3,35 @@
 
 </script>
 
-<h1>Laskentakaavojen hallinta</h1>
+<h1>{{ t('hakukohdelaskentakaavalista.header') || 'Laskentakaavojen hallinta' }}</h1>
 
 <div class="tabs">
-    <a href="#/etusivu" class="tab"><span>Valintaryhmät ja hakukohteet</span></a>
-    <a href="#/laskentakaava" class="tab current"><span>Laskentakaavat</span></a>
-    <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
+    <a href="#/etusivu" class="tab"><span>{{ t('common.etusivu') || 'Valintaryhmät ja hakukohteet' }}</span></a>
+    <a href="#/laskentakaava" class="tab current"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
+    <a auth="crudOph" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
 </div>
 
 <div class="tabsheets">
     <breadcrumb></breadcrumb>
     <button type="button" class="btn btn-sm btn-default" ng-click="cancel()">
-        <i class="fa fa-arrow-left"></i> Takaisin
+        <i class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
     </button>
-    <span ng-click="createKaava()" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Uusi laskentakaava</span>
+    <span ng-click="createKaava()" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> {{ t('hakukohdelaskentakaavalista.uusi') || 'Uusi laskentakaava' }}</span>
 
-    <h2>Laskentakaavalista</h2>
+    <h2>{{ t('hakukohdelaskentakaavalista.laskentakaavalista') || 'Laskentakaavalista' }}</h2>
     
     <div class="col-md-12" ng-repeat="hakukohde in hakukohdeLaskentakaavaLista.hakukohdeList()">
 
         <h3>{{hakukohde.nimi}}</h3>
         <div class="alert alert-info" ng-show="hakukohde.laskentakaavat.length == 0">
-            <p>Tälle hakukohteelle ei ole luotu yhtään laskentakaavaa.</p>
+            <p>{{ t('hakukohdelaskentakaavalista.tallehakukohteelle') || 'Tälle hakukohteelle ei ole luotu yhtään laskentakaavaa.' }}</p>
         </div>
 
         <table class="virkailija-table-1" ng-show="hakukohde.laskentakaavat.length > 0">
             <thead>
                 <tr>
-                    <th>Nimi</th>
-                    <th>Kuvaus</th>
+                    <th>{{ t('hakukohdelaskentakaavalista.nimi') || 'Nimi' }}</th>
+                    <th>{{ t('hakukohdelaskentakaavalista.kuvaus') || 'Kuvaus' }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -51,14 +51,14 @@
         <div ng-repeat="valintaryhma in valintaryhmaList">
             <h3>{{valintaryhma.nimi}}</h3>
             <div class="alert alert-info margin-bottom-2" ng-show="!valintaryhma.laskentakaavat || valintaryhma.laskentakaavat.length == 0">
-                <p ng-show="!valintaryhma.oid">Yhtään laskentakaavaa ei ole luotu.</p>
-                <p ng-show="valintaryhma.oid">Tälle valintaryhmälle ei ole luotu yhtään laskentakaavaa.</p>
+                <p ng-show="!valintaryhma.oid">{{ t('hakukohdelaskentakaavalista.yhtaan') || 'Yhtään laskentakaavaa ei ole luotu.' }}</p>
+                <p ng-show="valintaryhma.oid">{{ t('hakukohdelaskentakaavalista.tallevalintaryhmalle') || 'Tälle valintaryhmälle ei ole luotu yhtään laskentakaavaa.' }}</p>
             </div>
             <table class="virkailija-table-1" ng-show="valintaryhma.laskentakaavat.length > 0">
                 <thead>
                 <tr>
-                    <th>Nimi</th>
-                    <th>Kuvaus</th>
+                    <th>{{ t('hakukohdelaskentakaavalista.nimi') || 'Nimi' }}</th>
+                    <th>{{ t('hakukohdelaskentakaavalista.kuvaus') || 'Kuvaus' }}</th>
                 </tr>
                 </thead>
                 <tbody>
