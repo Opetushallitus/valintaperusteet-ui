@@ -1,10 +1,10 @@
-﻿<h1>Hakijaryhman muokkaus</h1>
+﻿<h1>{{ t('hakijaryhma.header') || 'Hakijaryhmän muokkaus' }}</h1>
 
 <div class="tabs">
-    <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
-    <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaavalista" class="tab"><span>Laskentakaavat</span></a>
-    <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaavalista" class="tab"><span>Laskentakaavat</span></a>
-    <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
+    <a href="#/etusivu" class="tab current"><span>{{ t('common.etusivu') || 'Valintaryhmät ja hakukohteet' }}</span></a>
+    <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaavalista" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
+    <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaavalista" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
+    <a auth="crudOph" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
 </div>
 
 <div class="tabsheets">
@@ -12,7 +12,7 @@
     <form name="form" ng-submit="submit()">
 
         <div class="form-row">
-            <label class="form-row-label" for="nimi">OID</label>
+            <label class="form-row-label" for="nimi">{{ t('hakijaryhma.oid') || 'OID' }}</label>
 
             <div class="form-row-content">
                 <span>{{model.hakijaryhma.oid}}</span>
@@ -20,7 +20,7 @@
             <div class="clear"></div>
         </div>
         <div class="form-row">
-            <label class="form-row-label" for="nimi">Nimi</label>
+            <label class="form-row-label" for="nimi">{{ t('hakijaryhma.nimi') || 'Nimi' }}</label>
 
             <div class="form-row-content">
                 <input type="text" id="nimi" required ng-model="model.hakijaryhma.nimi"/>
@@ -28,7 +28,7 @@
             <div class="clear"></div>
         </div>
         <div class="form-row">
-            <label class="form-row-label" for="kuvaus">Kuvaus</label>
+            <label class="form-row-label" for="kuvaus">{{ t('hakijaryhma.kuvaus') || 'Kuvaus' }}</label>
 
             <div class="form-row-content">
                 <input type="text" id="kuvaus" ng-model="model.hakijaryhma.kuvaus"/>
@@ -36,7 +36,7 @@
             <div class="clear"></div>
         </div>
         <div class="form-row">
-            <label class="form-row-label" for="kiintio">Määrä</label>
+            <label class="form-row-label" for="kiintio">{{ t('hakijaryhma.maara') || 'Määrä' }}</label>
 
             <div class="form-row-content">
                 <input type="number" min="0" required id="kiintio" ng-model="model.hakijaryhma.kiintio"/>
@@ -46,7 +46,7 @@
 
         <div class="form-row" ng-model="model.laskentakaavaModel.laskentakaavat">
 
-            <div class="form-row-label">Laskentakaava<br/></div>
+            <div class="form-row-label">{{ t('hakijaryhma.laskentakaava') || 'Laskentakaava' }}<br/></div>
             <div class="form-row-content">&nbsp;<br/></div>
             <div class="clear"></div>
             <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat" class="field-container-radio">
@@ -72,15 +72,15 @@
         </div>
 
         <div class="form-row" ng-show="model.hakijaryhma.oid">
-            <div class="form-row-label">Liitetyt valintatapajonot</div>
+            <div class="form-row-label">{{ t('hakijaryhma.liitetyt') || 'Liitetyt valintatapajonot' }}</div>
 
             <div class="form-row-content">
                 <table class="virkailija-table-1 margin-bottom-2">
                     <thead>
                     <tr>
-                        <th>Aktiivinen</th>
-                        <th>Nimi</th>
-                        <th>Periytyminen</th>
+                        <th>{{ t('hakijaryhma.aktiivinen') || 'Aktiivinen' }}</th>
+                        <th>{{ t('hakijaryhma.nimi') || 'Nimi' }}</th>
+                        <th>{{ t('hakijaryhma.periytyminen') || 'Periytyminen' }}</th>
                     </tr>
                     </thead>
                     <tbody class="margin-top-2">
@@ -99,14 +99,14 @@
         </div>
 
         <div class="col-sm-2">
-            <button class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="Muista tallentaa muutoksesi"><i class="fa fa-arrow-left"></i> Takaisin
+            <button class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
             </button>
             <button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit">
                 <div ng-show="!model.hakijaryhma.oid"><i class="fa fa-floppy-o"></i>
-                    Lisää
+                    {{ t('hakijaryhma.lisaa') || 'Lisää' }}
                 </div>
                 <div ng-show="model.hakijaryhma.oid"><i class="fa fa-floppy-o"></i>
-                    Muokkaa
+                    {{ t('hakijaryhma.muokkaa') || 'Muokkaa' }}
                 </div>
             </button>
         </div>

@@ -1,11 +1,11 @@
-﻿<h1>Järjestyskriteerin muokkaus</h1>
+﻿<h1>{{ t('jarjestyskriteeri.header') || 'Järjestyskriteerin muokkaus' }}</h1>
 
 <div class="tabs">
-    <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
-    <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaavalista" class="tab"><span>Laskentakaavat</span></a>
+    <a href="#/etusivu" class="tab current"><span>{{ t('common.etusivu') || 'Valintaryhmät ja hakukohteet' }}</span></a>
+    <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaavalista" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
     <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaavalista"
-       class="tab"><span>Laskentakaavat</span></a>
-    <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
+       class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
+    <a auth="crudOph" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
 </div>
 
 <div class="tabsheets">
@@ -13,7 +13,7 @@
     <form name="form" ng-submit="submit()">
         <div class="form-horizontal">
             <div class="form-group">
-                <label class="col-sm-2 control-label" for="metatiedot">Metatiedot</label>
+                <label class="col-sm-2 control-label" for="metatiedot">{{ t('jarjestyskriteeri.metatiedot') || 'Metatiedot' }}</label>
 
                 <div class="col-sm-6">
                     <input class="form-control" type="text" name="metatiedot" id="metatiedot"
@@ -23,14 +23,13 @@
 
             <div class="form-group" ng-model="model.laskentakaavaModel.laskentakaavat">
 
-                <label class="col-sm-2 control-label">Laskentakaavan valinta</label>
+                <label class="col-sm-2 control-label">{{ t('jarjestyskriteeri.laskentakaavanvalinta') || 'Laskentakaavan valinta' }}</label>
 
                 <div class="clear"></div>
                 <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat">
                     <label class="col-sm-2 control-label">{{group.name}}<br/></label>
 
                     <div class="col-sm-10">
-                        <!--<span >{{model.laskentakaavat}}</span>-->
                         <div ng-repeat="data in group.result">
                             <p class="form-control-static">
                                 <input type="radio" name="laskentakaava" value="{{data.id}}"
@@ -42,20 +41,17 @@
                                 <a popover-popup-delay="500"
                                    popover-placement="right"
                                    popover-trigger="mouseenter"
-                                   popover="Kaava avataan uuteen välilehteen"
+                                   popover="{{ t('jarjestyskriteeri.kaavaavataan') || 'Kaava avataan uuteen välilehteen' }}"
                                    ng-if="group.valintaryhmaOid"
                                    target="_blank"
-                                   ng-href="#/valintaryhma/{{group.valintaryhmaOid}}/laskentakaavalista/laskentakaava/{{data.id}}">Näytä
-                                    kaava</a>
-                                <!--<a ng-if="group.name === 'Juurikaavat'" target="_blank" ng-href="#/valintaryhma/{{group.valintaryhmaOid}}/laskentakaavalista/laskentakaava/{{data.id}}">näytä kaava</a>-->
-                                <a popover-popup-delay="500"
+                                   ng-href="#/valintaryhma/{{group.valintaryhmaOid}}/laskentakaavalista/laskentakaava/{{data.id}}">{{ t('jarjestyskriteeri.naytakaava') || 'Näytä kaava' }}</a>
+                                 <a popover-popup-delay="500"
                                    popover-placement="right"
                                    popover-trigger="mouseenter"
-                                   popover="Kaava avataan uuteen välilehteen"
+                                   popover="{{ t('jarjestyskriteeri.kaavaavataan') || 'Kaava avataan uuteen välilehteen' }}"
                                    ng-if="group.hakukohdeOid"
                                    target="_blank"
-                                   ng-href="#/hakukohde/{{group.hakukohdeOid}}/laskentakaavalista/laskentakaava/{{data.id}}">Näytä
-                                    kaava</a>
+                                   ng-href="#/hakukohde/{{group.hakukohdeOid}}/laskentakaavalista/laskentakaava/{{data.id}}">{{ t('jarjestyskriteeri.naytakaava') || 'Näytä kaava' }}</a>
                             </p>
                         </div>
                         <br/>
@@ -65,18 +61,19 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-2">
-                        <button class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="Muista tallentaa muutoksesi"><i class="fa fa-arrow-left"></i> Takaisin
+                        <button class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
                         </button>
 
                         <button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit">
                             <div ng-show="!model.jarjestyskriteeri.oid">
-                                <i class="fa fa-floppy-o"></i> Lisää
+                                <i class="fa fa-floppy-o"></i> {{ t('jarjestyskriteeri.lisaa') || 'Lisää' }}
                             </div>
                             <div ng-show="model.jarjestyskriteeri.oid">
-                                <i class="fa fa-floppy-o"></i> Muokkaa
+                                <i class="fa fa-floppy-o"></i> {{ t('jarjestyskriteeri.muokkaa') || 'Muokkaa' }}
                             </div>
                     </button>
                 </div>
             </div>
+        </div>
     </form>
 </div>
