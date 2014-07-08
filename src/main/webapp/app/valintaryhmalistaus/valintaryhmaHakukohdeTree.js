@@ -1,3 +1,5 @@
+"use strict";
+
 //domain .. this is both, service & domain layer
 app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
 
@@ -115,7 +117,7 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
                 }
                 item.getParents = function() {
                   i = this.ylavalintaryhma;
-                  arr = [];
+                  var arr = [];
                   while(i != null) {
                      arr.unshift(i);
                      i = i.ylavalintaryhma;
@@ -169,7 +171,9 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
 });
 
 
-function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra, HakuModel) {
+angular.module('valintaperusteet').
+    controller('ValintaryhmaHakukohdeTreeController', ['$scope', 'Treemodel', 'HakukohdeSiirra', 'HakuModel',
+        function ($scope, Treemodel, HakukohdeSiirra, HakuModel) {
 	$scope.predicate = 'nimi';
 	$scope.domain = Treemodel;
 
@@ -181,19 +185,9 @@ function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra,
         $scope.hakukohteetListingLimit +=100;
     };
 
-//    $scope.showMessage = function(){
-//        toaster.add({
-//            type:'success',
-//            title: "title",
-//            message: "text"
-//        });
-//    };
 
-	$scope.move = function(index, hakukohdeOid, valintaryhmaOid, item) {
+	$scope.move = function(index, hakukohdeOid, valintaryhmaOid) {
         HakukohdeSiirra.siirra({hakukohdeOid: hakukohdeOid}, valintaryhmaOid, function(result) {
-            //var hakukohde = Treemodel.getHakukohde(hakukohdeOid);
-            //var parentNode = hakukohde.ylavalintaryhma;
-            //var newParentNode = Treemodel.getValintaryhma(valintaryhmaOid);
     	}, function() {
               // show error
     	});
@@ -216,7 +210,6 @@ function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra,
                 // aukaisee alitason, jos ei ole liikaa tavaraa
                 var iter = function(ala) {
                     ala.forEach(function(ala){
-                        "use strict";
                         if(!ala.alavalintaryhmat || ala.alavalintaryhmat.length < 4) {
                             ala.isVisible = true;
                             iter(ala.alavalintaryhmat);
@@ -242,4 +235,4 @@ function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra,
         Treemodel.expandTree();
     }
 
-}
+}]);

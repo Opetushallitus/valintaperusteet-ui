@@ -16,7 +16,7 @@ var TEMPLATE_URL_BASE = TEMPLATE_URL_BASE || "";
 var KOODISTO_URL_BASE = KOODISTO_URL_BASE || "";
 var ORGANIZATION_SERVICE_URL_BASE = ORGANIZATION_SERVICE_URL_BASE || "/organisaatio-service/";
 var LOKALISOINTIPALVELU_URL_BASE = LOKALISOINTIPALVELU_URL_BASE || "";
-
+var TARJONTA_URL_BASE = TARJONTA_URL_BASE || "";
 
 function mainCtrl($scope, breadcrumbs) {
     $scope.breadcrumbs = breadcrumbs;
