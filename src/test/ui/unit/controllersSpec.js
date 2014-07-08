@@ -170,3 +170,97 @@ describe('Testing UusiValintaryhmaController', function(){
 
 
 });
+
+describe('Testing ValintaryhmaController', function(){
+    var rootScope,$rootScope, $controller, $httpBackend, $location, location, scope,ctrl,valintaryhmaModel,
+        puukaikkijson,haunkohdejoukkojson;
+    var routeParams = {"id": "oid1"};
+    beforeEach(module('valintaperusteet','MockData'));
+
+    beforeEach(inject(function($injector,puuKaikkiJSON,haunkohdejoukkoJSON) {
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $location = $injector.get('$location');
+        $controller = $injector.get('$controller');
+        valintaryhmaModel = $injector.get('ValintaryhmaModel');
+        puukaikkijson = puuKaikkiJSON;
+        haunkohdejoukkojson = haunkohdejoukkoJSON;
+
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('resources/puu?kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
+
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.flush();
+    }));
+
+    it('should get ValintaryhmaController', function() {
+        scope = $rootScope.$new();
+        rootScope = $rootScope;
+        location = $location;
+        $httpBackend.expectGET('resources/valintaryhma/'+ routeParams.id).respond('{"nimi":"Ammatillinen koulutus","kohdejoukko":null,"organisaatiot":[],"oid":"14030801791808409465510859807597","hakukohdekoodit":[],"valintakoekoodit":[],"lapsivalintaryhma":null,"lapsihakukohde":null}');
+        $httpBackend.expectGET('resources/valintaryhma/'+ routeParams.id+'/valinnanvaihe').respond('[{"nimi":"Harkinnanvaraisten kÃ¤sittelyvaihe","kuvaus":"Harkinnanvaraisten kÃ¤sittelyvaihe","aktiivinen":true,"valinnanVaiheTyyppi":"TAVALLINEN","oid":"1403080180051-8402607974762244585","inheritance":false},{"nimi":"Kielikokeen pakollisuus","kuvaus":"Kielikokeen pakollisuus","aktiivinen":true,"valinnanVaiheTyyppi":"VALINTAKOE","oid":"1403080180604-3934748042048289222","inheritance":false}]');
+        $httpBackend.expectGET('resources/valintaryhma/'+ routeParams.id+'/hakijaryhma').respond('[]');
+        $httpBackend.expectGET('json/haunkohdejoukko/koodi').respond(haunkohdejoukkojson);
+
+        ctrl = $controller('ValintaryhmaController', {'$scope' : scope, '$location': location, '$routeParams': routeParams,
+            'ValintaryhmaModel': valintaryhmaModel});
+        $httpBackend.flush();
+    });
+
+    it('check initialized variables', function() {
+        expect(scope.valintaryhmaOid).toBe(routeParams.id);
+    });
+
+    it('cancel', function() {
+        scope.cancel();
+        expect(location.path()).toBe("/");
+    });
+
+    it('lisaaValinnanVaihe', function() {
+        scope.lisaaValinnanVaihe();
+        expect(location.path()).toBe("/valintaryhma/" + routeParams.id + "/valinnanvaihe/");
+    });
+
+    it('lisaaValintakoeValinnanVaihe', function() {
+        scope.lisaaValintakoeValinnanVaihe();
+        expect(location.path()).toBe("/valintaryhma/" + routeParams.id + "/valintakoevalinnanvaihe/");
+    });
+
+    it('toValintaryhmaForm', function() {
+        scope.toValintaryhmaForm();
+        expect(location.path()).toBe("/valintaryhma/" + routeParams.id);
+    });
+
+
+    it('lisaaHakijaryhma', function() {
+        scope.lisaaHakijaryhma('oid111');
+        expect(location.path()).toBe("/valintaryhma/" + routeParams.id + "/hakijaryhma/");
+    });
+
+    it('organisaatioSelector', function() {
+        var data = {
+            oid: 'oid11'
+
+        };
+        scope.model.valintaryhma = {
+            organisaatiot: [{oid:'oid11'}]
+
+        };
+        expect(scope.model.valintaryhma.organisaatiot.length).toBe(1);
+        scope.organisaatioSelector(data);
+        expect(scope.model.valintaryhma.organisaatiot.length).toBe(1);
+
+        data.oid = 'oid111';
+        scope.organisaatioSelector(data);
+        expect(scope.model.valintaryhma.organisaatiot.length).toBe(2);
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+
+
+});

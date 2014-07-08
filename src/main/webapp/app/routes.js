@@ -10,7 +10,7 @@ app.config(function($routeProvider) {
 
 		//edit valintaryhma
 		when('/valintaryhma/', {controller:'UusiValintaryhmaController', templateUrl:TEMPLATE_URL_BASE + 'valintaryhma/valintaryhmalomake_uusi.html', label: 'valintaryhmä'}).
-		when('/valintaryhma/:id', {controller:ValintaryhmaController, templateUrl:TEMPLATE_URL_BASE + 'valintaryhma/valintaryhmalomake.html', label: 'valintaryhmä'}).
+		when('/valintaryhma/:id', {controller:'ValintaryhmaController', templateUrl:TEMPLATE_URL_BASE + 'valintaryhma/valintaryhmalomake.html', label: 'valintaryhmä'}).
 		when('/valintaryhma/:id/hakijaryhma/', {controller:HakijaryhmaController, templateUrl:TEMPLATE_URL_BASE + 'hakijaryhma/hakijaryhma.html', label: 'hakijaryhmä'}).
 		when('/valintaryhma/:id/hakijaryhma/:hakijaryhmaOid', {controller:HakijaryhmaController, templateUrl:TEMPLATE_URL_BASE + 'hakijaryhma/hakijaryhma.html', label: 'hakijaryhmä'}).
 		when('/valintaryhma/:id/valinnanvaihe/', {controller: valintaryhmaValinnanvaiheController, templateUrl: TEMPLATE_URL_BASE + 'valinnanvaihe/valinnanvaihelomake.html'}).
