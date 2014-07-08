@@ -247,19 +247,21 @@
             <tbody ng-model="model.hakijaryhmat ">
             <tr ng-repeat="data in model.hakijaryhmat">
                 <td><input type="checkbox" ng-model="data.aktiivinen"/></td>
-                <td class="align-center">
+                <td class="text-center">
                     {{data.hakijaryhma.nimi}}
                 </td>
-                <td class="align-center">{{data.hakijaryhma.kuvaus}}</td>
-                <td class="align-center">{{data.hakijaryhma.kiintio}}</td>
-                <td class="align-center">{{data.inheritance}}</td>
-                <td class="align-center">
+                <td class="text-center">{{data.hakijaryhma.kuvaus}}</td>
+                <td class="text-center">{{data.hakijaryhma.kiintio}}</td>
+                <td class="text-center">
                         <span auth="crud" ng-show="!data.inheritance" class="btn remove"
                               ng-click="model.removeHakijaryhma(data.oid)"></span>
                 </td>
             </tr>
             </tbody>
+
         </table>
+
+
         <span auth="crud" class="btn btn-sm btn-default" ng-click="addHakijaryhma()"><i
                 class="fa fa-plus"></i> Liitä hakijaryhmä</span>
     </div>
