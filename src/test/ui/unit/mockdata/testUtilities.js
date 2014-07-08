@@ -53,4 +53,119 @@ angular.module('MockData',[])
         "koulutuksenAlkamisVuosi" : 0,
         "kohdejoukkoUri" : "haunkohdejoukko_10#1",
         "sijoittelu" : true
-    });
+    }).value('haunkohdejoukkoJSON', [ {
+        "koodiUri" : "haunkohdejoukko_16",
+        "resourceUri" : "http://koodistopalvelu.opintopolku.fi/haunkohdejoukko/koodi/haunkohdejoukko_16",
+        "version" : 0,
+        "versio" : 1,
+        "koodisto" : {
+            "koodistoUri" : "haunkohdejoukko",
+            "organisaatioOid" : "1.2.246.562.10.00000000001",
+            "koodistoVersios" : [ 1 ]
+        },
+        "koodiArvo" : "16",
+        "paivitysPvm" : 1382966805050,
+        "voimassaAlkuPvm" : "2013-10-15",
+        "voimassaLoppuPvm" : null,
+        "tila" : "LUONNOS",
+        "metadata" : [ {
+            "nimi" : "Valmentava ja kuntouttava koulutus",
+            "kuvaus" : "Valmentava ja kuntouttava koulutus",
+            "lyhytNimi" : "Valmentava ja kuntouttava koulutus",
+            "kayttoohje" : null,
+            "kasite" : null,
+            "sisaltaaMerkityksen" : null,
+            "eiSisallaMerkitysta" : null,
+            "huomioitavaKoodi" : null,
+            "sisaltaaKoodiston" : null,
+            "kieli" : "FI"
+        }, {
+            "nimi" : "Förberedande och rehabiliterande utbildning",
+            "kuvaus" : "Förberedande och rehabiliterande utbildning",
+            "lyhytNimi" : "Förberedande och rehabiliterande utbildning",
+            "kayttoohje" : null,
+            "kasite" : null,
+            "sisaltaaMerkityksen" : null,
+            "eiSisallaMerkitysta" : null,
+            "huomioitavaKoodi" : null,
+            "sisaltaaKoodiston" : null,
+            "kieli" : "SV"
+        } ]
+    }, {
+        "koodiUri" : "haunkohdejoukko_11",
+        "resourceUri" : "http://koodistopalvelu.opintopolku.fi/haunkohdejoukko/koodi/haunkohdejoukko_11",
+        "version" : 0,
+        "versio" : 1,
+        "koodisto" : {
+            "koodistoUri" : "haunkohdejoukko",
+            "organisaatioOid" : "1.2.246.562.10.00000000001",
+            "koodistoVersios" : [ 1 ]
+        },
+        "koodiArvo" : "11",
+        "paivitysPvm" : 1382966805147,
+        "voimassaAlkuPvm" : "2000-01-01",
+        "voimassaLoppuPvm" : null,
+        "tila" : "LUONNOS",
+        "metadata" : [ {
+            "nimi" : "Ammatillinen koulutus ja lukiokoulutus",
+            "kuvaus" : "Ammatillinen koulutus ja lukiokoulutus",
+            "lyhytNimi" : "Ammatillinen koulutus ja lukiokoulutus",
+            "kayttoohje" : null,
+            "kasite" : null,
+            "sisaltaaMerkityksen" : null,
+            "eiSisallaMerkitysta" : null,
+            "huomioitavaKoodi" : null,
+            "sisaltaaKoodiston" : null,
+            "kieli" : "FI"
+        }, {
+            "nimi" : "Yrkes- och gymnasieuutbildning",
+            "kuvaus" : "Yrkes- och gymnasieuutbildning",
+            "lyhytNimi" : "Yrkes- och gymnasieuutbildning",
+            "kayttoohje" : null,
+            "kasite" : null,
+            "sisaltaaMerkityksen" : null,
+            "eiSisallaMerkitysta" : null,
+            "huomioitavaKoodi" : null,
+            "sisaltaaKoodiston" : null,
+            "kieli" : "SV"
+        } ]
+    }, {
+        "koodiUri" : "haunkohdejoukko_10",
+        "resourceUri" : "http://koodistopalvelu.opintopolku.fi/haunkohdejoukko/koodi/haunkohdejoukko_10",
+        "version" : 0,
+        "versio" : 1,
+        "koodisto" : {
+            "koodistoUri" : "haunkohdejoukko",
+            "organisaatioOid" : "1.2.246.562.10.00000000001",
+            "koodistoVersios" : [ 1 ]
+        },
+        "koodiArvo" : "10",
+        "paivitysPvm" : 1382966804943,
+        "voimassaAlkuPvm" : "2000-01-01",
+        "voimassaLoppuPvm" : null,
+        "tila" : "LUONNOS",
+        "metadata" : [ {
+            "nimi" : "Vuxenutbildning",
+            "kuvaus" : "Vuxenutbildning",
+            "lyhytNimi" : "Vuxenutbildning",
+            "kayttoohje" : null,
+            "kasite" : null,
+            "sisaltaaMerkityksen" : null,
+            "eiSisallaMerkitysta" : null,
+            "huomioitavaKoodi" : null,
+            "sisaltaaKoodiston" : null,
+            "kieli" : "SV"
+        }, {
+            "nimi" : "Aikuiskoulutus",
+            "kuvaus" : "Aikuiskoulutus",
+            "lyhytNimi" : "Aikuiskoulutus",
+            "kayttoohje" : null,
+            "kasite" : null,
+            "sisaltaaMerkityksen" : null,
+            "eiSisallaMerkitysta" : null,
+            "huomioitavaKoodi" : null,
+            "sisaltaaKoodiston" : null,
+            "kieli" : "FI"
+        } ]
+    }]);
+

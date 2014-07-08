@@ -53,6 +53,116 @@ describe('Testing ValintaryhmaHakukohdeTreeController', function(){
         expect(scope.hakuModel.haut.length).toBe(7);
     });
 
+    it('lazyLoading', function() {
+        expect(scope.hakukohteetListingLimit).toBe(100);
+        scope.lazyLoading();
+        expect(scope.hakukohteetListingLimit).toBe(200);
+    });
+
+    it('addClass', function() {
+        var ehto = null;
+        expect(scope.addClass("test",ehto)).toBe("");
+        ehto = true;
+        expect(scope.addClass("test",ehto)).toBe("test");
+    });
+
+    it('expandNode', function() {
+        var alanode = {
+            alavalintaryhmat: [],
+            hakukohdeViitteet: [],
+            isVisible: false
+        };
+
+        var node = {
+            alavalintaryhmat: null,
+            hakukohdeViitteet: null,
+            isVisible: false
+        };
+        scope.expandNode(node);
+        expect(node.isVisible).toBeFalsy();
+
+        node.alavalintaryhmat = [alanode];
+        node.hakukohdeViitteet = [{}];
+        scope.expandNode(node);
+        expect(node.isVisible).toBeTruthy();
+        expect(alanode.isVisible).toBeTruthy();
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+
+
+});
+
+
+describe('Testing UusiValintaryhmaController', function(){
+    var rootScope,$rootScope, $controller, $httpBackend, $location, location, scope,ctrl,valintaryhmaCreatorModel,
+        ylavalintaryhma,puukaikkijson,haunkohdejoukkojson;
+    var routeParams = {"hakukohdeOid": "oid2", "hakuOid": "oid1"};
+    beforeEach(module('valintaperusteet','MockData'));
+
+    beforeEach(inject(function($injector,puuKaikkiJSON, haunkohdejoukkoJSON) {
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $location = $injector.get('$location');
+        $controller = $injector.get('$controller');
+        valintaryhmaCreatorModel = $injector.get('ValintaryhmaCreatorModel');
+        ylavalintaryhma = $injector.get('Ylavalintaryhma');
+        puukaikkijson = puuKaikkiJSON;
+        haunkohdejoukkojson = haunkohdejoukkoJSON;
+
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('resources/puu?kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
+        $httpBackend.expectGET('resources/puu?hakukohteet=false').respond(puukaikkijson);
+
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.flush();
+    }));
+
+    it('should get UusiValintaryhmaController', function() {
+        scope = $rootScope.$new();
+        rootScope = $rootScope;
+        location = $location;
+
+        $httpBackend.expectGET('json/haunkohdejoukko/koodi').respond(haunkohdejoukkojson);
+        $httpBackend.expectGET('resources/puu?hakukohteet=false').respond(puukaikkijson);
+
+        ctrl = $controller('UusiValintaryhmaController', {'$scope' : scope, '$location': location, '$routeParams': routeParams,
+            'ValintaryhmaCreatorModel': valintaryhmaCreatorModel, 'Ylavalintaryhma': ylavalintaryhma});
+        $httpBackend.flush();
+    });
+
+    it('check initialized variables', function() {
+        expect(scope.model.kohdejoukot.length).toBe(3);
+    });
+
+    it('cancel', function() {
+        scope.cancel();
+        expect(location.path()).toBe("/");
+    });
+
+    it('organisaatioSelector', function() {
+        var data = {
+            oid: 'oid11'
+
+        };
+        scope.model.valintaryhma = {
+            organisaatiot: [{oid:'oid11'}]
+
+        };
+        expect(scope.model.valintaryhma.organisaatiot.length).toBe(1);
+        scope.organisaatioSelector(data);
+        expect(scope.model.valintaryhma.organisaatiot.length).toBe(1);
+
+        data.oid = 'oid111';
+        scope.organisaatioSelector(data);
+        expect(scope.model.valintaryhma.organisaatiot.length).toBe(2);
+    });
+
     afterEach(function() {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
