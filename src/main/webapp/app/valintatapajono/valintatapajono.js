@@ -60,6 +60,10 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
                 model.valintatapajono.varasijojaTaytetaanAsti = null;
             };
 
+            if(!model.valintatapajono.aloituspaikat && model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan) {
+                model.valintatapajono.aloituspaikat = 0;
+            }
+
             if(model.valintatapajono.oid == null) {
                 model.valintatapajono.aktiivinen = true;
                 ValinnanvaiheValintatapajono.insert({parentOid: valinnanvaiheOid}, model.valintatapajono,

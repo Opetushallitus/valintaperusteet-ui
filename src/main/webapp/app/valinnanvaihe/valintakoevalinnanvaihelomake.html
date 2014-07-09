@@ -1,10 +1,10 @@
-<h1>{{'koekutsuvaihe.header' | translate}}</h1>
+<h1>{{ t('valintakoevalinnanvaihelomake.header') || 'Koekutsuvaiheen muokkaus' }}</h1>
 
 <div class="tabs">
-    <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
-    <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaavalista" class="tab"><span>Laskentakaavat</span></a>
-    <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaavalista" class="tab"><span>Laskentakaavat</span></a>
-    <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
+    <a href="#/etusivu" class="tab current"><span>{{ t('common.etusivu') || 'Valintaryhmät ja hakukohteet' }}</span></a>
+    <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaavalista" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
+    <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaavalista" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
+    <a auth="crudOph" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
 </div>
 
 <div class="tabsheets">
@@ -12,7 +12,7 @@
     <form name="form" ng-submit="submit()">
 
         <div class="form-row">
-            <label class="form-row-label" for="nimi">Nimi</label>
+            <label class="form-row-label" for="nimi">{{ t('valintakoevalinnanvaihelomake.nimi') || 'Nimi' }}</label>
 
             <div class="form-row-content">
                 <input name="nimi" ng-model="model.valintakoevalinnanvaihe.nimi" required/>
@@ -20,7 +20,7 @@
 
             <div class="clear"></div>
 
-            <label class="form-row-label" for="kuvaus">Kuvaus</label>
+            <label class="form-row-label" for="kuvaus">{{ t('valintakoevalinnanvaihelomake.kuvaus') || 'Kuvaus' }}</label>
 
             <div class="form-row-content">
                 <textarea name="kuvaus" ng-model="model.valintakoevalinnanvaihe.kuvaus"/>
@@ -29,17 +29,17 @@
 
         <div class="form-row width-100" ng-show="model.valintakoevalinnanvaihe.oid">
 
-            <div class="form-row-label">Valintakokeet</div>
+            <div class="form-row-label">{{ t('valintakoevalinnanvaihelomake.valintakokeet') || 'Valintakokeet' }}</div>
 
             <div class="form-row-content width-80">
                 <table class="virkailija-table-1 margin-bottom-2" ng-show="model.valintakokeet">
                     <thead>
                     <tr>
-                        <th>Aktiivinen</th>
-                        <th>Tunniste</th>
-                        <th>Nimi</th>
-                        <th>Kuvaus</th>
-                        <th>Poista</th>
+                        <th>{{ t('valintakoevalinnanvaihelomake.aktiivinen') || 'Aktiivinen' }}</th>
+                        <th>{{ t('valintakoevalinnanvaihelomake.tunniste') || 'Tunniste' }}</th>
+                        <th>{{ t('valintakoevalinnanvaihelomake.nimi') || 'Nimi' }}</th>
+                        <th>{{ t('valintakoevalinnanvaihelomake.kuvaus') || 'Kuvaus' }}</th>
+                        <th>{{ t('valintakoevalinnanvaihelomake.poista') || 'Poista' }}</th>
                     </tr>
                     </thead>
                     <tbody ng-model="model.valintakokeet" class="margin-top-2">
@@ -53,16 +53,16 @@
                     </tr>
                     </tbody>
                 </table>
-                <span auth="crud" class="btn btn-sm btn-default" ng-click="addValintakoe()"><i class="fa fa-plus"></i> Valintakoe</span>
+                <span auth="crud" class="btn btn-sm btn-default" ng-click="addValintakoe()"><i class="fa fa-plus"></i> {{ t('valintakoevalinnanvaihelomake.valintakoe') || 'Valintakoe' }}</span>
             </div>
         </div>
         <div class="clear"></div>
-        <span><button class="btn btn-sm btn-default" ng-click="cancel()"><i
-                class="fa fa-arrow-left"></i> Takaisin
+        <span><button class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
+                class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
         </button></span>
     <span><button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i
             class="fa fa-floppy-o"></i>
-        Tallenna
+        {{ t('common.tallenna') || 'Tallenna' }}
     </button></span>
 
 

@@ -1,3 +1,5 @@
+"use strict";
+
 //domain .. this is both, service & domain layer
 app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
 
@@ -114,13 +116,13 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
                     item.ylavalintaryhma = previousItem;
                 }
                 item.getParents = function() {
-                    i = this.ylavalintaryhma;
-                    arr = [];
-                    while(i != null) {
-                        arr.unshift(i);
-                        i = i.ylavalintaryhma;
-                    }
-                    return arr;
+                  i = this.ylavalintaryhma;
+                  var arr = [];
+                  while(i != null) {
+                     arr.unshift(i);
+                     i = i.ylavalintaryhma;
+                  }
+                  return arr;
                 };
 
                 if(item.tyyppi == 'VALINTARYHMA') {
@@ -169,9 +171,11 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
 });
 
 
-function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra, HakuModel) {
-    $scope.predicate = 'nimi';
-    $scope.domain = Treemodel;
+angular.module('valintaperusteet').
+    controller('ValintaryhmaHakukohdeTreeController', ['$scope', 'Treemodel', 'HakukohdeSiirra', 'HakuModel',
+        function ($scope, Treemodel, HakukohdeSiirra, HakuModel) {
+	$scope.predicate = 'nimi';
+	$scope.domain = Treemodel;
 
     $scope.hakuModel = HakuModel;
     $scope.hakuModel.init();
@@ -181,14 +185,22 @@ function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra,
         $scope.hakukohteetListingLimit +=100;
     };
 
-    $scope.addClass = function(cssClass, ehto) {
-        if(ehto) {
-            return cssClass;
-        } else {
-            return "";
-        }
-    };
 
+	$scope.move = function(index, hakukohdeOid, valintaryhmaOid) {
+        HakukohdeSiirra.siirra({hakukohdeOid: hakukohdeOid}, valintaryhmaOid, function(result) {
+    	}, function() {
+              // show error
+    	});
+	};
+
+	$scope.addClass = function(cssClass, ehto) {
+		if(ehto) {
+			return cssClass;
+		} else {
+			return "";
+		}
+	};
+	
     $scope.expandNode = function(node) {
         if( (node.alavalintaryhmat && node.alavalintaryhmat.length > 0)  ||
             (node.hakukohdeViitteet && node.hakukohdeViitteet.length > 0 )  ) {
@@ -198,7 +210,6 @@ function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra,
                 // aukaisee alitason, jos ei ole liikaa tavaraa
                 var iter = function(ala) {
                     ala.forEach(function(ala){
-                        "use strict";
                         if(!ala.alavalintaryhmat || ala.alavalintaryhmat.length < 4) {
                             ala.isVisible = true;
                             iter(ala.alavalintaryhmat);
@@ -224,4 +235,4 @@ function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra,
         Treemodel.expandTree();
     }
 
-}
+}]);

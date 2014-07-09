@@ -1,10 +1,10 @@
-﻿<h1>{{'jononmuokkaus.header' | translate}}</h1>
+﻿<h1>{{ t('valintatapajono.header') || 'Jonon muokkaus' }}</h1>
 
 <div class="tabs">
-    <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
-    <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaavalista" class="tab"><span>Laskentakaavat</span></a>
-    <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaavalista" class="tab"><span>Laskentakaavat</span></a>
-    <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
+    <a href="#/etusivu" class="tab current"><span>{{ t('common.etusivu') || 'Valintaryhmät ja hakukohteet' }}</span></a>
+    <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaavalista" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
+    <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaavalista" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
+    <a auth="crudOph" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
 </div>
 
 <div class="tabsheets">
@@ -12,7 +12,7 @@
 
 <form name="form" ng-submit="submit()" class="valintatapajono">
 <div class="form-row">
-    <label class="form-row-label" for="nimi">Jonon nimi</label>
+    <label class="form-row-label" for="nimi">{{ t('valintatapajono.jononnimi') || 'Jonon nimi' }}</label>
 
     <div class="form-row-content">
         <input type="text" name="nimi" id="nimi" ng-model="model.valintatapajono.nimi" required/>
@@ -21,7 +21,7 @@
 </div>
 
 <div class="form-row">
-    <label class="form-row-label" for="kuvaus">Kuvaus</label>
+    <label class="form-row-label" for="kuvaus">{{ t('valintatapajono.kuvaus') || 'Kuvaus' }}</label>
 
     <div class="form-row-content">
         <textarea name="kuvaus" id="kuvaus" ng-model="model.valintatapajono.kuvaus"/>
@@ -31,16 +31,17 @@
 
 <div class="form-row">
 
-    <label class="form-row-label" for="aloituspaikat">Aloituspaikat</label>
+    <label class="form-row-label" for="aloituspaikat">{{ t('valintatapajono.aloituspaikat') || 'Aloituspaikat' }}</label>
 
     <div class="form-row-content">
-        <input type="number" min="0" id="aloituspaikat" name="aloituspaikat"
+        <input ng-if="!model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan" type="number" min="0" id="aloituspaikat" name="aloituspaikat"
                ng-model="model.valintatapajono.aloituspaikat" required>
+        <input ng-if="model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan" type="number" min="0" id="aloituspaikat" name="aloituspaikat"
+               ng-model="model.valintatapajono.aloituspaikat"/>
     </div>
     <div class="clear"></div>
 
-    <label class="form-row-label" for="siirretaanSijoitteluun">{{'jononmuokkaus.siirretaan.sijoitteluun' |
-        translate}}</label>
+    <label class="form-row-label" for="siirretaanSijoitteluun">{{ t('valintatapajono.siirretaansijoitteluun') || 'Siirretään sijoitteluun' }}</label>
 
     <div class="form-row-content">
         <div class="field-container-checkbox">
@@ -50,7 +51,7 @@
     </div>
     <div class="clear"></div>
 
-    <label class="form-row-label" for="kaytetaanValintalaskentaa">Käytetään valintalaskentaa</label>
+    <label class="form-row-label" for="kaytetaanValintalaskentaa">{{ t('valintatapajono.kaytetaan') || 'Käytetään valintalaskentaa' }}</label>
 
     <div class="form-row-content">
         <div class="field-container-checkbox">
@@ -61,7 +62,7 @@
 
     <div class="clear"></div>
 
-    <label class="form-row-label" for="kaikkiEhdonTayttavatHyvaksytaan">Kaikki ehdon täyttävät hyväksytään</label>
+    <label class="form-row-label" for="kaikkiEhdonTayttavatHyvaksytaan">{{ t('valintatapajono.kaikkiehdon') || 'Kaikki ehdon täyttävät hyväksytään' }}</label>
 
     <div class="form-row-content">
         <div class="field-container-checkbox">
@@ -72,30 +73,30 @@
 
     <div class="clear"></div>
 
-    <div class="form-row-label">Tasasijasääntö</div>
+    <div class="form-row-label">{{ t('valintatapajono.tasasijasaanto') || 'Tasasijasääntö' }}</div>
     <div class="form-row-content">
         <div class="field-container-radio">
             <input type="radio" name="tps" ng-model="model.valintatapajono.tasapistesaanto" id="tps1"
                    value="YLITAYTTO" required/>
-            <label for="tps1">Ylitäyttö</label>
+            <label for="tps1">{{ t('valintatapajono.ylitaytto') || 'Ylitäyttö' }}</label>
         </div>
         <div class="field-container-radio">
             <input type="radio" name="tps" ng-model="model.valintatapajono.tasapistesaanto" id="tps2"
                    value="ALITAYTTO" required/>
-            <label for="tps2">Alitäyttö</label>
+            <label for="tps2">{{ t('valintatapajono.alitaytto') || 'Alitäyttö' }}</label>
         </div>
         <div class="field-container-radio">
             <input type="radio" name="tps" ng-model="model.valintatapajono.tasapistesaanto" id="tps3"
                    value="ARVONTA" required/>
-            <label for="tps3">Arvonta</label>
+            <label for="tps3">{{ t('valintatapajono.arvonta') || 'Arvonta' }}</label>
         </div>
     </div>
     <div class="clear"></div>
 
     <fieldset>
-        <legend>Varasijakäsittelysäännöt</legend>
+        <legend>{{ t('valintatapajono.varasijakasittelysaannot') || 'Varasijakäsittelysäännöt' }}</legend>
 
-        <label class="form-row-label" for="eiVarasijatayttoa">Ei varasijatayttoa</label>
+        <label class="form-row-label" for="eiVarasijatayttoa">{{ t('valintatapajono.eivarasijatayttoa') || 'Ei varasijatäyttöä' }}</label>
 
         <div class="form-row-content">
             <div class="field-container-checkbox">
@@ -105,8 +106,7 @@
 
             <div>
                 <small>
-                    Jos valittu, sijoittelu pyrkii ainoastaan valitsemaan aloituspaikkojen mukaisen määrän jonon alusta,
-                    jättäen hylätyt huomioimatta. Varasijoille jääviä ei huomioida.
+                    {{ t('valintatapajono.josvalittu') || 'Jos valittu, sijoittelu pyrkii ainoastaan valitsemaan aloituspaikkojen mukaisen määrän jonon alusta, jättäen hylätyt huomioimatta. Varasijoille jääviä ei huomioida.' }}
                 </small>
             </div>
 
@@ -114,7 +114,7 @@
         <div class="clear"></div>
 
         <div class="form-row">
-            <label class="form-row-label" for="varasijojaKaytetaanAlkaen">Varasijasääntöjä käytetään alkaen</label>
+            <label class="form-row-label" for="varasijojaKaytetaanAlkaen">{{ t('valintatapajono.varasijasaantoja') || 'Varasijasääntöjä käytetään alkaen' }}</label>
 
             <div class="form-row-content">
                 <input type="checkbox" id="alkaenRajattu" name="alkaenRajattu"
@@ -126,7 +126,7 @@
         </div>
 
         <div class="form-row">
-            <label class="form-row-label" for="varasijojaTaytetaanAsti">Varasijoja täytetään asti</label>
+            <label class="form-row-label" for="varasijojaTaytetaanAsti">{{ t('valintatapajono.varasijoja') || 'Varasijoja täytetään asti' }}</label>
 
             <div class="form-row-content">
                 <input type="checkbox" id="astiRajattu" name="astiRajattu"
@@ -138,7 +138,7 @@
         </div>
 
         <div class="form-row">
-            <label class="form-row-label" for="rajattu">Huomioitavien varasijojen määrä rajattu</label>
+            <label class="form-row-label" for="rajattu">{{ t('valintatapajono.huomioitavien') || 'Huomioitavien varasijojen määrä rajattu' }}</label>
 
             <div class="form-row-content">
                 <div class="field-container-checkbox">
@@ -153,8 +153,7 @@
         </div>
 
         <div class="form-row">
-            <label class="form-row-label" for="poissaOlevaTaytto">Varasijatäyttö poissa olevaksi ilmoittautuneiden
-                tilalle</label>
+            <label class="form-row-label" for="poissaOlevaTaytto">{{ t('valintatapajono.varasijataytto') || 'Varasijatäyttö poissa olevaksi ilmoittautuneiden tilalle' }}</label>
 
             <div class="form-row-content">
                 <div class="field-container-checkbox">
@@ -168,12 +167,12 @@
         <div class="form-row">
             <div class="form-row-content">
                 <div class="field-container-checkbox">
-                    Jos jonoon jää täyttämättömiä aloituspaikkoja, niitä täytetään jonosta
+                    {{ t('valintatapajono.josjonoon') || 'Jos jonoon jää täyttämättömiä aloituspaikkoja, niitä täytetään jonosta' }}
                     <select>
                         <option></option>
-                        <option>1. jono</option>
-                        <option>2. jono</option>
-                        <option>3. jono</option>
+                        <option>1. {{ t('valintatapajono.jono') || 'jono' }}</option>
+                        <option>2. {{ t('valintatapajono.jono') || 'jono' }}</option>
+                        <option>3. {{ t('valintatapajono.jono') || 'jono' }}</option>
                     </select>
                 </div>
             </div>
@@ -185,17 +184,17 @@
 
 
 <div class="form-row">
-    <div class="form-row-label">Jonon muodostumiskriteerit</div>
+    <div class="form-row-label">{{ t('valintatapajono.muodostumiskriteerit') || 'Jonon muodostumiskriteerit' }}</div>
     <div class="form-row-content" ng-show="model.valintatapajono.oid">
 
         <table class="virkailija-table-1 margin-bottom-2" ng-show="model.jarjestyskriteerit">
             <thead>
             <tr>
-                <th>Aktiivinen</th>
-                <th>Laskentakaava</th>
-                <th>Metatiedot</th>
-                <th>Peritty</th>
-                <th>Poista</th>
+                <th>{{ t('valintatapajono.aktiivinen') || 'Aktiivinen' }}</th>
+                <th>{{ t('valintatapajono.laskentakaava') || 'Laskentakaava' }}</th>
+                <th>{{ t('valintatapajono.metatiedot') || 'Metatiedot' }}</th>
+                <th>{{ t('valintatapajono.peritty') || 'Peritty' }}</th>
+                <th>{{ t('valintatapajono.poista') || 'Poista' }}</th>
             </tr>
             </thead>
             <tbody ui-sortable class="margin-top-2" ng-model="model.jarjestyskriteerit">
@@ -216,30 +215,29 @@
             </tbody>
         </table>
         <span auth="crud" class="btn btn-sm btn-default" ng-click="addKriteeri()"><i
-                class="fa fa-plus"></i> Kriteeri</span>
-        <!--<div><small>Jonojen muodostuskriteereihin liittyvä ohjeteksti.</small></div>-->
+                class="fa fa-plus"></i> {{ t('valintatapajono.kriteeri') || 'Kriteeri' }}</span>
     </div>
-    <span ng-show="!model.valintatapajono.oid">Tallenna jono lisätäksesi kriteeri.</span>
+    <span ng-show="!model.valintatapajono.oid">{{ t('valintatapajono.tallennajono') || 'Tallenna jono lisätäksesi kriteeri.' }}</span>
 </div>
 
 <div class="clear"></div>
 
 <div class="form-row width-100">
-    <div class="form-row-label">Hakijaryhmat</div>
+    <div class="form-row-label">{{ t('valintatapajono.hakijaryhmat') || 'Hakijaryhmät' }}</div>
     <div class="form-row-content width-60" ng-if="!model.valintatapajono.siirretaanSijoitteluun">
-        <span>Valintatapajonoa ei siirretä sijoitteluun. Hakijaryhma ei vaikuta jonoon.</span>
+        <span>{{ t('valintatapajono.eisiirreta') || 'Valintatapajonoa ei siirretä sijoitteluun. Hakijaryhmä ei vaikuta jonoon.' }}</span>
     </div>
     <div class="form-row-content width-60"
          ng-if="model.valintatapajono.siirretaanSijoitteluun && model.valintatapajono.oid">
         <table ng-show="model.hakijaryhmat" class="virkailija-table-1 margin-bottom-2 width-60">
             <thead>
             <tr>
-                <th>Aktiivinen</th>
-                <th>Nimi</th>
-                <th>Kuvaus</th>
-                <th>Määrä</th>
-                <th>Periytyy</th>
-                <th>Poista</th>
+                <th>{{ t('valintatapajono.aktiivinen') || 'Aktiivinen' }}</th>
+                <th>{{ t('valintatapajono.nimi') || 'Nimi' }}</th>
+                <th>{{ t('valintatapajono.kuvaus') || 'Kuvaus' }}</th>
+                <th>{{ t('valintatapajono.maara') || 'Määrä' }}</th>
+                <th>{{ t('valintatapajono.periytyy') || 'Periytyy' }}</th>
+                <th>{{ t('valintatapajono.poista') || 'Poista' }}</th>
             </tr>
             </thead>
             <tbody ng-model="model.hakijaryhmat ">
@@ -258,17 +256,17 @@
             </tr>
             </tbody>
         </table>
-        <span auth="crud" class="button small" ng-click="addHakijaryhma()">Liitä hakijaryhmä</span>
+        <span auth="crud" class="button small" ng-click="addHakijaryhma()">{{ t('valintatapajono.liita') || 'Liitä hakijaryhmä' }}</span>
     </div>
-    <span ng-if="model.valintatapajono.siirretaanSijoitteluun && !model.valintatapajono.oid">Tallenna jono lisätäksesi hakijaryhma.</span>
+    <span ng-if="model.valintatapajono.siirretaanSijoitteluun && !model.valintatapajono.oid">{{ t('valintatapajono.tallennahakijaryhma') || 'Tallenna jono lisätäksesi hakijaryhmä.' }}</span>
 </div>
 
 <div class="clear"></div>
-<button class="btn btn-sm btn-default" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Takaisin
+<button class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
 </button>
 <button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i
         class="fa fa-floppy-o"></i>
-    Tallenna
+    {{ t('common.tallenna') || 'Tallenna' }}
 </button>
 
 <div class="clear"></div>

@@ -1,10 +1,10 @@
-﻿<h1>Hakijaryhman liittäminen</h1>
+﻿<h1>{{ t('hakijaryhmavalintatapajono.header') || 'Hakijaryhmän liittäminen' }}</h1>
 
 <div class="tabs">
-    <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
-    <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaavalista" class="tab"><span>Laskentakaavat</span></a>
-    <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaavalista" class="tab"><span>Laskentakaavat</span></a>
-    <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
+    <a href="#/etusivu" class="tab current"><span>{{ t('common.etusivu') || 'Valintaryhmät ja hakukohteet' }}</span></a>
+    <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaavalista" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
+    <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaavalista" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
+    <a auth="crudOph" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
 </div>
 
 <div class="tabsheet">
@@ -13,16 +13,16 @@
 
 
     <div class="form-row" ng-model="model.hakijaryhmat" >
-        <div class="form-row-label">Hakijaryhmat</div>
+        <div class="form-row-label">{{ t('hakijaryhmavalintatapajono.hakijaryhmat') || 'Hakijaryhmät' }}</div>
         <div class="form-row-content width-60">
             <table class="virkailija-table-1 margin-bottom-2 width-60">
                 <thead>
                 <tr>
                     <th></th>
-                    <th>Nimi</th>
-                    <th>Laskentakaava</th>
-                    <th>Kiintiö</th>
-                    <th>Periytyy</th>
+                    <th>{{ t('hakijaryhmavalintatapajono.nimi') || 'Nimi' }}</th>
+                    <th>{{ t('hakijaryhmavalintatapajono.laskentakaava') || 'Laskentakaava' }}</th>
+                    <th>{{ t('hakijaryhmavalintatapajono.kiintio') || 'Kiintiö' }}</th>
+                    <th>{{ t('hakijaryhmavalintatapajono.periytyy') || 'Periytyy' }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -47,10 +47,10 @@
 
     <div class="form-row">
         <button auth="update" ng-disabled="!form.$valid" class="button small primary" type="submit">
-                Liitä
+            {{ t('hakijaryhmavalintatapajono.liita') || 'Liitä' }}
         </button>
 
-        <button class="button small float-left margin-right-2" ng-click="cancel()">Takaisin</button>
+        <button class="button small float-left margin-right-2" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}">{{ t('common.takaisin') || 'Takaisin' }}</button>
     </div>
 </form>
-        </div>
+</div>

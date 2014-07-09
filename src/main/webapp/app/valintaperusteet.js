@@ -1,33 +1,26 @@
 "use strict";
-var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'pascalprecht.translate', 'ui.bootstrap', 'underscore', 'LaskentakaavaEditor', 'ng-breadcrumbs']).run(function($http){
+var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'pascalprecht.translate',
+    'ui.bootstrap', 'lodash', 'LaskentakaavaEditor', 'ng-breadcrumbs', 'oph.localisation']).run(function($http, LocalisationService){
     $http.get(SERVICE_URL_BASE + "buildversion.txt?auth");
+    LocalisationService.getTranslation("");
 });
 
 
-
-var underscore = angular.module('underscore', []);
+var underscore = angular.module('lodash', []);
 underscore.factory('_', function() {
   return window._; // assumes lodash has already been loaded on the page
 });
 
-
-
-
-
-var SERVICE_URL_BASwE = SERVICE_URL_BASE || "";
+var SERVICE_URL_BASE = SERVICE_URL_BASE || "";
 var TEMPLATE_URL_BASE = TEMPLATE_URL_BASE || "";
 var KOODISTO_URL_BASE = KOODISTO_URL_BASE || "";
 var ORGANIZATION_SERVICE_URL_BASE = ORGANIZATION_SERVICE_URL_BASE || "/organisaatio-service/";
 var LOKALISOINTIPALVELU_URL_BASE = LOKALISOINTIPALVELU_URL_BASE || "";
+var TARJONTA_URL_BASE = TARJONTA_URL_BASE || "";
 
-
-function mainCtrl($scope, breadcrumbs, $http) {
+function mainCtrl($scope, breadcrumbs) {
     $scope.breadcrumbs = breadcrumbs;
-
 }
-
-
-
 
 
 //TARJONTA RESOURCES

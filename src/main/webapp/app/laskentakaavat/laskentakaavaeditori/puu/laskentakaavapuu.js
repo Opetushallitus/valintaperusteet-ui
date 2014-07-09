@@ -336,6 +336,21 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 return parent.lapsi ? false : true;
             };
 
+            $scope.getValintaperusteviitetyyppiText = function(valintaperusteviite) {
+                var text = "";
+                _.some($scope.valintaperusteviitetyypit, function(item) {
+                    if(item.key == valintaperusteviite.lahde) {
+                        text = item.text;
+                        return true;
+                    }
+                });
+                return text;
+            };
+
+            $scope.valintaperusteviiteDefined = function(valintaperusteviite) {
+                return valintaperusteviite.tunniste || valintaperusteviite.kuvaus || !(_.isEmpty($scope.getValintaperusteviitetyyppiText(valintaperusteviite)));
+            };
+
             $scope.isFunktiokutsu = function (funktiokutsu) {
                 return funktiokutsu.lapsi.tyyppi === 'LUKUARVOFUNKTIO' || funktiokutsu.lapsi.tyyppi === 'TOTUUSARVOFUNKTIO';
             };

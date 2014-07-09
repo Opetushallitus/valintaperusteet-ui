@@ -36,7 +36,7 @@ var paths = {
         'bower_components/jquery-ui/ui/minified/jquery-ui.min.js',
         'bower_components/jquery.i18n.properites/jquery.i18n.properties.js',
 
-        'bower_components/underscore/underscore.js',
+        'bower_components/lodash/dist/lodash.underscore.js',
 
         'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
 

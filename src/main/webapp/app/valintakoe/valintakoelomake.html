@@ -1,10 +1,10 @@
-<h1>Valintakokeen muokkaus</h1>
+<h1>{{ t('valintakoelomake.header') || 'Valintakokeen muokkaus' }}</h1>
 <div class="tabs">
-    <a href="#/etusivu" class="tab current"><span>Valintaryhmät ja hakukohteet</span></a>
-    <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaavalista" class="tab"><span>Laskentakaavat</span></a>
+    <a href="#/etusivu" class="tab current"><span>{{ t('common.etusivu') || 'Valintaryhmät ja hakukohteet' }}</span></a>
+    <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaavalista" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
     <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaavalista"
-       class="tab"><span>Laskentakaavat</span></a>
-    <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
+       class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
+    <a auth="crudOph" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
 </div>
 
 <div class="tabsheets">
@@ -14,35 +14,35 @@
 
         <div class="form-row">
 
-            <label class="form-row-label">Tunniste</label>
+            <label class="form-row-label">{{ t('valintakoelomake.tunniste') || 'Tunniste' }}</label>
 
             <div class="form-row-content">
                 <input name="tunniste" ng-model="model.valintakoe.tunniste" required/>
             </div>
             <div class="clear"></div>
 
-            <label class="form-row-label" for="nimi">Nimi</label>
+            <label class="form-row-label" for="nimi">{{ t('valintakoelomake.nimi') || 'Nimi' }}</label>
 
             <div class="form-row-content">
                 <input name="nimi" ng-model="model.valintakoe.nimi" required/>
             </div>
             <div class="clear"></div>
 
-            <label class="form-row-label" for="kuvaus">Kuvaus</label>
+            <label class="form-row-label" for="kuvaus">{{ t('valintakoelomake.kuvaus') || 'Kuvaus' }}</label>
 
             <div class="form-row-content">
                 <textarea name="kuvaus" ng-model="model.valintakoe.kuvaus"/>
             </div>
             <div class="clear"></div>
 
-            <label class="form-row-label" for="lahetetaankoKoekutsut">Lähetetäänkö koekutsut</label>
+            <label class="form-row-label" for="lahetetaankoKoekutsut">{{ t('valintakoelomake.lahetetaanko') || 'Lähetetäänkö koekutsut' }}</label>
 
             <div class="form-row-content">
                 <input type="checkbox" name="lahetetaankoKoekutsut" ng-model="model.valintakoe.lahetetaankoKoekutsut"/>
             </div>
             <div class="clear"></div>
 
-            <label class="form-row-label" for="kutsutaankoKaikki">Kutsutaanko kaikki</label>
+            <label class="form-row-label" for="kutsutaankoKaikki">{{ t('valintakoelomake.kutsutaanko') || 'Kutsutaanko kaikki' }}</label>
 
             <div class="form-row-content">
                 <input type="checkbox" name="kutsutaankoKaikki" ng-model="model.valintakoe.kutsutaankoKaikki"/>
@@ -53,7 +53,7 @@
 
             <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat | filter:'TOTUUSARVO'"
                  class="field-container-radio">
-                <label class="form-row-label">Valintakokeen laskentakaava</label>
+                <label class="form-row-label">{{ t('valintakoelomake.valintakokeenlaskentakaava') || 'Valintakokeen laskentakaava' }}</label>
 
 
                 <div class="form-row-content">
@@ -61,8 +61,8 @@
                         <thead>
                         <tr>
                             <th></th>
-                            <th>Laskentakaava</th>
-                            <th>Valintaryhmä / Hakukohde</th>
+                            <th>{{ t('valintakoelomake.laskentakaava') || 'Laskentakaava' }}</th>
+                            <th>{{ t('valintakoelomake.valintaryhma') || 'Valintaryhmä / Hakukohde' }}</th>
                         </tr>
                         </thead>
                         <tbody ng-repeat="group in model.laskentakaavaModel.laskentakaavat">
@@ -86,12 +86,12 @@
         </div>
 
 
-        <button class="btn btn-sm btn-default" ng-click="cancel()"><i class="fa fa-arrow-left"></i>
-            Takaisin
+        <button class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i class="fa fa-arrow-left"></i>
+            {{ t('common.takaisin') || 'Takaisin' }}
         </button>
         <button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i
                 class="fa fa-floppy-o"></i>
-            Tallenna
+            {{ t('common.tallenna') || 'Tallenna' }}
         </button>
 
     </form>
