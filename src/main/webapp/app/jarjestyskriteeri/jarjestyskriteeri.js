@@ -1,3 +1,5 @@
+"use strict";
+
 // Valintaryhma Järjestyskriteerit
 app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskriteeri, ValintatapajonoJarjestyskriteeri, ParentValintaryhmas, Hakukohde, LaskentakaavaModel) {
 

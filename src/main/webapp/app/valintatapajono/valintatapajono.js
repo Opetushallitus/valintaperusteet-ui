@@ -1,3 +1,5 @@
+"use strict";
+
 //domain .. this is both, service & domain layer
 app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheValintatapajono,
                                                 ValintatapajonoJarjestyskriteeri, Laskentakaava, Jarjestyskriteeri,

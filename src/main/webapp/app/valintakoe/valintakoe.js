@@ -1,3 +1,5 @@
+"use strict";
+
 app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe, Laskentakaava, LaskentakaavaModel) {
 
 	var model = new function() {
@@ -96,7 +98,10 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 
 });
 
-function ValintaryhmaValintakoeController($scope, $location, $routeParams, ValintakoeModel, ValintaryhmaValintakoeValinnanvaiheModel, HakukohdeValintakoeValinnanvaiheModel) {
+angular.module('valintaperusteet').
+    controller('ValintaryhmaValintakoeController', ['$scope', '$location', '$routeParams', 'ValintakoeModel',
+        'ValintaryhmaValintakoeValinnanvaiheModel',
+        function ($scope, $location, $routeParams, ValintakoeModel, ValintaryhmaValintakoeValinnanvaiheModel) {
 	$scope.valintaryhmaOid = $routeParams.id;
 	$scope.valintakoeValinnanvaiheOid = $routeParams.valintakoevalinnanvaiheOid;
 	$scope.valintakoeOid = $routeParams.valintakoeOid;
@@ -109,14 +114,17 @@ function ValintaryhmaValintakoeController($scope, $location, $routeParams, Valin
 			$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.valintaryhmaOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid);
 		});
 		
-	}
+	};
 
 	$scope.cancel = function () {
 		$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.valintaryhmaOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid );
-	}
-}
+	};
+}]);
 
-function HakukohdeValintakoeController($scope, $location, $routeParams, ValintakoeModel, ValintaryhmaValintakoeValinnanvaiheModel, HakukohdeValintakoeValinnanvaiheModel) {
+angular.module('valintaperusteet').
+    controller('HakukohdeValintakoeController',['$scope', '$location', '$routeParams', 'ValintakoeModel',
+        'ValintaryhmaValintakoeValinnanvaiheModel', 'HakukohdeValintakoeValinnanvaiheModel',
+        function ($scope, $location, $routeParams, ValintakoeModel, ValintaryhmaValintakoeValinnanvaiheModel, HakukohdeValintakoeValinnanvaiheModel) {
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
 	$scope.valintakoeValinnanvaiheOid = $routeParams.valintakoevalinnanvaiheOid;
 	$scope.valintakoeOid = $routeParams.id;
@@ -129,9 +137,9 @@ function HakukohdeValintakoeController($scope, $location, $routeParams, Valintak
 			$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.hakukohdeOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid);
 		});
 		
-	}
+	};
 
 	$scope.cancel = function () {
 		$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.hakukohdeOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid );
-	}
-}
+	};
+}]);

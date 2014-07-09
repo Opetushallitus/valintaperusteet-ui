@@ -1,3 +1,5 @@
+"use strict";
+
 // Valintaryhma Järjestyskriteerit
 app.factory('HakijaryhmaModel', function($q, Hakijaryhma, LaskentakaavaModel,
                                          ValintaryhmaHakijaryhma, HakukohdeHakijaryhma,

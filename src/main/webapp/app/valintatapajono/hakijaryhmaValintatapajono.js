@@ -1,3 +1,5 @@
+"use strict";
+
 // Valintaryhma Järjestyskriteerit
 app.factory('HakijaryhmaValintatapajonoModel', function($q, ValintatapajonoModel, ValintaryhmaHakijaryhma,
                                                     HakukohdeHakijaryhma, ValintatapajonoHakijaryhma,
@@ -65,7 +67,10 @@ app.factory('HakijaryhmaValintatapajonoModel', function($q, ValintatapajonoModel
     
 });
 
-function HakijaryhmaValintatapajonoController($scope, $location, $routeParams, HakijaryhmaValintatapajonoModel, ValintatapajonoModel) {
+angular.module('valintaperusteet').
+    controller('HakijaryhmaValintatapajonoController', ['$scope', '$location', '$routeParams',
+        'HakijaryhmaValintatapajonoModel', 'ValintatapajonoModel',
+        function ($scope, $location, $routeParams, HakijaryhmaValintatapajonoModel, ValintatapajonoModel) {
 	$scope.valintaryhmaOid = $routeParams.id;
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
     ValintatapajonoModel.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid);
@@ -101,4 +106,4 @@ function HakijaryhmaValintatapajonoController($scope, $location, $routeParams, H
 
     };
 
-}
+}]);

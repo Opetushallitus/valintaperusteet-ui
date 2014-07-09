@@ -177,7 +177,10 @@ app.factory('ValintaryhmaValintakoeValinnanvaiheModel', function(Valinnanvaihe, 
     return model;
 });
 
-function ValintaryhmaValintakoeValinnanvaiheController($scope, $location, $routeParams, ValintaryhmaValintakoeValinnanvaiheModel, ValintaryhmaModel) {
+angular.module('valintaperusteet').
+    controller('ValintaryhmaValintakoeValinnanvaiheController', ['$scope', '$location', '$routeParams',
+        'ValintaryhmaValintakoeValinnanvaiheModel', 'ValintaryhmaModel',
+        function ($scope, $location, $routeParams, ValintaryhmaValintakoeValinnanvaiheModel, ValintaryhmaModel) {
     $scope.valintaryhmaOid = $routeParams.id;
     $scope.ValintaryhmaValintakoeValinnanvaiheOid = $routeParams.valintakoevalinnanvaiheOid;
     $scope.model = ValintaryhmaValintakoeValinnanvaiheModel;
@@ -186,18 +189,18 @@ function ValintaryhmaValintakoeValinnanvaiheController($scope, $location, $route
 
     $scope.submit = function() {
         ValintaryhmaValintakoeValinnanvaiheModel.persist($scope.valintaryhmaOid, ValintaryhmaModel.valinnanvaiheet);
-    }
+    };
 
     $scope.modifyvalintakoe = function(valintakoeOid) {
         $location.path("/valintaryhma/" + $scope.valintaryhmaOid + "/valintakoevalinnanvaihe/" + $scope.model.valintakoevalinnanvaihe.oid + "/valintakoe/" + valintakoeOid);
-    }
+    };
 
     $scope.addValintakoe = function() {
         $location.path("/valintaryhma/" + $scope.valintaryhmaOid + "/valintakoevalinnanvaihe/" + $scope.model.valintakoevalinnanvaihe.oid + "/valintakoe/");
-    }
+    };
 
     $scope.cancel = function() {
         $location.path("/valintaryhma/" + $scope.valintaryhmaOid);
-    }
+    };
 
-}
+}]);
