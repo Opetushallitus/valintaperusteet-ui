@@ -385,3 +385,146 @@ describe('Testing ValintaryhmaValinnanvaiheController', function(){
 
 
 });
+
+describe('Testing ValintaryhmaValintatapajonoController', function(){
+    var rootScope,$rootScope, $controller, $httpBackend, $location, $timeout, location, scope,ctrl,valintatapajonoModel,
+        valintaryhmaValinnanvaiheModel;
+    var routeParams = {"id": "oid1","valinnanvaiheOid": "oid2"};
+    beforeEach(module('valintaperusteet','MockData'));
+
+    beforeEach(inject(function($injector) {
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $location = $injector.get('$location');
+        $controller = $injector.get('$controller');
+        $timeout = $injector.get('$timeout');
+        valintatapajonoModel = $injector.get('ValintatapajonoModel');
+        valintaryhmaValinnanvaiheModel = $injector.get('ValintaryhmaValinnanvaiheModel');
+
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.flush();
+    }));
+
+    it('should get ValintaryhmaValintatapajonoController', function() {
+        scope = $rootScope.$new();
+        rootScope = $rootScope;
+        location = $location;
+
+        ctrl = $controller('ValintaryhmaValintatapajonoController', {'$scope' : scope, '$location': location, '$routeParams': routeParams,
+            '$timeout': $timeout, 'ValintatapajonoModel': valintatapajonoModel, 'ValintaryhmaValinnanvaiheModel': valintaryhmaValinnanvaiheModel});
+    });
+
+    it('check initialized variables', function() {
+        expect(scope.valintaryhmaOid).toBe(routeParams.id);
+        expect(scope.valinnanvaiheOid).toBe(routeParams.valinnanvaiheOid);
+    });
+
+    it('cancel', function() {
+        scope.cancel();
+        expect(location.path()).toBe("/valintaryhma/" + scope.valintaryhmaOid + '/valinnanvaihe/'+ scope.valinnanvaiheOid );
+    });
+
+    it('addKriteeri', function() {
+        scope.addKriteeri();
+        expect(location.path()).toBe("/valintaryhma/" + scope.valintaryhmaOid
+            + '/valinnanvaihe/' + scope.valinnanvaiheOid
+            + '/valintatapajono/' + scope.model.valintatapajono.oid + '/jarjestyskriteeri/');
+    });
+
+    it('addHakijaryhma', function() {
+        scope.addHakijaryhma();
+        expect(location.path()).toBe("/valintaryhma/" + scope.valintaryhmaOid
+            + '/valinnanvaihe/' + scope.valinnanvaiheOid
+            + '/valintatapajono/' + scope.model.valintatapajono.oid + '/hakijaryhma');
+    });
+
+    it('modifyKriteeri', function() {
+        var oid = '111';
+        scope.modifyKriteeri(oid);
+        expect(location.path()).toBe("/valintaryhma/" + scope.valintaryhmaOid
+            + '/valinnanvaihe/' + scope.valinnanvaiheOid
+            + '/valintatapajono/' + scope.model.valintatapajono.oid
+            + '/jarjestyskriteeri/' + oid);
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+
+});
+
+describe('Testing JarjestyskriteeriController', function(){
+    var rootScope,$rootScope, $controller, $httpBackend, $location, location, scope,ctrl,valintatapajonoModel,
+        jarjestyskriteeriModel,hakukohdejson, valintatapajonojson,laskentakaavajson,laskentakaavaonejson;
+    var routeParams = {"id": "oid1","valinnanvaiheOid": "oid2","hakukohdeOid": "oid3","valintatapajonoOid": "oid4"};
+    beforeEach(module('valintaperusteet','MockData'));
+
+    beforeEach(inject(function($injector,hakukohdeJSON,valintatapajonoJSON,laskentakaavaJSON,laskentakaavaoneJSON) {
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $location = $injector.get('$location');
+        $controller = $injector.get('$controller');
+        valintatapajonoModel = $injector.get('ValintatapajonoModel');
+        jarjestyskriteeriModel = $injector.get('JarjestyskriteeriModel');
+        hakukohdejson = hakukohdeJSON;
+        valintatapajonojson = valintatapajonoJSON;
+        laskentakaavajson = laskentakaavaJSON;
+        laskentakaavaonejson = laskentakaavaoneJSON;
+
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.flush();
+    }));
+
+    it('should get JarjestyskriteeriController', function() {
+        scope = $rootScope.$new();
+        rootScope = $rootScope;
+        location = $location;
+
+        $httpBackend.expectGET('resources/laskentakaava').respond("[]");
+        $httpBackend.expectGET('resources/laskentakaava?hakukohde='+routeParams.hakukohdeOid).respond("[]");
+        $httpBackend.expectGET('resources/hakukohde/'+routeParams.hakukohdeOid).respond(hakukohdejson);
+        $httpBackend.expectGET('resources/valintaryhma/'+ routeParams.id+'/parents').respond('[{"nimi":"Lukiokoulutus","kohdejoukko":null,"oid":"1403079862403-6606759132794079794"}]');
+        $httpBackend.expectGET('resources/valintatapajono/'+routeParams.valintatapajonoOid).respond(valintatapajonojson);
+        $httpBackend.expectGET('resources/valintatapajono/'+routeParams.valintatapajonoOid+"/hakijaryhma").respond("[]");
+        $httpBackend.expectGET('resources/valintatapajono/'+routeParams.valintatapajonoOid+"/jarjestyskriteeri").respond('[{"metatiedot":"Ulkomailla suoritettu koulutus tai oppivelvollisuuden suorittaminen keskeytynyt","aktiivinen":true,"oid":"1403080024594-3389074374885820341","valintatapajonoOid":"14030800242802764498205598029585","inheritance":false,"laskentakaavaId":4140}]');
+        $httpBackend.expectGET('resources/valintaryhma/parents').respond("[]");
+        $httpBackend.expectGET('resources/laskentakaava?valintaryhma=1403079862403-6606759132794079794').respond(laskentakaavajson);
+        $httpBackend.expectGET('resources/laskentakaava/4140').respond(laskentakaavaonejson);
+
+        ctrl = $controller('JarjestyskriteeriController', {'$scope' : scope, '$location': location, '$routeParams': routeParams,
+            'jarjestyskriteeriModel': jarjestyskriteeriModel, 'ValintatapajonoModel': valintatapajonoModel});
+
+        $httpBackend.flush();
+    });
+
+    it('check initialized variables', function() {
+        expect(scope.valintaryhmaOid).toBe(routeParams.id);
+        expect(scope.valinnanvaiheOid).toBe(routeParams.valinnanvaiheOid);
+        expect(scope.hakukohdeOid).toBe(routeParams.hakukohdeOid);
+        expect(scope.valintatapajonoOid).toBe(routeParams.valintatapajonoOid);
+    });
+
+    it('cancel', function() {
+        scope.cancel();
+        expect(location.path()).toBe("/hakukohde/" + routeParams.hakukohdeOid + '/valinnanvaihe/' + routeParams.valinnanvaiheOid +
+            '/valintatapajono/' + routeParams.valintatapajonoOid);
+        routeParams.hakukohdeOid=null;
+        scope.cancel();
+        expect(location.path()).toBe("/valintaryhma/" + routeParams.id + '/valinnanvaihe/' + routeParams.valinnanvaiheOid +
+            '/valintatapajono/' + routeParams.valintatapajonoOid);
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+
+
+});

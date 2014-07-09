@@ -214,11 +214,13 @@ function HakukohdeValintatapajonoController($scope, $location, $routeParams, Val
 
 
 
-function ValintaryhmaValintatapajonoController($scope, $location, $routeParams, $timeout, ValintatapajonoModel, ValintaryhmaValinnanvaiheModel) {
+angular.module('valintaperusteet').
+    controller('ValintaryhmaValintatapajonoController', ['$scope', '$location', '$routeParams', '$timeout',
+        'ValintatapajonoModel', 'ValintaryhmaValinnanvaiheModel',
+    function ($scope, $location, $routeParams, $timeout, ValintatapajonoModel, ValintaryhmaValinnanvaiheModel) {
 
     $scope.valintaryhmaOid = $routeParams.id;
     $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
-    //$scope.valintatapajonoOid =  $routeParams.valintatapajonoOid;
 
     $scope.model = ValintatapajonoModel;
     $scope.model.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid);
@@ -257,4 +259,4 @@ function ValintaryhmaValintatapajonoController($scope, $location, $routeParams, 
     $scope.removeHakjiaryhma = function(oid) {
         $scope.model.removeHakijaryhma(oid);
     }
-}
+}]);

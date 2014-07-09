@@ -79,7 +79,9 @@ app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskrit
 
 });
 
-function JarjestyskriteeriController($scope, $location, $routeParams, JarjestyskriteeriModel, ValintatapajonoModel) {
+angular.module('valintaperusteet').
+    controller('JarjestyskriteeriController', ['$scope', '$location', '$routeParams', 'JarjestyskriteeriModel', 'ValintatapajonoModel',
+        function ($scope, $location, $routeParams, JarjestyskriteeriModel, ValintatapajonoModel) {
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
 	$scope.valintaryhmaOid = $routeParams.id;
     $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
@@ -114,5 +116,4 @@ function JarjestyskriteeriController($scope, $location, $routeParams, Jarjestysk
         $location.path(path + '/valinnanvaihe/' + $routeParams.valinnanvaiheOid +
             '/valintatapajono/' + $routeParams.valintatapajonoOid);
     };
-
-}
+}]);
