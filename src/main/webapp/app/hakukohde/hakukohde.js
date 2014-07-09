@@ -87,8 +87,7 @@ app.factory('HakukohdeModel', function($q, HakukohdeHakukohdekoodi, KoodistoHaku
             }
 
             if(model.hakijaryhmat.length > 0) {
-                HakijaryhmaJarjesta.post(getHakijaryhmaOids(), function(result) {
-                });
+                HakijaryhmaJarjesta.post(model.hakijaryhmat, function(result) {});
             }
         };
 

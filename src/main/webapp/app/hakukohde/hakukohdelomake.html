@@ -12,13 +12,13 @@
         <div class="form-group">
             <label class="col-md-2 control-label">Hakukohteen nimi</label>
 
-            <div class="col-md-10 control-content">{{model.hakukohde.nimi}} ({{model.hakukohde.oid}})</div>
+            <div class="col-md-10 form-control-static">{{model.hakukohde.nimi}} ({{model.hakukohde.oid}})</div>
         </div>
 
         <div class="form-group">
             <label class="col-md-2 control-label">Hakukohdekoodi: </label>
 
-            <div class="col-md-6 control-content">
+            <div class="col-md-6 form-control-static">
                 <table class="virkailija-table-1">
                     <thead>
                     <tr>
@@ -29,9 +29,9 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td class="align-center">{{model.hakukohde.hakukohdekoodi.uri}}</td>
-                        <td class="align-center">{{model.hakukohde.hakukohdekoodi.arvo}}</td>
-                        <td class="align-center">{{model.hakukohde.hakukohdekoodi.nimiFi}}</td>
+                        <td class="text-center">{{model.hakukohde.hakukohdekoodi.uri}}</td>
+                        <td class="text-center">{{model.hakukohde.hakukohdekoodi.arvo}}</td>
+                        <td class="text-center">{{model.hakukohde.hakukohdekoodi.nimiFi}}</td>
                     </tr>
 
                     </tbody>
@@ -56,7 +56,7 @@
         <div class="form-group">
             <label class="col-md-2 control-label">Haun Tunniste (oid):</label>
 
-            <div class="control-content col-md-10">
+            <div class="form-control-static col-md-10">
                 {{model.haku.nimi.kieli_fi}} ({{model.haku.oid}})
             </div>
         </div>
@@ -64,7 +64,7 @@
         <div class="form-group">
             <label class="col-md-2 control-label">Tarjoaja (oid):</label>
 
-            <div class="control-content col-md-10">
+            <div class="form-control-static col-md-10">
                 {{model.hakukohde.tarjoajaOid}}
                 <!--<br/>{{model.selectedHakukohde.tarjoajaOid}}-->
             </div>
@@ -73,7 +73,7 @@
         <div class="form-group">
             <label class="col-md-2 control-label">Julkaisutila:</label>
 
-            <div class="control-content col-md-10">
+            <div class="form-control-static col-md-10">
                 {{model.hakukohde.tila}}
                 <!--<br/>{{model.selectedHakukohde.tarjoajaOid}}-->
             </div>
@@ -84,7 +84,7 @@
         <div class="form-group">
             <label class="col-md-2 control-label">Valintaryhmä:</label>
 
-            <div class="control-content">
+            <div class="col-md-10 form-control-static">
                 <!--{{model.hakukohde.oid}}-->
                 <span>{{model.parentValintaryhma.nimi}}</span>
 
@@ -106,7 +106,7 @@
         <div class="form-group">
             <label class="col-md-2 control-label">Kuuluu sijoitteluun</label>
 
-            <div class="control-content col-md-10">
+            <div class="form-control-static col-md-10">
                 {{model.kuuluuSijoitteluun ? 'Kyllä' : 'Ei'}}
             </div>
         </div>
@@ -114,7 +114,7 @@
         <div class="form-group width-100">
             <label class="col-md-2 control-label">Valinnan vaiheet</label>
 
-            <div class="control-content col-md-10">
+            <div class="form-control-static col-md-10">
                 <table auth="update" ng-show="model.valinnanvaiheet"
                        class="virkailija-table-1">
                     <thead>
@@ -129,13 +129,13 @@
                     <tbody ui-sortable ng-model="model.valinnanvaiheet">
                     <tr ng-repeat="data in model.valinnanvaiheet">
                         <td><input type="checkbox" ng-model="data.aktiivinen"/></td>
-                        <td class="align-center">
+                        <td class="text-center">
                             <a ng-class="{true:'', false:'line-through'}[data.aktiivinen]"
                                href="#/hakukohde/{{hakukohdeOid}}/{{model.getValinnanvaiheType(data)}}/{{data.oid}}">{{data.nimi}}</a>
                         </td>
-                        <td class="align-center">{{data.inheritance ? 'Kyllä' : 'Ei'}}</td>
-                        <td class="align-center">{{data.valinnanVaiheTyyppi}}</td>
-                        <td class="align-center">
+                        <td class="text-center">{{data.inheritance ? 'Kyllä' : 'Ei'}}</td>
+                        <td class="text-center">{{data.valinnanVaiheTyyppi}}</td>
+                        <td class="text-center">
                                 <span auth="crud" ng-show="!data.inheritance" class="btn remove"
                                       ng-click="model.remove(data)"></span>
                         </td>
@@ -159,13 +159,15 @@
         <div class="form-group">
             <label class="col-md-2 control-label">Hakijaryhmat</label>
 
-            <div class="control-content col-md-10">
+            <div class="form-control-static col-md-10">
                 <table ng-show="model.hakijaryhmat" class="virkailija-table-1">
                     <thead>
                     <tr>
                         <th>Nimi</th>
                         <th>Laskentakaava</th>
                         <th>Kiintiö</th>
+                        <th>Tarkka kiintiö</th>
+                        <th>Käytetään kaikki</th>
                         <th>Periytyy</th>
                         <th>Valintatapajonot</th>
                         <th>Poista</th>
@@ -173,19 +175,21 @@
                     </thead>
                     <tbody ui-sortable ng-model="model.hakijaryhmat">
                     <tr ng-repeat="data in model.hakijaryhmat">
-                        <td class="align-center">
+                        <td class="text-center">
                             <a href="#/hakukohde/{{hakukohdeOid}}/hakijaryhma/{{data.oid}}">{{data.nimi}}</a>
                         </td>
-                        <td class="align-center">{{data.laskentakaava_nimi}}</td>
-                        <td class="align-center">{{data.kiintio}}</td>
-                        <td class="align-center">{{data.inheritance ? 'Kyllä' : 'Ei'}}</td>
-                        <td class="align-center">
+                        <td class="text-center">{{data.laskentakaava_nimi}}</td>
+                        <td class="text-center">{{data.kiintio}}</td>
+                        <td class="text-center"><input type="checkbox" disabled="true" ng-model="data.tarkkaKiintio" /></td>
+                        <td class="text-center"><input type="checkbox" disabled="true" ng-model="data.kaytaKaikki" /></td>
+                        <td class="text-center">{{data.inheritance ? 'Kyllä' : 'Ei'}}</td>
+                        <td class="text-center">
                         <span ng-repeat="jono in data.valintatapajonot"
                               ng-class="{true:'', false:'line-through'}[jono.valintatapajono.aktiivinen]">
                             <a href="#/hakukohde/{{model.hakukohde.oid}}/valinnanvaihe/{{jono.valintatapajono.valinnan_vaihe}}/valintatapajono/{{jono.valintatapajono.oid}}">{{jono.valintatapajono.nimi}}</a>{{!$last ? ', ' : ''}}
                         </span>
                         </td>
-                        <td class="align-center">
+                        <td class="text-center">
                             <i auth="crud" ng-show="!data.inheritance" class="fa fa-trash-o"
                                ng-click="removeHakijaryhma(data.oid)"></i>
                         </td>
@@ -194,10 +198,14 @@
                 </table>
 
 
-                <div ng-show="model.hakukohde.oid">
+
+            </div>
+        </div>
+
+        <div class="form-group" ng-if="model.hakukohde.oid">
+            <div class="col-md-offset-2 col-md-10">
                     <span auth="crud" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()"><i
                             class="fa fa-plus"></i> Hakijaryhma</span>
-                </div>
             </div>
         </div>
 

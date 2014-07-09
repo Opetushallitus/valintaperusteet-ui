@@ -244,7 +244,7 @@
                 <th>Poista</th>
             </tr>
             </thead>
-            <tbody ng-model="model.hakijaryhmat ">
+            <tbody ui-sortable ng-model="model.hakijaryhmat ">
             <tr ng-repeat="data in model.hakijaryhmat">
                 <td><input type="checkbox" ng-model="data.aktiivinen"/></td>
                 <td class="text-center">
@@ -252,9 +252,10 @@
                 </td>
                 <td class="text-center">{{data.hakijaryhma.kuvaus}}</td>
                 <td class="text-center">{{data.hakijaryhma.kiintio}}</td>
+                <td></td>
                 <td class="text-center">
-                        <span auth="crud" ng-show="!data.inheritance" class="btn remove"
-                              ng-click="model.removeHakijaryhma(data.oid)"></span>
+                        <span auth="crud" ng-show="!data.inheritance"
+                              ng-click="model.removeHakijaryhma(data.oid)"><i class="fa fa-trash-o"></i></span>
                 </td>
             </tr>
             </tbody>
