@@ -57,7 +57,10 @@ app.factory('HakijaryhmaModel', function($q, Hakijaryhma, LaskentakaavaModel,
     
 });
 
-function HakijaryhmaController($scope, $location, $routeParams, HakijaryhmaModel, HakukohdeModel, ValintaryhmaModel) {
+angular.module('valintaperusteet').
+    controller('HakijaryhmaController', ['$scope', '$location', '$routeParams', 'HakijaryhmaModel',
+        'HakukohdeModel', 'ValintaryhmaModel',
+        function ($scope, $location, $routeParams, HakijaryhmaModel, HakukohdeModel, ValintaryhmaModel) {
 	$scope.valintaryhmaOid = $routeParams.id;
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakijaryhmaModel;
@@ -90,5 +93,4 @@ function HakijaryhmaController($scope, $location, $routeParams, HakijaryhmaModel
 
         $location.path(path);
     };
-
-}
+}]);

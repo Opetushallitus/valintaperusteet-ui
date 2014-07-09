@@ -78,7 +78,9 @@ app.factory('ValintaryhmaValinnanvaiheModel', function(Valinnanvaihe, Valintatap
 
 });
 
-function valintaryhmaValinnanvaiheController($scope, $location, $routeParams, ValintaryhmaValinnanvaiheModel, ValintaryhmaModel) {
+angular.module('valintaperusteet').
+    controller('ValintaryhmaValinnanvaiheController', ['$scope', '$location', '$routeParams', 'ValintaryhmaValinnanvaiheModel', 'ValintaryhmaModel',
+    function ($scope, $location, $routeParams, ValintaryhmaValinnanvaiheModel, ValintaryhmaModel) {
     $scope.valintaryhmaOid = $routeParams.id;
     $scope.ValintaryhmaValinnanvaiheOid = $routeParams.valinnanvaiheOid;
     $scope.model = ValintaryhmaValinnanvaiheModel;
@@ -86,21 +88,21 @@ function valintaryhmaValinnanvaiheController($scope, $location, $routeParams, Va
 
     $scope.submit = function() {
         $scope.model.persistValintaryhmaValinnanvaihe($scope.valintaryhmaOid, ValintaryhmaModel.valinnanvaiheet);
-    }
+    };
 
     $scope.cancel = function() {
         $location.path("/valintaryhma/" + $scope.valintaryhmaOid);
-    }
+    };
 
     $scope.addJono = function() {
         $location.path("/valintaryhma/" + $scope.valintaryhmaOid + "/valinnanvaihe/" + $scope.model.valinnanvaihe.oid + "/valintatapajono/");
-    }
+    };
 
     $scope.modifyJono = function(oid) {
         $location.path("/valintaryhma/" + $scope.valintaryhmaOid + "/valinnanvaihe/" + $scope.model.valinnanvaihe.oid + "/valintatapajono/" + oid);
-    }
+    };
 
-}
+}]);
 
 
 
