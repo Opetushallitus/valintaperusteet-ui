@@ -1,7 +1,9 @@
 "use strict";
 
 
-function ValinnanVaiheController($scope, $location, $routeParams, HakukohdeValinnanVaiheModel, HakukohdeModel) {
+angular.module('valintaperusteet').
+    controller('ValinnanVaiheController',['$scope', '$location', '$routeParams', 'HakukohdeValinnanVaiheModel', 'HakukohdeModel',
+        function ($scope, $location, $routeParams, HakukohdeValinnanVaiheModel, HakukohdeModel) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
 
@@ -10,20 +12,20 @@ function ValinnanVaiheController($scope, $location, $routeParams, HakukohdeValin
 
     $scope.submit = function() {
         $scope.model.persistValinnanvaihe($scope.hakukohdeOid, HakukohdeModel.valinnanvaiheet);
-    }
+    };
 
     $scope.cancel = function() {
         $location.path("/hakukohde/" + $scope.hakukohdeOid);
-    }
+    };
 
     $scope.addJono = function() {
         $location.path("/hakukohde/" + $scope.hakukohdeOid + "/valinnanvaihe/" + $scope.model.valinnanvaihe.oid + "/valintatapajono/");
-    }
+    };
 
     $scope.modifyJono = function(oid) {
         $location.path("/hakukohde/" + $scope.hakukohdeOid + "/valinnanvaihe/" + $scope.model.valinnanvaihe.oid + "/valintatapajono/" + oid);
-    }
-}
+    };
+}]);
 
 app.factory('HakukohdeValinnanVaiheModel', function(Valinnanvaihe, Valintatapajono, ValinnanvaiheValintatapajono, HakukohdeValinnanvaihe, ValinnanvaiheKuuluuSijoitteluun, ValintatapajonoJarjesta) {
     var model = new function() {

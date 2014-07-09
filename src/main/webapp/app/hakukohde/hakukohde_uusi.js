@@ -1,3 +1,5 @@
+"use strict";
+
 //domain .. this is both, service & domain layer
 app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu, AuthService) {
 
@@ -134,7 +136,10 @@ app.factory('UusiHakukohdeModel', function(NewHakukohde) {
     return model;
 });
 
-function UusiHakukohdeController($scope, $location, UusiHakukohdeModel, Ylavalintaryhma, Haku, TarjontaHaku, HaunTiedot, Hakukohde) {
+angular.module('valintaperusteet').
+    controller('UusiHakukohdeController',['$scope', '$location', 'UusiHakukohdeModel', 'Ylavalintaryhma', 'Haku',
+        'TarjontaHaku', 'HaunTiedot', 'Hakukohde',
+        function ($scope, $location, UusiHakukohdeModel, Ylavalintaryhma, Haku, TarjontaHaku, HaunTiedot, Hakukohde) {
     $scope.predicate = 'nimi';
     $scope.model = UusiHakukohdeModel;
 
@@ -149,7 +154,7 @@ function UusiHakukohdeController($scope, $location, UusiHakukohdeModel, Ylavalin
             HaunTiedot.get({hakuOid: result[i].oid}, function(tiedot) {
                     haut.push(tiedot);
             });
-        };
+        }
 
         $scope.haut = haut;
 
@@ -176,14 +181,14 @@ function UusiHakukohdeController($scope, $location, UusiHakukohdeModel, Ylavalin
     $scope.setHakuoid = function(item) {
         $scope.model.hakukohde.hakuoid = item.oid;
         $scope.model.hakukohde.oid = undefined;
-    }
+    };
 
     $scope.setHakukohdeoid = function(item) {
         $scope.model.hakukohde.oid = item.hakukohdeOid;
         $scope.model.hakukohde.tila = item.hakukohdeTila;
-        $scope.model.hakukohde.nimi = item.tarjoajaNimi.fi + ', ' + item.hakukohdeNimi.fi
+        $scope.model.hakukohde.nimi = item.tarjoajaNimi.fi + ', ' + item.hakukohdeNimi.fi;
         $scope.model.hakukohde.tarjoajaOid = item.tarjoajaOid;
-    }
+    };
 
     $scope.submit = function() {
         Hakukohde.get({oid: $scope.model.hakukohde.oid}, function(result) { }).$promise
@@ -199,9 +204,10 @@ function UusiHakukohdeController($scope, $location, UusiHakukohdeModel, Ylavalin
                 alert("Hakukohdetta ei saatu luotua.");
             });
         });
-    }
+    };
+
     $scope.cancel = function() {
         $location.path("/");
-    }
+    };
 
-}
+}]);

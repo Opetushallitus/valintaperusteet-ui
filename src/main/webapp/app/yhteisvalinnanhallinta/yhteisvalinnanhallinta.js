@@ -1,5 +1,6 @@
-﻿
-app.factory('HakuModel', function($q, Haku, HaunTiedot, $http) {
+﻿"use strict";
+
+app.factory('HakuModel', function($q, Haku, HaunTiedot) {
     var model;
     model = new function() {
         this.hakuOid;
@@ -51,7 +52,9 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot, $http) {
     return model;
 });
 
-function ImportController($scope, $location, $routeParams, HakuModel, TarjontaImport, Treemodel) {
+angular.module('valintaperusteet').
+    controller('ImportController',['$scope', '$location', '$routeParams', 'HakuModel', 'TarjontaImport', 'Treemodel',
+        function ($scope, $location, $routeParams, HakuModel, TarjontaImport, Treemodel) {
     $scope.model = HakuModel;
     HakuModel.init($routeParams.hakuOid);
 
@@ -60,6 +63,5 @@ function ImportController($scope, $location, $routeParams, HakuModel, TarjontaIm
             Treemodel.refresh();
         });
     };
-
-}
+}]);
 

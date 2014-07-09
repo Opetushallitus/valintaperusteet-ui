@@ -32,14 +32,14 @@ app.config(function($routeProvider) {
 		when('/hakukohde/:hakukohdeOid/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid/valintakoe/:id', {controller: 'HakukohdeValintakoeController', templateUrl:TEMPLATE_URL_BASE + 'valintakoe/valintakoelomake.html', label: 'valintakoe'}).
 
 		// edit hakukohde
-		when('/hakukohde/', {controller: UusiHakukohdeController, templateUrl:TEMPLATE_URL_BASE + 'hakukohde/hakukohde_uusi.html', label: 'hakukohde'}).
-		when('/hakukohde/:hakukohdeOid', {controller:HakukohdeController, templateUrl:TEMPLATE_URL_BASE + 'hakukohde/hakukohdelomake.html', label: 'hakukohde'}).
+		when('/hakukohde/', {controller: 'UusiHakukohdeController', templateUrl:TEMPLATE_URL_BASE + 'hakukohde/hakukohde_uusi.html', label: 'hakukohde'}).
+		when('/hakukohde/:hakukohdeOid', {controller:'HakukohdeController', templateUrl:TEMPLATE_URL_BASE + 'hakukohde/hakukohdelomake.html', label: 'hakukohde'}).
 		when('/hakukohde/:hakukohdeOid/hakijaryhma/', {controller:'HakijaryhmaController', templateUrl:TEMPLATE_URL_BASE + 'hakijaryhma/hakijaryhma.html', label: 'hakijaryhmä'}).
 		when('/hakukohde/:hakukohdeOid/hakijaryhma/:hakijaryhmaOid', {controller:'HakijaryhmaController', templateUrl:TEMPLATE_URL_BASE + 'hakijaryhma/hakijaryhma.html', label: 'hakijaryhmä'}).
-		when('/hakukohde/:hakukohdeOid/valinnanvaihe/', {controller:ValinnanVaiheController, templateUrl:TEMPLATE_URL_BASE + 'valinnanvaihe/valinnanvaihelomake.html', label: 'valinnanvaihe'}).
-		when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid', {controller:ValinnanVaiheController, templateUrl:TEMPLATE_URL_BASE + 'valinnanvaihe/valinnanvaihelomake.html', label: 'valinnanvaihe'}).
-		when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/', {controller: HakukohdeValintatapajonoController, templateUrl:TEMPLATE_URL_BASE + 'valintatapajono/valintatapajono.html', label: 'valintatapajono'}).
-		when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid', {controller: HakukohdeValintatapajonoController, templateUrl:TEMPLATE_URL_BASE + 'valintatapajono/valintatapajono.html', label: 'valintatapajono'}).
+		when('/hakukohde/:hakukohdeOid/valinnanvaihe/', {controller:'ValinnanVaiheController', templateUrl:TEMPLATE_URL_BASE + 'valinnanvaihe/valinnanvaihelomake.html', label: 'valinnanvaihe'}).
+		when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid', {controller:'ValinnanVaiheController', templateUrl:TEMPLATE_URL_BASE + 'valinnanvaihe/valinnanvaihelomake.html', label: 'valinnanvaihe'}).
+		when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/', {controller: 'HakukohdeValintatapajonoController', templateUrl:TEMPLATE_URL_BASE + 'valintatapajono/valintatapajono.html', label: 'valintatapajono'}).
+		when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid', {controller: 'HakukohdeValintatapajonoController', templateUrl:TEMPLATE_URL_BASE + 'valintatapajono/valintatapajono.html', label: 'valintatapajono'}).
 		when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/jarjestyskriteeri/', {controller:'JarjestyskriteeriController', templateUrl:TEMPLATE_URL_BASE + 'jarjestyskriteeri/jarjestyskriteeri.html', label: 'järjestyskriteeri'}).
 		when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/jarjestyskriteeri/:jarjestyskriteeriOid', {controller:'JarjestyskriteeriController', templateUrl:TEMPLATE_URL_BASE + 'jarjestyskriteeri/jarjestyskriteeri.html', label: 'järjestyskriteeri'}).
 		when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/hakijaryhma', {controller:'HakijaryhmaValintatapajonoController', templateUrl:TEMPLATE_URL_BASE + 'valintatapajono/hakijaryhmaValintatapajono.html', label: 'hakijaryhmä'}).
@@ -47,7 +47,7 @@ app.config(function($routeProvider) {
 
 
 		//Tarjonta import
-		when('/import', {controller: ImportController, templateUrl:TEMPLATE_URL_BASE + 'yhteisvalinnanhallinta/yhteisvalinnanhallinta.html', label: 'Yhteisvalinnahallinta'}).
+		when('/import', {controller: 'ImportController', templateUrl:TEMPLATE_URL_BASE + 'yhteisvalinnanhallinta/yhteisvalinnanhallinta.html', label: 'Yhteisvalinnahallinta'}).
 
 		//else
 		otherwise({redirectTo:'/etusivu'});

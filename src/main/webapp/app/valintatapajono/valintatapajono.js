@@ -169,50 +169,52 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
     return model;
 });
 
-function HakukohdeValintatapajonoController($scope, $location, $routeParams, ValintatapajonoModel, HakukohdeValinnanVaiheModel) {
+angular.module('valintaperusteet').
+    controller('HakukohdeValintatapajonoController',['$scope', '$location', '$routeParams', 'ValintatapajonoModel',
+        'HakukohdeValinnanVaiheModel',
+        function ($scope, $location, $routeParams, ValintatapajonoModel, HakukohdeValinnanVaiheModel) {
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
-    //$scope.valintatapajonoOid =  $routeParams.valintatapajonoOid;
 
     $scope.model = ValintatapajonoModel;
     $scope.model.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid);
 
     $scope.submit = function() {
         $scope.model.submit($scope.valinnanvaiheOid, HakukohdeValinnanVaiheModel.valintatapajonot);
-    }
+    };
 
     $scope.cancel = function() {
         $location.path("/hakukohde/" + $scope.hakukohdeOid + '/valinnanvaihe/'+ $scope.valinnanvaiheOid );
-    }
+    };
 
     $scope.addKriteeri = function() {
         $location.path("/hakukohde/" + $scope.hakukohdeOid
             + '/valinnanvaihe/' + $scope.valinnanvaiheOid
             + '/valintatapajono/' + $scope.model.valintatapajono.oid + '/jarjestyskriteeri/');
-    }
+    };
 
     $scope.addHakijaryhma = function() {
         $location.path("/hakukohde/" + $scope.hakukohdeOid
             + '/valinnanvaihe/' + $scope.valinnanvaiheOid
             + '/valintatapajono/' + $scope.model.valintatapajono.oid + '/hakijaryhma');
-    }
+    };
 
     $scope.modifyKriteeri = function(oid) {
         $location.path("/hakukohde/" + $scope.hakukohdeOid
                     + '/valinnanvaihe/' + $scope.valinnanvaiheOid
                     + '/valintatapajono/' + $scope.model.valintatapajono.oid
                     + '/jarjestyskriteeri/' + oid);
-    }
+    };
 
     $scope.remove = function(oid) {
         $scope.model.remove(oid);
-    }
+    };
 
     $scope.removeHakjiaryhma = function(oid) {
         $scope.model.removeHakijaryhma(oid);
-    }
-}
+    };
+}]);
 
 
 

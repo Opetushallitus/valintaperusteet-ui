@@ -815,3 +815,297 @@ describe('Testing HakukohdeValintakoeController', function(){
         $httpBackend.verifyNoOutstandingRequest();
     });
 });
+
+describe('Testing UusiHakukohdeController', function(){
+    var rootScope,$rootScope, $controller, $httpBackend, $location, location, scope,ctrl,
+        uusiHakukohdeModel,ylavalintaryhma,haku,tarjontaHaku,haunTiedot,hakukohde,puukaikkijson,hakujson,
+        hakuextrajson;
+    var routeParams = {"id": "oid1","valinnanvaiheOid": "oid2","hakukohdeOid": "oid3","valintatapajonoOid": "oid4"};
+    beforeEach(module('valintaperusteet','MockData'));
+
+    beforeEach(inject(function($injector,puuKaikkiJSON,hakuJSON,hakuExtraJSON) {
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $location = $injector.get('$location');
+        $controller = $injector.get('$controller');
+        uusiHakukohdeModel = $injector.get('UusiHakukohdeModel');
+        ylavalintaryhma = $injector.get('Ylavalintaryhma');
+        haku = $injector.get('Haku');
+        puukaikkijson = puuKaikkiJSON;
+        hakujson = hakuJSON;
+        hakuextrajson = hakuExtraJSON;
+
+        tarjontaHaku = $injector.get('TarjontaHaku');
+        haunTiedot = $injector.get('HaunTiedot');
+        hakukohde = $injector.get('Hakukohde');
+
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('resources/puu?hakukohteet=false').respond(puukaikkijson);
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.flush();
+    }));
+
+    it('should get UusiHakukohdeController', function() {
+        scope = $rootScope.$new();
+        rootScope = $rootScope;
+        location = $location;
+        $httpBackend.expectGET('resources/puu?hakukohteet=false').respond(puukaikkijson);
+        $httpBackend.expectGET('haku').respond(hakujson);
+        $httpBackend.expectGET('haku/1.2.246.562.29.21702520681').respond(hakuextrajson);
+        $httpBackend.expectGET('haku/1.2.246.562.29.41647728207').respond(hakuextrajson);
+        $httpBackend.expectGET('haku/1.2.246.562.5.2013112910452702965370').respond(hakuextrajson);
+        $httpBackend.expectGET('haku/1.2.246.562.5.2013112910480420004764').respond(hakuextrajson);
+        $httpBackend.expectGET('haku/1.2.246.562.29.87103060197').respond(hakuextrajson);
+        $httpBackend.expectGET('haku/1.2.246.562.29.16836448445').respond(hakuextrajson);
+        $httpBackend.expectGET('haku/1.2.246.562.29.34600360753').respond(hakuextrajson);
+        ctrl = $controller('UusiHakukohdeController', {'$scope' : scope, '$location': location,
+            'UusiHakukohdeModel':uusiHakukohdeModel,'Ylavalintaryhma':ylavalintaryhma,
+            'Haku':haku,'TarjontaHaku': tarjontaHaku,'HaunTiedot':haunTiedot,'Hakukohde':hakukohde});
+        $httpBackend.flush();
+    });
+
+    it('check initialized variables', function() {
+        expect(scope.predicate).toBe("nimi");
+        expect(scope.haut.length).toBe(7);
+        expect(scope.model.tilat.length).toBe(5);
+    });
+
+    it('cancel', function() {
+        scope.cancel();
+        expect(location.path()).toBe("/");
+    });
+
+    it('setHakuoid', function() {
+        var item = {
+            oid: '111'
+        };
+        scope.setHakuoid(item);
+        expect(scope.model.hakukohde.hakuoid).toBe(item.oid);
+        expect(scope.model.hakukohde.oid).toBeUndefined();
+    });
+
+    it('setHakukohdeoid', function() {
+        var item = {
+            hakukohdeOid: '111',
+            hakukohdeTila: 'tila',
+            tarjoajaNimi: {fi:'tfi'},
+            hakukohdeNimi: {fi:'hfi'},
+            tarjoajaOid: 'oid111'
+        };
+        scope.setHakukohdeoid(item);
+        expect(scope.model.hakukohde.oid).toBe(item.hakukohdeOid);
+        expect(scope.model.hakukohde.tila).toBe(item.hakukohdeTila);
+        expect(scope.model.hakukohde.nimi).toBe(item.tarjoajaNimi.fi + ', ' + item.hakukohdeNimi.fi);
+        expect(scope.model.hakukohde.tarjoajaOid).toBe(item.tarjoajaOid);
+    });
+
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+});
+
+describe('Testing ValinnanVaiheController', function(){
+    var rootScope,$rootScope, $controller, $httpBackend, $location, location, scope,ctrl,
+        hakukohdeValinnanVaiheModel,hakukohdeModel,valintatapajonoalljson;
+    var routeParams = {"id": "oid1","valinnanvaiheOid": "oid2","hakukohdeOid": "oid3","valintatapajonoOid": "oid4"};
+    beforeEach(module('valintaperusteet','MockData'));
+
+    beforeEach(inject(function($injector,valintatapajonoallJSON) {
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $location = $injector.get('$location');
+        $controller = $injector.get('$controller');
+        hakukohdeValinnanVaiheModel = $injector.get('HakukohdeValinnanVaiheModel');
+        hakukohdeModel = $injector.get('HakukohdeModel');
+        valintatapajonoalljson = valintatapajonoallJSON;
+
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.flush();
+    }));
+
+    it('should get ValinnanVaiheController', function() {
+        scope = $rootScope.$new();
+        rootScope = $rootScope;
+        location = $location;
+        $httpBackend.expectGET('resources/valinnanvaihe/'+routeParams.valinnanvaiheOid).respond("{}");
+        $httpBackend.expectGET('resources/valinnanvaihe/'+routeParams.valinnanvaiheOid+"/valintatapajono").respond(valintatapajonoalljson);
+        $httpBackend.expectGET('resources/valinnanvaihe/'+routeParams.valinnanvaiheOid+"/kuuluuSijoitteluun").respond('{"sijoitteluun":false}');
+
+        ctrl = $controller('ValinnanVaiheController', {'$scope' : scope, '$location': location, '$routeParams': routeParams,
+            'HakukohdeValinnanVaiheModel': hakukohdeValinnanVaiheModel, 'HakukohdeModel': hakukohdeModel});
+        $httpBackend.flush();
+    });
+
+    it('check initialized variables', function() {
+        expect(scope.hakukohdeOid).toBe(routeParams.hakukohdeOid);
+        expect(scope.valinnanvaiheOid).toBe(routeParams.valinnanvaiheOid);
+        expect(scope.model.valintatapajonot.length).toBe(1);
+    });
+
+    it('cancel', function() {
+        scope.cancel();
+        expect(location.path()).toBe("/hakukohde/" + scope.hakukohdeOid);
+    });
+
+    it('addJono', function() {
+        scope.addJono();
+        expect(location.path()).toBe("/hakukohde/" + scope.hakukohdeOid + "/valinnanvaihe/" + scope.model.valinnanvaihe.oid + "/valintatapajono/");
+    });
+
+    it('addJono', function() {
+        var oid = '222';
+        scope.modifyJono(oid);
+        expect(location.path()).toBe("/hakukohde/" + scope.hakukohdeOid + "/valinnanvaihe/" + scope.model.valinnanvaihe.oid + "/valintatapajono/" + oid);
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+});
+
+
+describe('Testing HakukohdeValintatapajonoController', function(){
+    var rootScope,$rootScope, $controller, $httpBackend, $location, location, scope,ctrl,
+        hakukohdeValinnanVaiheModel,valintatapajonoModel,valintatapajonojson,laskentakaavaonejson;
+    var routeParams = {"id": "oid1","valinnanvaiheOid": "oid2","hakukohdeOid": "oid3","valintatapajonoOid": "oid4"};
+    beforeEach(module('valintaperusteet','MockData'));
+
+    beforeEach(inject(function($injector,valintatapajonoJSON,laskentakaavaoneJSON) {
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $location = $injector.get('$location');
+        $controller = $injector.get('$controller');
+        hakukohdeValinnanVaiheModel = $injector.get('HakukohdeValinnanVaiheModel');
+        valintatapajonoModel = $injector.get('ValintatapajonoModel');
+        valintatapajonojson = valintatapajonoJSON;
+        laskentakaavaonejson = laskentakaavaoneJSON;
+
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.flush();
+    }));
+
+    it('should get HakukohdeValintatapajonoController', function() {
+        scope = $rootScope.$new();
+        rootScope = $rootScope;
+        location = $location;
+
+        $httpBackend.expectGET('resources/valintatapajono/'+routeParams.valintatapajonoOid).respond(valintatapajonojson);
+        $httpBackend.expectGET('resources/valintatapajono/'+routeParams.valintatapajonoOid+"/hakijaryhma").respond("[]");
+        $httpBackend.expectGET('resources/valintatapajono/'+routeParams.valintatapajonoOid+"/jarjestyskriteeri").respond('[{"metatiedot":"Ulkomailla suoritettu koulutus tai oppivelvollisuuden suorittaminen keskeytynyt","aktiivinen":true,"oid":"1403080024594-3389074374885820341","valintatapajonoOid":"14030800242802764498205598029585","inheritance":false,"laskentakaavaId":4140}]');
+        $httpBackend.expectGET('resources/laskentakaava/4140').respond(laskentakaavaonejson);
+
+        ctrl = $controller('HakukohdeValintatapajonoController', {'$scope' : scope, '$location': location, '$routeParams': routeParams,
+            'ValintatapajonoModel':valintatapajonoModel, 'HakukohdeValinnanVaiheModel': hakukohdeValinnanVaiheModel});
+        $httpBackend.flush();
+    });
+
+    it('check initialized variables', function() {
+        expect(scope.hakukohdeOid).toBe(routeParams.hakukohdeOid);
+        expect(scope.valinnanvaiheOid).toBe(routeParams.valinnanvaiheOid);
+        expect(scope.model.hakijaryhmat.length).toBe(0);
+        expect(scope.model.jarjestyskriteerit.length).toBe(1);
+    });
+
+    it('cancel', function() {
+        scope.cancel();
+        expect(location.path()).toBe("/hakukohde/" + scope.hakukohdeOid + '/valinnanvaihe/'+ scope.valinnanvaiheOid);
+    });
+
+
+    it('addKriteeri', function() {
+        scope.addKriteeri();
+        expect(location.path()).toBe("/hakukohde/" + scope.hakukohdeOid
+            + '/valinnanvaihe/' + scope.valinnanvaiheOid
+            + '/valintatapajono/' + scope.model.valintatapajono.oid + '/jarjestyskriteeri/');
+    });
+
+    it('addHakijaryhma', function() {
+        scope.addHakijaryhma();
+        expect(location.path()).toBe("/hakukohde/" + scope.hakukohdeOid
+            + '/valinnanvaihe/' + scope.valinnanvaiheOid
+            + '/valintatapajono/' + scope.model.valintatapajono.oid + '/hakijaryhma');
+    });
+
+    it('modifyKriteeri', function() {
+        var oid = '2222';
+        scope.modifyKriteeri(oid);
+        expect("/hakukohde/" + scope.hakukohdeOid
+            + '/valinnanvaihe/' + scope.valinnanvaiheOid
+            + '/valintatapajono/' + scope.model.valintatapajono.oid
+            + '/jarjestyskriteeri/' + oid);
+    });
+
+
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+});
+
+
+describe('Testing ImportController', function(){
+    var rootScope,$rootScope, $controller, $httpBackend, $location, location, scope,ctrl,
+        hakuModel, tarjontaImport, treemodel,puukaikkijson,hakujson,hakuextrajson;
+    var routeParams = {"id": "oid1","valinnanvaiheOid": "oid2","hakukohdeOid": "oid3","valintatapajonoOid": "oid4"};
+    beforeEach(module('valintaperusteet','MockData'));
+
+    beforeEach(inject(function($injector,puuKaikkiJSON,hakuJSON,hakuExtraJSON) {
+        $httpBackend = $injector.get('$httpBackend');
+        $rootScope = $injector.get('$rootScope');
+        $location = $injector.get('$location');
+        $controller = $injector.get('$controller');
+        hakuModel = $injector.get('HakuModel');
+        tarjontaImport = $injector.get('TarjontaImport');
+        treemodel = $injector.get('Treemodel');
+        puukaikkijson = puuKaikkiJSON;
+        hakujson = hakuJSON;
+        hakuextrajson = hakuExtraJSON;
+
+        var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+        $httpBackend.expectGET('resources/puu?kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
+        $httpBackend.expectGET('https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1/localisation?category=valintaperusteet').respond("");
+        $httpBackend.flush();
+    }));
+
+    it('should get ImportController', function() {
+        scope = $rootScope.$new();
+        rootScope = $rootScope;
+        location = $location;
+
+        $httpBackend.expectGET('haku').respond(hakujson);
+        $httpBackend.expectGET('haku/1.2.246.562.29.21702520681').respond(hakuextrajson);
+        $httpBackend.expectGET('haku/1.2.246.562.29.41647728207').respond(hakuextrajson);
+        $httpBackend.expectGET('haku/1.2.246.562.5.2013112910452702965370').respond(hakuextrajson);
+        $httpBackend.expectGET('haku/1.2.246.562.5.2013112910480420004764').respond(hakuextrajson);
+        $httpBackend.expectGET('haku/1.2.246.562.29.87103060197').respond(hakuextrajson);
+        $httpBackend.expectGET('haku/1.2.246.562.29.16836448445').respond(hakuextrajson);
+        $httpBackend.expectGET('haku/1.2.246.562.29.34600360753').respond(hakuextrajson);
+        ctrl = $controller('ImportController', {'$scope' : scope, '$location': location, '$routeParams': routeParams,
+            'HakuModel':hakuModel, 'TarjontaImport': tarjontaImport, 'Treemodel': treemodel});
+        $httpBackend.flush();
+    });
+
+    it('check initialized variables', function() {
+        expect(scope.model.hakuOid).toBe('1.2.246.562.29.21702520681');
+        expect(scope.model.haut.length).toBe(7);
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+});
