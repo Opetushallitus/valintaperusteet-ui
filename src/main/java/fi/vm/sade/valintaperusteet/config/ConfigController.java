@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class ConfigController {
-    @Value("${localisation.rest}")
+    @Value("${localisation.rest:https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1}")
     private String localisationUrl;
 
     @Value("${valintaperusteet-ui.valintaperuste-service-url.rest}")
