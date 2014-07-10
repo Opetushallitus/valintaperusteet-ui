@@ -21,7 +21,7 @@
 
 <div ng-controller="OrganisaatioTreeController">
     <button type="button" class="btn btn-sm btn-default" ng-click="show()"><i
-            class="fa fa-plus"></i> Organisaatio
+            class="fa fa-plus"></i> {{ t('organisaatioselector.organisaatio') || 'Organisaatio' }}
     </button>
 
     <modal modal-template="../common/partials/organisaatio.html"></modal>

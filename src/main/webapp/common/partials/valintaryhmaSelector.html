@@ -13,15 +13,15 @@
 
 </script>
 
-<input type="text" class="search" placeholder="Suodata valintaryhmiä" id="text" ng-model="domain.search.q">
-<a class="btn btn-sm btn-default" ng-click="domain.expandTree()"> <i class="fa fa-expand"></i> Avaa puu</a>
+<input type="text" class="search" placeholder="{{ t('valintaryhmaselector.suodata') || 'Suodata valintaryhmiä' }}" id="text" ng-model="domain.search.q">
+<a class="btn btn-sm btn-default" ng-click="domain.expandTree()"> <i class="fa fa-expand"></i> {{ t('valintaryhmaselector.avaa') || 'Avaa puu' }}</a>
 <br />
 <div class="valintaryhmaSelector">
     <ol class="treelist collapsible">
         <li>
             <span class="node">
             <i class="fa fa-users valintaryhma auki"></i>
-            <input name="valintaryhmaOid" type="radio" ng-model="model.parentOid" value="" id="root"/> <label for="root">Juuri</label>
+            <input name="valintaryhmaOid" type="radio" ng-model="model.parentOid" value="" id="root"/> <label for="root">{{ t('valintaryhmaselector.juuri') || 'Juuri' }}</label>
             </span>
         </li>
         <ol>
@@ -34,4 +34,4 @@
         </ol>
     </ol>
 </div>
-<span>Haku palautti {{domain.tilasto.valintaryhmia}} valintaryhmää</span>
+<span>{{ t('valintaryhmaselector.hakupalautti') || 'Haku palautti' }} {{domain.tilasto.valintaryhmia}} {{ t('valintaryhmaselector.valintaryhmaa') || 'valintaryhmää' }}</span>
