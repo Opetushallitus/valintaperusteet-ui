@@ -1,7 +1,6 @@
-'use strict';
-
 angular.module('LaskentakaavaEditor').controller('UusiLaskentakaavaController', ['$scope', 'FunktioService',
     '$routeParams', function ($scope, FunktioService, $routeParams) {
+    'use strict';
 
     $scope.funktioService = FunktioService;
     $scope.funktioService.refresh();

@@ -1,6 +1,5 @@
-"use strict";
-
 app.factory('OrganisaatioTreeModel', function(Organizations, AuthService, OrganizationByOid) {
+    "use strict";
 
     return (function() {
         var instance = {};
@@ -29,7 +28,7 @@ app.factory('OrganisaatioTreeModel', function(Organizations, AuthService, Organi
                     });
                 }
             });
-        }
+        };
 
         instance.openChildren = function(data) {
             data.open = !data.open;
@@ -42,11 +41,11 @@ app.factory('OrganisaatioTreeModel', function(Organizations, AuthService, Organi
                             iter(child.children);
                         });
                     }
-                }
+                };
 
                 iter(data.children);
             }
-        }
+        };
 
         instance.init = function() {
             instance.model = {};
@@ -76,6 +75,7 @@ app.factory('OrganisaatioTreeModel', function(Organizations, AuthService, Organi
 });
 
 function OrganisaatioTreeController($scope, $timeout, OrganisaatioTreeModel) {
+    "use strict";
 
     $scope.orgTree = OrganisaatioTreeModel;
 

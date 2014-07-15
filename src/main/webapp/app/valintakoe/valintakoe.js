@@ -1,6 +1,5 @@
-"use strict";
-
 app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe, Laskentakaava, LaskentakaavaModel) {
+    "use strict";
 
 	var model = new function() {
 		this.valintakoe = {};
@@ -68,7 +67,7 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 				});
 			}
 			return deferred.promise;
-		}
+		};
 
 		this.getParentGroupType = function(path) {
 			
@@ -81,7 +80,7 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 			}
 
 			return type;
-		}
+		};
 
 		function getlaskentakaavaId() {
 			var laskentakaavaId;
@@ -93,7 +92,7 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 			return laskentakaavaId;
 		}
 		
-	};
+	}();
 
 	return model;
 
@@ -103,6 +102,8 @@ angular.module('valintaperusteet').
     controller('ValintaryhmaValintakoeController', ['$scope', '$location', '$routeParams', 'ValintakoeModel',
         'ValintaryhmaValintakoeValinnanvaiheModel',
         function ($scope, $location, $routeParams, ValintakoeModel, ValintaryhmaValintakoeValinnanvaiheModel) {
+    "use strict";
+
 	$scope.valintaryhmaOid = $routeParams.id;
 	$scope.valintakoeValinnanvaiheOid = $routeParams.valintakoevalinnanvaiheOid;
 	$scope.valintakoeOid = $routeParams.valintakoeOid;
@@ -127,6 +128,8 @@ angular.module('valintaperusteet').
         'ValintaryhmaValintakoeValinnanvaiheModel', 'HakukohdeValintakoeValinnanvaiheModel',
         function ($scope, $location, $routeParams, ValintakoeModel, ValintaryhmaValintakoeValinnanvaiheModel,
                   HakukohdeValintakoeValinnanvaiheModel) {
+    "use strict";
+
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
 	$scope.valintakoeValinnanvaiheOid = $routeParams.valintakoevalinnanvaiheOid;
 	$scope.valintakoeOid = $routeParams.id;

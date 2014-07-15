@@ -1,8 +1,7 @@
-'use strict';
-
 angular.module('LaskentakaavaEditor').
-
 factory('FunktioService', function (FunktioKuvausResource) {
+    'use strict';
+
     var model = new function () {
         this.funktiokuvaukset = {};
 
@@ -228,12 +227,14 @@ factory('FunktioService', function (FunktioKuvausResource) {
             return arr;
         };
 
-    };
+    }();
 
     return model;
 }).
 
 factory('Valintaperusteviitetyypit', function () {
+    'use strict';
+
     return [
         { key: 'HAETTAVA_ARVO', text: 'Arvo hakemukselta' },
         { key: 'SYOTETTAVA_ARVO', text: 'Syötettävä arvo' },
@@ -243,6 +244,8 @@ factory('Valintaperusteviitetyypit', function () {
 }).
 
 factory('Arvokonvertterikuvauskielet', function () {
+   'use strict';
+
     return [
         { key: 'FI', text: 'Suomi' },
         { key: 'SV', text: 'Ruotsi' },

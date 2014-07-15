@@ -1,7 +1,7 @@
-'use strict';
-
 function HakukohdeLaskentakaavaListController($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista,
                                               HakukohdeModel, Valintaryhma, Hakukohde) {
+    'use strict';
+
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
 

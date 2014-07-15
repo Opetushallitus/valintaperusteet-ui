@@ -1,8 +1,9 @@
-"use strict";
-
 app.factory('ValintaryhmaValinnanvaiheModel', function(Valinnanvaihe, Valintatapajono, ValinnanvaiheValintatapajono,
                                                        NewValintaryhmaValinnanvaihe, ValintatapajonoJarjesta) {
-    
+
+    "use strict";
+
+
     var model = new function() {
         
         this.valinnanvaihe = {};
@@ -54,7 +55,7 @@ app.factory('ValintaryhmaValinnanvaiheModel', function(Valinnanvaihe, Valintatap
                     kuvaus: model.valinnanvaihe.kuvaus,
                     aktiivinen: true,
                     valinnanVaiheTyyppi: "TAVALLINEN"
-                }
+                };
                 NewValintaryhmaValinnanvaihe.put({valintaryhmaOid: parentValintaryhmaOid}, valinnanvaihe, function(result){
                     model.valinnanvaihe = result;
                     valinnanvaiheet.push(result);
@@ -75,7 +76,7 @@ app.factory('ValintaryhmaValinnanvaiheModel', function(Valinnanvaihe, Valintatap
             return oids;
         }
 
-    };
+    }();
     return model;
 
 });
@@ -84,6 +85,8 @@ angular.module('valintaperusteet').
     controller('ValintaryhmaValinnanvaiheController', ['$scope', '$location', '$routeParams',
         'ValintaryhmaValinnanvaiheModel', 'ValintaryhmaModel',
     function ($scope, $location, $routeParams, ValintaryhmaValinnanvaiheModel, ValintaryhmaModel) {
+    "use strict";
+
     $scope.valintaryhmaOid = $routeParams.id;
     $scope.ValintaryhmaValinnanvaiheOid = $routeParams.valinnanvaiheOid;
     $scope.model = ValintaryhmaValinnanvaiheModel;
@@ -110,6 +113,8 @@ angular.module('valintaperusteet').
 
 app.factory('ValintaryhmaValintakoeValinnanvaiheModel', function(Valinnanvaihe, ValinnanvaiheValintakoe,
                                                                  NewValintaryhmaValinnanvaihe, Valintakoe) {
+    "use strict";
+
     var model = new function() {
         
         this.valintakoevalinnanvaihe = {};
@@ -175,7 +180,7 @@ app.factory('ValintaryhmaValintakoeValinnanvaiheModel', function(Valinnanvaihe, 
             });
         };
 
-    };
+    }();
 
     return model;
 });
@@ -184,6 +189,8 @@ angular.module('valintaperusteet').
     controller('ValintaryhmaValintakoeValinnanvaiheController', ['$scope', '$location', '$routeParams',
         'ValintaryhmaValintakoeValinnanvaiheModel', 'ValintaryhmaModel',
         function ($scope, $location, $routeParams, ValintaryhmaValintakoeValinnanvaiheModel, ValintaryhmaModel) {
+    "use strict";
+
     $scope.valintaryhmaOid = $routeParams.id;
     $scope.ValintaryhmaValintakoeValinnanvaiheOid = $routeParams.valintakoevalinnanvaiheOid;
     $scope.model = ValintaryhmaValintakoeValinnanvaiheModel;

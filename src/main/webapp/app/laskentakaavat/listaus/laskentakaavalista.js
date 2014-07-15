@@ -1,7 +1,7 @@
-'use strict';
-
 angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (Laskentakaava, ParentValintaryhmas,
                                                                               Hakukohde, Valintaryhma) {
+    'use strict';
+
     var valintaryhmaList = [];
     var hakukohde = [];
     var valintaryhma = null;
@@ -84,6 +84,8 @@ angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (La
 });
 
 function LaskentakaavaListController($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista, FunktioService) {
+    'use strict';
+
 	$scope.funktioService = FunktioService;
 	$scope.funktioService.refresh();
 	$scope.valintaryhmaOid = $routeParams.valintaryhmaOid;

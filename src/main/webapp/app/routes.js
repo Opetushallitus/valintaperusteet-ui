@@ -1,9 +1,9 @@
-'use strict';
-
-
 //Route configuration
 app.config(function($routeProvider) {
-	$routeProvider.
+    'use strict';
+
+
+    $routeProvider.
 
 		//front page
 		when('/etusivu', {controller:'ValintaryhmaHakukohdeTreeController', templateUrl:TEMPLATE_URL_BASE + 'valintaryhmalistaus/valintaryhmatlistaus.html'}).

@@ -1,10 +1,10 @@
-"use strict";
-
 app.factory('HakukohdeModel', function($q, HakukohdeHakukohdekoodi, KoodistoHakukohdekoodi, Hakukohde, Valintaryhma,
                                         HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta,
                                         HakukohdeKuuluuSijoitteluun, HakukohdeHakijaryhma, Laskentakaava,
                                         HakijaryhmaJarjesta, Hakijaryhma, Haku, TarjontaHaku, HaunTiedot, HakukohdeNimi,
                                         HakijaryhmanValintatapajonot) {
+    "use strict";
+
     var model = new function()  {
         this.hakukohdeOid = "";
         this.loaded = $q.defer();
@@ -152,7 +152,7 @@ app.factory('HakukohdeModel', function($q, HakukohdeHakukohdekoodi, KoodistoHaku
             });
         };
 
-    };
+    }();
 
     function getValinnanvaiheOids() {
         var oids = [];
@@ -174,6 +174,7 @@ app.factory('HakukohdeModel', function($q, HakukohdeHakukohdekoodi, KoodistoHaku
 });
 
 function HakukohdeController($scope, $location, $routeParams, HakukohdeModel) {
+    "use strict";
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakukohdeModel;
@@ -213,6 +214,7 @@ function HakukohdeController($scope, $location, $routeParams, HakukohdeModel) {
 
 app.factory('ValintaryhmaSiirtoModel', function($resource, $location, $routeParams, Valintaryhma, ChildValintaryhmas,
                                                 Treemodel, HakukohdeSiirra) {
+    "use strict";
 
     var model = new function() {
         this.valintaryhma = {};
@@ -236,12 +238,14 @@ app.factory('ValintaryhmaSiirtoModel', function($resource, $location, $routePara
             }
 
         };
-    };
+    }();
 
     return model;
 });
 
 function ValintaryhmanSiirtoController($scope, $routeParams, ValintaryhmaSiirtoModel, Ylavalintaryhma, HakukohdeSiirra) {
+    "use strict";
+
     $scope.valintaryhmaOid = $routeParams.id;
     $scope.model = ValintaryhmaSiirtoModel;
     $scope.model.refreshIfNeeded($scope.valintaryhmaOid);

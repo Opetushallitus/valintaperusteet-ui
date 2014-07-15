@@ -1,10 +1,10 @@
-"use strict";
-
 //domain .. this is both, service & domain layer
 app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheValintatapajono,
                                                 ValintatapajonoJarjestyskriteeri, Laskentakaava, Jarjestyskriteeri,
                                                 JarjestyskriteeriJarjesta, ValintatapajonoHakijaryhma, HakukohdeHakijaryhma,
                                                 ValintaryhmaHakijaryhma, HakijaryhmaValintatapajono) {
+    "use strict";
+
     var model = new function()  {
         this.valintatapajono = {};
         this.jarjestyskriteerit = [];
@@ -163,7 +163,7 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
             }
             return oids;
         }
-    };
+    }();
 
 
     return model;
@@ -173,6 +173,7 @@ angular.module('valintaperusteet').
     controller('HakukohdeValintatapajonoController',['$scope', '$location', '$routeParams', 'ValintatapajonoModel',
         'HakukohdeValinnanVaiheModel',
         function ($scope, $location, $routeParams, ValintatapajonoModel, HakukohdeValinnanVaiheModel) {
+    "use strict";
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
@@ -222,6 +223,7 @@ angular.module('valintaperusteet').
     controller('ValintaryhmaValintatapajonoController', ['$scope', '$location', '$routeParams', '$timeout',
         'ValintatapajonoModel', 'ValintaryhmaValinnanvaiheModel',
     function ($scope, $location, $routeParams, $timeout, ValintatapajonoModel, ValintaryhmaValinnanvaiheModel) {
+    "use strict";
 
     $scope.valintaryhmaOid = $routeParams.id;
     $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;

@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
     ['$scope', '_', '$location', '$routeParams', '$timeout', 'KaavaValidointi', 'Laskentakaava', 'LaskentakaavaLista',
         'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'Arvokonvertterikuvauskielet',
@@ -7,6 +5,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
         function ($scope, _, $location, $routeParams, $timeout, KaavaValidointi, Laskentakaava, LaskentakaavaLista,
                   TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet,
                   FunktioNimiService, FunktioFactory, KaavaValidationService) {
+            'use strict';
 
             //servicet laskentakaavapuun piirtämiseen
             $scope.templateService = TemplateService;

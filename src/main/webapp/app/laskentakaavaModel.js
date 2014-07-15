@@ -1,8 +1,7 @@
-"use strict";
-
 // Valintaryhma Järjestyskriteerit
 app.factory('LaskentakaavaModel', function(Laskentakaava, ParentValintaryhmas, Hakukohde) {
-    
+    "use strict";
+
     var factory = (function() {
         var instance = {};
         instance.laskentakaavat = [];

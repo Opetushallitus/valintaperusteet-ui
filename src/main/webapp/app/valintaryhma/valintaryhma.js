@@ -1,10 +1,10 @@
-"use strict";
-
 app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, HakijaryhmaJarjesta, KoodistoHakukohdekoodi,
                                            KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel,
                                            ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe,
                                            ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma,
                                            OrganizationByOid) {
+    "use strict";
+
 
 	var model = new function () {
 		this.loaded = $q.defer();
@@ -59,9 +59,6 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
                 KoodistoHaunKohdejoukko.get(function (result) {
                     model.kohdejoukot = result;
                 });
-
-
-
             }
 		};
 
@@ -255,13 +252,14 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 			});
 		};
 
-	};
+	}();
 	return model;
 });
 
 angular.module('valintaperusteet').
     controller('ValintaryhmaController', ['$scope', '$location', '$routeParams', 'ValintaryhmaModel',
         function ($scope, $location, $routeParams, ValintaryhmaModel) {
+    "use strict";
 
 	$scope.valintaryhmaOid = $routeParams.id;
 	$scope.model = ValintaryhmaModel;

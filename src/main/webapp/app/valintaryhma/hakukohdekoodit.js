@@ -1,7 +1,7 @@
-"use strict";
-
 function HakukohdekoodiController($scope) {
-	$scope.toggleValintaryhmaHakukohdekoodit = false;
+    "use strict";
+
+    $scope.toggleValintaryhmaHakukohdekoodit = false;
 
 	$scope.toggleHakukohdekoodit = function () {
 		$scope.toggleValintaryhmaHakukohdekoodit = !$scope.toggleValintaryhmaHakukohdekoodit;

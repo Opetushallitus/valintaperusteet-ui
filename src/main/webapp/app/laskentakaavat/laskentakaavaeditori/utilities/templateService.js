@@ -1,6 +1,6 @@
-'use strict';
-
 angular.module('LaskentakaavaEditor').factory('TemplateService', function() {
+    'use strict';
+
 	var templateservice = new function() {
 
 
@@ -101,7 +101,7 @@ angular.module('LaskentakaavaEditor').factory('TemplateService', function() {
 			return map[key];
 		};
 
-	};
+	}();
 
 	return templateservice;
 });

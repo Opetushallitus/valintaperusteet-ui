@@ -1,7 +1,6 @@
-"use strict";
-
 //domain .. this is both, service & domain layer
 app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
+    "use strict";
 
     //and return interface for manipulating the model
     var modelInterface =  {
@@ -192,6 +191,8 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
 angular.module('valintaperusteet').
     controller('ValintaryhmaHakukohdeTreeController', ['$scope', 'Treemodel', 'HakukohdeSiirra', 'HakuModel',
         function ($scope, Treemodel, HakukohdeSiirra, HakuModel) {
+    "use strict";
+
 	$scope.predicate = 'nimi';
 	$scope.domain = Treemodel;
 

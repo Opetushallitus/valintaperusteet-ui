@@ -1,7 +1,6 @@
-'use strict';
-
 angular.module('LaskentakaavaEditor').factory('KaavaValidationService', ['FunktioService', 'FunktioNimiService',
     function (FunktioService, FunktioNimiService) {
+    'use strict';
 
     var validationService = new function () {
 
@@ -184,7 +183,7 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', ['Funkti
                 }
             }
         };
-    };
+    }();
 
     return validationService;
 }]);

@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  *  Module
  *
@@ -9,6 +7,8 @@
 angular.module('LaskentakaavaEditor', ['ngResource', 'loading', 'ngRoute', 'lodash', 'ng-breadcrumbs']);
 
 angular.module('LaskentakaavaEditor').config(function ($routeProvider) {
+    'use strict';
+
 	//laskentakaava
 	$routeProvider.
 		when('/laskentakaava', {controller: 'LaskentakaavaListController', templateUrl: TEMPLATE_URL_BASE + 'laskentakaavat/listaus/laskentakaavalista.html', label: 'laskentakaavalista'}).

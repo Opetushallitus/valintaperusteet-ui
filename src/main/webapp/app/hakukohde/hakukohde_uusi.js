@@ -1,7 +1,6 @@
-"use strict";
-
 //domain .. this is both, service & domain layer
 app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu, AuthService) {
+    "use strict";
 
     //and return interface for manipulating the model
     var modelInterface =  {
@@ -110,6 +109,8 @@ app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu, AuthServ
 });
 
 app.factory('UusiHakukohdeModel', function(NewHakukohde) {
+    "use strict";
+
     var model = new function()  {
         
         this.hakukohde = {};
@@ -133,7 +134,7 @@ app.factory('UusiHakukohdeModel', function(NewHakukohde) {
             model.parentOid = "";
         };
 
-    };
+    }();
 
     return model;
 });
@@ -142,6 +143,8 @@ angular.module('valintaperusteet').
     controller('UusiHakukohdeController',['$scope', '$location', 'UusiHakukohdeModel', 'Ylavalintaryhma', 'Haku',
         'TarjontaHaku', 'HaunTiedot', 'Hakukohde',
         function ($scope, $location, UusiHakukohdeModel, Ylavalintaryhma, Haku, TarjontaHaku, HaunTiedot, Hakukohde) {
+    "use strict";
+
     $scope.predicate = 'nimi';
     $scope.model = UusiHakukohdeModel;
 

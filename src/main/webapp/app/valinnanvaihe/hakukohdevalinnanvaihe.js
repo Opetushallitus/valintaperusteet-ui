@@ -1,10 +1,10 @@
-"use strict";
-
-
 angular.module('valintaperusteet').
     controller('ValinnanVaiheController',['$scope', '$location', '$routeParams', 'HakukohdeValinnanVaiheModel',
         'HakukohdeModel',
         function ($scope, $location, $routeParams, HakukohdeValinnanVaiheModel, HakukohdeModel) {
+    "use strict";
+
+
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
 
@@ -31,6 +31,8 @@ angular.module('valintaperusteet').
 app.factory('HakukohdeValinnanVaiheModel', function(Valinnanvaihe, Valintatapajono, ValinnanvaiheValintatapajono,
                                                     HakukohdeValinnanvaihe, ValinnanvaiheKuuluuSijoitteluun,
                                                     ValintatapajonoJarjesta) {
+    "use strict";
+
     var model = new function() {
         this.valinnanvaihe = {};
         this.valintatapajonot = [];
@@ -118,7 +120,7 @@ app.factory('HakukohdeValinnanVaiheModel', function(Valinnanvaihe, Valintatapajo
             }
             return oids;
         }
-    };
+    }();
     return model;
 });
 
@@ -126,7 +128,9 @@ app.factory('HakukohdeValinnanVaiheModel', function(Valinnanvaihe, Valintatapajo
 
 app.factory('HakukohdeValintakoeValinnanvaiheModel', function($q,HakukohdeValinnanvaihe, Valinnanvaihe,
                                                               ValinnanvaiheValintakoe, Valintakoe) {
-    
+    "use strict";
+
+
     var model = new function() {
         this.valintakoevalinnanvaihe = {};
         this.valintakokeet = [];
@@ -179,7 +183,7 @@ app.factory('HakukohdeValintakoeValinnanvaiheModel', function($q,HakukohdeValinn
                 });
 
             }
-        }
+        };
 
         this.removeValintakoe = function(valintakoe) {
 
@@ -192,7 +196,7 @@ app.factory('HakukohdeValintakoeValinnanvaiheModel', function($q,HakukohdeValinn
             });
         };
 
-    };
+    }();
 
     return model;
 
@@ -203,6 +207,8 @@ angular.module('valintaperusteet').
     controller('HakukohdeValintakoeValinnanvaiheController',['$scope', '$location', '$routeParams',
         'HakukohdeValintakoeValinnanvaiheModel', 'HakukohdeModel',
         function ($scope, $location, $routeParams, HakukohdeValintakoeValinnanvaiheModel, HakukohdeModel) {
+    "use strict";
+
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.HakukohdeValintakoeValinnanvaiheOid = $routeParams.valintakoevalinnanvaiheOid;
     $scope.model = HakukohdeValintakoeValinnanvaiheModel;

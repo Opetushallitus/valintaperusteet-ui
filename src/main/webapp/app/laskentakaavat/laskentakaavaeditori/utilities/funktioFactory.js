@@ -1,7 +1,7 @@
-"use strict";
-
 angular.module('LaskentakaavaEditor').factory('FunktioFactory', function(FunktioService){
-	var factory = new function() {
+    "use strict";
+
+    var factory = new function() {
 
 		function generateFunktioPrototype() {
 			return {
@@ -217,7 +217,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioFactory', function(Funktio
 			}
 		}
 
-	};
+	}();
 
 	return factory;
 });

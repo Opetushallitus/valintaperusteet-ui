@@ -1,8 +1,7 @@
-'use strict';
-
 angular.module('LaskentakaavaEditor').
     controller('LaskentakaavaLomakeController', ['$scope', '$routeParams', '$location', 'Laskentakaava',
         'KaavaVirheTyypit', function ($scope, $routeParams, $location, Laskentakaava, KaavaVirheTyypit) {
+        'use strict';
 
         $scope.kaavaVirheTyypit = KaavaVirheTyypit;
 

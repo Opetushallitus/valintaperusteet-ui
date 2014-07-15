@@ -1,8 +1,7 @@
-"use strict";
-
 // Valintaryhma Järjestyskriteerit
 app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskriteeri, ValintatapajonoJarjestyskriteeri,
                                                 ParentValintaryhmas, Hakukohde, LaskentakaavaModel) {
+    "use strict";
 
     var model;
 
@@ -76,7 +75,7 @@ app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskrit
             return deferred.promise;
         };
 
-    };
+    }();
 
     return model;
 
@@ -85,6 +84,8 @@ app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskrit
 angular.module('valintaperusteet').
     controller('JarjestyskriteeriController', ['$scope', '$location', '$routeParams', 'JarjestyskriteeriModel', 'ValintatapajonoModel',
         function ($scope, $location, $routeParams, JarjestyskriteeriModel, ValintatapajonoModel) {
+    "use strict";
+
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
 	$scope.valintaryhmaOid = $routeParams.id;
     $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;

@@ -1,6 +1,6 @@
-"use strict";
-
 function ValintakoekoodiController($scope) {
+    "use strict";
+
 	$scope.toggleValintaryhmaValintakokeet = false;
 
 	$scope.toggleValintakokeet = function () {

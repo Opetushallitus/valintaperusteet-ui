@@ -1,7 +1,7 @@
-"use strict";
-
 angular.module('LaskentakaavaEditor').controller('AlikaavaController', ['$scope', 'Laskentakaava', '$q',
     function ($scope, Laskentakaava, $q) {
+    "use strict";
+
     $scope.hasParentAlikaava = false;
     if ($scope.isAlikaava) {
         $scope.hasParentAlikaava = true;

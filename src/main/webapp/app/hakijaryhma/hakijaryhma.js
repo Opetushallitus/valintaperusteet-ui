@@ -1,10 +1,9 @@
-"use strict";
-
 // Valintaryhma Järjestyskriteerit
 app.factory('HakijaryhmaModel', function($q, Hakijaryhma, LaskentakaavaModel,
                                          ValintaryhmaHakijaryhma, HakukohdeHakijaryhma,
                                          HakijaryhmanValintatapajonot) {
-    
+    "use strict";
+
     var factory = (function() {
         var instance = {};
         instance.hakijaryhma = {};
@@ -63,7 +62,9 @@ angular.module('valintaperusteet').
     controller('HakijaryhmaController', ['$scope', '$location', '$routeParams', 'HakijaryhmaModel',
         'HakukohdeModel', 'ValintaryhmaModel',
         function ($scope, $location, $routeParams, HakijaryhmaModel, HakukohdeModel, ValintaryhmaModel) {
-	$scope.valintaryhmaOid = $routeParams.id;
+    "use strict";
+
+    $scope.valintaryhmaOid = $routeParams.id;
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakijaryhmaModel;
     $scope.model.refresh($routeParams.hakijaryhmaOid, $routeParams.id, $routeParams.hakukohdeOid);
