@@ -1,6 +1,11 @@
+"use strict";
+
 angular.module('LaskentakaavaEditor')
 
-    .controller('funktiokutsuAsetuksetController', ['$scope', '$routeParams', '$location', '$timeout', 'Laskentakaava', 'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'GuidGenerator', function ($scope, $routeParams, $location, $timeout, Laskentakaava, FunktioNimiService, FunktioFactory, KaavaValidationService, GuidGenerator) {
+    .controller('funktiokutsuAsetuksetController', ['$scope', '$routeParams', '$location', '$timeout', 'Laskentakaava',
+        'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'GuidGenerator',
+        function ($scope, $routeParams, $location, $timeout, Laskentakaava, FunktioNimiService, FunktioFactory,
+                  KaavaValidationService, GuidGenerator) {
         $scope.funktioFactory = FunktioFactory;
 
         $scope.$on('showFunktiokutsuAsetukset', function () {

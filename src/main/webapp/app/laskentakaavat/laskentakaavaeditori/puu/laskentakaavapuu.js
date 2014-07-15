@@ -2,8 +2,11 @@
 
 angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
     ['$scope', '_', '$location', '$routeParams', '$timeout', 'KaavaValidointi', 'Laskentakaava', 'LaskentakaavaLista',
-        'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'Arvokonvertterikuvauskielet', 'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'KaavaVirheService',
-        function ($scope, _, $location, $routeParams, $timeout, KaavaValidointi, Laskentakaava, LaskentakaavaLista, TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet, FunktioNimiService, FunktioFactory, KaavaValidationService) {
+        'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'Arvokonvertterikuvauskielet',
+        'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'KaavaVirheService',
+        function ($scope, _, $location, $routeParams, $timeout, KaavaValidointi, Laskentakaava, LaskentakaavaLista,
+                  TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet,
+                  FunktioNimiService, FunktioFactory, KaavaValidationService) {
 
             //servicet laskentakaavapuun piirtämiseen
             $scope.templateService = TemplateService;
@@ -143,7 +146,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     var argListLength = parent.lapsi.funktioargumentit.length;
 
                     //tarkistetaan, että funktioargumentteja on parillinen määrä ja että kaksi viimeistä funktioargumenttislottia on täytetty, jottei lisätä ylimääräisiä slotteja
-                    if (argCount % 2 == 0 && !(_.isEmpty(parent.lapsi.funktioargumentit[argListLength - 1])) && !(_.isEmpty(parent.lapsi.funktioargumentit[argCount - 2])) ) {
+                    if (argCount % 2 === 0 && !(_.isEmpty(parent.lapsi.funktioargumentit[argListLength - 1])) && !(_.isEmpty(parent.lapsi.funktioargumentit[argCount - 2])) ) {
                         parent.lapsi.funktioargumentit.push({});
                         parent.lapsi.funktioargumentit.push({});
                     }
@@ -169,7 +172,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
 
             $scope.noFunktioarguments = function (funktioargumentit) {
-                return funktioargumentit.length == 1 && _.isEmpty(funktioargumentit[0]);
+                return funktioargumentit.length === 1 && _.isEmpty(funktioargumentit[0]);
             };
 
             // Kaikissa tapauksissa funktiokutsuilla ja laskentakaavaviitteillä on parent, mutta juuresta seuraavalla tasolla ei ole parent.lapsi -muuttujaa,
@@ -179,9 +182,9 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             };
 
             $scope.setKonvertteriType = function () {
-                if ($scope.funktioSelection.lapsi.arvokonvertteriparametrit && $scope.funktioSelection.lapsi.arvovalikonvertteriparametrit.length == 0) {
+                if ($scope.funktioSelection.lapsi.arvokonvertteriparametrit && $scope.funktioSelection.lapsi.arvovalikonvertteriparametrit.length === 0) {
                     $scope.funktioasetukset.konvertteriType = 'ARVOKONVERTTERI';
-                } else if ($scope.funktioSelection.lapsi.arvovalikonvertteriparametrit && $scope.funktioSelection.lapsi.arvokonvertteriparametrit.length == 0) {
+                } else if ($scope.funktioSelection.lapsi.arvovalikonvertteriparametrit && $scope.funktioSelection.lapsi.arvokonvertteriparametrit.length === 0) {
                     $scope.funktioasetukset.konvertteriType = 'ARVOVALIKONVERTTERI';
                 }
             };
@@ -191,7 +194,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 var emptyArvokonvertteriparametri = {paluuarvo: '', hylkaysperuste: false, arvo: ''};
                 var emptyArvovalikonvertteriparametri = {paluuarvo: '', palautaHaettuArvo: false, minValue: '', maxValue: '', hylkaysperuste: false};
 
-                if ($scope.funktioasetukset.konvertteriType == "ARVOKONVERTTERI") {
+                if ($scope.funktioasetukset.konvertteriType === "ARVOKONVERTTERI") {
                     $scope.funktioSelection.lapsi.arvokonvertteriparametrit.push(emptyArvokonvertteriparametri);
                 } else {
                     $scope.funktioSelection.lapsi.arvovalikonvertteriparametrit.push(emptyArvovalikonvertteriparametri);
@@ -200,7 +203,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
             $scope.addArvokonvertterikuvaus = function (konvertterikuvausSelection) {
 
-                if (konvertterikuvausSelection.kuvaukset == null) {
+                if (konvertterikuvausSelection.kuvaukset === null) {
                     konvertterikuvausSelection.kuvaukset = {tekstit: []};
                 }
                 var emptyKuvaus = {kieli: 'FI', teksti: ''};
@@ -211,7 +214,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
             $scope.addValintaperusteviitekuvaus = function (viiteselection) {
 
-                if (viiteselection.kuvaukset == null) {
+                if (viiteselection.kuvaukset === null) {
                     viiteselection.kuvaukset = {tekstit: []};
                 }
 
@@ -234,7 +237,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
             $scope.getSyoteparametri = function (syoteparametrit, funktiokuvausSyoteparametri) {
                 var result = _.find(syoteparametrit, function (syoteparametri) {
-                    return syoteparametri.avain == funktiokuvausSyoteparametri.avain;
+                    return syoteparametri.avain === funktiokuvausSyoteparametri.avain;
                 });
                 if (result === undefined) {
                     result = {avain: funktiokuvausSyoteparametri.avain, arvo: "", tyyppi: funktiokuvausSyoteparametri.tyyppi};
@@ -262,7 +265,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             };
 
             $scope.removeKonvertteriParametri = function (index, konvertteriparametriSelection) {
-                if (konvertteriparametriSelection == "ARVOKONVERTTERI") {
+                if (konvertteriparametriSelection === "ARVOKONVERTTERI") {
                     $scope.funktioSelection.lapsi.arvokonvertteriparametrit.splice(index, 1);
                 } else {
                     $scope.funktioSelection.lapsi.arvovalikonvertteriparametrit.splice(index, 1);
@@ -285,7 +288,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             $scope.changeKonvertteriparametriTypeSelection = function (konvertteriparametriSelection) {
 
                 //tyhjennetään toinen konvertteriparametrilista tyyppiä vaihdettaessa
-                if (konvertteriparametriSelection == "ARVOKONVERTTERI") {
+                if (konvertteriparametriSelection === "ARVOKONVERTTERI") {
                     $scope.funktioSelection.lapsi.arvovalikonvertteriparametrit.length = 0;
                 } else {
                     $scope.funktioSelection.lapsi.arvokonvertteriparametrit.length = 0;
@@ -339,7 +342,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             $scope.getValintaperusteviitetyyppiText = function(valintaperusteviite) {
                 var text = "";
                 _.some($scope.valintaperusteviitetyypit, function(item) {
-                    if(item.key == valintaperusteviite.lahde) {
+                    if(item.key === valintaperusteviite.lahde) {
                         text = item.text;
                         return true;
                     }
@@ -402,7 +405,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 };
 
                 var urlEnd = _.reduce(_.last($location.path(), 14), function (result, current) {
-                    return result + current
+                    return result + current;
                 }, "");
 
                 $scope.errors.length = 0;
@@ -464,11 +467,4 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 $scope.persist();
             };
 
-
         }]);
-
-
-
-
-
-
