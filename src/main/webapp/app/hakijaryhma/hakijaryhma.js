@@ -24,7 +24,7 @@ app.factory('HakijaryhmaModel', function($q, Hakijaryhma, LaskentakaavaModel,
             LaskentakaavaModel.refresh(valintaryhmaOid, hakukohdeOid);
             instance.laskentakaavaModel = LaskentakaavaModel;
 
-        }
+        };
 
         
 
@@ -50,7 +50,7 @@ app.factory('HakijaryhmaModel', function($q, Hakijaryhma, LaskentakaavaModel,
                 alert("Hakijaryhma-, valintaryhma tai hakukohdeoidia ei löytynyt.");
             }
             return deferred.promise;
-        }
+        };
 
         return instance;
     })();
