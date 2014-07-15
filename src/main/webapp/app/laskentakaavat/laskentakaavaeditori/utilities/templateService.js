@@ -1,5 +1,6 @@
+'use strict';
 
-angular.module('LaskentakaavaEditor').factory('TemplateService', function(FunktioService) {
+angular.module('LaskentakaavaEditor').factory('TemplateService', function() {
 	var templateservice = new function() {
 
 
@@ -18,9 +19,9 @@ angular.module('LaskentakaavaEditor').factory('TemplateService', function(Funkti
                 case "ARVOJOUKKO":
                     return "arvojoukko-template";
 				default:
-					return ""
+					return "";
 			}
-		}
+		};
 
         this.getValintaperusteTemplate = function(syoteparametrityyppi) {
 
@@ -28,9 +29,9 @@ angular.module('LaskentakaavaEditor').factory('TemplateService', function(Funkti
                 case "ARVOJOUKKO":
                     return "valintaperuste-arvojoukko-template";
                 default:
-                    return "valintaperuste-default-template"
+                    return "valintaperuste-default-template";
             }
-        }
+        };
 
 
 
@@ -43,7 +44,7 @@ angular.module('LaskentakaavaEditor').factory('TemplateService', function(Funkti
 				default:
 					return "";
 			}
-		}
+		};
 
 		this.getTemplateName = function(key) {
 			var map = {
@@ -96,11 +97,11 @@ angular.module('LaskentakaavaEditor').factory('TemplateService', function(Funkti
 				HYLKAAARVOVALILLA: 'hylkaa_arvovalilla',
 				NIMETTYLUKUARVO: 'nimetty_lukuarvo',
 				NIMETTYTOTUUSARVO: 'nimetty_totuusarvo'
-			}
+			};
 			return map[key];
-		}
+		};
 
-	}
+	};
 
 	return templateservice;
 });

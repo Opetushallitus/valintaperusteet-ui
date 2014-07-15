@@ -3,7 +3,7 @@
 app.factory('HakuModel', function($q, Haku, HaunTiedot) {
     var model;
     model = new function() {
-        this.hakuOid;
+        this.hakuOid = "";
         this.haut = [];
 
         this.init = function(oid) {
@@ -20,7 +20,7 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot) {
                             var deferred = $q.defer();
 
                             HaunTiedot.get({hakuOid: element.oid}, function(result) {
-                            	if(result.tila=="JULKAISTU") {
+                            	if (result.tila === "JULKAISTU") {
                             		model.haut.push(result);
                             	}
                                 
@@ -39,7 +39,7 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot) {
                         
                         //set the previously selected haku or first in list
                         model.haut.forEach(function(haku){
-                            if(haku.oid == oid) {
+                            if(haku.oid === oid) {
                                 model.hakuOid = haku;
                             }
                         });

@@ -23,10 +23,10 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
         },
         //methods
     	isFile: function(data) {
-    		return data.hakukohdeViitteet == 0 && data.alavalintaryhmat == 0;
+    		return data.hakukohdeViitteet === 0 && data.alavalintaryhmat === 0;
     	},
     	isHakukohde: function(data) { 
-    	   return data.tyyppi == 'HAKUKOHDE';
+    	   return data.tyyppi === 'HAKUKOHDE';
     	},
     	noNesting: function(data) {
     		if(this.isHakukohde(data)) {
@@ -46,7 +46,7 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
     	},
     	getTemplate: function(data) {
     		if(data) {
-    			if(data.tyyppi == 'VALINTARYHMA') {
+    			if(data.tyyppi === 'VALINTARYHMA') {
     				return "valintaryhma_node.html";
     			} else {
     				return "hakukohde_leaf.html";
@@ -83,13 +83,19 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
         forEachValintaryhma:function(f) {
             var recursion = function(item, f) {
                 f(item);
-                if(item.alavalintaryhmat) for(var i=0; i<item.alavalintaryhmat.length;i++)  recursion(item.alavalintaryhmat[i],  f);
+                if(item.alavalintaryhmat) {
+                    for (var i=0; i<item.alavalintaryhmat.length;i++) {
+                        recursion(item.alavalintaryhmat[i],  f);
+                    }
+                }
+            };
+            for (var i=0; i<modelInterface.valintaperusteList.length;i++) {
+                recursion(modelInterface.valintaperusteList[i],  f);
             }
-           for(var i=0; i<modelInterface.valintaperusteList.length;i++) recursion(modelInterface.valintaperusteList[i],  f);
         },
         getHakukohde:function(oid) {
             for(i=0;i<modelInterface.hakukohteet.length;i++) {
-                if(oid == modelInterface.hakukohteet[i].oid) {
+                if(oid === modelInterface.hakukohteet[i].oid) {
                     return modelInterface.hakukohteet[i];
                 }
             }
@@ -97,7 +103,9 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
        getValintaryhma:function(oid) {
             var valintaryhma = null;
             modelInterface.forEachValintaryhma(function(item) {
-                if(item.oid == oid) valintaryhma = item;
+                if(item.oid === oid) {
+                    valintaryhma = item;
+                }
             });
             return valintaryhma;
         },
@@ -112,29 +120,28 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
 
 
             var recursion = function(item, previousItem) {
-                if(previousItem != null) {
+                if(previousItem !== null) {
                     item.ylavalintaryhma = previousItem;
                 }
                 item.getParents = function() {
                   i = this.ylavalintaryhma;
                   var arr = [];
-                  while(i != null) {
+                  while(i !== null) {
                      arr.unshift(i);
                      i = i.ylavalintaryhma;
                   }
                   return arr;
                 };
 
-                if(item.tyyppi == 'VALINTARYHMA') {
+                if(item.tyyppi === 'VALINTARYHMA') {
                   modelInterface.tilasto.valintaryhmia++;
                   AuthService.getOrganizations("APP_VALINTAPERUSTEET").then(function(organisations){
-                      "use strict";
                       item.access = false;
                       organisations.forEach(function(org){
                           if(item.organisaatiot.length > 0) {
                               item.organisaatiot.forEach(function(org2) {
 
-                                  if(org2.parentOidPath != null && org2.parentOidPath.indexOf(org) > -1) {
+                                  if(org2.parentOidPath !== null && org2.parentOidPath.indexOf(org) > -1) {
                                       item.access = true;
                                   }
                               });
@@ -144,19 +151,30 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
                       });
                   });
                 }
-                if(item.tyyppi == 'HAKUKOHDE') {
+                if(item.tyyppi === 'HAKUKOHDE') {
                    modelInterface.tilasto.hakukohteita++;
                    modelInterface.hakukohteet.push(item);
                 }
-                if(item.alavalintaryhmat)  for(var i=0; i<item.alavalintaryhmat.length;i++)  recursion(item.alavalintaryhmat[i],  item);
-                if(item.hakukohdeViitteet) for(var i=0; i<item.hakukohdeViitteet.length;i++) recursion(item.hakukohdeViitteet[i], item);
+                if(item.alavalintaryhmat) {
+                    for(var i=0; i<item.alavalintaryhmat.length;i++) {
+                        recursion(item.alavalintaryhmat[i], item);
+                    }
+                }
+                if(item.hakukohdeViitteet) {
+                    for(var i=0; i<item.hakukohdeViitteet.length;i++) {
+                        recursion(item.hakukohdeViitteet[i], item);
+                    }
+                }
+            };
+
+            for (var i=0; i<list.length;i++) {
+                recursion(list[i]);
             }
-            for(var i=0; i<list.length;i++) recursion(list[i]);
 
             modelInterface.hakukohteet.forEach(function(hakukohde){
               hakukohde.sisaltaaHakukohteita = true;
               var parent = hakukohde.ylavalintaryhma;
-              while(parent != null) {
+              while(parent !== null) {
                 parent.sisaltaaHakukohteita = true;
                 parent = parent.ylavalintaryhma;
               }
@@ -225,14 +243,14 @@ angular.module('valintaperusteet').
                 node.isVisible = false;
             }
         }
-    }
+    };
 
     $scope.updateDomain = function() {
         Treemodel.refresh();
-    }
+    };
 
     $scope.expandTree = function() {
         Treemodel.expandTree();
-    }
+    };
 
 }]);

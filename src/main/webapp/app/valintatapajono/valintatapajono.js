@@ -33,7 +33,7 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
                 model.hakijaryhmat = [];
                 model.valintatapajono.tasapistesaanto = "YLITAYTTO";
                 model.valintatapajono.kaytetaanValintalaskentaa = false;
-            } else if (oid != model.valintatapajono.oid) {
+            } else if (oid !== model.valintatapajono.oid) {
                 this.refresh(oid, valintaryhmaOid, hakukohdeOid);
             }
         };
@@ -52,21 +52,21 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
         this.submit = function(valinnanvaiheOid, valintatapajonot) {
             if(!model.valintatapajono.rajattu) {
                 model.valintatapajono.varasijat = 0;
-            };
+            }
 
             if(!model.valintatapajono.alkaenRajattu) {
                 model.valintatapajono.varasijojaKaytetaanAlkaen = null;
-            };
+            }
 
             if(!model.valintatapajono.astiRajattu) {
                 model.valintatapajono.varasijojaTaytetaanAsti = null;
-            };
+            }
 
             if(!model.valintatapajono.aloituspaikat && model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan) {
                 model.valintatapajono.aloituspaikat = 0;
             }
 
-            if(model.valintatapajono.oid == null) {
+            if(model.valintatapajono.oid === null) {
                 model.valintatapajono.aktiivinen = true;
                 ValinnanvaiheValintatapajono.insert({parentOid: valinnanvaiheOid}, model.valintatapajono,
                     function(result) {
@@ -125,7 +125,7 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
 
         this.remove = function(oid) {
             Jarjestyskriteeri.delete({oid:oid}, function() {
-                for(i in model.jarjestyskriteerit) {
+                for(var i in model.jarjestyskriteerit) {
                     if(oid === model.jarjestyskriteerit[i].oid) {
                         model.jarjestyskriteerit.splice(i,1);
                     }
@@ -135,7 +135,7 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
 
         this.removeHakijaryhma = function(oid) {
             HakijaryhmaValintatapajono.delete({oid:oid}, function() {
-                for(i in model.hakijaryhmat) {
+                for(var i in model.hakijaryhmat) {
                     if(oid === model.hakijaryhmat[i].oid) {
                         model.hakijaryhmat.splice(i,1);
                     }
@@ -154,7 +154,7 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
                     });
                 });
             }
-        };
+        }
 
         function getJarjestyskriteeriOids() {
             var oids = [];
@@ -189,22 +189,22 @@ angular.module('valintaperusteet').
     };
 
     $scope.addKriteeri = function() {
-        $location.path("/hakukohde/" + $scope.hakukohdeOid
-            + '/valinnanvaihe/' + $scope.valinnanvaiheOid
-            + '/valintatapajono/' + $scope.model.valintatapajono.oid + '/jarjestyskriteeri/');
+        $location.path("/hakukohde/" + $scope.hakukohdeOid +
+            '/valinnanvaihe/' + $scope.valinnanvaiheOid +
+            '/valintatapajono/' + $scope.model.valintatapajono.oid + '/jarjestyskriteeri/');
     };
 
     $scope.addHakijaryhma = function() {
-        $location.path("/hakukohde/" + $scope.hakukohdeOid
-            + '/valinnanvaihe/' + $scope.valinnanvaiheOid
-            + '/valintatapajono/' + $scope.model.valintatapajono.oid + '/hakijaryhma');
+        $location.path("/hakukohde/" + $scope.hakukohdeOid +
+            '/valinnanvaihe/' + $scope.valinnanvaiheOid +
+            '/valintatapajono/' + $scope.model.valintatapajono.oid + '/hakijaryhma');
     };
 
     $scope.modifyKriteeri = function(oid) {
-        $location.path("/hakukohde/" + $scope.hakukohdeOid
-                    + '/valinnanvaihe/' + $scope.valinnanvaiheOid
-                    + '/valintatapajono/' + $scope.model.valintatapajono.oid
-                    + '/jarjestyskriteeri/' + oid);
+        $location.path("/hakukohde/" + $scope.hakukohdeOid +
+                    '/valinnanvaihe/' + $scope.valinnanvaiheOid +
+                    '/valintatapajono/' + $scope.model.valintatapajono.oid +
+                    '/jarjestyskriteeri/' + oid);
     };
 
     $scope.remove = function(oid) {
@@ -231,36 +231,36 @@ angular.module('valintaperusteet').
 
     $scope.submit = function() {
         $scope.model.submit($scope.valinnanvaiheOid, ValintaryhmaValinnanvaiheModel.valintatapajonot);
-    }
+    };
 
     $scope.cancel = function() {
         $location.path("/valintaryhma/" + $scope.valintaryhmaOid + '/valinnanvaihe/'+ $scope.valinnanvaiheOid );
-    }
+    };
 
     $scope.addKriteeri = function() {
-        $location.path("/valintaryhma/" + $scope.valintaryhmaOid
-            + '/valinnanvaihe/' + $scope.valinnanvaiheOid
-            + '/valintatapajono/' + $scope.model.valintatapajono.oid + '/jarjestyskriteeri/');
-    }
+        $location.path("/valintaryhma/" + $scope.valintaryhmaOid +
+            '/valinnanvaihe/' + $scope.valinnanvaiheOid +
+            '/valintatapajono/' + $scope.model.valintatapajono.oid + '/jarjestyskriteeri/');
+    };
 
     $scope.addHakijaryhma = function() {
-        $location.path("/valintaryhma/" + $scope.valintaryhmaOid
-            + '/valinnanvaihe/' + $scope.valinnanvaiheOid
-            + '/valintatapajono/' + $scope.model.valintatapajono.oid + '/hakijaryhma');
-    }
+        $location.path("/valintaryhma/" + $scope.valintaryhmaOid +
+            '/valinnanvaihe/' + $scope.valinnanvaiheOid +
+            '/valintatapajono/' + $scope.model.valintatapajono.oid + '/hakijaryhma');
+    };
 
     $scope.modifyKriteeri = function(oid) {
-        $location.path("/valintaryhma/" + $scope.valintaryhmaOid
-                    + '/valinnanvaihe/' + $scope.valinnanvaiheOid
-                    + '/valintatapajono/' + $scope.model.valintatapajono.oid
-                    + '/jarjestyskriteeri/' + oid);
-    }
+        $location.path("/valintaryhma/" + $scope.valintaryhmaOid +
+                    '/valinnanvaihe/' + $scope.valinnanvaiheOid +
+                    '/valintatapajono/' + $scope.model.valintatapajono.oid +
+                    '/jarjestyskriteeri/' + oid);
+    };
 
     $scope.remove = function(oid) {
         $scope.model.remove(oid);
-    }
+    };
 
     $scope.removeHakjiaryhma = function(oid) {
         $scope.model.removeHakijaryhma(oid);
-    }
+    };
 }]);

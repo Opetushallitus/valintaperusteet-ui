@@ -17,7 +17,7 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 				Valintakoe.get({valintakoeOid: oid}, function(result) {
 					
 					model.valintakoe = result;
-					if(result.laskentakaavaId == null) {
+					if(result.laskentakaavaId === null) {
 						model.valintakoe.laskentakaavaId = "";
 					}
 				});
@@ -26,13 +26,13 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
             LaskentakaavaModel.refresh(valintaryhmaOid, hakukohdeOid);
             model.laskentakaavaModel = LaskentakaavaModel;
 
-		}
+		};
 
 		this.refreshIfNeeded = function(oid, valintaryhmaOid, hakukohdeOid) {
 			if(oid === undefined || model.valintakoe.oid !== oid) {
 				model.refresh(oid, valintaryhmaOid, hakukohdeOid);
 			}
-		}
+		};
 
 		this.persistValintakoe = function(parentValintakoeValinnanvaiheOid, valintakokeet) {
 			var deferred = $q.defer();
@@ -93,7 +93,7 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 			return laskentakaavaId;
 		}
 		
-	}	
+	};
 
 	return model;
 
@@ -125,7 +125,8 @@ angular.module('valintaperusteet').
 angular.module('valintaperusteet').
     controller('HakukohdeValintakoeController',['$scope', '$location', '$routeParams', 'ValintakoeModel',
         'ValintaryhmaValintakoeValinnanvaiheModel', 'HakukohdeValintakoeValinnanvaiheModel',
-        function ($scope, $location, $routeParams, ValintakoeModel, ValintaryhmaValintakoeValinnanvaiheModel, HakukohdeValintakoeValinnanvaiheModel) {
+        function ($scope, $location, $routeParams, ValintakoeModel, ValintaryhmaValintakoeValinnanvaiheModel,
+                  HakukohdeValintakoeValinnanvaiheModel) {
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
 	$scope.valintakoeValinnanvaiheOid = $routeParams.valintakoevalinnanvaiheOid;
 	$scope.valintakoeOid = $routeParams.id;

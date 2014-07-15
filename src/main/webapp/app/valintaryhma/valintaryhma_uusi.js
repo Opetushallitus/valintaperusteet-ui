@@ -44,7 +44,7 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
                 });
             }
         };
-    }
+    };
 
     return model;
 });

@@ -1,4 +1,5 @@
 "use strict";
+
 var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'pascalprecht.translate',
     'ui.bootstrap', 'lodash', 'LaskentakaavaEditor', 'ng-breadcrumbs', 'oph.localisation']).run(function($http, LocalisationService){
     $http.get(SERVICE_URL_BASE + "buildversion.txt?auth");
@@ -324,7 +325,7 @@ app.factory('HaunTiedot', function($resource) {
 app.factory('TarjontaImport', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/hakuimport/aktivoi", {}, {
         aktivoi: {method: "GET"}
-    })
+    });
 });
 app.factory('HakuHakukohdeChildren', function($resource) {
 return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohde?count=99999", {hakuOid: "@hakuOid"}, {

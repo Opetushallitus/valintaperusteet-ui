@@ -1,3 +1,5 @@
+"use strict";
+
 angular.module('LaskentakaavaEditor').factory('GuidGenerator', [function() {
 
     function S4() {

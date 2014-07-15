@@ -2,7 +2,8 @@
 
 
 angular.module('valintaperusteet').
-    controller('ValinnanVaiheController',['$scope', '$location', '$routeParams', 'HakukohdeValinnanVaiheModel', 'HakukohdeModel',
+    controller('ValinnanVaiheController',['$scope', '$location', '$routeParams', 'HakukohdeValinnanVaiheModel',
+        'HakukohdeModel',
         function ($scope, $location, $routeParams, HakukohdeValinnanVaiheModel, HakukohdeModel) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
@@ -27,7 +28,9 @@ angular.module('valintaperusteet').
     };
 }]);
 
-app.factory('HakukohdeValinnanVaiheModel', function(Valinnanvaihe, Valintatapajono, ValinnanvaiheValintatapajono, HakukohdeValinnanvaihe, ValinnanvaiheKuuluuSijoitteluun, ValintatapajonoJarjesta) {
+app.factory('HakukohdeValinnanVaiheModel', function(Valinnanvaihe, Valintatapajono, ValinnanvaiheValintatapajono,
+                                                    HakukohdeValinnanvaihe, ValinnanvaiheKuuluuSijoitteluun,
+                                                    ValintatapajonoJarjesta) {
     var model = new function() {
         this.valinnanvaihe = {};
         this.valintatapajonot = [];
@@ -48,7 +51,7 @@ app.factory('HakukohdeValinnanVaiheModel', function(Valinnanvaihe, Valintatapajo
                     model.valintatapajonot = result;
                 }); 
             }
-        }
+        };
 
         this.refreshIfNeeded = function(oid) {
             if( oid !== model.valinnanvaihe.oid ) {
@@ -60,7 +63,7 @@ app.factory('HakukohdeValinnanVaiheModel', function(Valinnanvaihe, Valintatapajo
 
         this.remove = function(jono) {
             Valintatapajono.delete({oid: jono.oid}, function(result) {
-                for(i in model.valintatapajonot) {
+                for(var i in model.valintatapajonot) {
                     if(jono.oid === model.valintatapajonot[i].oid) {
                         model.valintatapajonot.splice(i,1);
                     }
@@ -115,16 +118,17 @@ app.factory('HakukohdeValinnanVaiheModel', function(Valinnanvaihe, Valintatapajo
             }
             return oids;
         }
-    }
+    };
     return model;
 });
 
 
 
-app.factory('HakukohdeValintakoeValinnanvaiheModel', function($q,HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheValintakoe, Valintakoe) {
+app.factory('HakukohdeValintakoeValinnanvaiheModel', function($q,HakukohdeValinnanvaihe, Valinnanvaihe,
+                                                              ValinnanvaiheValintakoe, Valintakoe) {
     
     var model = new function() {
-        this.valintakoevalinnanvaihe = {}
+        this.valintakoevalinnanvaihe = {};
         this.valintakokeet = [];
 
         this.refresh = function(oid) {
@@ -141,7 +145,7 @@ app.factory('HakukohdeValintakoeValinnanvaiheModel', function($q,HakukohdeValinn
                     model.valintakokeet = result;
                 });
             }
-        }
+        };
 
         this.persist = function(parentHakukohdeOid, valinnanvaiheet) {
             if(model.valintakoevalinnanvaihe.oid) {
@@ -167,7 +171,7 @@ app.factory('HakukohdeValintakoeValinnanvaiheModel', function($q,HakukohdeValinn
                     kuvaus: model.valintakoevalinnanvaihe.kuvaus,
                     aktiivinen: true,
                     valinnanVaiheTyyppi: "VALINTAKOE"
-                }
+                };
 
                 HakukohdeValinnanvaihe.insert({"parentOid": parentHakukohdeOid}, valintakoevalinnanvaihe, function(result) {
                     model.valintakoevalinnanvaihe = result;
@@ -180,15 +184,15 @@ app.factory('HakukohdeValintakoeValinnanvaiheModel', function($q,HakukohdeValinn
         this.removeValintakoe = function(valintakoe) {
 
             Valintakoe.remove({valintakoeOid: valintakoe.oid}, function(result){
-                for(i in model.valintakokeet) {
+                for (var i in model.valintakokeet) {
                     if(valintakoe.oid === model.valintakokeet[i].oid) {
                         model.valintakokeet.splice(i,1);
                     }
                 }
             });
-        }
+        };
 
-    }
+    };
 
     return model;
 

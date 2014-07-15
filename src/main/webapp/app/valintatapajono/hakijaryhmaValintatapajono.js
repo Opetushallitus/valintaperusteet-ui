@@ -45,7 +45,7 @@ app.factory('HakijaryhmaValintatapajonoModel', function($q, ValintatapajonoModel
                     }
                 });
             });
-        }
+        };
 
         instance.submit = function(valintatapajonoOid) {
             var deferred = $q.defer();
@@ -58,7 +58,7 @@ app.factory('HakijaryhmaValintatapajonoModel', function($q, ValintatapajonoModel
                 alert("Hakijaryhma.oid ei löytynyt.");
             }
             return deferred.promise;
-        }
+        };
 
         return instance;
     })();

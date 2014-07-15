@@ -3,7 +3,8 @@
 app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, HakijaryhmaJarjesta, KoodistoHakukohdekoodi,
                                            KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel,
                                            ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe,
-                                           ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma, OrganizationByOid) {
+                                           ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma,
+                                           OrganizationByOid) {
 
 	var model = new function () {
 		this.loaded = $q.defer();
@@ -254,7 +255,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 			});
 		};
 
-	}
+	};
 	return model;
 });
 
@@ -301,7 +302,7 @@ angular.module('valintaperusteet').
 		if (!$scope.model.valintaryhma.organisaatiot) {
 			$scope.model.valintaryhma.organisaatiot = [];
 		}
-		var contains = false
+		var contains = false;
 		$scope.model.valintaryhma.organisaatiot.forEach(function (org) {
 			if (data.oid === org.oid) {
 				contains = true;

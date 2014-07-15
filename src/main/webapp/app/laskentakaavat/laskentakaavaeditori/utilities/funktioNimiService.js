@@ -1,5 +1,6 @@
-angular.module('LaskentakaavaEditor').
+"use strict";
 
+angular.module('LaskentakaavaEditor').
 
 factory('FunktioNimiService', function() {
 	var nameService = new function() {
@@ -52,7 +53,7 @@ factory('FunktioNimiService', function() {
 		this.getName = function(funktionimi) {
 			return nameService.nameMappings[funktionimi];
 		};
-	}
+	};
 
 	return nameService;
 });

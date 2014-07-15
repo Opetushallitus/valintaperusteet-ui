@@ -1,4 +1,7 @@
-app.factory('ValintaryhmaValinnanvaiheModel', function(Valinnanvaihe, Valintatapajono, ValinnanvaiheValintatapajono, NewValintaryhmaValinnanvaihe, ValintatapajonoJarjesta) {
+"use strict";
+
+app.factory('ValintaryhmaValinnanvaiheModel', function(Valinnanvaihe, Valintatapajono, ValinnanvaiheValintatapajono,
+                                                       NewValintaryhmaValinnanvaihe, ValintatapajonoJarjesta) {
     
     var model = new function() {
         
@@ -22,7 +25,7 @@ app.factory('ValintaryhmaValinnanvaiheModel', function(Valinnanvaihe, Valintatap
         };
         this.refreshIfNeeded = function(oid) {
             if(oid !== model.valinnanvaihe.oid) {
-                model.refresh(oid)
+                model.refresh(oid);
             }
         };
         this.persistValintaryhmaValinnanvaihe = function(parentValintaryhmaOid, valinnanvaiheet) {
@@ -42,7 +45,6 @@ app.factory('ValintaryhmaValinnanvaiheModel', function(Valinnanvaihe, Valintatap
 
                 model.valintatapajonot.forEach(function(element, index, array){
                     Valintatapajono.post({oid: model.valintatapajonot[index].oid}, element, function(result) {
-//                        model.valintatapajonot[index] = result;
                     });
                 });
                 
@@ -62,8 +64,8 @@ app.factory('ValintaryhmaValinnanvaiheModel', function(Valinnanvaihe, Valintatap
         this.remove = function(jono) {
             Valintatapajono.delete({oid: jono.oid}, function(result) {    
                 model.refresh(model.valinnanvaihe.oid);
-            })
-        }
+            });
+        };
 
         function getValintatapajonoOids() {
             var oids = [];
@@ -73,13 +75,14 @@ app.factory('ValintaryhmaValinnanvaiheModel', function(Valinnanvaihe, Valintatap
             return oids;
         }
 
-    }
+    };
     return model;
 
 });
 
 angular.module('valintaperusteet').
-    controller('ValintaryhmaValinnanvaiheController', ['$scope', '$location', '$routeParams', 'ValintaryhmaValinnanvaiheModel', 'ValintaryhmaModel',
+    controller('ValintaryhmaValinnanvaiheController', ['$scope', '$location', '$routeParams',
+        'ValintaryhmaValinnanvaiheModel', 'ValintaryhmaModel',
     function ($scope, $location, $routeParams, ValintaryhmaValinnanvaiheModel, ValintaryhmaModel) {
     $scope.valintaryhmaOid = $routeParams.id;
     $scope.ValintaryhmaValinnanvaiheOid = $routeParams.valinnanvaiheOid;
@@ -105,7 +108,8 @@ angular.module('valintaperusteet').
 
 
 
-app.factory('ValintaryhmaValintakoeValinnanvaiheModel', function(Valinnanvaihe, ValinnanvaiheValintakoe, NewValintaryhmaValinnanvaihe, Valintakoe) {
+app.factory('ValintaryhmaValintakoeValinnanvaiheModel', function(Valinnanvaihe, ValinnanvaiheValintakoe,
+                                                                 NewValintaryhmaValinnanvaihe, Valintakoe) {
     var model = new function() {
         
         this.valintakoevalinnanvaihe = {};
@@ -125,7 +129,7 @@ app.factory('ValintaryhmaValintakoeValinnanvaiheModel', function(Valinnanvaihe, 
                 });
 
             }
-        }
+        };
 
         this.persist = function(parentValintaryhmaOid, valinnanvaiheet) {
             if(model.valintakoevalinnanvaihe.oid) {
@@ -159,19 +163,19 @@ app.factory('ValintaryhmaValintakoeValinnanvaiheModel', function(Valinnanvaihe, 
                     valinnanvaiheet.push(result);
                 });
             }
-        }
+        };
 
         this.removeValintakoe = function(valintakoe) {
             Valintakoe.remove({valintakoeOid: valintakoe.oid}, function(result){
-                for(i in model.valintakokeet) {
+                for(var i in model.valintakokeet) {
                     if(valintakoe.oid === model.valintakokeet[i].oid) {
                         model.valintakokeet.splice(i,1);
                     }
                 }
             });
-        }
+        };
 
-    }
+    };
 
     return model;
 });

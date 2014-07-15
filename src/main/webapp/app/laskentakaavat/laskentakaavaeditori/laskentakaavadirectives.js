@@ -14,5 +14,5 @@ angular.module('LaskentakaavaEditor').directive('addClassOnMouseover', function 
                 $animate.removeClass(element, attrs.addClassOnMouseover);
             }
         });
-    }
+    };
 });

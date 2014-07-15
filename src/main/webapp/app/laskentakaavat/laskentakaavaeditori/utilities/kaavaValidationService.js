@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('LaskentakaavaEditor').factory('KaavaValidationService', ['FunktioService', 'FunktioNimiService', function (FunktioService, FunktioNimiService) {
+angular.module('LaskentakaavaEditor').factory('KaavaValidationService', ['FunktioService', 'FunktioNimiService',
+    function (FunktioService, FunktioNimiService) {
 
     var validationService = new function () {
 
@@ -11,7 +12,7 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', ['Funkti
                 validationService.validateNode(rootFunktiokutsu, funktioargumentti, funktioargumenttiIndex, errors);
             });
 
-        }
+        };
 
         this.validateNode = function (parent, funktiokutsu, funktiokutsuIndex, errors) {
             if (!(_.isEmpty(funktiokutsu))) {
@@ -20,7 +21,7 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', ['Funkti
                     validationService.validateNode(funktiokutsu, funktioargumentti, funktioargumenttiIndex, errors);
                 });
             }
-        }
+        };
 
         this.addValidationError = function (errors, funktionimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu) {
             errors.push({
@@ -31,7 +32,7 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', ['Funkti
                 index: funktiokutsuIndex,
                 isFunktiokutsu: isFunktiokutsu
             });
-        }
+        };
 
         this.makeRootValidations = function (rootFunktiokutsu, errors) {
 
@@ -175,7 +176,7 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', ['Funkti
         };
 
         this.cleanExtraArguments = function (funktioargumentit) {
-            if (!(funktioargumentit.length < 4)) {
+            if (funktioargumentit.length > 3) {
                 var hasExtraPair = _.every(_.last(funktioargumentit, 4), _.isEmpty);
                 if (hasExtraPair) {
                     funktioargumentit.length = funktioargumentit.length - 2;
@@ -183,7 +184,7 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidationService', ['Funkti
                 }
             }
         };
-    }
+    };
 
     return validationService;
 }]);

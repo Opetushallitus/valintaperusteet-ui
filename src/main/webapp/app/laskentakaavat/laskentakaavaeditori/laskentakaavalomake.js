@@ -1,5 +1,8 @@
+'use strict';
+
 angular.module('LaskentakaavaEditor').
-    controller('LaskentakaavaLomakeController', ['$scope', '$routeParams', '$location', 'Laskentakaava', 'KaavaVirheTyypit', function ($scope, $routeParams, $location, Laskentakaava, KaavaVirheTyypit) {
+    controller('LaskentakaavaLomakeController', ['$scope', '$routeParams', '$location', 'Laskentakaava',
+        'KaavaVirheTyypit', function ($scope, $routeParams, $location, Laskentakaava, KaavaVirheTyypit) {
 
         $scope.kaavaVirheTyypit = KaavaVirheTyypit;
 
@@ -24,7 +27,7 @@ angular.module('LaskentakaavaEditor').
             } else if ($routeParams.hakukohdeOid) {
                 $location.path("/hakukohde/" + $routeParams.hakukohdeOid + "/laskentakaavalista")
             } else {
-                $location.path("/laskentakaava")
+                $location.path("/laskentakaava");
             }
         };
 

@@ -1,4 +1,5 @@
 "use strict";
+
 app.factory('OrganisaatioTreeModel', function(Organizations, AuthService, OrganizationByOid) {
 
     return (function() {
@@ -100,12 +101,10 @@ function OrganisaatioTreeController($scope, $timeout, OrganisaatioTreeModel) {
     
     $scope.openChildren = function(data) {
         OrganisaatioTreeModel.openChildren(data);
-    }
+    };
 
     $scope.clear = function(){
         OrganisaatioTreeModel.model = {};
         OrganisaatioTreeModel.searchStr = '';
-    }
-
-
+    };
 }

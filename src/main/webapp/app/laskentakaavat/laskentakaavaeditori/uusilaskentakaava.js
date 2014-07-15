@@ -1,4 +1,7 @@
-angular.module('LaskentakaavaEditor').controller('UusiLaskentakaavaController', ['$scope', 'FunktioService', '$routeParams', function ($scope, FunktioService, $routeParams) {
+'use strict';
+
+angular.module('LaskentakaavaEditor').controller('UusiLaskentakaavaController', ['$scope', 'FunktioService',
+    '$routeParams', function ($scope, FunktioService, $routeParams) {
 
     $scope.funktioService = FunktioService;
     $scope.funktioService.refresh();
@@ -33,9 +36,9 @@ angular.module('LaskentakaavaEditor').controller('UusiLaskentakaavaController', 
                     }
                 ]
             }
-        }
+        };
 
         $scope.setLaskentakaava(laskentakaava);
-    }
+    };
 
 }]);
