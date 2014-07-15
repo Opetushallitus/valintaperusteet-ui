@@ -174,7 +174,8 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
             modelInterface.hakukohteet.forEach(function(hakukohde){
                   hakukohde.sisaltaaHakukohteita = true;
                   var parent = hakukohde.ylavalintaryhma;
-                  while(parent !== null) {
+                  while(typeof parent !== 'undefined' && parent !== null) {
+                    parent.sisaltaaHakukohteita = true;
                     parent = parent.ylavalintaryhma;
                   }
             });
