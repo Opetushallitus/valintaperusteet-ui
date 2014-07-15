@@ -1,7 +1,8 @@
 "use strict";
 
 // Valintaryhma Järjestyskriteerit
-app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskriteeri, ValintatapajonoJarjestyskriteeri, ParentValintaryhmas, Hakukohde, LaskentakaavaModel) {
+app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskriteeri, ValintatapajonoJarjestyskriteeri,
+                                                ParentValintaryhmas, Hakukohde, LaskentakaavaModel) {
 
     var model;
 
@@ -44,7 +45,7 @@ app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskrit
             };
 
             var deferred = $q.defer();
-            if (obj.oid == null) {
+            if (obj.oid === null) {
                 obj.jarjestyskriteeri.aktiivinen = "true";
                 ValintatapajonoJarjestyskriteeri.insert({parentOid: valintatapajonoOid}, obj,
                     function (jk) {
