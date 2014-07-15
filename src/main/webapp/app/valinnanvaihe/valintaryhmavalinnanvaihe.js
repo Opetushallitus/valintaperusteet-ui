@@ -101,7 +101,6 @@ angular.module('valintaperusteet').
     $scope.modifyJono = function(oid) {
         $location.path("/valintaryhma/" + $scope.valintaryhmaOid + "/valinnanvaihe/" + $scope.model.valinnanvaihe.oid + "/valintatapajono/" + oid);
     };
-
 }]);
 
 

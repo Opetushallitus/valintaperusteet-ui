@@ -53,7 +53,8 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 					laskentakaavaId: laskentakaavaId,
 					aktiivinen: true,
                     kutsutaankoKaikki: model.valintakoe.kutsutaankoKaikki,
-                    lahetetaankoKoekutsut: model.valintakoe.lahetetaankoKoekutsut
+                    lahetetaankoKoekutsut: model.valintakoe.lahetetaankoKoekutsut,
+                    kutsuttavienMaara: model.valintakoe.kutsuttavienMaara
 				};
 
 				ValinnanvaiheValintakoe.insert({valinnanvaiheOid: parentValintakoeValinnanvaiheOid},valintakoe, function(result) {
