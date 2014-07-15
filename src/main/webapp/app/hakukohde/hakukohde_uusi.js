@@ -39,14 +39,22 @@ app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu, AuthServ
         forEachValintaryhma:function(f) {
             var recursion = function(item, f) {
                 f(item);
-                if(item.alavalintaryhmat) for(var i=0; i<item.alavalintaryhmat.length;i++)  recursion(item.alavalintaryhmat[i],  f);
+                if(item.alavalintaryhmat) {
+                    for(var i=0; i<item.alavalintaryhmat.length;i++)  {
+                        recursion(item.alavalintaryhmat[i],  f);
+                    }
+                }
+            };
+            for (var i=0; i<modelInterface.valintaperusteList.length;i++) {
+                recursion(modelInterface.valintaperusteList[i],  f);
             }
-            for(var i=0; i<modelInterface.valintaperusteList.length;i++) recursion(modelInterface.valintaperusteList[i],  f);
         },
         getValintaryhma:function(oid) {
             var valintaryhma = null;
             modelInterface.forEachValintaryhma(function(item) {
-                if(item.oid == oid) valintaryhma = item;
+                if(item.oid === oid) {
+                    valintaryhma = item;
+                }
             });
             return valintaryhma;
         },
@@ -59,12 +67,11 @@ app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu, AuthServ
 
             var recursion = function(item) {
 
-                if(item.tyyppi == 'VALINTARYHMA') {
+                if(item.tyyppi === 'VALINTARYHMA') {
                     modelInterface.tilasto.valintaryhmia++;
                 }
 
                 AuthService.getOrganizations("APP_VALINTAPERUSTEET").then(function(organisations){
-                    "use strict";
                     item.access = false;
                     organisations.forEach(function(org){
 
@@ -85,7 +92,7 @@ app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu, AuthServ
                 if(item.alavalintaryhmat) {
                     for(var i=0; i<item.alavalintaryhmat.length;i++)  recursion(item.alavalintaryhmat[i]);
                 }
-            }
+            };
             for(var i=0; i<list.length;i++) {
                 recursion(list[i]);
             }
@@ -93,15 +100,10 @@ app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu, AuthServ
             modelInterface.valintaperusteList = list;
         },
         expandNode:function(node) {
-        if( (node.alavalintaryhmat && node.alavalintaryhmat.length > 0)) {
-
-            if(node.isVisible != true) {
-                node.isVisible = true;
-            } else {
-                node.isVisible = false;
+            if( (node.alavalintaryhmat && node.alavalintaryhmat.length > 0)) {
+                node.isVisible = !node.isVisible;
             }
         }
-    }
     };
     modelInterface.refresh();
     return modelInterface;
@@ -129,7 +131,7 @@ app.factory('UusiHakukohdeModel', function(NewHakukohde) {
             model.haku = "";
             model.selectedHakukohde = "";
             model.parentOid = "";
-        }
+        };
 
     };
 
