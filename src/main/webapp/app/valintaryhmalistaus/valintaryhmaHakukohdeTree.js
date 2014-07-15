@@ -94,7 +94,7 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
             }
         },
         getHakukohde:function(oid) {
-            for(i=0;i<modelInterface.hakukohteet.length;i++) {
+            for(var i=0;i<modelInterface.hakukohteet.length;i++) {
                 if(oid === modelInterface.hakukohteet[i].oid) {
                     return modelInterface.hakukohteet[i];
                 }
@@ -172,12 +172,8 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
             }
 
             modelInterface.hakukohteet.forEach(function(hakukohde){
-              hakukohde.sisaltaaHakukohteita = true;
-              var parent = hakukohde.ylavalintaryhma;
-              if (parent !== null) {
-                parent.sisaltaaHakukohteita = true;
-                parent = parent.ylavalintaryhma;
-              }
+                  hakukohde.sisaltaaHakukohteita = true;
+                  var parent = hakukohde.ylavalintaryhma;
             });
 
           modelInterface.valintaperusteList = list;
@@ -233,7 +229,7 @@ angular.module('valintaperusteet').
                             iter(ala.alavalintaryhmat);
                         }
                     });
-                }
+                };
                 if(node.alavalintaryhmat.length < 4) {
                     iter(node.alavalintaryhmat);
                 }
