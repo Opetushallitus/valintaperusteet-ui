@@ -1,5 +1,7 @@
 // Valintaryhma Järjestyskriteerit
-app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskriteeri, ValintatapajonoJarjestyskriteeri, ParentValintaryhmas, Hakukohde, LaskentakaavaModel) {
+app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskriteeri, ValintatapajonoJarjestyskriteeri,
+                                                ParentValintaryhmas, Hakukohde, LaskentakaavaModel) {
+    "use strict";
 
     var model;
 
@@ -42,7 +44,7 @@ app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskrit
             };
 
             var deferred = $q.defer();
-            if (obj.oid == null) {
+            if (obj.oid === null) {
                 obj.jarjestyskriteeri.aktiivinen = "true";
                 ValintatapajonoJarjestyskriteeri.insert({parentOid: valintatapajonoOid}, obj,
                     function (jk) {
@@ -73,13 +75,17 @@ app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskrit
             return deferred.promise;
         };
 
-    };
+    }();
 
     return model;
 
 });
 
-function JarjestyskriteeriController($scope, $location, $routeParams, JarjestyskriteeriModel, ValintatapajonoModel) {
+angular.module('valintaperusteet').
+    controller('JarjestyskriteeriController', ['$scope', '$location', '$routeParams', 'JarjestyskriteeriModel', 'ValintatapajonoModel',
+        function ($scope, $location, $routeParams, JarjestyskriteeriModel, ValintatapajonoModel) {
+    "use strict";
+
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
 	$scope.valintaryhmaOid = $routeParams.id;
     $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
@@ -114,5 +120,4 @@ function JarjestyskriteeriController($scope, $location, $routeParams, Jarjestysk
         $location.path(path + '/valinnanvaihe/' + $routeParams.valinnanvaiheOid +
             '/valintatapajono/' + $routeParams.valintatapajonoOid);
     };
-
-}
+}]);

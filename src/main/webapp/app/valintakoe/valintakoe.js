@@ -1,4 +1,5 @@
 app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe, Laskentakaava, LaskentakaavaModel) {
+    "use strict";
 
 	var model = new function() {
 		this.valintakoe = {};
@@ -15,7 +16,7 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 				Valintakoe.get({valintakoeOid: oid}, function(result) {
 					
 					model.valintakoe = result;
-					if(result.laskentakaavaId == null) {
+					if(result.laskentakaavaId === null) {
 						model.valintakoe.laskentakaavaId = "";
 					}
 				});
@@ -24,13 +25,13 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
             LaskentakaavaModel.refresh(valintaryhmaOid, hakukohdeOid);
             model.laskentakaavaModel = LaskentakaavaModel;
 
-		}
+		};
 
 		this.refreshIfNeeded = function(oid, valintaryhmaOid, hakukohdeOid) {
 			if(oid === undefined || model.valintakoe.oid !== oid) {
 				model.refresh(oid, valintaryhmaOid, hakukohdeOid);
 			}
-		}
+		};
 
 		this.persistValintakoe = function(parentValintakoeValinnanvaiheOid, valintakokeet) {
 			var deferred = $q.defer();
@@ -51,7 +52,8 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 					laskentakaavaId: laskentakaavaId,
 					aktiivinen: true,
                     kutsutaankoKaikki: model.valintakoe.kutsutaankoKaikki,
-                    lahetetaankoKoekutsut: model.valintakoe.lahetetaankoKoekutsut
+                    lahetetaankoKoekutsut: model.valintakoe.lahetetaankoKoekutsut,
+                    kutsuttavienMaara: model.valintakoe.kutsuttavienMaara
 				};
 
 				ValinnanvaiheValintakoe.insert({valinnanvaiheOid: parentValintakoeValinnanvaiheOid},valintakoe, function(result) {
@@ -65,7 +67,7 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 				});
 			}
 			return deferred.promise;
-		}
+		};
 
 		this.getParentGroupType = function(path) {
 			
@@ -78,7 +80,7 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 			}
 
 			return type;
-		}
+		};
 
 		function getlaskentakaavaId() {
 			var laskentakaavaId;
@@ -90,13 +92,18 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 			return laskentakaavaId;
 		}
 		
-	}	
+	}();
 
 	return model;
 
 });
 
-function ValintaryhmaValintakoeController($scope, $location, $routeParams, ValintakoeModel, ValintaryhmaValintakoeValinnanvaiheModel, HakukohdeValintakoeValinnanvaiheModel) {
+angular.module('valintaperusteet').
+    controller('ValintaryhmaValintakoeController', ['$scope', '$location', '$routeParams', 'ValintakoeModel',
+        'ValintaryhmaValintakoeValinnanvaiheModel',
+        function ($scope, $location, $routeParams, ValintakoeModel, ValintaryhmaValintakoeValinnanvaiheModel) {
+    "use strict";
+
 	$scope.valintaryhmaOid = $routeParams.id;
 	$scope.valintakoeValinnanvaiheOid = $routeParams.valintakoevalinnanvaiheOid;
 	$scope.valintakoeOid = $routeParams.valintakoeOid;
@@ -109,14 +116,20 @@ function ValintaryhmaValintakoeController($scope, $location, $routeParams, Valin
 			$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.valintaryhmaOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid);
 		});
 		
-	}
+	};
 
 	$scope.cancel = function () {
 		$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.valintaryhmaOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid );
-	}
-}
+	};
+}]);
 
-function HakukohdeValintakoeController($scope, $location, $routeParams, ValintakoeModel, ValintaryhmaValintakoeValinnanvaiheModel, HakukohdeValintakoeValinnanvaiheModel) {
+angular.module('valintaperusteet').
+    controller('HakukohdeValintakoeController',['$scope', '$location', '$routeParams', 'ValintakoeModel',
+        'ValintaryhmaValintakoeValinnanvaiheModel', 'HakukohdeValintakoeValinnanvaiheModel',
+        function ($scope, $location, $routeParams, ValintakoeModel, ValintaryhmaValintakoeValinnanvaiheModel,
+                  HakukohdeValintakoeValinnanvaiheModel) {
+    "use strict";
+
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
 	$scope.valintakoeValinnanvaiheOid = $routeParams.valintakoevalinnanvaiheOid;
 	$scope.valintakoeOid = $routeParams.id;
@@ -129,9 +142,9 @@ function HakukohdeValintakoeController($scope, $location, $routeParams, Valintak
 			$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.hakukohdeOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid);
 		});
 		
-	}
+	};
 
 	$scope.cancel = function () {
 		$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.hakukohdeOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid );
-	}
-}
+	};
+}]);

@@ -1,4 +1,5 @@
 "use strict";
+
 var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'pascalprecht.translate',
     'ui.bootstrap', 'lodash', 'LaskentakaavaEditor', 'ng-breadcrumbs', 'oph.localisation']).run(function($http, LocalisationService){
     $http.get(SERVICE_URL_BASE + "buildversion.txt?auth");
@@ -17,6 +18,8 @@ var KOODISTO_URL_BASE = KOODISTO_URL_BASE || "";
 var ORGANIZATION_SERVICE_URL_BASE = ORGANIZATION_SERVICE_URL_BASE || "/organisaatio-service/";
 var LOKALISOINTIPALVELU_URL_BASE = LOKALISOINTIPALVELU_URL_BASE || "";
 var TARJONTA_URL_BASE = TARJONTA_URL_BASE || "";
+var VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE || "";
+var LOCALISATION_URL_BASE = LOCALISATION_URL_BASE || "";
 
 function mainCtrl($scope, breadcrumbs) {
     $scope.breadcrumbs = breadcrumbs;
@@ -322,7 +325,7 @@ app.factory('HaunTiedot', function($resource) {
 app.factory('TarjontaImport', function($resource) {
     return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/hakuimport/aktivoi", {}, {
         aktivoi: {method: "GET"}
-    })
+    });
 });
 app.factory('HakuHakukohdeChildren', function($resource) {
 return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohde?count=99999", {hakuOid: "@hakuOid"}, {

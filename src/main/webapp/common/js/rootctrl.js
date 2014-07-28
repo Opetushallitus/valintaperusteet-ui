@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('valintaperusteet').controller('RootCtrl', ['$rootScope', '$scope','Props' ,'LocalisationService',
-        function($rootScope, $scope, Props, LocalisationService, breadcrumbs) {
+angular.module('valintaperusteet').controller('RootCtrl', ['$rootScope', '$scope' ,'LocalisationService',
+        function($rootScope, $scope, LocalisationService, breadcrumbs) {
             $scope.breadcrumbs = breadcrumbs;
 
             /**

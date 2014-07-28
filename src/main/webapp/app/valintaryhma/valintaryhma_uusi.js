@@ -1,7 +1,6 @@
-"use strict";
-
 app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routeParams, Valintaryhma,
                                                  KoodistoHaunKohdejoukko, ChildValintaryhmas, Treemodel ) {
+    "use strict";
 
     var model = new function() {
         this.valintaryhma = {};
@@ -44,7 +43,7 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
                 });
             }
         };
-    }
+    }();
 
     return model;
 });
@@ -52,6 +51,8 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
 angular.module('valintaperusteet').
     controller('UusiValintaryhmaController', ['$scope', '$location', '$routeParams', 'ValintaryhmaCreatorModel', 'Ylavalintaryhma',
         function ($scope, $location, $routeParams, ValintaryhmaCreatorModel, Ylavalintaryhma) {
+    "use strict";
+
     $scope.valintaryhmaOid = $routeParams.id;
     $scope.model = ValintaryhmaCreatorModel;
     $scope.model.refreshIfNeeded($scope.valintaryhmaOid);

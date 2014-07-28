@@ -1,6 +1,6 @@
-'use strict';
-
 angular.module('LaskentakaavaEditor').directive('addClassOnMouseover', function ($animate) {
+    'use strict';
+
     return function (scope, element, attrs) {
 
         element.bind('mouseover', function (hover) {
@@ -14,5 +14,5 @@ angular.module('LaskentakaavaEditor').directive('addClassOnMouseover', function 
                 $animate.removeClass(element, attrs.addClassOnMouseover);
             }
         });
-    }
+    };
 });

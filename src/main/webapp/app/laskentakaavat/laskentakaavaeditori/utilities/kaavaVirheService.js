@@ -1,6 +1,3 @@
-'use strict';
-
-
 angular.module('LaskentakaavaEditor')
 
     .constant('KaavaVirheTyypit', {
@@ -12,10 +9,12 @@ angular.module('LaskentakaavaEditor')
 
 
     .factory('KaavaVirheService', ['FunktioService', 'FunktioNimiService', function (FunktioService, FunktioNimiService) {
+        'use strict';
+
 
         var kaavaVirheService = new function () {
 
-        };
+        }();
 
         return kaavaVirheService;
     }]);

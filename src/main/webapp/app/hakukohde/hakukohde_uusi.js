@@ -1,5 +1,6 @@
 //domain .. this is both, service & domain layer
 app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu, AuthService) {
+    "use strict";
 
     //and return interface for manipulating the model
     var modelInterface =  {
@@ -37,14 +38,22 @@ app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu, AuthServ
         forEachValintaryhma:function(f) {
             var recursion = function(item, f) {
                 f(item);
-                if(item.alavalintaryhmat) for(var i=0; i<item.alavalintaryhmat.length;i++)  recursion(item.alavalintaryhmat[i],  f);
+                if(item.alavalintaryhmat) {
+                    for(var i=0; i<item.alavalintaryhmat.length;i++)  {
+                        recursion(item.alavalintaryhmat[i],  f);
+                    }
+                }
+            };
+            for (var i=0; i<modelInterface.valintaperusteList.length;i++) {
+                recursion(modelInterface.valintaperusteList[i],  f);
             }
-            for(var i=0; i<modelInterface.valintaperusteList.length;i++) recursion(modelInterface.valintaperusteList[i],  f);
         },
         getValintaryhma:function(oid) {
             var valintaryhma = null;
             modelInterface.forEachValintaryhma(function(item) {
-                if(item.oid == oid) valintaryhma = item;
+                if(item.oid === oid) {
+                    valintaryhma = item;
+                }
             });
             return valintaryhma;
         },
@@ -57,12 +66,11 @@ app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu, AuthServ
 
             var recursion = function(item) {
 
-                if(item.tyyppi == 'VALINTARYHMA') {
+                if(item.tyyppi === 'VALINTARYHMA') {
                     modelInterface.tilasto.valintaryhmia++;
                 }
 
                 AuthService.getOrganizations("APP_VALINTAPERUSTEET").then(function(organisations){
-                    "use strict";
                     item.access = false;
                     organisations.forEach(function(org){
 
@@ -83,7 +91,7 @@ app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu, AuthServ
                 if(item.alavalintaryhmat) {
                     for(var i=0; i<item.alavalintaryhmat.length;i++)  recursion(item.alavalintaryhmat[i]);
                 }
-            }
+            };
             for(var i=0; i<list.length;i++) {
                 recursion(list[i]);
             }
@@ -91,21 +99,18 @@ app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu, AuthServ
             modelInterface.valintaperusteList = list;
         },
         expandNode:function(node) {
-        if( (node.alavalintaryhmat && node.alavalintaryhmat.length > 0)) {
-
-            if(node.isVisible != true) {
-                node.isVisible = true;
-            } else {
-                node.isVisible = false;
+            if( (node.alavalintaryhmat && node.alavalintaryhmat.length > 0)) {
+                node.isVisible = !node.isVisible;
             }
         }
-    }
     };
     modelInterface.refresh();
     return modelInterface;
 });
 
 app.factory('UusiHakukohdeModel', function(NewHakukohde) {
+    "use strict";
+
     var model = new function()  {
         
         this.hakukohde = {};
@@ -127,14 +132,19 @@ app.factory('UusiHakukohdeModel', function(NewHakukohde) {
             model.haku = "";
             model.selectedHakukohde = "";
             model.parentOid = "";
-        }
+        };
 
-    };
+    }();
 
     return model;
 });
 
-function UusiHakukohdeController($scope, $location, UusiHakukohdeModel, Ylavalintaryhma, Haku, TarjontaHaku, HaunTiedot, Hakukohde) {
+angular.module('valintaperusteet').
+    controller('UusiHakukohdeController',['$scope', '$location', 'UusiHakukohdeModel', 'Ylavalintaryhma', 'Haku',
+        'TarjontaHaku', 'HaunTiedot', 'Hakukohde',
+        function ($scope, $location, UusiHakukohdeModel, Ylavalintaryhma, Haku, TarjontaHaku, HaunTiedot, Hakukohde) {
+    "use strict";
+
     $scope.predicate = 'nimi';
     $scope.model = UusiHakukohdeModel;
 
@@ -149,7 +159,7 @@ function UusiHakukohdeController($scope, $location, UusiHakukohdeModel, Ylavalin
             HaunTiedot.get({hakuOid: result[i].oid}, function(tiedot) {
                     haut.push(tiedot);
             });
-        };
+        }
 
         $scope.haut = haut;
 
@@ -176,14 +186,14 @@ function UusiHakukohdeController($scope, $location, UusiHakukohdeModel, Ylavalin
     $scope.setHakuoid = function(item) {
         $scope.model.hakukohde.hakuoid = item.oid;
         $scope.model.hakukohde.oid = undefined;
-    }
+    };
 
     $scope.setHakukohdeoid = function(item) {
         $scope.model.hakukohde.oid = item.hakukohdeOid;
         $scope.model.hakukohde.tila = item.hakukohdeTila;
-        $scope.model.hakukohde.nimi = item.tarjoajaNimi.fi + ', ' + item.hakukohdeNimi.fi
+        $scope.model.hakukohde.nimi = item.tarjoajaNimi.fi + ', ' + item.hakukohdeNimi.fi;
         $scope.model.hakukohde.tarjoajaOid = item.tarjoajaOid;
-    }
+    };
 
     $scope.submit = function() {
         Hakukohde.get({oid: $scope.model.hakukohde.oid}, function(result) { }).$promise
@@ -199,9 +209,10 @@ function UusiHakukohdeController($scope, $location, UusiHakukohdeModel, Ylavalin
                 alert("Hakukohdetta ei saatu luotua.");
             });
         });
-    }
+    };
+
     $scope.cancel = function() {
         $location.path("/");
-    }
+    };
 
-}
+}]);

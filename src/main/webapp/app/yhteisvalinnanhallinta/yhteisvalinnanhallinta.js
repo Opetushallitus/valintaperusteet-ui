@@ -1,8 +1,9 @@
-﻿
-app.factory('HakuModel', function($q, Haku, HaunTiedot, $http) {
+﻿app.factory('HakuModel', function($q, Haku, HaunTiedot) {
+    "use strict";
+
     var model;
     model = new function() {
-        this.hakuOid;
+        this.hakuOid = "";
         this.haut = [];
 
         this.init = function(oid) {
@@ -19,7 +20,7 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot, $http) {
                             var deferred = $q.defer();
 
                             HaunTiedot.get({hakuOid: element.oid}, function(result) {
-                            	if(result.tila=="JULKAISTU") {
+                            	if (result.tila === "JULKAISTU") {
                             		model.haut.push(result);
                             	}
                                 
@@ -38,7 +39,7 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot, $http) {
                         
                         //set the previously selected haku or first in list
                         model.haut.forEach(function(haku){
-                            if(haku.oid == oid) {
+                            if(haku.oid === oid) {
                                 model.hakuOid = haku;
                             }
                         });
@@ -46,12 +47,16 @@ app.factory('HakuModel', function($q, Haku, HaunTiedot, $http) {
                 });
             }
         };
-    };
+    }();
 
     return model;
 });
 
-function ImportController($scope, $location, $routeParams, HakuModel, TarjontaImport, Treemodel) {
+angular.module('valintaperusteet').
+    controller('ImportController',['$scope', '$location', '$routeParams', 'HakuModel', 'TarjontaImport', 'Treemodel',
+        function ($scope, $location, $routeParams, HakuModel, TarjontaImport, Treemodel) {
+    "use strict";
+
     $scope.model = HakuModel;
     HakuModel.init($routeParams.hakuOid);
 
@@ -60,6 +65,5 @@ function ImportController($scope, $location, $routeParams, HakuModel, TarjontaIm
             Treemodel.refresh();
         });
     };
-
-}
+}]);
 

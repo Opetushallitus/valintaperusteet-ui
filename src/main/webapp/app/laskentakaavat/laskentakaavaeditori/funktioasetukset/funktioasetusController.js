@@ -1,6 +1,11 @@
 angular.module('LaskentakaavaEditor')
 
-    .controller('funktiokutsuAsetuksetController', ['$scope', '$routeParams', '$location', '$timeout', 'Laskentakaava', 'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'GuidGenerator', function ($scope, $routeParams, $location, $timeout, Laskentakaava, FunktioNimiService, FunktioFactory, KaavaValidationService, GuidGenerator) {
+    .controller('funktiokutsuAsetuksetController', ['$scope', '$routeParams', '$location', '$timeout', 'Laskentakaava',
+        'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'GuidGenerator',
+        function ($scope, $routeParams, $location, $timeout, Laskentakaava, FunktioNimiService, FunktioFactory,
+                  KaavaValidationService, GuidGenerator) {
+        "use strict";
+
         $scope.funktioFactory = FunktioFactory;
 
         $scope.$on('showFunktiokutsuAsetukset', function () {
@@ -43,6 +48,8 @@ angular.module('LaskentakaavaEditor')
     }])
 
     .controller('laskentakaavaviiteAsetuksetController', ['$scope', 'FunktioService', function ($scope, FunktioService) {
+        "use strict";
+
         $scope.$on('showLaskentakaavaviiteAsetukset', function () {
             $scope.show();
         });
@@ -55,12 +62,16 @@ angular.module('LaskentakaavaEditor')
     }])
 
     .controller('funktioMenuController', ['$scope', function ($scope) {
+        "use strict";
+
         $scope.$on('hideFunktioMenu', function () {
             $scope.showNewFunktioList.visible = false;
         });
     }])
 
     .controller('funktiokutsunTallentaminenLaskentakaavanaController', ['$scope', function ($scope) {
+        "use strict";
+
         $scope.$on('showTallennaFunktiokutsuLaskentakaavanaModal', function () {
             $scope.show();
         });

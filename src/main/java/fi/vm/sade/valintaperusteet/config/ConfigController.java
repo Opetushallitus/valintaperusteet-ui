@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class ConfigController {
+    @Value("${localisation.rest:https://itest-virkailija.oph.ware.fi/lokalisointi/cxf/rest/v1}")
+    private String localisationUrl;
 
     @Value("${valintaperusteet-ui.valintaperuste-service-url.rest}")
     private String valintaperusteServiceRestURL;
@@ -40,6 +42,7 @@ public class ConfigController {
     @ResponseBody
     public String index() {
         StringBuilder b = new StringBuilder();
+        append(b, "LOCALISATION_URL_BASE", localisationUrl);
         append(b, "SERVICE_URL_BASE", valintaperusteServiceRestURL);
         append(b, "KOODISTO_URL_BASE", koodistoServiceRestURL);
         append(b, "TARJONTA_URL_BASE", tarjontaServiceRestURL);

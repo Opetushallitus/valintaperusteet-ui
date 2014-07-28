@@ -1,6 +1,10 @@
-"use strict";
+app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, HakijaryhmaJarjesta, KoodistoHakukohdekoodi,
+                                           KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel,
+                                           ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe,
+                                           ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma,
+                                           OrganizationByOid) {
+    "use strict";
 
-app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, HakijaryhmaJarjesta, KoodistoHakukohdekoodi, KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel, ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe, ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma, OrganizationByOid) {
 
 	var model = new function () {
 		this.loaded = $q.defer();
@@ -29,7 +33,6 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 						model.valintaryhma.valintakoekoodit = undefined;
 					}
 					model.valintaryhma.organisaatiot.forEach(function (org, index) {
-						"use strict";
 						OrganizationByOid.get(org, function (result) {
 							model.valintaryhma.organisaatiot[index] = result;
 						});
@@ -37,8 +40,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 
 					model.loaded.resolve();
 				}, function () {
-					"use strict";
-					loaded.reject();
+                    model.loaded.reject();
 				});
 
 				ValintaryhmaValinnanvaihe.get({oid: oid}, function (result) {
@@ -57,9 +59,6 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
                 KoodistoHaunKohdejoukko.get(function (result) {
                     model.kohdejoukot = result;
                 });
-
-
-
             }
 		};
 
@@ -70,7 +69,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 				deferred.resolve();
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.getValintakoeKoodit = function () {
 			var deferred = $q.defer();
@@ -79,7 +78,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 				deferred.resolve();
 			});
 			return deferred.promise;
-		}
+		};
 
 
 		this.refreshIfNeeded = function (oid) {
@@ -89,7 +88,6 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 		};
 
 		this.persistValintaryhma = function (oid) {
-            console.log(model.valintaryhma);
 			Valintaryhma.post(model.valintaryhma, function (result) {
 				model.valintaryhma = result;
 				Treemodel.refresh();
@@ -114,7 +112,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 
 		this.removeValinnanvaihe = function (vaihe) {
 			Valinnanvaihe.delete({oid: vaihe.oid}, function () {
-				for (i in model.valinnanvaiheet) {
+				for (var i in model.valinnanvaiheet) {
 					if (vaihe.oid === model.valinnanvaiheet[i].oid) {
 						model.valinnanvaiheet.splice(i, 1);
 					}
@@ -136,7 +134,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 				oids.push(model.valinnanvaiheet[i].oid);
 			}
 			return oids;
-		};
+		}
 
 		this.getValinnanvaiheType = function (valinnanvaihe) {
 			var type;
@@ -150,16 +148,16 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 
 		this.addHakukohdeUri = function (hakukohdekoodiUri) {
 			model.hakukohdekoodit.some(function (koodi) {
-				if (koodi.koodiUri == hakukohdekoodiUri) {
+				if (koodi.koodiUri === hakukohdekoodiUri) {
 					var hakukohdekoodi = {"uri": koodi.koodiUri,
 						"arvo": koodi.koodiArvo};
 
 					koodi.metadata.forEach(function (metadata) {
-						if (metadata.kieli == "FI") {
+						if (metadata.kieli === "FI") {
 							hakukohdekoodi.nimiFi = metadata.nimi;
-						} else if (metadata.kieli == "SV") {
+						} else if (metadata.kieli === "SV") {
 							hakukohdekoodi.nimiSv = metadata.nimi;
-						} else if (metadata.kieli == "EN") {
+						} else if (metadata.kieli === "EN") {
 							hakukohdekoodi.nimiEn = metadata.nimi;
 						}
 					});
@@ -181,16 +179,16 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 
 		this.addValintakoeUri = function (valintakoeKoodiUri) {
 			model.valintakoekoodit.some(function (koodi) {
-				if (koodi.koodiUri == valintakoeKoodiUri) {
+				if (koodi.koodiUri === valintakoeKoodiUri) {
 					var valintakoekoodi = {"uri": koodi.koodiUri,
 						"arvo": koodi.koodiArvo};
 
 					koodi.metadata.forEach(function (metadata) {
-						if (metadata.kieli == "FI") {
+						if (metadata.kieli === "FI") {
 							valintakoekoodi.nimiFi = metadata.nimi;
-						} else if (metadata.kieli == "SV") {
+						} else if (metadata.kieli === "SV") {
 							valintakoekoodi.nimiSv = metadata.nimi;
-						} else if (metadata.kieli == "EN") {
+						} else if (metadata.kieli === "EN") {
 							valintakoekoodi.nimiEn = metadata.nimi;
 						}
 					});
@@ -225,7 +223,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 					model.valintaryhma.hakukohdekoodit = undefined;
 				}
 			});
-		}
+		};
 
 		this.removeValintakoeKoodi = function (valintakoekoodi) {
 			var valintakoekoodit, index;
@@ -242,25 +240,26 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 					model.valintaryhma.valintakoekoodit = undefined;
 				}
 			});
-		}
+		};
 
 		this.removeHakijaryhma = function (hakijaryhmaOid) {
 			Hakijaryhma.delete({oid: hakijaryhmaOid}, function () {
-				for (i in model.hakijaryhmat) {
+				for (var i in model.hakijaryhmat) {
 					if (hakijaryhmaOid === model.hakijaryhmat[i].oid) {
 						model.hakijaryhmat.splice(i, 1);
 					}
 				}
 			});
-		}
+		};
 
-	}
+	}();
 	return model;
 });
 
 angular.module('valintaperusteet').
     controller('ValintaryhmaController', ['$scope', '$location', '$routeParams', 'ValintaryhmaModel',
         function ($scope, $location, $routeParams, ValintaryhmaModel) {
+    "use strict";
 
 	$scope.valintaryhmaOid = $routeParams.id;
 	$scope.model = ValintaryhmaModel;
@@ -269,39 +268,39 @@ angular.module('valintaperusteet').
 
 	$scope.submit = function () {
 		$scope.model.persistValintaryhma($scope.valintaryhmaOid);
-	}
+	};
 
 	$scope.cancel = function () {
 		$location.path("/");
-	}
+	};
 
 	$scope.lisaaValinnanVaihe = function () {
 		$location.path("/valintaryhma/" + $scope.valintaryhmaOid + "/valinnanvaihe/");
-	}
+	};
 
 	$scope.lisaaValintakoeValinnanVaihe = function () {
 		$location.path("/valintaryhma/" + $scope.valintaryhmaOid + "/valintakoevalinnanvaihe/");
-	}
+	};
 
 	$scope.toValintaryhmaForm = function () {
 		$location.path("/valintaryhma/" + $scope.valintaryhmaOid);
-	}
+	};
 
 
 	$scope.lisaaHakijaryhma = function () {
 		$location.path("/valintaryhma/" + $routeParams.id + "/hakijaryhma/");
-	}
+	};
 
 	$scope.removeHakijaryhma = function (hakijaryhmaOid) {
 		$scope.model.removeHakijaryhma(hakijaryhmaOid);
-	}
+	};
 
 	$scope.organisaatioSelector = function (data) {
 
 		if (!$scope.model.valintaryhma.organisaatiot) {
 			$scope.model.valintaryhma.organisaatiot = [];
 		}
-		var contains = false
+		var contains = false;
 		$scope.model.valintaryhma.organisaatiot.forEach(function (org) {
 			if (data.oid === org.oid) {
 				contains = true;
@@ -311,7 +310,7 @@ angular.module('valintaperusteet').
 		if (!contains) {
 			$scope.model.valintaryhma.organisaatiot.push(data);
 		}
-	}
+	};
 }]);
 
 

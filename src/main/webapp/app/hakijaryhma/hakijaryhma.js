@@ -2,7 +2,8 @@
 app.factory('HakijaryhmaModel', function($q, Hakijaryhma, LaskentakaavaModel,
                                          ValintaryhmaHakijaryhma, HakukohdeHakijaryhma,
                                          HakijaryhmanValintatapajonot) {
-    
+    "use strict";
+
     var factory = (function() {
         var instance = {};
         instance.hakijaryhma = {};
@@ -22,7 +23,7 @@ app.factory('HakijaryhmaModel', function($q, Hakijaryhma, LaskentakaavaModel,
             LaskentakaavaModel.refresh(valintaryhmaOid, hakukohdeOid);
             instance.laskentakaavaModel = LaskentakaavaModel;
 
-        }
+        };
 
         
 
@@ -48,7 +49,7 @@ app.factory('HakijaryhmaModel', function($q, Hakijaryhma, LaskentakaavaModel,
                 alert("Hakijaryhma-, valintaryhma tai hakukohdeoidia ei löytynyt.");
             }
             return deferred.promise;
-        }
+        };
 
         return instance;
     })();
@@ -57,8 +58,13 @@ app.factory('HakijaryhmaModel', function($q, Hakijaryhma, LaskentakaavaModel,
     
 });
 
-function HakijaryhmaController($scope, $location, $routeParams, HakijaryhmaModel, HakukohdeModel, ValintaryhmaModel) {
-	$scope.valintaryhmaOid = $routeParams.id;
+angular.module('valintaperusteet').
+    controller('HakijaryhmaController', ['$scope', '$location', '$routeParams', 'HakijaryhmaModel',
+        'HakukohdeModel', 'ValintaryhmaModel',
+        function ($scope, $location, $routeParams, HakijaryhmaModel, HakukohdeModel, ValintaryhmaModel) {
+    "use strict";
+
+    $scope.valintaryhmaOid = $routeParams.id;
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakijaryhmaModel;
     $scope.model.refresh($routeParams.hakijaryhmaOid, $routeParams.id, $routeParams.hakukohdeOid);
@@ -90,5 +96,4 @@ function HakijaryhmaController($scope, $location, $routeParams, HakijaryhmaModel
 
         $location.path(path);
     };
-
-}
+}]);
