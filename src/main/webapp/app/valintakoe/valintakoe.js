@@ -11,6 +11,7 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 				model.valintakoe = {};
                 model.valintakoe.kutsutaankoKaikki = false;
                 model.valintakoe.lahetetaankoKoekutsut = false;
+                model.valintakoe.kutsunKohde = 'YLIN_TOIVE';
 				model.valintakoe.laskentakaavaId = "";
 			} else {
 				Valintakoe.get({valintakoeOid: oid}, function(result) {
@@ -53,7 +54,8 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 					aktiivinen: true,
                     kutsutaankoKaikki: model.valintakoe.kutsutaankoKaikki,
                     lahetetaankoKoekutsut: model.valintakoe.lahetetaankoKoekutsut,
-                    kutsuttavienMaara: model.valintakoe.kutsuttavienMaara
+                    kutsuttavienMaara: model.valintakoe.kutsuttavienMaara,
+                    kutsunKohde: model.valintakoe.kutsunKohde
 				};
 
 				ValinnanvaiheValintakoe.insert({valinnanvaiheOid: parentValintakoeValinnanvaiheOid},valintakoe, function(result) {
