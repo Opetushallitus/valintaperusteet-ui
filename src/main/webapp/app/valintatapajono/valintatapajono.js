@@ -9,8 +9,14 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
         this.valintatapajono = {};
         this.jarjestyskriteerit = [];
         this.hakijaryhmat = [];
+        this.jonot = [];
 
-        this.refresh = function(oid) {
+        this.refresh = function(oid, valinnanVaiheOid) {
+            ValinnanvaiheValintatapajono.get({parentOid: valinnanVaiheOid},
+                function(result) {
+                    model.jonot = _.filter(result, function(jono) {return (jono.oid != oid && jono.siirretaanSijoitteluun)});
+                }
+            );
 
             Valintatapajono.get({oid: oid}, function(result) {
                 model.valintatapajono = result;
@@ -26,7 +32,7 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
             this.refreshJK(oid);
         };
 
-        this.refreshIfNeeded = function(oid, valintaryhmaOid, hakukohdeOid) {
+        this.refreshIfNeeded = function(oid, valintaryhmaOid, hakukohdeOid, valinnanVaiheOid) {
             if(!oid) {
                 model.valintatapajono = {};
                 model.jarjestyskriteerit = [];
@@ -34,7 +40,7 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
                 model.valintatapajono.tasapistesaanto = "YLITAYTTO";
                 model.valintatapajono.kaytetaanValintalaskentaa = false;
             } else if (oid !== model.valintatapajono.oid) {
-                this.refresh(oid, valintaryhmaOid, hakukohdeOid);
+                this.refresh(oid, valinnanVaiheOid);
             }
         };
 
@@ -66,7 +72,8 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
                 model.valintatapajono.aloituspaikat = 0;
             }
 
-            if(model.valintatapajono.oid === null) {
+            // Ei mitään null checkiä tähän!!!!
+            if(!model.valintatapajono.oid) {
                 model.valintatapajono.aktiivinen = true;
                 ValinnanvaiheValintatapajono.insert({parentOid: valinnanvaiheOid}, model.valintatapajono,
                     function(result) {
@@ -179,7 +186,7 @@ angular.module('valintaperusteet').
     $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
 
     $scope.model = ValintatapajonoModel;
-    $scope.model.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid);
+    $scope.model.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valinnanvaiheOid);
 
     $scope.submit = function() {
         $scope.model.submit($scope.valinnanvaiheOid, HakukohdeValinnanVaiheModel.valintatapajonot);
@@ -229,7 +236,7 @@ angular.module('valintaperusteet').
     $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
 
     $scope.model = ValintatapajonoModel;
-    $scope.model.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid);
+    $scope.model.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valinnanvaiheOid);
 
     $scope.submit = function() {
         $scope.model.submit($scope.valinnanvaiheOid, ValintaryhmaValinnanvaiheModel.valintatapajonot);
