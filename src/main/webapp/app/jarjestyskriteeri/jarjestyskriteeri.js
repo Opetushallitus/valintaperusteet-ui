@@ -44,7 +44,7 @@ app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskrit
             };
 
             var deferred = $q.defer();
-            if (obj.oid === null) {
+            if (!obj.oid) {
                 obj.jarjestyskriteeri.aktiivinen = "true";
                 ValintatapajonoJarjestyskriteeri.insert({parentOid: valintatapajonoOid}, obj,
                     function (jk) {

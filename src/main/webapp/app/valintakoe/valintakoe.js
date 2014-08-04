@@ -17,7 +17,7 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 				Valintakoe.get({valintakoeOid: oid}, function(result) {
 					
 					model.valintakoe = result;
-					if(result.laskentakaavaId === null) {
+					if(!result.laskentakaavaId) {
 						model.valintakoe.laskentakaavaId = "";
 					}
 				});
