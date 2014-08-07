@@ -33,6 +33,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
                     //käydään rekursiivisesti laskentakaavapuu läpi ja lisätään puuttuvat syöteparametriobjektit
                     FunktioService.addMissingSyoteparametrit($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit[0]);
+
                 });
             }
 
@@ -419,6 +420,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     if ($scope.errors.length === 0) {
                         //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
                         $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.cleanLaskentakaavaPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
+
                         KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function () {
                                 $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function (result) {
                                         $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
