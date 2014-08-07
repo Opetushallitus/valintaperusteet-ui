@@ -2,7 +2,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
                                            KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel,
                                            ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe,
                                            ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma,
-                                           OrganizationByOid) {
+                                           OrganizationByOid, $modal) {
     "use strict";
 
 
@@ -96,13 +96,28 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 		};
 
 		this.removeValinnanvaihe = function (vaihe) {
-			Valinnanvaihe.delete({oid: vaihe.oid}, function () {
-				for (var i in model.valinnanvaiheet) {
-					if (vaihe.oid === model.valinnanvaiheet[i].oid) {
-						model.valinnanvaiheet.splice(i, 1);
-					}
-				}
-			});
+            $modal.open({
+                backdrop: 'static',
+                templateUrl: 'poistavalinnanvaihe.html',
+                controller: function($scope, $window, $modalInstance) {
+                    $scope.ok = function() {
+                        Valinnanvaihe.delete({oid: vaihe.oid}, function () {
+                            for (var i in model.valinnanvaiheet) {
+                                if (vaihe.oid === model.valinnanvaiheet[i].oid) {
+                                    model.valinnanvaiheet.splice(i, 1);
+                                }
+                            }
+                        });
+                        $modalInstance.close();
+                    };
+                    $scope.cancel = function() {
+                        $modalInstance.dismiss('cancel');
+                    };
+                }
+            }).result.then(function() {
+                }, function() {
+                });
+
 		};
 
 		function getValinnanvaiheOids() {
@@ -232,7 +247,6 @@ angular.module('valintaperusteet').
 	$scope.valintaryhmaOid = $routeParams.id;
 	$scope.model = ValintaryhmaModel;
 	$scope.model.refreshIfNeeded($scope.valintaryhmaOid);
-
 
 	$scope.submit = function () {
 		$scope.model.persistValintaryhma($scope.valintaryhmaOid);

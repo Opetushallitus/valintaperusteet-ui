@@ -202,7 +202,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
             $scope.addArvokonvertterikuvaus = function (konvertterikuvausSelection) {
 
-                if (konvertterikuvausSelection.kuvaukset === null) {
+                if (!konvertterikuvausSelection.kuvaukset) {
                     konvertterikuvausSelection.kuvaukset = {tekstit: []};
                 }
                 var emptyKuvaus = {kieli: 'FI', teksti: ''};
@@ -213,7 +213,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
             $scope.addValintaperusteviitekuvaus = function (viiteselection) {
 
-                if (viiteselection.kuvaukset === null) {
+                if (!viiteselection.kuvaukset) {
                     viiteselection.kuvaukset = {tekstit: []};
                 }
 

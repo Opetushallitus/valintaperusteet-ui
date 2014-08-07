@@ -168,11 +168,8 @@
             <div class="form-row-content">
                 <div class="field-container-checkbox">
                     {{ t('valintatapajono.josjonoon') || 'Jos jonoon jää täyttämättömiä aloituspaikkoja, niitä täytetään jonosta' }}
-                    <select>
+                    <select ng-model="model.valintatapajono.tayttojono" ng-options="item.oid as item.nimi for item in model.jonot">
                         <option></option>
-                        <option>1. {{ t('valintatapajono.jono') || 'jono' }}</option>
-                        <option>2. {{ t('valintatapajono.jono') || 'jono' }}</option>
-                        <option>3. {{ t('valintatapajono.jono') || 'jono' }}</option>
                     </select>
                 </div>
             </div>

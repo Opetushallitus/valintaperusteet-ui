@@ -56,6 +56,18 @@
                        ng-disabled="model.valintakoe.kutsutaankoKaikki"/>
             </div>
 
+            <div class="clear"></div>
+            <label class="form-row-label" for="kohde">{{ t('valintakoelomake.kohde') || 'Kutsun kohde' }}</label>
+
+            <div class="form-row-content">
+                <select id="kohde" name="kohde" ng-model="model.valintakoe.kutsunKohde">
+                    <option value="YLIN_TOIVE">{{ t('valintakoelomake.ylin_toive') || 'Hakijan ylin hakutoive' }}</option>
+                    <option value="YLIN_HYVAKSYTTY_TOIVE">{{ t('valintakoelomake.ylin_hyvaksytty_toive') || 'Hakijan ylin hakutoive, johon pisteet riittävät' }}</option>
+                    <option value="HAKIJAN_VALINTA">{{ t('valintakoelomake.hakijan_valinta') || 'Hakijan valitsema hakukohde' }}</option>
+                    <option value="KAIKKI_TOIVEET">{{ t('valintakoelomake.kaikki_toiveet') || 'Kaikki valintaryhmän hakukohteet' }}</option>
+                </select>
+            </div>
+
         </div>
 
         <div class="form-row">
