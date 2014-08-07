@@ -1,6 +1,7 @@
-'use strict';
+angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (Laskentakaava, ParentValintaryhmas,
+                                                                              Hakukohde, Valintaryhma) {
+    'use strict';
 
-angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (Laskentakaava, ParentValintaryhmas, Hakukohde, Valintaryhma) {
     var valintaryhmaList = [];
     var hakukohde = [];
     var valintaryhma = null;
@@ -18,7 +19,7 @@ angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (La
             list.push(paataso);
         });
         return list;
-    }
+    };
 
     var findWithHakukohde = function (hakukohdeOid) {
         var list = [];
@@ -47,7 +48,7 @@ angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (La
         });
 
         return list;
-    }
+    };
 
     var findRootLevelLaskentakaavas = function () {
         var paataso = {
@@ -59,7 +60,7 @@ angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (La
         });
 
         return paataso;
-    }
+    };
 
     return {
         valintaryhmaList: function () {
@@ -79,10 +80,12 @@ angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (La
                 valintaryhmaList[0] = findRootLevelLaskentakaavas();
             }
         }
-    }
+    };
 });
 
 function LaskentakaavaListController($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista, FunktioService) {
+    'use strict';
+
 	$scope.funktioService = FunktioService;
 	$scope.funktioService.refresh();
 	$scope.valintaryhmaOid = $routeParams.valintaryhmaOid;
@@ -106,18 +109,18 @@ function LaskentakaavaListController($scope, $location, $routeParams, Laskentaka
     $scope.showForm = false;
 
     $scope.createKaava = function () {
-		$location.path("/valintaryhma/" + $routeParams.valintaryhmaOid + "/laskentakaavalista/laskentakaava")
-    }
+		$location.path("/valintaryhma/" + $routeParams.valintaryhmaOid + "/laskentakaavalista/laskentakaava");
+    };
 
     $scope.editKaava = function (kaava) {
         $scope.showForm = true;
         $scope.kaava = kaava;
         $scope.originalKaava = angular.copy(kaava);
-    }
+    };
 
 
     $scope.cancel = function() {
         $location.path("/valintaryhma/" + $routeParams.valintaryhmaOid);
-    }
+    };
 }
 

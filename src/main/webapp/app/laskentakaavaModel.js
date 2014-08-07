@@ -1,6 +1,7 @@
 // Valintaryhma Järjestyskriteerit
 app.factory('LaskentakaavaModel', function(Laskentakaava, ParentValintaryhmas, Hakukohde) {
-    
+    "use strict";
+
     var factory = (function() {
         var instance = {};
         instance.laskentakaavat = [];
@@ -14,7 +15,7 @@ app.factory('LaskentakaavaModel', function(Laskentakaava, ParentValintaryhmas, H
                     var obj = {
                         name: 'Juurikaavat',
                         result: result
-                    }
+                    };
                     instance.laskentakaavat.push(obj);
                 }
             });
@@ -41,7 +42,7 @@ app.factory('LaskentakaavaModel', function(Laskentakaava, ParentValintaryhmas, H
                   Valintaryhmas(valintaryhmaOid);
             }
 
-        }
+        };
 
         function Valintaryhmas(valintaryhmaOid) {
             ParentValintaryhmas.get({parentOid: valintaryhmaOid}, function(data) {

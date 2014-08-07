@@ -2,7 +2,8 @@
 angular.module('valintaperusteet').factory('HakijaryhmaValintatapajonoModel', function($q, ValintatapajonoModel, ValintaryhmaHakijaryhma,
                                                     HakukohdeHakijaryhma, ValintatapajonoHakijaryhma,
                                                     Laskentakaava) {
-    
+    "use strict";
+
     var factory = (function() {
         var instance = {};
 
@@ -44,7 +45,7 @@ angular.module('valintaperusteet').factory('HakijaryhmaValintatapajonoModel', fu
                     }
                 });
             });
-        }
+        };
 
         instance.submit = function(valintatapajonoOid) {
             var deferred = $q.defer();
@@ -57,7 +58,7 @@ angular.module('valintaperusteet').factory('HakijaryhmaValintatapajonoModel', fu
                 alert("Hakijaryhma.oid ei löytynyt.");
             }
             return deferred.promise;
-        }
+        };
 
         return instance;
     })();
@@ -66,8 +67,13 @@ angular.module('valintaperusteet').factory('HakijaryhmaValintatapajonoModel', fu
     
 });
 
-function ValintatapajonoHakijaryhmaController($scope, $location, $routeParams, HakijaryhmaValintatapajonoModel, ValintatapajonoModel) {
-	//$scope.valintaryhmaOid = $routeParams.id;
+angular.module('valintaperusteet').
+    controller('ValintatapajonoHakijaryhmaController', ['$scope', '$location', '$routeParams',
+        'HakijaryhmaValintatapajonoModel', 'ValintatapajonoModel',
+        function ($scope, $location, $routeParams, HakijaryhmaValintatapajonoModel, ValintatapajonoModel) {
+    "use strict";
+
+	$scope.valintaryhmaOid = $routeParams.id;
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
     ValintatapajonoModel.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid);
     $scope.model = HakijaryhmaValintatapajonoModel;
@@ -102,4 +108,4 @@ function ValintatapajonoHakijaryhmaController($scope, $location, $routeParams, H
 
     };
 
-}
+}]);

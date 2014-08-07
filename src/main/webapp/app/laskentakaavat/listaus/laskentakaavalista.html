@@ -1,11 +1,9 @@
-
-
-<h1>Laskentakaavojen hallinta</h1>
+<h1>{{ t('laskentakaavalista.header') || 'Laskentakaavojen hallinta' }}</h1>
 
 <div class="tabs">
-    <a href="#/etusivu" class="tab"><span>Valintaryhmät ja hakukohteet</span></a>
-    <a href="#/laskentakaava" class="tab current"><span>Laskentakaavat</span></a>
-    <a auth="crudOph" href="#/import" class="tab float-right"><span>Yhteisvalinnan hallinta</span></a>
+    <a href="#/etusivu" class="tab"><span>{{ t('common.etusivu') || 'Valintaryhmät ja hakukohteet' }}</span></a>
+    <a href="#/laskentakaava" class="tab current"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
+    <a auth="crudOph" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
 </div>
 
 
@@ -14,11 +12,11 @@
     <breadcrumb></breadcrumb>
 
     <button type="button" class="btn btn-sm btn-default" ng-click="cancel()">
-        <i class="fa fa-arrow-left"></i> Takaisin
+        <i class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
     </button>
-    <span ng-click="createKaava()" class="btn btn-sm btn-default"><i class="fa fa-plus"></i> Laskentakaava</span>
+    <span ng-click="createKaava()" class="btn btn-sm btn-default"><i class="fa fa-plus"></i> {{ t('laskentakaavalista.laskentakaava') || 'Laskentakaava' }}</span>
 
-    <h2>Laskentakaavalista</h2>
+    <h2>{{ t('laskentakaavalista.laskentakaavalista') || 'Laskentakaavalista' }}</h2>
 
 
     <div class="width-60">
@@ -29,15 +27,15 @@
 
                 <div class="alert alert-info margin-bottom-2"
                      ng-show="!valintaryhma.laskentakaavat || valintaryhma.laskentakaavat.length == 0">
-                    <p ng-show="!valintaryhma.oid">Yhtään laskentakaavaa ei ole luotu.</p>
+                    <p ng-show="!valintaryhma.oid">{{ t('laskentakaavalista.yhtaan') || 'Yhtään laskentakaavaa ei ole luotu.' }}</p>
 
-                    <p ng-show="valintaryhma.oid">Tälle valintaryhmälle ei ole luotu yhtään laskentakaavaa.</p>
+                    <p ng-show="valintaryhma.oid">{{ t('laskentakaavalista.talle') || 'Tälle valintaryhmälle ei ole luotu yhtään laskentakaavaa.' }}</p>
                 </div>
                 <table class="virkailija-table-1" ng-show="valintaryhma.laskentakaavat.length > 0">
                     <thead>
                     <tr>
-                        <th>Nimi</th>
-                        <th>Kuvaus</th>
+                        <th>{{ t('laskentakaavalista.nimi') || 'Nimi' }}</th>
+                        <th>{{ t('laskentakaavalista.kuvaus') || 'Kuvaus' }}</th>
                     </tr>
                     </thead>
                     <tbody>

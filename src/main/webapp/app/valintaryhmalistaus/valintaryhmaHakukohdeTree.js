@@ -1,5 +1,6 @@
 //domain .. this is both, service & domain layer
 app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
+    "use strict";
 
     //and return interface for manipulating the model
     var modelInterface =  {
@@ -21,10 +22,10 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
         },
         //methods
     	isFile: function(data) {
-    		return data.hakukohdeViitteet == 0 && data.alavalintaryhmat == 0;
+    		return data.hakukohdeViitteet === 0 && data.alavalintaryhmat === 0;
     	},
     	isHakukohde: function(data) { 
-    	   return data.tyyppi == 'HAKUKOHDE';
+    	   return data.tyyppi === 'HAKUKOHDE';
     	},
     	noNesting: function(data) {
     		if(this.isHakukohde(data)) {
@@ -44,7 +45,7 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
     	},
     	getTemplate: function(data) {
     		if(data) {
-    			if(data.tyyppi == 'VALINTARYHMA') {
+    			if(data.tyyppi === 'VALINTARYHMA') {
     				return "valintaryhma_node.html";
     			} else {
     				return "hakukohde_leaf.html";
@@ -81,13 +82,19 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
         forEachValintaryhma:function(f) {
             var recursion = function(item, f) {
                 f(item);
-                if(item.alavalintaryhmat) for(var i=0; i<item.alavalintaryhmat.length;i++)  recursion(item.alavalintaryhmat[i],  f);
+                if(item.alavalintaryhmat) {
+                    for (var i=0; i<item.alavalintaryhmat.length;i++) {
+                        recursion(item.alavalintaryhmat[i],  f);
+                    }
+                }
+            };
+            for (var i=0; i<modelInterface.valintaperusteList.length;i++) {
+                recursion(modelInterface.valintaperusteList[i],  f);
             }
-           for(var i=0; i<modelInterface.valintaperusteList.length;i++) recursion(modelInterface.valintaperusteList[i],  f);
         },
         getHakukohde:function(oid) {
-            for(i=0;i<modelInterface.hakukohteet.length;i++) {
-                if(oid == modelInterface.hakukohteet[i].oid) {
+            for(var i=0;i<modelInterface.hakukohteet.length;i++) {
+                if(oid === modelInterface.hakukohteet[i].oid) {
                     return modelInterface.hakukohteet[i];
                 }
             }
@@ -95,7 +102,9 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
        getValintaryhma:function(oid) {
             var valintaryhma = null;
             modelInterface.forEachValintaryhma(function(item) {
-                if(item.oid == oid) valintaryhma = item;
+                if(item.oid === oid) {
+                    valintaryhma = item;
+                }
             });
             return valintaryhma;
         },
@@ -110,29 +119,28 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
 
 
             var recursion = function(item, previousItem) {
-                if(previousItem != null) {
+                if(previousItem !== null) {
                     item.ylavalintaryhma = previousItem;
                 }
                 item.getParents = function() {
                   i = this.ylavalintaryhma;
-                  arr = [];
-                  while(i != null) {
+                  var arr = [];
+                  while(i !== null) {
                      arr.unshift(i);
                      i = i.ylavalintaryhma;
                   }
                   return arr;
                 };
 
-                if(item.tyyppi == 'VALINTARYHMA') {
+                if(item.tyyppi === 'VALINTARYHMA') {
                   modelInterface.tilasto.valintaryhmia++;
                   AuthService.getOrganizations("APP_VALINTAPERUSTEET").then(function(organisations){
-                      "use strict";
                       item.access = false;
                       organisations.forEach(function(org){
                           if(item.organisaatiot.length > 0) {
                               item.organisaatiot.forEach(function(org2) {
 
-                                  if(org2.parentOidPath != null && org2.parentOidPath.indexOf(org) > -1) {
+                                  if(org2.parentOidPath !== null && org2.parentOidPath.indexOf(org) > -1) {
                                       item.access = true;
                                   }
                               });
@@ -142,22 +150,33 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
                       });
                   });
                 }
-                if(item.tyyppi == 'HAKUKOHDE') {
+                if(item.tyyppi === 'HAKUKOHDE') {
                    modelInterface.tilasto.hakukohteita++;
                    modelInterface.hakukohteet.push(item);
                 }
-                if(item.alavalintaryhmat)  for(var i=0; i<item.alavalintaryhmat.length;i++)  recursion(item.alavalintaryhmat[i],  item);
-                if(item.hakukohdeViitteet) for(var i=0; i<item.hakukohdeViitteet.length;i++) recursion(item.hakukohdeViitteet[i], item);
+                if(item.alavalintaryhmat) {
+                    for(var i=0; i<item.alavalintaryhmat.length;i++) {
+                        recursion(item.alavalintaryhmat[i], item);
+                    }
+                }
+                if(item.hakukohdeViitteet) {
+                    for(var i=0; i<item.hakukohdeViitteet.length;i++) {
+                        recursion(item.hakukohdeViitteet[i], item);
+                    }
+                }
+            };
+
+            for (var i=0; i<list.length;i++) {
+                recursion(list[i]);
             }
-            for(var i=0; i<list.length;i++) recursion(list[i]);
 
             modelInterface.hakukohteet.forEach(function(hakukohde){
-              hakukohde.sisaltaaHakukohteita = true;
-              var parent = hakukohde.ylavalintaryhma;
-              while(parent != null) {
-                parent.sisaltaaHakukohteita = true;
-                parent = parent.ylavalintaryhma;
-              }
+                  hakukohde.sisaltaaHakukohteita = true;
+                  var parent = hakukohde.ylavalintaryhma;
+                  while(typeof parent !== 'undefined' && parent !== null) {
+                    parent.sisaltaaHakukohteita = true;
+                    parent = parent.ylavalintaryhma;
+                  }
             });
 
           modelInterface.valintaperusteList = list;
@@ -169,7 +188,11 @@ app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
 });
 
 
-function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra, HakuModel) {
+angular.module('valintaperusteet').
+    controller('ValintaryhmaHakukohdeTreeController', ['$scope', 'Treemodel', 'HakukohdeSiirra', 'HakuModel',
+        function ($scope, Treemodel, HakukohdeSiirra, HakuModel) {
+    "use strict";
+
 	$scope.predicate = 'nimi';
 	$scope.domain = Treemodel;
 
@@ -181,19 +204,9 @@ function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra,
         $scope.hakukohteetListingLimit +=100;
     };
 
-//    $scope.showMessage = function(){
-//        toaster.add({
-//            type:'success',
-//            title: "title",
-//            message: "text"
-//        });
-//    };
 
-	$scope.move = function(index, hakukohdeOid, valintaryhmaOid, item) {
+	$scope.move = function(index, hakukohdeOid, valintaryhmaOid) {
         HakukohdeSiirra.siirra({hakukohdeOid: hakukohdeOid}, valintaryhmaOid, function(result) {
-            //var hakukohde = Treemodel.getHakukohde(hakukohdeOid);
-            //var parentNode = hakukohde.ylavalintaryhma;
-            //var newParentNode = Treemodel.getValintaryhma(valintaryhmaOid);
     	}, function() {
               // show error
     	});
@@ -216,13 +229,12 @@ function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra,
                 // aukaisee alitason, jos ei ole liikaa tavaraa
                 var iter = function(ala) {
                     ala.forEach(function(ala){
-                        "use strict";
                         if(!ala.alavalintaryhmat || ala.alavalintaryhmat.length < 4) {
                             ala.isVisible = true;
                             iter(ala.alavalintaryhmat);
                         }
                     });
-                }
+                };
                 if(node.alavalintaryhmat.length < 4) {
                     iter(node.alavalintaryhmat);
                 }
@@ -232,14 +244,14 @@ function ValintaryhmaHakukohdeTreeController($scope, Treemodel, HakukohdeSiirra,
                 node.isVisible = false;
             }
         }
-    }
+    };
 
     $scope.updateDomain = function() {
         Treemodel.refresh();
-    }
+    };
 
     $scope.expandTree = function() {
         Treemodel.expandTree();
-    }
+    };
 
-}
+}]);

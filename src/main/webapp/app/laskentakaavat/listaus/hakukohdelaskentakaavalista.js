@@ -1,6 +1,7 @@
-'use strict';
+function HakukohdeLaskentakaavaListController($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista,
+                                              HakukohdeModel, Valintaryhma, Hakukohde) {
+    'use strict';
 
-function HakukohdeLaskentakaavaListController($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista, HakukohdeModel, Valintaryhma, Hakukohde) {
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
 
@@ -14,11 +15,11 @@ function HakukohdeLaskentakaavaListController($scope, $location, $routeParams, L
     saveParams.hakukohde = {oid: $routeParams.hakukohdeOid};
 
     $scope.createKaava = function () {
-        $location.path("/hakukohde/" + $routeParams.hakukohdeOid + "/laskentakaavalista/laskentakaava")
-    }
+        $location.path("/hakukohde/" + $routeParams.hakukohdeOid + "/laskentakaavalista/laskentakaava");
+    };
 
     $scope.cancel = function() {
         $location.path("/hakukohde/" + $routeParams.hakukohdeOid);
-    }
+    };
 
 }

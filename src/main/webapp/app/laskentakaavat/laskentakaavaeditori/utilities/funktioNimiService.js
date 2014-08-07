@@ -1,8 +1,8 @@
 angular.module('LaskentakaavaEditor').
-
-
 factory('FunktioNimiService', function() {
-	var nameService = new function() {
+   "use strict";
+
+   var nameService = new function() {
 		this.nameMappings = {
 			LUKUARVO: 'Lukuarvo',
 			TOTUUSARVO: 'Totuusarvo',
@@ -52,7 +52,7 @@ factory('FunktioNimiService', function() {
 		this.getName = function(funktionimi) {
 			return nameService.nameMappings[funktionimi];
 		};
-	}
+	}();
 
 	return nameService;
 });

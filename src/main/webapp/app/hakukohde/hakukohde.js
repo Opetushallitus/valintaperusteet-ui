@@ -3,6 +3,8 @@ app.factory('HakukohdeModel', function($q, HakukohdeHakukohdekoodi, KoodistoHaku
                                         HakukohdeKuuluuSijoitteluun, HakukohdeHakijaryhma, Laskentakaava,
                                         HakijaryhmaJarjesta, Hakijaryhma, Haku, TarjontaHaku, HaunTiedot, HakukohdeNimi,
                                         HakijaryhmanValintatapajonot) {
+    "use strict";
+
     var model = new function()  {
         this.hakukohdeOid = "";
         this.loaded = $q.defer();
@@ -43,8 +45,7 @@ app.factory('HakukohdeModel', function($q, HakukohdeHakukohdekoodi, KoodistoHaku
 
                 model.loaded.resolve();
             }, function(){
-                "use strict";
-                loaded.reject();
+                model.loaded.reject();
             });
 
             KoodistoHakukohdekoodi.get(function(result) {
@@ -93,7 +94,7 @@ app.factory('HakukohdeModel', function($q, HakukohdeHakukohdekoodi, KoodistoHaku
 
         this.remove = function(vaihe) {
             Valinnanvaihe.delete({oid: vaihe.oid} ,function(result) {
-                for(i in model.valinnanvaiheet) {
+                for(var i in model.valinnanvaiheet) {
                     if(vaihe.oid === model.valinnanvaiheet[i].oid) {
                         model.valinnanvaiheet.splice(i,1);
                     }
@@ -109,20 +110,20 @@ app.factory('HakukohdeModel', function($q, HakukohdeHakukohdekoodi, KoodistoHaku
                 type = "valintakoevalinnanvaihe";
             }
             return type;
-        }
+        };
 
         this.addHakukohdeUri = function(hakukohdekoodiUri) {
             model.hakukohdekoodit.some(function (koodi) {
-                if(koodi.koodiUri == hakukohdekoodiUri) {
+                if(koodi.koodiUri === hakukohdekoodiUri) {
                     var hakukohdekoodi = {"uri": koodi.koodiUri,
                                          "arvo":koodi.koodiArvo};
 
                     koodi.metadata.forEach(function(metadata){
-                        if(metadata.kieli == "FI") {
+                        if(metadata.kieli === "FI") {
                             hakukohdekoodi.nimiFi = metadata.nimi;
-                        } else if(metadata.kieli == "SV") {
+                        } else if(metadata.kieli === "SV") {
                             hakukohdekoodi.nimiSv = metadata.nimi;
-                        } else if(metadata.kieli == "EN") {
+                        } else if(metadata.kieli === "EN") {
                             hakukohdekoodi.nimiEn = metadata.nimi;
                         }
                     });
@@ -142,15 +143,15 @@ app.factory('HakukohdeModel', function($q, HakukohdeHakukohdekoodi, KoodistoHaku
 
         this.removeHakijaryhma = function(hakijaryhmaOid) {
             Hakijaryhma.delete({oid: hakijaryhmaOid}, function(){
-                for(i in model.hakijaryhmat) {
+                for(var i in model.hakijaryhmat) {
                     if(hakijaryhmaOid === model.hakijaryhmat[i].oid) {
                         model.hakijaryhmat.splice(i,1);
                     }
                 }
             });
-        }
+        };
 
-    };
+    }();
 
     function getValinnanvaiheOids() {
         var oids = [];
@@ -171,7 +172,8 @@ app.factory('HakukohdeModel', function($q, HakukohdeHakukohdekoodi, KoodistoHaku
     return model;
 });
 
-function HakukohdeController($q, $timeout, $scope, $location, $routeParams, HakukohdeModel) {
+function HakukohdeController($scope, $location, $routeParams, HakukohdeModel) {
+    "use strict";
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakukohdeModel;
@@ -179,29 +181,29 @@ function HakukohdeController($q, $timeout, $scope, $location, $routeParams, Haku
 
     $scope.submit = function() {
         $scope.model.persistHakukohde();
-    }
+    };
     $scope.cancel = function() {
         $location.path("/");
-    }
+    };
     $scope.lisaaValinnanVaihe = function() {
         $location.path("/hakukohde/" + $scope.hakukohdeOid + "/valinnanvaihe/");
-    }
+    };
     $scope.lisaaValintakoeValinnanVaihe = function() {
         $location.path("/hakukohde/" + $scope.hakukohdeOid + "/valintakoevalinnanvaihe/");
-    }
+    };
 
     $scope.addHakukohdeUri = function() {
             $scope.model.addHakukohdeUri($scope.uusiHakukohdeUri.koodiUri);
             $scope.uusiHakukohdeUri = "";
-    }
+    };
 
     $scope.lisaaHakijaryhma = function() {
         $location.path("/hakukohde/" + $scope.hakukohdeOid + "/hakijaryhma/");
-    }
+    };
 
     $scope.removeHakijaryhma = function(hakijaryhmaOid) {
         $scope.model.removeHakijaryhma(hakijaryhmaOid);
-    }
+    };
 
     $scope.$on('valintaryhmansiirto', function(){
         $scope.model.refresh($scope.hakukohdeOid);
@@ -209,7 +211,9 @@ function HakukohdeController($q, $timeout, $scope, $location, $routeParams, Haku
 
 }
 
-app.factory('ValintaryhmaSiirtoModel', function($resource, $location, $routeParams, Valintaryhma, ChildValintaryhmas, Treemodel, HakukohdeSiirra) {
+app.factory('ValintaryhmaSiirtoModel', function($resource, $location, $routeParams, Valintaryhma, ChildValintaryhmas,
+                                                Treemodel, HakukohdeSiirra) {
+    "use strict";
 
     var model = new function() {
         this.valintaryhma = {};
@@ -226,21 +230,21 @@ app.factory('ValintaryhmaSiirtoModel', function($resource, $location, $routePara
 
         this.move = function() {
 
-            if(!model.parentOid) {
-                console.log("Valintaryhmää ei ole valittu.");
-            } else {
+            if(model.parentOid) {
                 HakukohdeSiirra.siirra({hakukohdeOid: $routeParams.hakukohdeOid}, model.parentOid, function(result) {
 
                 });
             }
 
         };
-    }
+    }();
 
     return model;
 });
 
-function ValintaryhmanSiirtoController($scope, $resource, $routeParams, ValintaryhmaSiirtoModel, Ylavalintaryhma, HakukohdeSiirra) {
+function ValintaryhmanSiirtoController($scope, $routeParams, ValintaryhmaSiirtoModel, Ylavalintaryhma, HakukohdeSiirra) {
+    "use strict";
+
     $scope.valintaryhmaOid = $routeParams.id;
     $scope.model = ValintaryhmaSiirtoModel;
     $scope.model.refreshIfNeeded($scope.valintaryhmaOid);
@@ -250,9 +254,7 @@ function ValintaryhmanSiirtoController($scope, $resource, $routeParams, Valintar
 
 
     $scope.siirra = function() {
-        if(!$scope.model.parentOid) {
-            console.log("Valintaryhmää ei ole valittu.");
-        } else {
+        if($scope.model.parentOid) {
             HakukohdeSiirra.siirra({hakukohdeOid: $routeParams.hakukohdeOid}, $scope.model.parentOid, function(result) {
                 $scope.$emit('valintaryhmansiirto');
                 $scope.$broadcast('suljemodal');

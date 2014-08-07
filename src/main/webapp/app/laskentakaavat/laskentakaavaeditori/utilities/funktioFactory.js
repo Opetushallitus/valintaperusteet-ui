@@ -1,5 +1,7 @@
 angular.module('LaskentakaavaEditor').factory('FunktioFactory', function(FunktioService){
-	var factory = new function() {
+    "use strict";
+
+    var factory = new function() {
 
 		function generateFunktioPrototype() {
 			return {
@@ -24,7 +26,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioFactory', function(Funktio
 				},
 
 				indeksi: 0
-			}
+			};
 		}
 
 		function setLapsityyppi(funktioprototype, funktiotyyppi) {
@@ -96,7 +98,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioFactory', function(Funktio
                     tulosTekstiEn: null,
                     tallennaTulos: null
                 }
-            }
+            };
         };
 
 		this.createLaskentakaavaviite = function(laskentakaavaviite) {
@@ -124,7 +126,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioFactory', function(Funktio
 						tallennaTulos: false
 					},
 					indeksi: 0
-				}
+				};
 			} else {
 				return {
 					lapsi: {
@@ -148,7 +150,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioFactory', function(Funktio
 						tallennaTulos: false
 					},
 					indeksi: 0
-				}
+				};
 			}
 		};
 
@@ -174,7 +176,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioFactory', function(Funktio
 			}
 
 			return funktioprototype;
-		}
+		};
 
 		function populateParameters(funktioprototype, funktiokuvaus) {
 
@@ -215,7 +217,7 @@ angular.module('LaskentakaavaEditor').factory('FunktioFactory', function(Funktio
 			}
 		}
 
-	}
+	}();
 
 	return factory;
 });

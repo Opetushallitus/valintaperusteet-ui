@@ -8,7 +8,7 @@
     <script type="text/javascript" src="../common/jslib/jquery.min.js"></script>
     <script type="text/javascript" src="../common/jslib/jquery-ui.min.js"></script>
     <script type="text/javascript" src="../common/jslib/angular.min.js"></script>
-    <script type="text/javascript" src="../common/jslib/lodash.underscore.min.js"></script>
+    <script type="text/javascript" src="../common/jslib/lodash.underscore.js"></script>
     <script type="text/javascript" src="../common/jslib/angular-resource.min.js"></script>
     <script type="text/javascript" src="../common/jslib/angular-route.min.js"></script>
     <script type="text/javascript" src="../common/jslib/angular-animate.min.js"></script>
@@ -27,7 +27,6 @@
     <script type="text/javascript" src="valintaryhma/valintaryhma.js"></script>
     <script type="text/javascript" src="valintaryhma/valintakoekoodit.js"></script>
     <script type="text/javascript" src="valintaryhma/hakukohdekoodit.js"></script>
-
     <script type="text/javascript" src="valintaryhma/valintaryhma_uusi.js"></script>
     <script type="text/javascript" src="laskentakaavaModel.js"></script>
     <script type="text/javascript" src="hakijaryhma/hakijaryhma.js"></script>
@@ -44,6 +43,8 @@
     <script type="text/javascript" src="../common/js/auth.js"></script>
     <script type="text/javascript" src="../common/js/ng-breadcrumbs.js"></script>
     <script type="text/javascript" src="../common/js/localizations.js"></script>
+    <script type="text/javascript" src="../common/js/rootctrl.js"></script>
+    <script type="text/javascript" src="../common/js/localisation.js"></script>
 
     <script type="text/javascript" src="laskentakaavat/laskentakaavaeditor.js"></script>
     <script type="text/javascript" src="laskentakaavat/laskentakaavaresources.js"></script>
@@ -86,7 +87,7 @@
 
 
 </head>
-<body>
+<body data-ng-controller="RootCtrl">
 
     <div id="application-wrapper">
         <div id="angularbox" ng-view="" ng-controller="mainCtrl"></div>

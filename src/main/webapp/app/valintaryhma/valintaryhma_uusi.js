@@ -1,4 +1,6 @@
-app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routeParams, Valintaryhma, KoodistoHaunKohdejoukko, ChildValintaryhmas, Treemodel ) {
+app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routeParams, Valintaryhma,
+                                                 KoodistoHaunKohdejoukko, ChildValintaryhmas, Treemodel ) {
+    "use strict";
 
     var model = new function() {
         this.valintaryhma = {};
@@ -10,7 +12,7 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
 
             KoodistoHaunKohdejoukko.get(function (result) {
                 model.kohdejoukot = result;
-            })
+            });
 
         };
 
@@ -41,12 +43,16 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
                 });
             }
         };
-    }
+    }();
 
     return model;
 });
 
-function UusiValintaryhmaController($scope, $location, $routeParams, ValintaryhmaCreatorModel, Ylavalintaryhma) {
+angular.module('valintaperusteet').
+    controller('UusiValintaryhmaController', ['$scope', '$location', '$routeParams', 'ValintaryhmaCreatorModel', 'Ylavalintaryhma',
+        function ($scope, $location, $routeParams, ValintaryhmaCreatorModel, Ylavalintaryhma) {
+    "use strict";
+
     $scope.valintaryhmaOid = $routeParams.id;
     $scope.model = ValintaryhmaCreatorModel;
     $scope.model.refreshIfNeeded($scope.valintaryhmaOid);
@@ -56,14 +62,13 @@ function UusiValintaryhmaController($scope, $location, $routeParams, Valintaryhm
 
     $scope.submit = function() {
         $scope.model.persistValintaryhma($scope.valintaryhmaOid);
-    }
+    };
 
     $scope.cancel = function() {
         $location.path("/");
-    }
+    };
 
     $scope.organisaatioSelector = function(data) {
-        "use strict";
         if(!$scope.model.valintaryhma.organisaatiot) {
             $scope.model.valintaryhma.organisaatiot = [];
         }
@@ -77,6 +82,6 @@ function UusiValintaryhmaController($scope, $location, $routeParams, Valintaryhm
         if(!contains) {
             $scope.model.valintaryhma.organisaatiot.push(data);
         }
-    }
+    };
 
-}
+}]);

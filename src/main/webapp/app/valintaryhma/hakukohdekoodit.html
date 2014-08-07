@@ -1,13 +1,13 @@
 <div ng-controller="HakukohdekoodiController">
-    <label class="form-row-label" for="">Hakukohdekoodit</label>
+    <label class="form-row-label" for="">{{ t('hakukohdekoodit.header') || 'Hakukohdekoodit' }}</label>
 
     <div class="row">
         <button class="btn btn-sm btn-default" ng-click="toggleHakukohdekoodit()">
             <i ng-if="!toggleValintaryhmaHakukohdekoodit" class="fa fa-eye"></i>
-            <i ng-if="toggleValintaryhmaHakukohdekoodit" class="fa fa-eye-slash"></i> Hakukohdekoodit
+            <i ng-if="toggleValintaryhmaHakukohdekoodit" class="fa fa-eye-slash"></i> {{ t('hakukohdekoodit.header') || 'Hakukohdekoodit' }}
         </button>
         <button ng-click="showHakukohdeKoodit()" type="button" class="btn btn-sm btn-default">
-            <i class="fa fa-plus"></i> Uusi hakukohdekoodi
+            <i class="fa fa-plus"></i> {{ t('hakukohdekoodit.uusi') || 'Uusi hakukohdekoodi' }}
         </button>
 
         <modal modal-template="../common/partials/hakukohdekoodinValinta.html" auth="update">
@@ -20,16 +20,16 @@
     <div class="form-row-content">
 
         <div ng-if="toggleValintaryhmaHakukohdekoodit && !model.valintaryhma.hakukohdekoodit" class="alert alert-info">
-            Tähän valintaryhmään ei ole vielä liitetty yhtään hakukohdekoodia
+            {{ t('hakukohdekoodit.virhe') || 'Tähän valintaryhmään ei ole vielä liitetty yhtään hakukohdekoodia' }}
         </div>
         <table ng-if="toggleValintaryhmaHakukohdekoodit && model.valintaryhma.hakukohdekoodit"
                class="virkailija-table-1">
             <thead>
             <tr>
-                <th>koodi</th>
-                <th>arvo</th>
-                <th>nimi</th>
-                <th>poista</th>
+                <th>{{ t('hakukohdekoodit.koodi') || 'koodi' }}</th>
+                <th>{{ t('hakukohdekoodit.arvo') || 'arvo' }}</th>
+                <th>{{ t('hakukohdekoodit.nimi') || 'nimi' }}</th>
+                <th>{{ t('hakukohdekoodit.poista') || 'poista' }}</th>
             </tr>
             </thead>
             <tbody>

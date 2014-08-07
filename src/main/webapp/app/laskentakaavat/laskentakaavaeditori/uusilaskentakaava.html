@@ -1,15 +1,15 @@
 <div ng-controller="UusiLaskentakaavaController">
-    <span class="btn btn-sm btn-default" ng-click="back()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="Muista tallentaa muutoksesi"><i class="fa fa-arrow-left"></i> Takaisin</span>
+    <span class="btn btn-sm btn-default" ng-click="back()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}</span>
     <button class="btn btn-sm btn-primary"
             ng-click="createKaava(kaava)"
-            ng-disabled="kaavaForm.$invalid"><i class="fa fa-plus"></i> Alusta uusi laskentakaava
+            ng-disabled="kaavaForm.$invalid"><i class="fa fa-plus"></i> {{ t('uusilaskentakaava.alusta') || 'Alusta uusi laskentakaava' }}
     </button>
 
-    <h2>Uuden laskentakaavan luonti</h2>
+    <h2>{{ t('uusilaskentakaava.luonti') || 'Uuden laskentakaavan luonti' }}</h2>
 
     <form name="kaavaForm" class="margin-top-2" novalidate>
         <div class="form-row">
-            <div class="form-row-label">Laskentakaavan nimi</div>
+            <div class="form-row-label">{{ t('uusilaskentakaava.nimi') || 'Laskentakaavan nimi' }}</div>
 
             <div class="form-row-content">
                 <input type="text" ng-model="kaava.nimi" required/>
@@ -17,7 +17,7 @@
             <div class="clear"></div>
         </div>
         <div class="form-row">
-            <div class="form-row-label">Laskentakaavan kuvaus</div>
+            <div class="form-row-label">{{ t('uusilaskentakaava.kuvaus') || 'Laskentakaavan kuvaus' }}</div>
 
             <div class="form-row-content">
                 <textarea ng-model="kaava.kuvaus"></textarea>
@@ -25,13 +25,13 @@
             <div class="clear"></div>
         </div>
         <div class="form-row" ng-show="!kaava.id">
-            <div class="form-row-label">Laskentakaavan tyyppi</div>
+            <div class="form-row-label">{{ t('uusilaskentakaava.tyyppi') || 'Laskentakaavan tyyppi' }}</div>
 
             <div class="form-row-content">
                 <input type="radio" name="tyyppi" value="NIMETTYTOTUUSARVO" ng-model="kaava.tyyppi"/>
-                Totuusarvofunktio
+                {{ t('uusilaskentakaava.totuusarvofunktio') || 'Totuusarvofunktio' }}
                 <br/>
-                <input type="radio" name="tyyppi" value="NIMETTYLUKUARVO" ng-model="kaava.tyyppi"/> Lukuarvofunktio
+                <input type="radio" name="tyyppi" value="NIMETTYLUKUARVO" ng-model="kaava.tyyppi"/> {{ t('uusilaskentakaava.lukuarvofunktio') || 'Lukuarvofunktio' }}
             </div>
             <div class="clear"></div>
         </div>

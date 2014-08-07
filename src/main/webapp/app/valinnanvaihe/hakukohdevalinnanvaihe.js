@@ -1,7 +1,10 @@
+angular.module('valintaperusteet').
+    controller('ValinnanVaiheController',['$scope', '$location', '$routeParams', 'HakukohdeValinnanVaiheModel',
+        'HakukohdeModel',
+        function ($scope, $location, $routeParams, HakukohdeValinnanVaiheModel, HakukohdeModel) {
+    "use strict";
 
 
-
-function ValinnanVaiheController($scope, $location, $routeParams, HakukohdeValinnanVaiheModel, HakukohdeModel) {
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
 
@@ -10,22 +13,26 @@ function ValinnanVaiheController($scope, $location, $routeParams, HakukohdeValin
 
     $scope.submit = function() {
         $scope.model.persistValinnanvaihe($scope.hakukohdeOid, HakukohdeModel.valinnanvaiheet);
-    }
+    };
 
     $scope.cancel = function() {
         $location.path("/hakukohde/" + $scope.hakukohdeOid);
-    }
+    };
 
     $scope.addJono = function() {
         $location.path("/hakukohde/" + $scope.hakukohdeOid + "/valinnanvaihe/" + $scope.model.valinnanvaihe.oid + "/valintatapajono/");
-    }
+    };
 
     $scope.modifyJono = function(oid) {
         $location.path("/hakukohde/" + $scope.hakukohdeOid + "/valinnanvaihe/" + $scope.model.valinnanvaihe.oid + "/valintatapajono/" + oid);
-    }
-}
+    };
+}]);
 
-app.factory('HakukohdeValinnanVaiheModel', function(Valinnanvaihe, Valintatapajono, ValinnanvaiheValintatapajono, HakukohdeValinnanvaihe, ValinnanvaiheKuuluuSijoitteluun, ValintatapajonoJarjesta) {
+app.factory('HakukohdeValinnanVaiheModel', function(Valinnanvaihe, Valintatapajono, ValinnanvaiheValintatapajono,
+                                                    HakukohdeValinnanvaihe, ValinnanvaiheKuuluuSijoitteluun,
+                                                    ValintatapajonoJarjesta) {
+    "use strict";
+
     var model = new function() {
         this.valinnanvaihe = {};
         this.valintatapajonot = [];
@@ -46,7 +53,7 @@ app.factory('HakukohdeValinnanVaiheModel', function(Valinnanvaihe, Valintatapajo
                     model.valintatapajonot = result;
                 }); 
             }
-        }
+        };
 
         this.refreshIfNeeded = function(oid) {
             if( oid !== model.valinnanvaihe.oid ) {
@@ -58,7 +65,7 @@ app.factory('HakukohdeValinnanVaiheModel', function(Valinnanvaihe, Valintatapajo
 
         this.remove = function(jono) {
             Valintatapajono.delete({oid: jono.oid}, function(result) {
-                for(i in model.valintatapajonot) {
+                for(var i in model.valintatapajonot) {
                     if(jono.oid === model.valintatapajonot[i].oid) {
                         model.valintatapajonot.splice(i,1);
                     }
@@ -113,16 +120,19 @@ app.factory('HakukohdeValinnanVaiheModel', function(Valinnanvaihe, Valintatapajo
             }
             return oids;
         }
-    }
+    }();
     return model;
 });
 
 
 
-app.factory('HakukohdeValintakoeValinnanvaiheModel', function($q,HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheValintakoe, Valintakoe) {
-    
+app.factory('HakukohdeValintakoeValinnanvaiheModel', function($q,HakukohdeValinnanvaihe, Valinnanvaihe,
+                                                              ValinnanvaiheValintakoe, Valintakoe) {
+    "use strict";
+
+
     var model = new function() {
-        this.valintakoevalinnanvaihe = {}
+        this.valintakoevalinnanvaihe = {};
         this.valintakokeet = [];
 
         this.refresh = function(oid) {
@@ -139,7 +149,7 @@ app.factory('HakukohdeValintakoeValinnanvaiheModel', function($q,HakukohdeValinn
                     model.valintakokeet = result;
                 });
             }
-        }
+        };
 
         this.persist = function(parentHakukohdeOid, valinnanvaiheet) {
             if(model.valintakoevalinnanvaihe.oid) {
@@ -165,7 +175,7 @@ app.factory('HakukohdeValintakoeValinnanvaiheModel', function($q,HakukohdeValinn
                     kuvaus: model.valintakoevalinnanvaihe.kuvaus,
                     aktiivinen: true,
                     valinnanVaiheTyyppi: "VALINTAKOE"
-                }
+                };
 
                 HakukohdeValinnanvaihe.insert({"parentOid": parentHakukohdeOid}, valintakoevalinnanvaihe, function(result) {
                     model.valintakoevalinnanvaihe = result;
@@ -173,27 +183,32 @@ app.factory('HakukohdeValintakoeValinnanvaiheModel', function($q,HakukohdeValinn
                 });
 
             }
-        }
+        };
 
         this.removeValintakoe = function(valintakoe) {
 
             Valintakoe.remove({valintakoeOid: valintakoe.oid}, function(result){
-                for(i in model.valintakokeet) {
+                for (var i in model.valintakokeet) {
                     if(valintakoe.oid === model.valintakokeet[i].oid) {
                         model.valintakokeet.splice(i,1);
                     }
                 }
             });
-        }
+        };
 
-    }
+    }();
 
     return model;
 
 });
 
 
-function HakukohdeValintakoeValinnanvaiheController($scope, $location, $routeParams, HakukohdeValintakoeValinnanvaiheModel, HakukohdeModel) {
+angular.module('valintaperusteet').
+    controller('HakukohdeValintakoeValinnanvaiheController',['$scope', '$location', '$routeParams',
+        'HakukohdeValintakoeValinnanvaiheModel', 'HakukohdeModel',
+        function ($scope, $location, $routeParams, HakukohdeValintakoeValinnanvaiheModel, HakukohdeModel) {
+    "use strict";
+
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.HakukohdeValintakoeValinnanvaiheOid = $routeParams.valintakoevalinnanvaiheOid;
     $scope.model = HakukohdeValintakoeValinnanvaiheModel;
@@ -201,22 +216,19 @@ function HakukohdeValintakoeValinnanvaiheController($scope, $location, $routePar
 
     $scope.submit = function() {
         $scope.model.persist($scope.hakukohdeOid, HakukohdeModel.valinnanvaiheet);
-    }
+    };
 
     $scope.cancel = function() {
         $location.path("/hakukohde/" + $scope.hakukohdeOid);
-    }
+    };
 
     $scope.modifyvalintakoe = function(valintakoeOid) {
         $location.path("/hakukohde/" + $scope.hakukohdeOid + "/valintakoevalinnanvaihe/" + $scope.model.valintakoevalinnanvaihe.oid + "/valintakoe/" + valintakoeOid);
-    }
+    };
 
     $scope.addValintakoe = function() {
         $location.path("/hakukohde/" + $scope.hakukohdeOid + "/valintakoevalinnanvaihe/" + $scope.model.valintakoevalinnanvaihe.oid + "/valintakoe/");
-    }
-
-
-
-}
+    };
+}]);
 
 
