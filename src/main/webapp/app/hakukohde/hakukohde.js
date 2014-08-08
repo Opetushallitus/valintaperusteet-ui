@@ -302,14 +302,14 @@ app.factory('HakijaryhmaLiitaHakukohdeModel', function($resource, $location, $ro
     return model;
 });
 
-function HakijaryhmaValintaHakukohdeController($scope, $routeParams, HakijaryhmaLiitaHakukohdeModel, ValintaryhmaModel, HakijaryhmaLiitaHakukohde) {
+function HakijaryhmaValintaHakukohdeController($scope, $routeParams, HakijaryhmaLiitaHakukohdeModel, ValintaryhmaModel, HakijaryhmaLiitaHakukohde, HakukohdeModel) {
     "use strict";
 
     $scope.model = HakijaryhmaLiitaHakukohdeModel;
     $scope.model.refreshIfNeeded();
 
+    ValintaryhmaModel.refresh(HakukohdeModel.hakukohde.valintaryhma_id);
     $scope.domain = ValintaryhmaModel;
-    ValintaryhmaModel.refresh();
 
 
     $scope.liita = function() {
