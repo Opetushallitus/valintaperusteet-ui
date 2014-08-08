@@ -54,6 +54,14 @@ app.factory('HakijaryhmaModel', function($q, Hakijaryhma, LaskentakaavaModel,
                 }, function(err) {
                     deferred.reject('Hakijaryhmän tallentaminen valintatapajonoon epäonnistui', err);
                 })
+            }
+            else if(valintaryhmaOid){
+                ValintaryhmaHakijaryhma.insert({oid: valintaryhmaOid}, instance.hakijaryhma, function(result) {
+                    instance.hakijaryhma = result;
+                    deferred.resolve();
+                }, function(err) {
+                    deferred.reject('Hakijaryhmän tallentaminen valintaryhmään epäonnistui', err);
+                });
             } else {
                 deferred.reject('Hakukohteen tai valintatapajonon tunnistetta ei löytynyt. Hakijaryhmän tallentaminen epäonnistui');
             }
@@ -103,11 +111,10 @@ angular.module('valintaperusteet').
             } else if($routeParams.hakukohdeOid) {
                 HakukohdeModel.refresh($routeParams.hakukohdeOid);
                 $location.path("/hakukohde/" + $routeParams.hakukohdeOid);
-            }
-             /*{
+            } else {
                 ValintaryhmaModel.refresh($routeParams.id);
-                path = "/valintaryhma/" + $routeParams.id;
-            }*/
+                $location.path("/valintaryhma/" + $routeParams.id);
+            }
         });
 
     };

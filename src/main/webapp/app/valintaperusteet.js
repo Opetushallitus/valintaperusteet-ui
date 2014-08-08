@@ -186,6 +186,18 @@ app.factory('HakukohdeSiirra', function($resource) {
 	});
 });
 
+app.factory('HakijaryhmaLiita', function($resource) {
+    return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoOid/hakijaryhma/:hakijaryhmaOid", {valintatapajonoOid: "@valintatapajonoOid", hakijaryhmaOid: "@hakijaryhmaOid"}, {
+        liita: {method: "POST"}
+    });
+});
+
+app.factory('HakijaryhmaLiitaHakukohde', function($resource) {
+    return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeOid/hakijaryhma/:hakijaryhmaOid", {hakukohdeOid: "@hakukohdeOid", hakijaryhmaOid: "@hakijaryhmaOid"}, {
+        liita: {method: "POST"}
+    });
+});
+
 //Valinnanvaihe
 app.factory('Valinnanvaihe', function($resource) {
  return $resource(SERVICE_URL_BASE + "resources/valinnanvaihe/:oid", {oid: "@oid"}, {

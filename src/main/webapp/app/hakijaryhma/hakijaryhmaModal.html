@@ -1,0 +1,14 @@
+<div class="modal-header">
+    <h3>{{ t('hakijaryhmamodal.header') || 'Valitse Hakijaryhmä' }}</h3>
+</div>
+<div class="modal-body">
+    <div ng-include="'../common/partials/hakijaryhmaSelector.html'" />
+    <div class="clear"></div>
+</div>
+<div class="modal-footer">
+
+    <a class="btn btn-primary btn-sm" ng-click="liita();"
+       role="button">{{ t('hakijaryhmamodal.valitse') || 'Valitse' }}</a>
+    <a class="btn btn-default btn-sm" ng-click="sulje();"
+       role="button">{{ t('hakijaryhmamodal.sulje') || 'Sulje' }}</a>
+</div>

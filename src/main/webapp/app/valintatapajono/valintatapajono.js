@@ -2,7 +2,7 @@
 app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheValintatapajono,
                                                 ValintatapajonoJarjestyskriteeri, Laskentakaava, Jarjestyskriteeri,
                                                 JarjestyskriteeriJarjesta, ValintatapajonoHakijaryhma, HakukohdeHakijaryhma,
-                                                ValintaryhmaHakijaryhma, HakijaryhmaValintatapajono) {
+                                                ValintaryhmaHakijaryhma, HakijaryhmaValintatapajono, Hakijaryhma) {
     "use strict";
 
     var model = new function()  {
@@ -223,6 +223,10 @@ angular.module('valintaperusteet').
     $scope.removeHakjiaryhma = function(oid) {
         $scope.model.removeHakijaryhma(oid);
     };
+
+    $scope.$on('hakijaryhmaliita', function(){
+        $scope.model.refresh($routeParams.valintatapajonoOid, $routeParams.valinnanvaiheOid);
+    });
 }]);
 
 
@@ -280,4 +284,63 @@ angular.module('valintaperusteet').
     $scope.removeHakjiaryhma = function(oid) {
         $scope.model.removeHakijaryhma(oid);
     };
+
+        $scope.$on('hakijaryhmaliita', function(){
+            $scope.model.refresh($routeParams.valintatapajonoOid, $routeParams.valinnanvaiheOid);
+        });
 }]);
+
+
+app.factory('HakijaryhmaLiitaModel', function($resource, $location, $routeParams, Hakijaryhma, HakijaryhmaLiita) {
+    "use strict";
+
+    var model = new function() {
+        this.hakijaryhma = {};
+
+        this.refresh = function() {
+            model.hakijaryhmaOid = {};
+            this.parentOid = "";
+
+        };
+
+        this.refreshIfNeeded = function() {
+            this.refresh();
+        };
+
+        this.move = function() {
+
+            if(model.parentOid) {
+                HakijaryhmaLiita.liita({valintatapajonoOid: $routeParams.valintatapajonoOid}, model.parentOid, function(result) {
+
+                });
+            }
+
+        };
+    }();
+
+    return model;
+});
+
+function HakijaryhmaValintaController($scope, $routeParams, HakijaryhmaLiitaModel, ValintaryhmaModel, HakijaryhmaLiita) {
+    "use strict";
+
+    $scope.model = HakijaryhmaLiitaModel;
+    $scope.model.refreshIfNeeded();
+
+    $scope.domain = ValintaryhmaModel;
+    ValintaryhmaModel.refresh();
+
+
+    $scope.liita = function() {
+        if($scope.model.parentOid) {
+            HakijaryhmaLiita.liita({valintatapajonoOid: $routeParams.valintatapajonoOid, hakijaryhmaOid: $scope.model.parentOid}, function(result) {
+                $scope.$emit('hakijaryhmaliita');
+                $scope.$broadcast('suljemodal');
+            });
+        }
+    };
+
+    $scope.openHakijaryhmaModal = function () {
+        $scope.show();
+    };
+}

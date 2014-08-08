@@ -1,0 +1,25 @@
+<!-- Node template -->
+<script type="text/ng-template" id="node.html">
+
+    <span class="node" ng-if="data.nimi | filter:domain.search.q">
+        <i class="fa fa-users"></i>
+        <input name="hakijaryhmaOid" type="radio" ng-model="model.parentOid" value="{{data.oid}}" id="{{data.oid}}"/> <label for="{{data.oid}}">{{data.nimi}}</label>
+    </span>
+
+    <ol ng-if="data.isVisible">
+        <li ng-repeat="data in data.alavalintaryhmat | filter:domain.search.q | orderBy:'nimi'" ng-include="'node.html'">
+        </li>
+    </ol>
+
+</script>
+
+<input type="text" class="search" placeholder="{{ t('hakijaryhmaselector.suodata') || 'Suodata Hakijaryhmiä' }}" id="text" ng-model="domain.search.q">
+<br />
+<div class="hakijaryhmaSelector">
+    <ol class="treelist">
+        <li ng-repeat="data in domain.hakijaryhmat | filter:domain.search.q | orderBy:'nimi'"
+            ng-model="data"
+            ng-include="'node.html'">
+        </li>
+    </ol>
+</div>

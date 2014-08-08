@@ -259,9 +259,19 @@
 
         </table>
 
+        <div ng-controller="HakijaryhmaValintaController" class="modal-controller-div">
+            <modal modal-template="hakijaryhma/hakijaryhmaModal.html">
+                <modal-open></modal-open>
+            </modal>
+            <button auth="update" class="btn btn-sm btn-primary" type="button" ng-click="openHakijaryhmaModal()"><i
+                    class="fa fa-plus"></i>
+                Liitä hakijaryhmä
+            </button>
+        </div>
 
         <span auth="crud" class="btn btn-sm btn-default" ng-click="addHakijaryhma()"><i
-                class="fa fa-plus"></i> Liitä hakijaryhmä</span>
+                class="fa fa-plus"></i> Luo uusi hakijaryhmä</span>
+
     </div>
     <span ng-if="model.valintatapajono.siirretaanSijoitteluun && !model.valintatapajono.oid">{{ t('valintatapajono.tallennahakijaryhma') || 'Tallenna jono lisätäksesi hakijaryhmä.' }}</span>
 </div>

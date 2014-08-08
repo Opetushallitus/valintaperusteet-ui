@@ -46,6 +46,15 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 					model.valinnanvaiheet = result;
 				});
 
+                ValintaryhmaHakijaryhma.get({oid: oid}, function (result) {
+                    model.hakijaryhmat = result;
+                    model.hakijaryhmat.forEach(function (hr) {
+                        Laskentakaava.get({oid: hr.laskentakaavaId}, function (result) {
+                            hr.laskentakaava_nimi = result.nimi;
+                        });
+                    });
+                });
+
                 KoodistoHaunKohdejoukko.get(function (result) {
                     model.kohdejoukot = result;
                 });
@@ -263,6 +272,10 @@ angular.module('valintaperusteet').
 	$scope.lisaaValintakoeValinnanVaihe = function () {
 		$location.path("/valintaryhma/" + $scope.valintaryhmaOid + "/valintakoevalinnanvaihe/");
 	};
+
+    $scope.lisaaHakijaryhma = function() {
+        $location.path("/valintaryhma/" + $scope.valintaryhmaOid + "/hakijaryhma/");
+    };
 
 	$scope.toValintaryhmaForm = function () {
 		$location.path("/valintaryhma/" + $scope.valintaryhmaOid);

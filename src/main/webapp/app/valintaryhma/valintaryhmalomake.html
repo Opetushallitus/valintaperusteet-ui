@@ -149,6 +149,44 @@
     </div>
 </div>
 
+<div class="form-row width-100">
+    <div class="form-row-label">{{ t('valintaryhmalomake.hakijaryhmat') || 'Hakijaryhmät' }}</div>
+    <div class="form-row-content width-60">
+        <table ng-show="model.hakijaryhmat" class="virkailija-table-1 margin-bottom-2 width-60">
+            <thead>
+            <tr>
+                <th>{{ t('valintaryhmalomake.nimi') || 'Nimi' }}</th>
+                <th>{{ t('valintaryhmalomake.kuvaus') || 'Kuvaus' }}</th>
+                <th>{{ t('valintaryhmalomake.laskentakaava') || 'Laskentakaava' }}</th>
+                <th>{{ t('valintaryhmalomake.kiintio') || 'Kiintiö' }}</th>
+                <th>{{ t('valintaryhmalomake.poista') || 'Poista' }}</th>
+            </tr>
+            </thead>
+            <tbody ng-model="model.hakijaryhmat">
+            <tr ng-repeat="data in model.hakijaryhmat">
+                <td class="align-center">
+                    <a href="#/valintaryhma/{{model.valintaryhma.oid}}/hakijaryhma/{{data.oid}}">{{data.nimi}}</a>
+                </td>
+                <td class="align-center">{{data.kuvaus}}</td>
+                <td class="align-center">{{data.laskentakaava_nimi}}</td>
+                <td class="align-center">{{data.kiintio}}</td>
+                <td class="align-center">
+
+                    <i auth="crud" ng-show="!data.inheritance" class="fa fa-trash-o"
+                       ng-click="removeHakijaryhma(data.oid)"></i>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="clear"></div>
+
+        <div ng-show="model.valintaryhma.oid" class="form-row">
+            <span auth="crud" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()"><i class="fa fa-plus"></i> {{ t('valintaryhmalomake.hakijaryhma') || 'Hakijaryhmä' }}</span>
+        </div>
+    </div>
+</div>
+
 
 <div class="col-md-12">
     <button type="button" class="float-left margin-right-1 btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i

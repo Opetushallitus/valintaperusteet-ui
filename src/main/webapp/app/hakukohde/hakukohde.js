@@ -209,6 +209,10 @@ function HakukohdeController($scope, $location, $routeParams, HakukohdeModel) {
         $scope.model.refresh($scope.hakukohdeOid);
     });
 
+    $scope.$on('hakijaryhmaliita', function(){
+        $scope.model.refresh($scope.hakukohdeOid);
+    });
+
 }
 
 app.factory('ValintaryhmaSiirtoModel', function($resource, $location, $routeParams, Valintaryhma, ChildValintaryhmas,
@@ -263,6 +267,60 @@ function ValintaryhmanSiirtoController($scope, $routeParams, ValintaryhmaSiirtoM
     };
 
     $scope.openValintaryhmaModal = function () {
+        $scope.show();
+    };
+}
+
+app.factory('HakijaryhmaLiitaModel', function($resource, $location, $routeParams, Hakijaryhma, HakijaryhmaLiitaHakukohde) {
+    "use strict";
+
+    var model = new function() {
+        this.hakijaryhma = {};
+
+        this.refresh = function() {
+            model.hakijaryhmaOid = {};
+            this.parentOid = "";
+
+        };
+
+        this.refreshIfNeeded = function() {
+            this.refresh();
+        };
+
+        this.move = function() {
+
+            if(model.parentOid) {
+                HakijaryhmaLiitaHakukohde.liita({valintatapajonoOid: $routeParams.valintatapajonoOid}, model.parentOid, function(result) {
+
+                });
+            }
+
+        };
+    }();
+
+    return model;
+});
+
+function HakijaryhmaValintaController($scope, $routeParams, HakijaryhmaLiitaModel, ValintaryhmaModel, HakijaryhmaLiitaHakukohde) {
+    "use strict";
+
+    $scope.model = HakijaryhmaLiitaModel;
+    $scope.model.refreshIfNeeded();
+
+    $scope.domain = ValintaryhmaModel;
+    ValintaryhmaModel.refresh();
+
+
+    $scope.liita = function() {
+        if($scope.model.parentOid) {
+            HakijaryhmaLiitaHakukohde.liita({hakukohdeOid: $routeParams.hakukohdeOid, hakijaryhmaOid: $scope.model.parentOid}, function(result) {
+                $scope.$emit('hakijaryhmaliita');
+                $scope.$broadcast('suljemodal');
+            });
+        }
+    };
+
+    $scope.openHakijaryhmaModal = function () {
         $scope.show();
     };
 }
