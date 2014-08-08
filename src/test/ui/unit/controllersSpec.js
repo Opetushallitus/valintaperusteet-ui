@@ -163,6 +163,16 @@ describe('Testing UusiValintaryhmaController', function(){
         expect(scope.model.valintaryhma.organisaatiot.length).toBe(2);
     });
 
+    it('persistValintaryhma', function() {
+
+        $httpBackend.expectPUT('resources/valintaryhma').respond("");
+        $httpBackend.expectGET('resources/puu?kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
+        valintaryhmaCreatorModel.persistValintaryhma();
+        $httpBackend.flush();
+
+    });
+
+
     afterEach(function() {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
