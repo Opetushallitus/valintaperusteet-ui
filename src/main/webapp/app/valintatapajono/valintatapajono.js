@@ -311,7 +311,8 @@ app.factory('HakijaryhmaLiitaModel', function($resource, $location, $routeParams
 
             if(model.parentOid) {
                 HakijaryhmaLiita.liita({valintatapajonoOid: $routeParams.valintatapajonoOid}, model.parentOid, function(result) {
-
+                    $scope.$emit('hakijaryhmaliita');
+                    $scope.$broadcast('suljemodal');
                 });
             }
 

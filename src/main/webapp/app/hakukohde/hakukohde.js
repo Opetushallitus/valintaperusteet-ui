@@ -271,7 +271,7 @@ function ValintaryhmanSiirtoController($scope, $routeParams, ValintaryhmaSiirtoM
     };
 }
 
-app.factory('HakijaryhmaLiitaModel', function($resource, $location, $routeParams, Hakijaryhma, HakijaryhmaLiitaHakukohde) {
+app.factory('HakijaryhmaLiitaHakukohdeModel', function($resource, $location, $routeParams, Hakijaryhma, HakijaryhmaLiitaHakukohde) {
     "use strict";
 
     var model = new function() {
@@ -290,8 +290,9 @@ app.factory('HakijaryhmaLiitaModel', function($resource, $location, $routeParams
         this.move = function() {
 
             if(model.parentOid) {
-                HakijaryhmaLiitaHakukohde.liita({valintatapajonoOid: $routeParams.valintatapajonoOid}, model.parentOid, function(result) {
-
+                HakijaryhmaLiitaHakukohde.liita({hakukohdeOid: $routeParams.hakukohdeOid, hakijaryhmaOid: $scope.model.parentOid}, function(result) {
+                    $scope.$emit('hakijaryhmaliita');
+                    $scope.$broadcast('suljemodal');
                 });
             }
 
@@ -301,10 +302,10 @@ app.factory('HakijaryhmaLiitaModel', function($resource, $location, $routeParams
     return model;
 });
 
-function HakijaryhmaValintaController($scope, $routeParams, HakijaryhmaLiitaModel, ValintaryhmaModel, HakijaryhmaLiitaHakukohde) {
+function HakijaryhmaValintaHakukohdeController($scope, $routeParams, HakijaryhmaLiitaHakukohdeModel, ValintaryhmaModel, HakijaryhmaLiitaHakukohde) {
     "use strict";
 
-    $scope.model = HakijaryhmaLiitaModel;
+    $scope.model = HakijaryhmaLiitaHakukohdeModel;
     $scope.model.refreshIfNeeded();
 
     $scope.domain = ValintaryhmaModel;
