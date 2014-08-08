@@ -53,8 +53,6 @@ return $resource(SERVICE_URL_BASE + "resources/puu", {
 
 
 
-
-
 app.factory('RootValintaryhmas', function($resource) {
 return $resource(SERVICE_URL_BASE + "resources/valintaryhma", {}, {
     get: {method: "GET", isArray: true,

@@ -1,14 +1,17 @@
 app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routeParams, Valintaryhma,
-                                                 KoodistoHaunKohdejoukko, ChildValintaryhmas, Treemodel ) {
+                                                 KoodistoHaunKohdejoukko, ChildValintaryhmas, Treemodel,
+                                                 ParentValintaryhmas) {
     "use strict";
 
     var model = new function() {
         this.valintaryhma = {};
         this.kohdejoukot = [];
+        this.nameerror = false;
 
         this.refresh = function() {
             model.valintaryhma = {};
             model.parentOid  = "";
+            model.nameerror = false;
 
             KoodistoHaunKohdejoukko.get(function (result) {
                 model.kohdejoukot = result;
@@ -30,19 +33,79 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
                 organisaatiot: model.valintaryhma.organisaatiot
             };
 
-            if(!model.parentOid){
-                Valintaryhma.insert(newValintaryhma, function(result) {
-                    Treemodel.refresh();
-                    $location.path("/valintaryhma/" + result.oid);
-                });
+            if (!model.parentOid) {
+                if (!model.hasSameName()) {
+                    Valintaryhma.insert(newValintaryhma, function (result) {
+                        Treemodel.refresh();
+                        $location.path("/valintaryhma/" + result.oid);
+                    });
+                } else {
+                    model.nameerror = true;
+                }
             } else {
-                ChildValintaryhmas.insert({"parentOid": model.parentOid}, newValintaryhma, function(result){
-                    Treemodel.refresh();
-                    model.valintaryhma = result;
-                    $location.path("/valintaryhma/" + result.oid);
+                ParentValintaryhmas.get({parentOid: model.parentOid}, function (data) {
+                    var parentoid = model.parentOid;
+                    if (data && data.length > 0) {
+                        parentoid = data[data.length-1].oid;
+                    }
+                    if (!model.hasSameName(parentoid)) {
+                        ChildValintaryhmas.insert({"parentOid": model.parentOid}, newValintaryhma, function (result) {
+                            Treemodel.refresh();
+                            model.valintaryhma = result;
+                            $location.path("/valintaryhma/" + result.oid);
+                        });
+                    } else {
+                        model.nameerror = true;
+                    }
                 });
+
             }
         };
+
+        this.hasSameName = function(parentoid) {
+            var returnValue = false;
+
+            Treemodel.valintaperusteList.forEach(function(valinta) {
+                if (!returnValue && valinta.tyyppi === "VALINTARYHMA") {
+                    if (!model.parentOid) {
+                        if (valinta.nimi === model.valintaryhma.nimi) {
+                            returnValue = true;
+                        }
+                    } else {
+                        if (!returnValue && parentoid === valinta.oid) {
+                            if (valinta.nimi === model.valintaryhma.nimi) {
+                                returnValue = true;
+                            }
+                            if (!returnValue && valinta.alavalintaryhmat.length > 0) {
+                                returnValue = model.checkAlavalintaryhmaForSameName(valinta.alavalintaryhmat);
+                            }
+                        }
+
+                    }
+                }
+            });
+
+            return returnValue;
+        };
+
+        this.checkAlavalintaryhmaForSameName = function(ryhma) {
+            var returnValue = false;
+
+            ryhma.forEach(function(valinta) {
+                if (!returnValue) {
+                    if (valinta.nimi === model.valintaryhma.nimi) {
+                        returnValue = true;
+                    }
+                    if (!returnValue && valinta.alavalintaryhmat.length > 0) {
+                        returnValue = model.checkAlavalintaryhmaForSameName(valinta.alavalintaryhmat);
+                    }
+                }
+            });
+
+
+            return returnValue;
+        };
+
     }();
 
     return model;

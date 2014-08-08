@@ -76,7 +76,7 @@
          ng-include="templateService.getTemplateName(funktiowrapper.lapsi.funktionimi)"></div>
 
     <!-- käydään rekursiivisesti nykyisen funktion lapset läpi -->
-    <ul ng-if="funktiowrapper.lapsi.funktioargumentit" ng-init="parent = funktiowrapper">
+    <ul ng-if="funktiowrapper.open && funktiowrapper.lapsi.funktioargumentit" ng-init="parent = funktiowrapper">
 
         <li ng-if="parent.lapsi.funktioargumentit.length > 0 && parent.lapsi.funktioargumentit[0] !== null || isNimettyFunktioargumentti(parent)"
             class="item" ng-repeat="funktiowrapper in parent.lapsi.funktioargumentit track by $index">
@@ -295,7 +295,7 @@ YHTASUURI
 -->
 <script type="text/ng-template" id="funktio">
     <div class="function" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
-        <span class="icon">&#8302;</span>
+        <span class="icon" ng-click="funktiowrapper.open = funktiowrapper.open ? false : true">&#8302;</span>
         <span add-class-on-mouseover="bold" class="node"
               ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
     </div>
