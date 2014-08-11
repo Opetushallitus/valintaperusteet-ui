@@ -11,133 +11,194 @@
     <breadcrumb></breadcrumb>
     <form class="form-horizontal" name="form" ng-submit="submit()">
 
-        <div class="form-group">
-            <label class="col-md-2 control-label" for="nimi">OID</label>
+    <!-- Hakijaryhmä -->
+        <div ng-if="model.onkoHakijaryhma">
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="nimi">OID</label>
 
-            <p class="col-md-4 form-control-static">{{model.hakijaryhma.oid}}</p>
-        </div>
-
-        <div class="form-group">
-            <label class="col-md-2 control-label" for="nimi">Nimi</label>
-
-            <div class="col-md-4">
-                <input class="form-control" type="text" id="nimi" required ng-model="model.hakijaryhma.nimi"/>
+                <p class="col-md-4 form-control-static">{{model.hakijaryhma.oid}}</p>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label class="col-md-2 control-label" for="kuvaus">Kuvaus</label>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="nimi">Nimi</label>
 
-            <div class="col-md-4">
-                <input class="form-control" type="text" id="kuvaus" ng-model="model.hakijaryhma.kuvaus"/>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-md-2 control-label" for="kiintio">Kiintiön koko</label>
-
-            <div class="col-md-4">
-                <input class="form-control" type="number" min="0" required id="kiintio"
-                       ng-model="model.hakijaryhma.kiintio"/>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-md-2 control-label"
-                   for="tarkkaKiintio"
-                   popover-popup-delay="500"
-                   popover-placement="right"
-                   popover-trigger="mouseenter"
-                   popover="Hakijaryhmästä hyväksytään enintään kiintiön mukainen määrä">Kiintiö on yläraja</label>
-
-            <div class="col-md-2 ">
-                <div class="checkbox">
-                    <input type="checkbox"
-                           id="tarkkaKiintio"
-                           ng-model="model.hakijaryhma.tarkkaKiintio"
-                           popover-popup-delay="500"
-                           popover-placement="right"
-                           popover-trigger="mouseenter"
-                           popover="Hakijaryhmästä hyväksytään enintään kiintiön mukainen määrä"
-                            />
+                <div class="col-md-4">
+                    <input class="form-control" type="text" id="nimi" required ng-model="model.hakijaryhma.nimi"/>
                 </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label class="col-md-2 control-label"
-                   for="kaytaKaikki"
-                   popover-popup-delay="500"
-                   popover-placement="right"
-                   popover-trigger="mouseenter"
-                   popover="Vain hakijaryhmään kuuluvat voivat tulla hyväksytyiksi">Vain hakijaryhmään kuuluvat voivat tulla hyväksytyiksi</label>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="kuvaus">Kuvaus</label>
 
-            <div class="col-md-2 ">
-                <div class="checkbox" >
-                    <input type="checkbox"
-                           ng-model="model.hakijaryhma.kaytaKaikki"
-                           id="kaytaKaikki"
-                           popover-popup-delay="500"
-                           popover-placement="right"
-                           popover-trigger="mouseenter"
-                           popover="Vain hakijaryhmään kuuluvat voivat tulla hyväksytyiksi"
-                            />
+                <div class="col-md-4">
+                    <input class="form-control" type="text" id="kuvaus" ng-model="model.hakijaryhma.kuvaus"/>
                 </div>
             </div>
-        </div>
 
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="kiintio">Kiintiön koko</label>
 
-        <div class="form-group">
-            <div class="col-md-2 text-right">
-                <label popover-popup-delay="500"
+                <div class="col-md-4">
+                    <input class="form-control" type="number" min="0" required id="kiintio"
+                           ng-model="model.hakijaryhma.kiintio"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label"
+                       for="tarkkaKiintio"
+                       popover-popup-delay="500"
                        popover-placement="right"
                        popover-trigger="mouseenter"
-                       popover="Hakijaryhmään liittyvä laskentakaava">Laskentakaava:</label>
-            </div>
-            <div class="col-md-10">&nbsp;</div>
-        </div>
-        <div class="form-group" ng-repeat="group in model.laskentakaavaModel.laskentakaavat">
-            <label class="col-md-2 control-label">{{group.name}}</label>
+                       popover="Hakijaryhmästä hyväksytään enintään kiintiön mukainen määrä">Kiintiö on yläraja</label>
 
-            <div class="col-md-10">
-                <div class="radio" ng-repeat="data in group.result">
-                    <label>
-                        <input type="radio" name="laskentakaava" value="{{data.id}}"
-                               ng-model="model.hakijaryhma.laskentakaavaId"
-                               ng-required="!model.hakijaryhma.laskentakaavaId"> {{data.nimi}} (<span
-                            ng-bind="data.id"></span>)
-                    </label>
+                <div class="col-md-2 ">
+                    <div class="checkbox">
+                        <input type="checkbox"
+                               id="tarkkaKiintio"
+                               ng-model="model.hakijaryhma.tarkkaKiintio"
+                               popover-popup-delay="500"
+                               popover-placement="right"
+                               popover-trigger="mouseenter"
+                               popover="Hakijaryhmästä hyväksytään enintään kiintiön mukainen määrä"
+                                />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label"
+                       for="kaytaKaikki"
+                       popover-popup-delay="500"
+                       popover-placement="right"
+                       popover-trigger="mouseenter"
+                       popover="Vain hakijaryhmään kuuluvat voivat tulla hyväksytyiksi">Vain hakijaryhmään kuuluvat voivat tulla hyväksytyiksi</label>
+
+                <div class="col-md-2 ">
+                    <div class="checkbox" >
+                        <input type="checkbox"
+                               ng-model="model.hakijaryhma.kaytaKaikki"
+                               id="kaytaKaikki"
+                               popover-popup-delay="500"
+                               popover-placement="right"
+                               popover-trigger="mouseenter"
+                               popover="Vain hakijaryhmään kuuluvat voivat tulla hyväksytyiksi"
+                                />
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-2 text-right">
+                    <label popover-popup-delay="500"
+                           popover-placement="right"
+                           popover-trigger="mouseenter"
+                           popover="Hakijaryhmään liittyvä laskentakaava">Laskentakaava:</label>
+                </div>
+                <div class="col-md-10">&nbsp;</div>
+            </div>
+            <div class="form-group" ng-repeat="group in model.laskentakaavaModel.laskentakaavat">
+                <label class="col-md-2 control-label">{{group.name}}</label>
+
+                <div class="col-md-10">
+                    <div class="radio" ng-repeat="data in group.result">
+                        <label>
+                            <input type="radio" name="laskentakaava" value="{{data.id}}"
+                                   ng-model="model.hakijaryhma.laskentakaavaId"
+                                   ng-required="!model.hakijaryhma.laskentakaavaId"> {{data.nimi}} (<span
+                                ng-bind="data.id"></span>)
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Hakijaryhmä Valintatapajono -->
+        <div ng-if="!model.onkoHakijaryhma">
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="nimi">OID</label>
+
+                <p class="col-md-4 form-control-static">{{model.hakijaryhma.oid}}</p>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label"
+                       for="aktiivinen"
+                       popover-popup-delay="500"
+                       popover-placement="right"
+                       popover-trigger="mouseenter"
+                       popover="Hakijaryhmästä on aktiivinen">Aktiivinen</label>
+
+                <div class="col-md-2 ">
+                    <div class="checkbox">
+                        <input type="checkbox"
+                               id="aktiivinen"
+                               ng-model="model.hakijaryhma.aktiivinen"
+                               popover-popup-delay="500"
+                               popover-placement="right"
+                               popover-trigger="mouseenter"
+                               popover="Hakijaryhmästä on aktiivinen"
+                                />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="kiintio">Kiintiön koko</label>
+
+                <div class="col-md-4">
+                    <input class="form-control" type="number" min="0" required id="kiintio"
+                           ng-model="model.hakijaryhma.kiintio"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label"
+                       for="tarkkaKiintio"
+                       popover-popup-delay="500"
+                       popover-placement="right"
+                       popover-trigger="mouseenter"
+                       popover="Hakijaryhmästä hyväksytään enintään kiintiön mukainen määrä">Kiintiö on yläraja</label>
+
+                <div class="col-md-2 ">
+                    <div class="checkbox">
+                        <input type="checkbox"
+                               id="tarkkaKiintio"
+                               ng-model="model.hakijaryhma.tarkkaKiintio"
+                               popover-popup-delay="500"
+                               popover-placement="right"
+                               popover-trigger="mouseenter"
+                               popover="Hakijaryhmästä hyväksytään enintään kiintiön mukainen määrä"
+                                />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label"
+                       for="kaytaKaikki"
+                       popover-popup-delay="500"
+                       popover-placement="right"
+                       popover-trigger="mouseenter"
+                       popover="Vain hakijaryhmään kuuluvat voivat tulla hyväksytyiksi">Vain hakijaryhmään kuuluvat voivat tulla hyväksytyiksi</label>
+
+                <div class="col-md-2 ">
+                    <div class="checkbox" >
+                        <input type="checkbox"
+                               ng-model="model.hakijaryhma.kaytaKaikki"
+                               id="kaytaKaikki"
+                               popover-popup-delay="500"
+                               popover-placement="right"
+                               popover-trigger="mouseenter"
+                               popover="Vain hakijaryhmään kuuluvat voivat tulla hyväksytyiksi"
+                                />
+                    </div>
                 </div>
             </div>
 
         </div>
-
-        <!--<div class="form-group" ng-show="model.hakijaryhma.oid">-->
-        <!--<label class="col-md-2 control-label">Liitetyt valintatapajonot</label>-->
-
-        <!--<div class="col-md-10">-->
-        <!--<table class="virkailija-table-1 margin-bottom-2">-->
-        <!--<thead>-->
-        <!--<tr>-->
-        <!--<th>Aktiivinen</th>-->
-        <!--<th>Nimi</th>-->
-        <!--<th>Periytyminen</th>-->
-        <!--</tr>-->
-        <!--</thead>-->
-        <!--<tbody class="margin-top-2">-->
-        <!--<tr ng-repeat="jono in model.valintatapajonot">-->
-        <!--<td>{{jono.valintatapajono.aktiivinen ? 'Kyllä' : 'Ei'}}</td>-->
-        <!--<td>-->
-        <!--<span ng-class="{true:'', false:'line-through'}[jono.valintatapajono.aktiivinen]">{{jono.valintatapajono.nimi}}</span>-->
-        <!--</td>-->
-        <!--<td>{{'valintaperusteet.periytyy.' + jono.valintatapajono.inheritance | translate}}</td>-->
-        <!--</tr>-->
-        <!--</tbody>-->
-        <!--</table>-->
-
-        <!--</div>-->
-        <!--<div class="clear"></div>-->
-        <!--</div>-->
 
         <div class="col-sm-2">
             <button class="btn btn-sm btn-default"

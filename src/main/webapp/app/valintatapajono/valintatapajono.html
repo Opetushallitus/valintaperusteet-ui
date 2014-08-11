@@ -239,16 +239,16 @@
 
             </tr>
             </thead>
-            <tbody ui-sortable ng-model="model.hakijaryhmat ">
+            <tbody ui-sortable ng-model="model.hakijaryhmat">
             <tr ng-repeat="data in model.hakijaryhmat">
                 <td><input type="checkbox" ng-model="data.aktiivinen"/></td>
                 <td class="text-center">
                     <a ng-class="{true:'', false:'line-through'}[data.aktiivinen]"
-                       ng-click="modifyHakijaryhma(data.hakijaryhma.oid)">{{data.hakijaryhma.nimi}}</a>
+                       ng-click="modifyHakijaryhma(data.oid)">{{data.nimi}}</a>
                 </td>
-                <td class="text-center">{{data.hakijaryhma.kuvaus}}</td>
+                <td class="text-center">{{data.kuvaus}}</td>
                 <!--<td class="text-center">{{data.laskentakaava_nimi}}</td>-->
-                <td class="text-center">{{data.hakijaryhma.kiintio}}</td>
+                <td class="text-center">{{data.kiintio}}</td>
                 <!--<td></td>-->
                 <td class="text-center">
                         <span auth="crud" ng-show="!data.inheritance"

@@ -38,6 +38,9 @@ public class ConfigController {
     @Value("${valintaperusteet-ui.lokalisointi-service-url}")
     private String lokalisointiServiceUrl;
 
+    @Value("${valintalaskenta-ui.hakemus-service-url.rest}")
+    private String hakemusServiceUrl;
+
     @RequestMapping(value = "/configuration.js", method = RequestMethod.GET, produces = "text/javascript", headers="Accept=*/*")
     @ResponseBody
     public String index() {
@@ -49,6 +52,7 @@ public class ConfigController {
         append(b, "ORGANIZATION_SERVICE_URL_BASE", organisaatioServiceURL);
         append(b, "VALINTALASKENTAKOOSTE_URL_BASE", valintalaskentakoostepalvelu);
         append(b, "LOKALISOINTIPALVELU_URL_BASE", lokalisointiServiceUrl);
+        append(b, "HAKEMUS_URL_BASE", hakemusServiceUrl);
         append(b, "TEMPLATE_URL_BASE", "");
 
         append(b, "CAS_URL", casUrl);

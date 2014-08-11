@@ -20,6 +20,7 @@ var LOKALISOINTIPALVELU_URL_BASE = LOKALISOINTIPALVELU_URL_BASE || "";
 var TARJONTA_URL_BASE = TARJONTA_URL_BASE || "";
 var VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE || "";
 var LOCALISATION_URL_BASE = LOCALISATION_URL_BASE || "";
+var HAKEMUS_URL_BASE = HAKEMUS_URL_BASE || "";
 
 function mainCtrl($scope, breadcrumbs) {
     $scope.breadcrumbs = breadcrumbs;
@@ -37,6 +38,19 @@ app.factory('HaunTiedot', function($resource) {
   return $resource(TARJONTA_URL_BASE + "haku/:hakuOid", {hakuOid: "@hakuOid"}, {
     get: {method: "GET"}
   });
+});
+
+// HAKU-APP
+app.factory('HakemusAvaimet', function($resource) {
+    return $resource(HAKEMUS_URL_BASE + "application-system-form-editor/application-system-form/:asId", {asId: "@asId"}, {
+        get: {method: "GET", isArray: false}
+    });
+});
+
+app.factory('HakemusLisakysymykset', function($resource) {
+    return $resource(HAKEMUS_URL_BASE + "application-system-form-editor/theme-question/list/:asId", {asId: "@asId"}, {
+        get: {method: "GET", isArray: false}
+    });
 });
 
 //Valintaryhma
@@ -184,18 +198,6 @@ app.factory('HakukohdeSiirra', function($resource) {
 	});
 });
 
-app.factory('HakijaryhmaLiita', function($resource) {
-    return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoOid/hakijaryhma/:hakijaryhmaOid", {valintatapajonoOid: "@valintatapajonoOid", hakijaryhmaOid: "@hakijaryhmaOid"}, {
-        liita: {method: "POST"}
-    });
-});
-
-app.factory('HakijaryhmaLiitaHakukohde', function($resource) {
-    return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeOid/hakijaryhma/:hakijaryhmaOid", {hakukohdeOid: "@hakukohdeOid", hakijaryhmaOid: "@hakijaryhmaOid"}, {
-        liita: {method: "POST"}
-    });
-});
-
 //Valinnanvaihe
 app.factory('Valinnanvaihe', function($resource) {
  return $resource(SERVICE_URL_BASE + "resources/valinnanvaihe/:oid", {oid: "@oid"}, {
@@ -298,6 +300,7 @@ app.factory('HakijaryhmanValintatapajonot', function($resource) {
 
 app.factory('HakijaryhmaValintatapajono', function($resource) {
  return $resource(SERVICE_URL_BASE + "resources/hakijaryhma_valintatapajono/:oid", {oid: "@oid"}, {
+     get: {method: "GET"},
      delete: {method: "DELETE"},
      update: {method: "POST"}
    });
@@ -306,6 +309,18 @@ app.factory('HakijaryhmaValintatapajono', function($resource) {
 app.factory('HakijaryhmaJarjesta', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/hakijaryhma/jarjesta", {}, {
         post: {method: "POST", isArray: true}
+    });
+});
+
+app.factory('HakijaryhmaLiita', function($resource) {
+    return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoOid/hakijaryhma/:hakijaryhmaOid", {valintatapajonoOid: "@valintatapajonoOid", hakijaryhmaOid: "@hakijaryhmaOid"}, {
+        liita: {method: "POST"}
+    });
+});
+
+app.factory('HakijaryhmaLiitaHakukohde', function($resource) {
+    return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeOid/hakijaryhma/:hakijaryhmaOid", {hakukohdeOid: "@hakukohdeOid", hakijaryhmaOid: "@hakijaryhmaOid"}, {
+        liita: {method: "POST"}
     });
 });
 

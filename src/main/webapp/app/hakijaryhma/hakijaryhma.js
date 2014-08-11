@@ -1,26 +1,34 @@
 // Valintaryhma Järjestyskriteerit
 app.factory('HakijaryhmaModel', function($q, Hakijaryhma, LaskentakaavaModel,
                                          ValintaryhmaHakijaryhma, HakukohdeHakijaryhma,
-                                         HakijaryhmanValintatapajonot, ValintatapajonoHakijaryhma) {
+                                         HakijaryhmanValintatapajonot, ValintatapajonoHakijaryhma, HakijaryhmaValintatapajono) {
     "use strict";
 
     var factory = (function() {
         var instance = {};
         instance.hakijaryhma = {};
         instance.valintatapajonot = [];
+        instance.onkoHakijaryhma = true;
 
-        instance.refresh = function(oid, valintaryhmaOid, hakukohdeOid) {
+        instance.refresh = function(oid, valintaryhmaOid, hakukohdeOid, valintatapajonoOid) {
             instance.hakijaryhma = {};
             instance.hakijaryhma.kaytaKaikki = false;
             instance.hakijaryhma.tarkkaKiintio = false;
             instance.valintatapajonot.length = 0;
 
             if(oid) {
-                Hakijaryhma.get({oid: oid}, function(result) {
-                    instance.hakijaryhma = result;
-                });
+                if(hakukohdeOid || valintatapajonoOid) {
+                    HakijaryhmaValintatapajono.get({oid: oid}, function(result) {
+                        instance.hakijaryhma = result;
+                        instance.onkoHakijaryhma = false;
+                    })
+                } else {
+                    Hakijaryhma.get({oid: oid}, function(result) {
+                        instance.hakijaryhma = result;
+                    });
+                }
 
-                instance.valintatapajonot = HakijaryhmanValintatapajonot.get({oid: oid});
+                //instance.valintatapajonot = HakijaryhmanValintatapajonot.get({oid: oid});
             }
 
             LaskentakaavaModel.refresh(valintaryhmaOid, hakukohdeOid);
@@ -34,12 +42,21 @@ app.factory('HakijaryhmaModel', function($q, Hakijaryhma, LaskentakaavaModel,
             var deferred = $q.defer();
 
             if(instance.hakijaryhma.oid) {
-                Hakijaryhma.update({oid: instance.hakijaryhma.oid}, instance.hakijaryhma, function (result) {
-                    instance.hakijaryhma = result;
-                    deferred.resolve();
-                }, function(err) {
-                    deferred.reject('Hakijaryhmän tallentaminen valintaryhmään epäonnistui', err);
-                });
+                if(hakukohdeOid || valintatapajonoOid) {
+                    HakijaryhmaValintatapajono.update({oid: instance.hakijaryhma.oid}, instance.hakijaryhma, function (result) {
+                        instance.hakijaryhma = result;
+                        deferred.resolve();
+                    }, function(err) {
+                        deferred.reject('Hakijaryhmän tallentaminen hakukohteelle tai valintatapajonolle epäonnistui', err);
+                    });
+                } else {
+                    Hakijaryhma.update({oid: instance.hakijaryhma.oid}, instance.hakijaryhma, function (result) {
+                        instance.hakijaryhma = result;
+                        deferred.resolve();
+                    }, function(err) {
+                        deferred.reject('Hakijaryhmän tallentaminen valintaryhmään epäonnistui', err);
+                    });
+                }
             } else if(hakukohdeOid) {
                 HakukohdeHakijaryhma.insert({oid: hakukohdeOid}, instance.hakijaryhma, function(result) {
                     instance.hakijaryhma = result;
@@ -92,7 +109,7 @@ angular.module('valintaperusteet').
     $scope.valintaryhmaOid = $routeParams.id;
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakijaryhmaModel;
-    $scope.model.refresh($routeParams.hakijaryhmaOid, $routeParams.id, $routeParams.hakukohdeOid);
+    $scope.model.refresh($routeParams.hakijaryhmaOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valintatapajonoOid);
 
 
     $scope.submit = function() {
