@@ -1,7 +1,8 @@
 "use strict";
 
 var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute', 'pascalprecht.translate',
-    'ui.bootstrap', 'lodash', 'LaskentakaavaEditor', 'ng-breadcrumbs', 'oph.localisation']).run(function($http, LocalisationService){
+    'ui.bootstrap', 'lodash', 'LaskentakaavaEditor', 'ng-breadcrumbs', 'oph.localisation', 'oph.utils']).
+    run(function($http, LocalisationService){
     $http.get(SERVICE_URL_BASE + "buildversion.txt?auth");
     LocalisationService.getTranslation("");
 });

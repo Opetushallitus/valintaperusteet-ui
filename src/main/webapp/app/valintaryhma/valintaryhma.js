@@ -2,7 +2,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
                                            KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel,
                                            ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe,
                                            ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma,
-                                           OrganizationByOid, $modal) {
+                                           OrganizationByOid, $modal, Utils) {
     "use strict";
 
 
@@ -13,8 +13,10 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 		this.hakukohdekoodit = [];
 		this.valintakoekoodit = [];
         this.kohdejoukot = [];
+        this.nameerror = false;
 
 		this.refresh = function (oid) {
+            this.nameerror = false;
 
 			if (!oid) {
 				model.valintaryhma = {};
@@ -87,20 +89,24 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 		};
 
 		this.persistValintaryhma = function (oid) {
-			Valintaryhma.post(model.valintaryhma, function (result) {
-				model.valintaryhma = result;
-				Treemodel.refresh();
-			});
+            if (!Utils.hasSameName(model)) {
+                this.nameerror = false;
+                Valintaryhma.post(model.valintaryhma, function (result) {
+                    model.valintaryhma = result;
+                    Treemodel.refresh();
+                });
 
-			if (model.valinnanvaiheet.length > 0) {
-				ValinnanvaiheJarjesta.post(getValinnanvaiheOids(), function (result) {
-				});
-				for (var i = 0; i < model.valinnanvaiheet.length; ++i) {
-					Valinnanvaihe.post(model.valinnanvaiheet[i], function () {
-					});
-				}
-			}
-
+                if (model.valinnanvaiheet.length > 0) {
+                    ValinnanvaiheJarjesta.post(getValinnanvaiheOids(), function (result) {
+                    });
+                    for (var i = 0; i < model.valinnanvaiheet.length; ++i) {
+                        Valinnanvaihe.post(model.valinnanvaiheet[i], function () {
+                        });
+                    }
+                }
+            } else {
+                model.nameerror = true;
+            }
 
 		};
 
