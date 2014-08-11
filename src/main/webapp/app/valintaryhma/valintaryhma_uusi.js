@@ -1,6 +1,6 @@
 app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routeParams, Valintaryhma,
                                                  KoodistoHaunKohdejoukko, ChildValintaryhmas, Treemodel,
-                                                 ParentValintaryhmas) {
+                                                 ParentValintaryhmas, Utils) {
     "use strict";
 
     var model = new function() {
@@ -34,7 +34,7 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
             };
 
             if (!model.parentOid) {
-                if (!model.hasSameName()) {
+                if (!Utils.hasSameName(model)) {
                     Valintaryhma.insert(newValintaryhma, function (result) {
                         Treemodel.refresh();
                         $location.path("/valintaryhma/" + result.oid);
@@ -48,7 +48,7 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
                     if (data && data.length > 0) {
                         parentoid = data[data.length-1].oid;
                     }
-                    if (!model.hasSameName(parentoid)) {
+                    if (!Utils.hasSameName(model,parentoid)) {
                         ChildValintaryhmas.insert({"parentOid": model.parentOid}, newValintaryhma, function (result) {
                             Treemodel.refresh();
                             model.valintaryhma = result;
@@ -62,49 +62,6 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
             }
         };
 
-        this.hasSameName = function(parentoid) {
-            var returnValue = false;
-
-            Treemodel.valintaperusteList.forEach(function(valinta) {
-                if (!returnValue && valinta.tyyppi === "VALINTARYHMA") {
-                    if (!model.parentOid) {
-                        if (valinta.nimi === model.valintaryhma.nimi) {
-                            returnValue = true;
-                        }
-                    } else {
-                        if (!returnValue && parentoid === valinta.oid) {
-                            if (valinta.nimi === model.valintaryhma.nimi) {
-                                returnValue = true;
-                            }
-                            if (!returnValue && valinta.alavalintaryhmat.length > 0) {
-                                returnValue = model.checkAlavalintaryhmaForSameName(valinta.alavalintaryhmat);
-                            }
-                        }
-
-                    }
-                }
-            });
-
-            return returnValue;
-        };
-
-        this.checkAlavalintaryhmaForSameName = function(ryhma) {
-            var returnValue = false;
-
-            ryhma.forEach(function(valinta) {
-                if (!returnValue) {
-                    if (valinta.nimi === model.valintaryhma.nimi) {
-                        returnValue = true;
-                    }
-                    if (!returnValue && valinta.alavalintaryhmat.length > 0) {
-                        returnValue = model.checkAlavalintaryhmaForSameName(valinta.alavalintaryhmat);
-                    }
-                }
-            });
-
-
-            return returnValue;
-        };
 
     }();
 
