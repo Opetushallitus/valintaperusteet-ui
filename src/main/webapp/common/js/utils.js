@@ -8,7 +8,7 @@ angular.module('oph.utils', [])
 
                 ryhma.forEach(function (valinta) {
                     if (!returnValue) {
-                        if (valinta.nimi === model.valintaryhma.nimi) {
+                        if (valinta.nimi === model.valintaryhma.nimi && valinta.oid !== model.valintaryhma.oid) {
                             returnValue = true;
                         }
                         if (!returnValue && valinta.alavalintaryhmat.length > 0) {
@@ -26,11 +26,11 @@ angular.module('oph.utils', [])
                 Treemodel.valintaperusteList.forEach(function (valinta) {
                     if (!returnValue && valinta.tyyppi === "VALINTARYHMA") {
                         if (!model.parentOid) {
-                            if (valinta.nimi === model.valintaryhma.nimi) {
+                            if (valinta.nimi === model.valintaryhma.nimi && valinta.oid !== model.valintaryhma.oid) {
                                 returnValue = true;
                             }
                         } else {
-                            if (!returnValue && parentoid === valinta.oid) {
+                            if (!returnValue && parentoid === valinta.oid && valinta.oid !== model.valintaryhma.oid) {
                                 if (valinta.nimi === model.valintaryhma.nimi) {
                                     returnValue = true;
                                 }
