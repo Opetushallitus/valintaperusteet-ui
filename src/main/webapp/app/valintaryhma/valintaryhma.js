@@ -115,12 +115,16 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 			}
 		};
 
-        this.updateKohdejoukot = function (kohdejoukko) {
-            ChildValintaryhmas.get({"parentOid": model.valintaryhma.oid}, function (result) {
+        this.updateKohdejoukot = function (kohdejoukko, oid) {
+            ChildValintaryhmas.get({"parentOid": oid}, function (result) {
                 result.forEach(function (valintaryhma) {
-                    valintaryhma.kohdejoukko = kohdejoukko;
-                    Valintaryhma.post(valintaryhma, function (result) {
-                    });
+
+                    if (valintaryhma.kohdejoukko !== kohdejoukko) {
+                        valintaryhma.kohdejoukko = kohdejoukko;
+                        Valintaryhma.post(valintaryhma, function (result) {
+                        });
+                    }
+                    model.updateKohdejoukot(kohdejoukko, valintaryhma.oid);
                 });
             });
         };
@@ -132,7 +136,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
                 Valintaryhma.post(model.valintaryhma, function (result) {
                     model.valintaryhma = result;
                     if (model.valintaryhma.level === 1) {
-                        model.updateKohdejoukot(model.valintaryhma.kohdejoukko);
+                        model.updateKohdejoukot(model.valintaryhma.kohdejoukko, model.valintaryhma.oid);
                     }
 
                     Treemodel.refresh();
