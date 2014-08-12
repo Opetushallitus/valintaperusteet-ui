@@ -11,7 +11,7 @@
             if(model.haut.length <= 0) {
                 Haku.get({}, function(result) {
                     var HakuOidObjects = result;
-                    
+
                     var promises = [];
 
                     //iterate hakuoids and fetch corresponding hakuobjects
@@ -23,8 +23,8 @@
                             	if (result.tila === "JULKAISTU") {
                             		model.haut.push(result);
                             	}
-                                
-                                deferred.resolve();    
+
+                                deferred.resolve();
                             });
 
                             return deferred.promise;

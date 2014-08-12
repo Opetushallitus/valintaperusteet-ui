@@ -2,7 +2,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
                                            KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel,
                                            ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe,
                                            ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma,
-                                           OrganizationByOid, $modal, Utils) {
+                                           OrganizationByOid, $modal, Utils, Haku, HaunTiedot) {
     "use strict";
 
 
@@ -13,6 +13,9 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 		this.hakukohdekoodit = [];
 		this.valintakoekoodit = [];
         this.kohdejoukot = [];
+        this.haut = [];
+        this.hakuoidit = [];
+        this.haettu = false;
         this.nameerror = false;
 
 		this.refresh = function (oid) {
@@ -60,6 +63,24 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
                 KoodistoHaunKohdejoukko.get(function (result) {
                     model.kohdejoukot = result;
                 });
+
+                if(!model.haettu) {
+                    model.haettu = true;
+                    Haku.get({}, function(result) {
+
+                        model.hakuoidit = result;
+
+                        //iterate hakuoids and fetch corresponding hakuobjects
+                        model.hakuoidit.forEach(function(element, index){
+                            HaunTiedot.get({hakuOid: element.oid}, function(result) {
+                                if (result.tila === "JULKAISTU") {
+                                    model.haut.push(result);
+                                }
+
+                            });
+                        });
+                    });
+                }
             }
 		};
 
