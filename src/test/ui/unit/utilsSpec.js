@@ -12,6 +12,7 @@ describe('Testing Utils', function(){
         model = {
             parentOid: '123213213',
             valintaryhma: {
+                oid: '1233333',
                 nimi: 'Painotettu keskiarvo, pÃ¤Ã¤sykoe ja lisÃ¤nÃ¤yttÃ¶'
             }
         };
@@ -25,10 +26,29 @@ describe('Testing Utils', function(){
         $httpBackend.flush();
     }));
 
-    it('hasSameName', function() {
+    it('hasSameName no VALINTARYHMA', function() {
         expect(utils.hasSameName(model, parentoid)).toBeFalsy();
-        treemodel.valintaperusteList[0].tyyppi = "VALINTARYHMA";
+    });
+
+    it('hasSameName has VALINTARYHMA', function() {
         treemodel.valintaperusteList[0].oid = parentoid;
+        treemodel.valintaperusteList[0].tyyppi = "VALINTARYHMA";
+        expect(utils.hasSameName(model, parentoid)).toBeTruthy();
+    });
+
+    it('hasSameName has same oid (update)', function() {
+        treemodel.valintaperusteList[0].oid = parentoid;
+        treemodel.valintaperusteList[0].tyyppi = "VALINTARYHMA";
+        treemodel.valintaperusteList[0].alavalintaryhmat[0].oid = '1233333';
+        expect(utils.hasSameName(model, parentoid)).toBeFalsy();
+    });
+
+    it('hasSameName has same name level 1', function() {
+        treemodel.valintaperusteList[0].oid = parentoid;
+        treemodel.valintaperusteList[0].tyyppi = "VALINTARYHMA";
+        treemodel.valintaperusteList[0].nimi = 'Painotettu keskiarvo, pÃ¤Ã¤sykoe ja lisÃ¤nÃ¤yttÃ¶';
+        treemodel.valintaperusteList[0].alavalintaryhmat[0].oid = '1233333';
+        treemodel.valintaperusteList[0].alavalintaryhmat[0].nimi = '3';
         expect(utils.hasSameName(model, parentoid)).toBeTruthy();
     });
 
