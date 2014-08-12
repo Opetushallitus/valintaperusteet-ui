@@ -59,3 +59,14 @@ app.filter('valintakoekoodiFullMatchFilter', function(ValintaryhmaModel) {
     return result;
   }
 });
+
+
+app.filter('laskentakaavaFilter', function(_, ValintatapajonoModel) {
+   return function(list) {
+       return _.difference(list, _.filter(list, function (item) {
+           return _.some(ValintatapajonoModel.jarjestyskriteerit, function (jk) {
+               return jk.laskentakaavaId == item.id;
+           });
+       }));
+   }
+});

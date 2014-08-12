@@ -82,8 +82,8 @@ app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskrit
 });
 
 angular.module('valintaperusteet').
-    controller('JarjestyskriteeriController', ['$scope', '$location', '$routeParams', 'JarjestyskriteeriModel', 'ValintatapajonoModel',
-        function ($scope, $location, $routeParams, JarjestyskriteeriModel, ValintatapajonoModel) {
+    controller('JarjestyskriteeriController', ['$scope', '$filter', '$location', '$routeParams', 'JarjestyskriteeriModel', 'ValintatapajonoModel',
+        function ($scope, $filter, $location, $routeParams, JarjestyskriteeriModel, ValintatapajonoModel) {
     "use strict";
 
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -93,7 +93,8 @@ angular.module('valintaperusteet').
 	
     $scope.model = JarjestyskriteeriModel;
     $scope.model.refreshIfNeeded($routeParams.jarjestyskriteeriOid, $routeParams.id, $routeParams.hakukohdeOid);
-    ValintatapajonoModel.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid);
+    
+    ValintatapajonoModel.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valinnanvaiheOid);
 
     $scope.submit = function () {
         var promise = JarjestyskriteeriModel.submit($scope.valintatapajonoOid, ValintatapajonoModel.jarjestyskriteerit);
@@ -120,4 +121,8 @@ angular.module('valintaperusteet').
         $location.path(path + '/valinnanvaihe/' + $routeParams.valinnanvaiheOid +
             '/valintatapajono/' + $routeParams.valintatapajonoOid);
     };
+            
+            $scope.kaavasFiltered = function(kaavas) {
+                return $filter('laskentakaavaFilter')(kaavas).length != 0;
+            }
 }]);
