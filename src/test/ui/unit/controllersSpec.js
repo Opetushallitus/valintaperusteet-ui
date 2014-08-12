@@ -214,7 +214,7 @@ describe('Testing ValintaryhmaController', function(){
         $httpBackend.expectGET('resources/valintaryhma/'+ routeParams.id+'/hakijaryhma').respond('[]');
         $httpBackend.expectGET('json/haunkohdejoukko/koodi').respond(haunkohdejoukkojson);
         $httpBackend.expectGET('haku').respond([]);
-
+        $httpBackend.expectGET('resources/valintaryhma/14030801791808409465510859807597/parents').respond('[{"nimi":"Lukiokoulutus","kohdejoukko":null,"oid":"1403079862403-6606759132794079794"}]');
 
         ctrl = $controller('ValintaryhmaController', {'$scope' : scope, '$location': location, '$routeParams': routeParams,
             'ValintaryhmaModel': valintaryhmaModel});

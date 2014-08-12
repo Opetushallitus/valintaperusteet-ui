@@ -2,7 +2,8 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
                                            KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel,
                                            ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe,
                                            ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma,
-                                           OrganizationByOid, $modal, Utils, Haku, HaunTiedot) {
+                                           OrganizationByOid, $modal, Utils, Haku, HaunTiedot, ParentValintaryhmas,
+                                           ChildValintaryhmas) {
     "use strict";
 
 
@@ -29,20 +30,25 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 				Valintaryhma.get({oid: oid}, function (result) {
 					model.valintaryhma = result;
 
-					//if there are empty arrays present that are attached to view, the view won't update when arrays are modified
-					if (model.valintaryhma.hakukohdekoodit !== undefined && model.valintaryhma.hakukohdekoodit.length === 0) {
-						model.valintaryhma.hakukohdekoodit = undefined;
-					}
-					if (model.valintaryhma.valintakoekoodit !== undefined && model.valintaryhma.valintakoekoodit.length === 0) {
-						model.valintaryhma.valintakoekoodit = undefined;
-					}
-					model.valintaryhma.organisaatiot.forEach(function (org, index) {
-						OrganizationByOid.get(org, function (result) {
-							model.valintaryhma.organisaatiot[index] = result;
-						});
-					});
+                    ParentValintaryhmas.get({parentOid: model.valintaryhma.oid}, function (data) {
+                        model.valintaryhma.level = data.length;
+                        //if there are empty arrays present that are attached to view, the view won't update when arrays are modified
+                        if (model.valintaryhma.hakukohdekoodit !== undefined && model.valintaryhma.hakukohdekoodit.length === 0) {
+                            model.valintaryhma.hakukohdekoodit = undefined;
+                        }
+                        if (model.valintaryhma.valintakoekoodit !== undefined && model.valintaryhma.valintakoekoodit.length === 0) {
+                            model.valintaryhma.valintakoekoodit = undefined;
+                        }
+                        model.valintaryhma.organisaatiot.forEach(function (org, index) {
+                            OrganizationByOid.get(org, function (result) {
+                                model.valintaryhma.organisaatiot[index] = result;
+                            });
+                        });
 
-					model.loaded.resolve();
+                        model.loaded.resolve();
+                    });
+
+
 				}, function () {
                     model.loaded.reject();
 				});
@@ -109,11 +115,26 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 			}
 		};
 
+        this.updateKohdejoukot = function (kohdejoukko) {
+            ChildValintaryhmas.get({"parentOid": model.valintaryhma.oid}, function (result) {
+                result.forEach(function (valintaryhma) {
+                    valintaryhma.kohdejoukko = kohdejoukko;
+                    Valintaryhma.post(valintaryhma, function (result) {
+                    });
+                });
+            });
+        };
+
 		this.persistValintaryhma = function (oid) {
             if (!Utils.hasSameName(model)) {
                 this.nameerror = false;
+
                 Valintaryhma.post(model.valintaryhma, function (result) {
                     model.valintaryhma = result;
+                    if (model.valintaryhma.level === 1) {
+                        model.updateKohdejoukot(model.valintaryhma.kohdejoukko);
+                    }
+
                     Treemodel.refresh();
                 });
 
@@ -270,7 +291,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 			});
 		};
 
-	}
+	}();
 
 	return model;
 });

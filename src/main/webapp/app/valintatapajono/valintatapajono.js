@@ -2,7 +2,7 @@
 app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheValintatapajono,
                                                 ValintatapajonoJarjestyskriteeri, Laskentakaava, Jarjestyskriteeri,
                                                 JarjestyskriteeriJarjesta, ValintatapajonoHakijaryhma, HakukohdeHakijaryhma,
-                                                ValintaryhmaHakijaryhma, HakijaryhmaValintatapajono, Hakijaryhma) {
+                                                ValintaryhmaHakijaryhma, HakijaryhmaValintatapajono, $modal) {
     "use strict";
 
     var model = new function()  {
@@ -131,13 +131,28 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
         };
 
         this.remove = function(oid) {
-            Jarjestyskriteeri.delete({oid:oid}, function() {
-                for(var i in model.jarjestyskriteerit) {
-                    if(oid === model.jarjestyskriteerit[i].oid) {
-                        model.jarjestyskriteerit.splice(i,1);
-                    }
+            $modal.open({
+                backdrop: 'static',
+                templateUrl: 'poistajononmuodostumiskriteeri.html',
+                controller: function($scope, $window, $modalInstance) {
+                    $scope.ok = function() {
+                        Jarjestyskriteeri.delete({oid:oid}, function() {
+                            for(var i in model.jarjestyskriteerit) {
+                                if(oid === model.jarjestyskriteerit[i].oid) {
+                                    model.jarjestyskriteerit.splice(i,1);
+                                }
+                            }
+                        });
+                        $modalInstance.close();
+                    };
+                    $scope.cancel = function() {
+                        $modalInstance.dismiss('cancel');
+                    };
                 }
-            });
+            }).result.then(function() {
+                }, function() {
+                });
+
         };
 
         this.removeHakijaryhma = function(oid) {

@@ -47,6 +47,7 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
                     var parentoid = model.parentOid;
                     if (data && data.length > 0) {
                         parentoid = data[data.length-1].oid;
+                        model.valintaryhma.kohdejoukko = data[data.length-1].kohdejoukko;
                     }
                     if (!Utils.hasSameName(model,parentoid)) {
                         ChildValintaryhmas.insert({"parentOid": model.parentOid}, newValintaryhma, function (result) {
