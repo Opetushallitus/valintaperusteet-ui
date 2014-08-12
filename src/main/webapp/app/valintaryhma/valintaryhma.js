@@ -2,7 +2,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
                                            KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel,
                                            ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe,
                                            ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma,
-                                           OrganizationByOid, $modal, Utils, Haku, HaunTiedot) {
+                                           OrganizationByOid, $modal, Utils, Haku, HaunTiedot, ParentValintaryhmas) {
     "use strict";
 
 
@@ -28,6 +28,10 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 
 				Valintaryhma.get({oid: oid}, function (result) {
 					model.valintaryhma = result;
+
+                    ParentValintaryhmas.get({parentOid: model.valintaryhma.oid}, function (data) {
+                        model.valintaryhma.level = data.length;
+                    });
 
 					//if there are empty arrays present that are attached to view, the view won't update when arrays are modified
 					if (model.valintaryhma.hakukohdekoodit !== undefined && model.valintaryhma.hakukohdekoodit.length === 0) {
