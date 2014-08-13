@@ -1,3 +1,4 @@
+/*
 xdescribe('LaskentakaavaController', function () {
 
     var $scope, $location, createController, _, $routeParams, $httpBackend, KaavaValidointi, Laskentakaava, LaskentakaavaLista,
@@ -37,6 +38,7 @@ xdescribe('LaskentakaavaController', function () {
      $httpBackend.verifyNoOutstandingRequest();
      });
      */
+/*
     describe('laskentakaavaController', function () {
 
         beforeEach(function () {
@@ -62,6 +64,8 @@ xdescribe('LaskentakaavaController', function () {
             $httpBackend.verifyNoOutstandingRequest();
         });
 */
+
+        /*
 //valintaperusteet -moduulissa
         it("buildversion is fetched", function () {
             $httpBackend.expectGET('buildversion.txt?auth');
@@ -98,3 +102,4 @@ xdescribe('LaskentakaavaController', function () {
 
 
 });
+*/
