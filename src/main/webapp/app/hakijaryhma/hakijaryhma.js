@@ -102,15 +102,14 @@ app.factory('HakijaryhmaModel', function($q, Hakijaryhma, LaskentakaavaModel,
 
 angular.module('valintaperusteet').
     controller('HakijaryhmaController', ['$scope', '$location', '$routeParams', 'HakijaryhmaModel',
-        'HakukohdeModel', 'ValintaryhmaModel',
+        'HakukohdeModel', 'ValintaryhmaModel', 'ValintatapajonoModel',
         function ($scope, $location, $routeParams, HakijaryhmaModel, HakukohdeModel, ValintaryhmaModel,ValintatapajonoModel) {
     "use strict";
 
-    $scope.valintaryhmaOid = $routeParams.id;
-	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakijaryhmaModel;
     $scope.model.refresh($routeParams.hakijaryhmaOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valintatapajonoOid);
 
+    ValintatapajonoModel.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valinnanvaiheOid);
 
     $scope.submit = function() {
         var promise = HakijaryhmaModel.submit($routeParams.id, $routeParams.hakukohdeOid, $routeParams.valintatapajonoOid);

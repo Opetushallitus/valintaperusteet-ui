@@ -1,4 +1,4 @@
-<script type="text/ng-template" id="poistajononmuodostumiskriteeri.html">
+﻿<script type="text/ng-template" id="poistajononmuodostumiskriteeri.html">
     <div class="modal-header">
         <h3 class="modal-title">{{ t('valintatapajono.poistajononmuodostumiskriteeri.header') || 'Oletko varma?' }}</h3>
     </div>
@@ -257,11 +257,11 @@
                 <td><input type="checkbox" ng-model="data.aktiivinen"/></td>
                 <td class="text-center">
                     <a ng-class="{true:'', false:'line-through'}[data.aktiivinen]"
-                       ng-click="modifyHakijaryhma(data.oid)">{{data.nimi}}</a>
+                       ng-click="modifyHakijaryhma(data.oid)">{{data.hakijaryhma.nimi}}</a>
                 </td>
-                <td class="text-center">{{data.kuvaus}}</td>
+                <td class="text-center">{{data.hakijaryhma.kuvaus}}</td>
                 <!--<td class="text-center">{{data.laskentakaava_nimi}}</td>-->
-                <td class="text-center">{{data.kiintio}}</td>
+                <td class="text-center">{{data.hakijaryhma.kiintio}}</td>
                 <!--<td></td>-->
                 <td class="text-center">
                         <span auth="crud" ng-show="!data.inheritance"
