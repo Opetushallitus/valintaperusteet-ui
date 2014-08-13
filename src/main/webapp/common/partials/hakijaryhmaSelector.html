@@ -5,10 +5,11 @@
         <i class="fa fa-users"></i>
         <input name="hakijaryhmaOid" type="radio" ng-model="model.parentOid" value="{{data.oid}}" id="{{data.oid}}"/> <label for="{{data.oid}}">{{data.nimi}}</label>
     </span>
-
     <ol ng-if="data.isVisible">
-        <li ng-repeat="data in data.alavalintaryhmat | filter:domain.search.q | orderBy:'nimi'" ng-include="'node.html'">
+        <li ng-repeat="data in data.alavalintaryhmat | hakijaryhmatFilter | filter:domain.search.q | orderBy:'nimi'" ng-include="'node.html'">
+
         </li>
+
     </ol>
 
 </script>
@@ -17,7 +18,8 @@
 <br />
 <div class="hakijaryhmaSelector">
     <ol class="treelist">
-        <li ng-repeat="data in domain.hakijaryhmat | filter:domain.search.q | orderBy:'nimi'"
+
+        <li ng-repeat="data in domain.hakijaryhmat | hakijaryhmatFilter | filter:domain.search.q | orderBy:'nimi'"
             ng-model="data"
             ng-include="'node.html'">
         </li>
