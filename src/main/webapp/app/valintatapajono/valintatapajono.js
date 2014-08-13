@@ -12,12 +12,13 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
         this.jonot = [];
 
         this.refresh = function(oid, valinnanVaiheOid) {
+            
             ValinnanvaiheValintatapajono.get({parentOid: valinnanVaiheOid},
                 function(result) {
                     model.jonot = _.filter(result, function(jono) {return (jono.oid != oid && jono.siirretaanSijoitteluun)});
                 }
             );
-
+            
             Valintatapajono.get({oid: oid}, function(result) {
                 model.valintatapajono = result;
                 model.valintatapajono.rajattu = model.valintatapajono.varasijat > 0;
@@ -43,7 +44,7 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
                 this.refresh(oid, valinnanVaiheOid);
             }
         };
-
+        
         this.refreshJK = function(oid) {
             ValintatapajonoJarjestyskriteeri.get({parentOid: oid}, function(result) {
                 model.jarjestyskriteerit = result;
@@ -201,6 +202,7 @@ angular.module('valintaperusteet').
     $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
 
     $scope.model = ValintatapajonoModel;
+
     $scope.model.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valinnanvaiheOid);
 
     $scope.submit = function() {

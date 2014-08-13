@@ -113,11 +113,12 @@ angular.module('valintaperusteet').
 
     $scope.submit = function() {
         var promise = HakijaryhmaModel.submit($routeParams.id, $routeParams.hakukohdeOid, $routeParams.valintatapajonoOid);
+
         promise.then(function() {
 
             if($routeParams.valintatapajonoOid) {
                 var isValintaryhmaChild = $routeParams.id ? true : false;
-                ValintatapajonoModel.refresh($routeParams.valintatapajonoOid);
+                ValintatapajonoModel.refresh($routeParams.valintatapajonoOid, $routeParams.valinnanvaiheOid);
 
                 if(isValintaryhmaChild) {
                     $location.path('/valintaryhma/' + $routeParams.id + '/valinnanvaihe/' + $routeParams.valinnanvaiheOid + '/valintatapajono/' + $routeParams.valintatapajonoOid);
@@ -138,7 +139,13 @@ angular.module('valintaperusteet').
     $scope.cancel = function() {
         var path;
 
-        if($routeParams.hakukohdeOid) {
+        if ($routeParams.valintatapajonoOid) {
+            if($routeParams.id) {
+                $location.path('/valintaryhma/' + $routeParams.id + '/valinnanvaihe/' + $routeParams.valinnanvaiheOid + '/valintatapajono/' + $routeParams.valintatapajonoOid);
+            } else {
+                $location.path('/hakukohde/' + $routeParams.hakukohdeOid + '/valinnanvaihe/' + $routeParams.valinnanvaiheOid + '/valintatapajono/' + $routeParams.valintatapajonoOid);
+            }
+        } else if($routeParams.hakukohdeOid) {
             path = "/hakukohde/" + $routeParams.hakukohdeOid;
         } else {
             path = "/valintaryhma/" + $routeParams.id;
