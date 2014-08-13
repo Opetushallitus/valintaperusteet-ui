@@ -317,7 +317,6 @@ describe('Testing HakijaryhmaController', function(){
     });
 
     it('check initialized variables', function() {
-        expect(scope.valintaryhmaOid).toBe(routeParams.id);
         expect(scope.model.laskentakaavaModel.laskentakaavat.length).toBe(1);
     });
 
