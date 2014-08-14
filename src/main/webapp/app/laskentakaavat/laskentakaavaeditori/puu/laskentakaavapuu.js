@@ -247,9 +247,15 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
             $scope.getValintaperuste = function (viitteet, indeksi) {
                 var result = viitteet[indeksi];
-
                 if (result === undefined) {
-                    result = {tunniste: "", kuvaus: "", lahde: "", onPakollinen: false, kuvaukset: {tekstit: []}};
+                    result = {tunniste: "", kuvaus: "", lahde: "", onPakollinen: false, kuvaukset: {tekstit: []}, vaatiiOsallistumisen: true};
+                } else if(_.size(result) == 1 || _.isEmpty(result)) {
+                    result.tunniste = "";
+                    result.kuvaus = "";
+                    result.lahde = "";
+                    result.onPakollinen = false;
+                    result.kuvaukset = {tekstit: []};
+                    result.vaatiiOsallistumisen = true;
                 }
 
                 return result;
