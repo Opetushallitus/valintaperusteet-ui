@@ -28,7 +28,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 $scope.laskentakaavaOid = $routeParams.laskentakaavaOid;
                 Laskentakaava.get({oid: $scope.laskentakaavaOid}, function (result) {
                     $scope.model.laskentakaavapuu = result;
-                    console.log(result);
+
                     //laskentakaavan painotettu keskiarvo -funktiokutsuihin lisätään tyhjät objektit, jotta niihin pystytään lisäämään funktioargumentteja
                     FunktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
 

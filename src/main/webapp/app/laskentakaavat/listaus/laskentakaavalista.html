@@ -16,50 +16,53 @@
     </button>
     <span ng-click="createKaava()" class="btn btn-sm btn-default"><i class="fa fa-plus"></i> {{ t('laskentakaavalista.laskentakaava') || 'Laskentakaava' }}</span>
 
-    <modal modal-template="laskentakaavat/listaus/kaavakopiointiModal.html">
-        <modal-open></modal-open>
-    </modal>
+    <div ng-controller="KaavaKopiointiController">
+        <modal modal-template="laskentakaavat/listaus/kaavakopiointiModal.html">
+            <modal-open></modal-open>
+        </modal>
+    </div>
 
-    <h2>{{ t('laskentakaavalista.laskentakaavalista') || 'Laskentakaavalista' }}</h2>
+</div>
+<h2>{{ t('laskentakaavalista.laskentakaavalista') || 'Laskentakaavalista' }}</h2>
 
 
+<div ng-repeat="valintaryhmaList in valintaryhmat.valintaryhmaList()">
+    <div ng-repeat="valintaryhma in valintaryhmaList">
+        <h3>{{valintaryhma.nimi}}</h3>
 
+        <div class="alert alert-info margin-bottom-2"
+             ng-show="!valintaryhma.laskentakaavat || valintaryhma.laskentakaavat.length == 0">
+            <p ng-show="!valintaryhma.oid">{{ t('laskentakaavalista.yhtaan') || 'Yhtään laskentakaavaa ei ole luotu.'
+                }}</p>
 
-        <div ng-repeat="valintaryhmaList in valintaryhmat.valintaryhmaList()">
-            <div ng-repeat="valintaryhma in valintaryhmaList">
-                <h3>{{valintaryhma.nimi}}</h3>
-
-                <div class="alert alert-info margin-bottom-2"
-                     ng-show="!valintaryhma.laskentakaavat || valintaryhma.laskentakaavat.length == 0">
-                    <p ng-show="!valintaryhma.oid">{{ t('laskentakaavalista.yhtaan') || 'Yhtään laskentakaavaa ei ole luotu.' }}</p>
-
-                    <p ng-show="valintaryhma.oid">{{ t('laskentakaavalista.talle') || 'Tälle valintaryhmälle ei ole luotu yhtään laskentakaavaa.' }}</p>
-                </div>
-                <table class="virkailija-table-1" ng-show="valintaryhma.laskentakaavat.length > 0">
-                    <thead>
-                    <tr>
-                        <th>{{ t('laskentakaavalista.nimi') || 'Nimi' }}</th>
-                        <th>{{ t('laskentakaavalista.kuvaus') || 'Kuvaus' }}</th>
-                        <th>{{ t('laskentakaavalista.kopioikaava') || 'Kopioi kaava'}}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="kaava in valintaryhma.laskentakaavat">
-                        <td>
-                            <a ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaavalista/laskentakaava/{{kaava.id}}">{{kaava.nimi}}</a>
-                        </td>
-                        <td>
-                            {{kaava.kuvaus}}
-                        </td>
-                        <td><button class="btn btn-default btn-sm" ng-click="kaavaKopiointiModal()"><i class="fa fa-file-o"></i> <i class="fa fa-long-arrow-right"></i> <i class="fa fa-users"></i></button></td>
-
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+            <p ng-show="valintaryhma.oid">{{ t('laskentakaavalista.talle') || 'Tälle valintaryhmälle ei ole luotu yhtään laskentakaavaa.' }}</p>
         </div>
+        <table class="virkailija-table-1" ng-show="valintaryhma.laskentakaavat.length > 0">
+            <thead>
+            <tr>
+                <th>{{ t('laskentakaavalista.nimi') || 'Nimi' }}</th>
+                <th>{{ t('laskentakaavalista.kuvaus') || 'Kuvaus' }}</th>
+                <th>{{ t('laskentakaavalista.kopioikaava') || 'Kopioi kaava'}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="kaava in valintaryhma.laskentakaavat">
+                <td>
+                    <a ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaavalista/laskentakaava/{{kaava.id}}">{{kaava.nimi}}</a>
+                </td>
+                <td>
+                    {{kaava.kuvaus}}
+                </td>
+                <td>
+                    <button class="btn btn-default btn-sm" ng-click="kaavaKopiointiModal(kaava)"><i class="fa fa-file-o"></i>
+                        <i class="fa fa-long-arrow-right"></i> <i class="fa fa-users"></i></button>
+                </td>
 
-
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 
 </div>

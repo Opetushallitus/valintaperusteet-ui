@@ -17,7 +17,7 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidointi', function($resou
 angular.module('LaskentakaavaEditor').factory('KaavaSiirto', function($resource) {
    'use strict';
 
-    return $resource(SERVICE_URL_BASE + "resources/laskentakaava/siirra", {});
+    return $resource(SERVICE_URL_BASE + "resources/laskentakaava/siirra", {}, {put: {method: "PUT"}});
 });
 
 angular.module('LaskentakaavaEditor').factory('Laskentakaava', function($resource) {

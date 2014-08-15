@@ -83,7 +83,7 @@ angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (La
     };
 });
 
-angular.module('LaskentakaavaEditor').controller('LaskentakaavaListController', function($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista, FunktioService, Ylavalintaryhma, KaavaSiirto) {
+angular.module('LaskentakaavaEditor').controller('LaskentakaavaListController', function($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista, FunktioService) {
     'use strict';
 
     $scope.funktioService = FunktioService;
@@ -92,12 +92,6 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaListController', 
     $scope.linkprefix = '';
     var params = {};
     var saveParams = {};
-
-    $scope.domain = Ylavalintaryhma;
-    $scope.domain.refresh();
-
-    $scope.model = {}
-    $scope.model.parentOid = "";
 
     if ($routeParams.valintaryhmaOid) {
         LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, null, true);
@@ -117,6 +111,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaListController', 
     };
 
     $scope.editKaava = function (kaava) {
+        console.log(kaava);
         $scope.showForm = true;
         $scope.kaava = kaava;
         $scope.originalKaava = angular.copy(kaava);
@@ -126,17 +121,80 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaListController', 
         $location.path("/valintaryhma/" + $routeParams.valintaryhmaOid);
     };
 
-    $scope.kaavaKopiointiModal = function () {
-        $scope.show();
+    $scope.kaavaKopiointiModal = function (kaava) {
+        $scope.$broadcast('kaavakopiointi', kaava);
     };
 
+});
+
+angular.module('LaskentakaavaEditor').factory('KaavaKopiointiModel', function($log,  Laskentakaava) {
+    'use strict';
+    var model = new function () {
+
+
+        this.laskentakaava = {};
+
+        this.refresh = function (kaavaId) {
+            Laskentakaava.get({oid: kaavaId}, function(result) {
+                model.laskentakaava = result.funktiokutsu;
+            }, function(error) {
+                $log.error('Laskentakaavan hakeminen epäonnistui', error);
+            });
+
+
+        };
+
+        this.refreshIfNeeded = function(kaavaId) {
+            if(model.laskentakaava.id !== kaavaId) {
+                model.refresh(kaavaId);
+            }
+        };
+
+   };
+
+   return model;
+});
+
+angular.module('LaskentakaavaEditor').controller('KaavaKopiointiController', function($scope, $log, KaavaKopiointiModel, Ylavalintaryhma, KaavaSiirto, Laskentakaava ) {
+
+    $scope.domain = Ylavalintaryhma;
+    $scope.domain.refresh();
+
+    $scope.kopiointiModel = KaavaKopiointiModel;
+    //model-object täytyy luoda, koska sen parentOid-muuttujaan asetetaan valitun valintaryhmän oid
+    $scope.model = {};
+
     $scope.kopioiKaava = function() {
-        console.log($scope.model.parentOid);
-//        KaavaSiirto.put({}, )
+        var payload = {
+            uusinimi: $scope.model.uusinimi,
+            valintaryhmaOid: $scope.model.parentOid,
+            funktiokutsu: $scope.kopiointiModel.laskentakaava,
+            onLuonnos: $scope.kaavaData.onLuonnos,
+            nimi: $scope.kaavaData.nimi,
+            kuvaus: $scope.kaavaData.kuvaus
+        };
+        
+        KaavaSiirto.put(payload, function(result) {
+            $scope.$broadcast('suljemodal');
+        }, function(error) {
+            $log.error('Kaavan siirto ei onnistunut', error);
+            $scope.$broadcast('suljemodal');
+        });
     };
 
     $scope.cancel = function() {
         $scope.$broadcast('suljemodal');
     }
+
+    $scope.$on('kaavakopiointi', function(event, kaava) {
+        if(kaava.id) {
+            $scope.kaavaData = kaava;
+            $scope.kopiointiModel.refreshIfNeeded(kaava.id);
+            $scope.show();
+        } else {
+            $log.error('Kopioitavan kaavan Id puuttuu');
+        }
+    });
+
 
 });
