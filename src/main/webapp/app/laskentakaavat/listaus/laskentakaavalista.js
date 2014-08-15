@@ -96,6 +96,9 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaListController', 
     $scope.domain = Ylavalintaryhma;
     $scope.domain.refresh();
 
+    $scope.model = {}
+    $scope.model.parentOid = "";
+
     if ($routeParams.valintaryhmaOid) {
         LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, null, true);
         saveParams.valintaryhmaOid = $routeParams.valintaryhmaOid;
