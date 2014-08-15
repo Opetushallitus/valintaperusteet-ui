@@ -14,6 +14,12 @@ angular.module('LaskentakaavaEditor').factory('KaavaValidointi', function($resou
     });
 });
 
+angular.module('LaskentakaavaEditor').factory('KaavaSiirto', function($resource) {
+   'use strict';
+
+    return $resource(SERVICE_URL_BASE + "resources/laskentakaava/siirra", {});
+});
+
 angular.module('LaskentakaavaEditor').factory('Laskentakaava', function($resource) {
     'use strict';
 

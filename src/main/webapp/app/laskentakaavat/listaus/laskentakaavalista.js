@@ -83,17 +83,18 @@ angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (La
     };
 });
 
-function LaskentakaavaListController($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista, FunktioService) {
+angular.module('LaskentakaavaEditor').controller('LaskentakaavaListController', function($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista, FunktioService, Ylavalintaryhma, KaavaSiirto) {
     'use strict';
 
-	$scope.funktioService = FunktioService;
-	$scope.funktioService.refresh();
-	$scope.valintaryhmaOid = $routeParams.valintaryhmaOid;
+    $scope.funktioService = FunktioService;
+    $scope.funktioService.refresh();
+    $scope.valintaryhmaOid = $routeParams.valintaryhmaOid;
     $scope.linkprefix = '';
     var params = {};
     var saveParams = {};
 
-
+    $scope.domain = Ylavalintaryhma;
+    $scope.domain.refresh();
 
     if ($routeParams.valintaryhmaOid) {
         LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, null, true);
@@ -109,7 +110,7 @@ function LaskentakaavaListController($scope, $location, $routeParams, Laskentaka
     $scope.showForm = false;
 
     $scope.createKaava = function () {
-		$location.path("/valintaryhma/" + $routeParams.valintaryhmaOid + "/laskentakaavalista/laskentakaava");
+        $location.path("/valintaryhma/" + $routeParams.valintaryhmaOid + "/laskentakaavalista/laskentakaava");
     };
 
     $scope.editKaava = function (kaava) {
@@ -118,9 +119,21 @@ function LaskentakaavaListController($scope, $location, $routeParams, Laskentaka
         $scope.originalKaava = angular.copy(kaava);
     };
 
-
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $location.path("/valintaryhma/" + $routeParams.valintaryhmaOid);
     };
-}
 
+    $scope.kaavaKopiointiModal = function () {
+        $scope.show();
+    };
+
+    $scope.kopioiKaava = function() {
+        console.log($scope.model.parentOid);
+//        KaavaSiirto.put({}, )
+    };
+
+    $scope.cancel = function() {
+        $scope.$broadcast('suljemodal');
+    }
+
+});

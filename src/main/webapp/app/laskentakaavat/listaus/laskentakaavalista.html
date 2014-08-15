@@ -16,10 +16,14 @@
     </button>
     <span ng-click="createKaava()" class="btn btn-sm btn-default"><i class="fa fa-plus"></i> {{ t('laskentakaavalista.laskentakaava') || 'Laskentakaava' }}</span>
 
+    <modal modal-template="laskentakaavat/listaus/kaavakopiointiModal.html">
+        <modal-open></modal-open>
+    </modal>
+
     <h2>{{ t('laskentakaavalista.laskentakaavalista') || 'Laskentakaavalista' }}</h2>
 
 
-    <div class="width-60">
+
 
         <div ng-repeat="valintaryhmaList in valintaryhmat.valintaryhmaList()">
             <div ng-repeat="valintaryhma in valintaryhmaList">
@@ -36,6 +40,7 @@
                     <tr>
                         <th>{{ t('laskentakaavalista.nimi') || 'Nimi' }}</th>
                         <th>{{ t('laskentakaavalista.kuvaus') || 'Kuvaus' }}</th>
+                        <th>{{ t('laskentakaavalista.kopioikaava') || 'Kopioi kaava'}}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -46,13 +51,13 @@
                         <td>
                             {{kaava.kuvaus}}
                         </td>
+                        <td><button class="btn btn-default btn-sm" ng-click="kaavaKopiointiModal()"><i class="fa fa-file-o"></i> <i class="fa fa-long-arrow-right"></i> <i class="fa fa-users"></i></button></td>
 
                     </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-    </div>
 
 
 

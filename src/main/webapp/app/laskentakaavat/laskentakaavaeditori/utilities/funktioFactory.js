@@ -179,13 +179,15 @@ angular.module('LaskentakaavaEditor').factory('FunktioFactory', function(Funktio
 		};
 
 		function populateParameters(funktioprototype, funktiokuvaus) {
-
+            
 			// Lisätään funktioprototypeen funktiokuvauksen valintaperusteiden mukainen määrä tyhjiä objekteja
 			if(funktiokuvaus.valintaperusteviitteet) {
 				funktiokuvaus.valintaperusteviitteet.forEach(function(item) {
 					funktioprototype.lapsi.valintaperusteviitteet.push({});
 				});
 			}
+
+            console.log(funktioprototype);
 
 			// Lisätään funktioprototypeen funktiokuvauksen mukaiset syoteparametrit
 			if(funktiokuvaus.syoteparametrit) {

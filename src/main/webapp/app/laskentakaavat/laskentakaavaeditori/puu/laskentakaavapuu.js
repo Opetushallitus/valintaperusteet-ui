@@ -28,12 +28,13 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 $scope.laskentakaavaOid = $routeParams.laskentakaavaOid;
                 Laskentakaava.get({oid: $scope.laskentakaavaOid}, function (result) {
                     $scope.model.laskentakaavapuu = result;
+                    console.log(result);
                     //laskentakaavan painotettu keskiarvo -funktiokutsuihin lisätään tyhjät objektit, jotta niihin pystytään lisäämään funktioargumentteja
                     FunktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
 
                     //käydään rekursiivisesti laskentakaavapuu läpi ja lisätään puuttuvat syöteparametriobjektit
                     FunktioService.addMissingSyoteparametrit($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit[0]);
-
+                    
                 });
             }
 
@@ -75,6 +76,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             // parentFunktiokutsu = parentFunktiokutsu tai laskentakaavan juuri
             // index = monesko funktio-parametri on funktioargumenttilistassa, juurifunktiokutsulla ei ole indeksiä
             $scope.setFunktioSelection = function (funktio, isFunktiokutsu, parentFunktiokutsu, index, isAlikaava, hasParentAlikaava) {
+                console.log(funktio);
                 $scope.funktioasetukset.parentFunktiokutsu = parentFunktiokutsu;
 
                 $scope.funktioasetukset.selectedFunktioIndex = index;

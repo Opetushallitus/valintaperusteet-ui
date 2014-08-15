@@ -13,6 +13,7 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
             model.parentOid  = "";
             model.nameerror = false;
 
+
             KoodistoHaunKohdejoukko.get(function (result) {
                 model.kohdejoukot = result;
             });
