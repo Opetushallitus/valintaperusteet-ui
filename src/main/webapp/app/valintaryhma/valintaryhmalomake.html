@@ -118,7 +118,7 @@
 <div ng-include="'valintaryhma/hakukohdekoodit.html'" class="form-row"></div>
 
 <!-- VALINNANVAIHEIDEN LISTAUS -->
-<div class="form-row width-100">
+<div class="form-row">
     <div class="form-row-label">{{ t('valintaryhmalomake.valinnanvaiheet') || 'Valinnan vaiheet' }}</div>
     <div class="form-row-content width-60">
         <table ng-show="model.valinnanvaiheet" class="virkailija-table-1 margin-bottom-2 width-60">
@@ -138,8 +138,14 @@
                     <a ng-class="{true:'', false:'line-through'}[data.aktiivinen]"
                        ng-href="#/valintaryhma/{{model.valintaryhma.oid}}/{{model.getValinnanvaiheType(data)}}/{{data.oid}}">{{data.nimi}}</a>
                 </td>
-                <td class="align-center">{{'valintaperusteet.periytyy.' + data.inheritance | translate}}</td>
-                <td class="align-center">{{'valintaperusteet.tyyppi.' + data.valinnanVaiheTyyppi | translate}}</td>
+                <td class="align-center">
+                    <span ng-if="data.inheritance">{{t('valintaperusteet.periytyy.true') || 'Periytyy'}}</span>
+                    <span ng-if="!data.inheritance">{{t('valintaperusteet.periytyy.false') || 'Ei periydy'}}</span>
+                </td>
+                <td class="align-center">
+                    <span ng-if="data.valinnanVaiheTyyppi === 'TAVALLINEN'">{{t('valintaperusteet.tyyppi.TAVALLINEN') || 'Tavallinen'}}</span>
+                    <span ng-if="data.valinnanVaiheTyyppi === 'VALINTAKOE'">{{t('valintaperusteet.tyyppi.VALINTAKOE') || 'Valintakoe'}}</span>
+                </td>
                 <td class="align-center">
                     <i auth="crud" ng-show="!data.inheritance" class="fa fa-trash-o"
                        ng-click="model.removeValinnanvaihe(data)"></i>
