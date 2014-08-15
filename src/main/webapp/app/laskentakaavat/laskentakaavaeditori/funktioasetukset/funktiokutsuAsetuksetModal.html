@@ -220,10 +220,16 @@
             <div class="form-group">
                 <label class="col-sm-5 control-label">{{ t('laskentakaavaviiteasetuksetmodal.arvo') || 'Arvo' }}</label>
 
-                <div class="col-sm-7">
+                <div class="col-sm-7" ng-if="funktiokuvausForSelection.konvertteri.konvertteriTyypit[0].arvotyyppi != 'ARVOJOUKKO'">
                     <input ng-disabled="alikaavaValues.isAlikaava" type="text" size="9" ng-model="parametri.arvo"
                            placeholder="{{ t('laskentakaavaviiteasetuksetmodal.arvo') || 'Arvo' }}"/>
                 </div>
+
+                <div class="col-sm-7" ng-if="funktiokuvausForSelection.konvertteri.konvertteriTyypit[0].arvotyyppi == 'ARVOJOUKKO'">
+                    <select ng-disabled="alikaavaValues.isAlikaava" ng-model="parametri.arvo"
+                            ng-options="arvo.avain as arvo.arvo for arvo in funktiokuvausForSelection.konvertteri.konvertteriTyypit[0].arvojoukko | orderBy:'arvo'"></select>
+                </div>
+
             </div>
             <div class="form-group">
                 <label class="col-sm-5 control-label">{{ t('laskentakaavaviiteasetuksetmodal.pisteet') || 'Pisteet' }}</label>
