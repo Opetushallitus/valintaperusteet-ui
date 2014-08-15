@@ -153,10 +153,10 @@
 
         <div ng-show="model.valintaryhma.oid" class="form-row">
                 <span auth="crud" type="button" class="btn btn-sm btn-default" ng-click="lisaaValinnanVaihe()"><i
-                        class="fa fa-plus"></i> {{'valintaryhmalomake.valinnanvaihe' | translate}}</span>
+                        class="fa fa-plus"></i> {{ t('valintaperusteet.valinnanvaihe') || 'Valinnanvaihe'}}</span>
                 <span auth="crud" type="button" class="btn btn-sm btn-default"
                       ng-click="lisaaValintakoeValinnanVaihe()"><i
-                        class="fa fa-plus"></i> {{'valintaryhmalomake.koekutsuvaihe' | translate}}</span>
+                        class="fa fa-plus"></i> {{ t('valintaperusteet.valintakoevalinnanvaihe') || 'Valintakoevalinnanvaihe'}}</span>
         </div>
     </div>
 </div>
