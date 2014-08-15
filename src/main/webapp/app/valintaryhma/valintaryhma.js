@@ -15,6 +15,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 		this.valintakoekoodit = [];
         this.kohdejoukot = [];
         this.haut = [];
+        this.hakijaryhmat = [];
         this.hakuoidit = [];
         this.haettu = false;
         this.nameerror = false;
@@ -294,6 +295,16 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 				}
 			});
 		};
+
+        this.removeHakijaryhma = function(hakijaryhmaOid) {
+            Hakijaryhma.delete({oid: hakijaryhmaOid}, function(result) {
+                model.hakijaryhmat = _.filter(model.hakijaryhmat, function(item) {
+                    return item.oid != hakijaryhmaOid;
+                });
+            }, function(error) {
+                $log.error('Hakijaryhmän poistaminen valintaryhmästä ei onnistunu', error);
+            });
+        };
 
 	}();
 
