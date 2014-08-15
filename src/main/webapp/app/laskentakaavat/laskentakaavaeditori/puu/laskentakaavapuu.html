@@ -114,6 +114,7 @@
     HAELUKUARVO
     HAELUKUARVOEHDOLLA
     HAEMERKKIJONOJAKONVERTOILUKUARVOKSI
+    HAETOTUUSARVOJAKONVERTOILUKUARVOKSI
     HAEMERKKIJONOJAVERTAAYHTASUURUUS
     HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI
     HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI
@@ -456,8 +457,8 @@ YHTASUURI
             </td>
         </tr>
         <tr>
-            <td ng-click="addFunktio(parent, 'HAEMERKKIJONOJAKONVERTOILUKUARVOKSI', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.haemerkkijono') || 'Hae merkkijono ja konvertoi lukuarvoksi' }}</span></td>
+            <td ng-click="addFunktio(parent, 'HAETOTUUSARVOJAKONVERTOILUKUARVOKSI', funktioSlotIndex); showNewFunktioList.visible = false">
+                <span>{{ t('laskentakaavapuu.haetotuusarvojakonvertoilukuarvoksi') || 'Hae totuusarvo ja konvertoi lukuarvoksi' }}</span></td>
             <td ng-click="addFunktio(parent, 'NIMETTYLUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false">
                 <span>{{ t('laskentakaavapuu.nimettylukuarvo') || 'Nimetty lukuarvo' }}</span></td>
         </tr>
@@ -476,6 +477,8 @@ YHTASUURI
         <tr ng-if="parent.lapsi">
             <td ng-click="addLaskentakaavaviite(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.viittaus') || 'Viittaus toiseen kaavaan' }}</span>
             </td>
+            <td ng-click="addFunktio(parent, 'HAEMERKKIJONOJAKONVERTOILUKUARVOKSI', funktioSlotIndex); showNewFunktioList.visible = false">
+                <span>{{ t('laskentakaavapuu.haemerkkijono') || 'Hae merkkijono ja konvertoi lukuarvoksi' }}</span></td>
         </tr>
         </tbody>
     </table>

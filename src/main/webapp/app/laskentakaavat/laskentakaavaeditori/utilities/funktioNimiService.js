@@ -12,6 +12,7 @@ factory('FunktioNimiService', function() {
 			HAELUKUARVO: 'Hae lukuarvo',
 			HAELUKUARVOEHDOLLA: 'Hae lukuarvo ehdolla',
 			HAEMERKKIJONOJAKONVERTOILUKUARVOKSI: 'Hae merkkijono ja konvertoi lukuarvoksi',
+            HAETOTUUSARVOJAKONVERTOILUKUARVOKSI: 'Hae totuusarvo ja konvertoi lukuarvoksi',
 			HAEMERKKIJONOJAVERTAAYHTASUURUUS: 'Hae merkkijono ja vertaa yhtäsuuruus',
 			HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI: 'Hae merkkijono ja konvertoi totuusarvoksi',
 			VALINTAPERUSTEYHTASUURUUS: 'Valintaperusteyhtäsuuruus',

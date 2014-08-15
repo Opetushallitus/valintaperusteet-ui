@@ -57,6 +57,7 @@ angular.module('LaskentakaavaEditor').factory('TemplateService', function() {
 				HAELUKUARVO: 'haettava_arvo',
 				HAELUKUARVOEHDOLLA: 'haettava_arvo',
 				HAEMERKKIJONOJAKONVERTOILUKUARVOKSI: 'haettava_arvo',
+                HAETOTUUSARVOJAKONVERTOILUKUARVOKSI: 'haettava_arvo',
 				HAEMERKKIJONOJAVERTAAYHTASUURUUS: 'haettava_arvo',
 				HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI: 'haettava_arvo',
 				VALINTAPERUSTEYHTASUURUUS: 'haettava_arvo',
