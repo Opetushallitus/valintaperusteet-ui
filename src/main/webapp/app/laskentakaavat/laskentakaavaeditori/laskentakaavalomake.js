@@ -1,4 +1,4 @@
-angular.module('LaskentakaavaEditor').
+angular.module('valintaperusteet').
     controller('LaskentakaavaLomakeController', ['$scope', '$routeParams', '$location', 'Laskentakaava',
         'KaavaVirheTyypit', 'Hakemusavaimet', '$http', function ($scope, $routeParams, $location, Laskentakaava, KaavaVirheTyypit, Hakemusavaimet, $http) {
         'use strict';

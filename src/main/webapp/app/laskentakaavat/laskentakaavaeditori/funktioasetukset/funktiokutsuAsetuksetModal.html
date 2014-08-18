@@ -58,10 +58,10 @@
             </div>
 
             <div class="form-group">
-                <label class="col-sm-3 s">{{ t('laskentakaavaviiteasetuksetmodal.tunniste') || 'Tunniste' }}</label>
+                <label class="col-sm-3 control-label">{{ t('laskentakaavaviiteasetuksetmodal.tunniste') || 'Tunniste' }}</label>
                 <div class="col-sm-9" ng-if="valintaperusteviite.tyyppi != 'ARVOJOUKKO'">
                     <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && data.length > 0">
-                        <select ng-model="valintaperuste.tunniste" ng-options="data._id as data.messageText.translations.fi for data in data"></select>
+                        <select ng-model="valintaperuste.tunniste" ng-options="data._id as data.answers for data in bigdata"></select>
                     </div>
                     <div ng-if="valintaperuste.lahde !== 'HAETTAVA_ARVO' || valintaperuste.lahde === 'HAETTAVA_ARVO' && data.length == 0">
                     <input ng-disabled="alikaavaValues.isAlikaava" type="text" ng-model="valintaperuste.tunniste"

@@ -6,7 +6,7 @@ describe("FunktioService", function () {
         laskentakaavaviite, rootFunktiokutsu, funktiokutsuPainotettukeskiarvoWith2EmptySlots,
         funktiokutsuPainotettukeskiarvoWith4EmptySlots;
     beforeEach(module('MockData'));
-    beforeEach(module('LaskentakaavaEditor'));
+    beforeEach(module('valintaperusteet'));
 
     beforeEach(inject(function (FunktioService, Funktiokuvaukset, FunktiokutsuKeskiarvo, FunktiokutsuJos,
                                 FunktiokutsuSumma, FunktiokutsuHylkaaarvovalilla, FunktiokutsuPainotettukeskiarvo,

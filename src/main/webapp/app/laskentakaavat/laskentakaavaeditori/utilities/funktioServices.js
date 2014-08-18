@@ -1,4 +1,4 @@
-angular.module('LaskentakaavaEditor').
+angular.module('valintaperusteet').
 factory('FunktioService', function (FunktioKuvausResource) {
     'use strict';
 

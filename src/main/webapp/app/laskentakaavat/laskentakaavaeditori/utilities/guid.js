@@ -1,4 +1,4 @@
-angular.module('LaskentakaavaEditor').factory('GuidGenerator', [function() {
+angular.module('valintaperusteet').factory('GuidGenerator', [function() {
     "use strict";
 
     function S4() {

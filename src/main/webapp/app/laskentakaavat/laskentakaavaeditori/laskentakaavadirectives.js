@@ -1,4 +1,4 @@
-angular.module('LaskentakaavaEditor').directive('addClassOnMouseover', function ($animate) {
+angular.module('valintaperusteet').directive('addClassOnMouseover', function ($animate) {
     'use strict';
 
     return function (scope, element, attrs) {

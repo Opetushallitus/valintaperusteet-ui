@@ -1,4 +1,4 @@
-angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (Laskentakaava, ParentValintaryhmas,
+angular.module('valintaperusteet').factory('LaskentakaavaLista', function (Laskentakaava, ParentValintaryhmas,
                                                                               Hakukohde, Valintaryhma) {
     'use strict';
 
@@ -83,7 +83,7 @@ angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (La
     };
 });
 
-angular.module('LaskentakaavaEditor').controller('LaskentakaavaListController', function($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista, FunktioService) {
+angular.module('valintaperusteet').controller('LaskentakaavaListController', function($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista, FunktioService) {
     'use strict';
 
     $scope.funktioService = FunktioService;
@@ -127,7 +127,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaListController', 
 
 });
 
-angular.module('LaskentakaavaEditor').factory('KaavaKopiointiModel', function($log,  Laskentakaava) {
+angular.module('valintaperusteet').factory('KaavaKopiointiModel', function($log,  Laskentakaava) {
     'use strict';
     var model = new function () {
 
@@ -155,7 +155,7 @@ angular.module('LaskentakaavaEditor').factory('KaavaKopiointiModel', function($l
    return model;
 });
 
-angular.module('LaskentakaavaEditor').controller('KaavaKopiointiController', function($scope, $log, KaavaKopiointiModel, Ylavalintaryhma, KaavaSiirto, Laskentakaava ) {
+angular.module('valintaperusteet').controller('KaavaKopiointiController', function($scope, $log, KaavaKopiointiModel, Ylavalintaryhma, KaavaSiirto, Laskentakaava ) {
 
     $scope.domain = Ylavalintaryhma;
     $scope.domain.refresh();
