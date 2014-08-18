@@ -1,12 +1,13 @@
 angular.module('valintaperusteet')
 
     .controller('funktiokutsuAsetuksetController', ['$scope', '$q', '$routeParams', '$location', '$timeout', 'Laskentakaava',
-        'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'GuidGenerator', 'Hakemusavaimet', 'HakemusavaimetLomake', 'ValintaryhmaModel', 'ParentValintaryhmas',
-        function ($scope, $q, $routeParams, $location, $timeout, Laskentakaava, FunktioNimiService, FunktioFactory, KaavaValidationService, GuidGenerator, Hakemusavaimet, HakemusavaimetLomake, ValintaryhmaModel, ParentValintaryhmas) {
+        'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'GuidGenerator', 'Hakemusavaimet', 'HakemusavaimetLomake', 'ValintaryhmaModel', 'Treemodel',
+        function ($scope, $q, $routeParams, $location, $timeout, Laskentakaava, FunktioNimiService, FunktioFactory, KaavaValidationService, GuidGenerator, Hakemusavaimet, HakemusavaimetLomake, ValintaryhmaModel, Treemodel) {
 
             $scope.funktioFactory = FunktioFactory;
             $scope.valintaryhmaModel = ValintaryhmaModel;
-
+            $scope.treemodel = Treemodel;
+            
             if ($routeParams.valintaryhmaOid !== undefined) {
                 $scope.valintaryhmaModel.refreshIfNeeded($routeParams.valintaryhmaOid);
             }
@@ -51,17 +52,13 @@ angular.module('valintaperusteet')
 
 
             $scope.getHakemusAvaimet = function () {
-                $scope.valintaryhmaPromise.then(function () {
-                    ParentValintaryhmas.get({parentOid: "14083437371152263513669352542794"}, function(result) {
-                        console.log('got it', result);
-                    });
-//                        HakemusavaimetLomake.get({hakuOid: ""}, function (result) {
-//                            def1.resolve();
-//                            $scope.bigdata = result;
-//                        }, function (error) {
-//                            def1.reject('Avaimien haku epäonnistui: ', error);
-//                        });
 
+
+                $scope.valintaryhmaPromise.then(function (result) {
+                        HakemusavaimetLomake.get({hakuOid: $scope.treemodel.search.haku}, function (result) {
+                            $scope.bigdata = result;
+                        }, function (error) {
+                        });
 
                 }, function(reject) {
                     console.log('rejected');
