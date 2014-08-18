@@ -45,5 +45,7 @@ angular.module('valintaperusteet')
     })
 
     .factory('HakemusavaimetLomake', function ($resource) {
-        return $resource(HAKEMUS_URL_BASE + "application-system-form-editor/application-system-form/:hakuoid", {hakuoid: "@hakuoid"});
+        //return $resource(HAKEMUS_URL_BASE + "application-system-form-editor/application-system-form/:hakuoid", {hakuoid: "@hakuoid"});
+        return $resource("http://localhost:9090/haku-app/application-system-form-editor/application-system-form/:hakuoid", {hakuoid: "@hakuoid"});
+
     });

@@ -55,7 +55,7 @@ angular.module('valintaperusteet')
 
 
                 $scope.valintaryhmaPromise.then(function (result) {
-                        HakemusavaimetLomake.get({hakuOid: $scope.treemodel.search.haku}, function (result) {
+                        HakemusavaimetLomake.get({hakuoid: $scope.treemodel.search.haku.oid}, function (result) {
                             $scope.bigdata = result;
                         }, function (error) {
                         });
