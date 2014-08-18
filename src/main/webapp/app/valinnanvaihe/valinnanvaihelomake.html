@@ -56,7 +56,10 @@
                             <a ng-class="{true:'', false:'line-through'}[jono.aktiivinen]"
                                ng-click="modifyJono(jono.oid)">{{jono.nimi}}</a>
                         </td>
-                        <td>{{'valintaperusteet.periytyy.' + jono.inheritance | translate}}</td>
+                        <td class="align-center">
+                            <span ng-if="jono.inheritance">{{t('valintaperusteet.periytyy.true') || 'Periytyy'}}</span>
+                            <span ng-if="!jono.inheritance">{{t('valintaperusteet.periytyy.false') || 'Ei periydy'}}</span>
+                        </td>
                         <td class="align-center">
                         <i auth="crud" ng-show="!jono.inheritance" class="fa fa-trash-o"
                               ng-click="model.remove(jono)"></i>
