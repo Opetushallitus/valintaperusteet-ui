@@ -1,6 +1,6 @@
 // Valintaryhma Järjestyskriteerit
 app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskriteeri, ValintatapajonoJarjestyskriteeri,
-                                                ParentValintaryhmas, Hakukohde, LaskentakaavaModel) {
+                                                ParentValintaryhmas, Hakukohde, LaskentakaavaModel, ValintatapajonoModel) {
     "use strict";
 
     var model;
@@ -31,6 +31,8 @@ app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskrit
                 this.refresh(oid);
             }
 
+            var jarjestyskriteerit = ValintatapajonoModel.
+            
             LaskentakaavaModel.refresh(valintaryhmaOid, hakukohdeOid);
             model.laskentakaavaModel = LaskentakaavaModel;
 
