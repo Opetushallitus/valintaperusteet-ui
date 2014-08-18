@@ -31,7 +31,7 @@ app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskrit
                 this.refresh(oid);
             }
 
-            var jarjestyskriteerit = ValintatapajonoModel.
+            var jarjestyskriteerit = ValintatapajonoModel;
             
             LaskentakaavaModel.refresh(valintaryhmaOid, hakukohdeOid);
             model.laskentakaavaModel = LaskentakaavaModel;
@@ -97,6 +97,8 @@ angular.module('valintaperusteet').
     $scope.model.refreshIfNeeded($routeParams.jarjestyskriteeriOid, $routeParams.id, $routeParams.hakukohdeOid);
     
     ValintatapajonoModel.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valinnanvaiheOid);
+
+
 
     $scope.submit = function () {
         var promise = JarjestyskriteeriModel.submit($scope.valintatapajonoOid, ValintatapajonoModel.jarjestyskriteerit);
