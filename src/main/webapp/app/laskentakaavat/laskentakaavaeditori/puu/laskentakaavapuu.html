@@ -4,9 +4,8 @@
         <span class="btn btn-sm btn-default" ng-click="back()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}</span>
         <span class="btn btn-sm btn-primary" ng-click="persist()"><i class="fa fa-floppy-o"></i> {{ t('common.tallenna') || 'Tallenna' }}</span>
     </div>
-    <div class="clear"></div>
 
-    <div class="gradingformula" style="float:left;">
+    <div class="gradingformula">
         <!-- Laskentakaavassa olevat virheet-->
         <div class="alert alert-danger margin-top-2" collapse="errors.length === 0 && commonErrors.length === 0">
             <h3>{{ t('laskentakaavapuu.eitalletettu') || 'Laskentakaavaa ei voitu tallentaa.' }}</h3>
@@ -48,7 +47,7 @@
 
         <!-- LASKENTAKAAVAPUUN JUURI -->
         <div class="frame open" ng-class="isRootSelected ? 'active' : ''">
-            <span class="icon">&#8302;</span>
+            <span class="icon" ng-click="toggleAll()">&#8302;</span>
             <span class="node bold" ng-click="setRootSelection(model.laskentakaavapuu.funktiokutsu)">{{model.laskentakaavapuu.nimi}}</span>
         </div>
 

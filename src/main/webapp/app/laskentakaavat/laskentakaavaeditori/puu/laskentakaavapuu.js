@@ -120,6 +120,19 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = $scope.funktioFactory.createLaskentakaavaviite(kaava);
             };
 
+            $scope.toggleAll = function () {
+                $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit.forEach(function(item) {
+                    item.open = item.open ? false : true;
+                    toggleAllLower(item.lapsi);
+                });
+            };
+
+            function toggleAllLower(item) {
+                item.funktioargumentit.forEach(function(item) {
+                    item.open = item.open ? false : true;
+                    toggleAllLower(item.lapsi);
+                });
+            }
 
             $scope.addLaskentakaavaviite = function (parent, index) {
                 $scope.funktioasetukset.parentFunktiokutsu = parent;
