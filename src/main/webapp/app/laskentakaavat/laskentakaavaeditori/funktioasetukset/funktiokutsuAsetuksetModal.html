@@ -20,7 +20,6 @@
         <option value=""></option>
     </select>
 </script>
-<h6>{{bigdata}}</h6>
 <!-- Valintaperuste default template -->
 <script type="text/ng-template" id="valintaperuste-default-template">
     <div class="form-item-content">
@@ -59,9 +58,12 @@
 
             <div class="form-group">
                 <label class="col-sm-3 control-label">{{ t('laskentakaavaviiteasetuksetmodal.tunniste') || 'Tunniste' }}</label>
-                <div class="col-sm-9" ng-if="valintaperusteviite.tyyppi != 'ARVOJOUKKO'">
-                    <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && data.length > 0">
-                        <select ng-model="valintaperuste.tunniste" ng-options="data._id as data.answers for data in bigdata"></select>
+                <!--<div class="col-sm-9" ng-if="valintaperusteviite.tyyppi != 'ARVOJOUKKO'">-->
+                    <!--<div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && data.length > 0">-->
+                        <!--<select ng-model="valintaperuste.tunniste" ng-options="data._id as data.answers for data in bigdata"></select>-->
+                    <!--</div>-->
+                    <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && bigdata.length > 0">
+                        <select ng-model="valintaperuste.tunniste" ng-options="data.key as data.value for data in bigdata"></select>
                     </div>
                     <div ng-if="valintaperuste.lahde !== 'HAETTAVA_ARVO' || valintaperuste.lahde === 'HAETTAVA_ARVO' && data.length == 0">
                     <input ng-disabled="alikaavaValues.isAlikaava" type="text" ng-model="valintaperuste.tunniste"

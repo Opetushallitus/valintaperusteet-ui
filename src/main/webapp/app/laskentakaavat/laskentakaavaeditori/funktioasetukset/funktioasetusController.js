@@ -55,8 +55,21 @@ angular.module('valintaperusteet')
 
 
                 $scope.valintaryhmaPromise.then(function (result) {
-                        HakemusavaimetLomake.get({hakuoid: $scope.treemodel.search.haku.oid}, function (result) {
-                            $scope.bigdata = result;
+//                        HakemusavaimetLomake.get({hakuoid: $scope.treemodel.search.haku.oid}, function (result) {
+                    HakemusavaimetLomake.get({hakuoid: "1.2.246.562.5.2013080813081926341927"}, function (result) {
+                            //$scope.bigdata = result;
+                            var avaimet = [];
+                            _.forEach(result.children, function(ekataso) {
+                                _.forEach(ekataso.children, function(tokataso) {
+                                    _.forEach(tokataso.children, function(kolmastaso) {
+                                        var obj = {};
+                                        obj[kolmastaso.id] = kolmastaso.id;
+                                        avaimet.push(obj);
+                                    });
+                                });
+                            });
+                            console.log(avaimet);
+                            $scope.bigdata = avaimet;
                         }, function (error) {
                         });
 
