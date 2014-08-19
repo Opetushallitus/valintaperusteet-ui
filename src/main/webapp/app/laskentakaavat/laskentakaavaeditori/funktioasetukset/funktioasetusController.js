@@ -63,7 +63,8 @@ angular.module('valintaperusteet')
                                 _.forEach(ekataso.children, function(tokataso) {
                                     _.forEach(tokataso.children, function(kolmastaso) {
                                         var obj = {};
-                                        obj[kolmastaso.id] = kolmastaso.id;
+                                        obj.key = kolmastaso.id;
+                                        obj.value = kolmastaso.id;
                                         avaimet.push(obj);
                                     });
                                 });
