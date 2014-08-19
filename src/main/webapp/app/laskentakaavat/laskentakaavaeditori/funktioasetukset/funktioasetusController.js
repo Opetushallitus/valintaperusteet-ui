@@ -58,18 +58,47 @@ angular.module('valintaperusteet')
 //                        HakemusavaimetLomake.get({hakuoid: $scope.treemodel.search.haku.oid}, function (result) {
                     HakemusavaimetLomake.get({hakuoid: "1.2.246.562.5.2013080813081926341927"}, function (result) {
                             //$scope.bigdata = result;
+                            var tyypit = ["TextQuestion","DropdownSelect","Radio","DateQuestion","SocialSecurityNumber","PostalCode","GradeGridOptionQuestion"];
                             var avaimet = [];
-                            _.forEach(result.children, function(ekataso) {
-                                _.forEach(ekataso.children, function(tokataso) {
-                                    _.forEach(tokataso.children, function(kolmastaso) {
-                                        var obj = {};
-                                        obj.key = kolmastaso.id;
-                                        obj.value = kolmastaso.id;
-                                        avaimet.push(obj);
-                                    });
+
+                            var flattenRecursively = function(array) {
+                                var result = [];
+                                _.forEach(array, function(phase) {
+                                    if(phase.children) {
+                                        var current = _.omit(phase, phase.children);
+                                        if(tyypit.indexOf(phase.type) != -1) {
+                                            result.push(current);
+                                        }
+                                        result = _.union(result, flattenRecursively(phase.children));
+                                    } else {
+                                        if(tyypit.indexOf(phase.type) != -1) {
+                                            result.push(phase);
+                                        }
+                                    }
                                 });
+                                return result;
+                            };
+
+                            var flatten = _.flatten(flattenRecursively(result.children));
+                            _.forEach(flatten, function(phase) {
+
+                                var obj = {};
+//                                if(phase.expr && phase.expr.left) {
+//                                    obj.key = phase.expr.left.value
+//                                } else {
+//                                    obj.key = phase.id;
+//                                }
+                                obj.key = phase.id;
+                                if(phase.i18nText) {
+                                    obj.value = phase.id + ' - ' + phase.i18nText.translations.fi;
+                                } else {
+                                    obj.value = phase.id;
+                                }
+                                console.log(obj.key);
+                                avaimet.push(obj);
                             });
-                            console.log(avaimet);
+
+
                             $scope.bigdata = avaimet;
                         }, function (error) {
                         });
