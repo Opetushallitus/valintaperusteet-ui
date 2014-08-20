@@ -414,7 +414,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
             $scope.editLaskentakaava = function() {
                 $scope.$broadcast('showLaskentakaavaAsetukset')
-            }
+            };
 
             $scope.persistNewKaava = function () {
                 var kaava = {

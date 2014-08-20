@@ -31,11 +31,11 @@
 
             <div class="form-group">
                 <label class="col-sm-3 control-label">{{ t('laskentakaavaviiteasetuksetmodal.tyyppi') || 'Tyyppi' }}</label>
-
                 <div class="col-sm-9">
-                    <select ng-disabled="alikaavaValues.isAlikaava" ng-model="valintaperuste.lahde"
+                    <select ng-disabled="alikaavaValues.isAlikaava" ng-model="valintaperuste.lahde" ng-if="!isYoFunktiokutsu(funktioSelection)"
                             ng-options="item.key as item.text for item in valintaperusteviitetyypit">
                     </select>
+                    <p class="form-control-static" ng-init="valintaperuste.lahde = 'HAETTAVA_ARVO'" ng-if="isYoFunktiokutsu(funktioSelection)" >{{ t('laskentakaavat.funktioasetukset.haettava_arvo') || 'Arvo hakemukselta' }}</p>
                 </div>
             </div>
 

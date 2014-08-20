@@ -2,50 +2,53 @@ angular.module('LaskentakaavaEditor')
 
     .controller('funktiokutsuAsetuksetController', ['$scope', '$routeParams', '$location', '$timeout', 'Laskentakaava',
         'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'GuidGenerator',
-        function ($scope, $routeParams, $location, $timeout, Laskentakaava, FunktioNimiService, FunktioFactory,
-                  KaavaValidationService, GuidGenerator) {
-        "use strict";
+        function ($scope, $routeParams, $location, $timeout, Laskentakaava, FunktioNimiService, FunktioFactory, KaavaValidationService, GuidGenerator) {
+            "use strict";
 
-        $scope.funktioFactory = FunktioFactory;
+            $scope.funktioFactory = FunktioFactory;
+            $scope.toggle = false;
 
-        $scope.$on('showFunktiokutsuAsetukset', function () {
-            $scope.show();
-        });
+            $scope.$on('showFunktiokutsuAsetukset', function () {
+                $scope.show();
+            });
 
-        $scope.guidGenerator = GuidGenerator;
+            $scope.guidGenerator = GuidGenerator;
 
-        $scope.generateSyoteId = function(valintaperuste) {
-            valintaperuste.tunniste = $scope.guidGenerator();
-        };
+            $scope.generateSyoteId = function (valintaperuste) {
+                valintaperuste.tunniste = $scope.guidGenerator();
+            };
 
-        $scope.getFunktiokutsuName = function (funktiokutsu) {
-            if (funktiokutsu.lapsi) {
-                return FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi);
-            } else {
-                return FunktioNimiService.getName(funktiokutsu.funktionimi);
-            }
-        };
+            $scope.getFunktiokutsuName = function (funktiokutsu) {
+                if (funktiokutsu.lapsi) {
+                    return FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi);
+                } else {
+                    return FunktioNimiService.getName(funktiokutsu.funktionimi);
+                }
+            };
 
-        $scope.saveAsNewLaskentakaava = function (parent, funktiokutsu, newKaavaNimi, newKaavaKuvaus, closeModal) {
-            var osakaava = FunktioFactory.createEmptyLaskentakaava($scope.funktioSelection, $routeParams, newKaavaNimi, newKaavaKuvaus);
-            $scope.persistOsakaava(osakaava, funktiokutsu, closeModal);
-        };
+            $scope.saveAsNewLaskentakaava = function (parent, funktiokutsu, newKaavaNimi, newKaavaKuvaus, closeModal) {
+                var osakaava = FunktioFactory.createEmptyLaskentakaava($scope.funktioSelection, $routeParams, newKaavaNimi, newKaavaKuvaus);
+                $scope.persistOsakaava(osakaava, funktiokutsu, closeModal);
+            };
 
-        $scope.persistOsakaava = function (osakaava, funktiokutsu, closeModal) {
-            KaavaValidationService.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
-            if ($scope.errors.length === 0) {
-                closeModal();
-                Laskentakaava.insert({}, osakaava, function (savedKaava) {
-                    $scope.funktiokutsuSavedAsLaskentakaava(FunktioFactory.getLaskentakaavaviiteFromLaskentakaava(savedKaava));
-                }, function (error) {
+            $scope.persistOsakaava = function (osakaava, funktiokutsu, closeModal) {
+                KaavaValidationService.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
+                if ($scope.errors.length === 0) {
+                    closeModal();
+                    Laskentakaava.insert({}, osakaava, function (savedKaava) {
+                        $scope.funktiokutsuSavedAsLaskentakaava(FunktioFactory.getLaskentakaavaviiteFromLaskentakaava(savedKaava));
+                    }, function (error) {
 
-                });
-            }
-        };
+                    });
+                }
+            };
 
-        $scope.toggle = false;
+            $scope.isYoFunktiokutsu = function (funktio, valintaperuste) {
+                var funktionimi = funktio.lapsi.funktionimi;
+                return funktionimi === "HAEOSAKOEARVOSANA" || funktionimi === "HAEYOARVOSANA";
+            };
 
-    }])
+        }])
 
     .controller('laskentakaavaviiteAsetuksetController', ['$scope', 'FunktioService', function ($scope, FunktioService) {
         "use strict";
@@ -54,7 +57,7 @@ angular.module('LaskentakaavaEditor')
             $scope.show();
         });
 
-        $scope.getFunktioargumenttiSlotTyyppi = function(parent, funktioargumenttiSlotIndex) {
+        $scope.getFunktioargumenttiSlotTyyppi = function (parent, funktioargumenttiSlotIndex) {
             return FunktioService.isLukuarvoFunktioSlot(parent, funktioargumenttiSlotIndex) === true ? "LUKUARVOFUNKTIO" : "TOTUUSARVOFUNKTIO";
         };
 
@@ -76,8 +79,8 @@ angular.module('LaskentakaavaEditor')
         });
     }])
 
-    .controller('laskentakaavaAsetuksetController', ['$scope', function($scope) {
-        $scope.$on('editKaavaMetadata', function() {
+    .controller('laskentakaavaAsetuksetController', ['$scope', function ($scope) {
+        $scope.$on('editKaavaMetadata', function () {
             $scope.show();
         });
     }]);

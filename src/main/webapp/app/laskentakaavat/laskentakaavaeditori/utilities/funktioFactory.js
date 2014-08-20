@@ -187,8 +187,6 @@ angular.module('LaskentakaavaEditor').factory('FunktioFactory', function(Funktio
 				});
 			}
 
-            console.log(funktioprototype);
-
 			// Lisätään funktioprototypeen funktiokuvauksen mukaiset syoteparametrit
 			if(funktiokuvaus.syoteparametrit) {
 				funktiokuvaus.syoteparametrit.forEach(function(item) {
