@@ -72,7 +72,7 @@
 
         <div class="form-row">
 
-            <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat | filter:'TOTUUSARVO'"
+            <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat"
                  class="field-container-radio">
                 <label class="form-row-label">{{ t('valintakoelomake.valintakokeenlaskentakaava') || 'Valintakokeen laskentakaava' }}</label>
 
@@ -87,7 +87,7 @@
                         </tr>
                         </thead>
                         <tbody ng-repeat="group in model.laskentakaavaModel.laskentakaavat">
-                            <tr ng-repeat="data in group.result | filter: 'TOTUUSARVOFUNKTIO'">
+                            <tr ng-repeat="data in group.result">
 
                                 <td><input type="radio" name="laskentakaava" value="{{data.id}}"
                                            ng-model="model.valintakoe.laskentakaavaId"/></td>
