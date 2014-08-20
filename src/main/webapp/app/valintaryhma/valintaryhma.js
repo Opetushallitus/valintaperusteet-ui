@@ -157,6 +157,26 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 
 		};
 
+        this.deleteValintaryhma = function (oid) {
+            $modal.open({
+                backdrop: 'static',
+                templateUrl: 'poistavalintaryhma.html',
+                controller: function($scope, $window, $modalInstance) {
+                    $scope.ok = function() {
+                        Valintaryhma.delete({oid: oid}, function (result) {
+                            Treemodel.refresh();
+                        });
+                        $modalInstance.close();
+                    };
+                    $scope.cancel = function() {
+                        $modalInstance.dismiss('cancel');
+                    };
+                }
+            }).result.then(function() {
+                }, function() {
+                });
+        };
+
 		this.removeValinnanvaihe = function (vaihe) {
             $modal.open({
                 backdrop: 'static',
@@ -327,6 +347,10 @@ angular.module('valintaperusteet').
 	$scope.cancel = function () {
 		$location.path("/");
 	};
+
+    $scope.deleteValintaryhma = function () {
+        $scope.model.deleteValintaryhma($scope.valintaryhmaOid);
+    };
 
 	$scope.lisaaValinnanVaihe = function () {
 		$location.path("/valintaryhma/" + $scope.valintaryhmaOid + "/valinnanvaihe/");

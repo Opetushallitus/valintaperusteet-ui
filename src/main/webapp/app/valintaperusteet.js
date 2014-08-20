@@ -95,7 +95,8 @@ app.factory('Valintaryhma', function($resource) {
 	    get: {method: "GET"},
 	    post:{method: "POST"},
 	    insert: {method: "PUT"},
-      query: {method: "GET", isArray: true}
+        query: {method: "GET", isArray: true},
+        delete: {method: "DELETE"}
 	});
 });
 
