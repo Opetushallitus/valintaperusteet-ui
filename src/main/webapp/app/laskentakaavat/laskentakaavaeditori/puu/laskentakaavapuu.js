@@ -18,6 +18,8 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             $scope.errors = [];
             $scope.commonErrors = [];
             $scope.model = {};
+            $scope.openAll = false;
+
             $scope.hideKaavaBasics = true;
             $routeParams.laskentakaavaOid ? $scope.kaavaHasId = true : $scope.kaavaHasId = false;
 
@@ -119,15 +121,16 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             };
 
             $scope.toggleAll = function () {
+                $scope.openAll =! $scope.openAll;
                 $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit.forEach(function (item) {
-                    item.open = item.open ? false : true;
+                    item.open = $scope.openAll;
                     toggleAllLower(item.lapsi);
                 });
             };
 
             function toggleAllLower(item) {
                 item.funktioargumentit.forEach(function (item) {
-                    item.open = item.open ? false : true;
+                    item.open = $scope.openAll;
                     toggleAllLower(item.lapsi);
                 });
             }
