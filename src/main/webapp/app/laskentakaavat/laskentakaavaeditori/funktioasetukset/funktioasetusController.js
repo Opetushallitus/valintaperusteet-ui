@@ -71,8 +71,13 @@ angular.module('LaskentakaavaEditor')
 
     .controller('funktiokutsunTallentaminenLaskentakaavanaController', ['$scope', function ($scope) {
         "use strict";
-
         $scope.$on('showTallennaFunktiokutsuLaskentakaavanaModal', function () {
+            $scope.show();
+        });
+    }])
+
+    .controller('laskentakaavaAsetuksetController', ['$scope', function($scope) {
+        $scope.$on('editKaavaMetadata', function() {
             $scope.show();
         });
     }]);

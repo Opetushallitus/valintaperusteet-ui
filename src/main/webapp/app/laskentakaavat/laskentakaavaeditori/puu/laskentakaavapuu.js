@@ -2,11 +2,11 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
     ['$scope', '_', '$location', '$routeParams', '$timeout', 'KaavaValidointi', 'Laskentakaava', 'LaskentakaavaLista',
         'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'Arvokonvertterikuvauskielet',
         'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'KaavaVirheService',
-        function ($scope, _, $location, $routeParams, $timeout, KaavaValidointi, Laskentakaava, LaskentakaavaLista,
-                  TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet,
-                  FunktioNimiService, FunktioFactory, KaavaValidationService) {
+        function ($scope, _, $location, $routeParams, $timeout, KaavaValidointi, Laskentakaava, LaskentakaavaLista, TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet, FunktioNimiService, FunktioFactory, KaavaValidationService) {
             'use strict';
+            
 
+            
             //servicet laskentakaavapuun piirtämiseen
             $scope.templateService = TemplateService;
             $scope.funktioService = FunktioService;
@@ -18,6 +18,8 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             $scope.errors = [];
             $scope.commonErrors = [];
             $scope.model = {};
+            $scope.hideKaavaBasics = true;
+            $routeParams.laskentakaavaOid ? $scope.kaavaHasId = true : $scope.kaavaHasId = false;
 
             //Pidetään laskentakaaviitevalinta objektissa. Laskentakaavaviitettä kaavaan liitettäessä radio-inputit iteroidaan ng-repeatissa,
             //joka luo uuden skoopin joka itemille, jolloin laskentakaavaviitteen tallentaminen  suoraan skoopissa olevaan muuttujaan ei toimi oikein
@@ -34,14 +36,12 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
 
                     //käydään rekursiivisesti laskentakaavapuu läpi ja lisätään puuttuvat syöteparametriobjektit
                     FunktioService.addMissingSyoteparametrit($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit[0]);
-                    
+
                 });
             }
 
 
-            $scope.$on('newkaava', function () {
-                $scope.model.laskentakaavapuu = $scope.$parent.$parent.newKaavaTemplate;
-            });
+
 
             $scope.reloadLaskentakaavaLista = function () {
                 if ($routeParams.valintaryhmaOid) {
@@ -66,8 +66,9 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             };
 
             $scope.setRootSelection = function (funktiokutsu) {
-                $scope.isRootSelected = true;
                 $scope.funktioSelection = funktiokutsu;
+                $scope.hideKaavaBasics = !$scope.hideKaavaBasics;
+                $scope.$broadcast('editKaavaMetadata');
             };
 
 
@@ -76,7 +77,6 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             // parentFunktiokutsu = parentFunktiokutsu tai laskentakaavan juuri
             // index = monesko funktio-parametri on funktioargumenttilistassa, juurifunktiokutsulla ei ole indeksiä
             $scope.setFunktioSelection = function (funktio, isFunktiokutsu, parentFunktiokutsu, index, isAlikaava, hasParentAlikaava) {
-                console.log(funktio);
                 $scope.funktioasetukset.parentFunktiokutsu = parentFunktiokutsu;
 
                 $scope.funktioasetukset.selectedFunktioIndex = index;
@@ -100,15 +100,13 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     $scope.$broadcast('showLaskentakaavaviiteAsetukset');
                 }
 
-
                 $scope.laskentakaavaviite.selection = funktio || undefined;
-                $scope.isRootSelected = false;
                 $scope.saved = false;
+                $scope.hideKaavaBasics = true;
             };
 
             $scope.removeFunktioSelection = function () {
                 $scope.funktioasetukset.konvertteriType = '';
-                $scope.isRootSelected = false;
                 $scope.saved = false;
                 $scope.alikaavaValues = {};
                 $scope.funktioSelection = undefined;
@@ -121,14 +119,14 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
             };
 
             $scope.toggleAll = function () {
-                $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit.forEach(function(item) {
+                $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit.forEach(function (item) {
                     item.open = item.open ? false : true;
                     toggleAllLower(item.lapsi);
                 });
             };
 
             function toggleAllLower(item) {
-                item.funktioargumentit.forEach(function(item) {
+                item.funktioargumentit.forEach(function (item) {
                     item.open = item.open ? false : true;
                     toggleAllLower(item.lapsi);
                 });
@@ -161,7 +159,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                     var argListLength = parent.lapsi.funktioargumentit.length;
 
                     //tarkistetaan, että funktioargumentteja on parillinen määrä ja että kaksi viimeistä funktioargumenttislottia on täytetty, jottei lisätä ylimääräisiä slotteja
-                    if (argCount % 2 === 0 && !(_.isEmpty(parent.lapsi.funktioargumentit[argListLength - 1])) && !(_.isEmpty(parent.lapsi.funktioargumentit[argCount - 2])) ) {
+                    if (argCount % 2 === 0 && !(_.isEmpty(parent.lapsi.funktioargumentit[argListLength - 1])) && !(_.isEmpty(parent.lapsi.funktioargumentit[argCount - 2]))) {
                         parent.lapsi.funktioargumentit.push({});
                         parent.lapsi.funktioargumentit.push({});
                     }
@@ -264,7 +262,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 var result = viitteet[indeksi];
                 if (result === undefined) {
                     result = {tunniste: "", kuvaus: "", lahde: "", onPakollinen: false, kuvaukset: {tekstit: []}, vaatiiOsallistumisen: true};
-                } else if(_.size(result) == 1 || _.isEmpty(result)) {
+                } else if (_.size(result) == 1 || _.isEmpty(result)) {
                     result.tunniste = "";
                     result.kuvaus = "";
                     result.lahde = "";
@@ -360,10 +358,10 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 return parent.lapsi ? false : true;
             };
 
-            $scope.getValintaperusteviitetyyppiText = function(valintaperusteviite) {
+            $scope.getValintaperusteviitetyyppiText = function (valintaperusteviite) {
                 var text = "";
-                _.some($scope.valintaperusteviitetyypit, function(item) {
-                    if(item.key === valintaperusteviite.lahde) {
+                _.some($scope.valintaperusteviitetyypit, function (item) {
+                    if (item.key === valintaperusteviite.lahde) {
                         text = item.text;
                         return true;
                     }
@@ -371,7 +369,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 return text;
             };
 
-            $scope.valintaperusteviiteDefined = function(valintaperusteviite) {
+            $scope.valintaperusteviiteDefined = function (valintaperusteviite) {
                 return valintaperusteviite.tunniste || valintaperusteviite.kuvaus || !(_.isEmpty($scope.getValintaperusteviitetyyppiText(valintaperusteviite)));
             };
 
@@ -414,11 +412,11 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 $location.path('/valintaryhma' + valintaryhmaOid + '/laskentakaavalista/laskentakaava/' + laskentakaavaOid);
             };
 
-            $scope.persist = function () {
-                $scope.$broadcast('persist');
-            };
+            $scope.editLaskentakaava = function() {
+                $scope.$broadcast('showLaskentakaavaAsetukset')
+            }
 
-            $scope.$on('persist', function () {
+            $scope.persistNewKaava = function () {
                 var kaava = {
                     valintaryhmaOid: $routeParams.valintaryhmaOid,
                     hakukohdeOid: $routeParams.hakukohdeOid,
@@ -432,53 +430,65 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 $scope.errors.length = 0;
                 $scope.commonErrors.length = 0;
 
-                if (!$scope.createNewKaava) {
-                    $scope.funktioSelection = undefined;
-                    $scope.alikaavaValues = {};
+                KaavaValidationService.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
+                kaava.laskentakaava.funktiokutsu.funktioargumentit = FunktioService.cleanLaskentakaavaPKObjects(kaava.laskentakaava.funktiokutsu.funktioargumentit);
 
-                    KaavaValidationService.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
+                if ($scope.errors.length === 0) {
+                    Laskentakaava.insert({}, kaava, function (result) {
+                        $scope.createNewKaava = false;
+                        $scope.saved = true;
 
-                    if ($scope.errors.length === 0) {
-                        //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
-                        $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.cleanLaskentakaavaPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
+                        if (urlEnd === 'laskentakaava/') {
+                            $location.path($location.path() + result.id);
+                        }
 
-                        KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function () {
-                                $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function (result) {
-                                        $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
-                                        $scope.saved = true;
+                    }, function (error) {
+                        $scope.commonErrors.push({virhetyyppi: $scope.kaavaVirheTyypit['MuuVirhe'], kuvaus: 'Laskentakaavan tallennus epäonnistui'});
+                    });
+                }
+            };
 
-                                        if (urlEnd === 'laskentakaava/') {
-                                            $location.path($location.path() + result.id);
-                                        }
+            $scope.persist = function () {
 
-                                    },
-                                    function (error) {
-                                       
-                                        $scope.commonErrors.push({virhetyyppi: $scope.kaavaVirheTyypit['MuuVirhe'], kuvaus: 'Laskentakaavan tallennus epäonnistui '});
-                                    });
-                            },
-                            function (error) {
-                                $scope.commonErrors.push({virhetyyppi: $scope.kaavaVirheTyypit['MuuVirhe'], kuvaus: 'Laskentakaavan tallennus epäonnistui'});
-                            });
-                    }
-                } else {
-                    KaavaValidationService.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
-                    kaava.laskentakaava.funktiokutsu.funktioargumentit = FunktioService.cleanLaskentakaavaPKObjects(kaava.laskentakaava.funktiokutsu.funktioargumentit);
+                var urlEnd = _.reduce(_.last($location.path(), 14), function (result, current) {
+                    return result + current;
+                }, "");
 
-                    if ($scope.errors.length === 0) {
-                        Laskentakaava.insert({}, kaava, function (result) {
-                            $scope.createNewKaava = false;
-                            $scope.saved = true;
+                $scope.errors.length = 0;
+                $scope.commonErrors.length = 0;
 
-                            if (urlEnd === 'laskentakaava/') {
-                                $location.path($location.path() + result.id);
-                            }
+                $scope.funktioSelection = undefined;
+                $scope.alikaavaValues = {};
 
-                        }, function (error) {
+                KaavaValidationService.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
+
+                if ($scope.errors.length === 0) {
+                    //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
+                    $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.cleanLaskentakaavaPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
+
+                    KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function () {
+                            $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function (result) {
+                                    $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
+                                    $scope.saved = true;
+
+                                    if (urlEnd === 'laskentakaava/') {
+                                        $location.path($location.path() + result.id);
+                                    }
+
+                                },
+                                function (error) {
+
+                                    $scope.commonErrors.push({virhetyyppi: $scope.kaavaVirheTyypit['MuuVirhe'], kuvaus: 'Laskentakaavan tallennus epäonnistui '});
+                                });
+                        },
+                        function (error) {
                             $scope.commonErrors.push({virhetyyppi: $scope.kaavaVirheTyypit['MuuVirhe'], kuvaus: 'Laskentakaavan tallennus epäonnistui'});
                         });
-                    }
                 }
+            };
+
+            $scope.$on('newkaava', function () {
+                $scope.model.laskentakaavapuu = $scope.$parent.$parent.newKaavaTemplate;
             });
 
 

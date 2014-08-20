@@ -1,8 +1,11 @@
 <div ng-controller="LaskentakaavaController">
 
     <div class="float-left">
-        <span class="btn btn-sm btn-default" ng-click="back()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}</span>
-        <span class="btn btn-sm btn-primary" ng-click="persist()"><i class="fa fa-floppy-o"></i> {{ t('common.tallenna') || 'Tallenna' }}</span>
+        <span class="btn btn-sm btn-default" ng-click="back()" popover-popup-delay="500" popover-placement="top"
+              popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
+                class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}</span>
+        <span ng-if="kaavaHasId" class="btn btn-sm btn-primary" ng-click="persist()"><i class="fa fa-floppy-o"></i> {{ t('common.tallenna') || 'Tallenna' }}</span>
+        <span ng-if="!kaavaHasId" class="bnt btn-sm btn-primary" ng-click="persistNewKaava()"><i class="fa fa-floppy-o"></i> {{ t('common.tallenna') || 'Tallenna uusi kaava'}}</span>
     </div>
 
     <div class="gradingformula">
@@ -10,7 +13,9 @@
         <div class="alert alert-danger margin-top-2" collapse="errors.length === 0 && commonErrors.length === 0">
             <h3>{{ t('laskentakaavapuu.eitalletettu') || 'Laskentakaavaa ei voitu tallentaa.' }}</h3>
 
-            <p>{{ t('laskentakaavapuu.eitalletettutext') || 'Alla olevasta listasta saat vihjeitä kaavan virheistä ja virheellisen funktiokutsun tapauksessa pääset muokkaamaan sitä suoraan klikkaamalla virheilmoitusta. Yritä laskentakaavan tallennusta uudestaan heti virheet korjattuasi.' }}</p>
+            <p>{{ t('laskentakaavapuu.eitalletettutext') || 'Alla olevasta listasta saat vihjeitä kaavan virheistä ja
+                virheellisen funktiokutsun tapauksessa pääset muokkaamaan sitä suoraan klikkaamalla virheilmoitusta.
+                Yritä laskentakaavan tallennusta uudestaan heti virheet korjattuasi.' }}</p>
 
             <ol class="margin-top-2">
                 <li ng-repeat="error in errors">
@@ -44,6 +49,15 @@
                 <modal-open></modal-open>
             </modal>
         </div>
+
+        <!--MUOKKAA KAAVAN NIMEÄ TAI KUVAUSTA -->
+
+        <div ng-controller="laskentakaavaAsetuksetController">
+            <modal modal-template="laskentakaavat/laskentakaavaeditori/funktioasetukset/laskentakaavaAsetuksetModal.html">
+                <modal-open></modal-open>
+            </modal>
+        </div>
+
 
         <!-- LASKENTAKAAVAPUUN JUURI -->
         <div class="frame open" ng-class="isRootSelected ? 'active' : ''">
@@ -125,9 +139,11 @@
         <span add-class-on-mouseover="bold" class="node"
               ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">
             <span>{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}
-                <span ng-if="funktiowrapper.lapsi.valintaperusteviitteet" ng-repeat="valintaperusteviite in funktiowrapper.lapsi.valintaperusteviitteet">
+                <span ng-if="funktiowrapper.lapsi.valintaperusteviitteet"
+                      ng-repeat="valintaperusteviite in funktiowrapper.lapsi.valintaperusteviitteet">
                     <span ng-if="valintaperusteviiteDefined(valintaperusteviite)">(</span>
-                    {{getValintaperusteviitetyyppiText(valintaperusteviite)}}<span ng-if="getValintaperusteviitetyyppiText(valintaperusteviite) && valintaperusteviite.tunniste || valintaperusteviite.kuvaus">,</span>
+                    {{getValintaperusteviitetyyppiText(valintaperusteviite)}}<span
+                        ng-if="getValintaperusteviitetyyppiText(valintaperusteviite) && valintaperusteviite.tunniste || valintaperusteviite.kuvaus">,</span>
                     <span>{{valintaperusteviite.tunniste}}</span>
                     <span ng-if="valintaperusteviite.tunniste && valintaperusteviite.kuvaus"> - </span>
                     <span ng-if="valintaperusteviite.kuvaus">{{valintaperusteviite.kuvaus}}</span>
@@ -390,7 +406,8 @@ YHTASUURI
 
     <table class="dropmenu-table" ng-controller="funktioMenuController">
         <thead>
-        <th colspan="2">{{ t('laskentakaavapuu.lisaa') || 'Lisää uusi funktio' }} <span class="float-right" ng-click="showNewFunktioList.visible = false"><i
+        <th colspan="2">{{ t('laskentakaavapuu.lisaa') || 'Lisää uusi funktio' }} <span class="float-right"
+                                                                                        ng-click="showNewFunktioList.visible = false"><i
                 style="font-size: 18px;" class="fa fa-times-circle-o"></i></span></th>
         </thead>
         <tbody>
@@ -457,7 +474,8 @@ YHTASUURI
         </tr>
         <tr>
             <td ng-click="addFunktio(parent, 'HAETOTUUSARVOJAKONVERTOILUKUARVOKSI', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.haetotuusarvojakonvertoilukuarvoksi') || 'Hae totuusarvo ja konvertoi lukuarvoksi' }}</span></td>
+                <span>{{ t('laskentakaavapuu.haetotuusarvojakonvertoilukuarvoksi') || 'Hae totuusarvo ja konvertoi lukuarvoksi' }}</span>
+            </td>
             <td ng-click="addFunktio(parent, 'NIMETTYLUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false">
                 <span>{{ t('laskentakaavapuu.nimettylukuarvo') || 'Nimetty lukuarvo' }}</span></td>
         </tr>
@@ -487,7 +505,8 @@ YHTASUURI
 <script type="text/ng-template" id="totuusarvoFunktiot">
     <table class="dropmenu-table" ng-controller="funktioMenuController">
         <thead>
-        <th colspan="2">{{ t('laskentakaavapuu.lisaa') || 'Lisää uusi funktio' }} <span class="float-right" ng-click="showNewFunktioList.visible = false"><i
+        <th colspan="2">{{ t('laskentakaavapuu.lisaa') || 'Lisää uusi funktio' }} <span class="float-right"
+                                                                                        ng-click="showNewFunktioList.visible = false"><i
                 style="font-size: 18px;" class="fa fa-times-circle-o"></i></span></th>
         </thead>
         <tbody>
@@ -529,13 +548,15 @@ YHTASUURI
         </tr>
         <tr>
             <td ng-click="addFunktio(parent, 'HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.haemerkkijonototuusarvoksi') || 'Hae merkkijono ja konvertoi totuusarvoksi' }}</span></td>
+                <span>{{ t('laskentakaavapuu.haemerkkijonototuusarvoksi') || 'Hae merkkijono ja konvertoi totuusarvoksi' }}</span>
+            </td>
             <td ng-click="addFunktio(parent, 'NIMETTYTOTUUSARVO', funktioSlotIndex); showNewFunktioList.visible = false">
                 <span>{{ t('laskentakaavapuu.nimettytotuusarvo') || 'Nimetty totuusarvo' }}</span></td>
         </tr>
         <tr>
             <td ng-click="addFunktio(parent, 'HAEMERKKIJONOJAVERTAAYHTASUURUUS', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.haemerkkijonoyhtasuuruus') || 'Hae merkkijono ja vertaa yhtäsuuruus' }}</span></td>
+                <span>{{ t('laskentakaavapuu.haemerkkijonoyhtasuuruus') || 'Hae merkkijono ja vertaa yhtäsuuruus' }}</span>
+            </td>
             <td ng-click="addFunktio(parent, 'VALINTAPERUSTEYHTASUURUUS', funktioSlotIndex); showNewFunktioList.visible = false">
                 <span>{{ t('laskentakaavapuu.valintaperusteyhtasuuruus') || 'Valintaperusteyhtäsuuruus' }}</span></td>
         </tr>

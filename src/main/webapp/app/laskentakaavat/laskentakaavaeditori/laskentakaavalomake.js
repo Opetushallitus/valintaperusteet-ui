@@ -6,13 +6,13 @@ angular.module('LaskentakaavaEditor').
         $scope.kaavaVirheTyypit = KaavaVirheTyypit;
 
         if (!$routeParams.laskentakaavaOid) {
-            $scope.showNewLaskentakaavaForm = true;
+            $scope.showNewKaava = true;
             $scope.createNewKaava = true;
         }
 
         $scope.setLaskentakaava = function (laskentakaava) {
             $scope.newKaavaTemplate = laskentakaava;
-            $scope.showNewLaskentakaavaForm = false;
+            $scope.showNewKaava = false;
             $scope.$broadcast('newkaava');
         };
 
