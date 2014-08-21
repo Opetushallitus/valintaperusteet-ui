@@ -1,14 +1,20 @@
 angular.module('LaskentakaavaEditor').
-factory('FunktioService', function (FunktioKuvausResource) {
+factory('FunktioService', function (FunktioKuvausResource, $log) {
     'use strict';
 
     var model = new function () {
         this.funktiokuvaukset = {};
+        this.funktiokuvausRequest = false;
 
         this.refresh = function () {
-            if (_.isEmpty(model.funktiokuvaukset)) {
+            if (_.isEmpty(model.funktiokuvaukset) && !model.funktiokuvausRequest ) {
+                model.funktiokuvausRequest = true;
                 FunktioKuvausResource.get({}, function (result) {
                     model.funktiokuvaukset = result;
+                    model.funktiokuvausRequest = false;
+                }, function(error) {
+                    model.funktiokuvausRequest = false;
+                    $log.error('Funktiokuvausten hakeminen epäonnistui', error);
                 });
             }
         };

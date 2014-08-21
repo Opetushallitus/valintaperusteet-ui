@@ -40,16 +40,13 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
                 });
             }
 
-
-
-
             $scope.reloadLaskentakaavaLista = function () {
                 if ($routeParams.valintaryhmaOid) {
-                    LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, null, false);
+                    LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, null);
                 } else if ($routeParams.hakukohdeOid) {
-                    LaskentakaavaLista.refresh(null, $routeParams.hakukohdeOid, false);
+                    LaskentakaavaLista.refresh(null, $routeParams.hakukohdeOid);
                 } else {
-                    LaskentakaavaLista.refresh(null, null, false);
+                    LaskentakaavaLista.refresh(null, null);
                 }
             };
 

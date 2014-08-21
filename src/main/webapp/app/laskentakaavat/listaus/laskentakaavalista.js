@@ -1,5 +1,5 @@
 angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (Laskentakaava, ParentValintaryhmas,
-                                                                              Hakukohde, Valintaryhma) {
+                                                                              Hakukohde, Valintaryhma, _) {
     'use strict';
 
     var valintaryhmaList = [];
@@ -9,10 +9,11 @@ angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (La
     var findWithValintaryhma = function (valintaryhmaId) {
         var list = [];
         ParentValintaryhmas.get({parentOid: valintaryhmaId}, function (data) {
-            for (var i in data) {
-                var valintaryhma = data[i];
-                valintaryhma['laskentakaavat'] = Laskentakaava.list({valintaryhma: valintaryhma.oid});
-            }
+            _.forEach(data, function(item, index, array) {
+                if(item.oid) {
+                    item['laskentakaavat'] = Laskentakaava.list({valintaryhma: item.oid});
+                }
+            });
 
             var paataso = findRootLevelLaskentakaavas();
             list.push.apply(list, data);
@@ -55,7 +56,7 @@ angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (La
             nimi: "Yleiset kaavat",
             laskentakaavat: []
         };
-        Laskentakaava.list({}, function (data) {
+        Laskentakaava.list({oid: null}, function (data) {
             paataso.laskentakaavat = data;
         });
 
@@ -135,6 +136,7 @@ angular.module('LaskentakaavaEditor').factory('KaavaKopiointiModel', function($l
         this.laskentakaava = {};
 
         this.refresh = function (kaavaId) {
+
             Laskentakaava.get({oid: kaavaId}, function(result) {
                 model.laskentakaava = result.funktiokutsu;
             }, function(error) {
