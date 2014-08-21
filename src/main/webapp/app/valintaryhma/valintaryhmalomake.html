@@ -1,3 +1,16 @@
+<script type="text/ng-template" id="poistavalintaryhma.html">
+    <div class="modal-header">
+        <h3 class="modal-title">{{ t('valintaryhmalomake.poistavalintaryhma.header') || 'Oletko varma?' }}</h3>
+    </div>
+    <div class="modal-body">
+        {{ t('valintaryhmalomake.poistavalintaryhma.body') || 'Oletko varma, että halua poistaa valintaryhmän?' }}
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">{{ t('valintaryhmalomake.poistavalintaryhma.kylla') || 'Kyllä' }}</button>
+        <button class="btn btn-warning" ng-click="cancel()">{{ t('valintaryhmalomake.poistavalintaryhma.ei') || 'Ei' }}</button>
+    </div>
+</script>
+
 <script type="text/ng-template" id="poistavalinnanvaihe.html">
     <div class="modal-header">
         <h3 class="modal-title">{{ t('valintaryhmalomake.poistavalinnanvaihe.header') || 'Oletko varma?' }}</h3>
@@ -215,6 +228,10 @@
         {{ t('common.tallenna') || 'Tallenna' }}
     </button>
 
+    <button auth="crud" class="btn btn-sm btn-primary" type="button" ng-click="deleteValintaryhma()">
+        <i class="fa fa-trash-o"></i>
+        {{ t('common.poista') || 'Poista' }}
+    </button>
 </div>
 <div class="clear"></div>
 </form>
