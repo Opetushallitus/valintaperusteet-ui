@@ -249,6 +249,7 @@
                 <th>{{ t('valintatapajono.maara') || 'Kiintiö' }}</th>
                 <!--<th>{{ t('valintatapajono.periytyy') || 'Periytyy' }}</th>-->
                 <th>{{ t('valintatapajono.poista') || 'Poista' }}</th>
+                <td>id</td>
 
             </tr>
             </thead>
@@ -267,6 +268,7 @@
                         <span auth="crud" ng-show="!data.inheritance"
                               ng-click="model.removeHakijaryhma(data.oid)"><i class="fa fa-trash-o"></i></span>
                 </td>
+                <td>{{data.oid}}</td>
             </tr>
             </tbody>
 

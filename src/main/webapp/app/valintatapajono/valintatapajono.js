@@ -317,11 +317,6 @@ app.factory('HakijaryhmaLiitaModel', function($resource, $location, $routeParams
         this.refresh = function() {
             model.hakijaryhmaOid = {};
             this.parentOid = "";
-
-        };
-
-        this.refreshIfNeeded = function() {
-            this.refresh();
         };
 
         this.move = function() {
@@ -343,10 +338,10 @@ function HakijaryhmaValintaController($scope, $routeParams, HakijaryhmaLiitaMode
     "use strict";
 
     $scope.model = HakijaryhmaLiitaModel;
-    $scope.model.refreshIfNeeded();
+    $scope.model.refresh();
 
     $scope.domain = ValintaryhmaModel;
-    ValintaryhmaModel.refresh();
+    ValintaryhmaModel.refresh($routeParams.id);
 
 
     $scope.liita = function() {

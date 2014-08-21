@@ -72,11 +72,11 @@ app.filter('laskentakaavaFilter', function (_, ValintatapajonoModel) {
 });
 
 app.filter('hakijaryhmatFilter', function (_, ValintatapajonoModel) {
-    return function (hakijaryhmat, more, even) {
+    return function (hakijaryhmat) {
         return _.difference(hakijaryhmat, _.filter(hakijaryhmat, function(origItem) {
             return _.some(ValintatapajonoModel.hakijaryhmat, function(filterItem) {
-                return origItem.oid == filterItem.hakijaryhma.oid;
-            })
+                return origItem.oid == filterItem.masterOid;
+            });
         }));
     }
-})
+});
