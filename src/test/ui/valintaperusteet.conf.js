@@ -20,7 +20,7 @@ module.exports = function(config) {
       'main/webapp/app/valintaperusteet.js',
       'main/webapp/app/**/*.js',
       'main/webapp/common/js/**/*.js',
-      'test/ui/angular-mocks.js',
+      'test/ui/mockdata/**/*.js',
       'test/ui/unit/**/*.js'
     ],
 
@@ -34,7 +34,6 @@ module.exports = function(config) {
     plugins: [
         'karma-jasmine',
         'karma-phantomjs-launcher'
-
     ],
 
 
@@ -75,6 +74,11 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false
+    singleRun: true,
+
+      plugins: [
+          'karma-jasmine',
+          'karma-phantomjs-launcher'
+      ]
   });
 };
