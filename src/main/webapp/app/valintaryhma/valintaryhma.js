@@ -19,6 +19,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
         this.hakuoidit = [];
         this.haettu = false;
         this.nameerror = false;
+        this.okToDelete = false;
 
 		this.refresh = function (oid) {
             this.nameerror = false;
@@ -30,6 +31,8 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 
 				Valintaryhma.get({oid: oid}, function (result) {
 					model.valintaryhma = result;
+
+                    model.okToDelete = model.isOkToDelete();
 
                     ParentValintaryhmas.get({parentOid: model.valintaryhma.oid}, function (data) {
                         model.valintaryhma.level = data.length;
@@ -114,6 +117,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 			if (oid !== model.valintaryhma.oid) {
 				this.refresh(oid);
 			}
+
 		};
 
         this.updateKohdejoukot = function (kohdejoukko, oid) {
@@ -326,6 +330,9 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
             });
         };
 
+        this.isOkToDelete = function () {
+            return (!model.valintaryhma.lapsihakukohde && !model.valintaryhma.lapsivalintaryhma);
+        };
 	}();
 
 	return model;
@@ -339,6 +346,7 @@ angular.module('valintaperusteet').
 	$scope.valintaryhmaOid = $routeParams.id;
 	$scope.model = ValintaryhmaModel;
 	$scope.model.refreshIfNeeded($scope.valintaryhmaOid);
+
 
 	$scope.submit = function () {
 		$scope.model.persistValintaryhma($scope.valintaryhmaOid);
@@ -367,6 +375,7 @@ angular.module('valintaperusteet').
 	$scope.toValintaryhmaForm = function () {
 		$location.path("/valintaryhma/" + $scope.valintaryhmaOid);
 	};
+
 
 	$scope.organisaatioSelector = function (data) {
 

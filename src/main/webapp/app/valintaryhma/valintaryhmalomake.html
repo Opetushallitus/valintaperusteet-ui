@@ -228,7 +228,7 @@
         {{ t('common.tallenna') || 'Tallenna' }}
     </button>
 
-    <button auth="crud" class="btn btn-sm btn-primary" type="button" ng-click="deleteValintaryhma()">
+    <button auth="crud" ng-disabled="!model.okToDelete" class="btn btn-sm btn-primary" type="button" ng-click="deleteValintaryhma()">
         <i class="fa fa-trash-o"></i>
         {{ t('common.poista') || 'Poista' }}
     </button>
