@@ -40,8 +40,11 @@ angular.module('valintaperusteet')
         });
     })
 
-    .factory('Hakemusavaimet', function ($resource) {
-        return $resource(HAKEMUS_URL_BASE + "haku-app/application-system-form-editor/theme-question/list/:hakuoid", {hakuoid: "@hakuoid"});
+    .factory('HakemusavaimetLisakysymykset', function ($resource) {
+        //return $resource(HAKEMUS_URL_BASE + "haku-app/application-system-form-editor/theme-question/list/:hakuoid", {hakuoid: "@hakuoid"});
+        return $resource("http://localhost:9090/haku-app/application-system-form-editor/theme-question/list/:hakuoid", {hakuoid: "@hakuoid"},{
+            get: {method: "GET", isArray:true}
+        });
     })
 
     .factory('HakemusavaimetLomake', function ($resource) {

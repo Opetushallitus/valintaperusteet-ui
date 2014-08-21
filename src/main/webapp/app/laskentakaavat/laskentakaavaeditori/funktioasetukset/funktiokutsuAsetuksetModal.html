@@ -69,11 +69,23 @@
                 <div class="col-sm-9" >
                     <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && bigdata.length > 0">
                         <select ng-model="valintaperuste.tunniste"
-                                ng-options="data.key as data.value for data in bigdata">
+                                ng-options="data.key as data.value for data in bigdata"
+                                ng-disabled="alikaavaValues.isAlikaava">
                             <option value=""></option>
                         </select>
                     </div>
-                    <div ng-if="valintaperuste.lahde !== 'HAETTAVA_ARVO' || valintaperuste.lahde === 'HAETTAVA_ARVO' && data.length == 0">
+                    <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && lisakysymysAvaimet.length > 0">
+                        <select ng-model="valintaperuste.tunniste"
+                                ng-options="data.key as data.value for data in lisakysymysAvaimet"
+                                ng-disabled="alikaavaValues.isAlikaava">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO'">
+                        <input ng-disabled="alikaavaValues.isAlikaava" type="text" ng-model="valintaperuste.tunniste"
+                               required="required"/>
+                    </div>
+                    <div ng-if="valintaperuste.lahde !== 'HAETTAVA_ARVO'">
                         <input ng-disabled="alikaavaValues.isAlikaava" type="text" ng-model="valintaperuste.tunniste"
                                required="required"/>
                     </div>

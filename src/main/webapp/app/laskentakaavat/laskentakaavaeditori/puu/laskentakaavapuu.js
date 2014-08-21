@@ -76,7 +76,6 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
             // parentFunktiokutsu = parentFunktiokutsu tai laskentakaavan juuri
             // index = monesko funktio-parametri on funktioargumenttilistassa, juurifunktiokutsulla ei ole indeksiä
             $scope.setFunktioSelection = function (funktio, isFunktiokutsu, parentFunktiokutsu, index, isAlikaava, hasParentAlikaava) {
-                console.log(funktio);
                 $scope.funktioasetukset.parentFunktiokutsu = parentFunktiokutsu;
 
                 $scope.funktioasetukset.selectedFunktioIndex = index;
