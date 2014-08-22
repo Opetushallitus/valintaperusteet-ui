@@ -3,7 +3,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
                                            ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe,
                                            ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma,
                                            OrganizationByOid, $modal, Utils, Haku, HaunTiedot, ParentValintaryhmas,
-                                           ChildValintaryhmas) {
+                                           ChildValintaryhmas, $location) {
     "use strict";
 
 
@@ -169,6 +169,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
                     $scope.ok = function() {
                         Valintaryhma.delete({oid: oid}, function (result) {
                             Treemodel.refresh();
+                            $location.path("/");
                         });
                         $modalInstance.close();
                     };
