@@ -25,11 +25,18 @@ angular.module('valintaperusteet')
     .factory('Laskentakaava', function ($resource) {
 
         return $resource(SERVICE_URL_BASE + "resources/laskentakaava/:oid", {oid: "@oid"}, {
-            list: {method: "GET", isArray: true},
+            list: {method: "GET", isArray:true},
             get: {method: "GET"},
             insert: {method: "PUT"},
             update: {method: "POST"},
             updateMetadata: {method: "POST", params: {metadata: "true"}}
+        });
+    })
+
+    .factory('LaskentakaavaValintaryhma', function ($resource) {
+
+        return $resource(SERVICE_URL_BASE + "resources/laskentakaava/:oid/valintaryhma", {oid: "@oid"}, {
+            get: {method: "GET"}
         });
     })
 
