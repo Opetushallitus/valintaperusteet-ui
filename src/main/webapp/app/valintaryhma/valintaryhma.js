@@ -64,7 +64,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
                 ValintaryhmaHakijaryhma.get({oid: oid}, function (result) {
                     model.hakijaryhmat = result;
                     model.hakijaryhmat.forEach(function (hr) {
-                        Laskentakaava.get({oid: hr.laskentakaavaId}, function (result) {
+                        Laskentakaava.get({oid: hr.laskentakaavaId, funktiopuu: false}, function (result) {
                             hr.laskentakaava_nimi = result.nimi;
                         });
                     });

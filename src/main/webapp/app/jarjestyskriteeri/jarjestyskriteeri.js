@@ -50,7 +50,7 @@ app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskrit
                 obj.jarjestyskriteeri.aktiivinen = "true";
                 ValintatapajonoJarjestyskriteeri.insert({parentOid: valintatapajonoOid}, obj,
                     function (jk) {
-                        Laskentakaava.get({oid: jk.laskentakaavaId}, function (result) {
+                        Laskentakaava.get({oid: jk.laskentakaavaId, funktiopuu: false}, function (result) {
                             jk.nimi = result.nimi;
                         });
                         jarjestyskriteerit.push(jk);
@@ -63,7 +63,7 @@ app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskrit
                     for (i in jarjestyskriteerit) {
                         if (jk.oid === jarjestyskriteerit[i].oid) {
 
-                            Laskentakaava.get({oid: jk.laskentakaavaId}, function (result) {
+                            Laskentakaava.get({oid: jk.laskentakaavaId, funktiopuu: false}, function (result) {
                                 jk.nimi = result.nimi;
                             });
 

@@ -49,7 +49,7 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
             ValintatapajonoJarjestyskriteeri.get({parentOid: oid}, function(result) {
                 model.jarjestyskriteerit = result;
                 model.jarjestyskriteerit.forEach(function(jk){
-                    Laskentakaava.get({oid: jk.laskentakaavaId}, function(result) {
+                    Laskentakaava.get({oid: jk.laskentakaavaId, funktiopuu: false}, function(result) {
                         jk.nimi = result.nimi;
                     });
                 });
@@ -171,7 +171,7 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
                 JarjestyskriteeriJarjesta.post(getJarjestyskriteeriOids(), function(result) {
                     model.jarjestyskriteerit = result;
                     model.jarjestyskriteerit.forEach(function(jk){
-                        Laskentakaava.get({oid: jk.laskentakaavaId}, function(result) {
+                        Laskentakaava.get({oid: jk.laskentakaavaId, funktiopuu: false}, function(result) {
                             jk.nimi = result.nimi;
                         });
                     });

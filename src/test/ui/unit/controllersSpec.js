@@ -511,7 +511,7 @@ describe('Testing JarjestyskriteeriController', function(){
         $httpBackend.expectGET('resources/valintatapajono/'+routeParams.valintatapajonoOid+"/jarjestyskriteeri").respond('[{"metatiedot":"Ulkomailla suoritettu koulutus tai oppivelvollisuuden suorittaminen keskeytynyt","aktiivinen":true,"oid":"1403080024594-3389074374885820341","valintatapajonoOid":"14030800242802764498205598029585","inheritance":false,"laskentakaavaId":4140}]');
         $httpBackend.expectGET('resources/valintaryhma/parents').respond("[]");
         $httpBackend.expectGET('resources/laskentakaava?valintaryhma=1403079862403-6606759132794079794').respond(laskentakaavajson);
-        $httpBackend.expectGET('resources/laskentakaava/4140').respond(laskentakaavaonejson);
+        $httpBackend.expectGET('resources/laskentakaava/4140?funktiopuu=false').respond(laskentakaavaonejson);
 
         ctrl = $controller('JarjestyskriteeriController', {'$scope' : scope, '$location': location, '$routeParams': routeParams,
             'jarjestyskriteeriModel': jarjestyskriteeriModel, 'ValintatapajonoModel': valintatapajonoModel});
@@ -958,7 +958,7 @@ describe('Testing HakukohdeValintatapajonoController', function(){
         $httpBackend.expectGET('resources/valintatapajono/'+routeParams.valintatapajonoOid).respond(valintatapajonojson);
         $httpBackend.expectGET('resources/valintatapajono/'+routeParams.valintatapajonoOid+"/hakijaryhma").respond("[]");
         $httpBackend.expectGET('resources/valintatapajono/'+routeParams.valintatapajonoOid+"/jarjestyskriteeri").respond('[{"metatiedot":"Ulkomailla suoritettu koulutus tai oppivelvollisuuden suorittaminen keskeytynyt","aktiivinen":true,"oid":"1403080024594-3389074374885820341","valintatapajonoOid":"14030800242802764498205598029585","inheritance":false,"laskentakaavaId":4140}]');
-        $httpBackend.expectGET('resources/laskentakaava/4140').respond(laskentakaavaonejson);
+        $httpBackend.expectGET('resources/laskentakaava/4140?funktiopuu=false').respond(laskentakaavaonejson);
 
         ctrl = $controller('HakukohdeValintatapajonoController', {'$scope' : scope, '$location': location, '$routeParams': routeParams,
             'ValintatapajonoModel':valintatapajonoModel, 'HakukohdeValinnanVaiheModel': hakukohdeValinnanVaiheModel});
