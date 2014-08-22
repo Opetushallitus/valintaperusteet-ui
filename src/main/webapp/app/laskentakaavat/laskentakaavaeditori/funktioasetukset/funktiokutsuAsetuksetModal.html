@@ -29,12 +29,18 @@
             <h3 ng-if="!valintaperusteviite.kuvaus">{{valintaperusteviite.nimi}}</h3>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label">{{ t('laskentakaavaviiteasetuksetmodal.tyyppi') || 'Tyyppi' }}</label>
+                <label class="col-sm-3 control-label">{{ t('laskentakaavaviiteasetuksetmodal.tyyppi') || 'Tyyppi'
+                    }}</label>
+
                 <div class="col-sm-9">
-                    <select ng-disabled="alikaavaValues.isAlikaava" ng-model="valintaperuste.lahde" ng-if="!isYoFunktiokutsu(funktioSelection)"
+                    <select ng-disabled="alikaavaValues.isAlikaava" ng-model="valintaperuste.lahde"
+                            ng-if="!isYoFunktiokutsu(funktioSelection)"
                             ng-options="item.key as item.text for item in valintaperusteviitetyypit">
                     </select>
-                    <p class="form-control-static" ng-init="valintaperuste.lahde = 'HAETTAVA_ARVO'" ng-if="isYoFunktiokutsu(funktioSelection)" >{{ t('laskentakaavat.funktioasetukset.haettava_arvo') || 'Arvo hakemukselta' }}</p>
+
+                    <p class="form-control-static" ng-init="valintaperuste.lahde = 'HAETTAVA_ARVO'"
+                       ng-if="isYoFunktiokutsu(funktioSelection)">{{ t('laskentakaavat.funktioasetukset.haettava_arvo')
+                        || 'Arvo hakemukselta' }}</p>
                 </div>
             </div>
 
@@ -59,18 +65,12 @@
             </div>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label">{{ t('laskentakaavaviiteasetuksetmodal.tunniste') || 'Tunniste'
-                    }}</label>
-                <!--<div class="col-sm-9" ng-if="valintaperusteviite.tyyppi != 'ARVOJOUKKO'">-->
-                <!--<div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && data.length > 0">-->
-                <!--<select ng-model="valintaperuste.tunniste" ng-options="data._id as data.answers for data in bigdata"></select>-->
-                <!--</div>-->
+                <label class="col-sm-3 control-label">{{ t('laskentakaavaviiteasetuksetmodal.tunniste') || 'Tunniste'}}</label>
+
                 <div class="col-sm-9">
                     <div>
                         <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && bigdata.length > 0">
-                        <p class="form-control-static">Hakulomakkeen tunniste</p>
-
-
+                            <p class="form-control-static">Hakulomakkeen tunniste</p>
                             <select ng-model="valintaperuste.tunniste"
                                     ng-options="data.key as data.value for data in bigdata"
                                     ng-disabled="alikaavaValues.isAlikaava">
@@ -80,8 +80,7 @@
                     </div>
                     <div>
                         <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && lisakysymysAvaimet.length > 0">
-s
-                        <p class="form-control-static">Lisäkysymyksen tunniste</p>
+                            <p class="form-control-static">Lisäkysymyksen tunniste</p>
                             <select ng-model="valintaperuste.tunniste"
                                     ng-options="data.key as data.value for data in lisakysymysAvaimet"
                                     ng-disabled="alikaavaValues.isAlikaava">
@@ -168,7 +167,8 @@ s
                 <div>
                     <button ng-disabled="alikaavaValues.isAlikaava" class="btn btn-sm btn-default"
                             ng-click="removeKonvertteriParametri($index, 'ARVOVALIKONVERTTERI')"><i
-                            class="fa fa-trash-o"></i> {{ t('laskentakaavaviiteasetuksetmodal.poistaparametri') || 'Poista parametri' }}
+                            class="fa fa-trash-o"></i> {{ t('laskentakaavaviiteasetuksetmodal.poistaparametri') ||
+                        'Poista parametri' }}
                     </button>
                 </div>
                 <div>
@@ -189,12 +189,15 @@ s
                     <label>
                         <input ng-disabled="alikaavaValues.isAlikaava" type="checkbox"
                                ng-model="parametri.palautaHaettuArvo" ng-true-value="true"
-                               ng-false-value="false"/> {{ t('laskentakaavaviiteasetuksetmodal.palauta') || 'Palauta haettu arvo' }}
+                               ng-false-value="false"/> {{ t('laskentakaavaviiteasetuksetmodal.palauta') || 'Palauta
+                        haettu arvo' }}
                     </label>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-5 control-label">{{ t('laskentakaavaviiteasetuksetmodal.pisteet') || 'Pisteet' }}</label>
-                    <input type="text" size="10" ng-model="parametri.paluuarvo" placeholder="{{ t('laskentakaavaviiteasetuksetmodal.pisteet') || 'Pisteet' }}"
+                    <label class="col-sm-5 control-label">{{ t('laskentakaavaviiteasetuksetmodal.pisteet') || 'Pisteet'
+                        }}</label>
+                    <input type="text" size="10" ng-model="parametri.paluuarvo"
+                           placeholder="{{ t('laskentakaavaviiteasetuksetmodal.pisteet') || 'Pisteet' }}"
                            ng-disabled="parametri.palautaHaettuArvo == 'true' || alikaavaValues.isAlikaava"/>
                 </div>
                 <div class="form-group">
@@ -203,7 +206,8 @@ s
                             <label>
                                 <input ng-disabled="alikaavaValues.isAlikaava" type="checkbox"
                                        ng-model="parametri.hylkaysperuste" ng-true-value="true"
-                                       ng-false-value="false"/> {{ t('laskentakaavaviiteasetuksetmodal.hylkaysperuste') || 'Hylkäysperuste' }}
+                                       ng-false-value="false"/> {{ t('laskentakaavaviiteasetuksetmodal.hylkaysperuste')
+                                || 'Hylkäysperuste' }}
                             </label>
                         </div>
                     </div>
@@ -336,14 +340,16 @@ s
     <h3 ng-show="!toggle">{{ t('laskentakaavaviiteasetuksetmodal.funktioasetukset') || 'Funktioasetukset' }}</h3>
 
     <!-- tallenna funktiokutsu laskentakaavana -->
-    <h3 ng-show="toggle">{{ t('laskentakaavaviiteasetuksetmodal.tallentaminen') || 'Funktiokutsun tallentaminen laskentakaavana' }}</h3>
+    <h3 ng-show="toggle">{{ t('laskentakaavaviiteasetuksetmodal.tallentaminen') || 'Funktiokutsun tallentaminen
+        laskentakaavana' }}</h3>
 
 </div>
 <div class="modal-body">
 
     <!-- Funktiokutsun asetukset -->
     <div collapse="toggle">
-        <div ng-if="alikaavaValues.isAlikaava" class="alert alert-info margin-top-2">{{ t('laskentakaavaviiteasetuksetmodal.eivoimuokata') || 'Alikaavan funktiokutsuja ei voi muokata.' }}
+        <div ng-if="alikaavaValues.isAlikaava" class="alert alert-info margin-top-2">{{
+            t('laskentakaavaviiteasetuksetmodal.eivoimuokata') || 'Alikaavan funktiokutsuja ei voi muokata.' }}
         </div>
 
         <h2 ng-if="funktioSelection">Funktiokutsun tyyppi: {{getFunktiokutsuName(funktioSelection)}}</h2>
@@ -353,7 +359,9 @@ s
             <!-- Valintaperusteviitteet -->
             <div class="form-item">
                 <div ng-if="funktiokuvausForSelection.valintaperusteviitteet">
-                    <label class="form-item-label" style="width:50px;">{{ t('laskentakaavaviiteasetuksetmodal.valintaperusteviitteet') || 'Valintaperusteviitteet' }}</label>
+                    <label class="form-item-label" style="width:50px;">{{
+                        t('laskentakaavaviiteasetuksetmodal.valintaperusteviitteet') || 'Valintaperusteviitteet'
+                        }}</label>
 
                     <div ng-if="funktioSelection.lapsi.valintaperusteviitteet"
                          ng-repeat="valintaperusteviite in funktiokuvausForSelection.valintaperusteviitteet"
@@ -368,7 +376,8 @@ s
             <div class="form-item">
 
                 <div ng-if="funktiokuvausForSelection.konvertteri">
-                    <label class="form-item-label" style="width:50px;">{{ t('laskentakaavaviiteasetuksetmodal.arvomuunnin') || 'Arvomuunnin' }}</label>
+                    <label class="form-item-label" style="width:50px;">{{
+                        t('laskentakaavaviiteasetuksetmodal.arvomuunnin') || 'Arvomuunnin' }}</label>
 
                     <div class="form-item-content">
                         <div class="field-select-containerbox">
@@ -384,7 +393,9 @@ s
 
                     <div class="form-item">
                         <label ng-if="funktioSelection.lapsi.arvokonvertteriparametrit.length > 0 || funktioSelection.lapsi.arvovalikonvertteriparametrit.length > 0"
-                               class="form-item-label" style="width:100px;">{{ t('laskentakaavaviiteasetuksetmodal.konversiomaarittelyt') || 'Konversiomäärittelyt' }}</label>
+                               class="form-item-label" style="width:100px;">{{
+                            t('laskentakaavaviiteasetuksetmodal.konversiomaarittelyt') || 'Konversiomäärittelyt'
+                            }}</label>
 
                         <div class="form-item-content"
                              ng-if="funktioSelection.lapsi.arvokonvertteriparametrit.length > 0"
@@ -407,7 +418,8 @@ s
 
             <!-- SYÖTEPARAMETRIT -->
             <div class="form-item">
-                <label class="form-item-label" style="width:150px;">{{ t('laskentakaavaviiteasetuksetmodal.arvonmaarittelyt') || 'Arvon määrittelyt' }}</label>
+                <label class="form-item-label" style="width:150px;">{{
+                    t('laskentakaavaviiteasetuksetmodal.arvonmaarittelyt') || 'Arvon määrittelyt' }}</label>
 
                 <div class="form-item-content">
 
@@ -421,7 +433,8 @@ s
                             </thead>
                             <tbody>
                             <tr ng-repeat="funktiokuvausSyoteparametri in funktiokuvausForSelection.syoteparametrit">
-                                <td ng-if="funktiokuvausSyoteparametri.kuvaus.length <= 0">{{ t('laskentakaavaviiteasetuksetmodal.avain') || 'Avain' }}:
+                                <td ng-if="funktiokuvausSyoteparametri.kuvaus.length <= 0">{{
+                                    t('laskentakaavaviiteasetuksetmodal.avain') || 'Avain' }}:
                                     {{funktiokuvausSyoteparametri.avain}}
                                 </td>
                                 <td ng-if="funktiokuvausSyoteparametri.kuvaus.length > 0">
@@ -472,20 +485,24 @@ s
         <form name="kaavaForm" class="form-horizontal margin-top-2">
 
             <div class="form-group">
-                <label class="col-sm-4 control-label">{{ t('laskentakaavaviiteasetuksetmodal.laskentakaavaksi') || 'Laskentakaavaksi tallennettava funktiokutsu' }}</label>
+                <label class="col-sm-4 control-label">{{ t('laskentakaavaviiteasetuksetmodal.laskentakaavaksi') ||
+                    'Laskentakaavaksi tallennettava funktiokutsu' }}</label>
                 <span class="col-sm-8 control-content" ng-if="funktioSelection">{{getFunktiokutsuName(funktioSelection)}}</span>
             </div>
 
 
             <div class="form-group">
-                <label class="col-sm-4 control-label">{{ t('laskentakaavaviiteasetuksetmodal.laskentakaavannimi') || 'Laskentakaavan nimi' }}</label>
+                <label class="col-sm-4 control-label">{{ t('laskentakaavaviiteasetuksetmodal.laskentakaavannimi') ||
+                    'Laskentakaavan nimi' }}</label>
+
                 <div class="col-sm-8">
                     <input type="text" ng-model="newKaavaNimi" required/>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-sm-4 control-label">{{ t('laskentakaavaviiteasetuksetmodal.laskentakaavankuvaus') || 'Laskentakaavan kuvaus' }}</label>
+                <label class="col-sm-4 control-label">{{ t('laskentakaavaviiteasetuksetmodal.laskentakaavankuvaus') ||
+                    'Laskentakaavan kuvaus' }}</label>
 
                 <div class="col-sm-8">
                     <textarea ng-model="newKaavaKuvaus"></textarea>
@@ -493,12 +510,17 @@ s
             </div>
 
             <div class="form-group">
-                <label class="col-sm-4 control-label">{{ t('laskentakaavaviiteasetuksetmodal.laskentakaavantyyppi') || 'Laskentakaavan tyyppi' }}</label>
+                <label class="col-sm-4 control-label">{{ t('laskentakaavaviiteasetuksetmodal.laskentakaavantyyppi') ||
+                    'Laskentakaavan tyyppi' }}</label>
+
                 <div class="col-sm-8">
-                    <input ng-disabled="true" type="radio" name="tyyppi" value="TOTUUSARVOFUNKTIO" ng-model="funktioSelection.lapsi.tyyppi"/>
+                    <input ng-disabled="true" type="radio" name="tyyppi" value="TOTUUSARVOFUNKTIO"
+                           ng-model="funktioSelection.lapsi.tyyppi"/>
                     {{ t('laskentakaavaviiteasetuksetmodal.totuusarvofunktio') || 'Totuusarvofunktio' }}
                     <br/>
-                    <input ng-disabled="true" type="radio" name="tyyppi" value="LUKUARVOFUNKTIO" ng-model="funktioSelection.lapsi.tyyppi"/> {{ t('laskentakaavaviiteasetuksetmodal.lukuarvofunktio') || 'Lukuarvofunktio' }}
+                    <input ng-disabled="true" type="radio" name="tyyppi" value="LUKUARVOFUNKTIO"
+                           ng-model="funktioSelection.lapsi.tyyppi"/> {{
+                    t('laskentakaavaviiteasetuksetmodal.lukuarvofunktio') || 'Lukuarvofunktio' }}
                 </div>
                 <div class="clear"></div>
             </div>
@@ -513,21 +535,41 @@ s
     <div ng-show="!toggle">
         <button class="btn btn-default btn-sm"
                 ng-disabled="alikaavaValues.isAlikaava || funktioasetukset.parentFunktiokutsu === model.laskentakaavapuu.funktiokutsu"
-                ng-click="toggle = !toggle">{{ t('laskentakaavaviiteasetuksetmodal.kaavanosantallennus') || 'Kaavan osan tallennus' }}
+                ng-click="toggle = !toggle">{{ t('laskentakaavaviiteasetuksetmodal.kaavanosantallennus') || 'Kaavan osan
+            tallennus' }}
         </button>
         <button ng-disabled="alikaavaValues.isAlikaava" class="btn btn-sm btn-default"
-                ng-click="removeFunktiokutsu(); sulje()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}"><i class="fa fa-trash-o"></i> {{ t('laskentakaavaviiteasetuksetmodal.poistafunktiokutsu') || 'Poista funktiokutsu' }}
+                ng-click="removeFunktiokutsu(); sulje()" popover-popup-delay="500" popover-placement="top"
+                popover-trigger="mouseenter"
+                popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
+            <i class="fa fa-trash-o"></i> {{ t('laskentakaavaviiteasetuksetmodal.poistafunktiokutsu') || 'Poista
+            funktiokutsu' }}
         </button>
         <button class="btn btn-default btn-sm" ng-click="sulje()"
-            role="button" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">{{ t('laskentakaavaviiteasetuksetmodal.sulje') || 'Sulje' }}
+                role="button" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter"
+                popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
+            {{ t('laskentakaavaviiteasetuksetmodal.sulje') || 'Sulje' }}
         </button>
     </div>
 
     <!-- tallenna funktiokutsu laskentakaavana -->
     <div ng-show="toggle">
-        <button class="btn btn-default btn-sm" ng-click="toggle = !toggle" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}"><i class="fa fa-arrow-left"></i> {{ t('laskentakaavaviiteasetuksetmodal.palaafunktioasetuksiin') || 'Palaa funktioasetuksiin' }}</button>
-        <button class="btn btn-primary btn-sm" ng-disabled="!newKaavaNimi" ng-click="saveAsNewLaskentakaava(funktioasetukset.parentFunktiokutsu, funktioSelection, newKaavaNimi, newKaavaKuvaus, sulje)"><i class="fa fa-floppy-o"></i> {{ t('laskentakaavaviiteasetuksetmodal.tallenna') || 'Tallenna uutena laskentakaavana' }}</button>
-        <button class="btn btn-default btn-sm" ng-click="sulje()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">{{ t('laskentakaavaviiteasetuksetmodal.sulje') || 'Sulje' }}</button>
+        <button class="btn btn-default btn-sm" ng-click="toggle = !toggle" popover-popup-delay="500"
+                popover-placement="top" popover-trigger="mouseenter"
+                popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
+            <i class="fa fa-arrow-left"></i> {{ t('laskentakaavaviiteasetuksetmodal.palaafunktioasetuksiin') || 'Palaa
+            funktioasetuksiin' }}
+        </button>
+        <button class="btn btn-primary btn-sm" ng-disabled="!newKaavaNimi"
+                ng-click="saveAsNewLaskentakaava(funktioasetukset.parentFunktiokutsu, funktioSelection, newKaavaNimi, newKaavaKuvaus, sulje)">
+            <i class="fa fa-floppy-o"></i> {{ t('laskentakaavaviiteasetuksetmodal.tallenna') || 'Tallenna uutena
+            laskentakaavana' }}
+        </button>
+        <button class="btn btn-default btn-sm" ng-click="sulje()" popover-popup-delay="500" popover-placement="top"
+                popover-trigger="mouseenter"
+                popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
+            {{ t('laskentakaavaviiteasetuksetmodal.sulje') || 'Sulje' }}
+        </button>
     </div>
 </div>
 

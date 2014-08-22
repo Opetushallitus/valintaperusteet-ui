@@ -179,9 +179,10 @@
     </div>
 </div>
 
+<!-- HAKIJARYHMÄT -->
 <div class="form-row width-100">
     <div class="form-row-label">{{ t('valintaryhmalomake.hakijaryhmat') || 'Hakijaryhmät' }}</div>
-    <div class="form-row-content width-60">
+    <div class="form-row-content">
         <table ng-show="model.hakijaryhmat" class="virkailija-table-1 margin-bottom-2 width-60">
             <thead>
             <tr>
@@ -190,6 +191,7 @@
                 <th>{{ t('valintaryhmalomake.laskentakaava') || 'Laskentakaava' }}</th>
                 <th>{{ t('valintaryhmalomake.kiintio') || 'Kiintiö' }}</th>
                 <th>{{ t('valintaryhmalomake.poista') || 'Poista' }}</th>
+                <th>{{ t('valintaryhmalomake.kopioihakijaryhma') || 'Kopioi hakijaryhmä'}}</th>
             </tr>
             </thead>
             <tbody ng-model="model.hakijaryhmat">
@@ -205,6 +207,11 @@
                     <i auth="crud" ng-show="!data.inheritance" class="fa fa-trash-o"
                        ng-click="model.removeHakijaryhma(data.oid)"></i>
                 </td>
+                <td>
+                    <button class="btn btn-default btn-sm" ng-click="openHakijaryhmaKopiointiModal(data)">
+                        <i class="fa fa-file-o"></i><i class="fa fa-long-arrow-right"></i> <i class="fa fa-users"></i>
+                    </button>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -215,6 +222,13 @@
             <span auth="crud" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()"><i class="fa fa-plus"></i> {{ t('valintaryhmalomake.hakijaryhma') || 'Hakijaryhmä' }}</span>
         </div>
     </div>
+
+    <div ng-controller="HakijaryhmaKopiointiController">
+        <modal modal-template="valintaryhma/hakijaryhmaKopiointiModal.html">
+            <modal-open></modal-open>
+        </modal>
+    </div>
+
 </div>
 
 

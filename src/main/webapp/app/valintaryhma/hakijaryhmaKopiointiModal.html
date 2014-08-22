@@ -1,10 +1,10 @@
 <div class="modal-header">
-    <h3>Kaavan kopiointi valintaryhmään</h3>
+    <h3>Hakijaryhmän kopiointi toiseen valintaryhmään</h3>
 </div>
 <div class="modal-body">
     <form class="form-horizontal" name="kaavakopio">
         <div class="form-group">
-            <label class="col-sm-4 control-label" for="uusinimi">Kopioitavan kaavan nimi</label>
+            <label class="col-sm-4 control-label" for="uusinimi">Kopioitavan hakijaryhmän nimi</label>
 
             <div class="col-sm-8">
                 <input ng-required="!nimi" type="text" id="uusinimi" class="form-control" ng-model="model.uusinimi"/>
@@ -17,5 +17,5 @@
 </div>
 <div class="modal-footer">
     <button class="btn btn-sm btn-default" ng-click="sulje()">Peruuta</button>
-    <button ng-click="kopioiKaava()" ng-disabled="kaavakopio.$invalid" class="btn btn-sm btn-primary">Kopioi</button>
+    <button ng-click="kopioiHakijaryhma()" ng-disabled="kaavakopio.$invalid" class="btn btn-sm btn-primary">Kopioi</button>
 </div>
