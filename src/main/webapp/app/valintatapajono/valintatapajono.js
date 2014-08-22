@@ -157,13 +157,28 @@ app.factory('ValintatapajonoModel', function($q, Valintatapajono, ValinnanvaiheV
         };
 
         this.removeHakijaryhma = function(oid) {
-            HakijaryhmaValintatapajono.delete({oid:oid}, function() {
-                for(var i in model.hakijaryhmat) {
-                    if(oid === model.hakijaryhmat[i].oid) {
-                        model.hakijaryhmat.splice(i,1);
-                    }
+            $modal.open({
+                backdrop: 'static',
+                templateUrl: 'poistahakijaryhma.html',
+                controller: function($scope, $window, $modalInstance) {
+                    $scope.ok = function() {
+                        HakijaryhmaValintatapajono.delete({oid:oid}, function() {
+                            for(var i in model.hakijaryhmat) {
+                                if(oid === model.hakijaryhmat[i].oid) {
+                                    model.hakijaryhmat.splice(i,1);
+                                }
+                            }
+                        });
+                        $modalInstance.close();
+                    };
+                    $scope.cancel = function() {
+                        $modalInstance.dismiss('cancel');
+                    };
                 }
-            });
+            }).result.then(function() {
+                }, function() {
+                });
+
         };
 
         function jarjestaJarjestyskriteerit() {
