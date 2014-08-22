@@ -1,7 +1,7 @@
 "use strict";
 
 var app = angular.module('valintaperusteet', ['ngResource', 'loading', 'ngRoute',
-    'ui.bootstrap', 'lodash','ng-breadcrumbs', 'oph.localisation', 'oph.utils']).
+    'ui.bootstrap', 'lodash','ng-breadcrumbs', 'oph.localisation', 'oph.utils', 'angular-promise-cache']).
     run(function($http, LocalisationService){
     $http.get(SERVICE_URL_BASE + "buildversion.txt?auth");
     LocalisationService.getTranslation("");
@@ -324,6 +324,10 @@ app.factory('HakijaryhmaLiitaHakukohde', function($resource) {
     return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeOid/hakijaryhma/:hakijaryhmaOid", {hakukohdeOid: "@hakukohdeOid", hakijaryhmaOid: "@hakijaryhmaOid"}, {
         liita: {method: "POST"}
     });
+});
+
+app.factory('HakijaryhmaKopiointi', function($resource) {
+    return $resource(SERVICE_URL_BASE + "resources/hakijaryhma/siirra", {}, {put: {method: "PUT"}})
 });
 
 //Järjestyskriteeri
