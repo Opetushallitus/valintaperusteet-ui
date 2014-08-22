@@ -67,9 +67,10 @@
                 <!--</div>-->
                 <div class="col-sm-9">
                     <div>
+                        <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && bigdata.length > 0">
                         <p class="form-control-static">Hakulomakkeen tunniste</p>
 
-                        <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && bigdata.length > 0">
+
                             <select ng-model="valintaperuste.tunniste"
                                     ng-options="data.key as data.value for data in bigdata"
                                     ng-disabled="alikaavaValues.isAlikaava">
@@ -78,8 +79,9 @@
                         </div>
                     </div>
                     <div>
-                        <p class="form-control-static">Lisäkysymyksen tunniste</p>
                         <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && lisakysymysAvaimet.length > 0">
+s
+                        <p class="form-control-static">Lisäkysymyksen tunniste</p>
                             <select ng-model="valintaperuste.tunniste"
                                     ng-options="data.key as data.value for data in lisakysymysAvaimet"
                                     ng-disabled="alikaavaValues.isAlikaava">
