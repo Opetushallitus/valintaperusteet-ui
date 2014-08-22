@@ -29,6 +29,9 @@ public class ConfigController {
     @Value("${valintaperusteet-ui.valintalaskentakoostepalvelu-service-url.rest}")
     private String valintalaskentakoostepalvelu;
 
+    @Value("${valintalaskenta-ui.hakemus-ui-url}")
+    private String hakemusServiceUrl;
+
     @Value("${auth.mode:}")
     private String authMode;
 
@@ -38,8 +41,6 @@ public class ConfigController {
     @Value("${valintaperusteet-ui.lokalisointi-service-url}")
     private String lokalisointiServiceUrl;
 
-    @Value("${valintalaskenta-ui.hakemus-service-url.rest}")
-    private String hakemusServiceUrl;
 
     @RequestMapping(value = "/configuration.js", method = RequestMethod.GET, produces = "text/javascript", headers="Accept=*/*")
     @ResponseBody

@@ -1,4 +1,4 @@
-angular.module('LaskentakaavaEditor').factory('TemplateService', function() {
+angular.module('valintaperusteet').factory('TemplateService', function() {
     'use strict';
 
 	var templateservice = new function() {

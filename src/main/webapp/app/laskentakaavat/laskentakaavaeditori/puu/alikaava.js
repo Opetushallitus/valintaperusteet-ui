@@ -1,4 +1,4 @@
-angular.module('LaskentakaavaEditor').controller('AlikaavaController', ['$scope', 'Laskentakaava', '$q',
+angular.module('valintaperusteet').controller('AlikaavaController', ['$scope', 'Laskentakaava', '$q',
     function ($scope, Laskentakaava, $q) {
     "use strict";
 

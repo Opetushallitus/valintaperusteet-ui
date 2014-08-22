@@ -6,7 +6,7 @@ describe('LaskentakaavaController', function () {
 
     beforeEach(function () {
         module('MockData');
-        module('LaskentakaavaEditor');
+//        module('LaskentakaavaEditor');
         module('valintaperusteet');
     });
 

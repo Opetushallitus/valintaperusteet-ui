@@ -1,4 +1,4 @@
-angular.module('LaskentakaavaEditor').factory('FunktioFactory', function(FunktioService){
+angular.module('valintaperusteet').factory('FunktioFactory', function(FunktioService){
     "use strict";
 
     var factory = new function() {

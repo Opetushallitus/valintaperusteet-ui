@@ -1,4 +1,4 @@
-angular.module('LaskentakaavaEditor').factory('KaavaValidationService', ['FunktioService', 'FunktioNimiService',
+angular.module('valintaperusteet').factory('KaavaValidationService', ['FunktioService', 'FunktioNimiService',
     function (FunktioService, FunktioNimiService) {
     'use strict';
 

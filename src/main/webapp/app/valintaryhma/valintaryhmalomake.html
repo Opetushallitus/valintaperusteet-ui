@@ -61,7 +61,6 @@
 
 <div class="form-row">
     <label class="form-row-label" for="">{{ t('valintaryhmalomake.haku') || 'Haku' }}</label>
-
     <div class="form-row-content width-60">
         <select ng-model="model.valintaryhma.hakuoid" ng-options="h.oid as h.nimi.kieli_fi for h in model.haut | orderBy:'nimi.kieli_fi'">
             <option value=""></option>

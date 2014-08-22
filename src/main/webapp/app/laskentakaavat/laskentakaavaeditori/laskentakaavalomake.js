@@ -1,6 +1,6 @@
-angular.module('LaskentakaavaEditor').
+angular.module('valintaperusteet').
     controller('LaskentakaavaLomakeController', ['$scope', '$routeParams', '$location', 'Laskentakaava',
-        'KaavaVirheTyypit', function ($scope, $routeParams, $location, Laskentakaava, KaavaVirheTyypit) {
+        'KaavaVirheTyypit', '$http', function ($scope, $routeParams, $location, Laskentakaava, KaavaVirheTyypit, $http) {
         'use strict';
 
         $scope.kaavaVirheTyypit = KaavaVirheTyypit;
@@ -29,5 +29,6 @@ angular.module('LaskentakaavaEditor').
                 $location.path("/laskentakaava");
             }
         };
+
 
     }]);

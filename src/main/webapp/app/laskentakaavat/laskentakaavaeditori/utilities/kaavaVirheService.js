@@ -1,4 +1,4 @@
-angular.module('LaskentakaavaEditor')
+angular.module('valintaperusteet')
 
     .constant('KaavaVirheTyypit', {
         FunktioargumenttiVirhe: 'FUNKTIOARGUMENTTIVIRHE',

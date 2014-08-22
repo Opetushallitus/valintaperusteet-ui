@@ -1,5 +1,5 @@
-angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (Laskentakaava, ParentValintaryhmas,
-                                                                              Hakukohde, Valintaryhma, _) {
+angular.module('valintaperusteet').factory('LaskentakaavaLista', function (Laskentakaava, ParentValintaryhmas,
+                                                                              Hakukohde, Valintaryhma) {
     'use strict';
 
     var valintaryhmaList = [];
@@ -9,11 +9,10 @@ angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (La
     var findWithValintaryhma = function (valintaryhmaId) {
         var list = [];
         ParentValintaryhmas.get({parentOid: valintaryhmaId}, function (data) {
-            _.forEach(data, function(item, index, array) {
-                if(item.oid) {
-                    item['laskentakaavat'] = Laskentakaava.list({valintaryhma: item.oid});
-                }
-            });
+            for (var i in data) {
+                var valintaryhma = data[i];
+                valintaryhma['laskentakaavat'] = Laskentakaava.list({valintaryhma: valintaryhma.oid});
+            }
 
             var paataso = findRootLevelLaskentakaavas();
             list.push.apply(list, data);
@@ -84,7 +83,7 @@ angular.module('LaskentakaavaEditor').factory('LaskentakaavaLista', function (La
     };
 });
 
-angular.module('LaskentakaavaEditor').controller('LaskentakaavaListController', function($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista, FunktioService) {
+angular.module('valintaperusteet').controller('LaskentakaavaListController', function($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista, FunktioService) {
     'use strict';
 
     $scope.funktioService = FunktioService;
@@ -128,7 +127,7 @@ angular.module('LaskentakaavaEditor').controller('LaskentakaavaListController', 
 
 });
 
-angular.module('LaskentakaavaEditor').factory('KaavaKopiointiModel', function($log,  Laskentakaava) {
+angular.module('valintaperusteet').factory('KaavaKopiointiModel', function($log,  Laskentakaava) {
     'use strict';
     var model = new function () {
 
@@ -136,7 +135,6 @@ angular.module('LaskentakaavaEditor').factory('KaavaKopiointiModel', function($l
         this.laskentakaava = {};
 
         this.refresh = function (kaavaId) {
-
             Laskentakaava.get({oid: kaavaId}, function(result) {
                 model.laskentakaava = result.funktiokutsu;
             }, function(error) {
@@ -157,7 +155,7 @@ angular.module('LaskentakaavaEditor').factory('KaavaKopiointiModel', function($l
    return model;
 });
 
-angular.module('LaskentakaavaEditor').controller('KaavaKopiointiController', function($scope, $log, KaavaKopiointiModel, Ylavalintaryhma, KaavaSiirto, Laskentakaava ) {
+angular.module('valintaperusteet').controller('KaavaKopiointiController', function($scope, $log, KaavaKopiointiModel, Ylavalintaryhma, KaavaSiirto, Laskentakaava ) {
 
     $scope.domain = Ylavalintaryhma;
     $scope.domain.refresh();

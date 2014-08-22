@@ -260,10 +260,10 @@
         <span class="icon" ng-click="funktiowrapper.open = funktiowrapper.open ? false : true">&#8302;</span>
         <span add-class-on-mouseover="bold" class="node"
               ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}:
-        <span ng-if="getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'arvovaliMin')">{{getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'arvovaliMin')}}</span>
+        <span>{{getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'arvovaliMin')}}</span>
         <span ng-if="!getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'arvovaliMin')">?</span>
         <span> - </span>
-        <span ng-if="getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'arvovaliMax')">{{getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'arvovaliMax')}}</span>
+        <span>{{getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'arvovaliMax')}}</span>
         <span ng-if="!getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'arvovaliMax')">?</span>
         <span ng-if="getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'hylkaysperustekuvaus_FI')"> ({{getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'hylkaysperustekuvaus_FI')}})</span>
         </span>

@@ -1,4 +1,4 @@
-angular.module('LaskentakaavaEditor').controller('LaskentakaavaController',
+angular.module('valintaperusteet').controller('LaskentakaavaController',
     ['$scope', '_', '$location', '$routeParams', '$timeout', 'KaavaValidointi', 'Laskentakaava', 'LaskentakaavaLista',
         'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'Arvokonvertterikuvauskielet',
         'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'KaavaVirheService',
