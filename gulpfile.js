@@ -29,6 +29,8 @@ var paths = {
 
         'bower_components/angular-translate/angular-translate.js',
 
+        'bower_components/angular-promise-cache/angular-promise-cache.js',
+
         'bower_components/jquery/dist/jquery.js',
         'bower_components/jquery/dist/jquery.min.js',
         'bower_components/jquery/dist/jquery.min.js.map',
