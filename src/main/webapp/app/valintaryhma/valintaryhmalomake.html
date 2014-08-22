@@ -1,3 +1,16 @@
+<script type="text/ng-template" id="poistahakijaryhma.html">
+    <div class="modal-header">
+        <h3 class="modal-title">{{ t('valintaryhmalomake.poistahakijaryhma.header') || 'Oletko varma?' }}</h3>
+    </div>
+    <div class="modal-body">
+        {{ t('valintaryhmalomake.poistahakijaryhma.body') || 'Oletko varma, että haluat poistaa hakijaryhmän?' }}
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">{{ t('valintaryhmalomake.poistahakijaryhma.kylla') || 'Kyllä' }}</button>
+        <button class="btn btn-warning" ng-click="cancel()">{{ t('valintaryhmalomake.poistahakijaryhma.ei') || 'Ei' }}</button>
+    </div>
+</script>
+
 <script type="text/ng-template" id="poistavalintaryhma.html">
     <div class="modal-header">
         <h3 class="modal-title">{{ t('valintaryhmalomake.poistavalintaryhma.header') || 'Oletko varma?' }}</h3>

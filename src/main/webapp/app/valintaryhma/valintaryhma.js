@@ -3,7 +3,7 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
                                            ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe,
                                            ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma,
                                            OrganizationByOid, $modal, Utils, Haku, HaunTiedot, ParentValintaryhmas,
-                                           ChildValintaryhmas, $location) {
+                                           ChildValintaryhmas, $location, $log) {
     "use strict";
 
 
@@ -322,13 +322,29 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
         };
 
         this.removeHakijaryhma = function (hakijaryhmaOid) {
-            Hakijaryhma.delete({oid: hakijaryhmaOid}, function (result) {
-                model.hakijaryhmat = _.filter(model.hakijaryhmat, function (item) {
-                    return item.oid != hakijaryhmaOid;
+            $modal.open({
+                backdrop: 'static',
+                templateUrl: 'poistahakijaryhma.html',
+                controller: function ($scope, $window, $modalInstance) {
+                    $scope.ok = function () {
+                        Hakijaryhma.delete({oid: hakijaryhmaOid}, function (result) {
+                            model.hakijaryhmat = _.filter(model.hakijaryhmat, function (item) {
+                                return item.oid != hakijaryhmaOid;
+                            });
+                        }, function (error) {
+                            $log.error('Hakijaryhmän poistaminen valintaryhmästä ei onnistunu', error);
+                            alert('Hakijaryhm\u00E4 on k\u00E4yt\u00F6ss\u00E4 eik\u00E4 sit\u00E4 voi poistaa.');
+                        });
+                        $modalInstance.close();
+                    };
+                    $scope.cancel = function () {
+                        $modalInstance.dismiss('cancel');
+                    };
+                }
+            }).result.then(function () {
+                }, function () {
                 });
-            }, function (error) {
-                $log.error('Hakijaryhmän poistaminen valintaryhmästä ei onnistunu', error);
-            });
+
         };
 
         this.isOkToDelete = function () {
