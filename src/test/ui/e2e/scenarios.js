@@ -41,7 +41,7 @@ describe('E2E-TESTS', function() {
         });
 
         describe('add Valintaryhmä', function() {
-            var item = by.xpath("//a[contains(@class, 'btn')]");
+            var item = by.xpath("//a[contains(@class, 'margin-right-1')]");
             browser.wait(function() {
                 return browser.driver.isElementPresent(item);
             }, 8000);
@@ -84,8 +84,10 @@ describe('E2E-TESTS', function() {
         });
 
         describe('edit Valintaryhmä', function() {
+            var input = element(by.model('domain.search.q'));
+            input.clear();
 
-            it('should be select new Valintaryhmä', function() {
+            it('should select new Valintaryhmä', function() {
                 element.all(by.xpath("//a[contains(text(),'TestiValintaryhma')]")).first().click();
             });
 
@@ -142,6 +144,82 @@ describe('E2E-TESTS', function() {
             });
         });
 
+
+        describe('add Hakukohde', function() {
+            var item = by.xpath("//a[contains(@class, 'margin-right-1')]");
+            browser.wait(function() {
+                return browser.driver.isElementPresent(item);
+            }, 8000);
+
+            it('should click add Hakukohde-button', function() {
+                element.all(by.xpath("//a[contains(@class, 'margin-right-1')]")).last().click();
+            });
+
+            it('should be add hakukohde-page', function() {
+                expect(browser.getLocationAbsUrl()).toMatch("/hakukohde");
+            });
+
+            it('should input text to Ylävalintaryhmä-field', function() {
+                var input = element(by.model('domain.search.q'));
+                input.clear();
+                input.sendKeys('Ammatillinen');
+                expect(input.getAttribute('value')).toBe('Ammatillinen');
+
+                var item = element.all(by.model('model.parentOid')).last();
+                item.click();
+
+                element.all(by.model('model.parentOid')).first().click();
+            });
+
+            it('should input text to Haun tunniste-field', function() {
+                var input = element(by.model('model.haku'));
+                input.sendKeys('a');
+                expect(input.getAttribute('value')).toBe('a');
+                element.all(by.xpath("//a[contains(@tabindex, '-1')]")).first().click();
+            });
+
+            it('should input text to Hakukohteen tunniste-field', function() {
+                var input = element(by.model('model.selectedHakukohde'));
+                input.sendKeys('s');
+                expect(input.getAttribute('value')).toBe('s');
+                element.all(by.xpath("//a[contains(@tabindex, '-1')]")).last().click();
+            });
+
+
+            it('should click Takaisin-button', function() {
+                element(by.buttonText('Takaisin')).click();
+
+            });
+        });
+/*
+        describe('edit Hakukohde', function() {
+            var input = element(by.model('domain.search.q'));
+            input.clear();
+            it('should select new Hakukohde', function() {
+                element.all(by.xpath("//a[contains(text(),'Tampereen seudun')]")).first().click();
+            });
+            it('should be add hakukohde-page', function() {
+                expect(browser.getLocationAbsUrl()).toMatch("/hakukohde");
+            });
+
+            it('should click Siirrä-button', function() {
+                element(by.buttonText('Siirrä')).click();
+
+            });
+
+            it('should input text to Ylävalintaryhmä-field', function() {
+                var input = element(by.model('domain.search.q'));
+                input.sendKeys('TestiValintaryhma2');
+                expect(input.getAttribute('value')).toBe('TestiValintaryhma2');
+
+                var item = element.all(by.model('model.parentOid')).last();
+                item.click();
+                element.all(by.xpath("//a[contains(text(),'Siirrä')]")).first().click();
+            });
+
+
+        });
+*/
         describe('delete Valintaryhmä', function() {
 
             it('should be select new Valintaryhmä', function() {
@@ -160,6 +238,7 @@ describe('E2E-TESTS', function() {
 
             });
         });
+
     });
 });
 
