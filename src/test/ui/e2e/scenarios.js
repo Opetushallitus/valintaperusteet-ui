@@ -205,35 +205,7 @@ describe('E2E-TESTS', function() {
 
             });
         });
-/*
-        describe('edit Hakukohde', function() {
-            var input = element(by.model('domain.search.q'));
-            input.clear();
-            it('should select new Hakukohde', function() {
-                element.all(by.xpath("//a[contains(text(),'Tampereen seudun')]")).first().click();
-            });
-            it('should be add hakukohde-page', function() {
-                expect(browser.getLocationAbsUrl()).toMatch("/hakukohde");
-            });
 
-            it('should click Siirrä-button', function() {
-                element(by.buttonText('Siirrä')).click();
-
-            });
-
-            it('should input text to Ylävalintaryhmä-field', function() {
-                var input = element(by.model('domain.search.q'));
-                input.sendKeys('TestiValintaryhma2');
-                expect(input.getAttribute('value')).toBe('TestiValintaryhma2');
-
-                var item = element.all(by.model('model.parentOid')).last();
-                item.click();
-                element.all(by.xpath("//a[contains(text(),'Siirrä')]")).first().click();
-            });
-
-
-        });
-*/
 
         describe('Valintakoekoodin lisääminen Valintaryhmään', function() {
             it('should select new Valintaryhmä', function () {
@@ -335,24 +307,99 @@ describe('E2E-TESTS', function() {
 
         });
 
-        describe('Hakukohdekoodin poistaminen Valintaryhmästä', function() {
+        describe('Valinnanvaiheen poistaminen Valintaryhmästä', function() {
             it('should be add Valintaryhmä-page', function () {
                 expect(browser.getLocationAbsUrl()).toMatch("/valintaryhma");
             });
 
-            it('should delete Hakukohdekoodi', function() {
+            it('should delete Valinnanvaihe', function() {
 
                 element.all(by.xpath("//i[contains(@class, 'fa-trash-o')]")).first().click();
 
                 element(by.buttonText('Kyllä')).click();
+            });
+
+        });
+
+
+        describe('Valintakoevalinnanvaiheen lisääminen Valintaryhmään', function() {
+
+
+            it('should be add Valintaryhmä-page', function () {
+                expect(browser.getLocationAbsUrl()).toMatch("/valintaryhma");
+            });
+
+            it('should click uusi Valintakoevalinnanvaihe-button', function() {
+                element.all(by.xpath("//span[contains(text(), 'Valintakoevalinnan vaihe')]")).first().click();
+            });
+
+            it('should input text to Hae-field', function() {
+                var input = element(by.model('model.valintakoevalinnanvaihe.nimi'));
+                input.sendKeys('testinimi');
+                expect(input.getAttribute('value')).toBe('testinimi');
+
+                input = element(by.model('model.valintakoevalinnanvaihe.kuvaus'));
+                input.sendKeys('testikuvaus');
+                expect(input.getAttribute('value')).toBe('testikuvaus');
+                element(by.buttonText('Tallenna')).click();
+            });
+
+        });
+
+        describe('Valintakokeen lisääminen Valintakoevalinnanvaiheeseen', function() {
+
+            it('should be add valintakoevalinnanvaihe-page', function () {
+                expect(browser.getLocationAbsUrl()).toMatch("/valintakoevalinnanvaihe");
+            });
+
+            it('should click uusi Valintakoevalinnanvaihe-button', function() {
+                element.all(by.xpath("//span[contains(text(), 'Valintakoe')]")).first().click();
+            });
+
+            it('should input text to Hae-field', function() {
+                var input = element(by.model('model.valintakoe.tunniste'));
+                input.sendKeys('testitunniste');
+                expect(input.getAttribute('value')).toBe('testitunniste');
+
+                input = element(by.model('model.valintakoe.nimi'));
+                input.sendKeys('testinimi');
+                expect(input.getAttribute('value')).toBe('testinimi');
+
+                input = element(by.model('model.valintakoe.kuvaus'));
+                input.sendKeys('testikuvaus');
+                expect(input.getAttribute('value')).toBe('testikuvaus');
+
+                element(by.model('model.valintakoe.lahetetaankoKoekutsut')).click();
+                element(by.model('model.valintakoe.kutsutaankoKaikki')).click();
+
+                element.all(by.cssContainingText('option', 'Hakijan valitsema hakukohde')).first().click();
+
+                element(by.buttonText('Tallenna')).click();
                 element(by.buttonText('Takaisin')).click();
             });
 
         });
 
-        describe('delete Valintaryhmä', function() {
 
+        describe('Valintakoevalinnanvaiheen poistaminen Valintaryhmästä', function() {
+            it('should be add Valintaryhmä-page', function () {
+                expect(browser.getLocationAbsUrl()).toMatch("/valintaryhma");
+            });
+
+            it('should delete Valinnanvaihe', function() {
+
+                element.all(by.xpath("//i[contains(@class, 'fa-trash-o')]")).first().click();
+
+                element(by.buttonText('Kyllä')).click();
+
+            });
+
+        });
+
+
+        describe('delete Valintaryhmä', function() {
             it('should be select new Valintaryhmä', function() {
+                element(by.buttonText('Takaisin')).click();
                 element.all(by.xpath("//a[contains(text(),'TestiValintaryhma2')]")).first().click();
             });
 
