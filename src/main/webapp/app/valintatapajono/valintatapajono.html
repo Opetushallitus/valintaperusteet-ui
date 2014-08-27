@@ -110,6 +110,17 @@
 
     <div class="clear"></div>
 
+    <label class="form-row-label" for="automaattinenLaskentaanSiirto">{{ t('valintatapajono.automaattinenLaskentaanSiirto') || 'Siirretäänkö lasketut tulokset automaattisesti sijoitteluun' }}</label>
+
+    <div class="form-row-content">
+        <div class="field-container-checkbox">
+            <input type="checkbox" id="automaattinenLaskentaanSiirto" name="automaattinenLaskentaanSiirto"
+                   ng-model="model.valintatapajono.automaattinenLaskentaanSiirto">
+        </div>
+    </div>
+
+    <div class="clear"></div>
+
     <div class="form-row-label">{{ t('valintatapajono.tasasijasaanto') || 'Tasasijasääntö' }}</div>
     <div class="form-row-content">
         <div class="field-container-radio">
