@@ -212,7 +212,6 @@ angular.module('valintaperusteet').
         'HakukohdeValinnanVaiheModel',
         function ($scope, $location, $routeParams, ValintatapajonoModel, HakukohdeValinnanVaiheModel) {
     "use strict";
-
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
 
@@ -241,7 +240,17 @@ angular.module('valintaperusteet').
 
     };
 
+            $scope.modifyHakijaryhma = function(oid) {
+
+                $location.path("/hakukohde/" + $scope.hakukohdeOid +
+                    '/valinnanvaihe/' + $scope.valinnanvaiheOid +
+                    '/valintatapajono/' + $scope.model.valintatapajono.oid +
+                    '/hakijaryhma/' + oid);
+            };
+
     $scope.modifyKriteeri = function(oid) {
+
+
         $location.path("/hakukohde/" + $scope.hakukohdeOid +
                     '/valinnanvaihe/' + $scope.valinnanvaiheOid +
                     '/valintatapajono/' + $scope.model.valintatapajono.oid +
@@ -268,7 +277,7 @@ angular.module('valintaperusteet').
         'ValintatapajonoModel', 'ValintaryhmaValinnanvaiheModel',
     function ($scope, $location, $routeParams, $timeout, ValintatapajonoModel, ValintaryhmaValinnanvaiheModel) {
     "use strict";
-
+    
     $scope.valintaryhmaOid = $routeParams.id;
     $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
 
@@ -301,8 +310,8 @@ angular.module('valintaperusteet').
                     '/valintatapajono/' + $scope.model.valintatapajono.oid +
                     '/jarjestyskriteeri/' + oid);
     };
-
     $scope.modifyHakijaryhma = function(oid) {
+
         $location.path("/valintaryhma/" + $scope.valintaryhmaOid +
             '/valinnanvaihe/' + $scope.valinnanvaiheOid +
             '/valintatapajono/' + $scope.model.valintatapajono.oid +
