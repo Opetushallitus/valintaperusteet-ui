@@ -130,20 +130,34 @@ describe('E2E-TESTS', function() {
 
             });
 
-            it('should click Tallenna-button', function() {
-                var item = by.xpath("//button[contains(text(),'Tallenna')]");
-                browser.wait(function() {
-                    return browser.driver.isElementPresent(item);
-                }, 8000);
-                element(by.buttonText('Tallenna')).click();
 
-            });
-            it('should click Takaisin-button', function() {
-                element(by.buttonText('Takaisin')).click();
-
-            });
         });
 
+
+         describe('organisaation poistaminen Valintaryhmästä', function() {
+
+             it('should be add Valintaryhmä-page', function () {
+             expect(browser.getLocationAbsUrl()).toMatch("/valintaryhma");
+             });
+
+             it('should delete organisation', function() {
+             element(by.xpath("//i[contains(@class, 'fa-trash-o')]")).click();
+             });
+
+             it('should click Tallenna-button', function() {
+                 var item = by.xpath("//button[contains(text(),'Tallenna')]");
+                 browser.wait(function() {
+                     return browser.driver.isElementPresent(item);
+                 }, 8000);
+                 element(by.buttonText('Tallenna')).click();
+
+             });
+
+             it('should click Takaisin-button', function() {
+               element(by.buttonText('Takaisin')).click();
+
+             });
+         });
 
         describe('add Hakukohde', function() {
             var item = by.xpath("//a[contains(@class, 'margin-right-1')]");
@@ -220,6 +234,122 @@ describe('E2E-TESTS', function() {
 
         });
 */
+
+        describe('Valintakoekoodin lisääminen Valintaryhmään', function() {
+            it('should select new Valintaryhmä', function () {
+                element.all(by.xpath("//a[contains(text(),'TestiValintaryhma2')]")).first().click();
+            });
+
+            it('should be add Valintaryhmä-page', function () {
+                expect(browser.getLocationAbsUrl()).toMatch("/valintaryhma");
+            });
+
+            it('should click uusi valintakoekoodi-button', function() {
+                element(by.buttonText('Uusi valintakoekoodi')).click();
+            });
+
+            it('should input text to Hae-field', function() {
+                var input = element(by.model('valintakoekoodifilter'));
+                input.sendKeys('haas');
+                expect(input.getAttribute('value')).toBe('haas');
+
+                element.all(by.xpath("//span[contains(text(), 'Haastattelu')]")).first().click();
+
+                element(by.buttonText('Valintakoekoodi')).click();
+
+                element.all(by.xpath("//a[contains(text(),'Sulje')]")).first().click();
+            });
+
+        });
+
+        describe('Valintakoekoodin poistaminen Valintaryhmästä', function() {
+
+            it('should be add Valintaryhmä-page', function () {
+                expect(browser.getLocationAbsUrl()).toMatch("/valintaryhma");
+            });
+
+            it('should delete valintakoekoodi', function() {
+                element.all(by.xpath("//i[contains(@class, 'fa-trash-o')]")).first().click();
+            });
+        });
+
+        describe('Hakukohdekoodin lisääminen Valintaryhmään', function() {
+
+            it('should be add Valintaryhmä-page', function () {
+                expect(browser.getLocationAbsUrl()).toMatch("/valintaryhma");
+            });
+
+            it('should click uusi Hakukohdekoodi-button', function() {
+                element(by.buttonText('Uusi hakukohdekoodi')).click();
+            });
+
+            it('should input text to Hae-field', function() {
+                var input = element(by.model('hakukohdekoodifilter'));
+                input.sendKeys('hotell');
+                expect(input.getAttribute('value')).toBe('hotell');
+
+                element.all(by.xpath("//span[contains(text(), 'Hotell-')]")).first().click();
+
+                element(by.buttonText('Hakukohdekoodi')).click();
+
+                element.all(by.xpath("//a[contains(text(),'Sulje')]")).first().click();
+            });
+
+        });
+
+        describe('Hakukohdekoodin poistaminen Valintaryhmästä', function() {
+
+
+            it('should be add Valintaryhmä-page', function () {
+                expect(browser.getLocationAbsUrl()).toMatch("/valintaryhma");
+            });
+
+            it('should delete Hakukohdekoodi', function() {
+                element.all(by.xpath("//i[contains(@class, 'fa-trash-o')]")).first().click();
+            });
+        });
+
+
+        describe('Valinnanvaiheen lisääminen Valintaryhmään', function() {
+
+            it('should be add Valintaryhmä-page', function () {
+                expect(browser.getLocationAbsUrl()).toMatch("/valintaryhma");
+            });
+
+            it('should click uusi Valinnanvaihe-button', function() {
+                element.all(by.xpath("//span[contains(text(), 'Valinnan vaihe')]")).first().click();
+            });
+
+            it('should input text to Hae-field', function() {
+                var input = element(by.model('model.valinnanvaihe.nimi'));
+                input.sendKeys('testinimi');
+                expect(input.getAttribute('value')).toBe('testinimi');
+
+                input = element(by.model('model.valinnanvaihe.kuvaus'));
+                input.sendKeys('testikuvaus');
+                expect(input.getAttribute('value')).toBe('testikuvaus');
+
+                element(by.buttonText('Tallenna')).click();
+                element(by.buttonText('Takaisin')).click();
+            });
+
+        });
+
+        describe('Hakukohdekoodin poistaminen Valintaryhmästä', function() {
+            it('should be add Valintaryhmä-page', function () {
+                expect(browser.getLocationAbsUrl()).toMatch("/valintaryhma");
+            });
+
+            it('should delete Hakukohdekoodi', function() {
+
+                element.all(by.xpath("//i[contains(@class, 'fa-trash-o')]")).first().click();
+
+                element(by.buttonText('Kyllä')).click();
+                element(by.buttonText('Takaisin')).click();
+            });
+
+        });
+
         describe('delete Valintaryhmä', function() {
 
             it('should be select new Valintaryhmä', function() {
