@@ -99,6 +99,17 @@
 
     <div class="clear"></div>
 
+    <label class="form-row-label" for="valisijoittelu">{{ t('valintatapajono.valisijoittelu') || 'Suoritetaanko jonolle välisijoittelu' }}</label>
+
+    <div class="form-row-content">
+        <div class="field-container-checkbox">
+            <input type="checkbox" id="valisijoittelu" name="valisijoittelu"
+                   ng-model="model.valintatapajono.valisijoittelu">
+        </div>
+    </div>
+
+    <div class="clear"></div>
+
     <div class="form-row-label">{{ t('valintatapajono.tasasijasaanto') || 'Tasasijasääntö' }}</div>
     <div class="form-row-content">
         <div class="field-container-radio">
