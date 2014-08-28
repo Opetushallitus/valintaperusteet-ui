@@ -6,7 +6,6 @@ describe('LaskentakaavaController', function () {
 
     beforeEach(function () {
         module('MockData');
-//        module('LaskentakaavaEditor');
         module('valintaperusteet');
     });
 
@@ -79,7 +78,7 @@ describe('LaskentakaavaController', function () {
                 ], "valintaperusteviitteet": [], "validointivirheet": [], "onLuonnos": null, "nimi": null, "kuvaus": null, "tyyppi": null, "id": 819228, "lapsityyppi": "funktiokutsu", "tulosTunniste": null, "tulosTekstiFi": null, "tulosTekstiSv": null, "tulosTekstiEn": null, "tallennaTulos": false}, "indeksi": 2}
             ], "valintaperusteviitteet": [], "validointivirheet": [], "onLuonnos": null, "nimi": null, "kuvaus": null, "tyyppi": null, "id": 819231, "lapsityyppi": "funktiokutsu", "tulosTunniste": null, "tulosTekstiFi": null, "tulosTekstiSv": null, "tulosTekstiEn": null, "tallennaTulos": false}, "indeksi": 1};
 
-            var controller = createController();
+            ctrl = createController();
             $routeParams.laskentakaavaOid = 12345;
 
             $httpBackend.expectGET('resources/laskentakaava/funktiokuvaus').respond(funktiokuvaus);
