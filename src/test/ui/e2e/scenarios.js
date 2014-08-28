@@ -292,7 +292,7 @@ describe('E2E-TESTS', function() {
                 element.all(by.xpath("//span[contains(text(), 'Valinnan vaihe')]")).first().click();
             });
 
-            it('should input text to Hae-field', function() {
+            it('should input text to fields', function() {
                 var input = element(by.model('model.valinnanvaihe.nimi'));
                 input.sendKeys('testinimi');
                 expect(input.getAttribute('value')).toBe('testinimi');
@@ -391,15 +391,87 @@ describe('E2E-TESTS', function() {
                 element.all(by.xpath("//i[contains(@class, 'fa-trash-o')]")).first().click();
 
                 element(by.buttonText('Kyllä')).click();
-
+                element(by.buttonText('Takaisin')).click();
             });
 
         });
 
 
+        describe('Laskentakaavat', function() {
+            it('should be Valintaryhmä-page', function () {
+                element.all(by.xpath("//a[contains(text(),'TestiValintaryhma2')]")).first().click();
+                expect(browser.getLocationAbsUrl()).toMatch("/valintaryhma");
+            });
+
+            it('should go to Laskentakaavat-tab', function() {
+
+                element.all(by.xpath("//span[contains(text(), 'Laskentakaavat')]")).first().click();
+            });
+
+            it('should click Laskentakaava-button', function() {
+                element.all(by.xpath("//span[contains(text(), 'Laskentakaava')]")).last().click();
+
+            });
+
+            it('should be on correct page', function() {
+
+                expect(element.all(by.css('h1')).first().getText()).
+                    toMatch(/Laskentakaavan muokkaus/);
+            });
+
+            it('should input text to fields', function() {
+                var input = element(by.model('kaava.nimi'));
+                input.sendKeys('testinimi');
+                expect(input.getAttribute('value')).toBe('testinimi');
+
+                input = element(by.model('kaava.kuvaus'));
+                input.sendKeys('testikuvaus');
+                expect(input.getAttribute('value')).toBe('testikuvaus');
+            });
+
+            it('should click uusi laskentakaava', function() {
+                element(by.buttonText('Alusta uusi laskentakaava')).click();
+            });
+
+            it('should create new laskentakaava', function() {
+                element.all(by.xpath("//i[contains(@class, 'fa-plus-square')]")).first().click();
+
+                element.all(by.xpath("//span[contains(text(), 'Summa')]")).first().click();
+
+                element(by.buttonText('Sulje')).click();
+
+                element.all(by.xpath("//span[contains(text(), 'Tallenna')]")).first().click();
+
+                expect(element.all(by.css('h3')).first().getText()).
+                    toMatch(/Laskentakaavaa ei voitu tallentaa./);
+            });
+
+            it('should delete function', function() {
+                element.all(by.xpath("//span[contains(text(), 'Summa')]")).last().click();
+
+                element(by.buttonText('Poista funktiokutsu')).click();
+            });
+
+            it('should create new function', function() {
+                element.all(by.xpath("//i[contains(@class, 'fa-plus-square')]")).first().click();
+
+                element.all(by.xpath("//span[contains(text(), 'Vakio')]")).first().click();
+
+                var input = element(by.model('syoteparametri.arvo'));
+                input.sendKeys('3');
+                expect(input.getAttribute('value')).toBe('3');
+
+                element(by.buttonText('Sulje')).click();
+
+            });
+        });
+
+
         describe('delete Valintaryhmä', function() {
+            it('should go to Valintaryhmät ja hakukohteet-tab', function() {
+                element.all(by.xpath("//span[contains(text(), 'Valintaryhmät ja hakukohteet')]")).first().click();
+            });
             it('should be select new Valintaryhmä', function() {
-                element(by.buttonText('Takaisin')).click();
                 element.all(by.xpath("//a[contains(text(),'TestiValintaryhma2')]")).first().click();
             });
 
