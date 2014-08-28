@@ -4,16 +4,12 @@ factory('FunktioService', function (FunktioKuvausResource, $log) {
 
     var model = new function () {
         this.funktiokuvaukset = {};
-        this.funktiokuvausRequest = false;
 
         this.refresh = function () {
-            if (_.isEmpty(model.funktiokuvaukset) && !model.funktiokuvausRequest ) {
-                model.funktiokuvausRequest = true;
+            if (_.isEmpty(model.funktiokuvaukset) ) {
                 FunktioKuvausResource.get({}, function (result) {
                     model.funktiokuvaukset = result;
-                    model.funktiokuvausRequest = false;
                 }, function(error) {
-                    model.funktiokuvausRequest = false;
                     $log.error('Funktiokuvausten hakeminen epäonnistui', error);
                 });
             }
