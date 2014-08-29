@@ -6,18 +6,18 @@ angular.module('valintaperusteet').controller('UusiLaskentakaavaController', ['$
     $scope.funktioService.refresh();
 
     $scope.kaava = { tyyppi: "NIMETTYLUKUARVO" };
-
-    $scope.createKaava = function (kaavaData) {
-
-        var funktiokuvaus = $scope.funktioService.getFunktiokuvaus(kaavaData.tyyppi);
+    
+        
+    $scope.$on('initializeKaava', function () {
+        var funktiokuvaus = $scope.funktioService.getFunktiokuvaus($scope.kaava.tyyppi);
         var laskentakaava = {
-            nimi: kaavaData.nimi,
-            kuvaus: kaavaData.kuvaus,
+            nimi: $scope.kaava.nimi,
+            kuvaus: $scope.kaava.kuvaus,
             onLuonnos: false,
             tyyppi: funktiokuvaus.funktioargumentit[0].tyyppi,
             kardinaliteetti: funktiokuvaus.funktioargumentit[0].kardinaliteetti,
             funktiokutsu: {
-                funktionimi: kaavaData.tyyppi,
+                funktionimi: $scope.kaava.tyyppi,
                 tallennaTulos: false,
                 tulosTunniste: null,
                 tulosTekstiFi: null,
@@ -31,13 +31,16 @@ angular.module('valintaperusteet').controller('UusiLaskentakaavaController', ['$
                 syoteparametrit: [
                     {
                         avain: "nimi",
-                        arvo: kaavaData.nimi
+                        arvo: $scope.kaava.nimi
                     }
                 ]
             }
         };
 
         $scope.setLaskentakaava(laskentakaava);
-    };
+    });
+        
+
+
 
 }]);

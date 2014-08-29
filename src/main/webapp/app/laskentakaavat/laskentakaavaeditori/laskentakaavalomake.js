@@ -31,8 +31,16 @@ angular.module('valintaperusteet').
             }
         };
 
-            $scope.hasHakijaryhmaCookie = function() {
-                return $cookieStore.get('hakijaryhmaSkeleton') ? true : false
-            };
+        $scope.hasHakijaryhmaCookie = function() {
+            return $cookieStore.get('hakijaryhmaSkeleton') ? true : false
+        };
+
+        $scope.initializeKaava = function () {
+            $scope.$broadcast('initializeKaava');
+        };
+
+        $scope.returnHakijaryhmaLuonti = function () {
+            $location.path($cookieStore.get('hakijaryhmaSkeleton').url);
+        }
 
     }]);
