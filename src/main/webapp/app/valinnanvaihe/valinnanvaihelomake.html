@@ -24,7 +24,7 @@
             <label class="form-row-label" for="nimi">{{ t('valinnanvaihelomake.nimi') || 'Nimi' }}</label>
 
             <div class="form-row-content">
-                <input name="nimi" ng-model="model.valinnanvaihe.nimi" required/>
+                <input name="nimi" id="nimi" ng-model="model.valinnanvaihe.nimi" required/>
             </div>
 
             <div class="clear"></div>
@@ -32,7 +32,7 @@
             <label class="form-row-label" for="kuvaus">{{ t('valinnanvaihelomake.kuvaus') || 'Kuvaus' }}</label>
 
             <div class="form-row-content">
-                <textarea name="kuvaus" ng-model="model.valinnanvaihe.kuvaus"/>
+                <textarea name="kuvaus" id="kuvaus" ng-model="model.valinnanvaihe.kuvaus"/>
             </div>
         </div>
 

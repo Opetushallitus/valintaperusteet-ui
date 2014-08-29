@@ -1,12 +1,6 @@
 <div ng-controller="LaskentakaavaController">
 
-    <div class="float-left">
-        <span class="btn btn-sm btn-default" ng-click="back()" popover-popup-delay="500" popover-placement="top"
-              popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
-                class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}</span>
-        <span ng-if="kaavaHasId" class="btn btn-sm btn-primary" ng-click="persist()"><i class="fa fa-floppy-o"></i> {{ t('common.tallenna') || 'Tallenna' }}</span>
-        <span ng-if="!kaavaHasId" class="bnt btn-sm btn-primary" ng-click="persistNewKaava()"><i class="fa fa-floppy-o"></i> {{ t('common.tallenna') || 'Tallenna uusi kaava'}}</span>
-    </div>
+
 
     <div class="gradingformula">
         <!-- Laskentakaavassa olevat virheet-->

@@ -1,10 +1,11 @@
 angular.module('valintaperusteet').
     controller('LaskentakaavaLomakeController', ['$scope', '$routeParams', '$location', 'Laskentakaava',
-        'KaavaVirheTyypit', '$http', function ($scope, $routeParams, $location, Laskentakaava, KaavaVirheTyypit, $http) {
+        'KaavaVirheTyypit', function ($scope, $routeParams, $location, Laskentakaava, KaavaVirheTyypit) {
         'use strict';
 
         $scope.kaavaVirheTyypit = KaavaVirheTyypit;
-
+        $routeParams.laskentakaavaOid ? $scope.kaavaHasId = true : $scope.kaavaHasId = false;
+        
         if (!$routeParams.laskentakaavaOid) {
             $scope.showNewKaava = true;
             $scope.createNewKaava = true;
@@ -16,7 +17,7 @@ angular.module('valintaperusteet').
             $scope.$broadcast('newkaava');
         };
 
-        $scope.persist = function() {
+        $scope.persist = function () {
             $scope.$broadcast('persistKaava');
         };
 

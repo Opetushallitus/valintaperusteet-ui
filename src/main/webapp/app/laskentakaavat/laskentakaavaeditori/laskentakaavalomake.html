@@ -9,15 +9,30 @@
 </div>
 
 <div class="tabsheets">
-    <breadcrumb></breadcrumb>
+    <div class="col-sm-12">
+        <breadcrumb></breadcrumb>
+    </div>
+
+    <div class="col-sm-12 margin-bottom-2">
+        <span class="btn btn-sm btn-default" ng-click="back()" popover-popup-delay="500" popover-placement="top"
+              popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
+                class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}</span>
+        <span ng-if="kaavaHasId" class="btn btn-sm btn-primary" ng-click="persist()"><i class="fa fa-floppy-o"></i> {{ t('common.tallenna') || 'Tallenna' }}</span>
+        <span ng-if="!kaavaHasId" class="btn btn-sm btn-primary" ng-click="persistNewKaava()"><i
+                class="fa fa-floppy-o"></i> {{ t('common.tallenna') || 'Tallenna uusi kaava'}}</span>
+        <span class="btn btn-sm btn-primary"
+              ng-click="createKaava(kaava)"
+              ng-disabled="kaavaForm.$invalid"><i class="fa fa-plus"></i> {{ t('uusilaskentakaava.alusta') || 'Alusta uusi laskentakaava' }}
+    </span>
+
+    </div>
+
 
     <!-- Laskentakaavapuu -->
     <div ng-show="!showNewKaava" ng-include="'laskentakaavat/laskentakaavaeditori/puu/laskentakaavapuu.html'"></div>
 
     <!-- Uusi laskentakaava -->
     <div ng-show="showNewKaava" ng-include="'laskentakaavat/laskentakaavaeditori/uusilaskentakaava.html'"></div>
-
-
 
 
     <div class="clear"></div>
