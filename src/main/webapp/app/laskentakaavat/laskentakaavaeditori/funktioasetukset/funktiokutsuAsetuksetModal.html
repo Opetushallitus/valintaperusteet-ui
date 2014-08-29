@@ -119,7 +119,6 @@
     </div>
 
     <div id="valintaperusteviite-kuvaukset">
-        <h3>{{ t('laskentakaavaviiteasetuksetmodal.hylkays') || 'Hylkäysperustekuvaukset' }}</h3>
 
         <div class="valintaperuste-form" ng-if="valintaperuste.kuvaukset.tekstit.length > 0">
             <table class="table">
@@ -146,6 +145,8 @@
                 </tbody>
             </table>
         </div>
+
+        <h3>{{ t('laskentakaavaviiteasetuksetmodal.hylkays') || 'Hylkäysperustekuvaukset' }}</h3>
         <button ng-disabled="alikaavaValues.isAlikaava" class="btn btn-sm btn-default"
                 ng-click="addValintaperusteviitekuvaus(valintaperuste)"><i
                 class="fa fa-plus"></i> {{ t('laskentakaavaviiteasetuksetmodal.kuvaus') || 'Kuvaus' }}
@@ -213,7 +214,6 @@
                     </div>
                 </div>
                 <div id="arvovalikonvertteri-kuvaukset" ng-if="parametri.hylkaysperuste">
-                    <div><b>{{ t('laskentakaavaviiteasetuksetmodal.hylkays') || 'Hylkäysperustekuvaukset' }}</b></div>
                     <table class="table" ng-if="parametri.kuvaukset.tekstit.length > 0">
                         <thead>
                         <tr>
@@ -237,6 +237,8 @@
                         </tr>
                         </tbody>
                     </table>
+
+                    <div><b>{{ t('laskentakaavaviiteasetuksetmodal.hylkays') || 'Hylkäysperustekuvaukset' }}</b></div>
                     <button ng-disabled="alikaavaValues.isAlikaava" class="btn btn-sm btn-default"
                             ng-click="addArvokonvertterikuvaus(parametri)"><i
                             class="fa fa-plus"></i> {{ t('laskentakaavaviiteasetuksetmodal.kuvaus') || 'Kuvaus' }}
@@ -301,7 +303,6 @@
                 </div>
             </div>
             <div id="arvokonvertteri-kuvaukset" ng-if="parametri.hylkaysperuste">
-                <div><b>{{ t('laskentakaavaviiteasetuksetmodal.hylkays') || 'Hylkäysperustekuvaukset' }}</b></div>
                 <table class="table" ng-if="parametri.kuvaukset.tekstit.length > 0">
                     <thead>
                     <tr>
@@ -324,6 +325,8 @@
                     </tr>
                     </tbody>
                 </table>
+
+                <div><b>{{ t('laskentakaavaviiteasetuksetmodal.hylkays') || 'Hylkäysperustekuvaukset' }}</b></div>
                 <button ng-disabled="alikaavaValues.isAlikaava" class="button small"
                         ng-click="addArvokonvertterikuvaus(parametri)"><i class="fa fa-plus"></i> {{
                     t('laskentakaavaviiteasetuksetmodal.kuvaus') || 'Kuvaus' }}
