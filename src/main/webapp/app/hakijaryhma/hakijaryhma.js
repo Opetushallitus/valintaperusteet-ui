@@ -155,8 +155,9 @@ angular.module('valintaperusteet')
             $scope.createNewLaskentakaava = function () {
                 var hakijaryhmaSkeleton = {
                     skeleton: $scope.model.hakijaryhma,
-                    url: $locatin.path()
-                }
+                    url: $location.path()
+                };
+
                 $cookieStore.put('hakijaryhmaSkeleton', hakijaryhmaSkeleton);
 
                 if ($routeParams.id) {
@@ -164,7 +165,6 @@ angular.module('valintaperusteet')
                 } else {
                     $location.path('/hakukohde/' + $routeParams.hakukohdeOid + '/laskentakaavalista/laskentakaava/');
                 }
-
             };
 
 

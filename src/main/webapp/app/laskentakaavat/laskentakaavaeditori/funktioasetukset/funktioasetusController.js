@@ -152,8 +152,10 @@ angular.module('valintaperusteet')
                     console.log('rejected');
                 });
             };
-            
-            $scope.getHakemusAvaimet();
+
+            if($routeParams.laskentakaavaOid) {
+                $scope.getHakemusAvaimet();
+            }
 
             $scope.isYoFunktiokutsu = function (funktio, valintaperuste) {
                 var funktionimi = funktio.lapsi.funktionimi;

@@ -16,14 +16,15 @@
     <div class="col-sm-12 margin-bottom-2">
         <span class="btn btn-sm btn-default" ng-click="back()" popover-popup-delay="500" popover-placement="top"
               popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
-                class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}</span>
+                class="fa fa-arrow-left"></i> {{ t('laskentakaavat.listaan') || 'Laskentakaavalistaan' }}</span>
+        <span ng-if="hasHakijaryhmaCookie()"> {{ t('laskentakaavat.hakijaryhmanluontiin' || 'Takaisin hakijaryhmän luontiin')}}</span>
         <span ng-if="kaavaHasId" class="btn btn-sm btn-primary" ng-click="persist()"><i class="fa fa-floppy-o"></i> {{ t('common.tallenna') || 'Tallenna' }}</span>
-        <span ng-if="!kaavaHasId" class="btn btn-sm btn-primary" ng-click="persistNewKaava()"><i
+        <span ng-if="!kaavaHasId && newKaavaTemplate" class="btn btn-sm btn-primary" ng-click="persistNewKaava()"><i
                 class="fa fa-floppy-o"></i> {{ t('common.tallenna') || 'Tallenna uusi kaava'}}</span>
-        <span class="btn btn-sm btn-primary"
-              ng-click="createKaava(kaava)"
-              ng-disabled="kaavaForm.$invalid"><i class="fa fa-plus"></i> {{ t('uusilaskentakaava.alusta') || 'Alusta uusi laskentakaava' }}
-    </span>
+        <span ng-if="!kaavaHasId && !newKaavaTemplate" class="btn btn-sm btn-primary"
+              ng-click="createKaava(kaava)">
+            <i class="fa fa-plus"></i> {{ t('uusilaskentakaava.alusta') || 'Alusta uusi laskentakaava' }}
+        </span>
 
     </div>
 

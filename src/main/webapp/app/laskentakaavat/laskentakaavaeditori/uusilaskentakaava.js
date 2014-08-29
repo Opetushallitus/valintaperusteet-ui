@@ -1,5 +1,5 @@
 angular.module('valintaperusteet').controller('UusiLaskentakaavaController', ['$scope', 'FunktioService',
-    '$routeParams', function ($scope, FunktioService, $routeParams) {
+    '$routeParams', function ($scope, FunktioService) {
     'use strict';
 
     $scope.funktioService = FunktioService;

@@ -1,11 +1,11 @@
 angular.module('valintaperusteet').
-    controller('LaskentakaavaLomakeController', ['$scope', '$routeParams', '$location', 'Laskentakaava',
-        'KaavaVirheTyypit', function ($scope, $routeParams, $location, Laskentakaava, KaavaVirheTyypit) {
+    controller('LaskentakaavaLomakeController', ['$scope', '$routeParams', '$location', '$cookieStore', 'Laskentakaava',
+        'KaavaVirheTyypit', function ($scope, $routeParams, $location, $cookieStore, Laskentakaava, KaavaVirheTyypit) {
         'use strict';
 
         $scope.kaavaVirheTyypit = KaavaVirheTyypit;
         $routeParams.laskentakaavaOid ? $scope.kaavaHasId = true : $scope.kaavaHasId = false;
-        
+
         if (!$routeParams.laskentakaavaOid) {
             $scope.showNewKaava = true;
             $scope.createNewKaava = true;
@@ -31,5 +31,8 @@ angular.module('valintaperusteet').
             }
         };
 
+            $scope.hasHakijaryhmaCookie = function() {
+                return $cookieStore.get('hakijaryhmaSkeleton') ? true : false
+            };
 
     }]);
