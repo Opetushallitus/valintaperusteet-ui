@@ -161,11 +161,12 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 
         };
 
-        this.deleteValintaryhma = function (oid) {
+        this.deleteValintaryhma = function (oid, laskentakaavat) {
             $modal.open({
                 backdrop: 'static',
                 templateUrl: 'poistavalintaryhma.html',
                 controller: function ($scope, $window, $modalInstance) {
+                    $scope.laskentakaavat = laskentakaavat;
                     $scope.ok = function () {
                         Valintaryhma.delete({oid: oid}, function (result) {
                             Treemodel.refresh();
@@ -356,8 +357,8 @@ app.factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, Hak
 });
 
 angular.module('valintaperusteet').
-    controller('ValintaryhmaController', ['$scope', '$location', '$routeParams', 'ValintaryhmaModel',
-        function ($scope, $location, $routeParams, ValintaryhmaModel) {
+    controller('ValintaryhmaController', ['$scope', '$location', '$routeParams', 'ValintaryhmaModel', 'Laskentakaava',
+        function ($scope, $location, $routeParams, ValintaryhmaModel, Laskentakaava) {
             "use strict";
 
             $scope.valintaryhmaOid = $routeParams.id;
@@ -374,7 +375,9 @@ angular.module('valintaperusteet').
             };
 
             $scope.deleteValintaryhma = function () {
-                $scope.model.deleteValintaryhma($scope.valintaryhmaOid);
+                Laskentakaava.list({valintaryhma: $scope.valintaryhmaOid}, function(data) {
+                    $scope.model.deleteValintaryhma($scope.valintaryhmaOid, data);
+                });
             };
 
             $scope.lisaaValinnanVaihe = function () {
@@ -413,7 +416,7 @@ angular.module('valintaperusteet').
 
             $scope.openHakijaryhmaKopiointiModal = function (hakijaryhma) {
                 $scope.$broadcast('openHakijaryhmaKopiointiModal', hakijaryhma);
-            }
+            };
         }]);
 
 
