@@ -99,9 +99,9 @@ angular.module('valintaperusteet')
         return factory;
     })
 
-    .controller('HakijaryhmaController', ['$scope', '$location', '$routeParams', '$cookieStore', 'HakijaryhmaModel',
+    .controller('HakijaryhmaController', ['$scope', '$location', '$routeParams', 'HakijaryhmaModel',
         'HakukohdeModel', 'ValintaryhmaModel', 'ValintatapajonoModel',
-        function ($scope, $location, $routeParams, $cookieStore, HakijaryhmaModel, HakukohdeModel, ValintaryhmaModel, ValintatapajonoModel) {
+        function ($scope, $location, $routeParams, HakijaryhmaModel, HakukohdeModel, ValintaryhmaModel, ValintatapajonoModel) {
             "use strict";
     
             $scope.model = HakijaryhmaModel;
