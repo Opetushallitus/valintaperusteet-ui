@@ -14,7 +14,6 @@
     </div>
 
     <div class="col-sm-12 margin-bottom-2">
-        <span>{{kaavaHasId}}</span>
         <span class="btn btn-sm btn-default" ng-click="back()" popover-popup-delay="250" popover-placement="top"
               popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
                 class="fa fa-arrow-left"></i> {{ t('laskentakaavat.listaan') || 'Laskentakaavalistaan' }}</span>
@@ -27,7 +26,7 @@
         </span>
         <span ng-if="kaavaHasId" class="btn btn-sm btn-primary" ng-click="persist()"><i class="fa fa-floppy-o"></i> {{ t('common.tallenna') || 'Tallenna' }}</span>
         <span ng-if="!kaavaHasId && newKaavaTemplate" class="btn btn-sm btn-primary" ng-click="persistNewKaava()"><i
-                class="fa fa-floppy-o"></i> {{ t('common.tallenna') || 'Tallenna uusi kaava'}}</span>
+                class="fa fa-floppy-o"></i> {{ t('laskentakaavat.uusikaava.tallenna') || 'Tallenna uusi kaava'}}</span>
         <span ng-if="!kaavaHasId && !newKaavaTemplate" class="btn btn-sm btn-primary"
               ng-click="initializeKaava()">
             <i class="fa fa-plus"></i> {{ t('uusilaskentakaava.alusta') || 'Alusta uusi laskentakaava' }}
