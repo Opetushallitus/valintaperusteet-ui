@@ -103,11 +103,17 @@ angular.module('valintaperusteet')
         'HakukohdeModel', 'ValintaryhmaModel', 'ValintatapajonoModel',
         function ($scope, $location, $routeParams, $cookieStore, HakijaryhmaModel, HakukohdeModel, ValintaryhmaModel, ValintatapajonoModel) {
             "use strict";
-
+    
             $scope.model = HakijaryhmaModel;
             $scope.model.refresh($routeParams.hakijaryhmaOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valintatapajonoOid);
-
-            ValintatapajonoModel.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valinnanvaiheOid);
+            
+            if(sessionStorage.getItem('hakijaryhmaSkeleton')) {
+                var storage = JSON.parse(sessionStorage.getItem('hakijaryhmaSkeleton'));
+                $scope.model.hakijaryhma = storage.skeleton;
+                sessionStorage.removeItem('hakijaryhmaSkeleton');
+            } else {
+                ValintatapajonoModel.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valinnanvaiheOid);
+            }
 
             $scope.submit = function () {
                 var promise = HakijaryhmaModel.submit($routeParams.id, $routeParams.hakukohdeOid, $routeParams.valintatapajonoOid);
@@ -158,8 +164,8 @@ angular.module('valintaperusteet')
                     url: $location.path()
                 };
 
-                $cookieStore.put('hakijaryhmaSkeleton', hakijaryhmaSkeleton);
-
+                sessionStorage.setItem('hakijaryhmaSkeleton', JSON.stringify(hakijaryhmaSkeleton));
+                
                 if ($routeParams.id) {
                     $location.path('/valintaryhma/' + $routeParams.id + '/laskentakaavalista/laskentakaava/');
                 } else {
@@ -169,3 +175,4 @@ angular.module('valintaperusteet')
 
 
         }]);
+    

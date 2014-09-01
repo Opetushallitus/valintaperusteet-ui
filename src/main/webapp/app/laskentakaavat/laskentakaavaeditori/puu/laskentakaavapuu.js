@@ -498,4 +498,12 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                 $scope.persist();
             };
 
+            $scope.$on('persistKaava', function () {
+                $scope.persist();
+            });
+
+            $scope.$on('persistNewKaava', function () {
+                $scope.persistNewKaava();
+            });
+
         }]);

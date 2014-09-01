@@ -25,7 +25,11 @@ var HAKEMUS_URL_BASE = HAKEMUS_URL_BASE || "";
 
 function mainCtrl($scope, breadcrumbs) {
     $scope.breadcrumbs = breadcrumbs;
+
+
 }
+
+
 
 
 //TARJONTA RESOURCES
