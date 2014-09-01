@@ -106,13 +106,16 @@ angular.module('valintaperusteet')
     
             $scope.model = HakijaryhmaModel;
             $scope.model.refresh($routeParams.hakijaryhmaOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valintatapajonoOid);
-            
-            if(sessionStorage.getItem('hakijaryhmaSkeleton')) {
+
+            if(!$routeParams.hakijaryhmaOid && sessionStorage.getItem('hakijaryhmaSkeleton')) {
                 var storage = JSON.parse(sessionStorage.getItem('hakijaryhmaSkeleton'));
                 $scope.model.hakijaryhma = storage.skeleton;
-                sessionStorage.removeItem('hakijaryhmaSkeleton');
             } else {
                 ValintatapajonoModel.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valinnanvaiheOid);
+            }
+
+            if(sessionStorage.getItem('hakijaryhmaSkeleton')) {
+                sessionStorage.removeItem('hakijaryhmaSkeleton');
             }
 
             $scope.submit = function () {
