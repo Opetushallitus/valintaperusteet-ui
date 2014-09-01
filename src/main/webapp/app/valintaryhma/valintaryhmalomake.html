@@ -16,6 +16,9 @@
         <h3 class="modal-title">{{ t('valintaryhmalomake.poistavalintaryhma.header') || 'Oletko varma?' }}</h3>
     </div>
     <div class="modal-body">
+        <div ng-if="laskentakaavat">
+        {{ t('valintaryhmalomake.poistavalintaryhmalaskentakaavoja.body') || 'Valintaryhmällä on laskentakaavoja.' }}
+        </div>
         {{ t('valintaryhmalomake.poistavalintaryhma.body') || 'Oletko varma, että haluat poistaa valintaryhmän?' }}
     </div>
     <div class="modal-footer">

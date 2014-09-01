@@ -463,6 +463,12 @@ describe('E2E-TESTS', function() {
 
                 element(by.buttonText('Sulje')).click();
 
+                element.all(by.xpath("//span[contains(text(), 'Tallenna')]")).first().click();
+
+                var item = by.xpath("//div[contains(@class,'alert-success')]");
+                browser.wait(function() {
+                    return browser.driver.isElementPresent(item);
+                }, 8000);
             });
         });
 
