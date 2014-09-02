@@ -1,5 +1,5 @@
 //domain .. this is both, service & domain layer
-app.factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
+angular.module('valintaperusteet').factory('Treemodel', function($resource, ValintaperusteetPuu, AuthService) {
     "use strict";
 
     //and return interface for manipulating the model
@@ -203,7 +203,6 @@ angular.module('valintaperusteet').
     $scope.lazyLoading = function() {
         $scope.hakukohteetListingLimit +=100;
     };
-
 
 	$scope.move = function(index, hakukohdeOid, valintaryhmaOid) {
         HakukohdeSiirra.siirra({hakukohdeOid: hakukohdeOid}, valintaryhmaOid, function(result) {
