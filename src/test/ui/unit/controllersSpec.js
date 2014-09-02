@@ -22,7 +22,7 @@ describe('Testing ValintaryhmaHakukohdeTreeController', function(){
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
 
-        $httpBackend.expectGET('resources/puu?kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
+        $httpBackend.expectGET('resources/puu?hakuOid=&kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
 
         $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
@@ -32,15 +32,15 @@ describe('Testing ValintaryhmaHakukohdeTreeController', function(){
         scope = $rootScope.$new();
         rootScope = $rootScope;
         location = $location;
-
-        $httpBackend.expectGET('haku').respond(hakujson);
-        $httpBackend.expectGET('haku/1.2.246.562.29.21702520681').respond(hakuextrajson);
-        $httpBackend.expectGET('haku/1.2.246.562.29.41647728207').respond(hakuextrajson);
-        $httpBackend.expectGET('haku/1.2.246.562.5.2013112910452702965370').respond(hakuextrajson);
-        $httpBackend.expectGET('haku/1.2.246.562.5.2013112910480420004764').respond(hakuextrajson);
-        $httpBackend.expectGET('haku/1.2.246.562.29.87103060197').respond(hakuextrajson);
-        $httpBackend.expectGET('haku/1.2.246.562.29.16836448445').respond(hakuextrajson);
-        $httpBackend.expectGET('haku/1.2.246.562.29.34600360753').respond(hakuextrajson);
+        $httpBackend.expectGET('resources/puu?hakuOid=&kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
+//        $httpBackend.expectGET('haku').respond(hakujson);
+//        $httpBackend.expectGET('haku/1.2.246.562.29.21702520681').respond(hakuextrajson);
+//        $httpBackend.expectGET('haku/1.2.246.562.29.41647728207').respond(hakuextrajson);
+//        $httpBackend.expectGET('haku/1.2.246.562.5.2013112910452702965370').respond(hakuextrajson);
+//        $httpBackend.expectGET('haku/1.2.246.562.5.2013112910480420004764').respond(hakuextrajson);
+//        $httpBackend.expectGET('haku/1.2.246.562.29.87103060197').respond(hakuextrajson);
+//        $httpBackend.expectGET('haku/1.2.246.562.29.16836448445').respond(hakuextrajson);
+//        $httpBackend.expectGET('haku/1.2.246.562.29.34600360753').respond(hakuextrajson);
         ctrl = $controller('ValintaryhmaHakukohdeTreeController', {'$scope' : scope, 'Treemodel': treemodel,
             'HakukohdeSiirra': hakukohdeSiirra, 'HakuModel': hakuModel});
         $httpBackend.flush();
@@ -49,8 +49,8 @@ describe('Testing ValintaryhmaHakukohdeTreeController', function(){
     it('check initialized variables', function() {
         expect(scope.hakukohteetListingLimit).toBe(100);
         expect(scope.predicate).toBe("nimi");
-        expect(scope.hakuModel.hakuOid).toBe("1.2.246.562.29.21702520681");
-        expect(scope.hakuModel.haut.length).toBe(7);
+        expect(scope.hakuModel.hakuOid).toBe("");
+        expect(scope.hakuModel.haut.length).toBe(0);
     });
 
     it('lazyLoading', function() {
@@ -116,7 +116,7 @@ describe('Testing UusiValintaryhmaController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('resources/puu?kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
+        $httpBackend.expectGET('resources/puu?hakuOid=&kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
         $httpBackend.expectGET('resources/puu?hakukohteet=false').respond(puukaikkijson);
 
         $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
@@ -166,7 +166,7 @@ describe('Testing UusiValintaryhmaController', function(){
     it('persistValintaryhma', function() {
 
         $httpBackend.expectPUT('resources/valintaryhma').respond("");
-        $httpBackend.expectGET('resources/puu?kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
+        $httpBackend.expectGET('resources/puu?hakuOid=&kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
         valintaryhmaCreatorModel.persistValintaryhma();
         $httpBackend.flush();
 
@@ -199,7 +199,7 @@ describe('Testing ValintaryhmaController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('resources/puu?kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
+        $httpBackend.expectGET('resources/puu?hakuOid=&kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
 
         $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
@@ -296,7 +296,7 @@ describe('Testing HakijaryhmaController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('resources/puu?kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
+        $httpBackend.expectGET('resources/puu?hakuOid=&kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
 
         $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
@@ -354,7 +354,7 @@ describe('Testing ValintaryhmaValinnanvaiheController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('resources/puu?kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
+        $httpBackend.expectGET('resources/puu?hakuOid=&kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
 
         $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
@@ -563,7 +563,7 @@ describe('Testing ValintaryhmaValintakoeValinnanvaiheController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('resources/puu?kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
+        $httpBackend.expectGET('resources/puu?hakuOid=&kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
         $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
     }));
@@ -1031,7 +1031,7 @@ describe('Testing ImportController', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
-        $httpBackend.expectGET('resources/puu?kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
+        $httpBackend.expectGET('resources/puu?hakuOid=&kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
         $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
     }));

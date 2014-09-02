@@ -1,0 +1,12 @@
+<div ng-controller="HakuController">
+    <label class="margin-right-2" for="haku">{{ t('valintaryhmatlistaus.haku') || 'Haku' }}</label>
+    <select id="haku"
+            ng-model="hakuModel.haku"
+            ng-options="haku.nimi.kieli_fi for haku in hakuModel.haut | orderBy:'nimi.kieli_fi'"
+            ng-change="changeHaku()">
+        <option value=""></option>
+    </select>
+</div>
+
+<!--ng-model="domain.search.haku"-->
+<!--ng-change="domain.refresh()">-->

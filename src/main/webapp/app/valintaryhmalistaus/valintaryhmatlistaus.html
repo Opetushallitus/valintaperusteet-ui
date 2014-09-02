@@ -45,10 +45,7 @@
         <br />
 
         <div class="margin-bottom-3">
-            <label class="margin-right-2" for="haku">{{ t('valintaryhmatlistaus.haku') || 'Haku' }}</label>
-            <select id="haku" ng-model="domain.search.haku" ng-options="haku.nimi.kieli_fi for haku in hakuModel.haut | orderBy:'nimi.kieli_fi'"  ng-change="domain.refresh()">
-                <option value=""></option>
-            </select>
+            <div ng-include="'haku/haku.html'"></div>
         </div>
         <div>
             <label class="margin-right-2" for="text">{{ t('valintaryhmatlistaus.hae') || 'Hae' }}</label>
