@@ -60,7 +60,7 @@ angular.module('valintaperusteet')
                     if($scope.treemodel.search.haku) {
                         hakuoid = $scope.treemodel.search.haku.oid;
                     }
-                    if(!hakuoid) {
+                    if(!hakuoid && $routeParams.laskentakaavaOid) {
                         LaskentakaavaValintaryhma.get({oid: $routeParams.laskentakaavaOid}, function(valintaryhma) {
                             hakuoid = valintaryhma.hakuoid;
                             if(hakuoid) {
@@ -153,9 +153,7 @@ angular.module('valintaperusteet')
                 });
             };
 
-            if($routeParams.laskentakaavaOid) {
-                $scope.getHakemusAvaimet();
-            }
+            $scope.getHakemusAvaimet();
 
             $scope.isYoFunktiokutsu = function (funktio, valintaperuste) {
                 var funktionimi = funktio.lapsi.funktionimi;
