@@ -279,7 +279,7 @@ app.factory('Hakijaryhma', function($resource) {
 
 app.factory('ValintaryhmaHakijaryhma', function($resource) {
  return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid/hakijaryhma", {oid: "@oid"}, {
-     get: {method: "GET", isArray: true, cache: true},
+     get: {method: "GET", isArray: true, cache: false},
      insert: {method: "PUT"}
    });
 });

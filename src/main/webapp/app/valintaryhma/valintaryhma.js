@@ -457,11 +457,6 @@ angular.module('valintaperusteet').controller('HakijaryhmaKopiointiController', 
         });
 
 
-        
-
-
-
-
     };
 
 }]);

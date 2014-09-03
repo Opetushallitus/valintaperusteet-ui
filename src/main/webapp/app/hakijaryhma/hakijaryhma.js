@@ -28,7 +28,6 @@ angular.module('valintaperusteet')
                         });
                     }
 
-                    //instance.valintatapajonot = HakijaryhmanValintatapajonot.get({oid: oid});
                 }
 
                 LaskentakaavaModel.refresh(valintaryhmaOid, hakukohdeOid);
@@ -62,7 +61,7 @@ angular.module('valintaperusteet')
                         deferred.resolve();
                     }, function (err) {
                         deferred.reject('Hakijaryhmän tallentaminen valintatapajonoon epäonnistui', err);
-                    })
+                    });
 
                 } else if (hakukohdeOid) {
                     HakukohdeHakijaryhma.insert({oid: hakukohdeOid}, instance.hakijaryhma, function (result) {
@@ -82,13 +81,6 @@ angular.module('valintaperusteet')
                 } else {
                     deferred.reject('Hakukohteen tai valintatapajonon tunnistetta ei löytynyt. Hakijaryhmän tallentaminen epäonnistui');
                 }
-                /*
-                 } else if(valintaryhmaOid) {
-                 ValintaryhmaHakijaryhma.insert({oid: valintaryhmaOid}, instance.hakijaryhma, function(result) {
-                 instance.hakijaryhma = result;
-                 deferred.resolve();
-                 });
-                 */
 
                 return deferred.promise;
             };
