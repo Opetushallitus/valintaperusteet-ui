@@ -74,7 +74,7 @@ app.factory('OrganisaatioTreeModel', function(Organizations, AuthService, Organi
 
 });
 
-function OrganisaatioTreeController($scope, $timeout, OrganisaatioTreeModel) {
+function OrganisaatioTreeController($scope, OrganisaatioTreeModel) {
     "use strict";
 
     $scope.orgTree = OrganisaatioTreeModel;
