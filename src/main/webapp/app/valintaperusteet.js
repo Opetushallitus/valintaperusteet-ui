@@ -34,7 +34,7 @@ function mainCtrl($scope, breadcrumbs) {
 
 //TARJONTA RESOURCES
 app.factory('Haku', function($resource) {
-  return $resource(TARJONTA_URL_BASE + "haku", {}, {
+  return $resource(TARJONTA_URL_BASE + "haku?count=500", {}, {
     get: {method: "GET", isArray: true}
   });
 });
@@ -348,7 +348,7 @@ app.factory('JarjestyskriteeriJarjesta', function($resource) {
 
 //ulkoiset
 app.factory('Haku', function($resource) {
-  return $resource(TARJONTA_URL_BASE + "haku", {}, {
+  return $resource(TARJONTA_URL_BASE + "haku?count=500", {}, {
     get: {method: "GET", isArray: true}
   });
 });
