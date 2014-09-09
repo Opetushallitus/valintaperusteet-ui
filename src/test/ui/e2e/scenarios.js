@@ -194,9 +194,6 @@ describe('E2E-TESTS', function() {
 
             it('should input text to Hakukohteen tunniste-field', function() {
                 var input = element(by.model('model.selectedHakukohde'));
-                input.sendKeys('s');
-                expect(input.getAttribute('value')).toBe('s');
-                element.all(by.xpath("//a[contains(@tabindex, '-1')]")).last().click();
             });
 
 
@@ -260,7 +257,7 @@ describe('E2E-TESTS', function() {
                 input.sendKeys('hotell');
                 expect(input.getAttribute('value')).toBe('hotell');
 
-                element.all(by.xpath("//span[contains(text(), 'Hotell-')]")).first().click();
+                element.all(by.xpath("//span[contains(text(), 'Hotelli-')]")).first().click();
 
                 element(by.buttonText('Hakukohdekoodi')).click();
 
@@ -430,17 +427,17 @@ describe('E2E-TESTS', function() {
             });
 
             it('should click uusi laskentakaava', function() {
-                element(by.buttonText('Alusta uusi laskentakaava')).click();
+                element.all(by.xpath("//span[contains(@class, 'btn-primary')]")).first().click();
             });
 
             it('should create new laskentakaava', function() {
-                element.all(by.xpath("//i[contains(@class, 'fa-plus-square')]")).first().click();
+                element.all(by.xpath("//span[contains(@class, 'node')]")).last().click();
 
-                element.all(by.xpath("//span[contains(text(), 'Summa')]")).first().click();
+                element.all(by.xpath("//td")).get(2).click();
 
                 element(by.buttonText('Sulje')).click();
 
-                element.all(by.xpath("//span[contains(text(), 'Tallenna')]")).first().click();
+                element.all(by.xpath("//span[contains(text(), 'Tallenna uusi kaava')]")).first().click();
 
                 expect(element.all(by.css('h3')).first().getText()).
                     toMatch(/Laskentakaavaa ei voitu tallentaa./);
@@ -453,9 +450,9 @@ describe('E2E-TESTS', function() {
             });
 
             it('should create new function', function() {
-                element.all(by.xpath("//i[contains(@class, 'fa-plus-square')]")).first().click();
+                element.all(by.xpath("//span[contains(@class, 'node')]")).last().click();
 
-                element.all(by.xpath("//span[contains(text(), 'Vakio')]")).first().click();
+                element.all(by.xpath("//td")).get(1).click();
 
                 var input = element(by.model('syoteparametri.arvo'));
                 input.sendKeys('3');
@@ -463,12 +460,8 @@ describe('E2E-TESTS', function() {
 
                 element(by.buttonText('Sulje')).click();
 
-                element.all(by.xpath("//span[contains(text(), 'Tallenna')]")).first().click();
+                element.all(by.xpath("//span[contains(text(), 'Tallenna uusi kaava')]")).first().click();
 
-                var item = by.xpath("//div[contains(@class,'alert-success')]");
-                browser.wait(function() {
-                    return browser.driver.isElementPresent(item);
-                }, 8000);
             });
         });
 
