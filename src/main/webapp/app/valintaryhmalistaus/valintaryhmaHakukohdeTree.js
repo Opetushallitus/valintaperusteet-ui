@@ -187,8 +187,8 @@ angular.module('valintaperusteet').factory('Treemodel', function ($resource, Val
 
 
 angular.module('valintaperusteet').
-    controller('ValintaryhmaHakukohdeTreeController', ['$scope', '$q', 'Treemodel', 'HakukohdeSiirra', 'HakuModel', 'UserOrganizationsModel',
-        function ($scope, $q, Treemodel, HakukohdeSiirra, HakuModel, UserOrganizationsModel) {
+    controller('ValintaryhmaHakukohdeTreeController', ['$scope', '$q', '_', 'Treemodel', 'HakukohdeSiirra', 'HakuModel', 'UserOrganizationsModel',
+        function ($scope, $q, _, Treemodel, HakukohdeSiirra, HakuModel, UserOrganizationsModel) {
             "use strict";
 
             $scope.predicate = 'nimi';
@@ -252,12 +252,26 @@ angular.module('valintaperusteet').
             $scope.expandTree = function () {
                 Treemodel.expandTree();
             };
-            
+
             $scope.userOrganizationsModel = UserOrganizationsModel;
             var promises = $scope.userOrganizationsModel.refresh();
             $q.all(promises).then(function () {
             }, function () {
 
             });
+
+            $scope.hasKorkeakouluOrganization = function (organisaatioArray) {
+                var korkeakouluTunnisteet = ['_41', '_42', '_43']; // 41 == AMK, 42 = Yliopistot, 43 = Sotilaskorkeakoulut
+                _.forEach(organisaatioArray, function (organisaatioData) {
+                    _.forEach(korkeakouluTunnisteet, function (item) {
+                        if (organisaatioData.oppilaitosTyyppiUri.indexOf(item) !== -1) {
+                            $scope.hasKorkeakouluOrganization = true;
+                        } else {
+                            $scope.hasOtherThanKKOrganization = true;
+                        }
+                    });
+                });
+
+            };
 
         }]);
