@@ -187,8 +187,8 @@ angular.module('valintaperusteet').factory('Treemodel', function ($resource, Val
 
 
 angular.module('valintaperusteet').
-    controller('ValintaryhmaHakukohdeTreeController', ['$scope', 'Treemodel', 'HakukohdeSiirra', 'HakuModel',
-        function ($scope, Treemodel, HakukohdeSiirra, HakuModel) {
+    controller('ValintaryhmaHakukohdeTreeController', ['$scope', '$q', 'Treemodel', 'HakukohdeSiirra', 'HakuModel', 'UserOrganizationsModel',
+        function ($scope, $q, Treemodel, HakukohdeSiirra, HakuModel, UserOrganizationsModel) {
             "use strict";
 
             $scope.predicate = 'nimi';
@@ -252,5 +252,12 @@ angular.module('valintaperusteet').
             $scope.expandTree = function () {
                 Treemodel.expandTree();
             };
+            
+            $scope.userOrganizationsModel = UserOrganizationsModel;
+            var promises = $scope.userOrganizationsModel.refresh();
+            $q.all(promises).then(function () {
+            }, function () {
+
+            });
 
         }]);
