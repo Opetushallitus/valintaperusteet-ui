@@ -55,13 +55,16 @@ angular.module('valintaperusteet').factory('Treemodel', function ($resource, Val
         },
         refresh: function () {
             var kohdejoukko = "";
-            if (this.search.haku) {
-                kohdejoukko = this.search.haku.kohdejoukkoUri.split("#")[0];
+
+            if (HakuModel.haku.kohdejoukkoUri) {
+                kohdejoukko = HakuModel.haku.kohdejoukkoUri.split("#")[0];
             }
+
             var tila = null;
             if (this.search.vainValmiitJaJulkaistut) {
                 tila = ["VALMIS", "JULKAISTU"];
             }
+            
             ValintaperusteetPuu.get({
                 q: this.search.q,
                 hakuOid: HakuModel.hakuOid,
