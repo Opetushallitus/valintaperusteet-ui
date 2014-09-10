@@ -64,7 +64,7 @@ angular.module('valintaperusteet').factory('Treemodel', function ($resource, Val
             if (this.search.vainValmiitJaJulkaistut) {
                 tila = ["VALMIS", "JULKAISTU"];
             }
-            
+
             ValintaperusteetPuu.get({
                 q: this.search.q,
                 hakuOid: HakuModel.hakuOid,
@@ -202,6 +202,8 @@ angular.module('valintaperusteet').
                 $scope.domain.refresh();
             });
 
+            $scope.userOrganizationsModel = UserOrganizationsModel;
+
             $scope.hakukohteetListingLimit = 100;
             $scope.lazyLoading = function () {
                 $scope.hakukohteetListingLimit += 100;
@@ -256,13 +258,6 @@ angular.module('valintaperusteet').
                 Treemodel.expandTree();
             };
 
-            $scope.userOrganizationsModel = UserOrganizationsModel;
-            var promises = $scope.userOrganizationsModel.refresh();
-            $q.all(promises).then(function () {
-            }, function () {
-
-            });
-
             $scope.hasKorkeakouluOrganization = function (organisaatioArray) {
                 var korkeakouluTunnisteet = ['_41', '_42', '_43']; // 41 == AMK, 42 = Yliopistot, 43 = Sotilaskorkeakoulut
                 _.forEach(organisaatioArray, function (organisaatioData) {
@@ -276,5 +271,4 @@ angular.module('valintaperusteet').
                 });
 
             };
-
         }]);
