@@ -203,6 +203,7 @@ angular.module('valintaperusteet').
             });
 
             $scope.userOrganizationsModel = UserOrganizationsModel;
+            $scope.userOrganizationsModel.refresh();
 
             $scope.hakukohteetListingLimit = 100;
             $scope.lazyLoading = function () {
