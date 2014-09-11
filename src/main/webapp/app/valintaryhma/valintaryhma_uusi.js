@@ -34,23 +34,12 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
                 organisaatiot: model.valintaryhma.organisaatiot
             };
 
-            if (!model.parentOid) {
-                if (!Utils.hasSameName(model)) {
-                    Valintaryhma.insert(newValintaryhma, function (result) {
-                        Treemodel.refresh();
-                        $location.path("/valintaryhma/" + result.oid);
-                    });
-                } else {
-                    model.nameerror = true;
-                }
-            } else {
-                ParentValintaryhmas.get({parentOid: model.parentOid}, function (data) {
-                    var parentoid = model.parentOid;
-                    if (data && data.length > 0) {
-                        parentoid = data[data.length-1].oid;
-                        model.valintaryhma.kohdejoukko = data[data.length-1].kohdejoukko;
+            ParentValintaryhmas.get({parentOid: model.parentOid}, function (parents) {
+                ChildValintaryhmas.get({"parentOid": model.parentOid}, function (children) {
+                    if (parents && parents.length > 0) {
+                        model.valintaryhma.kohdejoukko = parents[parents.length - 1].kohdejoukko;
                     }
-                    if (!Utils.hasSameName(model,parentoid)) {
+                    if (!Utils.hasSameName(model, parents, children)) {
                         ChildValintaryhmas.insert({"parentOid": model.parentOid}, newValintaryhma, function (result) {
                             Treemodel.refresh();
                             model.valintaryhma = result;
@@ -60,8 +49,8 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
                         model.nameerror = true;
                     }
                 });
+            });
 
-            }
         };
 
 
@@ -94,7 +83,7 @@ angular.module('valintaperusteet').
         if(!$scope.model.valintaryhma.organisaatiot) {
             $scope.model.valintaryhma.organisaatiot = [];
         }
-        var contains = false
+        var contains = false;
         $scope.model.valintaryhma.organisaatiot.forEach(function(org){
             if(data.oid === org.oid) {
                 contains = true;

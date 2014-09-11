@@ -1,49 +1,25 @@
 angular.module('oph.utils', [])
-    .factory('Utils',['Treemodel',  function (Treemodel) {
+    .factory('Utils',[ function () {
         "use strict";
         var utils =
         {
-            checkAlavalintaryhmaForSameName: function (model, ryhma) {
-                var returnValue = false;
-
-                ryhma.forEach(function (valinta) {
-                    if (!returnValue) {
-                        if (valinta.nimi === model.valintaryhma.nimi && valinta.oid !== model.valintaryhma.oid) {
-                            returnValue = true;
-                        }
-                        if (!returnValue && valinta.alavalintaryhmat.length > 0) {
-                            returnValue = utils.checkAlavalintaryhmaForSameName(model, valinta.alavalintaryhmat);
-                        }
+            hasSameName: function (model, parents, children) {
+                var nameFound=false;
+                parents.forEach(function(parent) {
+                    if (parent.nimi === model.valintaryhma.nimi && parent.oid !== model.valintaryhma.oid) {
+                        nameFound = true;
                     }
                 });
-
-
-                return returnValue;
-            },
-            hasSameName: function (model, parentoid) {
-                var returnValue = false;
-
-                Treemodel.valintaperusteList.forEach(function (valinta) {
-                    if (!returnValue && valinta.tyyppi === "VALINTARYHMA") {
-                        if (!model.parentOid) {
-                            if (valinta.nimi === model.valintaryhma.nimi && valinta.oid !== model.valintaryhma.oid) {
-                                returnValue = true;
-                            }
-                        } else {
-                            if (!returnValue && parentoid === valinta.oid && valinta.oid !== model.valintaryhma.oid) {
-                                if (valinta.nimi === model.valintaryhma.nimi) {
-                                    returnValue = true;
-                                }
-                                if (!returnValue && valinta.alavalintaryhmat.length > 0) {
-                                    returnValue = utils.checkAlavalintaryhmaForSameName(model, valinta.alavalintaryhmat);
-                                }
-                            }
-
-                        }
+                children.forEach(function(child) {
+                    if (child.nimi === model.valintaryhma.nimi && child.oid !== model.valintaryhma.oid) {
+                        nameFound = true;
+                    }
+                    if (!nameFound && child.alavalintaryhmat) {
+                        nameFound = utils.hasSameName(model, null, child.alavalintaryhmat);
                     }
                 });
+                return nameFound;
 
-                return returnValue;
             }
         };
         return utils;
