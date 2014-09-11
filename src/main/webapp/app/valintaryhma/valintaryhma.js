@@ -19,7 +19,7 @@ angular.module('valintaperusteet')
             this.okToDelete = false;
 
             this.refresh = function (oid) {
-                this.nameerror = false;
+                model.nameerror = false;
 
                 if (!oid) {
                     model.valintaryhma = {};
@@ -132,30 +132,33 @@ angular.module('valintaperusteet')
             };
 
             this.persistValintaryhma = function (oid) {
-                if (!Utils.hasSameName(model)) {
-                    this.nameerror = false;
+                ParentValintaryhmas.get({parentOid: oid}, function (parents) {
+                    ChildValintaryhmas.get({"parentOid": parents[0].oid}, function (children) {
+                        if (!Utils.hasSameName(model, parents, children)) {
+                            model.nameerror = false;
 
-                    Valintaryhma.post(model.valintaryhma, function (result) {
-                        model.valintaryhma = result;
-                        if (model.valintaryhma.level === 1) {
-                            model.updateKohdejoukot(model.valintaryhma.kohdejoukko, model.valintaryhma.oid);
-                        }
+                            Valintaryhma.post(model.valintaryhma, function (result) {
+                                model.valintaryhma = result;
+                                if (model.valintaryhma.level === 1) {
+                                    model.updateKohdejoukot(model.valintaryhma.kohdejoukko, model.valintaryhma.oid);
+                                }
 
-                        Treemodel.refresh();
-                    });
-
-                    if (model.valinnanvaiheet.length > 0) {
-                        ValinnanvaiheJarjesta.post(getValinnanvaiheOids(), function (result) {
-                        });
-                        for (var i = 0; i < model.valinnanvaiheet.length; ++i) {
-                            Valinnanvaihe.post(model.valinnanvaiheet[i], function () {
+                                Treemodel.refresh();
                             });
-                        }
-                    }
-                } else {
-                    model.nameerror = true;
-                }
 
+                            if (model.valinnanvaiheet.length > 0) {
+                                ValinnanvaiheJarjesta.post(getValinnanvaiheOids(), function (result) {
+                                });
+                                for (var i = 0; i < model.valinnanvaiheet.length; ++i) {
+                                    Valinnanvaihe.post(model.valinnanvaiheet[i], function () {
+                                    });
+                                }
+                            }
+                        } else {
+                            model.nameerror = true;
+                        }
+                    });
+                });
             };
 
             this.deleteValintaryhma = function (oid, laskentakaavat) {
