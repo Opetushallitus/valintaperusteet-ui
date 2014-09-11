@@ -1,6 +1,11 @@
 angular.module('valintaperusteet')
 
-    .factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, HakijaryhmaJarjesta, KoodistoHakukohdekoodi, KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel, ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe, ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma, OrganizationByOid, $modal, Utils, Haku, HaunTiedot, ParentValintaryhmas, ChildValintaryhmas, $location, $log) {
+    .factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, HakijaryhmaJarjesta, KoodistoHakukohdekoodi,
+                                            KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel,
+                                            ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe,
+                                            ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma,
+                                            OrganizationByOid, $modal, Utils, Haku, HaunTiedot, ParentValintaryhmas,
+                                            ChildValintaryhmas, $location, $log, RootValintaryhmas) {
         "use strict";
 
 
@@ -132,33 +137,43 @@ angular.module('valintaperusteet')
             };
 
             this.persistValintaryhma = function (oid) {
-                ParentValintaryhmas.get({parentOid: oid}, function (parents) {
-                    ChildValintaryhmas.get({"parentOid": parents[0].oid}, function (children) {
-                        if (!Utils.hasSameName(model, parents, children)) {
-                            model.nameerror = false;
-
-                            Valintaryhma.post(model.valintaryhma, function (result) {
-                                model.valintaryhma = result;
-                                if (model.valintaryhma.level === 1) {
-                                    model.updateKohdejoukot(model.valintaryhma.kohdejoukko, model.valintaryhma.oid);
-                                }
-
-                                Treemodel.refresh();
-                            });
-
-                            if (model.valinnanvaiheet.length > 0) {
-                                ValinnanvaiheJarjesta.post(getValinnanvaiheOids(), function (result) {
-                                });
-                                for (var i = 0; i < model.valinnanvaiheet.length; ++i) {
-                                    Valinnanvaihe.post(model.valinnanvaiheet[i], function () {
-                                    });
-                                }
-                            }
-                        } else {
-                            model.nameerror = true;
-                        }
+                if (model.valintaryhma.level === 1) {
+                    RootValintaryhmas.get({parentOid: model.parentOid}, function (all) {
+                        model.persist(all, all);
                     });
-                });
+                } else {
+                    ParentValintaryhmas.get({parentOid: oid}, function (parents) {
+                        ChildValintaryhmas.get({"parentOid": parents[0].oid}, function (children) {
+                            model.persist(parents, children);
+                        });
+                    });
+                }
+            };
+
+            this.persist = function(parents, children) {
+                if (!Utils.hasSameName(model, parents, children)) {
+                    model.nameerror = false;
+
+                    Valintaryhma.post(model.valintaryhma, function (result) {
+                        model.valintaryhma = result;
+                        if (model.valintaryhma.level === 1) {
+                            model.updateKohdejoukot(model.valintaryhma.kohdejoukko, model.valintaryhma.oid);
+                        }
+
+                        Treemodel.refresh();
+                    });
+
+                    if (model.valinnanvaiheet.length > 0) {
+                        ValinnanvaiheJarjesta.post(getValinnanvaiheOids(), function (result) {
+                        });
+                        for (var i = 0; i < model.valinnanvaiheet.length; ++i) {
+                            Valinnanvaihe.post(model.valinnanvaiheet[i], function () {
+                            });
+                        }
+                    }
+                } else {
+                    model.nameerror = true;
+                }
             };
 
             this.deleteValintaryhma = function (oid, laskentakaavat) {
