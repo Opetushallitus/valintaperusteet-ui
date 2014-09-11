@@ -27,29 +27,47 @@ describe('Testing Utils', function(){
     }));
 
     it('hasSameName no VALINTARYHMA', function() {
-        expect(utils.hasSameName(model, parentoid)).toBeFalsy();
+        var parents;
+        var children;
+        expect(utils.hasSameName(model, parents, children)).toBeFalsy();
     });
 
     it('hasSameName has VALINTARYHMA', function() {
-        treemodel.valintaperusteList[0].oid = parentoid;
-        treemodel.valintaperusteList[0].tyyppi = "VALINTARYHMA";
-        expect(utils.hasSameName(model, parentoid)).toBeTruthy();
+        var parents = [];
+        var children = [];
+
+        expect(utils.hasSameName(model, parents, children)).toBeFalsy();
     });
 
     it('hasSameName has same oid (update)', function() {
-        treemodel.valintaperusteList[0].oid = parentoid;
-        treemodel.valintaperusteList[0].tyyppi = "VALINTARYHMA";
-        treemodel.valintaperusteList[0].alavalintaryhmat[0].oid = '1233333';
-        expect(utils.hasSameName(model, parentoid)).toBeFalsy();
+        var parents = [];
+        var children = [];
+
+        var parent = {};
+        parent.oid = parentoid;
+        parent.tyyppi = "VALINTARYHMA";
+        parent.oid = '1233333';
+        parents.push(parent);
+        expect(utils.hasSameName(model, parents, children)).toBeFalsy();
     });
 
     it('hasSameName has same name level 1', function() {
-        treemodel.valintaperusteList[0].oid = parentoid;
-        treemodel.valintaperusteList[0].tyyppi = "VALINTARYHMA";
-        treemodel.valintaperusteList[0].nimi = 'Painotettu keskiarvo, pÃ¤Ã¤sykoe ja lisÃ¤nÃ¤yttÃ¶';
-        treemodel.valintaperusteList[0].alavalintaryhmat[0].oid = '1233333';
-        treemodel.valintaperusteList[0].alavalintaryhmat[0].nimi = '3';
-        expect(utils.hasSameName(model, parentoid)).toBeTruthy();
+        var parents = [];
+        var children = [];
+
+        var child = {};
+        child.oid = parentoid;
+        child.tyyppi = "VALINTARYHMA";
+        child.nimi = 'Painotettu keskiarvo, pÃ¤Ã¤sykoe ja lisÃ¤nÃ¤yttÃ¶';
+        child.alavalintaryhmat = [];
+        var child2 = {};
+        child2.oid = '1233333';
+        child2.nimi = '3';
+        child.alavalintaryhmat.push(child2);
+
+        children.push(child);
+
+        expect(utils.hasSameName(model, parents, children)).toBeTruthy();
     });
 
 
