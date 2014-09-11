@@ -164,9 +164,8 @@ describe('Testing UusiValintaryhmaController', function(){
     });
 
     it('persistValintaryhma', function() {
-        $httpBackend.expectGET('resources/valintaryhma/parents').respond("[]");
-        $httpBackend.expectGET('resources/valintaryhma/lapsi').respond("[]");
-        $httpBackend.expectPUT('resources/valintaryhma/lapsi').respond("");
+        $httpBackend.expectGET('resources/valintaryhma?paataso=true').respond("[]");
+        $httpBackend.expectPUT('resources/valintaryhma').respond("");
         $httpBackend.expectGET('resources/puu?hakuOid=&kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
         valintaryhmaCreatorModel.persistValintaryhma();
         $httpBackend.flush();

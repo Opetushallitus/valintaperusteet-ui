@@ -1,6 +1,6 @@
 app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routeParams, Valintaryhma,
                                                  KoodistoHaunKohdejoukko, ChildValintaryhmas, Treemodel,
-                                                 ParentValintaryhmas, Utils) {
+                                                 ParentValintaryhmas, Utils, RootValintaryhmas) {
     "use strict";
 
     var model = new function() {
@@ -24,35 +24,49 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
             this.refresh();
         };
 
-        this.persistValintaryhma = function() {
-
-            var newValintaryhma = {
-                lapsihakukohde: false,
-                lapsivalintaryhma: false,
-                nimi: model.valintaryhma.nimi,
-                kohdejoukko: model.valintaryhma.kohdejoukko,
-                organisaatiot: model.valintaryhma.organisaatiot
-            };
-
-            ParentValintaryhmas.get({parentOid: model.parentOid}, function (parents) {
-                ChildValintaryhmas.get({"parentOid": model.parentOid}, function (children) {
-                    if (parents && parents.length > 0) {
-                        model.valintaryhma.kohdejoukko = parents[parents.length - 1].kohdejoukko;
-                    }
-                    if (!Utils.hasSameName(model, parents, children)) {
-                        ChildValintaryhmas.insert({"parentOid": model.parentOid}, newValintaryhma, function (result) {
-                            Treemodel.refresh();
-                            model.valintaryhma = result;
-                            $location.path("/valintaryhma/" + result.oid);
-                        });
-                    } else {
-                        model.nameerror = true;
-                    }
+        this.persistValintaryhma = function(oid) {
+            if (model.parentOid) {
+                ParentValintaryhmas.get({parentOid: model.parentOid}, function (parents) {
+                    ChildValintaryhmas.get({"parentOid": model.parentOid}, function (children) {
+                        if (parents && parents.length > 0) {
+                            model.valintaryhma.kohdejoukko = parents[parents.length - 1].kohdejoukko;
+                        }
+                        model.persist(parents, children);
+                    });
                 });
-            });
+            } else {
+                RootValintaryhmas.get({parentOid: model.parentOid}, function (all) {
+                    model.persist(all, all);
+                });
+            }
 
         };
 
+        this.persist = function(parents, children) {
+            if (!Utils.hasSameName(model, parents, children)) {
+                var newValintaryhma = {
+                    lapsihakukohde: false,
+                    lapsivalintaryhma: false,
+                    nimi: model.valintaryhma.nimi,
+                    kohdejoukko: model.valintaryhma.kohdejoukko,
+                    organisaatiot: model.valintaryhma.organisaatiot
+                };
+                if (!model.parentOid) {
+                    Valintaryhma.insert(newValintaryhma, function (result) {
+                        Treemodel.refresh();
+                        $location.path("/valintaryhma/" + result.oid);
+                    });
+                } else {
+                    ChildValintaryhmas.insert({"parentOid": model.parentOid}, newValintaryhma, function (result) {
+                        Treemodel.refresh();
+                        model.valintaryhma = result;
+                        $location.path("/valintaryhma/" + result.oid);
+                    });
+                }
+            } else {
+                model.nameerror = true;
+            }
+        };
 
     }();
 
