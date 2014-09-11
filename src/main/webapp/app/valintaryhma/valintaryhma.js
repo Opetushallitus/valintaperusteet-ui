@@ -364,46 +364,13 @@ angular.module('valintaperusteet')
     })
 
 
-    .controller('ValintaryhmaController', ['$scope', '$q', '$location', '$routeParams', 'ValintaryhmaModel', 'Laskentakaava', 'UserOrganizationsModel', '_', 'AuthService',
-        function ($scope, $q, $location, $routeParams, ValintaryhmaModel, Laskentakaava, UserOrganizationsModel, _, AuthService) {
+    .controller('ValintaryhmaController', ['$scope', '$q', '$location', '$routeParams', 'ValintaryhmaModel', 'Laskentakaava',
+        function ($scope, $q, $location, $routeParams, ValintaryhmaModel, Laskentakaava) {
             "use strict";
 
             $scope.valintaryhmaOid = $routeParams.id;
             $scope.model = ValintaryhmaModel;
             $scope.model.refreshIfNeeded($scope.valintaryhmaOid);
-
-            UserOrganizationsModel.refreshIfNeeded();
-
-//            var ophPromise = AuthService.crudOph('APP_VALINTAPERUSTEET');
-//
-//            ophPromise.then(function (reason) {
-//                $scope.crudOph = true;
-//            });
-//
-//
-//
-//            $q.all(UserOrganizationsModel.promises).then(function () {
-//                $scope.model.loaded.promise.then(function () {
-//                    $scope.disableChanges = false;
-//                    var valintaryhmaOrganisaatioOids = $scope.model.getValintaryhmaOrganisaatioOids();
-//                    var disable = _.every(UserOrganizationsModel.organizationOids, function (item) {
-//
-//                    });
-//
-//                    AuthService.crudOph('APP_VALINTAPERUSTEET').then(function () {
-//                        $scope.crudOph = true;
-//                    });
-//
-//                    _.forEach(UserOrganizationsModel.organizationOids, function (item) {
-//                        if(_.contains(valintaryhmaOrganisaatioOids, item)) {
-//
-//                        }
-//                    });
-//
-//                });
-//            });
-
-
 
             $scope.submit = function () {
                 $scope.model.persistValintaryhma($scope.valintaryhmaOid);
