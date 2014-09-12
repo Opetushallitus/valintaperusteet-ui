@@ -379,13 +379,15 @@ angular.module('valintaperusteet')
     })
 
 
-    .controller('ValintaryhmaController', ['$scope', '$q', '$location', '$routeParams', 'ValintaryhmaModel', 'Laskentakaava',
-        function ($scope, $q, $location, $routeParams, ValintaryhmaModel, Laskentakaava) {
+    .controller('ValintaryhmaController', ['$scope', '$q', '$location', '$routeParams', 'ValintaryhmaModel', 'Laskentakaava', 'UserAccessLevels',
+        function ($scope, $q, $location, $routeParams, ValintaryhmaModel, Laskentakaava, UserAccessLevels) {
             "use strict";
 
             $scope.valintaryhmaOid = $routeParams.id;
             $scope.model = ValintaryhmaModel;
             $scope.model.refreshIfNeeded($scope.valintaryhmaOid);
+
+            UserAccessLevels.refresh();
 
             $scope.submit = function () {
                 $scope.model.persistValintaryhma($scope.valintaryhmaOid);
