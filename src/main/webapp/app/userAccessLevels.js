@@ -21,7 +21,7 @@ angular.module('valintaperusteet')
                 // Make all authentication request asynchronously so there's no need to wait for consecutive calls
                 // Calling crudOphPromise.then below starts the promise chain - all promises won't likely be called
                 // because running successcallback stops the chain. No need to check if user has lower level rights
-                
+
                 // OPH rights
                 var crudOphPromise = AuthService.crudOph('APP_VALINTAPERUSTEET');
                 var updateOphPromise = AuthService.updateOph('APP_VALINTAPERUSTEET');
@@ -63,11 +63,11 @@ angular.module('valintaperusteet')
 
                 return model.deferred.promise;
             };
-            
+
             this.isOphUser = function () {
                 return model.crudOph || model.updateOph || model.readOph;
             };
-            
+
             this.hasCrudRights = function () {
                 return model.crudOph || model.crudOrg;
             };
@@ -75,7 +75,7 @@ angular.module('valintaperusteet')
             this.hasUpdateRights = function () {
                 return model.updateOph || model.updateOrg;
             };
-            
+
             this.hasReadRights = function () {
                 return model.readOph || model.readOrg;
             };
@@ -108,4 +108,56 @@ angular.module('valintaperusteet')
         };
 
         return model;
-    }]);
+    }])
+
+app.directive('accessLevel', ['$q', '$timeout', '$log', 'UserAccessLevels', 'UserOrganizationsModel', 'ValintaryhmaModel', function ($q, $timeout, $log, UserAccessLevels, UserOrganizationsModel, ValintaryhmaModel) {
+    return {
+        priority: -1000,
+        link: function ($scope, element, attrs) {
+
+            element.attr('disabled', 'true');
+
+            UserOrganizationsModel.refreshIfNeeded();
+            var userOrganizationPromises = UserOrganizationsModel.promises;
+
+            UserAccessLevels.deferred.promise.then(function () {
+
+                var accessLevel = attrs.accessLevel;
+                var hasCrudAccess = UserAccessLevels.hasCrudRights();
+                var hasUpdateAccess = UserAccessLevels.hasUpdateRights();
+
+                if ( (accessLevel === 'crud' && hasCrudAccess) || (accessLevel === 'update' && hasUpdateAccess) ) {
+                    element.removeAttr('disabled');
+                }
+
+                /*
+                 $q.all(UserOrganizationsModel.promises).then(function () {
+                 ValintaryhmaModel.loaded.promise.then(function () {
+                 $scope.disableChanges = false;
+                 var valintaryhmaOrganisaatioOids = $scope.model.getValintaryhmaOrganisaatioOids();
+                 var disable = _.every(UserOrganizationsModel.organizationOids, function (item) {
+
+                 });
+
+
+
+                 _.forEach(UserOrganizationsModel.organizationOids, function (item) {
+                 if(_.contains(valintaryhmaOrganisaatioOids, item)) {
+
+                 }
+                 });
+
+                 });
+                 });
+                 */
+
+
+
+
+
+            }, function (error) {
+                $log.error("Käyttäjän oikeustasojen selvittäminen ei onnistu", error);
+            });
+        }
+    };
+}]);

@@ -190,8 +190,8 @@ angular.module('valintaperusteet').factory('Treemodel', function ($resource, Val
 
 
 angular.module('valintaperusteet').
-    controller('ValintaryhmaHakukohdeTreeController', ['$scope', '$q', '_', 'Treemodel', 'HakukohdeSiirra', 'HakuModel', 'UserOrganizationsModel',
-        function ($scope, $q, _, Treemodel, HakukohdeSiirra, HakuModel, UserOrganizationsModel) {
+    controller('ValintaryhmaHakukohdeTreeController', ['$scope', '$q', '_', 'Treemodel', 'HakukohdeSiirra', 'HakuModel', 'UserOrganizationsModel', '$timeout',
+        function ($scope, $q, _, Treemodel, HakukohdeSiirra, HakuModel, UserOrganizationsModel, $timeout) {
             "use strict";
 
             $scope.predicate = 'nimi';
@@ -203,7 +203,9 @@ angular.module('valintaperusteet').
             });
 
             $scope.userOrganizationsModel = UserOrganizationsModel;
-            $scope.userOrganizationsModel.refresh();
+            $scope.userOrganizationsModel.refreshIfNeeded();
+            $scope.hasKKOrganizations = $scope.userOrganizationsModel.userHasKKOrganizations();
+            $scope.hasOtherThanKKOrganization = $scope.userOrganizationsModel.userHasOtherThanKKOrganizations();
 
             $scope.hakukohteetListingLimit = 100;
             $scope.lazyLoading = function () {
@@ -270,6 +272,6 @@ angular.module('valintaperusteet').
                         }
                     });
                 });
-
             };
+
         }]);

@@ -16,6 +16,8 @@ app.factory('MyRolesModel', function ($q, $http) {
         var instance = {};
         instance.myroles = [];
 
+//        instance.myroles = ["USER_tampere", "VIRKAILIJA", "LANG_fi", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.727160772010", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_RYHMA", "APP_ORGANISAATIOHALLINTA_RYHMA_1.2.246.562.10.727160772010", "APP_HAKUJENHALLINTA", "APP_HAKUJENHALLINTA_CRUD", "APP_HAKUJENHALLINTA_CRUD_1.2.246.562.10.727160772010", "APP_SIJOITTELU", "APP_SIJOITTELU_READ", "APP_SIJOITTELU_READ_1.2.246.562.10.727160772010", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_CRUD", "APP_ORGANISAATIOHALLINTA_CRUD_1.2.246.562.10.727160772010", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_KKVASTUU", "APP_HENKILONHALLINTA_KKVASTUU_1.2.246.562.10.727160772010", "APP_OID", "APP_OID_CRUD", "APP_OID_CRUD_1.2.246.562.10.727160772010", "APP_OMATTIEDOT", "APP_OMATTIEDOT_CRUD", "APP_OMATTIEDOT_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK_CRUD", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK_CRUD_1.2.246.562.10.727160772010", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_READ", "APP_VALINTOJENTOTEUTTAMINEN_READ_1.2.246.562.10.727160772010", "APP_TARJONTA", "APP_TARJONTA_CRUD", "APP_TARJONTA_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEET", "APP_VALINTAPERUSTEET_CRUD", "APP_VALINTAPERUSTEET_CRUD_1.2.246.562.10.727160772010", "APP_HAKEMUS", "APP_HAKEMUS_READ", "APP_HAKEMUS_READ_1.2.246.562.10.727160772010", "APP_TARJONTA_KK", "APP_TARJONTA_KK_CRUD", "APP_TARJONTA_KK_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_CRUD", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_CRUD_1.2.246.562.10.727160772010"];
+//        deferred.resolve(instance);
         $http.get(CAS_URL).success(function (result) {
             instance.myroles = result;
             deferred.resolve(instance);
@@ -50,7 +52,6 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel) {
     };
 
     var crudAccess = function (service, org, model) {
-
         if (model.myroles.indexOf(service + CRUD + (org ? "_" + org : "")) > -1) {
             return true;
         }
@@ -181,75 +182,7 @@ app.factory('AuthService', function ($q, $http, $timeout, MyRolesModel) {
     return auth;
 });
 
-app.directive('accessLevel', ['$q', '$timeout', '$log', 'UserAccessLevels', 'UserOrganizationsModel', 'ValintaryhmaModel', function ($q, $timeout, $log, UserAccessLevels, UserOrganizationsModel, ValintaryhmaModel) {
-    return {
-        priority: -1000,
-        link: function ($scope, element, attrs) {
 
-            element.attr('disabled', 'true');
-
-            UserOrganizationsModel.refreshIfNeeded();
-            var userOrganizationPromises = UserOrganizationsModel.promises;
-
-            UserAccessLevels.deferred.promise.then(function () {
-                var accessLevel = attrs.accessLevel;
-                if(UserAccessLevels.isOphUser()) {
-
-                    if (accessLevel === 'crud' && UserAccessLevels.hasCrudRights()) {
-                        element.removeAttr('disabled');
-                    }
-
-                    if (accessLevel === 'update' && UserAccessLevels.hasUpdateRights()) {
-                        element.removeAttr('disabled');
-                    }
-
-                } else {
-
-
-                    /*
-                     $q.all(UserOrganizationsModel.promises).then(function () {
-                         ValintaryhmaModel.loaded.promise.then(function () {
-                             $scope.disableChanges = false;
-                             var valintaryhmaOrganisaatioOids = $scope.model.getValintaryhmaOrganisaatioOids();
-                             var disable = _.every(UserOrganizationsModel.organizationOids, function (item) {
-        
-                             });
-        
-        
-        
-                             _.forEach(UserOrganizationsModel.organizationOids, function (item) {
-                             if(_.contains(valintaryhmaOrganisaatioOids, item)) {
-        
-                             }
-                             });
-    
-                         });
-                     });
-
-
-                     $q.all(userOrganizationPromises).then(function () {
-                     var userOrganizationOids = UserOrganizationsModel.organizationOids;
-                     ValintaryhmaModel.loaded.promise.then(function () {
-                     var valintaryhmaOrganizations = ValintaryhmaModel.valintaryhma;
-                     console.log(UserOrganizationsModel.organizations);
-                     console.log('userOrganizationoids', userOrganizationOids);
-                     console.log('valintaryhmaOrganizations', valintaryhmaOrganizations);
-                     });
-                     });
-                     */
-                }
-
-
-
-
-
-
-            }, function (error) {
-                $log.error("Käyttäjän oikeustasojen selvittäminen ei onnistu", error);
-            });
-        }
-    };
-}]);
 
 app.directive('auth', function ($q, $animate, $routeParams, $timeout, AuthService, ValintaryhmaModel, HakukohdeModel) {
     return {
