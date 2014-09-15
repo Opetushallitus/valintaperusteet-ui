@@ -21,16 +21,16 @@ angular.module('valintaperusteet')
                 // Make all authentication request asynchronously so there's no need to wait for consecutive calls
                 // Calling crudOphPromise.then below starts the promise chain - all promises won't likely be called
                 // because running successcallback stops the chain. No need to check if user has lower level rights
-
+                
                 // OPH rights
                 var crudOphPromise = AuthService.crudOph('APP_VALINTAPERUSTEET');
                 var updateOphPromise = AuthService.updateOph('APP_VALINTAPERUSTEET');
                 var readOphPromise = AuthService.readOph('APP_VALINTAPERUSTEET');
 
                 // Organization rights
-                var crudOrgPromise = AuthService.crudOph('APP_VALINTAPERUSTEET');
-                var updateOrgPromise = AuthService.updateOph('APP_VALINTAPERUSTEET');
-                var readOrgPromise = AuthService.readOph('APP_VALINTAPERUSTEET');
+                var crudOrgPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET');
+                var updateOrgPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET');
+                var readOrgPromise = AuthService.readOrg('APP_VALINTAPERUSTEET');
 
                 // set user rights for OPHCRUD or continue to next level
                 var crudOphSuccessFn = function () { model.setCrudRights(true); model.deferred.resolve(); };
@@ -46,7 +46,7 @@ angular.module('valintaperusteet')
 
                 // set user rights for ORGCRUD or continue to next level
                 var crudOrgSuccessFn = function () { model.setCrudRights(false); model.deferred.resolve(); };
-                var crudOrgRejectFn = function () { updateOrgPromise.then(updateOrgSuccessFn, updateOrgRejectFn()); };
+                var crudOrgRejectFn = function () { updateOrgPromise.then(updateOrgSuccessFn, updateOrgRejectFn); };
 
                 // set user rights for ORGUPDATE or continue to next level
                 var updateOrgSuccessFn = function () { model.setUpdateRight(false); model.deferred.resolve(); };
