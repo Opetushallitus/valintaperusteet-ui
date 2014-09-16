@@ -1,6 +1,8 @@
-app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routeParams, Valintaryhma,
-                                                 KoodistoHaunKohdejoukko, ChildValintaryhmas, Treemodel,
-                                                 ParentValintaryhmas, Utils, RootValintaryhmas) {
+angular.module('valintaperusteet')
+    .factory('ValintaryhmaCreatorModel', ['$q', '$resource', '$location', '$routeParams', 'Valintaryhma', 'KoodistoHaunKohdejoukko', 'ChildValintaryhmas', 'Treemodel',
+    'ParentValintaryhmas', 'Utils', 'RootValintaryhmas', 'UserOrganizationsModel',
+        function($q, $resource, $location, $routeParams, Valintaryhma, KoodistoHaunKohdejoukko, ChildValintaryhmas, Treemodel,
+                ParentValintaryhmas, Utils, RootValintaryhmas, UserOrganizationsModel) {
     "use strict";
 
     var model = new function() {
@@ -14,8 +16,14 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
             model.nameerror = false;
 
 
+
             KoodistoHaunKohdejoukko.get(function (result) {
                 model.kohdejoukot = result;
+            });
+
+            UserOrganizationsModel.refreshIfNeeded();
+            $q.all(UserOrganizationsModel.promises).then(function () {
+                model.valintaryhma.organisaatiot = UserOrganizationsModel.organizations;
             });
 
         };
@@ -71,10 +79,10 @@ app.factory('ValintaryhmaCreatorModel', function($resource, $location, $routePar
     }();
 
     return model;
-});
+}])
 
-angular.module('valintaperusteet').
-    controller('UusiValintaryhmaController', ['$scope', '$location', '$routeParams', 'ValintaryhmaCreatorModel', 'Ylavalintaryhma',
+
+    .controller('UusiValintaryhmaController', ['$scope', '$location', '$routeParams', 'ValintaryhmaCreatorModel', 'Ylavalintaryhma',
         function ($scope, $location, $routeParams, ValintaryhmaCreatorModel, Ylavalintaryhma) {
     "use strict";
 
