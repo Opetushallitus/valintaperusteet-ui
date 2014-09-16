@@ -59,8 +59,6 @@ angular.module('valintaperusteet')
                 // Start promisechain checking
                 crudOphPromise.then(crudOphSuccessFn, crudOphRejectFn);
 
-
-
                 return model.deferred.promise;
             };
 
@@ -110,7 +108,7 @@ angular.module('valintaperusteet')
         return model;
     }])
 
-app.directive('accessLevel', ['$q', '$timeout', '$log', 'UserAccessLevels', 'UserOrganizationsModel', 'ValintaryhmaModel', function ($q, $timeout, $log, UserAccessLevels, UserOrganizationsModel, ValintaryhmaModel) {
+.directive('modificationRequirement', ['$q', '$timeout', '$log', 'UserAccessLevels', 'UserOrganizationsModel', 'ValintaryhmaModel', function ($q, $timeout, $log, UserAccessLevels, UserOrganizationsModel, ValintaryhmaModel) {
     return {
         priority: -1000,
         link: function ($scope, element, attrs) {
@@ -122,42 +120,26 @@ app.directive('accessLevel', ['$q', '$timeout', '$log', 'UserAccessLevels', 'Use
 
             UserAccessLevels.deferred.promise.then(function () {
 
-                var accessLevel = attrs.accessLevel;
+                var accessLevel = attrs.modificationRequirement;
                 var hasCrudAccess = UserAccessLevels.hasCrudRights();
                 var hasUpdateAccess = UserAccessLevels.hasUpdateRights();
-
                 if ( (accessLevel === 'crud' && hasCrudAccess) || (accessLevel === 'update' && hasUpdateAccess) ) {
                     element.removeAttr('disabled');
                 }
-
-                /*
-                 $q.all(UserOrganizationsModel.promises).then(function () {
-                 ValintaryhmaModel.loaded.promise.then(function () {
-                 $scope.disableChanges = false;
-                 var valintaryhmaOrganisaatioOids = $scope.model.getValintaryhmaOrganisaatioOids();
-                 var disable = _.every(UserOrganizationsModel.organizationOids, function (item) {
-
-                 });
-
-
-
-                 _.forEach(UserOrganizationsModel.organizationOids, function (item) {
-                 if(_.contains(valintaryhmaOrganisaatioOids, item)) {
-
-                 }
-                 });
-
-                 });
-                 });
-                 */
-
-
-
-
 
             }, function (error) {
                 $log.error("Käyttäjän oikeustasojen selvittäminen ei onnistu", error);
             });
         }
     };
+}])
+/*
+.directive('hakukohdeOwner', ['UserOrganizationsModel', function (UserOrganizationsModel) {
+    return {
+        link: function ($scope, element, attrs) {
+            console.log(UserOrganizationsModel);
+        }
+    }
 }]);
+*/
+
