@@ -16,7 +16,7 @@ angular.module('valintaperusteet')
                     model.hakukohdeOid = "";
 
                     ValintaryhmaModel.refreshIfNeeded($routeParams.id);
-                    ValintaryhmaModel.loaded.promises.then(function () {
+                    ValintaryhmaModel.loaded.promise.then(function () {
                         if (ValintaryhmaModel.valintaryhma.organisaatiot) {
                             _.forEach(ValintaryhmaModel.valintaryhma.organisaatiot, function (org) {
                                 model.organisaatiot.push(org.oid);
