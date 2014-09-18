@@ -54,12 +54,6 @@ app.factory('HakukohdeModel', function($q, HakukohdeHakukohdekoodi, KoodistoHaku
 
             HakukohdeHakijaryhma.get({oid: oid}, function(result) {
                 model.hakijaryhmat = result;
-                model.hakijaryhmat.forEach(function(hr){
-                    Laskentakaava.get({oid: hr.laskentakaavaId, funktiopuu: false}, function(result) {
-                        hr.laskentakaava_nimi = result.nimi;
-                    });
-                    hr.valintatapajonot = HakijaryhmanValintatapajonot.get({oid: hr.oid});
-                });
             });
 
             HakukohdeValinnanvaihe.get({parentOid: oid}, function(result) {

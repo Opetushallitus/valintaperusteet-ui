@@ -1,8 +1,8 @@
 angular.module('valintaperusteet')
 
     .controller('funktiokutsuAsetuksetController', ['$scope', '$q', '$routeParams', '$location', '$timeout', 'Laskentakaava',
-        'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'GuidGenerator', 'HakemusavaimetLisakysymykset', 'HakemusavaimetLomake', 'ValintaryhmaModel', 'Treemodel', 'LaskentakaavaValintaryhma',
-        function ($scope, $q, $routeParams, $location, $timeout, Laskentakaava, FunktioNimiService, FunktioFactory, KaavaValidationService, GuidGenerator, HakemusavaimetLisakysymykset, HakemusavaimetLomake, ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma) {
+        'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'GuidGenerator', 'HakemusavaimetLisakysymykset', 'HakemusavaimetLomake', 'ValintaryhmaModel', 'Treemodel', 'LaskentakaavaValintaryhma', '$cookieStore',
+        function ($scope, $q, $routeParams, $location, $timeout, Laskentakaava, FunktioNimiService, FunktioFactory, KaavaValidationService, GuidGenerator, HakemusavaimetLisakysymykset, HakemusavaimetLomake, ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore) {
 
             $scope.toggle = false;
             $scope.funktioFactory = FunktioFactory;
@@ -51,101 +51,111 @@ angular.module('valintaperusteet')
 
             $scope.toggle = false;
 
+            $scope.resolveHaku = function() {
+                var hakuoid = $cookieStore.get('hakuoid');
+                if(hakuoid) {
+                    $scope.getHakemusAvaimet(hakuoid);
+                }
+                else if(!hakuoid && $scope.treemodel.search.haku) {
+                    $scope.getHakemusAvaimet($scope.treemodel.search.haku.oid);
 
-            $scope.getHakemusAvaimet = function () {
+                } else if(!hakuoid && $routeParams.laskentakaavaOid) {
+                    LaskentakaavaValintaryhma.get({oid: $routeParams.laskentakaavaOid}, function(valintaryhma) {
+                        if(!_.isEmpty(valintaryhma.hakuoid)) {
+                            $scope.getHakemusAvaimet(valintaryhma.hakuoid);
+                        } else {
+                            alert("Hakulomakkeen tunnisteita ei voida hakea, koska mitään hakua ei ole valittu");
+                        }
+                    });
+                } else {
+                    alert("Hakulomakkeen tunnisteita ei voida hakea, koska mitään hakua ei ole valittu");
+                }
+            };
+
+
+            $scope.getHakemusAvaimet = function (hakuoid) {
 
 
                 $scope.valintaryhmaPromise.then(function (result) {
-                    var hakuoid;
-                    if($scope.treemodel.search.haku) {
-                        hakuoid = $scope.treemodel.search.haku.oid;
-                    }
-                    if(!hakuoid && $routeParams.laskentakaavaOid) {
-                        LaskentakaavaValintaryhma.get({oid: $routeParams.laskentakaavaOid}, function(valintaryhma) {
-                            hakuoid = valintaryhma.hakuoid;
-                            if(hakuoid) {
-                                HakemusavaimetLomake.get({hakuoid: hakuoid}, function (haetutAvaimet) {
-                                        var tyypit = ["TextQuestion","DropdownSelect","Radio","DateQuestion","SocialSecurityNumber","PostalCode","GradeGridOptionQuestion"];
-                                        var avaimet = [];
-                                        var hakutoiveRivi = "PreferenceRow";
-                                        var hakutoivePostfixes = ["-Koulutus",
-                                            "-Koulutus-educationDegree",
-                                            "-Koulutus-id",
-                                            "-Koulutus-id-aoIdentifier",
-                                            "-Koulutus-id-athlete",
-                                            "-Koulutus-id-educationcode",
-                                            "-Koulutus-id-kaksoistutkinto",
-                                            "-Koulutus-id-lang",
-                                            "-Koulutus-id-sora",
-                                            "-Koulutus-id-vocational",
-                                            "-Opetuspiste",
-                                            "-Opetuspiste-id"];
+                    HakemusavaimetLomake.get({hakuoid: hakuoid}, function (haetutAvaimet) {
+                            var tyypit = ["TextQuestion","DropdownSelect","Radio","DateQuestion","SocialSecurityNumber","PostalCode","GradeGridOptionQuestion"];
+                            var avaimet = [];
+                            var hakutoiveRivi = "PreferenceRow";
+                            var hakutoivePostfixes = ["-Koulutus",
+                                "-Koulutus-educationDegree",
+                                "-Koulutus-id",
+                                "-Koulutus-id-aoIdentifier",
+                                "-Koulutus-id-athlete",
+                                "-Koulutus-id-educationcode",
+                                "-Koulutus-id-kaksoistutkinto",
+                                "-Koulutus-id-lang",
+                                "-Koulutus-id-sora",
+                                "-Koulutus-id-vocational",
+                                "-Opetuspiste",
+                                "-Opetuspiste-id"];
 
-                                        var flattenRecursively = function(array) {
-                                            var result = [];
-                                            _.forEach(array, function(phase) {
-                                                if(phase.type == hakutoiveRivi) {
-                                                    _.forEach(hakutoivePostfixes, function(postfix) {
-                                                        result.push({type: hakutoiveRivi, id: phase.id+postfix});
-                                                    })
-                                                }
-                                                else if(phase.children) {
-                                                    var current = _.omit(phase, phase.children);
-                                                    if(tyypit.indexOf(phase.type) != -1) {
-                                                        result.push(current);
-                                                    }
-                                                    result = _.union(result, flattenRecursively(phase.children));
-                                                } else {
-                                                    if(tyypit.indexOf(phase.type) != -1) {
-                                                        result.push(phase);
-                                                    }
-                                                }
-                                            });
-                                            return result;
-                                        };
-
-                                        var flatten = _.flatten(flattenRecursively(haetutAvaimet.children));
-                                        _.forEach(flatten, function(phase) {
-
-                                            var obj = {};
-                                            obj.key = phase.id;
-                                            if(phase.i18nText) {
-                                                obj.value = phase.id + ' - ' + phase.i18nText.translations.fi;
-                                            } else {
-                                                obj.value = phase.id;
-                                            }
-                                            avaimet.push(obj);
-                                        });
-
-
-                                        $scope.bigdata = avaimet;
-                                    }, function (error) {
-                                        console.log("hakulomakkeen avaimia ei löytynyt");
+                            var flattenRecursively = function(array) {
+                                var result = [];
+                                _.forEach(array, function(phase) {
+                                    if(phase.type == hakutoiveRivi) {
+                                        _.forEach(hakutoivePostfixes, function(postfix) {
+                                            result.push({type: hakutoiveRivi, id: phase.id+postfix});
+                                        })
                                     }
-                                );
-
-                                HakemusavaimetLisakysymykset.get({hakuoid: hakuoid},function (haetutAvaimet) {
-                                        var avaimet = [];
-                                        _.forEach(haetutAvaimet, function(phase) {
-
-                                            var obj = {};
-                                            obj.key = phase._id;
-                                            if(phase.messageText) {
-                                                obj.value = phase._id + ' - ' + phase.messageText.translations.fi;
-                                            } else {
-                                                obj.value = phase._id;
-                                            }
-                                            avaimet.push(obj);
-
-                                        });
-                                        $scope.lisakysymysAvaimet = avaimet;
-                                    }, function (error) {
-                                        console.log("lisakysymyksiä ei löytynyt");
+                                    else if(phase.children) {
+                                        var current = _.omit(phase, phase.children);
+                                        if(tyypit.indexOf(phase.type) != -1) {
+                                            result.push(current);
+                                        }
+                                        result = _.union(result, flattenRecursively(phase.children));
+                                    } else {
+                                        if(tyypit.indexOf(phase.type) != -1) {
+                                            result.push(phase);
+                                        }
                                     }
-                                );
-                            }
-                        });
-                    }
+                                });
+                                return result;
+                            };
+
+                            var flatten = _.flatten(flattenRecursively(haetutAvaimet.children));
+                            _.forEach(flatten, function(phase) {
+
+                                var obj = {};
+                                obj.key = phase.id;
+                                if(phase.i18nText) {
+                                    obj.value = phase.id + ' - ' + phase.i18nText.translations.fi;
+                                } else {
+                                    obj.value = phase.id;
+                                }
+                                avaimet.push(obj);
+                            });
+
+
+                            $scope.bigdata = avaimet;
+                        }, function (error) {
+                            console.log("hakulomakkeen avaimia ei löytynyt");
+                        }
+                    );
+
+                    HakemusavaimetLisakysymykset.get({hakuoid: hakuoid},function (haetutAvaimet) {
+                            var avaimet = [];
+                            _.forEach(haetutAvaimet, function(phase) {
+
+                                var obj = {};
+                                obj.key = phase._id;
+                                if(phase.messageText) {
+                                    obj.value = phase._id + ' - ' + phase.messageText.translations.fi;
+                                } else {
+                                    obj.value = phase._id;
+                                }
+                                avaimet.push(obj);
+
+                            });
+                            $scope.lisakysymysAvaimet = avaimet;
+                        }, function (error) {
+                            console.log("lisakysymyksiä ei löytynyt");
+                        }
+                    );
 
 
                 }, function(reject) {
@@ -153,7 +163,7 @@ angular.module('valintaperusteet')
                 });
             };
 
-            $scope.getHakemusAvaimet();
+            $scope.resolveHaku();
 
             $scope.isYoFunktiokutsu = function (funktio, valintaperuste) {
                 var funktionimi = funktio.lapsi.funktionimi;

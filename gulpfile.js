@@ -27,6 +27,10 @@ var paths = {
         'bower_components/angular-animate/angular-animate.min.js',
         'bower_components/angular-animate/angular-animate.min.js.map',
 
+        'bower_components/angular-cookies/angular-cookies.js',
+        'bower_components/angular-cookies/angular-cookies.min.js',
+        'bower_components/angular-cookies/angular-cookies.min.js.map',
+
         'bower_components/jquery/dist/jquery.js',
         'bower_components/jquery/dist/jquery.min.js',
         'bower_components/jquery/dist/jquery.min.js.map',
