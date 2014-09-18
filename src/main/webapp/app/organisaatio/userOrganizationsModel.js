@@ -6,6 +6,8 @@ angular.module('valintaperusteet')
             this.promises = [];
             this.organizationOids = [];
             this.organizations = [];
+            this.isKKUser = false;
+            this.hasOtherThanKKUserOrgs = false;
 
             this.refresh = function () {
                 var authServiceDeferred = $q.defer();
@@ -29,6 +31,8 @@ angular.module('valintaperusteet')
 
                     $q.all(organizationPromises).then(function () {
                         authServiceDeferred.resolve();
+                        model.userHasKKOrganizations();
+                        model.userHasOtherThanKKOrganizations();
                     }, function () {
                         authServiceDeferred.reject();
                     });
@@ -47,43 +51,43 @@ angular.module('valintaperusteet')
             
             this.userHasKKOrganizations = function () {
                 $q.all(model.promises).then(function () {
-                    var hasKK = false;
+                    var isKKUser = false;
                     var korkeakouluTunnisteet = ['_41', '_42', '_43']; // 41 == AMK, 42 = Yliopistot, 43 = Sotilaskorkeakoulut
                     _.some(model.organizations, function (organisaatioData) {
                         _.some(korkeakouluTunnisteet, function (item) {
                             if(organisaatioData.oppilaitosTyyppiUri) {
                                 if (organisaatioData.oppilaitosTyyppiUri.indexOf(item) !== -1) {
-                                    hasKK = true;
+                                    isKKUser = true;
                                     return true;
                                 }
                             }
                         });
-                        return hasKK;
+                        return isKKUser;
                     });
 
-                    return hasKK;
+                    model.isKKUser = isKKUser;
                 });
             };
 
             this.userHasOtherThanKKOrganizations = function () {
                 $q.all(model.promises).then(function () {
-                    var otherThanKKOrganizations = false;
+                    var isOtherThanKKUser = false;
                     var korkeakouluTunnisteet = ['_41', '_42', '_43']; // 41 == AMK, 42 = Yliopistot, 43 = Sotilaskorkeakoulut
                     _.some(model.organizations, function (organisaatioData) {
                         _.some(korkeakouluTunnisteet, function (item) {
                             if(organisaatioData.oppilaitosTyyppiUri) {
                                 if (organisaatioData.oppilaitosTyyppiUri.indexOf(item) === -1) {
-                                    otherThanKKOrganizations = true;
+                                    isOtherThanKKUser = true;
                                     return true;
                                 }
                             }
                         });
-                        return otherThanKKOrganizations;
+                        return isOtherThanKKUser;
                     });
 
-                    return otherThanKKOrganizations;
+                    model.hasOtherThanKKUserOrgs = isOtherThanKKUser;
                 });
-            }
+            };
 
 
         };

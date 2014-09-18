@@ -204,8 +204,6 @@ angular.module('valintaperusteet').
 
             $scope.userOrganizationsModel = UserOrganizationsModel;
             $scope.userOrganizationsModel.refreshIfNeeded();
-            $scope.hasKKOrganizations = $scope.userOrganizationsModel.userHasKKOrganizations();
-            $scope.hasOtherThanKKOrganization = $scope.userOrganizationsModel.userHasOtherThanKKOrganizations();
 
             $scope.hakukohteetListingLimit = 100;
             $scope.lazyLoading = function () {

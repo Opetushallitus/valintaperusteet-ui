@@ -62,6 +62,14 @@ angular.module('valintaperusteet')
                 return model.deferred.promise;
             };
 
+            this.refreshIfNeeded = function () {
+                if(_.isEmpty(model.deferred)) {
+                    model.refresh();
+                } else {
+                    return model.deferred;
+                }
+            };
+
             this.isOphUser = function () {
                 return model.crudOph || model.updateOph || model.readOph;
             };

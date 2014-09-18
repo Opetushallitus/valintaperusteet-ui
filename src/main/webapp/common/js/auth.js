@@ -191,10 +191,12 @@ angular.module('valintaperusteet')
     }])
 
 
-    .directive('auth', ['$q', '$animate', '$routeParams', '$timeout', 'AuthService', 'OrganisaatioModel', function ($q, $animate, $routeParams, $timeout, AuthService, OrganisaatioModel) {
+    .directive('auth', ['$q', '$animate', '$routeParams', '$timeout', 'AuthService', 'OrganisaatioModel', 'UserAccessLevels', function ($q, $animate, $routeParams, $timeout, AuthService, OrganisaatioModel, UserAccessLevels) {
         return {
             priority: -1000,
             link: function ($scope, element, attrs) {
+
+
 
                 switch (attrs.authAction) {
                     case 'disable':
@@ -208,8 +210,6 @@ angular.module('valintaperusteet')
                 }
 
                 $timeout(function () {
-
-                    $animate.addClass(element, 'ng-hide');
 
                     OrganisaatioModel.refresh();
                     OrganisaatioModel.deferred.promise.then(function (orgs) {
