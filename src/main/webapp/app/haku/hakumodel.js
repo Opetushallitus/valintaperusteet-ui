@@ -1,6 +1,6 @@
 angular.module('valintaperusteet')
 
-    .factory('HakuModel', function($q, Haku, HaunTiedot, $cookieStore) {
+    .factory('HakuModel', function($q, Haku, HaunTiedot, $cookieStore, _) {
     "use strict";
 
     var model;
