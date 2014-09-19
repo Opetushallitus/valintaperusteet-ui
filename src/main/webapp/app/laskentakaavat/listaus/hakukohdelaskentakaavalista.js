@@ -22,4 +22,8 @@ function HakukohdeLaskentakaavaListController($scope, $location, $routeParams, L
         $location.path("/hakukohde/" + $routeParams.hakukohdeOid);
     };
 
+    $scope.kaavaKopiointiModal = function (kaava) {
+        $scope.$broadcast('kaavakopiointi', kaava);
+    };
+
 }

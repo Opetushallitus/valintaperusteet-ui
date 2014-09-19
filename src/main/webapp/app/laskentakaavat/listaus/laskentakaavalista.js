@@ -111,7 +111,6 @@ angular.module('valintaperusteet').controller('LaskentakaavaListController', fun
     };
 
     $scope.editKaava = function (kaava) {
-        console.log(kaava);
         $scope.showForm = true;
         $scope.kaava = kaava;
         $scope.originalKaava = angular.copy(kaava);
@@ -124,77 +123,5 @@ angular.module('valintaperusteet').controller('LaskentakaavaListController', fun
     $scope.kaavaKopiointiModal = function (kaava) {
         $scope.$broadcast('kaavakopiointi', kaava);
     };
-
-});
-
-angular.module('valintaperusteet').factory('KaavaKopiointiModel', function($log,  Laskentakaava) {
-    'use strict';
-    var model = new function () {
-
-
-        this.laskentakaava = {};
-
-        this.refresh = function (kaavaId) {
-            Laskentakaava.get({oid: kaavaId}, function(result) {
-                model.laskentakaava = result.funktiokutsu;
-            }, function(error) {
-                $log.error('Laskentakaavan hakeminen epäonnistui', error);
-            });
-
-
-        };
-
-        this.refreshIfNeeded = function(kaavaId) {
-            if(model.laskentakaava.id !== kaavaId) {
-                model.refresh(kaavaId);
-            }
-        };
-
-   };
-
-   return model;
-});
-
-angular.module('valintaperusteet').controller('KaavaKopiointiController', function($scope, $log, KaavaKopiointiModel, Ylavalintaryhma, KaavaSiirto, Laskentakaava ) {
-
-    $scope.domain = Ylavalintaryhma;
-    $scope.domain.refresh();
-
-    $scope.kopiointiModel = KaavaKopiointiModel;
-    //model-object täytyy luoda, koska sen parentOid-muuttujaan asetetaan valitun valintaryhmän oid
-    $scope.model = {};
-
-    $scope.kopioiKaava = function() {
-        var payload = {
-            uusinimi: $scope.model.uusinimi,
-            valintaryhmaOid: $scope.model.parentOid,
-            funktiokutsu: $scope.kopiointiModel.laskentakaava,
-            onLuonnos: $scope.kaavaData.onLuonnos,
-            nimi: $scope.kaavaData.nimi,
-            kuvaus: $scope.kaavaData.kuvaus
-        };
-        
-        KaavaSiirto.put(payload, function(result) {
-            $scope.$broadcast('suljemodal');
-        }, function(error) {
-            $log.error('Kaavan siirto ei onnistunut', error);
-            $scope.$broadcast('suljemodal');
-        });
-    };
-
-    $scope.cancel = function() {
-        $scope.$broadcast('suljemodal');
-    }
-
-    $scope.$on('kaavakopiointi', function(event, kaava) {
-        if(kaava.id) {
-            $scope.kaavaData = kaava;
-            $scope.kopiointiModel.refreshIfNeeded(kaava.id);
-            $scope.show();
-        } else {
-            $log.error('Kopioitavan kaavan Id puuttuu');
-        }
-    });
-
 
 });

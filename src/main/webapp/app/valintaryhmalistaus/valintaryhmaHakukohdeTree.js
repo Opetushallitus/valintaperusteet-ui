@@ -109,6 +109,31 @@ angular.module('valintaperusteet').factory('Treemodel', function ($resource, Val
             });
             return valintaryhma;
         },
+        expandNode: function (node) {
+            if ((node.alavalintaryhmat && node.alavalintaryhmat.length > 0) ||
+                (node.hakukohdeViitteet && node.hakukohdeViitteet.length > 0 )) {
+                if (node.isVisible != true) {
+                    node.isVisible = true;
+
+                    // aukaisee alitason, jos ei ole liikaa tavaraa
+                    var iter = function (ala) {
+                        ala.forEach(function (ala) {
+                            if (!ala.alavalintaryhmat || ala.alavalintaryhmat.length < 4) {
+                                ala.isVisible = true;
+                                iter(ala.alavalintaryhmat);
+                            }
+                        });
+                    };
+                    if (node.alavalintaryhmat.length < 4) {
+                        iter(node.alavalintaryhmat);
+                    }
+
+
+                } else {
+                    node.isVisible = false;
+                }
+            }
+        },
         update: function () {
             var list = modelInterface.valintaperusteList;
             modelInterface.valintaperusteList = [];
@@ -228,29 +253,8 @@ angular.module('valintaperusteet').
             };
 
             $scope.expandNode = function (node) {
-                if ((node.alavalintaryhmat && node.alavalintaryhmat.length > 0) ||
-                    (node.hakukohdeViitteet && node.hakukohdeViitteet.length > 0 )) {
-                    if (node.isVisible != true) {
-                        node.isVisible = true;
+                $scope.domain.expandNode(node);
 
-                        // aukaisee alitason, jos ei ole liikaa tavaraa
-                        var iter = function (ala) {
-                            ala.forEach(function (ala) {
-                                if (!ala.alavalintaryhmat || ala.alavalintaryhmat.length < 4) {
-                                    ala.isVisible = true;
-                                    iter(ala.alavalintaryhmat);
-                                }
-                            });
-                        };
-                        if (node.alavalintaryhmat.length < 4) {
-                            iter(node.alavalintaryhmat);
-                        }
-
-
-                    } else {
-                        node.isVisible = false;
-                    }
-                }
             };
 
             $scope.updateDomain = function () {
