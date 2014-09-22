@@ -1,8 +1,8 @@
 angular.module('valintaperusteet')
 
     .controller('funktiokutsuAsetuksetController', ['$scope', '$q', '$routeParams', '$location', '$timeout', 'Laskentakaava',
-        'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'GuidGenerator', 'HakemusavaimetLisakysymykset', 'HakemusavaimetLomake', 'ValintaryhmaModel', 'Treemodel', 'LaskentakaavaValintaryhma', '$cookieStore',
-        function ($scope, $q, $routeParams, $location, $timeout, Laskentakaava, FunktioNimiService, FunktioFactory, KaavaValidationService, GuidGenerator, HakemusavaimetLisakysymykset, HakemusavaimetLomake, ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore) {
+        'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'GuidGenerator', 'HakemusavaimetLisakysymykset', 'HakemusavaimetLomake', 'ValintaryhmaModel', 'Treemodel', 'LaskentakaavaValintaryhma', '$cookieStore', '$window',
+        function ($scope, $q, $routeParams, $location, $timeout, Laskentakaava, FunktioNimiService, FunktioFactory, KaavaValidationService, GuidGenerator, HakemusavaimetLisakysymykset, HakemusavaimetLomake, ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore, $window) {
 
             $scope.toggle = false;
             $scope.funktioFactory = FunktioFactory;
@@ -64,11 +64,11 @@ angular.module('valintaperusteet')
                         if(!_.isEmpty(valintaryhma.hakuoid)) {
                             $scope.getHakemusAvaimet(valintaryhma.hakuoid);
                         } else {
-                            alert("Hakulomakkeen tunnisteita ei voida hakea, koska mitään hakua ei ole valittu");
+                            console.log("hakuoidia ei löydy");
                         }
                     });
                 } else {
-                    alert("Hakulomakkeen tunnisteita ei voida hakea, koska mitään hakua ei ole valittu");
+                    console.log("hakuoidia ei löydy");
                 }
             };
 
@@ -163,12 +163,14 @@ angular.module('valintaperusteet')
                 });
             };
 
-            $scope.resolveHaku();
+
 
             $scope.isYoFunktiokutsu = function (funktio, valintaperuste) {
                 var funktionimi = funktio.lapsi.funktionimi;
                 return funktionimi === "HAEOSAKOEARVOSANA" || funktionimi === "HAEYOARVOSANA";
             };
+
+            $scope.resolveHaku();
 
             /*
              var def2 = $q.defer();

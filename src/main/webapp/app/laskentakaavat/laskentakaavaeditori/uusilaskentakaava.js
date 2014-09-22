@@ -39,7 +39,7 @@ angular.module('valintaperusteet').controller('UusiLaskentakaavaController', ['$
 
         $scope.setLaskentakaava(laskentakaava);
     });
-        
+
 
 
 
