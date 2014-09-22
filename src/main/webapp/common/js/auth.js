@@ -40,85 +40,54 @@ angular.module('valintaperusteet')
     }])
 
 
-    .directive('auth', ['$q', '$compile', '$animate', '$routeParams', '$timeout', 'AuthService', 'OrganisaatioModel', 'UserAccessLevels',
-        function ($q, $compile, $animate, $routeParams, $timeout, AuthService, OrganisaatioModel, UserAccessLevels) {
+    .directive('auth', ['$q', '$animate', 'AuthService', 'OrganisaatioModel',
+        function ($q, $animate, AuthService, OrganisaatioModel) {
             return {
                 priority: 1000,
                 link: function ($scope, element, attrs) {
-                    switch (attrs.authAction) {
-                        case 'disabled':
-                            element.attr('ng-disabled', 'true');
-                            break;
-                        case 'hide':
-                            $animate.addClass(element, 'ng-hide');
-                            break;
-                        default:
-                            $animate.addClass(element, 'ng-hide');
-                    }
-                    $timeout(function () {
+                    element.attr('disabled', 'true');
+                    $animate.addClass(element,'ng-hide');
+                    OrganisaatioModel.refresh();
+                }
+            };
+        }])
 
-                        OrganisaatioModel.refresh();
-                        OrganisaatioModel.deferred.promise.then(function (orgs) {
-                            switch (attrs.auth) {
-
-                                case "crudOph":
-                                    AuthService.crudOph("APP_VALINTAPERUSTEET").then(removeRestictionAction);
-                                    break;
-
-                                case "updateOph":
-                                    AuthService.updateOph("APP_VALINTAPERUSTEET").then(removeRestictionAction);
-                                    break;
-
-                                case "readOph":
-                                    AuthService.readOph("APP_VALINTAPERUSTEET").then(removeRestictionAction);
-                                    break;
-
-                                case "crud":
-                                    AuthService.crudOrg("APP_VALINTAPERUSTEET", orgs).then(removeRestictionAction);
-                                    break;
-
-                                case "update":
-                                    AuthService.updateOrg("APP_VALINTAPERUSTEET", orgs).then(removeRestictionAction);
-                                    break;
-
-                                case "read":
-                                    AuthService.readOrg("APP_VALINTAPERUSTEET", orgs).then(removeRestictionAction);
-                                    break;
-
-                            }
-                        });
-                    }, 0);
-
-                    function removeRestictionAction() {
-                        switch (attrs.authAction) {
-                            case 'disabled':
-                                element.removeAttr('disabled', 'disabled');
-                                break;
-                            default:
-                                $animate.removeClass(element, 'ng-hide');
-                        }
-                    }
-
-
-                };
-        };
-
-    }])
-
-    .directive('auth-disable', ['$animate', function (, $animate) {
+    .directive('auth-disable', ['$animate', function ($animate) {
         return {
             restrict: 'A',
             link: function ($scope, element, attrs) {
-                element.attr('ng-disabled', 'true');
+                element.removeAttr('ng-disabled');
+
+                function removeRestictionAction() {
+                    switch (attrs.authAction) {
+                        case 'disabled':
+                            element.removeAttr('disabled', 'disabled');
+                            break;
+                        default:
+                            $animate.removeClass(element, 'ng-hide');
+                    }
+                }
             }
         };
     }])
 
-    .directive('auth-hide', ['$animate', function ($animate) {
+    .directive('auth-hide', ['$animate', 'UserAccessLevels', 'UserOrganizationsModel', function ($animate, UserAccessLevels, UserOrganizationsModel) {
         return {
             restrict: 'A',
             link: function ($scope, element, attrs) {
-                $animate.addClass(element, 'ng-hide');
+                UserOrganizationsModel.refreshIfNeeded();
+
+                $animate.removeClass(element, 'ng-hide');
+
+                function removeRestictionAction() {
+                    switch (attrs.authAction) {
+                        case 'disabled':
+                            element.removeAttr('disabled', 'disabled');
+                            break;
+                        default:
+                            $animate.removeClass(element, 'ng-hide');
+                    }
+                }
             }
         };
     }])
@@ -280,3 +249,36 @@ angular.module('valintaperusteet')
         return auth;
     }]);
 
+
+
+/*
+ OrganisaatioModel.deferred.promise.then(function (orgs) {
+ switch (attrs.auth) {
+
+ case "crudOph":
+ AuthService.crudOph("APP_VALINTAPERUSTEET").then(removeRestictionAction);
+ break;
+
+ case "updateOph":
+ AuthService.updateOph("APP_VALINTAPERUSTEET").then(removeRestictionAction);
+ break;
+
+ case "readOph":
+ AuthService.readOph("APP_VALINTAPERUSTEET").then(removeRestictionAction);
+ break;
+
+ case "crud":
+ AuthService.crudOrg("APP_VALINTAPERUSTEET", orgs).then(removeRestictionAction);
+ break;
+
+ case "update":
+ AuthService.updateOrg("APP_VALINTAPERUSTEET", orgs).then(removeRestictionAction);
+ break;
+
+ case "read":
+ AuthService.readOrg("APP_VALINTAPERUSTEET", orgs).then(removeRestictionAction);
+ break;
+
+ }
+ });
+ */

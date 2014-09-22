@@ -114,40 +114,5 @@ angular.module('valintaperusteet')
         };
 
         return model;
-    }])
-
-.directive('modificationRequirement', ['$q', '$timeout', '$log', 'UserAccessLevels', 'UserOrganizationsModel', 'ValintaryhmaModel', function ($q, $timeout, $log, UserAccessLevels, UserOrganizationsModel, ValintaryhmaModel) {
-    return {
-        priority: -1000,
-        link: function ($scope, element, attrs) {
-
-            element.attr('disabled', 'true');
-
-            UserOrganizationsModel.refreshIfNeeded();
-            var userOrganizationPromises = UserOrganizationsModel.promises;
-
-            UserAccessLevels.deferred.promise.then(function () {
-
-                var accessLevel = attrs.modificationRequirement;
-                var hasCrudAccess = UserAccessLevels.hasCrudRights();
-                var hasUpdateAccess = UserAccessLevels.hasUpdateRights();
-                if ( (accessLevel === 'crud' && hasCrudAccess) || (accessLevel === 'update' && hasUpdateAccess) ) {
-                    element.removeAttr('disabled');
-                }
-
-            }, function (error) {
-                $log.error("Käyttäjän oikeustasojen selvittäminen ei onnistu", error);
-            });
-        }
-    };
-}])
-/*
-.directive('hakukohdeOwner', ['UserOrganizationsModel', function (UserOrganizationsModel) {
-    return {
-        link: function ($scope, element, attrs) {
-            console.log(UserOrganizationsModel);
-        }
-    }
-}]);
-*/
+    }]);
 

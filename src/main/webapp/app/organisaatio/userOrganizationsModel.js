@@ -3,15 +3,15 @@ angular.module('valintaperusteet')
 
     .factory('UserOrganizationsModel', ['$q', '$log', '_', 'AuthService', 'OrganizationByOid', function ($q, $log, _, AuthService, OrganizationByOid) {
         var model = new function() {
-            this.promises = [];
+            this.deferred = undefined;
             this.organizationOids = [];
             this.organizations = [];
             this.isKKUser = false;
             this.hasOtherThanKKUserOrgs = false;
 
             this.refresh = function () {
-                var authServiceDeferred = $q.defer();
-                model.promises.push(authServiceDeferred.promise);
+                model.deferred = $q.defer();
+                model.promises.push(model.deferred.promise);
 
                 AuthService.getOrganizations('APP_VALINTAPERUSTEET').then(function (oidList) {
                     model.organizationOids = oidList;
@@ -30,21 +30,21 @@ angular.module('valintaperusteet')
                     });
 
                     $q.all(organizationPromises).then(function () {
-                        authServiceDeferred.resolve();
+                        model.deferred.resolve();
                         model.userHasKKOrganizations();
                         model.userHasOtherThanKKOrganizations();
                     }, function () {
-                        authServiceDeferred.reject();
+                        model.deferred.reject();
                     });
 
                 }, function (error) {
                     $log.error('Käyttäjän organisaatiolistan hakeminen epäonnistui:', error);
-                    authServiceDeferred.reject(error);
+                    model.deferred.reject(error);
                 });
             };
 
             this.refreshIfNeeded = function () {
-                if(_.isEmpty(model.organizations)) {
+                if(_.isEmpty(model.deferred)) {
                     model.refresh();
                 }
             };
