@@ -113,7 +113,7 @@ app.factory('ParentValintaryhmas', function($resource) {
 
 app.factory('ValintaryhmaValinnanvaihe', function($resource) {
 return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid/valinnanvaihe", {oid: "@oid"}, {
-    get: {method: "GET", isArray: true, cache: true}
+    get: {method: "GET", isArray: true, cache: false}
   });
 });
 
@@ -252,7 +252,7 @@ app.factory('Valintakoe', function($resource) {
 //Valintatapajono
 app.factory('Valintatapajono', function($resource) {
  return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:oid", {oid: "@oid"}, {
-     get:   {method: "GET", cache: true},
+     get:   {method: "GET", cache: false},
      post:  {method: "POST"},
      delete:{method: "DELETE"}
    });
