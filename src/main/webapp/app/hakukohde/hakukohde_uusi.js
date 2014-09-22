@@ -70,6 +70,10 @@ app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu, AuthServ
                     modelInterface.tilasto.valintaryhmia++;
                 }
 
+
+
+                item.access = true;
+                /*
                 AuthService.getOrganizations("APP_VALINTAPERUSTEET").then(function(organisations){
                     item.access = false;
                     organisations.forEach(function(org){
@@ -87,6 +91,7 @@ app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu, AuthServ
                         }
                     });
                 });
+                */
 
                 if(item.alavalintaryhmat) {
                     for(var i=0; i<item.alavalintaryhmat.length;i++)  recursion(item.alavalintaryhmat[i]);
