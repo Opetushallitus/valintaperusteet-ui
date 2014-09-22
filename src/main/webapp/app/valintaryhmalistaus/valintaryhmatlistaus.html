@@ -69,7 +69,7 @@
             <li ng-repeat="data in domain.valintaperusteList | orderBy:predicate"
                 data-oid="{{data.oid}}"
                 ng-model="data"
-                ng-show="!(!data.sisaltaaHakukohteita&&domain.search.vainHakukohteitaSisaltavatRyhmat)"
+                ng-show="showNode(data)"
                 class="{{addClass('noNesting',domain.isHakukohde(data))}}"
                 ng-include="domain.getTemplate(data)">
             </li>

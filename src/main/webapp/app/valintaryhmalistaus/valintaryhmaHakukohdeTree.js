@@ -249,7 +249,23 @@ angular.module('valintaperusteet').
                     return "";
                 }
             };
+                
+            $scope.showNode = function (node) {
+                if(node.tyyppi === 'VALINTARYHMA') {
+                    return !(!node.sisaltaaHakukohteita && $scope.domain.search.vainHakukohteitaSisaltavatRyhmat); // && $scope.userOrganizationsModel.isKKUser;
+                } else {
+                    return !(!node.sisaltaaHakukohteita && $scope.domain.search.vainHakukohteitaSisaltavatRyhmat);
+                }
 
+
+                //var kkNode = $scope.hasKorkeakouluOrganization(node.organisaatiot);
+
+            };
+
+            $scope.test = function (node) {
+                console.log(node);
+            };
+            
             $scope.expandNode = function (node) {
                 $scope.domain.expandNode(node);
 
