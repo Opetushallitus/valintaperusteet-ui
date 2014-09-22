@@ -76,7 +76,7 @@ app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu, AuthServ
 
                         if(item.organisaatiot.length > 0) {
                             item.organisaatiot.forEach(function(org2) {
-                                if(org2.parentOidPath.indexOf(org) > -1) {
+                                if (org2.parentOidPath && org2.parentOidPath.indexOf(org) > -1) {
                                     item.access = true;
                                 }
                             });
