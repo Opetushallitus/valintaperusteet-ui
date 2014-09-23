@@ -45,6 +45,8 @@ angular.module('valintaperusteet')
                     model.deferred.resolve(model.organisaatiot);
                 }
 
+                return model.deferred.promise;
+
             };
 
             this.refreshIfNeeded = function () {
