@@ -22,7 +22,7 @@ angular.module('valintaperusteet')
             });
 
             UserOrganizationsModel.refreshIfNeeded();
-            $q.all(UserOrganizationsModel.promises).then(function () {
+            UserOrganizationsModel.deferred.promise.then(function () {
                 model.valintaryhma.organisaatiot = UserOrganizationsModel.organizations;
             });
 

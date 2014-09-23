@@ -1,7 +1,7 @@
 
 angular.module('valintaperusteet')
-    .factory('UserAccessLevels', ['$q', '$log', 'UserOrganizationsModel', 'AuthService', 'ValintaryhmaModel', '_',
-        function ($q, $log, UserOrganizationsModel, AuthService, ValintaryhmaModel, _) {
+    .factory('UserAccessLevels', ['$q', '$log', 'AuthService', 'ValintaryhmaModel', '_',
+        function ($q, $log, AuthService, ValintaryhmaModel, _) {
         var model = new function () {
             this.deferred = undefined;
 
@@ -66,7 +66,7 @@ angular.module('valintaperusteet')
                 if(_.isEmpty(model.deferred)) {
                     model.refresh();
                 } else {
-                    return model.deferred;
+                    return model.deferred.promise;
                 }
             };
 

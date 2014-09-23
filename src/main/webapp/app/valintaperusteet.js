@@ -23,10 +23,10 @@ var VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE || "";
 var LOCALISATION_URL_BASE = LOCALISATION_URL_BASE || "";
 var HAKEMUS_URL_BASE = HAKEMUS_URL_BASE || "";
 
-function mainCtrl($scope, breadcrumbs, UserAccessLevels, UserOganizationsModel) {
+function mainCtrl($scope, breadcrumbs, UserAccessLevels, UserOrganizationsModel) {
     $scope.breadcrumbs = breadcrumbs;
     UserAccessLevels.refreshIfNeeded();
-    UserOganizationsModel.refreshIfNeeded();
+    UserOrganizationsModel.refreshIfNeeded();
 
 }
 

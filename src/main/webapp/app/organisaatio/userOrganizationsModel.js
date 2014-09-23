@@ -11,7 +11,6 @@ angular.module('valintaperusteet')
 
             this.refresh = function () {
                 model.deferred = $q.defer();
-                model.promises.push(model.deferred.promise);
 
                 AuthService.getOrganizations('APP_VALINTAPERUSTEET').then(function (oidList) {
                     model.organizationOids = oidList;
@@ -41,11 +40,15 @@ angular.module('valintaperusteet')
                     $log.error('Käyttäjän organisaatiolistan hakeminen epäonnistui:', error);
                     model.deferred.reject(error);
                 });
+
+                return model.deferred.promise;
             };
 
             this.refreshIfNeeded = function () {
                 if(_.isEmpty(model.deferred)) {
                     model.refresh();
+                } else {
+                    return model.deferred.promise;
                 }
             };
             
