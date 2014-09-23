@@ -47,6 +47,14 @@ angular.module('valintaperusteet')
 
             };
 
+            this.refreshIfNeeded = function () {
+                if(_.isEmpty(model.deferred)) {
+                    model.refresh();
+                } else {
+                    return model.deferred.promise;
+                }
+            };
+
 
         };
 
