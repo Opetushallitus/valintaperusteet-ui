@@ -118,19 +118,19 @@ angular.module('valintaperusteet')
                                         if (UserAccessLevels.hasCrudRights() && UserAccessLevels.isOphUser()) { controller.enableElement(); }
                                         break;
                                     case "crud":
-                                        if (UserAccessLevels.hasCrudRights() && AuthService.crudOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids)) { controller.enableElement(); }
+                                        if (AuthService.crudOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids)) { controller.enableElement(); }
                                         break;
                                     case "updateOph":
                                         if (UserAccessLevels.hasUpdateRights() && UserAccessLevels.isOphUser()) { controller.enableElement(); }
                                         break;
                                     case "update":
-                                        if (UserAccessLevels.hasUpdateRights() && AuthService.updateOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids)) { controller.enableElement(); }
+                                        if (AuthService.updateOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids)) { controller.enableElement(); }
                                         break;
                                     case "readOph":
                                         if (UserAccessLevels.hasReadRights() && UserAccessLevels.isOphUser()) { controller.enableElement(); }
                                         break;
                                     case "read":
-                                        if (UserAccessLevels.hasReadRights() && AuthService.readOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids)) { controller.enableElement(); }
+                                        if (AuthService.readOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids)) { controller.enableElement(); }
                                         break;
                                 }
                             }
