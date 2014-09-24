@@ -219,7 +219,7 @@ angular.module('valintaperusteet')
     })
 
 
-    .directive('dateInput', [function (dateFilter) {
+    .directive('dateInput', ['dateFilter', function (dateFilter) {
         return {
             restrict: 'E',
             require: 'ngModel',
