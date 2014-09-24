@@ -93,19 +93,25 @@ angular.module('valintaperusteet')
                             } else if (attrs.authEnable) {
                                 switch (attrs.authEnable) {
                                     case "crud":
-                                        if (AuthService.crudOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids)) { element.removeAttr('disabled'); }
+                                        AuthService.crudOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids).then(function() {
+                                            element.removeAttr('disabled');
+                                        });
                                         break;
                                     case "updateOph":
                                         if (UserAccessLevels.hasUpdateRights() && UserAccessLevels.isOphUser()) { element.removeAttr('disabled'); }
                                         break;
                                     case "update":
-                                        if (AuthService.updateOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids)) { element.removeAttr('disabled'); }
+                                        AuthService.updateOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids).then(function () {
+                                            element.removeAttr('disabled');
+                                        });
                                         break;
                                     case "readOph":
                                         if (UserAccessLevels.hasReadRights() && UserAccessLevels.isOphUser()) { element.removeAttr('disabled'); }
                                         break;
                                     case "read":
-                                        if (AuthService.readOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids)) { element.removeAttr('disabled'); }
+                                        AuthService.readOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids).then(function() {
+                                            element.removeAttr('disabled');
+                                        });
                                         break;
                                 }
                             }
