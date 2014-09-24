@@ -24,15 +24,15 @@ angular.module('valintaperusteet')
             var kkRead = ["USER_tampere", "VIRKAILIJA", "LANG_fi", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.727160772010", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_RYHMA", "APP_ORGANISAATIOHALLINTA_RYHMA_1.2.246.562.10.727160772010", "APP_HAKUJENHALLINTA", "APP_HAKUJENHALLINTA_CRUD", "APP_HAKUJENHALLINTA_CRUD_1.2.246.562.10.727160772010", "APP_SIJOITTELU", "APP_SIJOITTELU_READ", "APP_SIJOITTELU_READ_1.2.246.562.10.727160772010", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_CRUD", "APP_ORGANISAATIOHALLINTA_CRUD_1.2.246.562.10.727160772010", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_KKVASTUU", "APP_HENKILONHALLINTA_KKVASTUU_1.2.246.562.10.727160772010", "APP_OID", "APP_OID_CRUD", "APP_OID_CRUD_1.2.246.562.10.727160772010", "APP_OMATTIEDOT", "APP_OMATTIEDOT_CRUD", "APP_OMATTIEDOT_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK_CRUD", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK_CRUD_1.2.246.562.10.727160772010", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_READ", "APP_VALINTOJENTOTEUTTAMINEN_READ_1.2.246.562.10.727160772010", "APP_TARJONTA", "APP_TARJONTA_CRUD", "APP_TARJONTA_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEET", "APP_VALINTAPERUSTEET_READ", "APP_VALINTAPERUSTEET_READ_1.2.246.562.10.727160772010", "APP_HAKEMUS", "APP_HAKEMUS_READ", "APP_HAKEMUS_READ_1.2.246.562.10.727160772010", "APP_TARJONTA_KK", "APP_TARJONTA_KK_CRUD", "APP_TARJONTA_KK_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_CRUD", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_CRUD_1.2.246.562.10.727160772010"];
 
             //kk-käyttäjä
-            instance.myroles = kkRead;
+//            instance.myroles = kkRead;
+//
+//            deferred.resolve(instance);
 
-            deferred.resolve(instance);
 
-
-//            $http.get(CAS_URL).success(function (result) {
-//                instance.myroles = result;
-//                deferred.resolve(instance);
-//            });
+            $http.get(CAS_URL).success(function (result) {
+                instance.myroles = result;
+                deferred.resolve(instance);
+            });
 
             return instance;
         })();
@@ -43,50 +43,30 @@ angular.module('valintaperusteet')
     }])
 
 
-    .directive('auth', ['$q', '$animate', 'AuthService', 'OrganisaatioModel',
-        function ($q, $animate, AuthService, OrganisaatioModel) {
+    .directive('auth', ['$q', '$animate', '$timeout', '$log', 'AuthService', 'UserAccessLevels', 'UserModel',
+        function ($q, $animate, $timeout, $log, AuthService, UserAccessLevels, UserModel) {
             return {
                 priority: 1000,
                 link: function ($scope, element, attrs) {
-                    element.attr('disabled', 'true');
                     $animate.addClass(element, 'ng-hide');
-                    OrganisaatioModel.refresh();
-                },
-                controller: function ($scope, $element) {
-                    this.revealElement = function () {
-                        $animate.removeClass($element, 'ng-hide');
-                    };
 
-                    this.enableElement = function () {
-                        $element.removeAttr('disabled');
-                    };
-                }
-            };
-        }])
+                    $timeout(function () {
+                        var promises = [];
+                        UserModel.refreshIfNeeded();
+                        UserAccessLevels.refreshIfNeeded();
 
-    .directive('authReveal', ['$q', '$log', '$animate', '$timeout', 'UserAccessLevels', 'UserModel',
-        function ($q, $log, $animate, $timeout, UserAccessLevels, UserModel) {
-            return {
-                restrict: 'A',
-                priority: 1,
-                require: 'auth',
-                link: function ($scope, element, attrs, controller) {
+                        promises.push(UserModel.organizationsDeferred.promise);
+                        promises.push(UserAccessLevels.deferred.promise);
 
-                    var promises = [];
-                    UserModel.refreshIfNeeded();
-                    UserAccessLevels.refreshIfNeeded();
-
-                    promises.push(UserModel.organizationsDeferred.promise);
-                    promises.push(UserAccessLevels.deferred.promise);
-
-                    // Reveal element for oph-users and KK-users by default
-                    $q.all(promises).then(function () {
-                        if (UserModel.isKKUser || UserAccessLevels.isOphUser()) {
-                            controller.revealElement();
-                        }
-                    }, function (error) {
-                        $log.error('Error revealing element:', error);
-                    });
+                        // Reveal element for oph-users and KK-users by default
+                        $q.all(promises).then(function () {
+                            if (UserModel.isKKUser || UserAccessLevels.isOphUser()) {
+                                $animate.removeClass(element, 'ng-hide');
+                            }
+                        }, function (error) {
+                            $log.error('Error revealing element:', error);
+                        });
+                    }, 0);
                 }
             };
         }])
@@ -95,14 +75,14 @@ angular.module('valintaperusteet')
         function ($q, $log, $animate, $timeout, UserModel, UserAccessLevels, AuthService) {
             return {
                 restrict: 'A',
-                priority: 1,
+                priority: 999,
                 require: 'auth',
                 link: function ($scope, element, attrs, controller) {
+                    element.attr('disabled', 'true');
 
                     var promises = [];
                     UserModel.refreshIfNeeded();
                     UserAccessLevels.refreshIfNeeded();
-
                     promises.push(UserModel.organizationsDeferred.promise);
                     promises.push(UserAccessLevels.deferred.promise);
 
@@ -111,26 +91,22 @@ angular.module('valintaperusteet')
                             // Enable element for crudOph -user by default
                             if (UserAccessLevels.isOphUser() && UserAccessLevels.hasCrudRights()) {
                                 controller.enableElement();
-
                             } else if (attrs.authEnable) {
                                 switch (attrs.authEnable) {
-                                    case "crudOph":
-                                        if (UserAccessLevels.hasCrudRights() && UserAccessLevels.isOphUser()) { controller.enableElement(); }
-                                        break;
                                     case "crud":
-                                        if (AuthService.crudOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids)) { controller.enableElement(); }
+                                        if (AuthService.crudOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids)) { element.removeAttr('disabled'); }
                                         break;
                                     case "updateOph":
-                                        if (UserAccessLevels.hasUpdateRights() && UserAccessLevels.isOphUser()) { controller.enableElement(); }
+                                        if (UserAccessLevels.hasUpdateRights() && UserAccessLevels.isOphUser()) { element.removeAttr('disabled'); }
                                         break;
                                     case "update":
-                                        if (AuthService.updateOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids)) { controller.enableElement(); }
+                                        if (AuthService.updateOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids)) { element.removeAttr('disabled'); }
                                         break;
                                     case "readOph":
-                                        if (UserAccessLevels.hasReadRights() && UserAccessLevels.isOphUser()) { controller.enableElement(); }
+                                        if (UserAccessLevels.hasReadRights() && UserAccessLevels.isOphUser()) { element.removeAttr('disabled'); }
                                         break;
                                     case "read":
-                                        if (AuthService.readOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids)) { controller.enableElement(); }
+                                        if (AuthService.readOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids)) { element.removeAttr('disabled'); }
                                         break;
                                 }
                             }
