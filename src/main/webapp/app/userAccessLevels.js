@@ -49,7 +49,7 @@ angular.module('valintaperusteet')
                 var crudOrgRejectFn = function () { updateOrgPromise.then(updateOrgSuccessFn, updateOrgRejectFn); };
 
                 // set user rights for ORGUPDATE or continue to next level
-                var updateOrgSuccessFn = function () { model.setUpdateRight(false); model.deferred.resolve(); };
+                var updateOrgSuccessFn = function () { model.setUpdateRights(false); model.deferred.resolve(); };
                 var updateOrgRejectFn = function () {readOrgPromise.then(readOrgSuccessFn, readOrgRejectFn); };
 
                 // set user rights for ORGREAD or continue to next level

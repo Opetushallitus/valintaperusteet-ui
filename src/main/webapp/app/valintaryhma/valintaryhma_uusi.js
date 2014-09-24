@@ -1,8 +1,8 @@
 angular.module('valintaperusteet')
     .factory('ValintaryhmaCreatorModel', ['$q', '$resource', '$location', '$routeParams', 'Valintaryhma', 'KoodistoHaunKohdejoukko', 'ChildValintaryhmas', 'Treemodel',
-    'ParentValintaryhmas', 'Utils', 'RootValintaryhmas', 'UserOrganizationsModel',
+    'ParentValintaryhmas', 'Utils', 'RootValintaryhmas', 'UserModel',
         function($q, $resource, $location, $routeParams, Valintaryhma, KoodistoHaunKohdejoukko, ChildValintaryhmas, Treemodel,
-                ParentValintaryhmas, Utils, RootValintaryhmas, UserOrganizationsModel) {
+                ParentValintaryhmas, Utils, RootValintaryhmas, UserModel) {
     "use strict";
 
     var model = new function() {
@@ -21,9 +21,9 @@ angular.module('valintaperusteet')
                 model.kohdejoukot = result;
             });
 
-            UserOrganizationsModel.refreshIfNeeded();
-            UserOrganizationsModel.deferred.promise.then(function () {
-                model.valintaryhma.organisaatiot = UserOrganizationsModel.organizations;
+            UserModel.refreshIfNeeded();
+            UserModel.organizationsDeferred.promise.then(function () {
+                model.valintaryhma.organisaatiot = UserModel.organizations;
             });
 
         };

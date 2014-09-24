@@ -19,10 +19,13 @@ angular.module('valintaperusteet')
             var instance = {};
             instance.myroles = [];
 
+            var kkCrud = ["USER_tampere", "VIRKAILIJA", "LANG_fi", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.727160772010", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_RYHMA", "APP_ORGANISAATIOHALLINTA_RYHMA_1.2.246.562.10.727160772010", "APP_HAKUJENHALLINTA", "APP_HAKUJENHALLINTA_CRUD", "APP_HAKUJENHALLINTA_CRUD_1.2.246.562.10.727160772010", "APP_SIJOITTELU", "APP_SIJOITTELU_READ", "APP_SIJOITTELU_READ_1.2.246.562.10.727160772010", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_CRUD", "APP_ORGANISAATIOHALLINTA_CRUD_1.2.246.562.10.727160772010", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_KKVASTUU", "APP_HENKILONHALLINTA_KKVASTUU_1.2.246.562.10.727160772010", "APP_OID", "APP_OID_CRUD", "APP_OID_CRUD_1.2.246.562.10.727160772010", "APP_OMATTIEDOT", "APP_OMATTIEDOT_CRUD", "APP_OMATTIEDOT_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK_CRUD", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK_CRUD_1.2.246.562.10.727160772010", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_READ", "APP_VALINTOJENTOTEUTTAMINEN_READ_1.2.246.562.10.727160772010", "APP_TARJONTA", "APP_TARJONTA_CRUD", "APP_TARJONTA_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEET", "APP_VALINTAPERUSTEET_CRUD", "APP_VALINTAPERUSTEET_CRUD_1.2.246.562.10.727160772010", "APP_HAKEMUS", "APP_HAKEMUS_READ", "APP_HAKEMUS_READ_1.2.246.562.10.727160772010", "APP_TARJONTA_KK", "APP_TARJONTA_KK_CRUD", "APP_TARJONTA_KK_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_CRUD", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_CRUD_1.2.246.562.10.727160772010"];
+            var kkUpdate = ["USER_tampere", "VIRKAILIJA", "LANG_fi", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.727160772010", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_RYHMA", "APP_ORGANISAATIOHALLINTA_RYHMA_1.2.246.562.10.727160772010", "APP_HAKUJENHALLINTA", "APP_HAKUJENHALLINTA_CRUD", "APP_HAKUJENHALLINTA_CRUD_1.2.246.562.10.727160772010", "APP_SIJOITTELU", "APP_SIJOITTELU_READ", "APP_SIJOITTELU_READ_1.2.246.562.10.727160772010", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_CRUD", "APP_ORGANISAATIOHALLINTA_CRUD_1.2.246.562.10.727160772010", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_KKVASTUU", "APP_HENKILONHALLINTA_KKVASTUU_1.2.246.562.10.727160772010", "APP_OID", "APP_OID_CRUD", "APP_OID_CRUD_1.2.246.562.10.727160772010", "APP_OMATTIEDOT", "APP_OMATTIEDOT_CRUD", "APP_OMATTIEDOT_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK_CRUD", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK_CRUD_1.2.246.562.10.727160772010", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_READ", "APP_VALINTOJENTOTEUTTAMINEN_READ_1.2.246.562.10.727160772010", "APP_TARJONTA", "APP_TARJONTA_CRUD", "APP_TARJONTA_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEET", "APP_VALINTAPERUSTEET_READ_UPDATE", "APP_VALINTAPERUSTEET_READ_UPDATE_1.2.246.562.10.727160772010", "APP_HAKEMUS", "APP_HAKEMUS_READ", "APP_HAKEMUS_READ_1.2.246.562.10.727160772010", "APP_TARJONTA_KK", "APP_TARJONTA_KK_CRUD", "APP_TARJONTA_KK_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_CRUD", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_CRUD_1.2.246.562.10.727160772010"];
+            var kkRead = ["USER_tampere", "VIRKAILIJA", "LANG_fi", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.727160772010", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_RYHMA", "APP_ORGANISAATIOHALLINTA_RYHMA_1.2.246.562.10.727160772010", "APP_HAKUJENHALLINTA", "APP_HAKUJENHALLINTA_CRUD", "APP_HAKUJENHALLINTA_CRUD_1.2.246.562.10.727160772010", "APP_SIJOITTELU", "APP_SIJOITTELU_READ", "APP_SIJOITTELU_READ_1.2.246.562.10.727160772010", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_CRUD", "APP_ORGANISAATIOHALLINTA_CRUD_1.2.246.562.10.727160772010", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_KKVASTUU", "APP_HENKILONHALLINTA_KKVASTUU_1.2.246.562.10.727160772010", "APP_OID", "APP_OID_CRUD", "APP_OID_CRUD_1.2.246.562.10.727160772010", "APP_OMATTIEDOT", "APP_OMATTIEDOT_CRUD", "APP_OMATTIEDOT_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK_CRUD", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK_CRUD_1.2.246.562.10.727160772010", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_READ", "APP_VALINTOJENTOTEUTTAMINEN_READ_1.2.246.562.10.727160772010", "APP_TARJONTA", "APP_TARJONTA_CRUD", "APP_TARJONTA_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEET", "APP_VALINTAPERUSTEET_READ", "APP_VALINTAPERUSTEET_READ_1.2.246.562.10.727160772010", "APP_HAKEMUS", "APP_HAKEMUS_READ", "APP_HAKEMUS_READ_1.2.246.562.10.727160772010", "APP_TARJONTA_KK", "APP_TARJONTA_KK_CRUD", "APP_TARJONTA_KK_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_CRUD", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_CRUD_1.2.246.562.10.727160772010"];
 
             //kk-käyttäjä
-            instance.myroles = ["USER_tampere", "VIRKAILIJA", "LANG_fi", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.727160772010", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_RYHMA", "APP_ORGANISAATIOHALLINTA_RYHMA_1.2.246.562.10.727160772010", "APP_HAKUJENHALLINTA", "APP_HAKUJENHALLINTA_CRUD", "APP_HAKUJENHALLINTA_CRUD_1.2.246.562.10.727160772010", "APP_SIJOITTELU", "APP_SIJOITTELU_READ", "APP_SIJOITTELU_READ_1.2.246.562.10.727160772010", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_CRUD", "APP_ORGANISAATIOHALLINTA_CRUD_1.2.246.562.10.727160772010", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_KKVASTUU", "APP_HENKILONHALLINTA_KKVASTUU_1.2.246.562.10.727160772010", "APP_OID", "APP_OID_CRUD", "APP_OID_CRUD_1.2.246.562.10.727160772010", "APP_OMATTIEDOT", "APP_OMATTIEDOT_CRUD", "APP_OMATTIEDOT_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK_CRUD", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK_CRUD_1.2.246.562.10.727160772010", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_READ", "APP_VALINTOJENTOTEUTTAMINEN_READ_1.2.246.562.10.727160772010", "APP_TARJONTA", "APP_TARJONTA_CRUD", "APP_TARJONTA_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEET", "APP_VALINTAPERUSTEET_CRUD", "APP_VALINTAPERUSTEET_CRUD_1.2.246.562.10.727160772010", "APP_HAKEMUS", "APP_HAKEMUS_READ", "APP_HAKEMUS_READ_1.2.246.562.10.727160772010", "APP_TARJONTA_KK", "APP_TARJONTA_KK_CRUD", "APP_TARJONTA_KK_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_CRUD", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_CRUD_1.2.246.562.10.727160772010"];
-//            instance.myroles = ["USER_tampere", "VIRKAILIJA", "LANG_fi", "APP_KOODISTO", "APP_KOODISTO_READ", "APP_KOODISTO_READ_1.2.246.562.10.727160772010", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_RYHMA", "APP_ORGANISAATIOHALLINTA_RYHMA_1.2.246.562.10.727160772010", "APP_HAKUJENHALLINTA", "APP_HAKUJENHALLINTA_CRUD", "APP_HAKUJENHALLINTA_CRUD_1.2.246.562.10.727160772010", "APP_SIJOITTELU", "APP_SIJOITTELU_READ", "APP_SIJOITTELU_READ_1.2.246.562.10.727160772010", "APP_ORGANISAATIOHALLINTA", "APP_ORGANISAATIOHALLINTA_CRUD", "APP_ORGANISAATIOHALLINTA_CRUD_1.2.246.562.10.727160772010", "APP_HENKILONHALLINTA", "APP_HENKILONHALLINTA_KKVASTUU", "APP_HENKILONHALLINTA_KKVASTUU_1.2.246.562.10.727160772010", "APP_OID", "APP_OID_CRUD", "APP_OID_CRUD_1.2.246.562.10.727160772010", "APP_OMATTIEDOT", "APP_OMATTIEDOT_CRUD", "APP_OMATTIEDOT_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK_CRUD", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_KK_CRUD_1.2.246.562.10.727160772010", "APP_VALINTOJENTOTEUTTAMINEN", "APP_VALINTOJENTOTEUTTAMINEN_READ", "APP_VALINTOJENTOTEUTTAMINEN_READ_1.2.246.562.10.727160772010", "APP_TARJONTA", "APP_TARJONTA_CRUD", "APP_TARJONTA_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEET", "APP_VALINTAPERUSTEET_READ", "APP_VALINTAPERUSTEET_READ_1.2.246.562.10.727160772010", "APP_HAKEMUS", "APP_HAKEMUS_READ", "APP_HAKEMUS_READ_1.2.246.562.10.727160772010", "APP_TARJONTA_KK", "APP_TARJONTA_KK_CRUD", "APP_TARJONTA_KK_CRUD_1.2.246.562.10.727160772010", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_CRUD", "APP_VALINTAPERUSTEKUVAUSTENHALLINTA_CRUD_1.2.246.562.10.727160772010"];
+            instance.myroles = kkRead;
+
             deferred.resolve(instance);
 
 
@@ -61,8 +64,8 @@ angular.module('valintaperusteet')
             };
         }])
 
-    .directive('authReveal', ['$q', '$log', '$animate', '$timeout', 'UserAccessLevels', 'UserOrganizationsModel',
-        function ($q, $log, $animate, $timeout, UserAccessLevels, UserOrganizationsModel) {
+    .directive('authReveal', ['$q', '$log', '$animate', '$timeout', 'UserAccessLevels', 'UserModel',
+        function ($q, $log, $animate, $timeout, UserAccessLevels, UserModel) {
             return {
                 restrict: 'A',
                 priority: 1,
@@ -70,14 +73,15 @@ angular.module('valintaperusteet')
                 link: function ($scope, element, attrs, controller) {
 
                     var promises = [];
-                    UserOrganizationsModel.refreshIfNeeded();
+                    UserModel.refreshIfNeeded();
                     UserAccessLevels.refreshIfNeeded();
-                    promises.push(UserOrganizationsModel.deferred.promise);
+
+                    promises.push(UserModel.organizationsDeferred.promise);
                     promises.push(UserAccessLevels.deferred.promise);
 
                     // Reveal element for oph-users and KK-users by default
                     $q.all(promises).then(function () {
-                        if (UserOrganizationsModel.isKKUser || UserAccessLevels.isOphUser()) {
+                        if (UserModel.isKKUser || UserAccessLevels.isOphUser()) {
                             controller.revealElement();
                         }
                     }, function (error) {
@@ -87,50 +91,51 @@ angular.module('valintaperusteet')
             };
         }])
 
-    .directive('authEnable', ['$q', '$log', '$animate', '$timeout', 'UserOrganizationsModel', 'UserAccessLevels',
-        function ($q, $log, $animate, $timeout, UserOrganizationsModel, UserAccessLevels) {
+    .directive('authEnable', ['$q', '$log', '$animate', '$timeout', 'UserModel', 'UserAccessLevels', 'AuthService',
+        function ($q, $log, $animate, $timeout, UserModel, UserAccessLevels, AuthService) {
             return {
                 restrict: 'A',
                 priority: 1,
                 require: 'auth',
                 link: function ($scope, element, attrs, controller) {
-                    var promises = [];
 
-                    UserOrganizationsModel.refreshIfNeeded();
+                    var promises = [];
+                    UserModel.refreshIfNeeded();
                     UserAccessLevels.refreshIfNeeded();
-                    promises.push(UserOrganizationsModel.deferred.promise);
+
+                    promises.push(UserModel.organizationsDeferred.promise);
                     promises.push(UserAccessLevels.deferred.promise);
 
                     $timeout(function () {
-
                         $q.all(promises).then(function () {
-                            if (attrs.authEnable) {
+                            // Enable element for crudOph -user by default
+                            if (UserAccessLevels.isOphUser() && UserAccessLevels.hasCrudRights()) {
+                                controller.enableElement();
+
+                            } else if (attrs.authEnable) {
                                 switch (attrs.authEnable) {
                                     case "crudOph":
                                         if (UserAccessLevels.hasCrudRights() && UserAccessLevels.isOphUser()) { controller.enableElement(); }
                                         break;
                                     case "crud":
-                                        if (UserAccessLevels.hasCrudRights()) { controller.enableElement(); }
+                                        if (UserAccessLevels.hasCrudRights() && AuthService.crudOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids)) { controller.enableElement(); }
                                         break;
                                     case "updateOph":
                                         if (UserAccessLevels.hasUpdateRights() && UserAccessLevels.isOphUser()) { controller.enableElement(); }
                                         break;
                                     case "update":
-                                        if (UserAccessLevels.hasUpdateRights()) { controller.enableElement(); }
+                                        if (UserAccessLevels.hasUpdateRights() && AuthService.updateOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids)) { controller.enableElement(); }
                                         break;
                                     case "readOph":
-                                        if (UserAccessLevels.hasReadRights() && UserAccessLevels.UserAccessLevels.isOphUser()) { controller.enableElement(); }
+                                        if (UserAccessLevels.hasReadRights() && UserAccessLevels.isOphUser()) { controller.enableElement(); }
                                         break;
                                     case "read":
-                                        if (UserAccessLevels.hasReadRights()) { controller.enableElement(); }
+                                        if (UserAccessLevels.hasReadRights() && AuthService.readOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids)) { controller.enableElement(); }
                                         break;
                                 }
                             }
 
-                            // Enable element for crudOph -user by default
-                            if (UserAccessLevels.isOphUser() && UserAccessLevels.hasCrudRights()) {
-                                controller.enableElement();
-                            }
+
                         }, function (error) {
                             $log.error('Error enabling element', error);
                         });
@@ -169,7 +174,6 @@ angular.module('valintaperusteet')
 
             var accessCheck = function (service, orgs, accessFunction) {
                 var deferred = $q.defer();
-
                 MyRolesModel.then(function (model) {
                     if (orgs && orgs.length > 0) {
                         orgs.forEach(function (orgOid) {
@@ -299,35 +303,3 @@ angular.module('valintaperusteet')
             return auth;
         }]);
 
-
-/*
- OrganisaatioModel.deferred.promise.then(function (orgs) {
- switch (attrs.auth) {
-
- case "crudOph":
- AuthService.crudOph("APP_VALINTAPERUSTEET").then(removeRestictionAction);
- break;
-
- case "updateOph":
- AuthService.updateOph("APP_VALINTAPERUSTEET").then(removeRestictionAction);
- break;
-
- case "readOph":
- AuthService.readOph("APP_VALINTAPERUSTEET").then(removeRestictionAction);
- break;
-
- case "crud":
- AuthService.crudOrg("APP_VALINTAPERUSTEET", orgs).then(removeRestictionAction);
- break;
-
- case "update":
- AuthService.updateOrg("APP_VALINTAPERUSTEET", orgs).then(removeRestictionAction);
- break;
-
- case "read":
- AuthService.readOrg("APP_VALINTAPERUSTEET", orgs).then(removeRestictionAction);
- break;
-
- }
- });
- */

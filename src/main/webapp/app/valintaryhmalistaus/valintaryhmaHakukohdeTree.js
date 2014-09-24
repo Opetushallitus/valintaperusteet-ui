@@ -215,8 +215,8 @@ angular.module('valintaperusteet').factory('Treemodel', function ($resource, Val
 
 
 angular.module('valintaperusteet').
-    controller('ValintaryhmaHakukohdeTreeController', ['$scope', '$q', '_', 'Treemodel', 'HakukohdeSiirra', 'HakuModel', 'UserOrganizationsModel', '$timeout',
-        function ($scope, $q, _, Treemodel, HakukohdeSiirra, HakuModel, UserOrganizationsModel, $timeout) {
+    controller('ValintaryhmaHakukohdeTreeController', ['$scope', '$q', '_', 'Treemodel', 'HakukohdeSiirra', 'HakuModel', 'UserModel', '$timeout',
+        function ($scope, $q, _, Treemodel, HakukohdeSiirra, HakuModel, UserModel, $timeout) {
             "use strict";
 
             $scope.predicate = 'nimi';
@@ -227,8 +227,8 @@ angular.module('valintaperusteet').
                 $scope.domain.refresh();
             });
 
-            $scope.userOrganizationsModel = UserOrganizationsModel;
-            $scope.userOrganizationsModel.refreshIfNeeded();
+            $scope.userModel = UserModel;
+            $scope.userModel.refreshIfNeeded();
 
             $scope.hakukohteetListingLimit = 100;
             $scope.lazyLoading = function () {
@@ -262,15 +262,11 @@ angular.module('valintaperusteet').
 
             };
 
-            $scope.test = function (node) {
-                console.log(node);
-            };
-            
             $scope.expandNode = function (node) {
                 $scope.domain.expandNode(node);
 
             };
-
+            
             $scope.updateDomain = function () {
                 Treemodel.refresh();
             };
