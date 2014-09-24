@@ -76,7 +76,6 @@ angular.module('valintaperusteet')
             return {
                 restrict: 'A',
                 priority: 999,
-                require: 'auth',
                 link: function ($scope, element, attrs, controller) {
                     element.attr('disabled', 'true');
 
@@ -90,7 +89,7 @@ angular.module('valintaperusteet')
                         $q.all(promises).then(function () {
                             // Enable element for crudOph -user by default
                             if (UserAccessLevels.isOphUser() && UserAccessLevels.hasCrudRights()) {
-                                controller.enableElement();
+                                element.removeAttr('disabled');
                             } else if (attrs.authEnable) {
                                 switch (attrs.authEnable) {
                                     case "crud":
