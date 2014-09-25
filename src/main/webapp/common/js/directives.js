@@ -42,14 +42,7 @@ angular.module('valintaperusteet')
                             valintaryhmaOid = "";
                         }
                         var index = item.index();
-                        //hyva keino logittaa on pistaa siirrettyyn bg-color!
-                        //$(item).attr("style","background-color:red;");
 
-                        //prevent default ei auta! aiheuttaa vaan epasynkkaa!
-                        //event.preventDefault();
-
-                        //remove ei auta ellet tee eri threadissa!
-                        //$(item).remove();
                         scope.$apply(function () {
                             scope.move(index, hakukohdeOid, valintaryhmaOid, item);
 

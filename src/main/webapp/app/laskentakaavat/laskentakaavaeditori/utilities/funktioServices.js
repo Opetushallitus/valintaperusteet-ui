@@ -1,5 +1,5 @@
 angular.module('valintaperusteet').
-factory('FunktioService', function (FunktioKuvausResource, $log) {
+factory('FunktioService', function (FunktioKuvausResource, $log, _) {
     'use strict';
 
     var model = new function () {

@@ -24,7 +24,7 @@
             <label class="form-row-label" for="nimi">{{ t('valinnanvaihelomake.nimi') || 'Nimi' }}</label>
 
             <div class="form-row-content">
-                <input name="nimi" id="nimi" ng-model="model.valinnanvaihe.nimi" required/>
+                <input type="text" auth auth-enable="update" name="nimi" id="nimi" ng-model="model.valinnanvaihe.nimi" required/>
             </div>
 
             <div class="clear"></div>
@@ -32,7 +32,7 @@
             <label class="form-row-label" for="kuvaus">{{ t('valinnanvaihelomake.kuvaus') || 'Kuvaus' }}</label>
 
             <div class="form-row-content">
-                <textarea name="kuvaus" id="kuvaus" ng-model="model.valinnanvaihe.kuvaus"/>
+                <textarea auth auth-enable="update" name="kuvaus" id="kuvaus" ng-model="model.valinnanvaihe.kuvaus"/>
             </div>
         </div>
 
@@ -51,7 +51,7 @@
                     </thead>
                     <tbody ui-sortable ng-model="model.valintatapajonot" class="margin-top-2">
                     <tr ng-repeat="jono in model.valintatapajonot">
-                        <td><input type="checkbox" ng-model="jono.aktiivinen"/></td>
+                        <td><input auth auth-enable="update" type="checkbox" ng-model="jono.aktiivinen"/></td>
                         <td>
                             <a ng-class="{true:'', false:'line-through'}[jono.aktiivinen]"
                                ng-click="modifyJono(jono.oid)">{{jono.nimi}}</a>
@@ -61,12 +61,13 @@
                             <span ng-if="!jono.inheritance">{{t('valintaperusteet.periytyy.false') || 'Ei periydy'}}</span>
                         </td>
                         <td class="align-center">
-                        <i auth="crud" ng-show="!jono.inheritance" class="fa fa-trash-o"
+                        <i auth auth-enable="crud" ng-show="!jono.inheritance" class="fa fa-trash-o"
                               ng-click="model.remove(jono)"></i>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+
                 <span auth="crud" class="btn btn-sm btn-default" ng-click="addJono()"><i
                         class="fa fa-plus"></i> {{ t('valinnanvaihelomake.jono') || 'Jono' }}</span>
              </div>

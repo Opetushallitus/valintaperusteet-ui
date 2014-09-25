@@ -25,7 +25,7 @@ angular.module('valintaperusteet')
 
             //kk-käyttäjä
 //            instance.myroles = kkRead;
-//
+
 //            deferred.resolve(instance);
 
 
@@ -71,19 +71,25 @@ angular.module('valintaperusteet')
             };
         }])
 
-    .directive('authEnable', ['$q', '$log', '$animate', '$timeout', 'UserModel', 'UserAccessLevels', 'AuthService',
-        function ($q, $log, $animate, $timeout, UserModel, UserAccessLevels, AuthService) {
+    .directive('authEnable', ['$q', '$log', '$animate', '$timeout', 'OrganisaatioUtility', 'UserAccessLevels', 'AuthService',
+        function ($q, $log, $animate, $timeout, OrganisaatioUtility, UserAccessLevels, AuthService) {
             return {
                 restrict: 'A',
                 priority: 999,
                 link: function ($scope, element, attrs, controller) {
                     element.attr('disabled', 'true');
-
                     var promises = [];
-                    UserModel.refreshIfNeeded();
+
                     UserAccessLevels.refreshIfNeeded();
-                    promises.push(UserModel.organizationsDeferred.promise);
                     promises.push(UserAccessLevels.deferred.promise);
+
+                    var organizationsPromise = OrganisaatioUtility.getOrganizations(true);
+                    promises.push(organizationsPromise);
+
+                    var organizationOids = undefined;
+                    organizationsPromise.then(function (organizationOids) {
+                        organizationOids = organizationOids;
+                    });
 
                     $timeout(function () {
                         $q.all(promises).then(function () {
@@ -93,7 +99,7 @@ angular.module('valintaperusteet')
                             } else if (attrs.authEnable) {
                                 switch (attrs.authEnable) {
                                     case "crud":
-                                        AuthService.crudOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids).then(function() {
+                                        AuthService.crudOrg('APP_VALINTAPERUSTEET', organizationOids).then(function() {
                                             element.removeAttr('disabled');
                                         });
                                         break;
@@ -101,7 +107,7 @@ angular.module('valintaperusteet')
                                         if (UserAccessLevels.hasUpdateRights() && UserAccessLevels.isOphUser()) { element.removeAttr('disabled'); }
                                         break;
                                     case "update":
-                                        AuthService.updateOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids).then(function () {
+                                        AuthService.updateOrg('APP_VALINTAPERUSTEET', organizationOids).then(function () {
                                             element.removeAttr('disabled');
                                         });
                                         break;
@@ -109,7 +115,7 @@ angular.module('valintaperusteet')
                                         if (UserAccessLevels.hasReadRights() && UserAccessLevels.isOphUser()) { element.removeAttr('disabled'); }
                                         break;
                                     case "read":
-                                        AuthService.readOrg('APP_VALINTAPERUSTEET', UserModel.organizationOids).then(function() {
+                                        AuthService.readOrg('APP_VALINTAPERUSTEET', organizationOids).then(function() {
                                             element.removeAttr('disabled');
                                         });
                                         break;
@@ -140,7 +146,6 @@ angular.module('valintaperusteet')
             };
 
             var updateAccess = function (service, org, model) {
-
                 if (model.myroles.indexOf(service + UPDATE + (org ? "_" + org : "")) > -1 ||
                     model.myroles.indexOf(service + CRUD + (org ? "_" + org : "")) > -1) {
                     return true;

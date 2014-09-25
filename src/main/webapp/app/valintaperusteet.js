@@ -23,12 +23,15 @@ var VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE || "";
 var LOCALISATION_URL_BASE = LOCALISATION_URL_BASE || "";
 var HAKEMUS_URL_BASE = HAKEMUS_URL_BASE || "";
 
-function mainCtrl($scope, breadcrumbs, UserAccessLevels, UserModel) {
+angular.module('valintaperusteet')
+    .controller('mainCtrl', ['$scope', 'breadcrumbs', 'UserAccessLevels', 'UserModel',
+                function ($scope, breadcrumbs, UserAccessLevels, UserModel) {
+
     $scope.breadcrumbs = breadcrumbs;
     UserAccessLevels.refreshIfNeeded();
     UserModel.refreshIfNeeded();
 
-}
+}]);
 
 
 

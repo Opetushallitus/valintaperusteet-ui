@@ -1,7 +1,7 @@
 
 angular.module('valintaperusteet')
-    .factory('UserAccessLevels', ['$q', '$log', 'AuthService', 'ValintaryhmaModel', '_',
-        function ($q, $log, AuthService, ValintaryhmaModel, _) {
+    .factory('UserAccessLevels', ['$q', '$log', 'AuthService', 'OrganisaatioUtility', 'ValintaryhmaModel', '_',
+        function ($q, $log, AuthService, OrganisaatioUtility, ValintaryhmaModel, _) {
         var model = new function () {
             this.deferred = undefined;
 
@@ -27,10 +27,9 @@ angular.module('valintaperusteet')
                 var updateOphPromise = AuthService.updateOph('APP_VALINTAPERUSTEET');
                 var readOphPromise = AuthService.readOph('APP_VALINTAPERUSTEET');
 
-                // Organization rights
-                var crudOrgPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET');
-                var updateOrgPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET');
-                var readOrgPromise = AuthService.readOrg('APP_VALINTAPERUSTEET');
+                var crudOrgPromise = undefined;
+                var updateOrgPromise = undefined;
+                var readOrgPromise = undefined;
 
                 // set user rights for OPHCRUD or continue to next level
                 var crudOphSuccessFn = function () { model.setCrudRights(true); model.deferred.resolve(); };
@@ -42,7 +41,23 @@ angular.module('valintaperusteet')
 
                 // set user rights for OPHREAD or continue to next level
                 var readOphSuccessFn = function () { model.setReadRights(true); model.deferred.resolve();};
-                var readOphRejectFn = function () { crudOrgPromise.then(crudOrgSuccessFn, crudOrgRejectFn); };
+                var readOphRejectFn = function () {
+
+                    // If users organizations are found then use them getting access
+                    OrganisaatioUtility.getOrganizations(true).then(function (organizationOids) {
+                        crudOrgPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET', organizationOids);
+                        updateOrgPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET', organizationOids);
+                        readOrgPromise = AuthService.readOrg('APP_VALINTAPERUSTEET', organizationOids);
+
+                        crudOrgPromise.then(crudOrgSuccessFn, crudOrgRejectFn);
+                    }, function () {
+                        crudOrgPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET');
+                        updateOrgPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET');
+                        readOrgPromise = AuthService.readOrg('APP_VALINTAPERUSTEET');
+
+                        crudOrgPromise.then(crudOrgSuccessFn, crudOrgRejectFn);
+                    });
+                };
 
                 // set user rights for ORGCRUD or continue to next level
                 var crudOrgSuccessFn = function () { model.setCrudRights(false); model.deferred.resolve(); };
