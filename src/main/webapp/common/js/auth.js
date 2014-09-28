@@ -25,7 +25,7 @@ angular.module('valintaperusteet')
 
             //kk-käyttäjä
 //            instance.myroles = kkRead;
-
+//
 //            deferred.resolve(instance);
 
 
@@ -48,90 +48,95 @@ angular.module('valintaperusteet')
             return {
                 priority: 1000,
                 link: function ($scope, element, attrs) {
+                    UserModel.refreshIfNeeded();
+                    UserAccessLevels.refreshIfNeeded();
+
+                    $scope.userAccess = UserAccessLevels;
                     $animate.addClass(element, 'ng-hide');
 
-                    $timeout(function () {
-                        var promises = [];
-                        UserModel.refreshIfNeeded();
-                        UserAccessLevels.refreshIfNeeded();
+                    var promises = [];
 
-                        promises.push(UserModel.organizationsDeferred.promise);
-                        promises.push(UserAccessLevels.deferred.promise);
 
-                        // Reveal element for oph-users and KK-users by default
-                        $q.all(promises).then(function () {
-                            if (UserModel.isKKUser || UserAccessLevels.isOphUser()) {
-                                $animate.removeClass(element, 'ng-hide');
-                            }
-                        }, function (error) {
-                            $log.error('Error revealing element:', error);
-                        });
-                    }, 0);
+                    promises.push(UserModel.organizationsDeferred.promise);
+                    promises.push(UserAccessLevels.deferred.promise);
+
+                    // Reveal element for oph-users and KK-users by default
+                    $q.all(promises).then(function () {
+                        if (UserModel.isKKUser || UserAccessLevels.isOphUser()) {
+                            $animate.removeClass(element, 'ng-hide');
+                        }
+                    }, function (error) {
+                        $log.error('Error revealing element:', error);
+                    });
                 }
             };
         }])
-
-    .directive('authEnable', ['$q', '$log', '$animate', '$timeout', 'OrganisaatioUtility', 'UserAccessLevels', 'AuthService',
-        function ($q, $log, $animate, $timeout, OrganisaatioUtility, UserAccessLevels, AuthService) {
+/*
+    .directive('authEnable', ['$compile', '$parse', '$q', '$log', '$animate', '$timeout', 'OrganisaatioUtility', 'UserAccessLevels', 'AuthService', '_',
+        function ($compile, $parse, $q, $log, $animate, $timeout, OrganisaatioUtility, UserAccessLevels, AuthService, _) {
             return {
                 restrict: 'A',
-                priority: 999,
+                priority: 300,
+                scope: true,
                 link: function ($scope, element, attrs, controller) {
-                    element.attr('disabled', 'true');
+                    $scope.authDisable = true;
                     var promises = [];
-
                     UserAccessLevels.refreshIfNeeded();
                     promises.push(UserAccessLevels.deferred.promise);
 
                     var organizationsPromise = OrganisaatioUtility.getOrganizations(true);
                     promises.push(organizationsPromise);
-
                     var organizationOids = undefined;
-                    organizationsPromise.then(function (organizationOids) {
-                        organizationOids = organizationOids;
+                    organizationsPromise.then(function (oids) {
+                        organizationOids = oids;
                     });
-
                     $timeout(function () {
+
+
                         $q.all(promises).then(function () {
+
                             // Enable element for crudOph -user by default
                             if (UserAccessLevels.isOphUser() && UserAccessLevels.hasCrudRights()) {
-                                element.removeAttr('disabled');
+                                $scope.authDisable = false;
                             } else if (attrs.authEnable) {
                                 switch (attrs.authEnable) {
                                     case "crud":
-                                        AuthService.crudOrg('APP_VALINTAPERUSTEET', organizationOids).then(function() {
-                                            element.removeAttr('disabled');
+                                        AuthService.crudOrg('APP_VALINTAPERUSTEET', organizationOids).then(function () {
+                                            $scope.authDisable = false;
                                         });
                                         break;
                                     case "updateOph":
-                                        if (UserAccessLevels.hasUpdateRights() && UserAccessLevels.isOphUser()) { element.removeAttr('disabled'); }
+                                        if (UserAccessLevels.hasUpdateRights() && UserAccessLevels.isOphUser()) {
+                                            $scope.authDisable = false;
+                                        }
                                         break;
                                     case "update":
                                         AuthService.updateOrg('APP_VALINTAPERUSTEET', organizationOids).then(function () {
-                                            element.removeAttr('disabled');
+                                            $scope.authDisable = false;
                                         });
                                         break;
                                     case "readOph":
-                                        if (UserAccessLevels.hasReadRights() && UserAccessLevels.isOphUser()) { element.removeAttr('disabled'); }
+                                        if (UserAccessLevels.hasReadRights() && UserAccessLevels.isOphUser()) {
+                                            $scope.authDisable = false;
+                                        }
                                         break;
                                     case "read":
-                                        AuthService.readOrg('APP_VALINTAPERUSTEET', organizationOids).then(function() {
-                                            element.removeAttr('disabled');
+                                        AuthService.readOrg('APP_VALINTAPERUSTEET', organizationOids).then(function () {
+                                            $scope.authDisable = false;
                                         });
                                         break;
                                 }
                             }
 
-
                         }, function (error) {
                             $log.error('Error enabling element', error);
                         });
+                    },0);
 
-                    }, 0);
                 }
             };
         }])
-
+*/
 
     .factory('AuthService', ['$q', '$http', '$timeout', 'MyRolesModel', 'READ', 'UPDATE', 'CRUD', 'OPH_ORG',
         function ($q, $http, $timeout, MyRolesModel, READ, UPDATE, CRUD, OPH_ORG) {

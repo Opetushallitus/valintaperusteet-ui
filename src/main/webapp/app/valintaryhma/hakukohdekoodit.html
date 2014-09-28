@@ -6,7 +6,7 @@
             <i ng-if="!toggleValintaryhmaHakukohdekoodit" class="fa fa-eye"></i>
             <i ng-if="toggleValintaryhmaHakukohdekoodit" class="fa fa-eye-slash"></i> {{ t('hakukohdekoodit.header') || 'Hakukohdekoodit' }}
         </button>
-        <button ng-click="showHakukohdeKoodit()" type="button" class="btn btn-sm btn-default">
+        <button auth ng-disabled="!userAccess.updateOrg" ng-click="showHakukohdeKoodit()" type="button" class="btn btn-sm btn-default">
             <i class="fa fa-plus"></i> {{ t('hakukohdekoodit.uusi') || 'Uusi hakukohdekoodi' }}
         </button>
 

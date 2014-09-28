@@ -6,7 +6,7 @@
         <i ng-if="toggleValintaryhmaValintakokeet" class="fa fa-eye-slash"></i>
         <i ng-if="!toggleValintaryhmaValintakokeet" class="fa fa-eye"></i> {{ t('valintakoekoodit.header') || 'Valintakoekoodit' }}
     </button>
-    <button ng-click="showValintakoeKoodit()" type="button"
+    <button auth ng-disabled="!userAccess.updateOrg" ng-click="showValintakoeKoodit()" type="button"
             class="btn btn-sm btn-default">
         <span><i class="fa fa-plus"></i> {{ t('valintakoekoodit.uusi') || 'Uusi valintakoekoodi' }}</span>
     </button>
