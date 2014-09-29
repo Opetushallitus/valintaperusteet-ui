@@ -57,7 +57,7 @@ angular.module('valintaperusteet')
                     // If users organizations are found then use them getting access
                     OrganisaatioUtility.getOrganizations(true).then(function (organizationOids) {
 
-                        if(_.isEmpty(organizationOids)) { //check rights against valintaryhma or hakukohde organizations
+                        if(!_.isEmpty(organizationOids)) { //check rights against valintaryhma or hakukohde organizations
                             crudOrgPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET', organizationOids);
                             updateOrgPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET', organizationOids);
                             readOrgPromise = AuthService.readOrg('APP_VALINTAPERUSTEET', organizationOids);
@@ -126,19 +126,27 @@ angular.module('valintaperusteet')
             this.isOphUser = function () {
                 return model.crudOph || model.updateOph || model.readOph;
             };
+            
+            this.isOrganizationUser = function () {
+                return model.crudOrg || model.updateOrg || model.readOrg;
+            };
+            
+            this.isValintaperusteUser = function () {
+                return model.crudNoOrg || model.updateNoOrg || model.readNoOrg;
+            };
 
             this.hasCrudRights = function () {
-                return model.crudOph || model.crudOrg;
+                return model.crudOph || model.crudOrg || model.readNoOrg;
             };
 
             this.hasUpdateRights = function () {
-                return model.updateOph || model.updateOrg;
+                return model.updateOph || model.updateOrg || model.updateNoOrg;
             };
 
             this.hasReadRights = function () {
-                return model.readOph || model.readOrg;
+                return model.readOph || model.readOrg || model.readNoOrg;
             };
-
+            
             this.setCrudRights = function (level) {
                 switch(level) {
                     case "oph":
