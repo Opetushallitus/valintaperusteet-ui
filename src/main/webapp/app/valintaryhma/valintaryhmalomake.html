@@ -162,7 +162,7 @@
             </thead>
             <tbody ui-sortable ng-model="model.valinnanvaiheet">
             <tr ng-repeat="data in model.valinnanvaiheet">
-                <td class="align-center"><input type="checkbox" ng-model="data.aktiivinen"/></td>
+                <td class="align-center"><input auth ng-disabled="!userAccess.updateOrg" type="checkbox" ng-model="data.aktiivinen"/></td>
                 <td class="align-center">
                     <a ng-class="{true:'', false:'line-through'}[data.aktiivinen]"
                        ng-href="#/valintaryhma/{{model.valintaryhma.oid}}/{{model.getValinnanvaiheType(data)}}/{{data.oid}}">{{data.nimi}}</a>
