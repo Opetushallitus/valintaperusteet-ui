@@ -243,7 +243,7 @@
                 <td class="align-center">{{data.laskentakaava_nimi}}</td>
                 <td class="align-center">{{data.kiintio}}</td>
                 <td class="align-center">
-                    <button auth ng-disabled="!userAccess.update" class="btn btn-sm btn-default" ng-show="!data.inheritance" ng-click="model.removeHakijaryhma(data.oid)">
+                    <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-default" ng-show="!data.inheritance" ng-click="model.removeHakijaryhma(data.oid)">
                     <i class="fa fa-trash-o"></i>
                     </button>
                 </td>
