@@ -52,7 +52,7 @@
                         <th>{{ t('valinnanvaihelomake.poista') || 'Poista' }}</th>
                     </tr>
                     </thead>
-                    <tbody ui-sortable ng-model="model.valintatapajonot" class="margin-top-2">
+                    <tbody ui-sortable ng-model="model.valintatapajonot">
                     <tr ng-repeat="jono in model.valintatapajonot">
                         <td><input auth ng-disabled="!userAccess.updateOrg" type="checkbox" ng-model="jono.aktiivinen"/>
                         </td>
@@ -60,11 +60,11 @@
                             <a ng-class="{true:'', false:'line-through'}[jono.aktiivinen]"
                                ng-click="modifyJono(jono.oid)">{{jono.nimi}}</a>
                         </td>
-                        <td class="align-center">
+                        <td >
                             <span ng-if="jono.inheritance">{{t('valintaperusteet.periytyy.true') || 'Periytyy'}}</span>
                             <span ng-if="!jono.inheritance">{{t('valintaperusteet.periytyy.false') || 'Ei periydy'}}</span>
                         </td>
-                        <td class="align-center">
+                        <td>
                             <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default"
                                     ng-click="model.remove(jono)">
                                 <i ng-show="!jono.inheritance"
@@ -80,7 +80,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" ng-show="model.valinnanvaihe.oid">
             <div class="col-md-2 col-md-offset-2">
                 <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="addJono()"><i
                         class="fa fa-plus"></i> {{ t('valinnanvaihelomake.jono') || 'Jono' }}
