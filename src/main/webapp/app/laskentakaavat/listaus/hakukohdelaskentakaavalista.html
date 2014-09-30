@@ -8,7 +8,7 @@
 <div class="tabs">
     <a href="#/etusivu" class="tab"><span>{{ t('common.etusivu') || 'Valintaryhmät ja hakukohteet' }}</span></a>
     <a href="#/laskentakaava" class="tab current"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
-    <a auth="crudOph" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
+    <a auth ng-if="userAccess.crudOph" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
 </div>
 
 <div class="tabsheets">

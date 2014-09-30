@@ -3,227 +3,236 @@
 <div class="tabs">
     <a href="#/etusivu" class="tab current"><span>{{ t('common.etusivu') || 'Valintaryhmät ja hakukohteet' }}</span></a>
     <a ng-show="model.hakukohde" href="#/hakukohde/{{model.hakukohde.oid}}/laskentakaavalista" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
-    <a auth="crudOph" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
+    <a auth ng-if="userAccess.crudOph" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
 </div>
 
 <div class="tabsheets">
-    <breadcrumb></breadcrumb>
-    <form class="form-horizontal" name="form" ng-submit="submit()">
-        <div class="form-group">
-            <label class="col-md-2 control-label">{{ t('hakukohdelomake.hakukohteennimi') || 'Hakukohteen nimi' }}</label>
+<breadcrumb></breadcrumb>
+<form class="form-horizontal" name="form" ng-submit="submit()">
+<div class="form-group">
+    <label class="col-md-2 control-label">{{ t('hakukohdelomake.hakukohteennimi') || 'Hakukohteen nimi' }}</label>
 
-            <div class="col-md-10 form-control-static">{{model.hakukohde.nimi}} ({{model.hakukohde.oid}})</div>
+    <div class="col-md-10 form-control-static">{{model.hakukohde.nimi}} ({{model.hakukohde.oid}})</div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-2 control-label">{{ t('hakukohdelomake.hakukohdekoodi') || 'Hakukohdekoodi' }}: </label>
+
+    <div class="col-md-6 form-control-static">
+        <table class="virkailija-table-1">
+            <thead>
+            <tr>
+                <th>{{ t('hakukohdelomake.koodi') || 'koodi' }}</th>
+                <th>{{ t('hakukohdelomake.arvo') || 'arvo' }}</th>
+                <th>{{ t('hakukohdelomake.nimi') || 'nimi' }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="text-center">{{model.hakukohde.hakukohdekoodi.uri}}</td>
+                <td class="text-center">{{model.hakukohde.hakukohdekoodi.arvo}}</td>
+                <td class="text-center">{{model.hakukohde.hakukohdekoodi.nimiFi}}</td>
+            </tr>
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input auth ng-disabled="!userAccess.updateOrg" type="text" ng-model="uusiHakukohdeUri"
+               typeahead-editable="false"
+               typeahead="koodi as koodi.metadata[0].nimi + ' (' + koodi.koodiUri + ')' for koodi in model.hakukohdekoodit| filter:$viewValue | orderBy:'metadata[0].nimi' | limitTo :10 ">
+        <button class="btn btn-sm btn-primary" auth type="button" ng-click="addHakukohdeUri()"
+                ng-disabled="!uusiHakukohdeUri || !userAccess.updateOrg"><i class="fa fa-refresh"></i> {{
+            t('hakukohdelomake.paivita') || 'Päivitä' }}
+        </button>
+    </div>
+
+</div>
+
+<div class="form-group">
+    <label class="col-md-2 control-label">{{ t('hakukohdelomake.hauntunniste') || 'Haun Tunniste (oid)' }}:</label>
+
+    <div class="form-control-static col-md-10">
+        {{model.haku.nimi.kieli_fi}} ({{model.haku.oid}})
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-2 control-label">{{ t('hakukohdelomake.tarjoaja') || 'Tarjoaja (oid)' }}:</label>
+
+    <div class="form-control-static col-md-10">
+        {{model.hakukohde.tarjoajaOid}}
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-2 control-label">{{ t('hakukohdelomake.julkaisutila') || 'Julkaisutila' }}:</label>
+
+    <div class="form-control-static col-md-10">
+        {{model.hakukohde.tila}}
+    </div>
+</div>
+
+
+<div class="form-group">
+    <label class="col-md-2 control-label">{{ t('hakukohdelomake.valintaryhma') || 'Valintaryhmä' }}:</label>
+
+    <div class="col-md-10 form-control-static">
+        <!--{{model.hakukohde.oid}}-->
+        <span>{{model.parentValintaryhma.nimi}}</span>
+
+        <!-- VALINTARYHMÄN SIIRTO -->
+
+        <div ng-controller="ValintaryhmanSiirtoController" class="modal-controller-div">
+            <modal modal-template="hakukohde/valintaryhmanSiirtoModal.html">
+                <modal-open></modal-open>
+            </modal>
+            <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-primary" type="button"
+                    ng-click="openValintaryhmaModal()"><i
+                    class="fa fa-arrows"></i>
+                {{ t('hakukohdelomake.siirra') || 'Siirrä' }}
+            </button>
         </div>
 
-        <div class="form-group">
-            <label class="col-md-2 control-label">{{ t('hakukohdelomake.hakukohdekoodi') || 'Hakukohdekoodi' }}: </label>
+    </div>
+</div>
 
-            <div class="col-md-6 form-control-static">
-                <table class="virkailija-table-1">
-                    <thead>
-                    <tr>
-                        <th>{{ t('hakukohdelomake.koodi') || 'koodi' }}</th>
-                        <th>{{ t('hakukohdelomake.arvo') || 'arvo' }}</th>
-                        <th>{{ t('hakukohdelomake.nimi') || 'nimi' }}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td class="text-center">{{model.hakukohde.hakukohdekoodi.uri}}</td>
-                        <td class="text-center">{{model.hakukohde.hakukohdekoodi.arvo}}</td>
-                        <td class="text-center">{{model.hakukohde.hakukohdekoodi.nimiFi}}</td>
-                    </tr>
+<div class="form-group">
+    <label class="col-md-2 control-label">{{ t('hakukohdelomake.kuuluusijoitteluun') || 'Kuuluu sijoitteluun' }}</label>
 
-                    </tbody>
+    <div class="form-control-static col-md-10">
+        {{model.kuuluuSijoitteluun ? 'Kyllä' : 'Ei'}}
+    </div>
+</div>
 
-                </table>
-            </div>
-        </div>
+<div class="form-group width-100">
+    <label class="col-md-2 control-label">{{ t('hakukohdelomake.valinnanvaiheet') || 'Valinnan vaiheet' }}</label>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input auth ng-disabled="!userAccess.updateOrg" type="text" ng-model="uusiHakukohdeUri"
-                       typeahead-editable="false"
-                       typeahead="koodi as koodi.metadata[0].nimi + ' (' + koodi.koodiUri + ')' for koodi in model.hakukohdekoodit| filter:$viewValue | orderBy:'metadata[0].nimi' | limitTo :10 ">
-                <button class="btn btn-sm btn-primary" auth type="button" ng-click="addHakukohdeUri()"
-                        ng-disabled="!uusiHakukohdeUri || !userAccess.updateOrg"><i class="fa fa-refresh"></i> {{ t('hakukohdelomake.paivita') || 'Päivitä' }}
-                </button>
-            </div>
-
-        </div>
-
-        <div class="form-group">
-            <label class="col-md-2 control-label">{{ t('hakukohdelomake.hauntunniste') || 'Haun Tunniste (oid)' }}:</label>
-
-            <div class="form-control-static col-md-10">
-                {{model.haku.nimi.kieli_fi}} ({{model.haku.oid}})
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-md-2 control-label">{{ t('hakukohdelomake.tarjoaja') || 'Tarjoaja (oid)' }}:</label>
-
-            <div class="form-control-static col-md-10">
-                {{model.hakukohde.tarjoajaOid}}
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-md-2 control-label">{{ t('hakukohdelomake.julkaisutila') || 'Julkaisutila' }}:</label>
-
-            <div class="form-control-static col-md-10">
-                {{model.hakukohde.tila}}
-            </div>
-        </div>
-
-
-
-        <div class="form-group">
-            <label class="col-md-2 control-label">{{ t('hakukohdelomake.valintaryhma') || 'Valintaryhmä' }}:</label>
-
-            <div class="col-md-10 form-control-static">
-                <!--{{model.hakukohde.oid}}-->
-                <span>{{model.parentValintaryhma.nimi}}</span>
-
-                <!-- VALINTARYHMÄN SIIRTO -->
-
-                <div ng-controller="ValintaryhmanSiirtoController" class="modal-controller-div">
-                    <modal modal-template="hakukohde/valintaryhmanSiirtoModal.html">
-                        <modal-open></modal-open>
-                    </modal>
-                    <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-primary" type="button" ng-click="openValintaryhmaModal()"><i
-                            class="fa fa-arrows"></i>
-                        {{ t('hakukohdelomake.siirra') || 'Siirrä' }}
-                    </button>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-md-2 control-label">{{ t('hakukohdelomake.kuuluusijoitteluun') || 'Kuuluu sijoitteluun' }}</label>
-
-            <div class="form-control-static col-md-10">
-                {{model.kuuluuSijoitteluun ? 'Kyllä' : 'Ei'}}
-            </div>
-        </div>
-
-        <div class="form-group width-100">
-            <label class="col-md-2 control-label">{{ t('hakukohdelomake.valinnanvaiheet') || 'Valinnan vaiheet' }}</label>
-
-            <div class="form-control-static col-md-10">
-                <table auth="update" ng-show="model.valinnanvaiheet"
-                       class="virkailija-table-1">
-                    <thead>
-                    <tr>
-                        <th>{{ t('hakukohdelomake.aktiivinen') || 'Aktiivinen' }}</th>
-                        <th>{{ t('hakukohdelomake.nimiiso') || 'Nimi' }}</th>
-                        <th>{{ t('hakukohdelomake.periytyy') || 'Periytyy' }}</th>
-                        <th>{{ t('hakukohdelomake.tyyppi') || 'Tyyppi' }}</th>
-                        <th>{{ t('hakukohdelomake.poista') || 'Poista' }}</th>
-                    </tr>
-                    </thead>
-                    <tbody ui-sortable ng-model="model.valinnanvaiheet">
-                    <tr ng-repeat="data in model.valinnanvaiheet">
-                        <td><input type="checkbox" ng-model="data.aktiivinen"/></td>
-                        <td class="text-center">
-                            <a ng-class="{true:'', false:'line-through'}[data.aktiivinen]"
-                               href="#/hakukohde/{{hakukohdeOid}}/{{model.getValinnanvaiheType(data)}}/{{data.oid}}">{{data.nimi}}</a>
-                        </td>
-                        <td class="text-center">{{data.inheritance ? 'Kyllä' : 'Ei'}}</td>
-                        <td class="text-center">{{data.valinnanVaiheTyyppi}}</td>
-                        <td class="text-center">
+    <div class="form-control-static col-md-10">
+        <table auth="update" ng-show="model.valinnanvaiheet"
+               class="virkailija-table-1">
+            <thead>
+            <tr>
+                <th>{{ t('hakukohdelomake.aktiivinen') || 'Aktiivinen' }}</th>
+                <th>{{ t('hakukohdelomake.nimiiso') || 'Nimi' }}</th>
+                <th>{{ t('hakukohdelomake.periytyy') || 'Periytyy' }}</th>
+                <th>{{ t('hakukohdelomake.tyyppi') || 'Tyyppi' }}</th>
+                <th>{{ t('hakukohdelomake.poista') || 'Poista' }}</th>
+            </tr>
+            </thead>
+            <tbody ui-sortable ng-model="model.valinnanvaiheet">
+            <tr ng-repeat="data in model.valinnanvaiheet">
+                <td><input type="checkbox" ng-model="data.aktiivinen"/></td>
+                <td class="text-center">
+                    <a ng-class="{true:'', false:'line-through'}[data.aktiivinen]"
+                       href="#/hakukohde/{{hakukohdeOid}}/{{model.getValinnanvaiheType(data)}}/{{data.oid}}">{{data.nimi}}</a>
+                </td>
+                <td class="text-center">{{data.inheritance ? 'Kyllä' : 'Ei'}}</td>
+                <td class="text-center">{{data.valinnanVaiheTyyppi}}</td>
+                <td class="text-center">
                                 <span auth="crud" ng-show="!data.inheritance" class="btn remove"
                                       ng-click="model.remove(data)"></span>
-                        </td>
+                </td>
 
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
+</div>
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10" ng-show="model.hakukohde.oid">
+        <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="lisaaValinnanVaihe()"><i
+                class="fa fa-plus"></i> {{ t('hakukohdelomake.valinnanvaihe') || 'Valinnanvaihe' }}
+        </button>
+        <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-default"
+                ng-click="lisaaValintakoeValinnanVaihe()"><i
+                class="fa fa-plus"></i> {{ t('hakukohdelomake.valintakoevalinnanvaihe') || 'Valintakoevalinnanvaihe' }}
+        </button>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-2 control-label">{{ t('hakukohdelomake.hakijaryhmat') || 'Hakijaryhmät' }}</label>
+
+    <div class="form-control-static col-md-10">
+        <table ng-show="model.hakijaryhmat" class="virkailija-table-1">
+            <thead>
+            <tr>
+
+                <th>{{ t('hakukohdelomake.nimiiso') || 'Nimi' }}</th>
+                <th>{{ t('hakukohdelomake.kuvaus') || 'Kuvaus' }}</th>
+
+                <th>{{ t('hakukohdelomake.kiintio') || 'Kiintiö' }}</th>
+
+                <th>{{ t('hakukohdelomake.poista') || 'Poista' }}</th>
+            </tr>
+            </thead>
+            <tbody ui-sortable ng-model="model.hakijaryhmat">
+            <tr ng-repeat="data in model.hakijaryhmat">
+
+                <td class="text-center">
+                    <a href="#/hakukohde/{{hakukohdeOid}}/hakijaryhma/{{data.oid}}">{{data.nimi}}</a>
+                </td>
+                <td class="text-center">{{data.kuvaus}}</td>
+
+                <td class="text-center">{{data.kiintio}}</td>
+
+                <td class="text-center">
+                    <i auth ng-disabled="!userAccess.crudOrg" ng-show="!data.inheritance" class="fa fa-trash-o"
+                       ng-click="removeHakijaryhma(data.oid)"></i>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+</div>
+
+<div class="form-group" ng-if="model.hakukohde.oid">
+    <div class="col-md-offset-2 col-md-10">
+        <div ng-controller="HakijaryhmaValintaHakukohdeController" class="modal-controller-div">
+            <modal modal-template="hakijaryhma/hakijaryhmaModal.html">
+                <modal-open></modal-open>
+            </modal>
+            <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-primary" type="button"
+                    ng-click="openHakijaryhmaModal()"><i
+                    class="fa fa-plus"></i>
+                Liitä hakijaryhmä
+            </button>
         </div>
+    </div>
+</div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10" ng-show="model.hakukohde.oid">
-                <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="lisaaValinnanVaihe()"><i
-                        class="fa fa-plus"></i> {{ t('hakukohdelomake.valinnanvaihe') || 'Valinnanvaihe' }}</button>
-                <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-default" ng-click="lisaaValintakoeValinnanVaihe()"><i
-                        class="fa fa-plus"></i> {{ t('hakukohdelomake.valintakoevalinnanvaihe') || 'Valintakoevalinnanvaihe' }}</button>
-            </div>
+<div class="form-group" ng-if="model.hakukohde.oid">
+    <div class="col-md-offset-2 col-md-10">
+        <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()"><i
+                class="fa fa-plus"></i> Hakijaryhma
+        </button>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-2">
+        <div class="pull-right">
+            <button type="button" class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500"
+                    popover-placement="top" popover-trigger="mouseenter"
+                    popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
+                    class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
+            </button>
+            <button auth ng-disabled="!form.$valid || !userAccess.updateOrg" class="btn btn-sm btn-primary"
+                    type="submit"><i
+                    class="fa fa-floppy-o"></i>
+                {{ t('common.tallenna') || 'Tallenna' }}
+            </button>
         </div>
-
-        <div class="form-group">
-            <label class="col-md-2 control-label">{{ t('hakukohdelomake.hakijaryhmat') || 'Hakijaryhmät' }}</label>
-
-            <div class="form-control-static col-md-10">
-                <table ng-show="model.hakijaryhmat" class="virkailija-table-1">
-                    <thead>
-                    <tr>
-
-                        <th>{{ t('hakukohdelomake.nimiiso') || 'Nimi' }}</th>
-                        <th>{{ t('hakukohdelomake.kuvaus') || 'Kuvaus' }}</th>
-
-                        <th>{{ t('hakukohdelomake.kiintio') || 'Kiintiö' }}</th>
-
-                        <th>{{ t('hakukohdelomake.poista') || 'Poista' }}</th>
-                    </tr>
-                    </thead>
-                    <tbody ui-sortable ng-model="model.hakijaryhmat">
-                    <tr ng-repeat="data in model.hakijaryhmat">
-
-                        <td class="text-center">
-                            <a href="#/hakukohde/{{hakukohdeOid}}/hakijaryhma/{{data.oid}}">{{data.nimi}}</a>
-                        </td>
-                        <td class="text-center">{{data.kuvaus}}</td>
-
-                        <td class="text-center">{{data.kiintio}}</td>
-
-                        <td class="text-center">
-                            <i auth ng-disabled="!userAccess.crudOrg" ng-show="!data.inheritance" class="fa fa-trash-o"
-                               ng-click="removeHakijaryhma(data.oid)"></i>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-
-
-
-            </div>
-        </div>
-
-        <div class="form-group" ng-if="model.hakukohde.oid">
-            <div class="col-md-offset-2 col-md-10">
-                <div ng-controller="HakijaryhmaValintaHakukohdeController" class="modal-controller-div">
-                    <modal modal-template="hakijaryhma/hakijaryhmaModal.html">
-                        <modal-open></modal-open>
-                    </modal>
-                    <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-primary" type="button" ng-click="openHakijaryhmaModal()"><i
-                            class="fa fa-plus"></i>
-                        Liitä hakijaryhmä
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group" ng-if="model.hakukohde.oid">
-            <div class="col-md-offset-2 col-md-10">
-                    <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()"><i
-                            class="fa fa-plus"></i> Hakijaryhma</button>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-2">
-                <button type="button" class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
-                        class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
-                </button>
-                <button auth ng-disabled="!form.$valid || !userAccess.updateOrg" class="btn btn-sm btn-primary" type="submit"><i
-                        class="fa fa-floppy-o"></i>
-                    {{ t('common.tallenna') || 'Tallenna' }}
-                </button>
-
-            </div>
-        </div>
-    </form>
+    </div>
+</div>
+</form>
 </div>

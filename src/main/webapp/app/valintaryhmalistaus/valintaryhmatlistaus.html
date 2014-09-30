@@ -29,7 +29,7 @@
 
 <div class="tabs">
     <a href="#/etusivu" class="tab current"><span>{{ t('common.etusivu') || 'Valintaryhmät ja hakukohteet' }}</span></a>
-    <a auth="crudOph" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
+    <a auth ng-if="userAccess.crudOph" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
 </div>
 
 <div class="tabsheets">
@@ -37,9 +37,9 @@
 
     <div class="search">
         <div class="margin-top-1">
-            <a auth="crud" href="#/valintaryhma/" class="margin-right-1 btn btn-sm btn-default"> <i class="fa fa-plus"></i> {{t('valintaryhmalistaus.add.valintaryhma') || 'Valintaryhmä' }}</a>
-            <a auth="crud" href="#/hakukohde/" class="margin-right-1 btn btn-sm btn-default"> <i class="fa fa-plus"></i> {{ t('valintaryhmalistaus.add.hakukohde') || 'Hakukohde' }}</a>
-            <a class="btn btn-sm btn-default" ng-click="domain.expandTree()"> <i class="fa fa-expand"></i> {{ t('valintaryhmatlistaus.ravaapuu') || 'Avaa puu' }}</a>
+            <button auth="crud" href="#/valintaryhma/" class="margin-right-1 btn btn-sm btn-default"> <i class="fa fa-plus"></i> {{t('valintaryhmalistaus.add.valintaryhma') || 'Valintaryhmä' }}</button>
+            <button auth="crud" href="#/hakukohde/" class="margin-right-1 btn btn-sm btn-default"> <i class="fa fa-plus"></i> {{ t('valintaryhmalistaus.add.hakukohde') || 'Hakukohde' }}</button>
+            <button class="btn btn-sm btn-default" ng-click="domain.expandTree()"> <i class="fa fa-expand"></i> {{ t('valintaryhmatlistaus.ravaapuu') || 'Avaa puu' }}</button>
         </div>
 
         <br />

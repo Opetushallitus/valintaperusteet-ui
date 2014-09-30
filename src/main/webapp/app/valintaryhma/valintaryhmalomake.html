@@ -6,7 +6,7 @@
         {{ t('valintaryhmalomake.poistahakijaryhma.body') || 'Oletko varma, että haluat poistaa hakijaryhmän?' }}
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">{{ t('valintaryhmalomake.poistahakijaryhma.kylla') || 'Kyllä'
+        <button class="btn btn-primary" auth ng-disabled="!userAccess.updateOrg" ng-click="ok()">{{ t('valintaryhmalomake.poistahakijaryhma.kylla') || 'Kyllä'
             }}
         </button>
         <button class="btn btn-warning" ng-click="cancel()">{{ t('valintaryhmalomake.poistahakijaryhma.ei') || 'Ei' }}
@@ -26,7 +26,7 @@
         {{ t('valintaryhmalomake.poistavalintaryhma.body') || 'Oletko varma, että haluat poistaa valintaryhmän?' }}
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">{{ t('valintaryhmalomake.poistavalintaryhma.kylla') || 'Kyllä'
+        <button class="btn btn-primary" auth ng-disabled="!userAccess.crudOrg" ng-click="ok()">{{ t('valintaryhmalomake.poistavalintaryhma.kylla') || 'Kyllä'
             }}
         </button>
         <button class="btn btn-warning" ng-click="cancel()">{{ t('valintaryhmalomake.poistavalintaryhma.ei') || 'Ei'
@@ -43,7 +43,7 @@
         {{ t('valintaryhmalomake.poistavalinnanvaihe.body') || 'Oletko varma, että haluat poistaa valinnan vaiheen?' }}
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">{{ t('valintaryhmalomake.poistavalinnanvaihe.kylla') || 'Kyllä'
+        <button class="btn btn-primary" auth ng-disabled="!userAccess.updateOrg" ng-click="ok()">{{ t('valintaryhmalomake.poistavalinnanvaihe.kylla') || 'Kyllä'
             }}
         </button>
         <button class="btn btn-warning" ng-click="cancel()">{{ t('valintaryhmalomake.poistavalinnanvaihe.ei') || 'Ei'
@@ -58,7 +58,7 @@
 <div class="tabs">
     <a href="#/etusivu" class="tab current"><span>{{ t('common.etusivu') || 'Valintaryhmät ja hakukohteet' }}</span></a>
     <a href="#/valintaryhma/{{model.valintaryhma.oid}}/laskentakaavalista" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>,
-    <a auth="crudOph" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
+    <a auth ng-if="userAccess.crudOph" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
 
 </div>
 
