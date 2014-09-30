@@ -10,39 +10,40 @@
 <div class="tabsheets">
 
     <breadcrumb></breadcrumb>
-    <form name="form" ng-submit="submit()">
+    <form name="form" class="form-horizontal" ng-submit="submit()">
 
-        <div class="form-row" ng-show="model.valinnanvaihe.kuuluuSijoitteluun">
-            <div class="form-row-label">{{ t('valinnanvaihelomake.kuuluu') || 'Kuuluu sijoitteluun' }}</div>
-            <div class="form-row-content">
+        <div class="form-group" ng-show="model.valinnanvaihe.kuuluuSijoitteluun">
+            <label class="control-label col-md-2">{{ t('valinnanvaihelomake.kuuluu') || 'Kuuluu sijoitteluun' }}</label>
+
+            <div class="control-content col-md-10">
                 {{model.valinnanvaihe.kuuluuSijoitteluun}}
             </div>
-            <div class="clear"></div>
         </div>
 
-        <div class="form-row">
-            <label class="form-row-label" for="nimi">{{ t('valinnanvaihelomake.nimi') || 'Nimi' }}</label>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="nimi">{{ t('valinnanvaihelomake.nimi') || 'Nimi' }}</label>
 
-            <div class="form-row-content">
-                <input type="text" auth ng-disabled="!userAccess.updateOrg" name="nimi" id="nimi"
+            <div class="col-md-4 ">
+                <input class="form-control" type="text" auth ng-disabled="!userAccess.updateOrg" name="nimi" id="nimi"
                        ng-model="model.valinnanvaihe.nimi" required/>
             </div>
+        </div>
 
-            <div class="clear"></div>
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="kuvaus">{{ t('valinnanvaihelomake.kuvaus') || 'Kuvaus' }}</label>
 
-            <label class="form-row-label" for="kuvaus">{{ t('valinnanvaihelomake.kuvaus') || 'Kuvaus' }}</label>
-
-            <div class="form-row-content">
-                <textarea auth ng-disabled="!userAccess.updateOrg" name="kuvaus" id="kuvaus"
+            <div class="col-md-4">
+                <textarea class="form-control" auth ng-disabled="!userAccess.updateOrg" name="kuvaus" id="kuvaus"
                           ng-model="model.valinnanvaihe.kuvaus"/>
             </div>
         </div>
 
-        <div class="form-row" ng-show="model.valinnanvaihe.oid">
-            <div class="form-row-label">{{ t('valinnanvaihelomake.valintatapajonot') || 'Valintatapajonot' }}</div>
+        <div class="form-group" ng-show="model.valinnanvaihe.oid">
+            <label class="control-label col-md-2">{{ t('valinnanvaihelomake.valintatapajonot') || 'Valintatapajonot'
+                }}</label>
 
-            <div class="form-row-content">
-                <table class="virkailija-table-1 margin-bottom-2" ng-show="model.valintatapajonot">
+            <div class="col-md-10">
+                <table class="virkailija-table-1" ng-show="model.valintatapajonot">
                     <thead>
                     <tr>
                         <th>{{ t('valinnanvaihelomake.aktiivinen') || 'Aktiivinen' }}</th>
@@ -64,36 +65,47 @@
                             <span ng-if="!jono.inheritance">{{t('valintaperusteet.periytyy.false') || 'Ei periydy'}}</span>
                         </td>
                         <td class="align-center">
-                            <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="model.remove(jono)">
-                                <i  ng-show="!jono.inheritance"
+                            <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default"
+                                    ng-click="model.remove(jono)">
+                                <i ng-show="!jono.inheritance"
                                    class="fa fa-trash-o"
-                                   ></i></button>
+                                        ></i></button>
 
                         </td>
                     </tr>
                     </tbody>
                 </table>
 
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2 col-md-offset-2">
                 <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="addJono()"><i
                         class="fa fa-plus"></i> {{ t('valinnanvaihelomake.jono') || 'Jono' }}
                 </button>
             </div>
         </div>
-        <div class="clear"></div>
 
-    <span>
-    <button auth ng-disabled="!userAccess.updateOrg" ng-disabled="!form.$valid" class="btn btn-sm btn-primary"
-            type="submit"><i
-            class="fa fa-floppy-o"></i>
-        {{ t('common.tallenna') || 'Tallenna' }}
-    </button>
-        </span>
-    <span>
-    <button class="btn btn-sm btn-default float-left margin-right-1" ng-click="cancel()" popover-popup-delay="500"
-            popover-placement="top" popover-trigger="mouseenter"
-            popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
-            class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
-    </button></span>
+        <div class="form-group">
+            <div class="col-md-2">
+                <div class="pull-right">
+                    <button auth ng-disabled="!userAccess.updateOrg" ng-disabled="!form.$valid"
+                            class="btn btn-sm btn-primary"
+                            type="submit"><i
+                            class="fa fa-floppy-o"></i>
+                        {{ t('common.tallenna') || 'Tallenna' }}
+                    </button>
+
+                    <button class="btn btn-sm btn-default float-left margin-right-1" ng-click="cancel()"
+                            popover-popup-delay="500"
+                            popover-placement="top" popover-trigger="mouseenter"
+                            popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
+                            class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
+                    </button>
+                </div>
+            </div>
+        </div>
     </form>
-    <div class="clear"></div>
 </div>
