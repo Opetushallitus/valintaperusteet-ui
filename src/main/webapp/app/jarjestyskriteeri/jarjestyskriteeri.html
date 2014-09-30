@@ -10,111 +10,122 @@
 
 <div class="tabsheets">
     <breadcrumb></breadcrumb>
-    <form name="form" ng-submit="submit()">
-        <div class="form-horizontal">
-            <div class="form-group">
-                <label class="col-sm-2 control-label" for="metatiedot">{{ t('jarjestyskriteeri.metatiedot') || 'Metatiedot' }}</label>
+    <form name="form" class="form-horizontal" ng-submit="submit()">
 
-                <div class="col-sm-6">
-                    <input class="form-control" type="text" name="metatiedot" id="metatiedot"
-                           ng-model="model.jarjestyskriteeri.metatiedot"/>
-                </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="metatiedot">{{ t('jarjestyskriteeri.metatiedot') || 'Metatiedot'
+                }}</label>
+
+            <div class="col-md-6">
+                <input auth ng-disabled="!userAccess.updateOrg" class="form-control" type="text" name="metatiedot"
+                       id="metatiedot"
+                       ng-model="model.jarjestyskriteeri.metatiedot"/>
             </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                {{ t('jarjestyskriteeri.laskentakaavanvalinta') || 'Laskentakaavan valinta' }}
+            </label>
+        </div>
+
+        <!-- Uuden järjestyskriteerin lisääminen -->
+        <div ng-if="!model.jarjestyskriteeri.oid" class="form-group" ng-model="model.laskentakaavaModel.laskentakaavat">
+
+            <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat ">
+                <label class="col-md-2 control-label" ng-if="kaavasFiltered(group.result)">{{group.name}}<br/></label>
+
+                <div class="col-md-10" ng-if="kaavasFiltered(group.result)">
+                    <div ng-repeat="data in group.result | laskentakaavaFilter">
+                        <p class="form-control-static">
+                            <input auth ng-disabled="!userAccess.updateOrg" type="radio" name="laskentakaava"
+                                   value="{{data.id}}"
+                                   ng-model="model.jarjestyskriteeri.laskentakaavaId"
+                                   ng-required="!model.jarjestyskriteeri.laskentakaavaId"/>
 
 
-            <!-- Uuden järjestyskriteerin lisääminen -->
-            <div ng-if="!model.jarjestyskriteeri.oid" class="form-group" ng-model="model.laskentakaavaModel.laskentakaavat">
+                            <span ng-bind="data.nimi"></span>
 
-                <label class="col-sm-2 control-label">{{ t('jarjestyskriteeri.laskentakaavanvalinta') || 'Laskentakaavan valinta' }}</label>
-
-                <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat ">
-                    <div class="clear"></div>
-                    <label class="col-sm-2 control-label" ng-if="kaavasFiltered(group.result)">{{group.name}}<br/></label>
-
-                    <div class="col-sm-10" ng-if="kaavasFiltered(group.result)">
-                        <div ng-repeat="data in group.result | laskentakaavaFilter">
-                            <p class="form-control-static">
-                                <input type="radio" name="laskentakaava" value="{{data.id}}"
-                                       ng-model="model.jarjestyskriteeri.laskentakaavaId"
-                                       ng-required="!model.jarjestyskriteeri.laskentakaavaId"/>
-
-                                <span ng-bind="data.nimi"></span>(<span ng-bind="data.id"></span>)
-
-                                <a popover-popup-delay="500"
-                                   popover-placement="right"
-                                   popover-trigger="mouseenter"
-                                   popover="{{ t('jarjestyskriteeri.kaavaavataan') || 'Kaava avataan uuteen välilehteen' }}"
-                                   ng-if="group.valintaryhmaOid"
-                                   target="_blank"
-                                   ng-href="#/valintaryhma/{{group.valintaryhmaOid}}/laskentakaavalista/laskentakaava/{{data.id}}">{{ t('jarjestyskriteeri.naytakaava') || 'Näytä kaava' }}</a>
-                                 <a popover-popup-delay="500"
-                                   popover-placement="right"
-                                   popover-trigger="mouseenter"
-                                   popover="{{ t('jarjestyskriteeri.kaavaavataan') || 'Kaava avataan uuteen välilehteen' }}"
-                                   ng-if="group.hakukohdeOid"
-                                   target="_blank"
-                                   ng-href="#/hakukohde/{{group.hakukohdeOid}}/laskentakaavalista/laskentakaava/{{data.id}}">{{ t('jarjestyskriteeri.naytakaava') || 'Näytä kaava' }}</a>
-                            </p>
-                        </div>
-                        <br/>
+                            <a popover-popup-delay="200"
+                               popover-placement="right"
+                               popover-trigger="mouseenter"
+                               popover="{{ t('jarjestyskriteeri.kaavaavataan') || 'Kaava avataan uuteen välilehteen' }}"
+                               ng-if="group.valintaryhmaOid"
+                               target="_blank"
+                               ng-href="#/valintaryhma/{{group.valintaryhmaOid}}/laskentakaavalista/laskentakaava/{{data.id}}">{{
+                                t('jarjestyskriteeri.naytakaava') || 'Näytä kaava' }}</a>
+                            <a popover-popup-delay="200"
+                               popover-placement="right"
+                               popover-trigger="mouseenter"
+                               popover="{{ t('jarjestyskriteeri.kaavaavataan') || 'Kaava avataan uuteen välilehteen' }}"
+                               ng-if="group.hakukohdeOid"
+                               target="_blank"
+                               ng-href="#/hakukohde/{{group.hakukohdeOid}}/laskentakaavalista/laskentakaava/{{data.id}}">{{
+                                t('jarjestyskriteeri.naytakaava') || 'Näytä kaava' }}</a>
+                        </p>
                     </div>
-
                 </div>
             </div>
+        </div>
 
 
-            <!-- Järjestyskriteerin muokkaus / tarkastelu (ei filttereitä laskentakaavalistassa) -->
-            <div ng-if="model.jarjestyskriteeri.oid" class="form-group" ng-model="model.laskentakaavaModel.laskentakaavat">
+        <!-- Järjestyskriteerin muokkaus / tarkastelu (ei filttereitä laskentakaavalistassa) -->
+        <div ng-if="model.jarjestyskriteeri.oid" class="form-group" ng-model="model.laskentakaavaModel.laskentakaavat">
 
-                <label class="col-sm-2 control-label">{{ t('jarjestyskriteeri.laskentakaavanvalinta') || 'Laskentakaavan valinta' }}</label>
+            <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat ">
+                <div class="clear"></div>
+                <label class="col-md-2 control-label">{{group.name}}<br/></label>
 
-                <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat ">
-                    <div class="clear"></div>
-                    <label class="col-sm-2 control-label">{{group.name}}<br/></label>
+                <div class="col-md-10">
+                    <div ng-repeat="data in group.result">
+                        <p class="form-control-static">
+                            <input auth ng-disabled="!userAccess.updateOrg" type="radio" name="laskentakaava"
+                                   value="{{data.id}}"
+                                   ng-model="model.jarjestyskriteeri.laskentakaavaId"
+                                   ng-required="!model.jarjestyskriteeri.laskentakaavaId"/>
 
-                    <div class="col-sm-10">
-                        <div ng-repeat="data in group.result">
-                            <p class="form-control-static">
-                                <input type="radio" name="laskentakaava" value="{{data.id}}"
-                                       ng-model="model.jarjestyskriteeri.laskentakaavaId"
-                                       ng-required="!model.jarjestyskriteeri.laskentakaavaId"/>
+                            <span ng-bind="data.nimi"></span>(<span ng-bind="data.id"></span>)
 
-                                <span ng-bind="data.nimi"></span>(<span ng-bind="data.id"></span>)
-
-                                <a popover-popup-delay="500"
-                                   popover-placement="right"
-                                   popover-trigger="mouseenter"
-                                   popover="{{ t('jarjestyskriteeri.kaavaavataan') || 'Kaava avataan uuteen välilehteen' }}"
-                                   ng-if="group.valintaryhmaOid"
-                                   target="_blank"
-                                   ng-href="#/valintaryhma/{{group.valintaryhmaOid}}/laskentakaavalista/laskentakaava/{{data.id}}">{{ t('jarjestyskriteeri.naytakaava') || 'Näytä kaava' }}</a>
-                                <a popover-popup-delay="500"
-                                   popover-placement="right"
-                                   popover-trigger="mouseenter"
-                                   popover="{{ t('jarjestyskriteeri.kaavaavataan') || 'Kaava avataan uuteen välilehteen' }}"
-                                   ng-if="group.hakukohdeOid"
-                                   target="_blank"
-                                   ng-href="#/hakukohde/{{group.hakukohdeOid}}/laskentakaavalista/laskentakaava/{{data.id}}">{{ t('jarjestyskriteeri.naytakaava') || 'Näytä kaava' }}</a>
-                            </p>
-                        </div>
-                        <br/>
+                            <a popover-popup-delay="200"
+                               popover-placement="right"
+                               popover-trigger="mouseenter"
+                               popover="{{ t('jarjestyskriteeri.kaavaavataan') || 'Kaava avataan uuteen välilehteen' }}"
+                               ng-if="group.valintaryhmaOid"
+                               target="_blank"
+                               ng-href="#/valintaryhma/{{group.valintaryhmaOid}}/laskentakaavalista/laskentakaava/{{data.id}}">{{
+                                t('jarjestyskriteeri.naytakaava') || 'Näytä kaava' }}</a>
+                            <a popover-popup-delay="200"
+                               popover-placement="right"
+                               popover-trigger="mouseenter"
+                               popover="{{ t('jarjestyskriteeri.kaavaavataan') || 'Kaava avataan uuteen välilehteen' }}"
+                               ng-if="group.hakukohdeOid"
+                               target="_blank"
+                               ng-href="#/hakukohde/{{group.hakukohdeOid}}/laskentakaavalista/laskentakaava/{{data.id}}">{{
+                                t('jarjestyskriteeri.naytakaava') || 'Näytä kaava' }}</a>
+                        </p>
                     </div>
-
+                    <br/>
                 </div>
+
             </div>
+        </div>
 
-            <div class="form-group">
-                <div class="col-sm-2">
-                        <button class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
-                        </button>
+        <div class="form-group">
+            <div class="col-md-2">
+                <div class="pull-right">
+                    <button class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500"
+                            popover-placement="top" popover-trigger="mouseenter"
+                            popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
+                            class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
+                    </button>
 
-                        <button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit">
-                            <div ng-show="!model.jarjestyskriteeri.oid">
-                                <i class="fa fa-floppy-o"></i> {{ t('jarjestyskriteeri.lisaa') || 'Lisää' }}
-                            </div>
-                            <div ng-show="model.jarjestyskriteeri.oid">
-                                <i class="fa fa-floppy-o"></i> {{ t('jarjestyskriteeri.muokkaa') || 'Muokkaa' }}
-                            </div>
+                    <button auth ng-disabled="!form.$valid || !userAccess.updateOrg" class="btn btn-sm btn-primary" type="submit">
+                        <div ng-show="!model.jarjestyskriteeri.oid">
+                            <i class="fa fa-floppy-o"></i> {{ t('jarjestyskriteeri.lisaa') || 'Lisää' }}
+                        </div>
+                        <div ng-show="model.jarjestyskriteeri.oid">
+                            <i class="fa fa-floppy-o"></i> {{ t('jarjestyskriteeri.muokkaa') || 'Muokkaa' }}
+                        </div>
                     </button>
                 </div>
             </div>
