@@ -40,7 +40,9 @@
                     <td class="align-center">{{hakukohdekoodi.arvo}}</td>
                     <td class="align-center">{{hakukohdekoodi.nimiFi}}</td>
                     <td class="align-center">
-                        <i class="fa fa-trash-o" ng-click="removeHakukohdeKoodi(hakukohdekoodi)"></i>
+                        <button auth ng-disabled="!userAccess.updateOrg" ng-click="removeHakukohdeKoodi(hakukohdekoodi)">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
                     </td>
                 </tr>
 

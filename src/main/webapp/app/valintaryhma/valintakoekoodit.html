@@ -35,11 +35,13 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="valintakoekoodit in model.valintaryhma.valintakoekoodit">
-                    <td class="align-center">{{valintakoekoodit.uri}}</td>
-                    <td class="align-center">{{valintakoekoodit.arvo}}</td>
-                    <td class="align-center">{{valintakoekoodit.nimiFi}}</td>
-                    <td class="align-center">
-                        <i class="fa fa-trash-o" ng-click="removeValintakoeKoodi(valintakoekoodit)"></i>
+                    <td>{{valintakoekoodit.uri}}</td>
+                    <td>{{valintakoekoodit.arvo}}</td>
+                    <td>{{valintakoekoodit.nimiFi}}</td>
+                    <td>
+                        <button auth ng-disabled="!userAccess.updateOrg" ng-click="removeValintakoeKoodi(valintakoekoodit)">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
                     </td>
                 </tr>
 
