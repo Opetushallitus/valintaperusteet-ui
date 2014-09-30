@@ -260,7 +260,7 @@
         <div class="clear"></div>
 
         <div ng-show="model.valintaryhma.oid" class="form-row">
-            <span auth="crud" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()"><i class="fa fa-plus"></i> {{ t('valintaryhmalomake.hakijaryhma') || 'Hakijaryhmä' }}</span>
+            <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()"><i class="fa fa-plus"></i> {{ t('valintaryhmalomake.hakijaryhma') || 'Hakijaryhmä' }}</button>
         </div>
     </div>
 
