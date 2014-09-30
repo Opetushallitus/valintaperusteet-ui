@@ -9,30 +9,35 @@
 
 <div class="tabsheets">
     <breadcrumb></breadcrumb>
-    <form name="form" ng-submit="submit()">
+    <form class="form-horizontal" name="form" ng-submit="submit()">
 
-        <div class="form-row">
-            <label class="form-row-label" for="nimi">{{ t('valintakoevalinnanvaihelomake.nimi') || 'Nimi' }}</label>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="nimi">{{ t('valintakoevalinnanvaihelomake.nimi') || 'Nimi'
+                }}</label>
 
-            <div class="form-row-content">
-                <input name="nimi" ng-model="model.valintakoevalinnanvaihe.nimi" required/>
+            <div class="col-md-4">
+                <input class="form-control" auth ng-disabled="!userAccess.updateOrg" id="nimi"
+                       ng-model="model.valintakoevalinnanvaihe.nimi" required/>
             </div>
+        </div>
+        <div class="form-group">
 
-            <div class="clear"></div>
+            <label class="control-label col-md-2" for="kuvaus">{{ t('valintakoevalinnanvaihelomake.kuvaus') || 'Kuvaus'
+                }}</label>
 
-            <label class="form-row-label" for="kuvaus">{{ t('valintakoevalinnanvaihelomake.kuvaus') || 'Kuvaus' }}</label>
-
-            <div class="form-row-content">
-                <textarea name="kuvaus" ng-model="model.valintakoevalinnanvaihe.kuvaus"/>
+            <div class="col-md-10">
+                <textarea auth ng-disabled="!userAccess.updateOrg" id="kuvaus"
+                          ng-model="model.valintakoevalinnanvaihe.kuvaus"/>
             </div>
         </div>
 
-        <div class="form-row width-100" ng-show="model.valintakoevalinnanvaihe.oid">
+        <div class="form-group" ng-show="model.valintakoevalinnanvaihe.oid">
 
-            <div class="form-row-label">{{ t('valintakoevalinnanvaihelomake.valintakokeet') || 'Valintakokeet' }}</div>
+            <label class="control-label col-md-2">{{ t('valintakoevalinnanvaihelomake.valintakokeet') || 'Valintakokeet'
+                }}</label>
 
-            <div class="form-row-content width-80">
-                <table class="virkailija-table-1 margin-bottom-2" ng-show="model.valintakokeet">
+            <div class="form-row-content col-md-4">
+                <table class="virkailija-table-1" ng-show="model.valintakokeet">
                     <thead>
                     <tr>
                         <th>{{ t('valintakoevalinnanvaihelomake.aktiivinen') || 'Aktiivinen' }}</th>
@@ -42,29 +47,51 @@
                         <th>{{ t('valintakoevalinnanvaihelomake.poista') || 'Poista' }}</th>
                     </tr>
                     </thead>
-                    <tbody ng-model="model.valintakokeet" class="margin-top-2">
+                    <tbody ng-model="model.valintakokeet">
                     <tr ng-repeat="valintakoe in model.valintakokeet">
-                        <td><input type="checkbox" ng-model="valintakoe.aktiivinen"/></td>
+                        <td><input auth ng-disabled="!userAccess.updateOrg" type="checkbox"
+                                   ng-model="valintakoe.aktiivinen"/></td>
                         <td>{{valintakoe.tunniste}}</td>
                         <td><a ng-click="modifyvalintakoe(valintakoe.oid)">{{valintakoe.nimi}}</a></td>
                         <td>{{valintakoe.kuvaus}}</td>
-                        <td><span auth="crud" class="btn remove" ng-click="model.removeValintakoe(valintakoe)"></span>
+                        <td>
+                            <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-default btn-sm"
+                                    ng-click="model.removeValintakoe(valintakoe)">
+                                <i class="fa fa-trash-o organisaatio"></i>
+                            </button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <span auth="crud" class="btn btn-sm btn-default" ng-click="addValintakoe()"><i class="fa fa-plus"></i> {{ t('valintakoevalinnanvaihelomake.valintakoe') || 'Valintakoe' }}</span>
+
             </div>
         </div>
-        <div class="clear"></div>
-        <span><button class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
-                class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
-        </button></span>
-    <span><button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i
-            class="fa fa-floppy-o"></i>
-        {{ t('common.tallenna') || 'Tallenna' }}
-    </button></span>
 
+        <div class="form-group">
+            <div class="col-md-2 col-md-offset-2">
+                <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default"
+                        ng-click="addValintakoe()"><i class="fa fa-plus"></i> {{
+                    t('valintakoevalinnanvaihelomake.valintakoe') || 'Valintakoe' }}
+                </button>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <div class="pull-right">
+                <button class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500"
+                        popover-placement="top" popover-trigger="mouseenter"
+                        popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
+                        class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
+                </button>
+                <button auth ng-disabled="!form.$valid || !userAccess.updateOrg" class="btn btn-sm btn-primary"
+                        type="submit">
+                    <i
+                            class="fa fa-floppy-o"></i>
+                    {{ t('common.tallenna') || 'Tallenna' }}
+                </button>
+                </div>
+            </div>
+        </div>
 
     </form>
 </div>
