@@ -73,8 +73,7 @@
         <div ng-if="model.jarjestyskriteeri.oid" class="form-group" ng-model="model.laskentakaavaModel.laskentakaavat">
 
             <div ng-repeat="group in model.laskentakaavaModel.laskentakaavat ">
-                <div class="clear"></div>
-                <label class="col-md-2 control-label">{{group.name}}<br/></label>
+                <label class="col-md-2 control-label">{{group.name}}</label>
 
                 <div class="col-md-10">
                     <div ng-repeat="data in group.result">
