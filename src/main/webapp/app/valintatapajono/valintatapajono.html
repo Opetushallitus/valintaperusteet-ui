@@ -310,8 +310,8 @@
                 </td>
                 <td>{{data.inheritance}}</td>
                 <td>
-                    <button class="btn btn-sm btn-default" auth ng-disabled="!userAccess.crudOrg">
-                        <i ng-show="!data.inheritance" class="fa fa-trash-o" ng-click="remove(data.oid)"></i>
+                    <button ng-show="!data.inheritance" class="btn btn-sm btn-default" auth ng-disabled="!userAccess.crudOrg">
+                        <i class="fa fa-trash-o" ng-click="remove(data.oid)"></i>
                     </button>
                 </td>
             </tr>

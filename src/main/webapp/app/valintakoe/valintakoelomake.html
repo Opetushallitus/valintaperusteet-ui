@@ -10,73 +10,90 @@
 <div class="tabsheets">
     <breadcrumb></breadcrumb>
 
-    <form name="form" ng-submit="submit()">
+    <form class="form-horizontal" name="form" ng-submit="submit()">
 
-        <div class="form-row">
+        <div class="form-group">
 
-            <label class="form-row-label">{{ t('valintakoelomake.tunniste') || 'Tunniste' }}</label>
+            <label for="valintakoenimi" class="control-label col-md-2">{{ t('valintakoelomake.tunniste') || 'Tunniste'
+                }}</label>
 
-            <div class="form-row-content">
-                <input name="tunniste" ng-model="model.valintakoe.tunniste" required/>
+            <div class="col-md-6">
+                <input auth ng-disabled="!userAccess.updateOrg" class="form-control" id="valintakoenimi"
+                       ng-model="model.valintakoe.tunniste" required/>
             </div>
-            <div class="clear"></div>
-
-            <label class="form-row-label" for="nimi">{{ t('valintakoelomake.nimi') || 'Nimi' }}</label>
-
-            <div class="form-row-content">
-                <input name="nimi" ng-model="model.valintakoe.nimi" required/>
-            </div>
-            <div class="clear"></div>
-
-            <label class="form-row-label" for="kuvaus">{{ t('valintakoelomake.kuvaus') || 'Kuvaus' }}</label>
-
-            <div class="form-row-content">
-                <textarea name="kuvaus" ng-model="model.valintakoe.kuvaus"/>
-            </div>
-            <div class="clear"></div>
-
-            <label class="form-row-label" for="lahetetaankoKoekutsut">{{ t('valintakoelomake.lahetetaanko') || 'Lähetetäänkö koekutsut' }}</label>
-
-            <div class="form-row-content">
-                <input type="checkbox" name="lahetetaankoKoekutsut" ng-model="model.valintakoe.lahetetaankoKoekutsut"/>
-            </div>
-            <div class="clear"></div>
-
-            <label class="form-row-label" for="kutsutaankoKaikki">{{ t('valintakoelomake.kutsutaanko') || 'Kutsutaanko kaikki' }}</label>
-
-            <div class="form-row-content">
-                <input type="checkbox" name="kutsutaankoKaikki" ng-model="model.valintakoe.kutsutaankoKaikki"/>
-            </div>
-
-            <div class="clear"></div>
-            <!-- Ei vielä dropata backendistä, mutta tällä hetkellä karsinta tehdään edeltävässä valinnan vaiheessa -->
-            <!--<label class="form-row-label" for="maara">{{ t('valintakoelomake.maara') || 'Kutsuttavien määrä' }}</label>-->
-
-            <!--<div class="form-row-content">-->
-                <!--<input id="maara" name="maara" ng-model="model.valintakoe.kutsuttavienMaara" type="number" min="0"-->
-                       <!--ng-disabled="model.valintakoe.kutsutaankoKaikki"/>-->
-            <!--</div>-->
-
-            <!--<div class="clear"></div>-->
-            <label class="form-row-label" for="kohde">{{ t('valintakoelomake.kohde') || 'Kutsun kohde' }}</label>
-
-            <div class="form-row-content">
-                <select id="kohde" name="kohde" ng-model="model.valintakoe.kutsunKohde">
-                    <option value="YLIN_TOIVE">{{ t('valintakoelomake.ylin_toive') || 'Hakijan ylin hakutoive' }}</option>
-                    <option value="YLIN_HYVAKSYTTY_TOIVE">{{ t('valintakoelomake.ylin_hyvaksytty_toive') || 'Hakijan ylin hakutoive, johon pisteet riittävät' }}</option>
-                    <option value="HAKIJAN_VALINTA">{{ t('valintakoelomake.hakijan_valinta') || 'Hakijan valitsema hakukohde' }}</option>
-                    <option value="KAIKKI_TOIVEET">{{ t('valintakoelomake.kaikki_toiveet') || 'Kaikki valintaryhmän hakukohteet' }}</option>
-                </select>
-            </div>
-
         </div>
 
-        <div class="form-row">
+        <div class="form-group">
+            <label class="control-label col-md-2" for="nimi">{{ t('valintakoelomake.nimi') || 'Nimi' }}</label>
 
-            <div class="field-container-radio">
-                <label class="form-row-label">{{ t('valintakoelomake.valintakokeenlaskentakaava') || 'Valintakokeen laskentakaava' }}</label>
+            <div class="col-md-6">
+                <input class="form-control" auth ng-disabled="!userAccess.updateOrg" id="nimi"
+                       ng-model="model.valintakoe.nimi" required/>
+            </div>
+        </div>
 
-                <div class="form-row-content">
+        <div class="form-group">
+            <label class="control-label col-md-2" for="kuvaus">{{ t('valintakoelomake.kuvaus') || 'Kuvaus' }}</label>
+
+            <div class="col-md-6">
+                <textarea class="form-control" auth ng-disabled="!userAccess.updateOrg" id="kuvaus"
+                          ng-model="model.valintakoe.kuvaus"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="lahetetaankoKoekutsut">{{ t('valintakoelomake.lahetetaanko') ||
+                'Lähetetäänkö
+                koekutsut' }}</label>
+
+            <div class="col-md-6">
+                <input auth ng-disabled="!userAccess.updateOrg" type="checkbox" id="lahetetaankoKoekutsut"
+                       ng-model="model.valintakoe.lahetetaankoKoekutsut"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="kutsutaankoKaikki">{{ t('valintakoelomake.kutsutaanko') ||
+                'Kutsutaanko
+                kaikki' }}</label>
+
+            <div class="col-md-6">
+                <input auth ng-disabled="!userAccess.updateOrg" type="checkbox" id="kutsutaankoKaikki"
+                       ng-model="model.valintakoe.kutsutaankoKaikki"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="kohde">{{ t('valintakoelomake.kohde') || 'Kutsun kohde'
+                }}</label>
+
+            <div class="col-md-6">
+                <select class="form-control" auth ng-disabled="!userAccess.updateOrg" id="kohde" name="kohde"
+                        ng-model="model.valintakoe.kutsunKohde">
+                    <option value="YLIN_TOIVE">{{ t('valintakoelomake.ylin_toive') || 'Hakijan ylin hakutoive' }}
+                    </option>
+                    <option value="YLIN_HYVAKSYTTY_TOIVE">{{ t('valintakoelomake.ylin_hyvaksytty_toive') || 'Hakijan
+                        ylin
+                        hakutoive, johon pisteet riittävät' }}
+                    </option>
+                    <option value="HAKIJAN_VALINTA">{{ t('valintakoelomake.hakijan_valinta') || 'Hakijan valitsema
+                        hakukohde' }}
+                    </option>
+                    <option value="KAIKKI_TOIVEET">{{ t('valintakoelomake.kaikki_toiveet') || 'Kaikki valintaryhmän
+                        hakukohteet' }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div>
+                <label class="control-label col-md-2">{{ t('valintakoelomake.valintakokeenlaskentakaava') ||
+                    'Valintakokeen
+                    laskentakaava' }}</label>
+
+                <div class="col-md-6">
                     <table class="virkailija-table-1">
                         <thead>
                         <tr>
@@ -86,33 +103,38 @@
                         </tr>
                         </thead>
                         <tbody ng-repeat="group in model.laskentakaavaModel.laskentakaavat">
-                            <tr ng-repeat="data in group.result">
+                        <tr ng-repeat="data in group.result">
 
-                                <td><input type="radio" name="laskentakaava" value="{{data.id}}"
-                                           ng-model="model.valintakoe.laskentakaavaId"/></td>
-                                <td>{{data.nimi}}</td>
-                                <td>{{group.name}}</td>
-                            </tr>
+                            <td><input auth ng-disabled="!userAccess.updateOrg" type="radio" name="laskentakaava"
+                                       value="{{data.id}}"
+                                       ng-model="model.valintakoe.laskentakaavaId"/></td>
+                            <td>{{data.nimi}}</td>
+                            <td>{{group.name}}</td>
+                        </tr>
                         </tbody>
 
                     </table>
                 </div>
-
-                <div class="clear"></div>
             </div>
-
-
-
         </div>
 
-
-        <button class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i class="fa fa-arrow-left"></i>
-            {{ t('common.takaisin') || 'Takaisin' }}
-        </button>
-        <button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i
-                class="fa fa-floppy-o"></i>
-            {{ t('common.tallenna') || 'Tallenna' }}
-        </button>
-
+        <div class="form-group">
+            <div class="col-md-2">
+                <div class="pull-right">
+                    <button class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500"
+                            popover-placement="top"
+                            popover-trigger="mouseenter"
+                            popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
+                            class="fa fa-arrow-left"></i>
+                        {{ t('common.takaisin') || 'Takaisin' }}
+                    </button>
+                    <button auth ng-disabled="!form.$valid || !userAccess.updateOrg" class="btn btn-sm btn-primary"
+                            type="submit"><i
+                            class="fa fa-floppy-o"></i>
+                        {{ t('common.tallenna') || 'Tallenna' }}
+                    </button>
+                </div>
+            </div>
+        </div>
     </form>
 </div>

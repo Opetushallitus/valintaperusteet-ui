@@ -15,7 +15,7 @@
             <label class="control-label col-md-2" for="nimi">{{ t('valintakoevalinnanvaihelomake.nimi') || 'Nimi'
                 }}</label>
 
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <input class="form-control" auth ng-disabled="!userAccess.updateOrg" id="nimi"
                        ng-model="model.valintakoevalinnanvaihe.nimi" required/>
             </div>
@@ -25,8 +25,8 @@
             <label class="control-label col-md-2" for="kuvaus">{{ t('valintakoevalinnanvaihelomake.kuvaus') || 'Kuvaus'
                 }}</label>
 
-            <div class="col-md-10">
-                <textarea auth ng-disabled="!userAccess.updateOrg" id="kuvaus"
+            <div class="col-md-6">
+                <textarea class="form-control" auth ng-disabled="!userAccess.updateOrg" id="kuvaus"
                           ng-model="model.valintakoevalinnanvaihe.kuvaus"/>
             </div>
         </div>
