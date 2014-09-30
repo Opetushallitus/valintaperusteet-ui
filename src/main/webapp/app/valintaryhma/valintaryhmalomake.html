@@ -65,58 +65,53 @@
 <div class="tabsheets">
 <breadcrumb></breadcrumb>
 
-<form name="form" ng-submit="submit()">
+<form name="form" class="form-horizontal" ng-submit="submit()">
 
-<div class="form-row">
-    <label class="form-row-label" for="">{{ t('valintaryhmalomake.nimi') || 'Nimi' }}</label>
+<div class="form-group">
+    <label class="control-label col-md-2" for="valintaryhmanimi">{{ t('valintaryhmalomake.nimi') || 'Nimi' }}</label>
 
-    <div class="form-row-content width-60">
-        <input auth ng-disabled="!userAccess.updateOrg"
-               class="width-60" type="text" name="" id="" ng-model="model.valintaryhma.nimi" required/>
-        <br><span class="red" ng-show="model.nameerror">{{ t('valintaryhmalomakeuusi.valintaryhmalomakeuusi.nimiloytyyjo') || 'Valintaryhmän nimi on jo käytössä. Anna jokin toinen nimi ryhmälle.' }}</span>
+    <div class="col-md-6">
+        <input auth ng-disabled="!userAccess.updateOrg" class="form-control"
+               type="text" name="" id="valintaryhmanimi" ng-model="model.valintaryhma.nimi" required/>
+        <span class="red" ng-show="model.nameerror">{{ t('valintaryhmalomakeuusi.valintaryhmalomakeuusi.nimiloytyyjo') || 'Valintaryhmän nimi on jo käytössä. Anna jokin toinen nimi ryhmälle.' }}</span>
     </div>
-
-
-    <div class="clear"></div>
 </div>
 
-<div class="form-row">
-    <label class="form-row-label" for="">{{ t('valintaryhmalomake.tunniste') || 'Tunniste(oid)' }}:</label>
+<div class="form-group">
+    <label class="control-label col-md-2">{{ t('valintaryhmalomake.tunniste') || 'Tunniste(oid)' }}:</label>
 
-    <div class="form-row-content">
-        <span class="nofield">{{model.valintaryhma.oid}}</span>
+    <div class="col-md-6">
+        <p class="form-control-static">{{model.valintaryhma.oid}}</p>
     </div>
-    <div class="clear"></div>
 </div>
 
-<div class="form-row">
-    <label class="form-row-label" for="">{{ t('valintaryhmalomake.haku') || 'Haku' }}</label>
+<div class="form-group">
+    <label class="control-label col-md-2" for="hakunimi">{{ t('valintaryhmalomake.haku') || 'Haku' }}</label>
 
-    <div class="form-row-content width-60">
-        <select auth ng-disabled="!userAccess.updateOrg" ng-model="model.valintaryhma.hakuoid"
+    <div class="col-md-4">
+        <select auth ng-disabled="!userAccess.updateOrg" id="hakunimi" ng-model="model.valintaryhma.hakuoid"
                 ng-options="h.oid as h.nimi.kieli_fi for h in model.haut | orderBy:'nimi.kieli_fi'">
             <option value=""></option>
         </select>
     </div>
-    <div class="clear"></div>
 </div>
 
-<div class="form-row">
-    <label class="form-row-label" for="">{{ t('valintaryhmalomake.kohdejoukko') || 'Kohdejoukko' }}</label>
+<div class="form-group">
+    <label class="control-label col-md-2" for="kohdejoukko">{{ t('valintaryhmalomake.kohdejoukko') || 'Kohdejoukko'
+        }}</label>
 
-    <div class="form-row-content width-60">
-        <select auth ng-disabled="model.valintaryhma.level > 1 || !userAccess.updateOrg"
+    <div class="col-md-6">
+        <select id="kohdejoukko" auth ng-disabled="model.valintaryhma.level > 1 || !userAccess.updateOrg"
                 ng-model="model.valintaryhma.kohdejoukko"
                 ng-options="k.koodiUri as k.metadata[0].nimi for k in model.kohdejoukot">
         </select>
     </div>
-    <div class="clear"></div>
 </div>
 
-<div class="form-row">
-    <label class="form-row-label" for="">{{ t('valintaryhmalomake.organisaatiot') || 'Organisaatiot' }}:</label>
+<div class="form-group">
+    <label class="control-label col-md-2">{{ t('valintaryhmalomake.organisaatiot') || 'Organisaatiot' }}:</label>
 
-    <div class="form-row-content  width-60">
+    <div class="col-md-10">
 
         <table class="virkailija-table-1">
             <thead>
@@ -129,15 +124,15 @@
             </thead>
             <tbody>
             <tr ng-repeat="organisaatio in model.valintaryhma.organisaatiot">
-                <td class="align-center">{{organisaatio.nimi['fi'] || organisaatio.nimi['sv'] ||
+                <td>{{organisaatio.nimi['fi'] || organisaatio.nimi['sv'] ||
                     organisaatio.nimi['en']}}
                 </td>
-                <td class="align-center">
+                <td>
                     <span ng-repeat="type in organisaatio.organisaatiotyypit">{{type}}</span>
                     <span ng-repeat="type in organisaatio.tyypit">{{type}}</span>
                 </td>
-                <td class="align-center">{{organisaatio.oid}}</td>
-                <td class="align-center">
+                <td>{{organisaatio.oid}}</td>
+                <td>
                     <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-default btn-sm"
                             ng-click="model.valintaryhma.organisaatiot.splice($index,1)">
                         <i class="fa fa-trash-o organisaatio"></i></button>
@@ -147,27 +142,21 @@
             </tbody>
 
         </table>
-        <div class="clear"></div>
-        <br/>
-
         <div auth="update" ng-include="'../common/partials/organisaatioSelector.html'"/>
-
     </div>
-
-    <div class="clear"></div>
 </div>
 
 <!-- VALINTAKOEKOODIEN LISTAUS -->
-<div ng-include="'valintaryhma/valintakoekoodit.html'" class="form-row"></div>
+<div ng-include="'valintaryhma/valintakoekoodit.html'"></div>
 
 <!-- HAKUKOHDEKOODIEN LISTAUS -->
-<div ng-include="'valintaryhma/hakukohdekoodit.html'" class="form-row"></div>
+<div ng-include="'valintaryhma/hakukohdekoodit.html'"></div>
 
 <!-- VALINNANVAIHEIDEN LISTAUS -->
-<div class="form-row">
-    <div class="form-row-label">{{ t('valintaryhmalomake.valinnanvaiheet') || 'Valinnan vaiheet' }}</div>
-    <div class="form-row-content width-60">
-        <table ng-show="model.valinnanvaiheet" class="virkailija-table-1 margin-bottom-2 width-60">
+<div class="form-group">
+    <label class="control-label col-md-2">{{ t('valintaryhmalomake.valinnanvaiheet') || 'Valinnan vaiheet' }}</label>
+    <div class="col-md-10">
+        <table ng-show="model.valinnanvaiheet" class="virkailija-table-1">
             <thead>
             <tr>
                 <th>{{ t('valintaryhmalomake.aktiivinen') || 'Aktiivinen' }}</th>
@@ -179,22 +168,23 @@
             </thead>
             <tbody ui-sortable ng-model="model.valinnanvaiheet">
             <tr ng-repeat="data in model.valinnanvaiheet">
-                <td class="align-center"><input auth ng-disabled="!userAccess.updateOrg" type="checkbox"
-                                                ng-model="data.aktiivinen"/></td>
-                <td class="align-center">
+                <td><input auth ng-disabled="!userAccess.updateOrg" type="checkbox"
+                           ng-model="data.aktiivinen"/></td>
+                <td>
                     <a ng-class="{true:'', false:'line-through'}[data.aktiivinen]"
                        ng-href="#/valintaryhma/{{model.valintaryhma.oid}}/{{model.getValinnanvaiheType(data)}}/{{data.oid}}">{{data.nimi}}</a>
                 </td>
-                <td class="align-center">
+                <td>
                     <span ng-if="data.inheritance">{{t('valintaperusteet.periytyy.true') || 'Periytyy'}}</span>
                     <span ng-if="!data.inheritance">{{t('valintaperusteet.periytyy.false') || 'Ei periydy'}}</span>
                 </td>
-                <td class="align-center">
+                <td>
                     <span ng-if="data.valinnanVaiheTyyppi === 'TAVALLINEN'">{{t('valintaperusteet.tyyppi.TAVALLINEN') || 'Tavallinen'}}</span>
                     <span ng-if="data.valinnanVaiheTyyppi === 'VALINTAKOE'">{{t('valintaperusteet.tyyppi.VALINTAKOE') || 'Valintakoe'}}</span>
                 </td>
-                <td class="align-center">
-                    <button auth ng-disabled="!userAccess.crudOrg" ng-show="!data.inheritance"  class="btn btn-sm btn-default" ng-click="model.removeValinnanvaihe(data)">
+                <td>
+                    <button auth ng-disabled="!userAccess.crudOrg" ng-show="!data.inheritance"
+                            class="btn btn-sm btn-default" ng-click="model.removeValinnanvaihe(data)">
                         <i class="fa fa-trash-o"></i>
                     </button>
                 </td>
@@ -203,27 +193,31 @@
 
         </table>
 
-        <div class="clear"></div>
 
-        <div ng-show="model.valintaryhma.oid" class="form-row">
-            <button auth ng-disabled="!userAccess.crudOrg" type="button" class="btn btn-sm btn-default"
-                    ng-click="lisaaValinnanVaihe()"><i
-                    class="fa fa-plus"></i> {{ t('valintaperusteet.valinnanvaihe') || 'Valinnanvaihe'}}
-            </button>
-            <button auth ng-disabled="!userAccess.crudOrg" type="button" class="btn btn-sm btn-default"
-                    ng-click="lisaaValintakoeValinnanVaihe()"><i
-                    class="fa fa-plus"></i> {{ t('valintaperusteet.valintakoevalinnanvaihe') ||
-                'Valintakoevalinnanvaihe'}}
-            </button>
-        </div>
     </div>
 </div>
 
+<div ng-show="model.valintaryhma.oid" class="form-group">
+    <div class="col-md-4 col-md-offset-2">
+        <button auth ng-disabled="!userAccess.crudOrg" type="button" class="btn btn-sm btn-default"
+                ng-click="lisaaValinnanVaihe()"><i
+                class="fa fa-plus"></i> {{ t('valintaperusteet.valinnanvaihe') || 'Valinnanvaihe'}}
+        </button>
+        <button auth ng-disabled="!userAccess.crudOrg" type="button" class="btn btn-sm btn-default"
+                ng-click="lisaaValintakoeValinnanVaihe()"><i
+                class="fa fa-plus"></i> {{ t('valintaperusteet.valintakoevalinnanvaihe') ||
+            'Valintakoevalinnanvaihe'}}
+        </button>
+    </div>
+</div>
+
+
 <!-- HAKIJARYHMÄT -->
-<div class="form-row width-100">
-    <div class="form-row-label">{{ t('valintaryhmalomake.hakijaryhmat') || 'Hakijaryhmät' }}</div>
-    <div class="form-row-content">
-        <table ng-show="model.hakijaryhmat" class="virkailija-table-1 margin-bottom-2 width-60">
+<div class="form-group">
+    <label class="control-label col-md-2">{{ t('valintaryhmalomake.hakijaryhmat') || 'Hakijaryhmät' }}</label>
+
+    <div class="col-md-10">
+        <table ng-show="model.hakijaryhmat" class="virkailija-table-1">
             <thead>
             <tr>
                 <th>{{ t('valintaryhmalomake.nimi') || 'Nimi' }}</th>
@@ -236,15 +230,16 @@
             </thead>
             <tbody ng-model="model.hakijaryhmat">
             <tr ng-repeat="data in model.hakijaryhmat">
-                <td class="align-center">
+                <td>
                     <a href="#/valintaryhma/{{model.valintaryhma.oid}}/hakijaryhma/{{data.oid}}">{{data.nimi}}</a>
                 </td>
-                <td class="align-center">{{data.kuvaus}}</td>
-                <td class="align-center">{{data.laskentakaava_nimi}}</td>
-                <td class="align-center">{{data.kiintio}}</td>
-                <td class="align-center">
-                    <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-default" ng-show="!data.inheritance" ng-click="model.removeHakijaryhma(data.oid)">
-                    <i class="fa fa-trash-o"></i>
+                <td>{{data.kuvaus}}</td>
+                <td>{{data.laskentakaava_nimi}}</td>
+                <td>{{data.kiintio}}</td>
+                <td>
+                    <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-default"
+                            ng-show="!data.inheritance" ng-click="model.removeHakijaryhma(data.oid)">
+                        <i class="fa fa-trash-o"></i>
                     </button>
                 </td>
                 <td>
@@ -257,11 +252,7 @@
             </tbody>
         </table>
 
-        <div class="clear"></div>
 
-        <div ng-show="model.valintaryhma.oid" class="form-row">
-            <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()"><i class="fa fa-plus"></i> {{ t('valintaryhmalomake.hakijaryhma') || 'Hakijaryhmä' }}</button>
-        </div>
     </div>
 
     <div ng-controller="HakijaryhmaKopiointiController">
@@ -270,6 +261,16 @@
         </modal>
     </div>
 
+</div>
+
+<div ng-show="model.hakijaryhmat" class="form-group">
+    <div class="col-md-4 col-md-offset-2">
+        <div ng-show="model.valintaryhma.oid">
+            <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()">
+                <i class="fa fa-plus"></i> {{ t('valintaryhmalomake.hakijaryhma') || 'Hakijaryhmä' }}
+            </button>
+        </div>
+    </div>
 </div>
 
 

@@ -1,49 +1,51 @@
 <div ng-controller="ValintakoekoodiController">
-<label class="form-row-label">{{ t('valintakoekoodit.header') || 'Valintakoekoodit' }}</label>
+    <div class="form-group">
+        <label class="control-label col-md-2">{{ t('valintakoekoodit.header') || 'Valintakoekoodit' }}</label>
 
-<div class="row">
-    <button ng-click="toggleValintakokeet()" class="btn btn-sm btn-default">
-        <i ng-if="toggleValintaryhmaValintakokeet" class="fa fa-eye-slash"></i>
-        <i ng-if="!toggleValintaryhmaValintakokeet" class="fa fa-eye"></i> {{ t('valintakoekoodit.header') || 'Valintakoekoodit' }}
-    </button>
-    <button auth ng-disabled="!userAccess.updateOrg" ng-click="showValintakoeKoodit()" type="button"
-            class="btn btn-sm btn-default">
-        <span><i class="fa fa-plus"></i> {{ t('valintakoekoodit.uusi') || 'Uusi valintakoekoodi' }}</span>
-    </button>
-    <modal modal-template="../common/partials/valintakoekoodinValinta.html" auth="update">
-        <modal-open></modal-open>
-    </modal>
-</div>
+        <div class="col-md-10">
+            <button ng-click="toggleValintakokeet()" class="btn btn-sm btn-default">
+                <i ng-if="toggleValintaryhmaValintakokeet" class="fa fa-eye-slash"></i>
+                <i ng-if="!toggleValintaryhmaValintakokeet" class="fa fa-eye"></i> {{ t('valintakoekoodit.header') ||
+                'Valintakoekoodit' }}
+            </button>
+            <button auth ng-disabled="!userAccess.updateOrg" ng-click="showValintakoeKoodit()" type="button"
+                    class="btn btn-sm btn-default">
+                <span><i class="fa fa-plus"></i> {{ t('valintakoekoodit.uusi') || 'Uusi valintakoekoodi' }}</span>
+            </button>
+            <modal modal-template="../common/partials/valintakoekoodinValinta.html" auth="update">
+                <modal-open></modal-open>
+            </modal>
+        </div>
 
-<label class="form-row-label"></label>
+        <div class="col-md-10 col-md-offset-2">
+            <div ng-if="toggleValintaryhmaValintakokeet && !model.valintaryhma.valintakoekoodit"
+                 class="alert alert-info">
+                {{ t('valintakoekoodit.virhe') || 'Tähän valintaryhmään ei ole vielä liitetty yhtään valintakoekoodia'
+                }}
+            </div>
+            <table ng-if="toggleValintaryhmaValintakokeet && model.valintaryhma.valintakoekoodit"
+                   class="virkailija-table-1">
+                <thead>
+                <tr>
+                    <th>{{ t('valintakoekoodit.koodi') || 'Koodi' }}</th>
+                    <th>{{ t('valintakoekoodit.arvo') || 'Arvo' }}</th>
+                    <th>{{ t('valintakoekoodit.nimi') || 'Nimi' }}</th>
+                    <th>{{ t('valintakoekoodit.poista') || 'Poista' }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="valintakoekoodit in model.valintaryhma.valintakoekoodit">
+                    <td class="align-center">{{valintakoekoodit.uri}}</td>
+                    <td class="align-center">{{valintakoekoodit.arvo}}</td>
+                    <td class="align-center">{{valintakoekoodit.nimiFi}}</td>
+                    <td class="align-center">
+                        <i class="fa fa-trash-o" ng-click="removeValintakoeKoodi(valintakoekoodit)"></i>
+                    </td>
+                </tr>
 
-<div class="form-row-content">
-    <div ng-if="toggleValintaryhmaValintakokeet && !model.valintaryhma.valintakoekoodit" class="alert alert-info">
-        {{ t('valintakoekoodit.virhe') || 'Tähän valintaryhmään ei ole vielä liitetty yhtään valintakoekoodia' }}
+                </tbody>
+
+            </table>
+        </div>
     </div>
-    <table ng-if="toggleValintaryhmaValintakokeet && model.valintaryhma.valintakoekoodit"
-           class="virkailija-table-1">
-        <thead>
-        <tr>
-            <th>{{ t('valintakoekoodit.koodi') || 'Koodi' }}</th>
-            <th>{{ t('valintakoekoodit.arvo') || 'Arvo' }}</th>
-            <th>{{ t('valintakoekoodit.nimi') || 'Nimi' }}</th>
-            <th>{{ t('valintakoekoodit.poista') || 'Poista' }}</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="valintakoekoodit in model.valintaryhma.valintakoekoodit">
-            <td class="align-center">{{valintakoekoodit.uri}}</td>
-            <td class="align-center">{{valintakoekoodit.arvo}}</td>
-            <td class="align-center">{{valintakoekoodit.nimiFi}}</td>
-            <td class="align-center">
-                <i class="fa fa-trash-o" ng-click="removeValintakoeKoodi(valintakoekoodit)"></i>
-            </td>
-        </tr>
-
-        </tbody>
-
-    </table>
-</div>
-<div class="clear"></div>
 </div>
