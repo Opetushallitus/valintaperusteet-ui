@@ -41,13 +41,12 @@
         </div>
 
         <div class="form-group">
-
             <div class="col-md-offset-2 col-md-10">
-                <input type="text" ng-model="uusiHakukohdeUri"
+                <input auth ng-disabled="!userAccess.updateOrg" type="text" ng-model="uusiHakukohdeUri"
                        typeahead-editable="false"
                        typeahead="koodi as koodi.metadata[0].nimi + ' (' + koodi.koodiUri + ')' for koodi in model.hakukohdekoodit| filter:$viewValue | orderBy:'metadata[0].nimi' | limitTo :10 ">
-                <button class="btn btn-sm btn-primary" auth="update" type="button" ng-click="addHakukohdeUri()"
-                        ng-disabled="!uusiHakukohdeUri"><i class="fa fa-refresh"></i> {{ t('hakukohdelomake.paivita') || 'Päivitä' }}
+                <button class="btn btn-sm btn-primary" auth type="button" ng-click="addHakukohdeUri()"
+                        ng-disabled="!uusiHakukohdeUri || !userAccess.updateOrg"><i class="fa fa-refresh"></i> {{ t('hakukohdelomake.paivita') || 'Päivitä' }}
                 </button>
             </div>
 
@@ -92,7 +91,7 @@
                     <modal modal-template="hakukohde/valintaryhmanSiirtoModal.html">
                         <modal-open></modal-open>
                     </modal>
-                    <button auth="update" class="btn btn-sm btn-primary" type="button" ng-click="openValintaryhmaModal()"><i
+                    <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-primary" type="button" ng-click="openValintaryhmaModal()"><i
                             class="fa fa-arrows"></i>
                         {{ t('hakukohdelomake.siirra') || 'Siirrä' }}
                     </button>
@@ -147,10 +146,10 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10" ng-show="model.hakukohde.oid">
-                <span auth="crud" class="btn btn-sm btn-default" ng-click="lisaaValinnanVaihe()"><i
-                        class="fa fa-plus"></i> {{ t('hakukohdelomake.valinnanvaihe') || 'Valinnanvaihe' }}</span>
-                <span auth="crud" class="btn btn-sm btn-default" ng-click="lisaaValintakoeValinnanVaihe()"><i
-                        class="fa fa-plus"></i> {{ t('hakukohdelomake.valintakoevalinnanvaihe') || 'Valintakoevalinnanvaihe' }}</span>
+                <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="lisaaValinnanVaihe()"><i
+                        class="fa fa-plus"></i> {{ t('hakukohdelomake.valinnanvaihe') || 'Valinnanvaihe' }}</button>
+                <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-default" ng-click="lisaaValintakoeValinnanVaihe()"><i
+                        class="fa fa-plus"></i> {{ t('hakukohdelomake.valintakoevalinnanvaihe') || 'Valintakoevalinnanvaihe' }}</button>
             </div>
         </div>
 
@@ -181,7 +180,7 @@
                         <td class="text-center">{{data.kiintio}}</td>
 
                         <td class="text-center">
-                            <i auth="crud" ng-show="!data.inheritance" class="fa fa-trash-o"
+                            <i auth ng-disabled="!userAccess.crudOrg" ng-show="!data.inheritance" class="fa fa-trash-o"
                                ng-click="removeHakijaryhma(data.oid)"></i>
                         </td>
                     </tr>
@@ -199,7 +198,7 @@
                     <modal modal-template="hakijaryhma/hakijaryhmaModal.html">
                         <modal-open></modal-open>
                     </modal>
-                    <button auth="update" class="btn btn-sm btn-primary" type="button" ng-click="openHakijaryhmaModal()"><i
+                    <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-primary" type="button" ng-click="openHakijaryhmaModal()"><i
                             class="fa fa-plus"></i>
                         Liitä hakijaryhmä
                     </button>
@@ -209,8 +208,8 @@
 
         <div class="form-group" ng-if="model.hakukohde.oid">
             <div class="col-md-offset-2 col-md-10">
-                    <span auth="crud" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()"><i
-                            class="fa fa-plus"></i> Hakijaryhma</span>
+                    <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()"><i
+                            class="fa fa-plus"></i> Hakijaryhma</button>
             </div>
         </div>
 
@@ -219,7 +218,7 @@
                 <button type="button" class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
                         class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
                 </button>
-                <button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i
+                <button auth ng-disabled="!form.$valid || !userAccess.updateOrg" class="btn btn-sm btn-primary" type="submit"><i
                         class="fa fa-floppy-o"></i>
                     {{ t('common.tallenna') || 'Tallenna' }}
                 </button>

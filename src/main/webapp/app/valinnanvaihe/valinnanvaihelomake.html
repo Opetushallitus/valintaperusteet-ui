@@ -24,7 +24,8 @@
             <label class="form-row-label" for="nimi">{{ t('valinnanvaihelomake.nimi') || 'Nimi' }}</label>
 
             <div class="form-row-content">
-                <input type="text" auth auth-enable="update" name="nimi" id="nimi" ng-model="model.valinnanvaihe.nimi" required/>
+                <input type="text" auth ng-disabled="!userAccess.updateOrg" name="nimi" id="nimi"
+                       ng-model="model.valinnanvaihe.nimi" required/>
             </div>
 
             <div class="clear"></div>
@@ -32,7 +33,8 @@
             <label class="form-row-label" for="kuvaus">{{ t('valinnanvaihelomake.kuvaus') || 'Kuvaus' }}</label>
 
             <div class="form-row-content">
-                <textarea auth auth-enable="update" name="kuvaus" id="kuvaus" ng-model="model.valinnanvaihe.kuvaus"/>
+                <textarea auth ng-disabled="!userAccess.updateOrg" name="kuvaus" id="kuvaus"
+                          ng-model="model.valinnanvaihe.kuvaus"/>
             </div>
         </div>
 
@@ -51,7 +53,8 @@
                     </thead>
                     <tbody ui-sortable ng-model="model.valintatapajonot" class="margin-top-2">
                     <tr ng-repeat="jono in model.valintatapajonot">
-                        <td><input auth auth-enable="update" type="checkbox" ng-model="jono.aktiivinen"/></td>
+                        <td><input auth ng-disabled="!userAccess.updateOrg" type="checkbox" ng-model="jono.aktiivinen"/>
+                        </td>
                         <td>
                             <a ng-class="{true:'', false:'line-through'}[jono.aktiivinen]"
                                ng-click="modifyJono(jono.oid)">{{jono.nimi}}</a>
@@ -61,27 +64,34 @@
                             <span ng-if="!jono.inheritance">{{t('valintaperusteet.periytyy.false') || 'Ei periydy'}}</span>
                         </td>
                         <td class="align-center">
-                        <i auth auth-enable="crud" ng-show="!jono.inheritance" class="fa fa-trash-o"
-                              ng-click="model.remove(jono)"></i>
+                            <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="model.remove(jono)">
+                                <i  ng-show="!jono.inheritance"
+                                   class="fa fa-trash-o"
+                                   ></i></button>
+
                         </td>
                     </tr>
                     </tbody>
                 </table>
 
-                <span auth="crud" class="btn btn-sm btn-default" ng-click="addJono()"><i
-                        class="fa fa-plus"></i> {{ t('valinnanvaihelomake.jono') || 'Jono' }}</span>
-             </div>
+                <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="addJono()"><i
+                        class="fa fa-plus"></i> {{ t('valinnanvaihelomake.jono') || 'Jono' }}
+                </button>
+            </div>
         </div>
         <div class="clear"></div>
 
     <span>
-    <button auth="update" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i
+    <button auth ng-disabled="!userAccess.updateOrg" ng-disabled="!form.$valid" class="btn btn-sm btn-primary"
+            type="submit"><i
             class="fa fa-floppy-o"></i>
         {{ t('common.tallenna') || 'Tallenna' }}
     </button>
         </span>
     <span>
-    <button class="btn btn-sm btn-default float-left margin-right-1" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
+    <button class="btn btn-sm btn-default float-left margin-right-1" ng-click="cancel()" popover-popup-delay="500"
+            popover-placement="top" popover-trigger="mouseenter"
+            popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
             class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
     </button></span>
     </form>

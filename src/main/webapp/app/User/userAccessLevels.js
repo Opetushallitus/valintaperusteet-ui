@@ -1,4 +1,8 @@
 
+
+
+// UserAccessLevels contains information about current users accessrights to currently selected valintaryhma/hakukohde
+
 angular.module('valintaperusteet')
     .factory('UserAccessLevels', ['$q', '$log', 'AuthService', 'OrganisaatioUtility', 'ValintaryhmaModel', '_',
         function ($q, $log, AuthService, OrganisaatioUtility, ValintaryhmaModel, _) {
@@ -16,13 +20,21 @@ angular.module('valintaperusteet')
             this.readOrg = false;
 
             // users with rights to application but not to currently selected valintaryhma/hakukohde
-            this.crudNoOrg = false;
-            this.updateNoOrg = false;
-            this.readNoOrg = false;
+            this.crudApp = false;
+            this.updateApp = false;
+            this.readApp = false;
+
+            this.refreshIfNeeded = function () {
+                if(_.isEmpty(model.deferred)) {
+                    model.refresh();
+                } else {
+                    return model.deferred.promise;
+                }
+            };
 
             this.refresh = function () {
-                model.deferred = $q.defer();
 
+                model.deferred = $q.defer();
                 model.resetRights(); // reset all rights to false
 
                 // Make all authentication request asynchronously so there's no need to wait for consecutive calls
@@ -38,9 +50,9 @@ angular.module('valintaperusteet')
                 var updateOrgPromise = undefined;
                 var readOrgPromise = undefined;
 
-                var crudNoOrgPromise = undefined;
-                var updateNoOrgPromise = undefined;
-                var readNoOrgPromise = undefined;
+                var crudAppPromise = undefined;
+                var updateAppPromise = undefined;
+                var readAppPromise = undefined;
 
 
                 // set user rights for OPHCRUD or continue to next level
@@ -63,14 +75,15 @@ angular.module('valintaperusteet')
                             readOrgPromise = AuthService.readOrg('APP_VALINTAPERUSTEET', organizationOids);
                             crudOrgPromise.then(crudOrgSuccessFn, crudOrgRejectFn);
                         } else { // check if user has rights to this application
-                            crudNoOrgPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET');
-                            updateNoOrgPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET');
-                            readNoOrgPromise = AuthService.readOrg('APP_VALINTAPERUSTEET');
-                            crudNoOrgPromise.then(crudNoOrgSuccessFn, crudNoOrgRejectFn);
+                            crudAppPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET');
+                            updateAppPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET');
+                            readAppPromise = AuthService.readOrg('APP_VALINTAPERUSTEET');
+                            crudAppPromise.then(crudAppSuccessFn, crudAppRejectFn);
                         }
 
 
                     }, function () {
+                        // check users rights to application if organizations can't be fetched
                         crudOrgPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET');
                         updateOrgPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET');
                         readOrgPromise = AuthService.readOrg('APP_VALINTAPERUSTEET');
@@ -92,35 +105,27 @@ angular.module('valintaperusteet')
                 var readOrgRejectFn = function () {
 
                     // check if user has rights to this application
-                    crudNoOrgPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET');
-                    updateNoOrgPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET');
-                    readNoOrgPromise = AuthService.readOrg('APP_VALINTAPERUSTEET');
-                    crudNoOrgPromise.then(crudNoOrgSuccessFn, crudNoOrgRejectFn);
+                    crudAppPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET');
+                    updateAppPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET');
+                    readAppPromise = AuthService.readOrg('APP_VALINTAPERUSTEET');
+                    crudAppPromise.then(crudAppSuccessFn, crudAppRejectFn);
 
                 };
 
                 // set user rights for NOORGCRUD or continue to next level
-                var crudNoOrgSuccessFn = function () { model.setCrudRights("noOrg"); model.deferred.resolve(); };
-                var crudNoOrgRejectFn = function () { updateNoOrgPromise.then(updateNoOrgSuccessFn, updateNoOrgRejectFn); };
+                var crudAppSuccessFn = function () { model.setCrudRights("noOrg"); model.deferred.resolve(); };
+                var crudAppRejectFn = function () { updateAppPromise.then(updateAppSuccessFn, updateAppRejectFn); };
 
-                var updateNoOrgSuccessFn = function() { model.setUpdateRights("noOrg"); model.deferred.resolve(); };
-                var updateNoOrgRejectFn = function() {readNoOrgPromise.then(readNoOrgSuccessFn, readNoOrgRejectFn); };
+                var updateAppSuccessFn = function() { model.setUpdateRights("noOrg"); model.deferred.resolve(); };
+                var updateAppRejectFn = function() {readAppPromise.then(readAppSuccessFn, readAppRejectFn); };
 
-                var readNoOrgSuccessFn = function() {model.setReadRights("noOrg"); model.deferred.resolve(); };
-                var readNoOrgRejectFn = function() { $log.error('Ei oikeuksia'); model.deferred.reject(); };
+                var readAppSuccessFn = function() {model.setReadRights("noOrg"); model.deferred.resolve(); };
+                var readAppRejectFn = function() { $log.error('Ei oikeuksia'); model.deferred.reject(); };
 
                 // Start promisechain checking
                 crudOphPromise.then(crudOphSuccessFn, crudOphRejectFn);
 
                 return model.deferred.promise;
-            };
-
-            this.refreshIfNeeded = function () {
-                if(_.isEmpty(model.deferred)) {
-                    model.refresh();
-                } else {
-                    return model.deferred.promise;
-                }
             };
 
             this.isOphUser = function () {
@@ -131,20 +136,20 @@ angular.module('valintaperusteet')
                 return model.crudOrg || model.updateOrg || model.readOrg;
             };
             
-            this.isValintaperusteUser = function () {
-                return model.crudNoOrg || model.updateNoOrg || model.readNoOrg;
+            this.isApplicationUser = function () {
+                return model.crudApp || model.updateApp || model.readApp;
             };
 
             this.hasCrudRights = function () {
-                return model.crudOph || model.crudOrg || model.readNoOrg;
+                return model.crudOph || model.crudOrg || model.readApp;
             };
 
             this.hasUpdateRights = function () {
-                return model.updateOph || model.updateOrg || model.updateNoOrg;
+                return model.updateOph || model.updateOrg || model.updateApp;
             };
 
             this.hasReadRights = function () {
-                return model.readOph || model.readOrg || model.readNoOrg;
+                return model.readOph || model.readOrg || model.readApp;
             };
             
             this.setCrudRights = function (level) {
@@ -154,7 +159,7 @@ angular.module('valintaperusteet')
                     case "org":
                         model.crudOrg = true;
                     case "noOrg":
-                        model.crudNoOrg = true;
+                        model.crudApp = true;
                 }
                 model.setUpdateRights(level); //set lower level rights to true
             };
@@ -166,7 +171,7 @@ angular.module('valintaperusteet')
                     case "org":
                         model.updateOrg = true;
                     case "noOrg":
-                        model.updateNoOrg = true;
+                        model.updateApp = true;
                 }
                 model.setReadRights(level); //set lower level rights to true
             };
@@ -178,7 +183,7 @@ angular.module('valintaperusteet')
                     case "org":
                         model.readOrg = true;
                     case "noOrg":
-                        model.readNoOrg = true;
+                        model.readApp = true;
                 }
             };
 
@@ -191,9 +196,9 @@ angular.module('valintaperusteet')
                 model.updateOrg = false;
                 model.readOrg = false;
 
-                model.crudNoOrg = false;
-                model.updateNoOrg = false;
-                model.readNoOrg = false;
+                model.crudApp = false;
+                model.updateApp = false;
+                model.readApp = false;
             };
         };
 

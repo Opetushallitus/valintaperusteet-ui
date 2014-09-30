@@ -6,8 +6,11 @@
         {{ t('valintaryhmalomake.poistahakijaryhma.body') || 'Oletko varma, että haluat poistaa hakijaryhmän?' }}
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">{{ t('valintaryhmalomake.poistahakijaryhma.kylla') || 'Kyllä' }}</button>
-        <button class="btn btn-warning" ng-click="cancel()">{{ t('valintaryhmalomake.poistahakijaryhma.ei') || 'Ei' }}</button>
+        <button class="btn btn-primary" ng-click="ok()">{{ t('valintaryhmalomake.poistahakijaryhma.kylla') || 'Kyllä'
+            }}
+        </button>
+        <button class="btn btn-warning" ng-click="cancel()">{{ t('valintaryhmalomake.poistahakijaryhma.ei') || 'Ei' }}
+        </button>
     </div>
 </script>
 
@@ -17,13 +20,18 @@
     </div>
     <div class="modal-body">
         <div ng-if="laskentakaavat">
-        {{ t('valintaryhmalomake.poistavalintaryhmalaskentakaavoja.body') || 'Valintaryhmällä on laskentakaavoja.' }}
+            {{ t('valintaryhmalomake.poistavalintaryhmalaskentakaavoja.body') || 'Valintaryhmällä on laskentakaavoja.'
+            }}
         </div>
         {{ t('valintaryhmalomake.poistavalintaryhma.body') || 'Oletko varma, että haluat poistaa valintaryhmän?' }}
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">{{ t('valintaryhmalomake.poistavalintaryhma.kylla') || 'Kyllä' }}</button>
-        <button class="btn btn-warning" ng-click="cancel()">{{ t('valintaryhmalomake.poistavalintaryhma.ei') || 'Ei' }}</button>
+        <button class="btn btn-primary" ng-click="ok()">{{ t('valintaryhmalomake.poistavalintaryhma.kylla') || 'Kyllä'
+            }}
+        </button>
+        <button class="btn btn-warning" ng-click="cancel()">{{ t('valintaryhmalomake.poistavalintaryhma.ei') || 'Ei'
+            }}
+        </button>
     </div>
 </script>
 
@@ -35,8 +43,12 @@
         {{ t('valintaryhmalomake.poistavalinnanvaihe.body') || 'Oletko varma, että haluat poistaa valinnan vaiheen?' }}
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">{{ t('valintaryhmalomake.poistavalinnanvaihe.kylla') || 'Kyllä' }}</button>
-        <button class="btn btn-warning" ng-click="cancel()">{{ t('valintaryhmalomake.poistavalinnanvaihe.ei') || 'Ei' }}</button>
+        <button class="btn btn-primary" ng-click="ok()">{{ t('valintaryhmalomake.poistavalinnanvaihe.kylla') || 'Kyllä'
+            }}
+        </button>
+        <button class="btn btn-warning" ng-click="cancel()">{{ t('valintaryhmalomake.poistavalinnanvaihe.ei') || 'Ei'
+            }}
+        </button>
     </div>
 </script>
 
@@ -59,7 +71,8 @@
     <label class="form-row-label" for="">{{ t('valintaryhmalomake.nimi') || 'Nimi' }}</label>
 
     <div class="form-row-content width-60">
-        <input auth ng-disabled="!userAccess.updateOrg" class="width-60" type="text" name="" id="" ng-model="model.valintaryhma.nimi" required/>
+        <input auth ng-disabled="!userAccess.updateOrg"
+               class="width-60" type="text" name="" id="" ng-model="model.valintaryhma.nimi" required/>
         <br><span class="red" ng-show="model.nameerror">{{ t('valintaryhmalomakeuusi.valintaryhmalomakeuusi.nimiloytyyjo') || 'Valintaryhmän nimi on jo käytössä. Anna jokin toinen nimi ryhmälle.' }}</span>
     </div>
 
@@ -76,10 +89,12 @@
     <div class="clear"></div>
 </div>
 
-<div  class="form-row">
-    <label  class="form-row-label" for="">{{ t('valintaryhmalomake.haku') || 'Haku' }}</label>
-    <div  class="form-row-content width-60">
-        <select auth ng-disabled="!userAccess.updateOrg" ng-model="model.valintaryhma.hakuoid" ng-options="h.oid as h.nimi.kieli_fi for h in model.haut | orderBy:'nimi.kieli_fi'">
+<div class="form-row">
+    <label class="form-row-label" for="">{{ t('valintaryhmalomake.haku') || 'Haku' }}</label>
+
+    <div class="form-row-content width-60">
+        <select auth ng-disabled="!userAccess.updateOrg" ng-model="model.valintaryhma.hakuoid"
+                ng-options="h.oid as h.nimi.kieli_fi for h in model.haut | orderBy:'nimi.kieli_fi'">
             <option value=""></option>
         </select>
     </div>
@@ -90,7 +105,8 @@
     <label class="form-row-label" for="">{{ t('valintaryhmalomake.kohdejoukko') || 'Kohdejoukko' }}</label>
 
     <div class="form-row-content width-60">
-        <select auth ng-disabled="model.valintaryhma.level > 1 || !userAccess.updateOrg" ng-model="model.valintaryhma.kohdejoukko"
+        <select auth ng-disabled="model.valintaryhma.level > 1 || !userAccess.updateOrg"
+                ng-model="model.valintaryhma.kohdejoukko"
                 ng-options="k.koodiUri as k.metadata[0].nimi for k in model.kohdejoukot">
         </select>
     </div>
@@ -122,8 +138,9 @@
                 </td>
                 <td class="align-center">{{organisaatio.oid}}</td>
                 <td class="align-center">
-                    <i auth="update" class="fa fa-trash-o organisaatio"
-                       ng-click="model.valintaryhma.organisaatiot.splice($index,1)"></i>
+                    <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-default btn-sm"
+                            ng-click="model.valintaryhma.organisaatiot.splice($index,1)">
+                        <i class="fa fa-trash-o organisaatio"></i></button>
                 </td>
             </tr>
 
@@ -162,7 +179,8 @@
             </thead>
             <tbody ui-sortable ng-model="model.valinnanvaiheet">
             <tr ng-repeat="data in model.valinnanvaiheet">
-                <td class="align-center"><input auth ng-disabled="!userAccess.updateOrg" type="checkbox" ng-model="data.aktiivinen"/></td>
+                <td class="align-center"><input auth ng-disabled="!userAccess.updateOrg" type="checkbox"
+                                                ng-model="data.aktiivinen"/></td>
                 <td class="align-center">
                     <a ng-class="{true:'', false:'line-through'}[data.aktiivinen]"
                        ng-href="#/valintaryhma/{{model.valintaryhma.oid}}/{{model.getValinnanvaiheType(data)}}/{{data.oid}}">{{data.nimi}}</a>
@@ -176,8 +194,9 @@
                     <span ng-if="data.valinnanVaiheTyyppi === 'VALINTAKOE'">{{t('valintaperusteet.tyyppi.VALINTAKOE') || 'Valintakoe'}}</span>
                 </td>
                 <td class="align-center">
-                    <i auth="crud" ng-show="!data.inheritance" class="fa fa-trash-o"
-                       ng-click="model.removeValinnanvaihe(data)"></i>
+                    <button auth ng-disabled="!userAccess.crudOrg" ng-show="!data.inheritance"  class="btn btn-sm btn-default" ng-click="model.removeValinnanvaihe(data)">
+                        <i class="fa fa-trash-o"></i>
+                    </button>
                 </td>
             </tr>
             </tbody>
@@ -187,11 +206,15 @@
         <div class="clear"></div>
 
         <div ng-show="model.valintaryhma.oid" class="form-row">
-                <button auth ng-disabled="!userAccess.crudOrg" type="button" class="btn btn-sm btn-default" ng-click="lisaaValinnanVaihe()"><i
-                        class="fa fa-plus"></i> {{ t('valintaperusteet.valinnanvaihe') || 'Valinnanvaihe'}}</button>
-                <button auth ng-disabled="!userAccess.crudOrg" type="button" class="btn btn-sm btn-default"
-                      ng-click="lisaaValintakoeValinnanVaihe()"><i
-                        class="fa fa-plus"></i> {{ t('valintaperusteet.valintakoevalinnanvaihe') || 'Valintakoevalinnanvaihe'}}</button>
+            <button auth ng-disabled="!userAccess.crudOrg" type="button" class="btn btn-sm btn-default"
+                    ng-click="lisaaValinnanVaihe()"><i
+                    class="fa fa-plus"></i> {{ t('valintaperusteet.valinnanvaihe') || 'Valinnanvaihe'}}
+            </button>
+            <button auth ng-disabled="!userAccess.crudOrg" type="button" class="btn btn-sm btn-default"
+                    ng-click="lisaaValintakoeValinnanVaihe()"><i
+                    class="fa fa-plus"></i> {{ t('valintaperusteet.valintakoevalinnanvaihe') ||
+                'Valintakoevalinnanvaihe'}}
+            </button>
         </div>
     </div>
 </div>
@@ -220,12 +243,13 @@
                 <td class="align-center">{{data.laskentakaava_nimi}}</td>
                 <td class="align-center">{{data.kiintio}}</td>
                 <td class="align-center">
-
-                    <i auth="crud" ng-show="!data.inheritance" class="fa fa-trash-o"
-                       ng-click="model.removeHakijaryhma(data.oid)"></i>
+                    <button auth ng-disabled="!userAccess.update" class="btn btn-sm btn-default" ng-show="!data.inheritance" ng-click="model.removeHakijaryhma(data.oid)">
+                    <i class="fa fa-trash-o"></i>
+                    </button>
                 </td>
                 <td>
-                    <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-default btn-sm" ng-click="openHakijaryhmaKopiointiModal(data)">
+                    <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-default btn-sm"
+                            ng-click="openHakijaryhmaKopiointiModal(data)">
                         <i class="fa fa-file-o"></i><i class="fa fa-long-arrow-right"></i> <i class="fa fa-users"></i>
                     </button>
                 </td>
@@ -250,7 +274,9 @@
 
 
 <div class="col-md-12">
-    <button type="button" class="float-left margin-right-1 btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
+    <button type="button" class="float-left margin-right-1 btn btn-sm btn-default" ng-click="cancel()"
+            popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter"
+            popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
             class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
     </button>
     <button auth ng-disabled="!form.$valid || !userAccess.updateOrg" class="btn btn-sm btn-primary" type="submit"><i
@@ -258,7 +284,8 @@
         {{ t('common.tallenna') || 'Tallenna' }}
     </button>
 
-    <button auth ng-disabled="!model.okToDelete || !userAccess.crudOrg" class="btn btn-sm btn-primary" type="button" ng-click="deleteValintaryhma()">
+    <button auth ng-disabled="!model.okToDelete || !userAccess.crudOrg" class="btn btn-sm btn-primary" type="button"
+            ng-click="deleteValintaryhma()">
         <i class="fa fa-trash-o"></i>
         {{ t('common.poista') || 'Poista' }}
     </button>

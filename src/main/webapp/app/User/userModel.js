@@ -74,14 +74,17 @@ angular.module('valintaperusteet')
                 var isOtherThanKKUser = false;
                 var korkeakouluTunnisteet = ['_41', '_42', '_43']; // 41 == AMK, 42 = Yliopistot, 43 = Sotilaskorkeakoulut
                 _.some(model.organizations, function (organisaatioData) {
-                    _.some(korkeakouluTunnisteet, function (item) {
+                    var isKKOrganization = false;
+
+                    _.some(korkeakouluTunnisteet, function (kkTunniste) {
                         if (organisaatioData.oppilaitosTyyppiUri) {
-                            if (organisaatioData.oppilaitosTyyppiUri.indexOf(item) === -1) {
-                                isOtherThanKKUser = true;
+                            if (organisaatioData.oppilaitosTyyppiUri.indexOf(kkTunniste) !== -1) {
+                                isKKOrganization = true;
                                 return true;
                             }
                         }
                     });
+
                     return isOtherThanKKUser;
                 });
 

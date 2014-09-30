@@ -52,19 +52,30 @@ angular.module('valintaperusteet')
                     UserAccessLevels.refreshIfNeeded();
 
                     $scope.userAccess = UserAccessLevels;
+                    $scope.userModel = UserModel;
+
                     $animate.addClass(element, 'ng-hide');
 
                     var promises = [];
-
 
                     promises.push(UserModel.organizationsDeferred.promise);
                     promises.push(UserAccessLevels.deferred.promise);
 
                     // Reveal element for oph-users and KK-users by default
                     $q.all(promises).then(function () {
-                        if (UserModel.isKKUser || UserAccessLevels.isOphUser()) {
+                        if( UserAccessLevels.isOphUser() || (UserModel.isKKUser && UserAccessLevels.readApp) ) {
                             $animate.removeClass(element, 'ng-hide');
                         }
+
+//                        if( (attrs.auth && UserAccessLevels[attrs.auth]) || UserAccessLevels.isOphUser() ) {
+//                           $animate.removeClass(element, 'ng-hide');
+//                        }
+
+
+
+//                        if (UserModel.isKKUser) {
+//                            $animate.removeClass(element, 'ng-hide');
+//                        }
                     }, function (error) {
                         $log.error('Error revealing element:', error);
                     });
