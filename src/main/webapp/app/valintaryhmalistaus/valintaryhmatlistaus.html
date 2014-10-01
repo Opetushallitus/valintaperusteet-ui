@@ -37,8 +37,8 @@
 
     <div class="search">
         <div class="margin-top-1">
-            <button auth ng-disabled="userModel.organizationOids.length === 0" href="#/valintaryhma/" class="margin-right-1 btn btn-sm btn-default"> <i class="fa fa-plus"></i> {{t('valintaryhmalistaus.add.valintaryhma') || 'Valintaryhmä' }}</button>
-            <button auth ng-disabled="userModel.organizationOids.length === 0" href="#/hakukohde/" class="margin-right-1 btn btn-sm btn-default"> <i class="fa fa-plus"></i> {{ t('valintaryhmalistaus.add.hakukohde') || 'Hakukohde' }}</button>
+            <button auth ng-disabled="userModel.organizationOids.length === 0 || !userAccess.hasCrudRights()" href="#/valintaryhma/" class="margin-right-1 btn btn-sm btn-default"> <i class="fa fa-plus"></i> {{t('valintaryhmalistaus.add.valintaryhma') || 'Valintaryhmä' }}</button>
+            <button auth ng-disabled="userModel.organizationOids.length === 0 || !userAccess.hasCrudRights()" href="#/hakukohde/" class="margin-right-1 btn btn-sm btn-default"> <i class="fa fa-plus"></i> {{ t('valintaryhmalistaus.add.hakukohde') || 'Hakukohde' }}</button>
             <button class="btn btn-sm btn-default" ng-click="domain.expandTree()"> <i class="fa fa-expand"></i> {{ t('valintaryhmatlistaus.ravaapuu') || 'Avaa puu' }}</button>
         </div>
 

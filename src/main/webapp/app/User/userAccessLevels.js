@@ -4,8 +4,8 @@
 // UserAccessLevels contains information about current users accessrights to currently selected valintaryhma/hakukohde
 
 angular.module('valintaperusteet')
-    .factory('UserAccessLevels', ['$q', '$log', 'AuthService', 'OrganisaatioUtility', 'ValintaryhmaModel', '_',
-        function ($q, $log, AuthService, OrganisaatioUtility, ValintaryhmaModel, _) {
+    .factory('UserAccessLevels', ['$q', '$log', 'AuthService', 'OrganisaatioUtility', '_',
+        function ($q, $log, AuthService, OrganisaatioUtility, _) {
         var model = new function () {
             this.deferred = undefined;
 
@@ -141,7 +141,7 @@ angular.module('valintaperusteet')
             };
 
             this.hasCrudRights = function () {
-                return model.crudOph || model.crudOrg || model.readApp;
+                return model.crudOph || model.crudOrg || model.crudApp;
             };
 
             this.hasUpdateRights = function () {
