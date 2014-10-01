@@ -30,8 +30,7 @@ angular.module('valintaperusteet')
 
                     $q.all(organizationPromises).then(function () {
                         model.organizationsDeferred.resolve();
-                        model.userHasKKOrganizations();
-                        model.userHasOtherThanKKOrganizations();
+                        model.analyzeOrganizations();
                     }, function () {
                         model.organizationsDeferred.reject();
                     });
@@ -52,43 +51,27 @@ angular.module('valintaperusteet')
                 }
             };
 
-            this.userHasKKOrganizations = function () {
+            this.analyzeOrganizations = function () {
                 var isKKUser = false;
-                var korkeakouluTunnisteet = ['_41', '_42', '_43']; // 41 == AMK, 42 = Yliopistot, 43 = Sotilaskorkeakoulut
                 _.some(model.organizations, function (organisaatioData) {
-                    _.some(korkeakouluTunnisteet, function (item) {
-                        if (organisaatioData.oppilaitosTyyppiUri) {
-                            if (organisaatioData.oppilaitosTyyppiUri.indexOf(item) !== -1) {
-                                isKKUser = true;
-                                return true;
-                            }
-                        }
-                    });
-                    return isKKUser;
+                    if(model.isKKOrganization(organisaatioData)) {
+                        model.isKKUser = true;
+                    } else {
+                        model.hasOtherThanKKUserOrgs = true;
+                    }
                 });
-
-                model.isKKUser = isKKUser;
             };
 
-            this.userHasOtherThanKKOrganizations = function () {
-                var isOtherThanKKUser = false;
-                var korkeakouluTunnisteet = ['_41', '_42', '_43']; // 41 == AMK, 42 = Yliopistot, 43 = Sotilaskorkeakoulut
-                _.some(model.organizations, function (organisaatioData) {
-                    var isKKOrganization = false;
-
-                    _.some(korkeakouluTunnisteet, function (kkTunniste) {
-                        if (organisaatioData.oppilaitosTyyppiUri) {
-                            if (organisaatioData.oppilaitosTyyppiUri.indexOf(kkTunniste) !== -1) {
-                                isKKOrganization = true;
-                                return true;
-                            }
-                        }
-                    });
-
-                    return isOtherThanKKUser;
+            this.isKKOrganization = function (organization) {
+                var kkTunnisteet = ['_41', '_42', '_43']; // 41 == AMK, 42 = Yliopistot, 43 = Sotilaskorkeakoulut
+                return _.some(kkTunnisteet, function (kkTunniste) {
+                    if(organization.oppilaitosTyyppiUri && organization.oppilaitosTyyppiUri.indexOf(kkTunniste) > -1) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 });
 
-                model.hasOtherThanKKUserOrgs = isOtherThanKKUser;
             };
 
 

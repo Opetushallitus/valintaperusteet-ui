@@ -48,7 +48,7 @@
     <label class="control-label col-md-2" for="nimi">{{ t('valintatapajono.jononnimi') || 'Jonon nimi' }}</label>
 
     <div class="col-md-4">
-        <input auth ng-disabled="!userAccess.updateOrg" class="form-control" type="text" name="nimi" id="nimi"
+        <input class="form-control" auth ng-disabled="!userAccess.updateOrg"  type="text" name="nimi" id="nimi"
                ng-model="model.valintatapajono.nimi" required/>
     </div>
 </div>
@@ -57,7 +57,7 @@
     <label class="control-label col-md-2" for="kuvaus">{{ t('valintatapajono.kuvaus') || 'Kuvaus' }}</label>
 
     <div class="col-md-4">
-        <textarea auth ng-disabled="!userAccess.updateOrg" class="form-control" name="kuvaus" id="kuvaus"
+        <textarea class="form-control" auth ng-disabled="!userAccess.updateOrg"  name="kuvaus" id="kuvaus"
                   ng-model="model.valintatapajono.kuvaus"/>
     </div>
 </div>

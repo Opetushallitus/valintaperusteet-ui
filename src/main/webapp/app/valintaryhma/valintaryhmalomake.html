@@ -89,7 +89,7 @@
     <label class="control-label col-md-2" for="hakunimi">{{ t('valintaryhmalomake.haku') || 'Haku' }}</label>
 
     <div class="col-md-4">
-        <select auth ng-disabled="!userAccess.updateOrg" id="hakunimi" ng-model="model.valintaryhma.hakuoid"
+        <select auth ng-disabled="!userAccess.updateOrg" id="hakunimi" class="form-control" ng-model="model.valintaryhma.hakuoid"
                 ng-options="h.oid as h.nimi.kieli_fi for h in model.haut | orderBy:'nimi.kieli_fi'">
             <option value=""></option>
         </select>
@@ -101,7 +101,7 @@
         }}</label>
 
     <div class="col-md-6">
-        <select id="kohdejoukko" auth ng-disabled="model.valintaryhma.level > 1 || !userAccess.updateOrg"
+        <select id="kohdejoukko" auth ng-disabled="model.valintaryhma.level > 1 || !userAccess.updateOrg" class="form-control"
                 ng-model="model.valintaryhma.kohdejoukko"
                 ng-options="k.koodiUri as k.metadata[0].nimi for k in model.kohdejoukot">
         </select>
@@ -113,7 +113,7 @@
 
     <div class="col-md-10">
 
-        <table class="virkailija-table-1">
+        <table ng-show="model.valintaryhma.organisaatiot" class="virkailija-table-1">
             <thead>
             <tr>
                 <th>{{ t('valintaryhmalomake.nimi') || 'Nimi' }}</th>

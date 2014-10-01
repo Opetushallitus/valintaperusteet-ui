@@ -37,8 +37,8 @@
 
     <div class="search">
         <div class="margin-top-1">
-            <button auth="crud" href="#/valintaryhma/" class="margin-right-1 btn btn-sm btn-default"> <i class="fa fa-plus"></i> {{t('valintaryhmalistaus.add.valintaryhma') || 'Valintaryhmä' }}</button>
-            <button auth="crud" href="#/hakukohde/" class="margin-right-1 btn btn-sm btn-default"> <i class="fa fa-plus"></i> {{ t('valintaryhmalistaus.add.hakukohde') || 'Hakukohde' }}</button>
+            <button auth ng-disabled="userModel.organizationOids.length === 0" href="#/valintaryhma/" class="margin-right-1 btn btn-sm btn-default"> <i class="fa fa-plus"></i> {{t('valintaryhmalistaus.add.valintaryhma') || 'Valintaryhmä' }}</button>
+            <button auth ng-disabled="userModel.organizationOids.length === 0" href="#/hakukohde/" class="margin-right-1 btn btn-sm btn-default"> <i class="fa fa-plus"></i> {{ t('valintaryhmalistaus.add.hakukohde') || 'Hakukohde' }}</button>
             <button class="btn btn-sm btn-default" ng-click="domain.expandTree()"> <i class="fa fa-expand"></i> {{ t('valintaryhmatlistaus.ravaapuu') || 'Avaa puu' }}</button>
         </div>
 
@@ -76,7 +76,7 @@
         </ol>
 
         <div ng-if="hakukohteetListingLimit < domain.hakukohteet.length && domain.search.vainHakukohteet">{{ t('valintaryhmatlistaus.naytetty') || 'Näytetty' }}: {{hakukohteetListingLimit}} / {{domain.hakukohteet.length}}</div>
-        <table ng-if="domain.search.vainHakukohteet" class="virkailija-table-1 hakukohde-table"  item-on-screen>
+        <table ng-if="domain.search.vainHakukohteet" class="virkailija-table-1 hakukohde-table" item-on-screen>
             <thead>
                 <tr>
                     <th>{{ t('valintaryhmatlistaus.hakukohde') || 'Hakukohde' }}</th>
