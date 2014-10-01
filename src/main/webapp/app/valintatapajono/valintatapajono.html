@@ -384,8 +384,8 @@
             </button>
         </div>
 
-        <span auth="crud" class="btn btn-sm btn-default" ng-click="addHakijaryhma()"><i
-                class="fa fa-plus"></i> Luo uusi hakijaryhmä</span>
+        <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="addHakijaryhma()"><i
+                class="fa fa-plus"></i> Luo uusi hakijaryhmä</button>
 
     </div>
     <span ng-if="model.valintatapajono.siirretaanSijoitteluun && !model.valintatapajono.oid">{{ t('valintatapajono.tallennahakijaryhma') || 'Tallenna jono lisätäksesi hakijaryhmä.' }}</span>

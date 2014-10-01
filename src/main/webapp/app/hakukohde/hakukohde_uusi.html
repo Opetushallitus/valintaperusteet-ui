@@ -8,67 +8,83 @@
 
 <div class="tabsheets">
     <breadcrumb></breadcrumb>
-<form name="form" ng-submit="submit()">
+    <form name="form" class="form-horizontal" ng-submit="submit()">
 
-    <div class="form-row">
-        <label class="form-row-label">{{ t('hakukohdeuusi.ylavalintaryhma') || 'Ylävalintaryhmä' }}</label>
+        <div class="form-group">
+            <label class="control-label col-md-2">{{ t('hakukohdeuusi.ylavalintaryhma') || 'Ylävalintaryhmä' }}</label>
 
-        <div class="form-row-content width-60">
-            <div ng-include="'../common/partials/valintaryhmaSelector.html'" />
-            <div class="clear"></div>
+            <div class="col-md-6">
+                <div ng-include="'../common/partials/valintaryhmaSelector.html'"/>
+            </div>
         </div>
-        <div class="clear"></div>
-    </div>
 
-    <div class="form-row">
-        <label class="form-row-label">{{ t('hakukohdeuusi.hakukohteennimi') || 'Hakukohteen nimi' }}</label>
+        <div class="form-group">
+            <label class="control-label col-md-2">{{ t('hakukohdeuusi.hakukohteennimi') || 'Hakukohteen nimi' }}</label>
 
-        <div class="form-row-content width-60">
-            {{model.hakukohde.nimi || ''}}
+            <div class="col-md-6">
+                <p class="form-control-static">{{model.hakukohde.nimi || ''}}</p>
+            </div>
         </div>
-        <div class="clear"></div>
-    </div>
 
-    <div class="form-row">
-        <label class="form-row-label" >{{ t('hakukohdeuusi.hauntunniste') || 'Haun Tunniste' }}:</label>
+        <div class="form-group">
+            <label class="control-label col-md-2">{{ t('hakukohdeuusi.hauntunniste') || 'Haun Tunniste' }}:</label>
 
-        <div class="form-row-content width-60">
-            <input ng-disabled="!(haut.length)" ng-required="true" class="width-60" type="text" typeahead-on-select="setHakuoid($item)" ng-model="model.haku" typeahead-editable="false"
-                   typeahead-min-length="0" typeahead="haku as haku.nimi.kieli_fi for haku in haut| filter:$viewValue | limitTo:20 | orderBy:'nimi.kieli_fi'">
-            <a class="btn btn-sm btn-default" ng-click="model.haku = undefined; model.hakukohde.hakuoid = undefined; model.hakukohde.oid = undefined">{{ t('hakukohdeuusi.tyhjenna') || 'Tyhjennä' }}</a>
+            <div class="col-md-6">
+                <input ng-disabled="!(haut.length)" ng-required="true" class="width-60" type="text"
+                       typeahead-on-select="setHakuoid($item)" ng-model="model.haku" typeahead-editable="false"
+                       typeahead-min-length="0"
+                       typeahead="haku as haku.nimi.kieli_fi for haku in haut| filter:$viewValue | limitTo:20 | orderBy:'nimi.kieli_fi'">
+                <a class="btn btn-sm btn-default"
+                   ng-click="model.haku = undefined; model.hakukohde.hakuoid = undefined; model.hakukohde.oid = undefined">{{
+                    t('hakukohdeuusi.tyhjenna') || 'Tyhjennä' }}</a>
+            </div>
         </div>
-        <div class="clear"></div>
-    </div>
 
-    <div class="form-row">
-        <label class="form-row-label" >{{ t('hakukohdeuusi.hakukohteentunniste') || 'Hakukohteen tunniste' }}:</label>
+        <div class="form-group">
+            <label class="control-label col-md-2">{{ t('hakukohdeuusi.hakukohteentunniste') || 'Hakukohteen tunniste'
+                }}:</label>
 
-        <div class="form-row-content width-60">
-            <input ng-disabled="!(hakukohteet.length)" ng-required="true" class="width-60" type="text" typeahead-on-select="setHakukohdeoid($item)" ng-model="model.selectedHakukohde" typeahead-editable="false"
-                   typeahead="hakukohde as (hakukohde.tarjoajaNimi.fi || 'Ei nimeä')+ ', ' + hakukohde.hakukohdeNimi.fi for hakukohde in hakukohteet| filter:$viewValue | limitTo:20 | orderBy:'hakukohde.kokoNimi'">
-            <a class="btn btn-sm btn-default" ng-click="model.selectedHakukohde = undefined; model.hakukohde.oid = undefined">{{ t('hakukohdeuusi.tyhjenna') || 'Tyhjennä' }}</a>
+            <div class="col-md-6">
+                <input ng-disabled="!(hakukohteet.length)" ng-required="true" class="width-60" type="text"
+                       typeahead-on-select="setHakukohdeoid($item)" ng-model="model.selectedHakukohde"
+                       typeahead-editable="false"
+                       typeahead="hakukohde as (hakukohde.tarjoajaNimi.fi || 'Ei nimeä')+ ', ' + hakukohde.hakukohdeNimi.fi for hakukohde in hakukohteet| filter:$viewValue | limitTo:20 | orderBy:'hakukohde.kokoNimi'">
+                <a class="btn btn-sm btn-default"
+                   ng-click="model.selectedHakukohde = undefined; model.hakukohde.oid = undefined">{{
+                    t('hakukohdeuusi.tyhjenna') || 'Tyhjennä' }}</a>
+            </div>
         </div>
-        <div class="clear"></div>
-    </div>
 
-    <div class="form-row">
-        <label class="form-row-label" >{{ t('hakukohdeuusi.tarjoaja') || 'Tarjoaja' }}:</label>
-        <div class="form-row-content width-60">
-            {{model.selectedHakukohde.tarjoajaNimi.fi || 'Ei nimeä'}}
+        <div class="form-group">
+            <label class="control-label col-md-2">{{ t('hakukohdeuusi.tarjoaja') || 'Tarjoaja' }}:</label>
+
+            <div class="col-md-6">
+                <p class="form-control-static">{{model.selectedHakukohde.tarjoajaNimi.fi || 'Ei nimeä'}}</p>
+            </div>
         </div>
-        <div class="clear"></div>
-    </div>
 
-    <div class="form-row">
-        <label class="form-row-label" >{{ t('hakukohdeuusi.julkaisutila') || 'Julkaisutila' }}:</label>
-        <div class="form-row-content width-60">
-            {{model.selectedHakukohde.hakukohdeTila || 'Ei tilaa'}}
+        <div class="form-group">
+            <label class="control-label col-md-2">{{ t('hakukohdeuusi.julkaisutila') || 'Julkaisutila' }}:</label>
+
+            <div class="col-md-6">
+                <p class="form-control-static">{{model.selectedHakukohde.hakukohdeTila || 'Ei tilaa'}}</p>
+            </div>
         </div>
-        <div class="clear"></div>
-    </div>
 
-    <button type="button" class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="Muista tallentaa muutoksesi"><i class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}</button>
-    <button auth="crud" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i class="fa fa-floppy-o"></i> {{ t('common.tallenna') || 'Tallenna' }}</button>
+        <div class="form-group">
+            <div class="col-md-2">
+                <div class="pull-right">
 
-</form>
+                    <button type="button" class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500"
+                            popover-placement="top" popover-trigger="mouseenter" popover="Muista tallentaa muutoksesi">
+                        <i
+                                class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
+                    </button>
+                    <button auth ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i
+                            class="fa fa-floppy-o"></i> {{ t('common.tallenna') || 'Tallenna' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
