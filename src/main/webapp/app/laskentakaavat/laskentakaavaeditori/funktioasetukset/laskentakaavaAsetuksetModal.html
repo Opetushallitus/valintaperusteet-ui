@@ -7,7 +7,7 @@
             <label class="control-label col-sm-2" label="kaavanimi">Kaavan nimi: </label>
 
             <div class="col-sm-10">
-                <input size="50" type="text" id="kaavanimi" placeholder="Kaavan nimi"
+                <input auth ng-disabled="!userAccess.updateOrg" class="form-control" size="50" type="text" id="kaavanimi" placeholder="Kaavan nimi"
                        ng-model="model.laskentakaavapuu.nimi"/>
             </div>
         </div>
@@ -15,7 +15,7 @@
             <label class="control-label col-sm-2" for="kaavakuvaus">Kuvaus: </label>
 
             <div class="col-sm-10">
-                <textarea id="kaavakuvaus" ng-model="model.laskentakaavapuu.kuvaus" cols="30" rows="10"></textarea>
+                <textarea auth ng-disabled="!userAccess.updateOrg" class="form-control" id="kaavakuvaus" ng-model="model.laskentakaavapuu.kuvaus" cols="30" rows="10"></textarea>
             </div>
         </div>
 
