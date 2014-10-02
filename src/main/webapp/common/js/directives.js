@@ -2,13 +2,18 @@
 
 angular.module('valintaperusteet')
 
-    .directive('ngEnable', [function () {
+    .directive('ngEnable', ['$log', function ($log) {
         return {
             priority: 100,
             link: function ($scope, element, attrs) {
-                $scope.$watch(attrs.ngEnable, function(value) {
-                    attrs.$set('disabled', !value);
-                });
+
+                if(!attrs.ngDisabled) {
+                    $scope.$watch(attrs.ngEnable, function(value) {
+                        attrs.$set('disabled', !value);
+                    });
+                } else {
+                    $log.error("ng-enabled and ng-disabled -directibes shouldn't be user in the same element", element);
+                }
             }
         };
     }])
