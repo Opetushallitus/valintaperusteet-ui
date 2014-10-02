@@ -9,42 +9,41 @@
 </div>
 <div class="tabsheets">
     <breadcrumb></breadcrumb>
-    <form name="form" ng-submit="submit()">
-        <div class="form-row">
-            <label class="form-row-label">{{ t('valintaryhmalomakeuusi.ylavalintaryhma') || 'Ylävalintaryhmä' }}</label>
+    <form name="form" class="form-horizontal" ng-submit="submit()">
+        <div class="form-group">
+            <label class="control-label col-md-2">{{ t('valintaryhmalomakeuusi.ylavalintaryhma') || 'Ylävalintaryhmä'
+                }}</label>
 
-            <div class="form-row-content width-60">
-                <div ng-include="'../common/partials/valintaryhmaSelector.html'" />
-                <div class="clear"></div>
+            <div class="col-md-6">
+                <div ng-include="'../common/partials/valintaryhmaSelector.html'"/>
             </div>
-            <div class="clear"></div>
         </div>
 
-        <div class="form-row">
-            <label class="form-row-label" for="">{{ t('valintaryhmalomakeuusi.nimi') || 'Nimi' }}</label>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="valintaryhmanimi">{{ t('valintaryhmalomakeuusi.nimi') || 'Nimi' }}</label>
 
-            <div class="form-row-content width-60">
-                <input class="width-60" type="text" name="" id="" ng-model="model.valintaryhma.nimi" required/>
-                <br><span class="red" ng-show="model.nameerror">{{ t('valintaryhmalomakeuusi.valintaryhmalomakeuusi.nimiloytyyjo') || 'Valintaryhmän nimi on jo käytössä. Anna jokin toinen nimi ryhmälle.' }}</span>
+            <div class="col-md-6">
+                <input class="form-control" type="text" name="valintaryhmanimi" ng-model="model.valintaryhma.nimi" required/>
+                <p class="help-block red" ng-show="model.nameerror">{{ t('valintaryhmalomakeuusi.valintaryhmalomakeuusi.nimiloytyyjo') || 'Valintaryhmän nimi on jo käytössä. Anna jokin toinen nimi ryhmälle.' }}</p>
             </div>
-            <div class="clear"></div>
         </div>
 
-        <div class="form-row">
-            <label class="form-row-label" for="">{{ t('valintaryhmalomakeuusi.kohdejoukko') || 'Kohdejoukko' }}</label>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="">{{ t('valintaryhmalomakeuusi.kohdejoukko') || 'Kohdejoukko'
+                }}</label>
 
-            <div class="form-row-content width-60">
-                <select ng-disabled="model.parentOid" ng-model="model.valintaryhma.kohdejoukko"
+            <div class="col-md-6">
+                <select class="form-control" ng-disabled="model.parentOid" ng-model="model.valintaryhma.kohdejoukko"
                         ng-options="k.koodiUri as k.metadata[0].nimi for k in model.kohdejoukot">
                 </select>
             </div>
-            <div class="clear"></div>
         </div>
 
-        <div class="form-row">
-            <label class="form-row-label" for="">{{ t('valintaryhmalomakeuusi.organisaatiot') || 'Organisaatiot' }}:</label>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="">{{ t('valintaryhmalomakeuusi.organisaatiot') || 'Organisaatiot'
+                }}:</label>
 
-            <div class="form-row-content  width-60">
+            <div class="col-md-6">
 
                 <table class="virkailija-table-1">
                     <thead>
@@ -57,35 +56,44 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="organisaatio in model.valintaryhma.organisaatiot">
-                        <td class="align-center">{{organisaatio.nimi['fi'] || organisaatio.nimi['sv'] || organisaatio.nimi['en']}}</td>
+                        <td class="align-center">{{organisaatio.nimi['fi'] || organisaatio.nimi['sv'] ||
+                            organisaatio.nimi['en']}}
+                        </td>
                         <td class="align-center">
                             <span ng-repeat="type in organisaatio.organisaatiotyypit">{{type}}</span>
                             <span ng-repeat="type in organisaatio.tyypit">{{type}}</span>
                         </td>
                         <td class="align-center">{{organisaatio.oid}}</td>
                         <td class="align-center">
-                            <i class="fa fa-trash-o organisaatio" ng-click="model.valintaryhma.organisaatiot.splice($index,1)"></i>
+                            <i class="fa fa-trash-o organisaatio"
+                               ng-click="model.valintaryhma.organisaatiot.splice($index,1)"></i>
                         </td>
                     </tr>
 
                     </tbody>
 
                 </table>
-                <div class="clear"></div>
-                <br />
-                <div ng-include="'../common/partials/organisaatioSelector.html'" />
+                <div ng-include="'../common/partials/organisaatioSelector.html'"/>
 
             </div>
 
-            <div class="clear"></div>
         </div>
 
-        <div class="col-sm-2">
-            <button type="button" class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}</button>
-            <button auth="crud" ng-disabled="!form.$valid" class="btn btn-sm btn-primary" type="submit"><i class="fa fa-floppy-o"></i> {{ t('common.tallenna') || 'Tallenna' }}</button>
+        <div class="form-group">
+            <div class="col-md-2">
+                <div class="pull-right">
+                <button type="button" class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500"
+                        popover-placement="top" popover-trigger="mouseenter"
+                        popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
+                        class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
+                </button>
+                <button auth ng-disabled="!form.$valid || !userAccess.hasCrudRights() || userModel.organizationOids.length === 0" class="btn btn-sm btn-primary" type="submit"><i
+                        class="fa fa-floppy-o"></i> {{ t('common.tallenna') || 'Tallenna' }}
+                </button>
+            </div>
+            </div>
         </div>
-        <div class="clear"></div>
-    </form>
+</form>
 
 
 </div>
