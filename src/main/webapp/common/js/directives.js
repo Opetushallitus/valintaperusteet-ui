@@ -2,6 +2,17 @@
 
 angular.module('valintaperusteet')
 
+    .directive('ngEnable', [function () {
+        return {
+            priority: 100,
+            link: function ($scope, element, attrs) {
+                $scope.$watch(attrs.ngEnable, function(value) {
+                    attrs.$set('disabled', !value);
+                });
+            }
+        };
+    }])
+
     .directive('nestedsortable', function (HakukohdeSiirra) {
         return {
             restrict: 'A',
@@ -51,7 +62,7 @@ angular.module('valintaperusteet')
                     }
                 });
             }
-        }
+        };
     })
 
 
