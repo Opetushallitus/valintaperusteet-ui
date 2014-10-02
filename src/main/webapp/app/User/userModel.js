@@ -1,6 +1,6 @@
 angular.module('valintaperusteet')
 
-    .factory('UserModel', ['$q', '$log', '_', 'AuthService', 'OrganizationByOid', function ($q, $log, _, AuthService, OrganizationByOid) {
+    .factory('UserModel', ['$q', '$log', '_', 'AuthService', 'OrganizationByOid', 'OPH_ORG', function ($q, $log, _, AuthService, OrganizationByOid, OPH_ORG) {
         var model = new function () {
             this.organizationsDeferred = undefined;
 
@@ -8,6 +8,7 @@ angular.module('valintaperusteet')
             this.organizations = [];
             this.isKKUser = false;
             this.hasOtherThanKKUserOrgs = false;
+            this.isOphUser = false;
 
             this.refresh = function () {
                 model.organizationsDeferred = $q.defer();
@@ -56,6 +57,8 @@ angular.module('valintaperusteet')
                 _.some(model.organizations, function (organisaatioData) {
                     if(model.isKKOrganization(organisaatioData)) {
                         model.isKKUser = true;
+                    } else if(model.isOphOrganization(organisaatioData)) {
+                        model.isOphUser = true;
                     } else {
                         model.hasOtherThanKKUserOrgs = true;
                     }
@@ -71,7 +74,10 @@ angular.module('valintaperusteet')
                         return false;
                     }
                 });
+            };
 
+            this.isOphOrganization = function (organization) {
+                return organization.oid === OPH_ORG;
             };
 
 

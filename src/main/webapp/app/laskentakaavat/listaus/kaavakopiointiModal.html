@@ -15,5 +15,5 @@
 </div>
 <div class="modal-footer">
     <button class="btn btn-sm btn-default" ng-click="sulje()">Peruuta</button>
-    <button ng-click="kopioiKaava()" ng-disabled="kaavakopio.$invalid" class="btn btn-sm btn-primary">Kopioi</button>
+    <button auth ng-click="kopioiKaava()" ng-disabled="kaavakopio.$invalid || !(userModel.isKKUser || userModel.isOphUser)" class="btn btn-sm btn-primary">Kopioi</button>
 </div>
