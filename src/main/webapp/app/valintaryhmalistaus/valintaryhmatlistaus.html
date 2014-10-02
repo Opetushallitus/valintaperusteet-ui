@@ -1,12 +1,14 @@
 <!-- Node template -->
 <script type="text/ng-template" id="valintaryhma_node.html">
     <span class="node">
-            <i class="fa fa-users"  ng-class="{ kiinni: domain.isCollapsed(data), eilapsia: domain.isFile(data), auki: domain.isExpanded(data)}" ng-click="expandNode(data)"></i>
+            <i class="fa fa-users"
+               ng-class="{ kiinni: domain.isCollapsed(data), eilapsia: domain.isFile(data), auki: domain.isExpanded(data)}"
+               ng-click="expandNode(data)"></i>
         <a href="#/valintaryhma/{{data.oid}}">{{data.nimi}}
             <i ng-if="!data.access" class="fa fa-lock"></i>
         </a>
     </span>
-    <ol ng-if="data.isVisible" data-valintaryhmaoid="{{data.oid}}" >
+    <ol ng-if="data.isVisible" data-valintaryhmaoid="{{data.oid}}">
         <li ng-repeat="data in data.alavalintaryhmat | orderBy:predicate "
             data-oid="{{data.oid}}"
             ng-show="!(!data.sisaltaaHakukohteita&&domain.search.vainHakukohteitaSisaltavatRyhmat)"
@@ -22,7 +24,8 @@
 
 <!--Leaf template -->
 <script type="text/ng-template" id="hakukohde_leaf.html">
-    <div class="node"><i class="fa fa-building-o"></i><a href="#/hakukohde/{{data.oid}}">{{data.nimi}} ({{data.tila}})</a></div>
+    <div class="node"><i class="fa fa-building-o"></i><a href="#/hakukohde/{{data.oid}}">{{data.nimi}}
+        ({{data.tila}})</a></div>
 </script>
 
 <h1>{{ t('valintaryhmatlistaus.header') || 'Valintaperusteet' }}</h1>
@@ -35,36 +38,54 @@
 <div class="tabsheets">
     <breadcrumb></breadcrumb>
 
-    <div class="search">
-        <div class="margin-top-1">
-            <a auth ng-if="userModel.organizationOids.length !== 0 && userAccess.hasCrudRights()" ng-href="#/valintaryhma/" class="margin-right-1 btn btn-sm btn-default"> <i class="fa fa-plus"></i> {{t('valintaryhmalistaus.add.valintaryhma') || 'Valintaryhmä' }}</a>
-            <a auth ng-if="userModel.organizationOids.length !== 0 && userAccess.hasCrudRights()" ng-href="#/hakukohde/" class="margin-right-1 btn btn-sm btn-default"> <i class="fa fa-plus"></i> {{ t('valintaryhmalistaus.add.hakukohde') || 'Hakukohde' }}</a>
-            <button class="btn btn-sm btn-default" ng-click="domain.expandTree()"> <i class="fa fa-expand"></i> {{ t('valintaryhmatlistaus.ravaapuu') || 'Avaa puu' }}</button>
-        </div>
+    <form role="form">
+        <div class="col-md-6">
+            <div class="form-group">
+                <a auth ng-if="userModel.organizationOids.length !== 0 && userAccess.hasCrudRights()"
+                   ng-href="#/valintaryhma/" class="margin-right-1 btn btn-sm btn-default"> <i class="fa fa-plus"></i>
+                    {{t('valintaryhmalistaus.add.valintaryhma') || 'Valintaryhmä' }}</a>
+                <a auth ng-if="userModel.organizationOids.length !== 0 && userAccess.hasCrudRights()"
+                   ng-href="#/hakukohde/"
+                   class="margin-right-1 btn btn-sm btn-default"> <i class="fa fa-plus"></i> {{
+                    t('valintaryhmalistaus.add.hakukohde') || 'Hakukohde' }}</a>
 
-        <br />
+            </div>
 
-        <div class="margin-bottom-3">
             <div ng-include="'haku/haku.html'"></div>
+            <div class="form-group">
+                <label for="searchtext">{{ t('valintaryhmatlistaus.suodatahakukohteita') || 'Suodata hakukohteita'
+                    }}</label>
+                <input type="text" class="search form-control" id="searchtext"
+                       ng-model="domain.search.q" ng-change="domain.refresh()">
+                <p class="help-block">{{ t('valintaryhmatlistaus.hakupalautti') || 'Haku palautti' }} {{domain.tilasto.valintaryhmia}} {{
+                    t('valintaryhmatlistaus.valintaryhmaaja') || 'valintaryhmää ja' }} {{domain.tilasto.hakukohteita}} {{
+                    t('valintaryhmatlistaus.hakukohdetta') || 'hakukohdetta' }}</p>
+            </div>
+
+                <label class="checkbox-inline">
+                    <input type="checkbox" ng-model="domain.search.vainValmiitJaJulkaistut"
+                           ng-change="domain.refresh()">
+                    {{t('valintaryhmatlistaus.vainvalmiit') || 'Vain valmiit ja julkaistut' }}
+                </label>
+
+                <label class="checkbox-inline">
+                    <input type="checkbox"
+                           ng-model="domain.search.vainHakukohteitaSisaltavatRyhmat" ng-change="domain.update()"/>
+                    {{ t('valintaryhmatlistaus.vainhakukohteita') || 'Vain hakukohteita sisältävät ryhmät' }}
+                </label>
+                <label class="checkbox-inline">
+                    <input type="checkbox"
+                           ng-model="domain.search.vainHakukohteet"
+                           ng-change="domain.update()"/>
+                    {{ t('valintaryhmatlistaus.vainhakukohteet') || 'Vain hakukohteet'
+                    }}</label>
         </div>
-        <div>
-            <label class="margin-right-2" for="text">{{ t('valintaryhmatlistaus.hae') || 'Hae' }}</label>
-            <input type="text" class="search" placeholder="{{ t('valintaryhmatlistaus.suodatahakukohteita') || 'Suodata hakukohteita' }}" id="text" ng-model="domain.search.q" ng-change="domain.refresh()">
-
-
-            <input class="margin-left-2" id="osallistuu" type="checkbox" ng-model="domain.search.vainValmiitJaJulkaistut" ng-change="domain.refresh()"/>
-            <label for="osallistuu">{{ t('valintaryhmatlistaus.vainvalmiit') || 'Vain valmiit ja julkaistut' }}</label>
-
-            <input class="margin-left-2" id="vainHakukohteitaSisaltavatRyhmat" type="checkbox" ng-model="domain.search.vainHakukohteitaSisaltavatRyhmat" ng-change="domain.update()"/>
-            <label for="vainHakukohteitaSisaltavatRyhmat">{{ t('valintaryhmatlistaus.vainhakukohteita') || 'Vain hakukohteita sisältävät ryhmät' }}</label>
-
-            <input class="margin-left-2" id="vainHakukohteet" type="checkbox" ng-model="domain.search.vainHakukohteet" ng-change="domain.update()"/>
-            <label for="vainHakukohteet">{{ t('valintaryhmatlistaus.vainhakukohteet') || 'Vain hakukohteet' }}</label>
-        </div>
-    </div>
-    <br><br>
-    <div class="results">
-        <div>{{ t('valintaryhmatlistaus.hakupalautti') || 'Haku palautti' }} {{domain.tilasto.valintaryhmia}} {{ t('valintaryhmatlistaus.valintaryhmaaja') || 'valintaryhmää ja' }} {{domain.tilasto.hakukohteita}} {{ t('valintaryhmatlistaus.hakukohdetta') || 'hakukohdetta' }} </div>
+    </form>
+    <div class="col-md-12">
+        <h3>Valintaryhmät ja hakukohteet </h3>
+        <button class="btn btn-sm btn-default" ng-click="domain.expandTree()"><i class="fa fa-expand"></i> {{
+            t('valintaryhmatlistaus.ravaapuu') || 'Avaa puu' }}
+        </button>
         <ol ng-if="!domain.search.vainHakukohteet" id="valintaryhmapuu" class="sortable collapsible">
             <li ng-repeat="data in domain.valintaperusteList | orderBy:predicate"
                 data-oid="{{data.oid}}"
@@ -75,31 +96,40 @@
             </li>
         </ol>
 
-        <div ng-if="hakukohteetListingLimit < domain.hakukohteet.length && domain.search.vainHakukohteet">{{ t('valintaryhmatlistaus.naytetty') || 'Näytetty' }}: {{hakukohteetListingLimit}} / {{domain.hakukohteet.length}}</div>
+        <div ng-if="hakukohteetListingLimit < domain.hakukohteet.length && domain.search.vainHakukohteet">{{
+            t('valintaryhmatlistaus.naytetty') || 'Näytetty' }}: {{hakukohteetListingLimit}} /
+            {{domain.hakukohteet.length}}
+        </div>
         <table ng-if="domain.search.vainHakukohteet" class="virkailija-table-1 hakukohde-table" item-on-screen>
             <thead>
-                <tr>
-                    <th>{{ t('valintaryhmatlistaus.hakukohde') || 'Hakukohde' }}</th>
-                    <th>{{ t('valintaryhmatlistaus.valintaryhma') || 'Valintaryhmä' }}</th>
-                </tr>
+            <tr>
+                <th>{{ t('valintaryhmatlistaus.hakukohde') || 'Hakukohde' }}</th>
+                <th>{{ t('valintaryhmatlistaus.valintaryhma') || 'Valintaryhmä' }}</th>
+            </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="data in domain.hakukohteet | limitTo:hakukohteetListingLimit">
-                    <td>
+            <tr ng-repeat="data in domain.hakukohteet | limitTo:hakukohteetListingLimit">
+                <td>
                         <span class="float-left">
                              <i class="fa fa-building-o"></i>
                              <a href="#/hakukohde/{{data.oid}}"> {{data.nimi}} ({{data.tila}})</a>
                         </span>
-                    </td>
-                    <td>
+                </td>
+                <td>
                         <span class="float-left">
-                            <a href="#/valintaryhma/{{parent.oid}}" ng-repeat="parent in data.getParents()" >{{parent.nimi}} / </a>
+                            <a href="#/valintaryhma/{{parent.oid}}" ng-repeat="parent in data.getParents()">{{parent.nimi}}
+                                / </a>
                         </span>
-                    </td>
-                </tr>
+                </td>
+            </tr>
             </tbody>
         </table>
-        <div ng-if="hakukohteetListingLimit < domain.hakukohteet.length && domain.search.vainHakukohteet">{{ t('valintaryhmatlistaus.naytetty') || 'Näytetty' }}: {{hakukohteetListingLimit}} / {{domain.hakukohteet.length}}</div>
+        <div ng-if="hakukohteetListingLimit < domain.hakukohteet.length && domain.search.vainHakukohteet">{{
+            t('valintaryhmatlistaus.naytetty') || 'Näytetty' }}: {{hakukohteetListingLimit}} /
+            {{domain.hakukohteet.length}}
+        </div>
+
     </div>
+    <div class="clearfix"></div>
 
 </div>
