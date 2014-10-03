@@ -50,7 +50,8 @@ angular.module('valintaperusteet').factory('TemplateService', function() {
 			var map = {
 				LUKUARVO: 'lukuarvo',
 				TOTUUSARVO: 'totuusarvo',
-				HAKUTOIVE: 'hakutoive',
+                HAKUKELPOISUUS: 'totuusarvo',
+                HAKUTOIVE: 'hakutoive',
 				DEMOGRAFIA: 'demografia',
 
 				HAETOTUUSARVO: 'haettava_arvo',
@@ -98,6 +99,7 @@ angular.module('valintaperusteet').factory('TemplateService', function() {
 				HYLKAAARVOVALILLA: 'hylkaa_arvovalilla',
 				NIMETTYLUKUARVO: 'nimetty_lukuarvo',
 				NIMETTYTOTUUSARVO: 'nimetty_totuusarvo'
+
 			};
 			return map[key];
 		};

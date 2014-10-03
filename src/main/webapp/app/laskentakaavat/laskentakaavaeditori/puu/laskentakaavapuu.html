@@ -556,8 +556,11 @@ YHTASUURI
             <td ng-click="addFunktio(parent, 'VALINTAPERUSTEYHTASUURUUS', funktioSlotIndex); showNewFunktioList.visible = false">
                 <span>{{ t('laskentakaavapuu.valintaperusteyhtasuuruus') || 'Valintaperusteyhtäsuuruus' }}</span></td>
         </tr>
-        <tr ng-if="parent.lapsi">
-            <td ng-click="addLaskentakaavaviite(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.viittaus') || 'Viittaus toiseen kaavaan' }}</span>
+        <tr>
+            <td ng-click="addFunktio(parent, 'HAKUKELPOISUUS', funktioSlotIndex); showNewFunktioList.visible = false">
+                <span>{{ t('laskentakaavapuu.hakukelpoisuus') || 'Hakukelpoisuus'}}</span>
+            </td>
+            <td ng-if="parent.lapsi" ng-click="addLaskentakaavaviite(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.viittaus') || 'Viittaus toiseen kaavaan' }}</span>
             </td>
         </tr>
         </tbody>

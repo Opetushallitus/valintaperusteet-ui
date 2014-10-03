@@ -46,8 +46,8 @@ factory('FunktioNimiService', function() {
 			NIMETTYLUKUARVO: 'Nimetty lukuarvo',
 			NIMETTYTOTUUSARVO: 'Nimetty totuusarvo',
             HAEYOARVOSANA: 'Hae YO-arvosana',
-            HAEOSAKOEARVOSANA: 'Hae YO-osakoearvosana'
-
+            HAEOSAKOEARVOSANA: 'Hae YO-osakoearvosana',
+            HAKUKELPOISUUS: 'Hakukelpoisuus'
 		};
 
 		this.getName = function(funktionimi) {
