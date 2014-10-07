@@ -1,4 +1,4 @@
-app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe, Laskentakaava, LaskentakaavaModel) {
+app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe, Laskentakaava, LaskentakaavaModel, UserModel, HakemusavaimetLisakysymykset, $cookieStore) {
     "use strict";
 
 	var model = new function() {
@@ -13,6 +13,7 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
                 model.valintakoe.lahetetaankoKoekutsut = false;
                 model.valintakoe.kutsunKohde = 'YLIN_TOIVE';
 				model.valintakoe.laskentakaavaId = "";
+                model.valintakoe.kutsunKohdeAvain = '';
 			} else {
 				Valintakoe.get({valintakoeOid: oid}, function(result) {
 					
@@ -20,13 +21,72 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 					if(!result.laskentakaavaId) {
 						model.valintakoe.laskentakaavaId = "";
 					}
+
+                    if(!result.kutsunKohdeAvain) {
+                        model.valintakoe.kutsunKohdeAvain = "";
+                    }
 				});
 			}
+
+
+            this.resolveHaku();
+
 
             LaskentakaavaModel.refresh(valintaryhmaOid, hakukohdeOid);
             model.laskentakaavaModel = LaskentakaavaModel;
 
 		};
+
+        this.getHakemusAvaimet = function (hakuoid) {
+            UserModel.organizationsDeferred.promise.then(function () {
+                HakemusavaimetLisakysymykset.get({hakuoid: hakuoid, orgId: UserModel.organizationOids[0]},function (haetutAvaimet) {
+                        var avaimet = [];
+                        _.forEach(haetutAvaimet, function(phase) {
+
+                            var obj = {};
+                            obj.key = phase._id;
+                            if(phase.messageText) {
+                                obj.value = phase._id + ' - ' + phase.messageText.translations.fi;
+                            } else {
+                                obj.value = phase._id;
+                            }
+                            avaimet.push(obj);
+
+                        });
+                        model.lisakysymysAvaimet = avaimet;
+                    }, function (error) {
+                        console.log("lisakysymyksiä ei löytynyt");
+                    }
+                );
+            }, function () {
+                HakemusavaimetLisakysymykset.get({hakuoid: hakuoid},function (haetutAvaimet) {
+                        var avaimet = [];
+                        _.forEach(haetutAvaimet, function(phase) {
+
+                            var obj = {};
+                            obj.key = phase._id;
+                            if(phase.messageText) {
+                                obj.value = phase._id + ' - ' + phase.messageText.translations.fi;
+                            } else {
+                                obj.value = phase._id;
+                            }
+                            avaimet.push(obj);
+
+                        });
+                        model.lisakysymysAvaimet = avaimet;
+                    }, function (error) {
+                        console.log("lisakysymyksiä ei löytynyt");
+                    }
+                );
+            });
+        };
+
+        this.resolveHaku = function() {
+            var hakuoid = $cookieStore.get('hakuoid');
+            if(hakuoid) {
+                this.getHakemusAvaimet(hakuoid);
+            }
+        };
 
 		this.refreshIfNeeded = function(oid, valintaryhmaOid, hakukohdeOid) {
 			if(oid === undefined || model.valintakoe.oid !== oid) {
@@ -55,7 +115,8 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
                     kutsutaankoKaikki: model.valintakoe.kutsutaankoKaikki,
                     lahetetaankoKoekutsut: model.valintakoe.lahetetaankoKoekutsut,
                     kutsuttavienMaara: model.valintakoe.kutsuttavienMaara,
-                    kutsunKohde: model.valintakoe.kutsunKohde
+                    kutsunKohde: model.valintakoe.kutsunKohde,
+                    kutsunKohdeAvain: model.valintakoe.kutsunKohdeAvain
 				};
 
 				ValinnanvaiheValintakoe.insert({valinnanvaiheOid: parentValintakoeValinnanvaiheOid},valintakoe, function(result) {
