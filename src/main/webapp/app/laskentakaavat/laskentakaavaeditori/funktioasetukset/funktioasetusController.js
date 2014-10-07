@@ -1,9 +1,9 @@
 angular.module('valintaperusteet')
 
     .controller('funktiokutsuAsetuksetController', ['$scope', '$q', '$routeParams', '$location', '$timeout', 'Laskentakaava',
-        'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'GuidGenerator', 'HakemusavaimetLisakysymykset', 'HakemusavaimetLomake', 'ValintaryhmaModel', 'Treemodel', 'LaskentakaavaValintaryhma', '$cookieStore', '$window',
-        function ($scope, $q, $routeParams, $location, $timeout, Laskentakaava, FunktioNimiService, FunktioFactory, KaavaValidationService, GuidGenerator, HakemusavaimetLisakysymykset, HakemusavaimetLomake, ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore, $window) {
-
+        'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'GuidGenerator', 'HakemusavaimetLisakysymykset', 'HakemusavaimetLomake', 'ValintaryhmaModel', 'Treemodel', 'LaskentakaavaValintaryhma', '$cookieStore', '$window', 'UserModel',
+        function ($scope, $q, $routeParams, $location, $timeout, Laskentakaava, FunktioNimiService, FunktioFactory, KaavaValidationService, GuidGenerator, HakemusavaimetLisakysymykset, HakemusavaimetLomake, ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore, $window, UserModel) {
+            UserModel.refreshIfNeeded();
             $scope.toggle = false;
             $scope.funktioFactory = FunktioFactory;
             $scope.valintaryhmaModel = ValintaryhmaModel;
@@ -136,26 +136,49 @@ angular.module('valintaperusteet')
                             console.log("hakulomakkeen avaimia ei löytynyt");
                         }
                     );
+                    
+                    UserModel.organizationsDeferred.promise.then(function () {
+                        HakemusavaimetLisakysymykset.get({hakuoid: hakuoid, orgId: UserModel.organizationOids[0]},function (haetutAvaimet) {
+                                var avaimet = [];
+                                _.forEach(haetutAvaimet, function(phase) {
 
-                    HakemusavaimetLisakysymykset.get({hakuoid: hakuoid},function (haetutAvaimet) {
-                            var avaimet = [];
-                            _.forEach(haetutAvaimet, function(phase) {
+                                    var obj = {};
+                                    obj.key = phase._id;
+                                    if(phase.messageText) {
+                                        obj.value = phase._id + ' - ' + phase.messageText.translations.fi;
+                                    } else {
+                                        obj.value = phase._id;
+                                    }
+                                    avaimet.push(obj);
 
-                                var obj = {};
-                                obj.key = phase._id;
-                                if(phase.messageText) {
-                                    obj.value = phase._id + ' - ' + phase.messageText.translations.fi;
-                                } else {
-                                    obj.value = phase._id;
-                                }
-                                avaimet.push(obj);
+                                });
+                                $scope.lisakysymysAvaimet = avaimet;
+                            }, function (error) {
+                                console.log("lisakysymyksiä ei löytynyt");
+                            }
+                        );
+                    }, function () {
+                        HakemusavaimetLisakysymykset.get({hakuoid: hakuoid},function (haetutAvaimet) {
+                                var avaimet = [];
+                                _.forEach(haetutAvaimet, function(phase) {
 
-                            });
-                            $scope.lisakysymysAvaimet = avaimet;
-                        }, function (error) {
-                            console.log("lisakysymyksiä ei löytynyt");
-                        }
-                    );
+                                    var obj = {};
+                                    obj.key = phase._id;
+                                    if(phase.messageText) {
+                                        obj.value = phase._id + ' - ' + phase.messageText.translations.fi;
+                                    } else {
+                                        obj.value = phase._id;
+                                    }
+                                    avaimet.push(obj);
+
+                                });
+                                $scope.lisakysymysAvaimet = avaimet;
+                            }, function (error) {
+                                console.log("lisakysymyksiä ei löytynyt");
+                            }
+                        );
+                    });
+
 
 
                 }, function(reject) {

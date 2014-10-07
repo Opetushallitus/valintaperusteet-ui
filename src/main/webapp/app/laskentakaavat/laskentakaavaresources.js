@@ -48,7 +48,7 @@ angular.module('valintaperusteet')
     })
 
     .factory('HakemusavaimetLisakysymykset', function ($resource) {
-        return $resource(HAKEMUS_URL_BASE + "/application-system-form-editor/theme-question/list/:hakuoid", {hakuoid: "@hakuoid"},{
+        return $resource(HAKEMUS_URL_BASE + "/application-system-form-editor/theme-question/list/:hakuoid", {hakuoid: "@hakuoid", orgId: "@orgId"},{
             get: {method: "GET", isArray:true}
         });
     })
