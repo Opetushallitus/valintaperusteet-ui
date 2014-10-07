@@ -81,7 +81,9 @@ angular.module('valintaperusteet')
 .filter('kkHakuFilter', ['_', function (_) {
     return function (haut) {
         return _.filter(haut, function (haku) {
-            return haku.kohdejoukkoUri.indexOf('_12') > -1;
+            if(haku.hakukohdeJoukkoUri) {
+                return haku.kohdejoukkoUri.indexOf('_12') > -1;
+            }
         });
     };
 }]);
