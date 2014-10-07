@@ -25,10 +25,7 @@ angular.module('valintaperusteet')
 
             //kk-käyttäjä
 //            instance.myroles = kkRead;
-//
 //            deferred.resolve(instance);
-
-
             $http.get(CAS_URL).success(function (result) {
                 instance.myroles = result;
                 deferred.resolve(instance);
@@ -67,15 +64,6 @@ angular.module('valintaperusteet')
                             $animate.removeClass(element, 'ng-hide');
                         }
 
-//                        if( (attrs.auth && UserAccessLevels[attrs.auth]) || UserAccessLevels.isOphUser() ) {
-//                           $animate.removeClass(element, 'ng-hide');
-//                        }
-
-
-
-//                        if (UserModel.isKKUser) {
-//                            $animate.removeClass(element, 'ng-hide');
-//                        }
                     }, function (error) {
                         $log.error('Error revealing element:', error);
                     });

@@ -141,7 +141,7 @@ angular.module('valintaperusteet')
             };
 
             this.hasCrudRights = function () {
-                return model.crudOph || model.crudOrg || model.crudApp;
+                return model.crudOph || model.crudOrg || model.readApp;
             };
 
             this.hasUpdateRights = function () {
