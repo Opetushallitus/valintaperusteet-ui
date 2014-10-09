@@ -1,7 +1,10 @@
 
 angular.module('valintaperusteet')
 
-    .controller('ValintaryhmaKopiointiController', ['$scope', 'ValintaryhmaModel', function ($scope, ValintaryhmaModel) {
+    .controller('ValintaryhmaKopiointiController', ['$scope', '$routeParams', 'HakuModel', 'ValintaryhmaModel', 'ValintaperusteetPuu', function ($scope, $routeParams, HakuModel, ValintaryhmaModel, ValintaperusteetPuu) {
+        HakuModel.init();
+
+
 
         $scope.kopioObj = {};
 
@@ -10,7 +13,15 @@ angular.module('valintaperusteet')
         });
 
         $scope.kopioiValintaryhma = function () {
-            console.log($scope.kopioObj);
+            HakuModel.hakuDeferred.promise.then(function () {
+                ValintaperusteetPuu.get({
+                    hakuOid: HakuModel.hakuOid,
+                    hakukohteet: false,
+                    valintaryhma: $routeParams.id
+                }, function (result) {
+                    console.log(result);
+                });
+            });
         };
 
     }]);

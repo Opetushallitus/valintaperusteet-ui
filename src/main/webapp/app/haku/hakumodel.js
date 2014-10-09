@@ -5,13 +5,14 @@ angular.module('valintaperusteet')
 
     var model;
     model = new function() {
+        this.hakuDeferred = undefined;
         this.hakuOid = "";
         this.haku = {};
         this.haut = [];
 
         this.init = function(oid) {
-            if(model.haut.length <= 0) {
-
+            if(model.haut.length < 1 && !model.hakuDeferred) {
+                model.hakuDeferred = $q.defer();
                 UserModel.refreshIfNeeded();
 
                 Haku.get({}, function(result) {
@@ -51,6 +52,9 @@ angular.module('valintaperusteet')
 
                             }
                         });
+                        model.hakuDeferred.resolve();
+                    }, function () {
+                        model.hakuDeferred.reject();
                     });
                 });
             }
