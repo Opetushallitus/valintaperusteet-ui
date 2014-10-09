@@ -10,11 +10,15 @@ app.directive('modal', function ($modal) {
 		link: function ($scope, $elems, $attrs) {
 			var template = $attrs.modalTemplate;
 			var windowClass = $attrs.windowClass;
+
 			$scope.show = function() {
+                var modalSize = $attrs.modalSize;
+
 				$modal.open({
 					scope: $scope,
 					templateUrl: template,
 					windowClass: windowClass,
+                    size: modalSize,
 					controller: function ($scope, $modalInstance) {
 						$scope.sulje = function () {
 							$modalInstance.dismiss('cancel');

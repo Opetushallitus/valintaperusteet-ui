@@ -52,6 +52,14 @@
     </div>
 </script>
 
+<!-- Valintaryhmän kopiointi -->
+<div ng-controller="ValintaryhmaKopiointiController">
+    <modal modal-size="lg" modal-template="valintaryhma/valintaryhmaKopiointi.html">
+        <modal-open></modal-open>
+    </modal>
+</div>
+
+
 <h1>{{ t('valintaryhmalomake.header') || 'Valintaryhmän muokkaus' }}</h1>
 
 
@@ -273,6 +281,19 @@
     </div>
 </div>
 
+<div auth ng-if="userAccess.crudOrg" class="form-group">
+    <label class="control-label col-md-2">{{ t('valintaryhmalomake.hallinnoi') || 'Hallinnoi valintaryhmää'}}</label>
+    <div class="col-md-10">
+        <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-default btn-sm" ng-click="showValintaryhmaKopiointi()">
+            {{t('valintaryhmalomake.kopioi.valintaryhma.kopiointi') || 'Valintaryhmän kopiointi'}}
+        </button>
+        <button auth ng-disabled="!model.okToDelete || !userAccess.crudOrg" class="btn btn-sm btn-primary" type="button"
+                ng-click="deleteValintaryhma()">
+            <i class="fa fa-trash-o"></i>
+            {{ t('common.poista') || 'Poista' }}
+        </button>
+    </div>
+</div>
 
 <div class="col-md-12">
     <button type="button" class="float-left margin-right-1 btn btn-sm btn-default" ng-click="cancel()"
@@ -285,12 +306,8 @@
         {{ t('common.tallenna') || 'Tallenna' }}
     </button>
 
-    <button auth ng-disabled="!model.okToDelete || !userAccess.crudOrg" class="btn btn-sm btn-primary" type="button"
-            ng-click="deleteValintaryhma()">
-        <i class="fa fa-trash-o"></i>
-        {{ t('common.poista') || 'Poista' }}
-    </button>
 </div>
+
 <div class="clear"></div>
 </form>
 
