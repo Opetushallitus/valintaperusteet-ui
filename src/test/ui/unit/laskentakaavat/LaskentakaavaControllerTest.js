@@ -26,7 +26,7 @@ describe('LaskentakaavaController', function () {
         Arvokonvertterikuvauskielet = $injector.get('Arvokonvertterikuvauskielet');
         FunktioNimiService = $injector.get('FunktioNimiService');
         FunktioFactory = $injector.get('FunktioFactory');
-        KaavaValidationService = $injector.get('KaavaValidationService');
+        KaavaValidation = $injector.get('KaavaValidation');
         KaavaVirheService = $injector.get('KaavaVirheService');
 
         //Mockdata
@@ -48,7 +48,7 @@ describe('LaskentakaavaController', function () {
                 Arvokonvertterikuvauskielet: Arvokonvertterikuvauskielet,
                 FunktioNimiService: FunktioNimiService,
                 FunktioFactory: FunktioFactory,
-                KaavaValidationService:  KaavaValidationService,
+                KaavaValidation:  KaavaValidation,
                 KaavaValidointi: KaavaValidointi,
                 KaavaVirheService: KaavaVirheService
             });

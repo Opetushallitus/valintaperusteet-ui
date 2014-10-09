@@ -439,6 +439,7 @@ angular.module('valintaperusteet')
             $scope.openHakijaryhmaKopiointiModal = function (hakijaryhma) {
                 $scope.$broadcast('openHakijaryhmaKopiointiModal', hakijaryhma);
             };
+
         }])
 
 
@@ -449,7 +450,6 @@ angular.module('valintaperusteet')
         $scope.model = {};
 
         $scope.hakijaryhma = {};
-
 
         $scope.$on('openHakijaryhmaKopiointiModal', function (event, hakijaryhma) {
             $scope.hakijaryhma = hakijaryhma;
@@ -479,9 +479,5 @@ angular.module('valintaperusteet')
 
         };
 
-    }]);
-
-
-
-
+    }])
 

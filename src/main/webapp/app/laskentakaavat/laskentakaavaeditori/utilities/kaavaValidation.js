@@ -1,23 +1,39 @@
-angular.module('valintaperusteet').factory('KaavaValidationService', ['FunktioService', 'FunktioNimiService',
-    function (FunktioService, FunktioNimiService) {
-    'use strict';
+angular.module('valintaperusteet')
 
-    var validationService = new function () {
+    .factory('KaavaValidation', ['FunktioService', 'FunktioNimiService', '_', 'KaavaValidationUtility', 'KaavaVirheTyypit', 'KaavaVirheService',
+        function (FunktioService, FunktioNimiService, _, KaavaValidationUtility, KaavaVirheTyypit, KaavaVirheService) {
+            'use strict';
+
+            var validationService = new function () {
+
+                this.virheService = KaavaVirheService;
+
+                this.validate = function (puu) {
+                    KaavaValidationUtility.validateTree(puu, validationService.virheService.laskentakaavavirheet);
+                };
+
+            }();
+
+            return validationService;
+        }])
+
+    .service('KaavaValidationUtility', ['_', 'FunktioNimiService', 'FunktioService', function (_, FunktioNimiService, FunktioService) {
+        var utility = this;
 
         this.validateTree = function (rootFunktiokutsu, errors) {
-            validationService.makeRootValidations(rootFunktiokutsu, errors);
+            utility.makeRootValidations(rootFunktiokutsu, errors);
 
             _.forEach(rootFunktiokutsu.funktioargumentit, function (funktioargumentti, funktioargumenttiIndex) {
-                validationService.validateNode(rootFunktiokutsu, funktioargumentti, funktioargumenttiIndex, errors);
+                utility.validateNode(rootFunktiokutsu, funktioargumentti, funktioargumenttiIndex, errors);
             });
 
         };
 
         this.validateNode = function (parent, funktiokutsu, funktiokutsuIndex, errors) {
             if (!(_.isEmpty(funktiokutsu))) {
-                validationService.makeNodeValidations(parent, funktiokutsu, funktiokutsuIndex, errors);
+                utility.makeNodeValidations(parent, funktiokutsu, funktiokutsuIndex, errors);
                 _.forEach(funktiokutsu.lapsi.funktioargumentit, function (funktioargumentti, funktioargumenttiIndex) {
-                    validationService.validateNode(funktiokutsu, funktioargumentti, funktioargumenttiIndex, errors);
+                    utility.validateNode(funktiokutsu, funktioargumentti, funktioargumenttiIndex, errors);
                 });
             }
         };
@@ -45,7 +61,7 @@ angular.module('valintaperusteet').factory('KaavaValidationService', ['FunktioSe
                 parent = undefined;
                 isFunktiokutsu = FunktioService.isFunktiokutsu(rootFunktiokutsu);
                 funktiokutsuIndex = index;
-                validationService.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
+                utility.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
             }
 
             //tallennatulos valittu -tarkistus (yllä) rootin lapsille
@@ -59,7 +75,7 @@ angular.module('valintaperusteet').factory('KaavaValidationService', ['FunktioSe
                     parent = parent;
                     isFunktiokutsu = FunktioService.isFunktiokutsu(funktioargumentti);
                     funktiokutsuIndex = funktioargumenttiIndex;
-                    validationService.addValidationError(errors, nimi, kuvaus, parent, funktioargumentti, funktiokutsuIndex, isFunktiokutsu);
+                    utility.addValidationError(errors, nimi, kuvaus, parent, funktioargumentti, funktiokutsuIndex, isFunktiokutsu);
                 }
             });
 
@@ -73,7 +89,7 @@ angular.module('valintaperusteet').factory('KaavaValidationService', ['FunktioSe
                 isFunktiokutsu = FunktioService.isFunktiokutsu(rootFunktiokutsu);
                 funktiokutsuIndex = 0;
 
-                validationService.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
+                utility.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
             }
         };
 
@@ -84,7 +100,7 @@ angular.module('valintaperusteet').factory('KaavaValidationService', ['FunktioSe
             //käydään tarkasteltavan funktiokutsun funktioargumentit läpi ja tehdään tarvittavat tarkistukset
             _.forEach(funktiokutsu.lapsi.funktioargumentit, function (funktioargumentti, funktioargumenttiIndex) {
 
-                validationService.nodeTallennaTulosValidation(funktiokutsu, funktioargumentti, funktioargumenttiIndex, errors);
+                utility.nodeTallennaTulosValidation(funktiokutsu, funktioargumentti, funktioargumenttiIndex, errors);
 
                 //definedFunktioargumenttiCount on apumuuttuja, jolla tarkistetaan että nimettyjäfunktioargumentteja on vaadittu määrä tai
                 //että funktioargumentteja on vähintään yksi, jos funktiokutsulla on n-funktioargumenttia
@@ -93,22 +109,20 @@ angular.module('valintaperusteet').factory('KaavaValidationService', ['FunktioSe
                 }
 
             });
-            validationService.atLeastOneFunktioargumenttiDefined(parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount, errors);
-            validationService.allNimettyargumenttiDefined(parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount, errors);
-            validationService.painotettukeskiarvoValidation(parent, funktiokutsu, funktiokutsuIndex, errors);
+            utility.atLeastOneFunktioargumenttiDefined(parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount, errors);
+            utility.allNimettyargumenttiDefined(parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount, errors);
+            utility.painotettukeskiarvoValidation(parent, funktiokutsu, funktiokutsuIndex, errors);
         };
 
         // tallennatulos valittu -> tulostunniste täytyy olla määritelty
         this.nodeTallennaTulosValidation = function (parent, funktiokutsu, funktiokutsuIndex, errors) {
             if (parent.lapsi.funktionimi !== 'PAINOTETTUKESKIARVO' && !_.isEmpty(funktiokutsu) && funktiokutsu.lapsi.tallennaTulos === true && _.isEmpty(funktiokutsu.lapsi.tulosTunniste)) {
-                var nimi, kuvaus, parent, funktiokutsuIndex, isFunktiokutsu;
+                var nimi, kuvaus, isFunktiokutsu;
                 nimi = FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi);
                 kuvaus = "tulostunniste täytyy määritellä, jos Tallenna tulos -kenttä on valittu";
-                parent = parent;
                 isFunktiokutsu = FunktioService.isFunktiokutsu(funktiokutsu);
-                funktiokutsuIndex = funktiokutsuIndex;
 
-                validationService.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
+                utility.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
             }
         };
 
@@ -119,7 +133,7 @@ angular.module('valintaperusteet').factory('KaavaValidationService', ['FunktioSe
                 nimi = FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi);
                 kuvaus = "Funktiokutsulle ei ole määritelty yhtään funktioargumenttia. Tälle funktiokutsulle on määriteltävä vähintään yksi funktioargumentti";
                 isFunktiokutsu = FunktioService.isFunktiokutsu(funktiokutsu);
-                validationService.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
+                utility.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
             }
         };
 
@@ -131,7 +145,7 @@ angular.module('valintaperusteet').factory('KaavaValidationService', ['FunktioSe
                 kuvaus = 'Funktiokutsulle on määritelty ' + definedFunktioargumenttiCount + "/" + FunktioService.getNimettyFunktioargumenttiCount(funktiokutsu) + " pakollista funktioargumenttia";
                 isFunktiokutsu = FunktioService.isFunktiokutsu(funktiokutsu);
 
-                validationService.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
+                utility.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
             }
         };
 
@@ -148,7 +162,7 @@ angular.module('valintaperusteet').factory('KaavaValidationService', ['FunktioSe
                 });
 
                 var kuvaus = undefined;
-                if (definedFunktioargumenttiCount < 2 ) {
+                if (definedFunktioargumenttiCount < 2) {
                     kuvaus = "Painotetulle keskiarvolle täytyy määritellä vähintään kaksi funktioargumenttia";
                 } else if (hasUndefinedFunktioargumentti) {
                     kuvaus = "Painotetun keskiarvon funktioargumenttilistan keskellä ei voi olla määrittelemättömiä funktioargumentteja";
@@ -161,7 +175,7 @@ angular.module('valintaperusteet').factory('KaavaValidationService', ['FunktioSe
                     nimi = FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi);
                     isFunktiokutsu = FunktioService.isFunktiokutsu(funktiokutsu);
 
-                    validationService.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
+                    utility.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
                 }
             }
         };
@@ -169,7 +183,7 @@ angular.module('valintaperusteet').factory('KaavaValidationService', ['FunktioSe
         //clear edit-time extra funktioargumenttislots from painotettukeskiarvo -funktiokutsu
         this.cleanExtraPKArgumenttiSlots = function (funktiokutsu) {
             if (funktiokutsu.lapsi && funktiokutsu.lapsi.funktionimi === 'PAINOTETTUKESKIARVO') {
-                validationService.cleanExtraArguments(funktiokutsu.lapsi.funktioargumentit);
+                utility.cleanExtraArguments(funktiokutsu.lapsi.funktioargumentit);
             }
             return funktiokutsu;
         };
@@ -179,11 +193,8 @@ angular.module('valintaperusteet').factory('KaavaValidationService', ['FunktioSe
                 var hasExtraPair = _.every(_.last(funktioargumentit, 4), _.isEmpty);
                 if (hasExtraPair) {
                     funktioargumentit.length = funktioargumentit.length - 2;
-                    validationService.cleanExtraArguments(funktioargumentit);
+                    utility.cleanExtraArguments(funktioargumentit);
                 }
             }
         };
-    }();
-
-    return validationService;
-}]);
+    }]);

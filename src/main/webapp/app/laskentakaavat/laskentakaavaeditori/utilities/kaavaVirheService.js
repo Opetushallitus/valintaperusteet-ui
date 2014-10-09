@@ -3,19 +3,33 @@ angular.module('valintaperusteet')
     .constant('KaavaVirheTyypit', {
         FunktioargumenttiVirhe: 'FUNKTIOARGUMENTTIVIRHE',
         SyoteparametriVirhe: 'SYOTEPARAMETRIVIRHE',
-        MuuVirhe: 'MUUVIRHE',
-        TallennaTulosVirhe: 'TALLENNATULOSVIRHE'
+
+        TallennaTulosVirhe: 'TALLENNATULOSVIRHE',
+        TaustaPalveluVirhe: 'TAUSTAPALVELUVIRHE',
+        Tuntematon: 'TUNTEMATONVIRHE'
     })
 
 
-    .factory('KaavaVirheService', ['FunktioService', 'FunktioNimiService', function (FunktioService, FunktioNimiService) {
+    .service('KaavaVirheService', ['FunktioService', 'FunktioNimiService', function (FunktioService, FunktioNimiService) {
         'use strict';
 
 
-        var kaavaVirheService = new function () {
+        this.laskentakaavavirheet = [];
 
-        }();
+        this.clearErrors = function () {
+            this.laskentakaavavirheet.length = 0;
+        };
 
-        return kaavaVirheService;
+        this.addError = function (virhetyyppi) {
+            
+        };
+
+    }])
+
+.directive('validationErrors', [function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'laskentakaavat/laskentakaavaeditori/puu/errors.html'
+        }
     }]);
 

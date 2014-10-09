@@ -1,8 +1,8 @@
 angular.module('valintaperusteet')
 
     .controller('funktiokutsuAsetuksetController', ['$scope', '$q', '$routeParams', '$location', '$timeout', 'Laskentakaava',
-        'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'GuidGenerator', 'HakemusavaimetLisakysymykset', 'HakemusavaimetLomake', 'ValintaryhmaModel', 'Treemodel', 'LaskentakaavaValintaryhma', '$cookieStore', '$window', 'UserModel',
-        function ($scope, $q, $routeParams, $location, $timeout, Laskentakaava, FunktioNimiService, FunktioFactory, KaavaValidationService, GuidGenerator, HakemusavaimetLisakysymykset, HakemusavaimetLomake, ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore, $window, UserModel) {
+        'FunktioNimiService', 'FunktioFactory', 'KaavaValidation', 'GuidGenerator', 'HakemusavaimetLisakysymykset', 'HakemusavaimetLomake', 'ValintaryhmaModel', 'Treemodel', 'LaskentakaavaValintaryhma', '$cookieStore', '$window', 'UserModel',
+        function ($scope, $q, $routeParams, $location, $timeout, Laskentakaava, FunktioNimiService, FunktioFactory, KaavaValidation, GuidGenerator, HakemusavaimetLisakysymykset, HakemusavaimetLomake, ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore, $window, UserModel) {
             UserModel.refreshIfNeeded();
             $scope.toggle = false;
             $scope.funktioFactory = FunktioFactory;
@@ -38,7 +38,7 @@ angular.module('valintaperusteet')
             };
 
             $scope.persistOsakaava = function (osakaava, funktiokutsu, closeModal) {
-                KaavaValidationService.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
+                KaavaValidation.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
                 if ($scope.errors.length === 0) {
                     closeModal();
                     Laskentakaava.insert({}, osakaava, function (savedKaava) {

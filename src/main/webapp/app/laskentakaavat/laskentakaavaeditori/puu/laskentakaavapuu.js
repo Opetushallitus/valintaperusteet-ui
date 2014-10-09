@@ -1,8 +1,8 @@
 angular.module('valintaperusteet').controller('LaskentakaavaController',
     ['$scope', '_', '$location', '$routeParams', '$timeout', 'KaavaValidointi', 'Laskentakaava', 'LaskentakaavaLista',
         'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'Arvokonvertterikuvauskielet',
-        'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'KaavaVirheService',
-        function ($scope, _, $location, $routeParams, $timeout, KaavaValidointi, Laskentakaava, LaskentakaavaLista, TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet, FunktioNimiService, FunktioFactory, KaavaValidationService) {
+        'FunktioNimiService', 'FunktioFactory', 'KaavaValidation',
+        function ($scope, _, $location, $routeParams, $timeout, KaavaValidointi, Laskentakaava, LaskentakaavaLista, TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet, FunktioNimiService, FunktioFactory, KaavaValidation) {
             'use strict';
             
 
@@ -335,7 +335,7 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                     //jos ei olla heti laskentakaavan juuren alla, niin koko slotti voidaan poistaa funktioargumenttitaulukosta
                     $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit.splice($scope.funktioasetukset.selectedFunktioIndex, 1);
                 }
-                KaavaValidationService.cleanExtraPKArgumenttiSlots($scope.funktioasetukset.parentFunktiokutsu);
+                KaavaValidation.cleanExtraPKArgumenttiSlots($scope.funktioasetukset.parentFunktiokutsu);
                 $scope.funktioasetukset.parentFunktiokutsu = undefined;
 
             };
@@ -429,7 +429,7 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                 $scope.errors.length = 0;
                 $scope.commonErrors.length = 0;
 
-                KaavaValidationService.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
+                KaavaValidation.validate($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
                 kaava.laskentakaava.funktiokutsu.funktioargumentit = FunktioService.cleanLaskentakaavaPKObjects(kaava.laskentakaava.funktiokutsu.funktioargumentit);
 
                 if ($scope.errors.length === 0) {
@@ -459,7 +459,7 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                 $scope.funktioSelection = undefined;
                 $scope.alikaavaValues = {};
 
-                KaavaValidationService.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
+                KaavaValidation.validate($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
 
                 if ($scope.errors.length === 0) {
                     //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
