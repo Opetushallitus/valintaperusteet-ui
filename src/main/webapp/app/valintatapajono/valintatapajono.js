@@ -1,5 +1,6 @@
 //domain .. this is both, service & domain layer
-app.factory('ValintatapajonoModel', function ($q, Valintatapajono, ValinnanvaiheValintatapajono, ValintatapajonoJarjestyskriteeri, Laskentakaava, Jarjestyskriteeri, JarjestyskriteeriJarjesta, ValintatapajonoHakijaryhma, HakukohdeHakijaryhma, ValintaryhmaHakijaryhma, HakijaryhmaValintatapajono, $modal) {
+app.factory('ValintatapajonoModel', ['$q', 'Valintatapajono', 'ValinnanvaiheValintatapajono', 'ValintatapajonoJarjestyskriteeri', 'Laskentakaava', 'Jarjestyskriteeri', 'JarjestyskriteeriJarjesta', 'ValintatapajonoHakijaryhma', 'HakukohdeHakijaryhma', 'ValintaryhmaHakijaryhma', 'HakijaryhmaValintatapajono', '$modal',
+    function ($q, Valintatapajono, ValinnanvaiheValintatapajono, ValintatapajonoJarjestyskriteeri, Laskentakaava, Jarjestyskriteeri, JarjestyskriteeriJarjesta, ValintatapajonoHakijaryhma, HakukohdeHakijaryhma, ValintaryhmaHakijaryhma, HakijaryhmaValintatapajono, $modal) {
     "use strict";
 
     var model = new function () {
@@ -23,6 +24,12 @@ app.factory('ValintatapajonoModel', function ($q, Valintatapajono, Valinnanvaihe
                 model.valintatapajono.rajattu = model.valintatapajono.varasijat > 0;
                 model.valintatapajono.alkaenRajattu = !!model.valintatapajono.varasijojaKaytetaanAlkaen;
                 model.valintatapajono.astiRajattu = !!model.valintatapajono.varasijojaTaytetaanAsti;
+
+                model.valintatapajono.siirretaanSijoitteluun = !!model.valintatapajono.siirretaanSijoitteluun;
+                model.valintatapajono.kaytetaanValintalaskentaa = !!model.valintatapajono.kaytetaanValintalaskentaa;
+                model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan = !!model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan;
+                model.valintatapajono.valisijoittelu = !!model.valintatapajono.valisijoittelu;
+                model.valintatapajono.automaattinenLaskentaanSiirto = !!model.valintatapajono.automaattinenLaskentaanSiirto;
             });
 
             ValintatapajonoHakijaryhma.get({oid: oid}, function (result) {
@@ -38,7 +45,12 @@ app.factory('ValintatapajonoModel', function ($q, Valintatapajono, Valinnanvaihe
                 model.jarjestyskriteerit = [];
                 model.hakijaryhmat = [];
                 model.valintatapajono.tasapistesaanto = "YLITAYTTO";
-                model.valintatapajono.kaytetaanValintalaskentaa = false;
+                model.valintatapajono.siirretaanSijoitteluun = !!model.valintatapajono.siirretaanSijoitteluun;
+                model.valintatapajono.kaytetaanValintalaskentaa = !!model.valintatapajono.kaytetaanValintalaskentaa;
+                model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan = !!model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan;
+                model.valintatapajono.valisijoittelu = !!model.valintatapajono.valisijoittelu;
+                model.valintatapajono.automaattinenLaskentaanSiirto = !!model.valintatapajono.automaattinenLaskentaanSiirto;
+
             } else if (oid !== model.valintatapajono.oid) {
                 this.refresh(oid, valinnanVaiheOid);
             }
@@ -204,10 +216,9 @@ app.factory('ValintatapajonoModel', function ($q, Valintatapajono, Valinnanvaihe
 
 
     return model;
-});
+}])
 
-angular.module('valintaperusteet').
-    controller('HakukohdeValintatapajonoController', ['$scope', '$location', '$routeParams', 'ValintatapajonoModel',
+    .controller('HakukohdeValintatapajonoController', ['$scope', '$location', '$routeParams', 'ValintatapajonoModel',
         'HakukohdeValinnanVaiheModel',
         function ($scope, $location, $routeParams, ValintatapajonoModel, HakukohdeValinnanVaiheModel) {
             "use strict";
@@ -223,7 +234,7 @@ angular.module('valintaperusteet').
             };
 
             $scope.cancel = function () {
-                $location.path("/hakukohde/" + $scope.hakukohdeOid + '/valinnanvaihe/' + $scope.valinnanvaiheOid);
+                $location.path("/hakukohde/" + $scope.hakukohdeOid + '/]alinnan.aihe/' + $scope.valinnanvaiheOid);
             };
 
             $scope.addKriteeri = function () {
