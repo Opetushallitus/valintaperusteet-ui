@@ -53,10 +53,7 @@ angular.module('valintaperusteet')
             };
 
             this.analyzeOrganizations = function () {
-                var isKKUser = false;
-                if(model.isKKOrganization()) {
-                    model.isKKUser = true;
-                }
+                model.isKKOrganization();
 
                 _.some(model.organizations, function (organisaatioData) {
                     if(model.isOphOrganization(organisaatioData)) {
@@ -67,9 +64,9 @@ angular.module('valintaperusteet')
                 });
             };
 
-            this.isKKOrganization = function (organization) {
-                MyRolesModel.then(function (model) {
-                    return _.some(model.myroles, function (role) {
+            this.isKKOrganization = function () {
+                MyRolesModel.then(function (myrolesModel) {
+                    model.isKKUser = _.some(myrolesModel.myroles, function (role) {
                         return role.indexOf("APP_VALINTAPERUSTEETKK") > -1;
                     });
                 }, function (error) {
