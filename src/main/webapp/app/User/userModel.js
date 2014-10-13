@@ -1,6 +1,6 @@
 angular.module('valintaperusteet')
 
-    .factory('UserModel', ['$q', '$log', '_', 'AuthService', 'OrganizationByOid', 'OPH_ORG', function ($q, $log, _, AuthService, OrganizationByOid, OPH_ORG) {
+    .factory('UserModel', ['$q', '$log', '_', 'MyRolesModel', 'AuthService', 'OrganizationByOid', 'OPH_ORG', function ($q, $log, _, MyRolesModel, AuthService, OrganizationByOid, OPH_ORG) {
         var model = new function () {
             this.organizationsDeferred = undefined;
 
@@ -54,10 +54,12 @@ angular.module('valintaperusteet')
 
             this.analyzeOrganizations = function () {
                 var isKKUser = false;
+                if(model.isKKOrganization()) {
+                    model.isKKUser = true;
+                }
+
                 _.some(model.organizations, function (organisaatioData) {
-                    if(model.isKKOrganization(organisaatioData)) {
-                        model.isKKUser = true;
-                    } else if(model.isOphOrganization(organisaatioData)) {
+                    if(model.isOphOrganization(organisaatioData)) {
                         model.isOphUser = true;
                     } else {
                         model.hasOtherThanKKUserOrgs = true;
@@ -66,13 +68,12 @@ angular.module('valintaperusteet')
             };
 
             this.isKKOrganization = function (organization) {
-                var kkTunnisteet = ['_41', '_42', '_43']; // 41 == AMK, 42 = Yliopistot, 43 = Sotilaskorkeakoulut
-                return _.some(kkTunnisteet, function (kkTunniste) {
-                    if(organization.oppilaitosTyyppiUri && organization.oppilaitosTyyppiUri.indexOf(kkTunniste) > -1) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+                MyRolesModel.then(function (model) {
+                    return _.some(model.myroles, function (role) {
+                        return role.indexOf("APP_VALINTAPERUSTEETKK") > -1;
+                    });
+                }, function (error) {
+                    $log.error('Käyttäjän roolien hakeminen korkeakoulukäyttöoikeuksien tarkistuksessa epäonnistui');
                 });
             };
 
