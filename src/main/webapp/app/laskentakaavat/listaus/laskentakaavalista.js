@@ -9,7 +9,7 @@ angular.module('valintaperusteet').factory('LaskentakaavaLista', function (Laske
     var findWithValintaryhma = function (valintaryhmaId) {
         var list = [];
         ParentValintaryhmas.get({parentOid: valintaryhmaId}, function (data) {
-            for (var i in data) {
+            for (var i = 0 ; i < data.length ; ++i) {
                 var valintaryhma = data[i];
                 valintaryhma['laskentakaavat'] = Laskentakaava.list({valintaryhma: valintaryhma.oid});
             }
@@ -32,7 +32,7 @@ angular.module('valintaperusteet').factory('LaskentakaavaLista', function (Laske
                 Valintaryhma.get({oid: hakukohdeData.valintaryhma_id}, function (valintaryhmaData) {
 
                     ParentValintaryhmas.get({parentOid: valintaryhmaData.oid}, function (data) {
-                        for (var i in data) {
+                        for (var i = 0 ; i < data.length ; ++i) {
                             var valintaryhma = data[i];
                             valintaryhma['laskentakaavat'] = Laskentakaava.list({valintaryhma: valintaryhma.oid});
                         }
