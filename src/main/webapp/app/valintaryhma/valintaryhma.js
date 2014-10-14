@@ -387,7 +387,7 @@ angular.module('valintaperusteet')
             $scope.model = ValintaryhmaModel;
             $scope.model.refreshIfNeeded($scope.valintaryhmaOid);
 
-            UserAccessLevels.refresh($routeParams.id, $routeParams.hakukohdeOid);
+            UserAccessLevels.refreshIfNeeded($routeParams.id, $routeParams.hakukohdeOid);
 
             $scope.submit = function () {
                 $scope.model.persistValintaryhma($scope.valintaryhmaOid);

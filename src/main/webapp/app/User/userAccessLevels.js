@@ -32,7 +32,7 @@ angular.module('valintaperusteet')
             this.refreshIfNeeded = function (valintaryhmaOid, hakukohdeOid) {
                 if(_.isEmpty(model.deferred) ||
                      ( !_.isEmpty(valintaryhmaOid) && (valintaryhmaOid !== model.valintaryhmaOid) ) ||
-                      ( !_.isEmpty(hakukohdeOid) && (hakukohdeOid !== model.hakuohdeOid) ) )  {
+                      ( !_.isEmpty(hakukohdeOid) && (hakukohdeOid !== model.hakukohdeOid) ) )  {
                     model.refresh(valintaryhmaOid, hakukohdeOid);
                 } else {
                     return model.deferred.promise;

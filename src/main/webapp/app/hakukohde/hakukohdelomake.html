@@ -150,7 +150,7 @@
         <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="lisaaValinnanVaihe()"><i
                 class="fa fa-plus"></i> {{ t('hakukohdelomake.valinnanvaihe') || 'Valinnanvaihe' }}
         </button>
-        <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-default"
+        <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default"
                 ng-click="lisaaValintakoeValinnanVaihe()"><i
                 class="fa fa-plus"></i> {{ t('hakukohdelomake.valintakoevalinnanvaihe') || 'Valintakoevalinnanvaihe' }}
         </button>
