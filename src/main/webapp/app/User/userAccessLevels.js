@@ -24,15 +24,15 @@ angular.module('valintaperusteet')
             this.updateApp = false;
             this.readApp = false;
 
-            this.refreshIfNeeded = function () {
+            this.refreshIfNeeded = function (valintaryhmaOid, hakukohdeOid) {
                 if(_.isEmpty(model.deferred)) {
-                    model.refresh();
+                    model.refresh(valintaryhmaOid, hakukohdeOid);
                 } else {
                     return model.deferred.promise;
                 }
             };
 
-            this.refresh = function () {
+            this.refresh = function (valintaryhmaOid, hakukohdeOid) {
                 model.deferred = undefined;
                 model.deferred = $q.defer();
                 model.resetRights(); // reset all rights to false
@@ -67,7 +67,7 @@ angular.module('valintaperusteet')
                 var readOphSuccessFn = function () { model.setReadRights("oph"); model.deferred.resolve();};
                 var readOphRejectFn = function () {
                     // If users organizations are found then use them getting access
-                    OrganisaatioUtility.getOrganizations(true).then(function (organizationOids) {
+                    OrganisaatioUtility.getOrganizations(true, valintaryhmaOid, hakukohdeOid).then(function (organizationOids) {
                         if(!_.isEmpty(organizationOids)) { //check rights against valintaryhma or hakukohde organizations
                             crudOrgPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET', organizationOids);
                             updateOrgPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET', organizationOids);

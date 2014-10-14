@@ -40,13 +40,13 @@ angular.module('valintaperusteet')
     }])
 
 
-    .directive('auth', ['$q', '$animate', '$timeout', '$log', 'AuthService', 'UserAccessLevels', 'UserModel',
-        function ($q, $animate, $timeout, $log, AuthService, UserAccessLevels, UserModel) {
+    .directive('auth', ['$routeParams', '$q', '$animate', '$timeout', '$log', 'AuthService', 'UserAccessLevels', 'UserModel',
+        function ($routeParams, $q, $animate, $timeout, $log, AuthService, UserAccessLevels, UserModel) {
             return {
                 priority: 1000,
                 link: function ($scope, element, attrs) {
                     UserModel.refreshIfNeeded();
-                    UserAccessLevels.refreshIfNeeded();
+                    UserAccessLevels.refreshIfNeeded($routeParams.id, $routeParams.hakukohdeOid);
 
                     $scope.userAccess = UserAccessLevels;
                     $scope.userModel = UserModel;
@@ -58,7 +58,7 @@ angular.module('valintaperusteet')
                     promises.push(UserModel.organizationsDeferred.promise);
                     promises.push(UserAccessLevels.deferred.promise);
 
-                    // Reveal element for oph-users and KK-users by default
+                    // Reveal element wfor oph-users and KK-users by default
                     $q.all(promises).then(function () {
                         if( UserAccessLevels.isOphUser() || (UserModel.isKKUser && UserAccessLevels.readApp) ) {
                             $animate.removeClass(element, 'ng-hide');

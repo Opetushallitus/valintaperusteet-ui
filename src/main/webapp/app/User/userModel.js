@@ -92,10 +92,10 @@ angular.module('valintaperusteet')
     }])
 
 
-.controller('UserPageController', ['$scope', '$routeParams', 'UserAccessLevels', 'UserModel', 'OrganisaatioUtility',
-        function ($scope, $routeParams, UserAccessLevels, UserModel, OrganisaatioUtility) {
+.controller('UserPageController', ['$scope', '$routeParams', '$log', 'UserAccessLevels', 'UserModel', 'OrganisaatioUtility',
+        function ($scope, $routeParams, $log, UserAccessLevels, UserModel, OrganisaatioUtility) {
         $scope.userAccess = UserAccessLevels;
-        UserAccessLevels.refreshIfNeeded();
+        UserAccessLevels.refreshIfNeeded($routeParams.id, $routeParams.hakukohdeOid);
 
         $scope.userModel = UserModel;
         UserModel.refreshIfNeeded();
@@ -108,9 +108,10 @@ angular.module('valintaperusteet')
         }
 
         $scope.getOrganizations = function () {
-
             OrganisaatioUtility.getOrganizations(false, $routeParams.id, $routeParams.hakukohdeOid).then(function (result) {
                 $scope.vrhkOrgs = result;
+            }, function (error) {
+                $log.error('valintaryhmän/hakukohteen organisaatioiden haku epäonnistui', error);
             });
         };
 

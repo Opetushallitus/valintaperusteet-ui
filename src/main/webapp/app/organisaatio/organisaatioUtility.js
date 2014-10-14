@@ -10,10 +10,11 @@ angular.module('valintaperusteet')
             this.getOrganizations = function (isOidList, valintaryhmaId, hakukohdeOid) {
                 var deferred = $q.defer();
                 var organizations = [];
-                if ($routeParams.id) {
+                if (valintaryhmaId) {
                     ValintaryhmaModel.refreshIfNeeded($routeParams.id);
                     ValintaryhmaModel.loaded.promise.then(function () {
                         if (ValintaryhmaModel.valintaryhma.organisaatiot) {
+                            
                             if(isOidList) {
                                 _.forEach(ValintaryhmaModel.valintaryhma.organisaatiot, function (org) {
                                     organizations.push(org.oid);
@@ -27,7 +28,7 @@ angular.module('valintaperusteet')
                     }, function () {
                         deferred.reject("Valintaryhmän tietojen hakeminen epäonnistui");
                     });
-                } else  if ($routeParams.hakukohdeOid) {
+                } else  if (hakukohdeOid) {
                     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
                     HakukohdeModel.loaded.promise.then(function () {
                         organizations.push(HakukohdeModel.hakukohde.tarjoajaOid);

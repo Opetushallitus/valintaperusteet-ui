@@ -24,11 +24,11 @@ var LOCALISATION_URL_BASE = LOCALISATION_URL_BASE || "";
 var HAKEMUS_URL_BASE = HAKEMUS_URL_BASE || "";
 
 angular.module('valintaperusteet')
-    .controller('mainCtrl', ['$scope', 'breadcrumbs', 'UserAccessLevels', 'UserModel',
-                function ($scope, breadcrumbs, UserAccessLevels, UserModel) {
+    .controller('mainCtrl', ['$scope', '$routeParams', 'breadcrumbs', 'UserAccessLevels', 'UserModel',
+                function ($scope, $routeParams, breadcrumbs, UserAccessLevels, UserModel) {
 
     $scope.breadcrumbs = breadcrumbs;
-    UserAccessLevels.refreshIfNeeded();
+    UserAccessLevels.refreshIfNeeded($routeParams.id, $routeParams.hakukohdeOid);
     UserModel.refreshIfNeeded();
 
 }]);
