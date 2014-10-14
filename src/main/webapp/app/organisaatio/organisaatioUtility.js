@@ -2,8 +2,8 @@
 
 // Organisaatiotiedot erillisessä
 angular.module('valintaperusteet')
-    .service('OrganisaatioUtility', ['$routeParams', '$q', '$log', '_', 'ValintaryhmaModel', 'HakukohdeModel', 'OrganizationByOid',
-        function ($routeParams, $q, $log, _, ValintaryhmaModel, HakukohdeModel, OrganizationByOid) {
+    .service('OrganisaatioUtility', ['$q', '$log', '_', 'ValintaryhmaModel', 'HakukohdeModel', 'OrganizationByOid', 'Hakukohde',
+        function ($q, $log, _, ValintaryhmaModel, HakukohdeModel, OrganizationByOid, Hakukohde) {
 
             // isOidList === true => return the oids of organizations as array
             // isOidList === false => return organization objects as array
@@ -11,7 +11,7 @@ angular.module('valintaperusteet')
                 var deferred = $q.defer();
                 var organizations = [];
                 if (valintaryhmaId) {
-                    ValintaryhmaModel.refreshIfNeeded($routeParams.id);
+                    ValintaryhmaModel.refreshIfNeeded(valintaryhmaId);
                     ValintaryhmaModel.loaded.promise.then(function () {
                         if (ValintaryhmaModel.valintaryhma.organisaatiot) {
                             
@@ -29,32 +29,32 @@ angular.module('valintaperusteet')
                         deferred.reject("Valintaryhmän tietojen hakeminen epäonnistui");
                     });
                 } else  if (hakukohdeOid) {
-                    HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
-                    HakukohdeModel.loaded.promise.then(function () {
+
+                    Hakukohde.get({oid: hakukohdeOid}, function (hakukohde) {
                         if(isOidList) {
-                            organizations.push(HakukohdeModel.hakukohde.tarjoajaOid);
+                            organizations.push(hakukohde.tarjoajaOid);
                             deferred.resolve(organizations);
                         } else {
                             var hakukohdeOrgDeferred = $q.defer();
-                            OrganizationByOid.get({oid: HakukohdeModel.hakukohde.tarjoajaOid}, function (result) {
+                            OrganizationByOid.get({oid: hakukohde.tarjoajaOid}, function (result) {
                                 organizations.push(result);
                                 hakukohdeOrgDeferred.resolve();
                             }, function (error) {
                                 hakukohdeOrgDeferred.reject('Hakukohteen organisaation hakeminen epäonnistui', error);
                             });
-                            
+
                             hakukohdeOrgDeferred.promise.then(function (result) {
                                 deferred.resolve(organizations);
                             }, function (error) {
                                 deferred.reject('Hakukohteen organisaation hakeminen epäonnistui', error);
                             });
                         }
-
-
-
-                    }, function () {
+                    }, function (error) {
+                        $log.error('Hakukohteen hakeminen epäonnistui', error);
                         deferred.reject();
                     });
+
+
                 } else {
                     deferred.resolve(organizations);
                 }
