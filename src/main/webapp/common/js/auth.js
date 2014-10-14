@@ -215,8 +215,6 @@ angular.module('valintaperusteet')
                                 }
                             });
 
-                            console.info('users organizations:', instance.organisaatiot);
-
                             deferred.resolve(instance.organisaatiot[service]);
                         });
                     }
