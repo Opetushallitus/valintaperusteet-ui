@@ -40,8 +40,10 @@ angular.module('valintaperusteet')
             };
 
             this.refresh = function (valintaryhmaOid, hakukohdeOid) {
-                model.deferred = undefined;
+                model.valintaryhmaOid = valintaryhmaOid;
+                model.hakukohdeOid = hakukohdeOid;
                 model.deferred = $q.defer();
+
                 model.resetRights(); // reset all rights to false
 
                 // Make all authentication request asynchronously so there's no need to wait for consecutive calls
