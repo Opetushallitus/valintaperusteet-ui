@@ -7,10 +7,9 @@ angular.module('valintaperusteet')
 
             // isOidList === true => return the oids of organizations as array
             // isOidList === false => return organization objects as array
-            this.getOrganizations = function (isOidList) {
+            this.getOrganizations = function (isOidList, valintaryhmaId, hakukohdeOid) {
                 var deferred = $q.defer();
                 var organizations = [];
-
                 if ($routeParams.id) {
                     ValintaryhmaModel.refreshIfNeeded($routeParams.id);
                     ValintaryhmaModel.loaded.promise.then(function () {

@@ -33,7 +33,7 @@ angular.module('valintaperusteet')
             };
 
             this.refresh = function () {
-
+                model.deferred = undefined;
                 model.deferred = $q.defer();
                 model.resetRights(); // reset all rights to false
 
@@ -68,7 +68,6 @@ angular.module('valintaperusteet')
                 var readOphRejectFn = function () {
                     // If users organizations are found then use them getting access
                     OrganisaatioUtility.getOrganizations(true).then(function (organizationOids) {
-
                         if(!_.isEmpty(organizationOids)) { //check rights against valintaryhma or hakukohde organizations
                             crudOrgPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET', organizationOids);
                             updateOrgPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET', organizationOids);

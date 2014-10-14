@@ -89,4 +89,35 @@ angular.module('valintaperusteet')
         };
 
         return model;
+    }])
+
+
+.controller('UserPageController', ['$scope', '$routeParams', 'UserAccessLevels', 'UserModel', 'OrganisaatioUtility',
+        function ($scope, $routeParams, UserAccessLevels, UserModel, OrganisaatioUtility) {
+        $scope.userAccess = UserAccessLevels;
+        UserAccessLevels.refreshIfNeeded();
+
+        $scope.userModel = UserModel;
+        UserModel.refreshIfNeeded();
+
+        $scope.organisaatioUtility = OrganisaatioUtility;
+        if($routeParams.id) {
+            $scope.isValintaryhma = true;
+        } else if($routeParams.hakukohdeOid) {
+            $scope.isHakukohde = true;
+        }
+
+        $scope.getOrganizations = function () {
+
+            OrganisaatioUtility.getOrganizations(false, $routeParams.id, $routeParams.hakukohdeOid).then(function (result) {
+                $scope.vrhkOrgs = result;
+            });
+        };
+
+
+
     }]);
+
+
+
+
