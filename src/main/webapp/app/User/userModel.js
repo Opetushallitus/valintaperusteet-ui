@@ -32,6 +32,7 @@ angular.module('valintaperusteet')
                     $q.all(organizationPromises).then(function () {
                         model.organizationsDeferred.resolve();
                         model.analyzeOrganizations();
+                        console.log('usermodel', model);
                     }, function () {
                         model.organizationsDeferred.reject();
                     });

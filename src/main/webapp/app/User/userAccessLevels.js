@@ -185,6 +185,7 @@ angular.module('valintaperusteet')
                     case "noOrg":
                         model.readApp = true;
                 }
+                console.info('useraccesslevels', model);
             };
 
             this.resetRights = function () {
