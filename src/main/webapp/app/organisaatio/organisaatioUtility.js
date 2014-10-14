@@ -8,10 +8,11 @@ angular.module('valintaperusteet')
             // isOidList === true => return the oids of organizations as array
             // isOidList === false => return organization objects as array
             this.getOrganizations = function (isOidList, valintaryhmaId, hakukohdeOid) {
+                console.log('arguments in organisaatioutility', arguments);
                 var deferred = $q.defer();
                 var organizations = [];
                 if (valintaryhmaId) {
-
+                    console.log('fetching hakukohde', valintaryhmaId);
                     Valintaryhma.get({oid: valintaryhmaId}, function (result) {
                         if (result.organisaatiot) {
                             
@@ -19,14 +20,17 @@ angular.module('valintaperusteet')
                                 _.forEach(result.organisaatiot, function (org) {
                                     organizations.push(org.oid);
                                 });
+                                console.log('returning valintaryhmä organizations:', organizations);
                             } else {
                                 organizations = result.organisaatiot;
                             }
 
                         }
+                        
                         deferred.resolve(organizations);
                     }, function () {
-                        deferred.reject("Valintaryhmän tietojen hakeminen epäonnistui");
+                        $log.error('valintaryhmän tietojen hakeminen epäonnistui');
+                        deferred.reject();
                     });
                 } else  if (hakukohdeOid) {
 

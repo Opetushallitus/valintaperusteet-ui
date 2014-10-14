@@ -40,6 +40,8 @@ angular.module('valintaperusteet')
             };
 
             this.refresh = function (valintaryhmaOid, hakukohdeOid) {
+                console.log('STARTED REFRESH', valintaryhmaOid, hakukohdeOid);
+
                 model.valintaryhmaOid = valintaryhmaOid;
                 model.hakukohdeOid = hakukohdeOid;
                 model.deferred = $q.defer();
@@ -62,22 +64,23 @@ angular.module('valintaperusteet')
                 var crudAppPromise = undefined;
                 var updateAppPromise = undefined;
                 var readAppPromise = undefined;
-
-
+                
                 // set user rights for OPHCRUD or continue to next level
                 var crudOphSuccessFn = function () { model.setCrudRights("oph"); model.deferred.resolve(); };
-                var crudOphRejectFn = function () { updateOphPromise.then(updateOphSuccessFn, updateOphRejectFn); };
+                var crudOphRejectFn = function () { console.log('crudOphRejectFn');updateOphPromise.then(updateOphSuccessFn, updateOphRejectFn); };
 
                 // set user rights for OPHUPDATE or continue to next level
                 var updateOphSuccessFn = function () { model.setUpdateRights("oph"); model.deferred.resolve(); };
-                var updateOphRejectFn = function () { readOphPromise.then(readOphSuccessFn, readOphRejectFn); };
+                var updateOphRejectFn = function () { console.log('updateOphRejectFn'); readOphPromise.then(readOphSuccessFn, readOphRejectFn); };
 
                 // set user rights for OPHREAD or continue to next level
                 var readOphSuccessFn = function () { model.setReadRights("oph"); model.deferred.resolve();};
                 var readOphRejectFn = function () {
+                    console.log('readOphRejectFn');
                     // If users organizations are found then use them getting access
                     OrganisaatioUtility.getOrganizations(true, valintaryhmaOid, hakukohdeOid).then(function (organizationOids) {
                         if(!_.isEmpty(organizationOids)) { //check rights against valintaryhma or hakukohde organizations
+                            console.log('checking crudOrg with organizations:', organizationOids);
                             crudOrgPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET', organizationOids);
                             updateOrgPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET', organizationOids);
                             readOrgPromise = AuthService.readOrg('APP_VALINTAPERUSTEET', organizationOids);
@@ -102,16 +105,16 @@ angular.module('valintaperusteet')
 
                 // set user rights for ORGCRUD or continue to next level
                 var crudOrgSuccessFn = function () { model.setCrudRights("org"); model.deferred.resolve(); };
-                var crudOrgRejectFn = function () { updateOrgPromise.then(updateOrgSuccessFn, updateOrgRejectFn); };
+                var crudOrgRejectFn = function () { console.log('crudOrgRejectFn'); updateOrgPromise.then(updateOrgSuccessFn, updateOrgRejectFn); };
 
                 // set user rights for ORGUPDATE or continue to next level
                 var updateOrgSuccessFn = function () { model.setUpdateRights("org"); model.deferred.resolve(); };
-                var updateOrgRejectFn = function () {readOrgPromise.then(readOrgSuccessFn, readOrgRejectFn); };
+                var updateOrgRejectFn = function () {console.log('updateOrgRejectFn'); readOrgPromise.then(readOrgSuccessFn, readOrgRejectFn); };
 
                 // set user rights for ORGREAD or continue to next level
                 var readOrgSuccessFn = function () { model.setReadRights("org"); model.deferred.resolve(); };
                 var readOrgRejectFn = function () {
-
+                    console.log('readOrgRejectFn');
                     // check if user has rights to this application
                     crudAppPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET');
                     updateAppPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET');
@@ -122,12 +125,12 @@ angular.module('valintaperusteet')
 
                 // set user rights for NOORGCRUD or continue to next level
                 var crudAppSuccessFn = function () { model.setCrudRights("noOrg"); model.deferred.resolve(); };
-                var crudAppRejectFn = function () { updateAppPromise.then(updateAppSuccessFn, updateAppRejectFn); };
+                var crudAppRejectFn = function () { console.log('crudAppRejectFn'); updateAppPromise.then(updateAppSuccessFn, updateAppRejectFn); };
 
                 var updateAppSuccessFn = function() { model.setUpdateRights("noOrg"); model.deferred.resolve(); };
-                var updateAppRejectFn = function() {readAppPromise.then(readAppSuccessFn, readAppRejectFn); };
+                var updateAppRejectFn = function() {console.log('updateAppRejectFn'); readAppPromise.then(readAppSuccessFn, readAppRejectFn); };
 
-                var readAppSuccessFn = function() {model.setReadRights("noOrg"); model.deferred.resolve(); };
+                var readAppSuccessFn = function() {console.log('FINALLYSUCCESS'); model.setReadRights("noOrg"); model.deferred.resolve(); };
                 var readAppRejectFn = function() { $log.error('Ei oikeuksia'); model.deferred.reject(); };
 
                 // Start promisechain checking
