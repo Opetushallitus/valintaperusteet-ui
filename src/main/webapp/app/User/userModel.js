@@ -54,11 +54,10 @@ angular.module('valintaperusteet')
 
             this.analyzeOrganizations = function () {
                 model.isKKOrganization();
-
                 _.some(model.organizations, function (organisaatioData) {
                     if(model.isOphOrganization(organisaatioData)) {
                         model.isOphUser = true;
-                    } else {
+                    } else if(model.isOtherThanKKOrganization(organisaatioData)) {
                         model.hasOtherThanKKUserOrgs = true;
                     }
                 });
