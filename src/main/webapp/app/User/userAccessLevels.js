@@ -9,6 +9,11 @@ angular.module('valintaperusteet')
         var model = new function () {
             this.deferred = undefined;
 
+            // valintaryhmaOid / hakukohdeOid user for matching users
+            // organizations against currently selected valintaryhma/hakukohde organizations
+            this.valintaryhmaOid = undefined;
+            this.hakukohdeOid = undefined;
+
             // OPH-users
             this.crudOph = false;
             this.updateOph = false;
@@ -24,16 +29,18 @@ angular.module('valintaperusteet')
             this.updateApp = false;
             this.readApp = false;
 
-            this.refreshIfNeeded = function () {
-                if(_.isEmpty(model.deferred)) {
-                    model.refresh();
+            this.refreshIfNeeded = function (valintaryhmaOid, hakukohdeOid) {
+                if(_.isEmpty(model.deferred) ||
+                     ( !_.isEmpty(valintaryhmaOid) && (valintaryhmaOid !== model.valintaryhmaOid) ) ||
+                      ( !_.isEmpty(hakukohdeOid) && (hakukohdeOid !== model.hakuohdeOid) ) )  {
+                    model.refresh(valintaryhmaOid, hakukohdeOid);
                 } else {
                     return model.deferred.promise;
                 }
             };
 
-            this.refresh = function () {
-
+            this.refresh = function (valintaryhmaOid, hakukohdeOid) {
+                model.deferred = undefined;
                 model.deferred = $q.defer();
                 model.resetRights(); // reset all rights to false
 
@@ -67,8 +74,7 @@ angular.module('valintaperusteet')
                 var readOphSuccessFn = function () { model.setReadRights("oph"); model.deferred.resolve();};
                 var readOphRejectFn = function () {
                     // If users organizations are found then use them getting access
-                    OrganisaatioUtility.getOrganizations(true).then(function (organizationOids) {
-
+                    OrganisaatioUtility.getOrganizations(true, valintaryhmaOid, hakukohdeOid).then(function (organizationOids) {
                         if(!_.isEmpty(organizationOids)) { //check rights against valintaryhma or hakukohde organizations
                             crudOrgPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET', organizationOids);
                             updateOrgPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET', organizationOids);
@@ -141,7 +147,7 @@ angular.module('valintaperusteet')
             };
 
             this.hasCrudRights = function () {
-                return model.crudOph || model.crudOrg || model.readApp;
+                return model.crudOph || model.crudOrg || model.crudApp;
             };
 
             this.hasUpdateRights = function () {
@@ -185,6 +191,7 @@ angular.module('valintaperusteet')
                     case "noOrg":
                         model.readApp = true;
                 }
+                console.info('useraccesslevels', model);
             };
 
             this.resetRights = function () {

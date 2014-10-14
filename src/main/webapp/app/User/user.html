@@ -1,0 +1,105 @@
+<h1>Käyttäjän oikeudet</h1>
+
+
+<div class="tabs">
+    <a href="#/etusivu" class="tab current"><span>{{ t('common.etusivu') || 'Valintaryhmät ja hakukohteet' }}</span></a>
+    <a href="#/valintaryhma/{{model.valintaryhma.oid}}/laskentakaavalista" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>,
+    <a auth ng-if="userAccess.crudOph" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
+
+</div>
+
+<div class="tabsheets">
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            <label class="control-label col-md-2">User Access Levels</label>
+
+            <div class="col-md-10">
+                <table class="virkailija-table-1">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>CRUD</th>
+                        <th>ORG</th>
+                        <th>APP</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>OPH</th>
+                        <td>{{userAccess.crudOph}}</td>
+                        <td>{{userAccess.updateOph}}</td>
+                        <td>{{userAccess.readOph}}</td>
+                    </tr>
+                    <tr>
+                        <th>ORG</th>
+                        <td>{{userAccess.crudOrg}}</td>
+                        <td>{{userAccess.updateOrg}}</td>
+                        <td>{{userAccess.readOrg}}</td>
+                    </tr>
+                    <tr>
+                        <th>APP</th>
+                        <td>{{userAccess.crudApp}}</td>
+                        <td>{{userAccess.updateApp}}</td>
+                        <td>{{userAccess.readApp}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">User model</label>
+
+            <div class="col-md-10">
+                <h3>Users Organization rights</h3>
+                <table class="virkailija-table-1">
+                    <thead>
+                    <tr>
+                        <th>OphUser</th>
+                        <th>KKUser</th>
+                        <th>OtherOrgUser</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                <tr>
+                    <td>{{userModel.isOphUser}}</td>
+                    <td>{{userModel.isKKUser}}</td>
+                    <td>{{userModel.hasOtherThanKKUserOrgs}}</td>
+                </tr>
+                    </tbody>
+                </table>
+                <h3>Organizations</h3>
+                <ul>
+                    <li ng-repeat="organization in userModel.organizations"><span ng-show="allOrgData">{{organization}}</span><span ng-show="!allOrgData">{{organization.oid}} - {{organization.nimi.fi}}</span></li>
+                </ul>
+                <button class="btn btn-sm btn-default" ng-init="allOrgData = false" ng-click="allOrgData = !allOrgData">show all data</button>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Organization Utility</label>
+
+            <div class="col-md-10">
+                <button class="btn btn-sm btn-default" ng-click="getOrganizations()">Fetch organizations for <span ng-if="isValintaryhma">valintaryhma</span>
+                    <span ng-if="isHakukohde">hakukohde</span>
+                    </button>
+                <button ng-show="vrhkOrgs" class="btn btn-sm btn-default" ng-click="allData = !allData" ng-init="allData = false">show all data</button>
+                <p ng-show="vrhkOrgs >= 0">
+                    <span ng-if="isValintaryhma">valintaryhma</span>
+                    <span ng-if="isHakukohde">Hakukohde</span>- Organisaatioden määrä: {{vrhkOrgs.length}}
+                </p>
+                <ul>
+                    <li ng-repeat="vrhkOrg in vrhkOrgs">
+                        <span ng-show="allData">{{vrhkOrg}}</span>
+                        <span ng-show="!allData">{{vrhkOrg.oid}} - {{vrhkOrg.nimi.fi}}</span>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>

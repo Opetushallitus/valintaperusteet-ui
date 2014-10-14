@@ -11,7 +11,8 @@ app.config(function($routeProvider) {
 		//edit valintaryhma
 		when('/valintaryhma/', {controller:'UusiValintaryhmaController', templateUrl:TEMPLATE_URL_BASE + 'valintaryhma/valintaryhmalomake_uusi.html', label: 'valintaryhmä'}).
 		when('/valintaryhma/:id', {controller:'ValintaryhmaController', templateUrl:TEMPLATE_URL_BASE + 'valintaryhma/valintaryhmalomake.html', label: 'valintaryhmä'}).
-		when('/valintaryhma/:id/hakijaryhma/', {controller:'HakijaryhmaController', templateUrl:TEMPLATE_URL_BASE + 'hakijaryhma/hakijaryhma.html', label: 'hakijaryhmä'}).
+        when('/valintaryhma/:id/userpage', {controller: 'UserPageController', templateUrl:TEMPLATE_URL_BASE + 'User/user.html', label:'user'}).
+        when('/valintaryhma/:id/hakijaryhma/', {controller:'HakijaryhmaController', templateUrl:TEMPLATE_URL_BASE + 'hakijaryhma/hakijaryhma.html', label: 'hakijaryhmä'}).
 		when('/valintaryhma/:id/hakijaryhma/:hakijaryhmaOid', {controller:'HakijaryhmaController', templateUrl:TEMPLATE_URL_BASE + 'hakijaryhma/hakijaryhma.html', label: 'hakijaryhmä'}).
 		when('/valintaryhma/:id/valinnanvaihe/', {controller: 'ValintaryhmaValinnanvaiheController', templateUrl: TEMPLATE_URL_BASE + 'valinnanvaihe/valinnanvaihelomake.html'}).
 		when('/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid', {controller: 'ValintaryhmaValinnanvaiheController', templateUrl: TEMPLATE_URL_BASE + 'valinnanvaihe/valinnanvaihelomake.html', label: 'valinnanvaihe'}).
@@ -34,7 +35,8 @@ app.config(function($routeProvider) {
 
 		// edit hakukohde
 		when('/hakukohde/', {controller: 'UusiHakukohdeController', templateUrl:TEMPLATE_URL_BASE + 'hakukohde/hakukohde_uusi.html', label: 'hakukohde'}).
-		when('/hakukohde/:hakukohdeOid', {controller:'HakukohdeController', templateUrl:TEMPLATE_URL_BASE + 'hakukohde/hakukohdelomake.html', label: 'hakukohde'}).
+        when('/hakukohde/:hakukohdeOid', {controller:'HakukohdeController', templateUrl:TEMPLATE_URL_BASE + 'hakukohde/hakukohdelomake.html', label: 'hakukohde'}).
+        when('/hakukohde/:hakukohdeOid/userpage', {controller: 'UserPageController', templateUrl:TEMPLATE_URL_BASE + 'User/user.html', label:'user'}).
 		when('/hakukohde/:hakukohdeOid/hakijaryhma/', {controller:'HakijaryhmaController', templateUrl:TEMPLATE_URL_BASE + 'hakijaryhma/hakijaryhma.html', label: 'hakijaryhmä'}).
 		when('/hakukohde/:hakukohdeOid/hakijaryhma/:hakijaryhmaOid', {controller:'HakijaryhmaController', templateUrl:TEMPLATE_URL_BASE + 'hakijaryhma/hakijaryhma.html', label: 'hakijaryhmä'}).
 		when('/hakukohde/:hakukohdeOid/valinnanvaihe/', {controller:'ValinnanVaiheController', templateUrl:TEMPLATE_URL_BASE + 'valinnanvaihe/valinnanvaihelomake.html', label: 'valinnanvaihe'}).

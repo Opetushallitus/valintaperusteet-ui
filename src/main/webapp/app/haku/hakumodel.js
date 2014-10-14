@@ -81,7 +81,7 @@ angular.module('valintaperusteet')
 .filter('kkHakuFilter', ['_', function (_) {
     return function (haut) {
         return _.filter(haut, function (haku) {
-            if(haku.hakukohdeJoukkoUri) {
+            if(haku.kohdejoukkoUri) {
                 return haku.kohdejoukkoUri.indexOf('_12') > -1;
             }
         });
