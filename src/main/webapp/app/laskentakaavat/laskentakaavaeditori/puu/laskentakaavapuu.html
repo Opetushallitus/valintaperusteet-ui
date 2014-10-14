@@ -1,32 +1,24 @@
 <div ng-controller="LaskentakaavaController">
 
 
-
     <div class="gradingformula">
-asdfasdf
-        <validation-errors></validation-errors>
-asdfasdf
-
-        <!-- Laskentakaavassa olevat virheet-->
-        <div class="alert alert-danger margin-top-2" collapse="errors.length === 0 && commonErrors.length === 0">
+        <div class="clear"></div>
+        <kaava-validation>
             <h3>{{ t('laskentakaavapuu.eitalletettu') || 'Laskentakaavaa ei voitu tallentaa.' }}</h3>
 
-            <p>{{ t('laskentakaavapuu.eitalletettutext') || 'Alla olevasta listasta saat vihjeitä kaavan virheistä ja
-                virheellisen funktiokutsun tapauksessa pääset muokkaamaan sitä suoraan klikkaamalla virheilmoitusta.
+            <p>{{ t('laskentakaavapuu.eitalletettutext') || 'Alla olevasta listasta saat vihjeitä kaavan virheistä
+                ja
+                virheellisen funktiokutsun tapauksessa pääset muo kkaamaan sitä suoraan klikkaamalla
+                virheilmoitusta.
                 Yritä laskentakaavan tallennusta uudestaan heti virheet korjattuasi.' }}</p>
+            <ol>
 
-            <ol class="margin-top-2">
+                <!--ng-click="setFunktioSelection(error.funktiokutsu, error.isFunktiokutsu, error.parent, error.index)">{{error.nimi}} {{ t('laskentakaavapuu.funktiossavirhe') || '-funktiokutsussa on virhe.' }} {{error.kuvaus}}</span>-->
                 <li ng-repeat="error in errors">
-                    <span add-class-on-mouseover="bold"
-                          ng-click="setFunktioSelection(error.funktiokutsu, error.isFunktiokutsu, error.parent, error.index)">{{error.nimi}} {{ t('laskentakaavapuu.funktiossavirhe') || '-funktiokutsussa on virhe.' }} {{error.kuvaus}}</span>
+                    <validation-error></validation-error>
                 </li>
-
-                <li ng-repeat="commonerr in commonErrors">
-                    <span>{{commonerr.kuvaus}}</span>
-                </li>
-
             </ol>
-        </div>
+        </kaava-validation>
 
         <div class="alert alert-success margin-top-2" collapse="!saved">
             <p>{{ t('laskentakaavapuu.onnistui') || 'Laskentakaavan tallentaminen onnistui' }}</p>
@@ -564,7 +556,8 @@ YHTASUURI
             <td ng-click="addFunktio(parent, 'HAKUKELPOISUUS', funktioSlotIndex); showNewFunktioList.visible = false">
                 <span>{{ t('laskentakaavapuu.hakukelpoisuus') || 'Hakukelpoisuus'}}</span>
             </td>
-            <td ng-if="parent.lapsi" ng-click="addLaskentakaavaviite(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.viittaus') || 'Viittaus toiseen kaavaan' }}</span>
+            <td ng-if="parent.lapsi"
+                ng-click="addLaskentakaavaviite(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.viittaus') || 'Viittaus toiseen kaavaan' }}</span>
             </td>
         </tr>
         </tbody>

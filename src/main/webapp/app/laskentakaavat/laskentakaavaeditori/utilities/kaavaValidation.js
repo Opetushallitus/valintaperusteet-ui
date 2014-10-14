@@ -1,106 +1,105 @@
 angular.module('valintaperusteet')
 
-    .factory('KaavaValidation', ['FunktioService', 'FunktioNimiService', '_', 'KaavaValidationUtility', 'KaavaVirheTyypit', 'KaavaVirheService',
-        function (FunktioService, FunktioNimiService, _, KaavaValidationUtility, KaavaVirheTyypit, KaavaVirheService) {
-            'use strict';
+    .service('KaavaValidation', ['_', 'FunktioNimiService', 'FunktioService', 'ErrorService', 'KaavaVirheTyypit',
+        function (_, FunktioNimiService, FunktioService, ErrorService, KaavaVirheTyypit) {
 
-            var validationService = new function () {
-
-                this.virheService = KaavaVirheService;
-
-                this.validate = function (puu) {
-                    KaavaValidationUtility.validateTree(puu, validationService.virheService.laskentakaavavirheet);
-                };
-
-            }();
-
-            return validationService;
-        }])
-
-    .service('KaavaValidationUtility', ['_', 'FunktioNimiService', 'FunktioService', function (_, FunktioNimiService, FunktioService) {
         var utility = this;
 
-        this.validateTree = function (rootFunktiokutsu, errors) {
-            utility.makeRootValidations(rootFunktiokutsu, errors);
+        this.validateTree = function (rootFunktiokutsu) {
+            utility.makeRootValidations(rootFunktiokutsu);
 
             _.forEach(rootFunktiokutsu.funktioargumentit, function (funktioargumentti, funktioargumenttiIndex) {
-                utility.validateNode(rootFunktiokutsu, funktioargumentti, funktioargumenttiIndex, errors);
+                utility.validateNode(rootFunktiokutsu, funktioargumentti, funktioargumenttiIndex);
             });
 
         };
 
-        this.validateNode = function (parent, funktiokutsu, funktiokutsuIndex, errors) {
+        this.validateNode = function (parent, funktiokutsu, funktiokutsuIndex) {
             if (!(_.isEmpty(funktiokutsu))) {
-                utility.makeNodeValidations(parent, funktiokutsu, funktiokutsuIndex, errors);
+                utility.makeNodeValidations(parent, funktiokutsu, funktiokutsuIndex);
                 _.forEach(funktiokutsu.lapsi.funktioargumentit, function (funktioargumentti, funktioargumenttiIndex) {
-                    utility.validateNode(funktiokutsu, funktioargumentti, funktioargumenttiIndex, errors);
+                    utility.validateNode(funktiokutsu, funktioargumentti, funktioargumenttiIndex);
                 });
             }
         };
 
-        this.addValidationError = function (errors, funktionimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu) {
-            errors.push({
+        this.addValidationError = function (funktionimi, virhetyyppi, parent, funktiokutsu, funktiokutsuIndex) {
+            ErrorService.addError({
                 nimi: funktionimi,
-                kuvaus: kuvaus,
                 parent: parent,
                 funktiokutsu: funktiokutsu,
                 index: funktiokutsuIndex,
-                isFunktiokutsu: isFunktiokutsu
+                isFunktiokutsu: FunktioService.isFunktiokutsu(funktiokutsu),
+                tyyppi: virhetyyppi
             });
         };
 
-        this.makeRootValidations = function (rootFunktiokutsu, errors) {
+        this.makeRootValidations = function (rootFunktiokutsu) {
 
             // tallennatulos valittu -> tulostunniste täytyy olla määritelty
             // tehdään tarkistus ensin rootille
             if (rootFunktiokutsu.tallennaTulos === true && _.isEmpty(rootFunktiokutsu.tulosTunniste)) {
                 var nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu;
                 nimi = FunktioNimiService.getName(rootFunktiokutsu.funktionimi);
-                kuvaus = "tulostunniste täytyy määritellä, jos Tallenna tulos -kenttä on valittu";
                 funktiokutsu = rootFunktiokutsu;
                 parent = undefined;
                 isFunktiokutsu = FunktioService.isFunktiokutsu(rootFunktiokutsu);
                 funktiokutsuIndex = index;
-                utility.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
+                utility.addValidationError(nimi, KaavaVirheTyypit.PUUTTUVATALLENNATULOS, parent, funktiokutsu, funktiokutsuIndex);
             }
 
-            //tallennatulos valittu -tarkistus (yllä) rootin lapsille
-            //tallennatulosvalidointi tehdään aina funktiokutsun funktioargumenteille, jotta funktioargumentin indeksi saadaan mukaan virheilmoitukseen
-            //tästä syystä validointi tehdään rootissa erikseen juuren funktiokutsulle ja sen funktioargument(e)ille
+            // tallennatulos valittu -tarkistus rootin lapsille
+            // pakollisten arvokonvertterien puuttumistarkistus rootin lapsille
             _.forEach(rootFunktiokutsu.funktioargumentit, function (funktioargumentti, funktioargumenttiIndex) {
+                console.log(funktioargumentti);
+                //tallennatulosvalidointi tehdään aina funktiokutsun funktioargumenteille, jotta funktioargumentin indeksi saadaan mukaan virheilmoitukseen
+                //tästä syystä validointi tehdään rootissa erikseen juuren funktiokutsulle ja sen funktioargument(e)ille
                 if (funktioargumentti.lapsi.tallennaTulos === true && _.isEmpty(funktioargumentti.lapsi.tulosTunniste)) {
                     var nimi, kuvaus, parent, funktiokutsuIndex, isFunktiokutsu;
                     nimi = FunktioNimiService.getName(funktioargumentti.lapsi.funktionimi);
-                    kuvaus = "tulostunniste täytyy määritellä, jos Tallenna tulos -kenttä on valittu";
-                    parent = parent;
+                    parent = rootFunktiokutsu;
                     isFunktiokutsu = FunktioService.isFunktiokutsu(funktioargumentti);
                     funktiokutsuIndex = funktioargumenttiIndex;
-                    utility.addValidationError(errors, nimi, kuvaus, parent, funktioargumentti, funktiokutsuIndex, isFunktiokutsu);
+                    utility.addValidationError(nimi, KaavaVirheTyypit.PUUTTUVATALLENNATULOS, parent, funktioargumentti, funktiokutsuIndex);
                 }
+
+                //Tarkistetaan että hae totuusarvo ja konvertoi lukuarvoksi -funktiokutsulle on määritelty vähintään yksi arvokonvertteri
+                if(funktioargumentti.lapsi.funktionimi === "HAETOTUUSARVOJAKONVERTOILUKUARVOKSI" && (_.isEmpty(funktioargumentti.lapsi.arvokonvertteriparametrit) && _.isEmpty(funktioargumentti.lapsi.arvovalikonvertteriparametrit) )) {
+
+
+                    utility.addValidationError(
+                        FunktioNimiService.getName(funktioargumentti.lapsi.funktionimi),
+                        KaavaVirheTyypit.HAETOTUUSARVOJAKONVERTOILUKUARVOKSIPUUTTUVAARVOKONVERTTERI,
+                        rootFunktiokutsu,
+                        FunktioService.isFunktiokutsu(funktioargumentti),
+                        funktioargumenttiIndex
+                    );
+                }
+
+
             });
+
 
             // tarkistetaan onko kaikki nimetyt funktioargumentit määritelty
             if (_.isEmpty(rootFunktiokutsu.funktioargumentit[0])) {
                 var nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu;
                 nimi = FunktioNimiService.getName(rootFunktiokutsu.funktionimi);
-                kuvaus = "Nimetyt funktioargumentit ovat pakollisia. Funktiokutsun " + funktiokutsuNimi + " funktioargumenttia ei ole määritelty",
-                    funktiokutsu = rootFunktiokutsu;
+                funktiokutsu = rootFunktiokutsu;
                 parent = undefined;
                 isFunktiokutsu = FunktioService.isFunktiokutsu(rootFunktiokutsu);
                 funktiokutsuIndex = 0;
-
-                utility.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
+                utility.addValidationError(nimi, KaavaVirheTyypit.JUURIPUUTTUVANIMETTYFUNKTIOARGUMENTTI, parent, funktiokutsu, funktiokutsuIndex);
             }
         };
 
         //ajaa kaikki validointitestit annetulle funktiokutsulle. Tätä on tarkoitus ajaa kaikille juurifunktiokutsua alemmille funktiokutsuille
-        this.makeNodeValidations = function (parent, funktiokutsu, funktiokutsuIndex, errors) {
+        this.makeNodeValidations = function (parent, funktiokutsu, funktiokutsuIndex) {
             var definedFunktioargumenttiCount = 0;
 
             //käydään tarkasteltavan funktiokutsun funktioargumentit läpi ja tehdään tarvittavat tarkistukset
             _.forEach(funktiokutsu.lapsi.funktioargumentit, function (funktioargumentti, funktioargumenttiIndex) {
 
-                utility.nodeTallennaTulosValidation(funktiokutsu, funktioargumentti, funktioargumenttiIndex, errors);
+                utility.nodeTallennaTulosValidation(funktiokutsu, funktioargumentti, funktioargumenttiIndex);
 
                 //definedFunktioargumenttiCount on apumuuttuja, jolla tarkistetaan että nimettyjäfunktioargumentteja on vaadittu määrä tai
                 //että funktioargumentteja on vähintään yksi, jos funktiokutsulla on n-funktioargumenttia
@@ -109,47 +108,46 @@ angular.module('valintaperusteet')
                 }
 
             });
-            utility.atLeastOneFunktioargumenttiDefined(parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount, errors);
-            utility.allNimettyargumenttiDefined(parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount, errors);
-            utility.painotettukeskiarvoValidation(parent, funktiokutsu, funktiokutsuIndex, errors);
+            utility.atLeastOneFunktioargumenttiDefined(parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount);
+            utility.allNimettyargumenttiDefined(parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount);
+            utility.painotettukeskiarvoValidation(parent, funktiokutsu, funktiokutsuIndex);
         };
 
         // tallennatulos valittu -> tulostunniste täytyy olla määritelty
-        this.nodeTallennaTulosValidation = function (parent, funktiokutsu, funktiokutsuIndex, errors) {
+        this.nodeTallennaTulosValidation = function (parent, funktiokutsu, funktiokutsuIndex) {
             if (parent.lapsi.funktionimi !== 'PAINOTETTUKESKIARVO' && !_.isEmpty(funktiokutsu) && funktiokutsu.lapsi.tallennaTulos === true && _.isEmpty(funktiokutsu.lapsi.tulosTunniste)) {
                 var nimi, kuvaus, isFunktiokutsu;
                 nimi = FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi);
-                kuvaus = "tulostunniste täytyy määritellä, jos Tallenna tulos -kenttä on valittu";
                 isFunktiokutsu = FunktioService.isFunktiokutsu(funktiokutsu);
-
-                utility.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
+                utility.addValidationError(nimi, KaavaVirheTyypit.PUUTTUVATALLENNATULOS, parent, funktiokutsu, funktiokutsuIndex);
             }
         };
 
         // Funktiokutsulle voidaan määritellä N määrä funktioargumentteja - vähintään yksi on määriteltävä
-        this.atLeastOneFunktioargumenttiDefined = function (parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount, errors) {
+        this.atLeastOneFunktioargumenttiDefined = function (parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount) {
             if (FunktioService.isFunktiokutsuWithFunktioargumenttiSizeN(funktiokutsu) && definedFunktioargumenttiCount === 0) {
                 var nimi, kuvaus, isFunktiokutsu;
                 nimi = FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi);
-                kuvaus = "Funktiokutsulle ei ole määritelty yhtään funktioargumenttia. Tälle funktiokutsulle on määriteltävä vähintään yksi funktioargumentti";
                 isFunktiokutsu = FunktioService.isFunktiokutsu(funktiokutsu);
-                utility.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
+                utility.addValidationError(nimi, KaavaVirheTyypit.PUUTTUVAPAKOLLINENFUNKTIOARGUMENTTI, parent, funktiokutsu, funktiokutsuIndex);
             }
         };
 
         // Tarkistetaan onko kaikki nimetyt funktioargumentit määritelty
-        this.allNimettyargumenttiDefined = function (parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount, errors) {
+        this.allNimettyargumenttiDefined = function (parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount) {
             if (FunktioService.isNimettyFunktioargumentti(funktiokutsu) && definedFunktioargumenttiCount !== FunktioService.getNimettyFunktioargumenttiCount(funktiokutsu)) {
                 var nimi, kuvaus, isFunktiokutsu;
                 nimi = FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi);
+
+
                 kuvaus = 'Funktiokutsulle on määritelty ' + definedFunktioargumenttiCount + "/" + FunktioService.getNimettyFunktioargumenttiCount(funktiokutsu) + " pakollista funktioargumenttia";
                 isFunktiokutsu = FunktioService.isFunktiokutsu(funktiokutsu);
 
-                utility.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
+                utility.addValidationError(nimi, KaavaVirheTyypit.PUUTTUVANIMETTYFUNKTIOARGUMENTTI, parent, funktiokutsu, funktiokutsuIndex);
             }
         };
 
-        this.painotettukeskiarvoValidation = function (parent, funktiokutsu, funktiokutsuIndex, errors) {
+        this.painotettukeskiarvoValidation = function (parent, funktiokutsu, funktiokutsuIndex) {
             if (funktiokutsu.lapsi.funktionimi === 'PAINOTETTUKESKIARVO') {
                 var definedFunktioargumenttiCount = 0;
                 var hasUndefinedFunktioargumentti = false;
@@ -161,13 +159,13 @@ angular.module('valintaperusteet')
                     }
                 });
 
-                var kuvaus = undefined;
+                var virhetyyppi = undefined;
                 if (definedFunktioargumenttiCount < 2) {
-                    kuvaus = "Painotetulle keskiarvolle täytyy määritellä vähintään kaksi funktioargumenttia";
+                    virhetyyppi = KaavaVirheTyypit.PKLIIANVAHANFUNKTIOARGUMENTTEJA;
                 } else if (hasUndefinedFunktioargumentti) {
-                    kuvaus = "Painotetun keskiarvon funktioargumenttilistan keskellä ei voi olla määrittelemättömiä funktioargumentteja";
+                    virhetyyppi = KaavaVirheTyypit.PKPUUTTUVAFUNKTIOARGUMENTTI;
                 } else if (definedFunktioargumenttiCount % 2 !== 0) {
-                    kuvaus = "Painotetulla keskiarvolla täytyy olla parillinen määrä funktioargumentteja";
+                    virhetyyppi = KaavaVirheTyypit.PKPARITONMAARAFUNKIOARGUMENTTEJA;
                 }
 
                 if (definedFunktioargumenttiCount % 2 !== 0 || hasUndefinedFunktioargumentti || definedFunktioargumenttiCount < 2) {
@@ -175,7 +173,7 @@ angular.module('valintaperusteet')
                     nimi = FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi);
                     isFunktiokutsu = FunktioService.isFunktiokutsu(funktiokutsu);
 
-                    utility.addValidationError(errors, nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu);
+                    utility.addValidationError(nimi, virhetyyppi, parent, funktiokutsu, funktiokutsuIndex);
                 }
             }
         };

@@ -1,11 +1,14 @@
-<h3>{{ t('laskentakaavapuu.eitalletettu') || 'Laskentakaavaa ei voitu tallentaa.' }}</h3>
 
-<p>{{ t('laskentakaavapuu.eitalletettutext') || 'Alla olevasta listasta saat vihjeitä kaavan virheistä ja
-    virheellisen funktiokutsun tapauksessa pääset muokkaamaan sitä suoraan klikkaamalla virheilmoitusta.
-    Yritä laskentakaavan tallennusta uudestaan heti virheet korjattuasi.' }}</p>
+<span ng-switch="error.tyyppi">
+    <span add-class-on-mouseover="bold" ng-switch-when="PUUTTUVANIMETTYFUNKTIOARGUMENTTI" ng-click="setFunktioSelection(error.funktiokutsu, error.isFunktiokutsu, error.parent, error.index)">Virhe funktiokutsussa: <b>{{error.nimi}}</b>. Kaikki nimetyt funktioargumentit ovat pakollisia.</span>
+    <span add-class-on-mouseover="bold" ng-switch-when="PUUTTUVAPAKOLLINENFUNKTIOARGUMENTTI" ng-click="setFunktioSelection(error.funktiokutsu, error.isFunktiokutsu, error.parent, error.index)">Virhe funktiokutsussa: <b>{{error.nimi}}</b>. Funktiokutsulle ei ole määritelty yhtään funktioargumenttia. Tälle funktiokutsulle on määriteltävä vähintään yksi funktioargumentti</span>
+    <span add-class-on-mouseover="bold" ng-switch-when="SYOTEPARAMETRIVIRHE" ng-click="setFunktioSelection(error.funktiokutsu, error.isFunktiokutsu, error.parent, error.index)">Virhe funktiokutsussa: <b>{{error.nimi}}</b>. </span>
+    <span add-class-on-mouseover="bold" ng-switch-when="PUUTTUVATALLENNATULOS" ng-click="setFunktioSelection(error.funktiokutsu, error.isFunktiokutsu, error.parent, error.index)">Virhe funktiokutsussa: <b>{{error.nimi}}</b>. Tulostunniste täytyy määritellä, jos Tallenna tulos -kenttä on valittu</span>
+    <span add-class-on-mouseover="bold" ng-switch-when="PUUTTUVAARVOKONVERTTERI" ng-click="setFunktioSelection(error.funktiokutsu, error.isFunktiokutsu, error.parent, error.index)">Virhe funktiokutsussa: <b>{{error.nimi}}</b>. Funktiokutsulta puuttuu pakollinen arvokonvertteri</span>
+    <span add-class-on-mouseover="bold" ng-switch-when="PKPARITONMAARAFUNKIOARGUMENTTEJA" ng-click="setFunktioSelection(error.funktiokutsu, error.isFunktiokutsu, error.parent, error.index)">Virhe funktiokutsussa: <b>{{error.nimi}}</b>. Painotetulla keskiarvolla on oltava parillinen määrä funktioargumentteja</span>
+    <span add-class-on-mouseover="bold" ng-switch-when="PKLIIANVAHANFUNKTIOARGUMENTTEJA" ng-click="setFunktioSelection(error.funktiokutsu, error.isFunktiokutsu, error.parent, error.index)">Virhe funktiokutsussa: <b>{{error.nimi}}</b>. Painotetulla keskiarvolla on oltava vähintään kaksi määriteltyä funktioargumenttia</span>
+    <span add-class-on-mouseover="bold" ng-switch-when="PKPUUTTUVAFUNKTIOARGUMENTTI" ng-click="setFunktioSelection(error.funktiokutsu, error.isFunktiokutsu, error.parent, error.index)">Virhe funktiokutsussa: <b>{{error.nimi}}</b>. Painotetun keskiarvon funktioargumenttilistan sisällä on määrittelemätön funktioargumentti</span>
+    <span ng-switch-when="TAUSTAPALVELU">Kaavaa tallennettaessa taustapalvelussa tapahtui virhe</span>
+    <span ng-switch-when="UNKNOWN">Tuntematon virhe</span>
 
-<div class="alert alert-danger">
-    <ol>
-        <li>virhe1</li>
-    </ol>
-</div>
+</span>
