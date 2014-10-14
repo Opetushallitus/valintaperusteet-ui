@@ -263,13 +263,11 @@
 
 </div>
 
-<div ng-show="model.hakijaryhmat" class="form-group">
+<div ng-show="model.valintaryhma.oid" class="form-group">
     <div class="col-md-4 col-md-offset-2">
-        <div ng-show="model.valintaryhma.oid">
-            <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()">
-                <i class="fa fa-plus"></i> {{ t('valintaryhmalomake.hakijaryhma') || 'Hakijaryhmä' }}
-            </button>
-        </div>
+        <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()">
+            <i class="fa fa-plus"></i> {{ t('valintaryhmalomake.hakijaryhma') || 'Hakijaryhmä' }}
+        </button>
     </div>
 </div>
 
