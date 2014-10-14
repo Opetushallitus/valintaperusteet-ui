@@ -36,7 +36,7 @@ angular.module('valintaperusteet')
                             deferred.resolve(organizations);
                         } else {
                             var hakukohdeOrgDeferred = $q.defer();
-                            OrganizationByOid({oid: HakukohdeModel.hakukohde.tarjoajaOid}, function (result) {
+                            OrganizationByOid.get({oid: HakukohdeModel.hakukohde.tarjoajaOid}, function (result) {
                                 organizations.push(result);
                                 hakukohdeOrgDeferred.resolve();
                             }, function (error) {

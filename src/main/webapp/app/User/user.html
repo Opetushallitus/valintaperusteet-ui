@@ -82,19 +82,17 @@
             <label class="control-label col-md-2">Organization Utility</label>
 
             <div class="col-md-10">
-                <button class="btn btn-sm btn-default" ng-click="getOrganizations()">Fetch organizations for <span ng-if="isValintaryhma">valintaryhma</span>
-                    <span ng-if="isHakukohde">hakukohde</span>
-                    </button>
-                <button ng-show="vrhkOrgs" class="btn btn-sm btn-default" ng-click="allData = !allData" ng-init="allData = false">show all data</button>
                 <p ng-show="vrhkOrgs >= 0">
                     <span ng-if="isValintaryhma">valintaryhma</span>
                     <span ng-if="isHakukohde">Hakukohde</span>- Organisaatioden määrä: {{vrhkOrgs.length}}
                 </p>
-                <ul>
-                    <li ng-repeat="vrhkOrg in vrhkOrgs">
+                <button class="btn btn-default btn-sm" ng-click="showAll = !showAll">show orgs</button>
+                <ul ng-init="showAll = false">
+                    <li ng-show="!showAll" ng-repeat="vrhkOrg in vrhkOrgs">
                         <span ng-show="allData">{{vrhkOrg}}</span>
                         <span ng-show="!allData">{{vrhkOrg.oid}} - {{vrhkOrg.nimi.fi}}</span>
                     </li>
+                    <li ng-show="showAll" ng-repeat="org in vrhkOrgs">{{org}}</li>
                 </ul>
 
             </div>
