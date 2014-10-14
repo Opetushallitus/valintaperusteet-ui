@@ -77,6 +77,13 @@ angular.module('valintaperusteet')
                 return organization.oid === OPH_ORG;
             };
 
+            this.isOtherThanKKOrganization = function (organization) {
+                return !(!organization.oppilaitosTyyppiUri ||
+                    organization.oppilaitosTyyppiUri.indexOf('_41') > -1 ||
+                    organization.oppilaitosTyyppiUri.indexOf('_42') > -1 ||
+                    organization.oppilaitosTyyppiUri.indexOf('_43') > -1 );
+            };
+
 
         };
 
