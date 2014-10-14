@@ -2,8 +2,8 @@
 
 // Organisaatiotiedot erillisessä
 angular.module('valintaperusteet')
-    .service('OrganisaatioUtility', ['$routeParams', '$q', '_', 'ValintaryhmaModel', 'HakukohdeModel',
-        function ($routeParams, $q, _, ValintaryhmaModel, HakukohdeModel) {
+    .service('OrganisaatioUtility', ['$routeParams', '$q', '$log', '_', 'ValintaryhmaModel', 'HakukohdeModel', 'OrganizationByOid',
+        function ($routeParams, $q, $log, _, ValintaryhmaModel, HakukohdeModel, OrganizationByOid) {
 
             // isOidList === true => return the oids of organizations as array
             // isOidList === false => return organization objects as array
@@ -31,8 +31,27 @@ angular.module('valintaperusteet')
                 } else  if (hakukohdeOid) {
                     HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
                     HakukohdeModel.loaded.promise.then(function () {
-                        organizations.push(HakukohdeModel.hakukohde.tarjoajaOid);
-                        deferred.resolve(organizations);
+                        if(isOidList) {
+                            organizations.push(HakukohdeModel.hakukohde.tarjoajaOid);
+                            deferred.resolve(organizations);
+                        } else {
+                            var hakukohdeOrgDeferred = $q.defer();
+                            OrganizationByOid({oid: HakukohdeModel.hakukohde.tarjoajaOid}, function (result) {
+                                organizations.push(result);
+                                hakukohdeOrgDeferred.resolve();
+                            }, function (error) {
+                                hakukohdeOrgDeferred.reject('Hakukohteen organisaation hakeminen epäonnistui', error);
+                            });
+                            
+                            hakukohdeOrgDeferred.promise.then(function (result) {
+                                deferred.resolve(organizations);
+                            }, function (error) {
+                                deferred.reject('Hakukohteen organisaation hakeminen epäonnistui', error);
+                            });
+                        }
+
+
+
                     }, function () {
                         deferred.reject();
                     });

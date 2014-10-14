@@ -9,6 +9,11 @@ angular.module('valintaperusteet')
         var model = new function () {
             this.deferred = undefined;
 
+            // valintaryhmaOid / hakukohdeOid user for matching users
+            // organizations against currently selected valintaryhma/hakukohde organizations
+            this.valintaryhmaOid = undefined;
+            this.hakukohdeOid = undefined;
+
             // OPH-users
             this.crudOph = false;
             this.updateOph = false;
@@ -25,7 +30,9 @@ angular.module('valintaperusteet')
             this.readApp = false;
 
             this.refreshIfNeeded = function (valintaryhmaOid, hakukohdeOid) {
-                if(_.isEmpty(model.deferred)) {
+                if(_.isEmpty(model.deferred) ||
+                     ( !_.isEmpty(valintaryhmaOid) && (valintaryhmaOid !== model.valintaryhmaOid) ) ||
+                      ( !_.isEmpty(hakukohdeOid) && (hakukohdeOid !== model.hakuohdeOid) ) )  {
                     model.refresh(valintaryhmaOid, hakukohdeOid);
                 } else {
                     return model.deferred.promise;

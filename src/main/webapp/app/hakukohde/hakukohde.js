@@ -166,12 +166,14 @@ app.factory('HakukohdeModel', function($q, HakukohdeHakukohdekoodi, KoodistoHaku
     return model;
 });
 
-function HakukohdeController($scope, $location, $routeParams, HakukohdeModel) {
+function HakukohdeController($scope, $location, $routeParams, HakukohdeModel, UserAccessLevels) {
     "use strict";
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakukohdeModel;
     $scope.model.refreshIfNeeded($scope.hakukohdeOid);
+    $scope.userAccess = UserAccessLevels;
+    UserAccessLevels.refreshIfNeeded($routeParams.id, $routeParams.hakukohdeOid);
 
     $scope.submit = function() {
         $scope.model.persistHakukohde();

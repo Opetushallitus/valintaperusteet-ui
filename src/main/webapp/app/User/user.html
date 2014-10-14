@@ -88,7 +88,8 @@
                 <button ng-show="vrhkOrgs" class="btn btn-sm btn-default" ng-click="allData = !allData" ng-init="allData = false">show all data</button>
                 <p ng-show="vrhkOrgs >= 0">
                     <span ng-if="isValintaryhma">valintaryhma</span>
-                    <span ng-if="isHakukohde">Hakukohde</span>- Organisaatioden määrä: {{vrhkOrgs.length}}</p>
+                    <span ng-if="isHakukohde">Hakukohde</span>- Organisaatioden määrä: {{vrhkOrgs.length}}
+                </p>
                 <ul>
                     <li ng-repeat="vrhkOrg in vrhkOrgs">
                         <span ng-show="allData">{{vrhkOrg}}</span>
