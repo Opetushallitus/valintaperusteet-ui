@@ -2,8 +2,8 @@
 
 // Organisaatiotiedot erillisessä
 angular.module('valintaperusteet')
-    .service('OrganisaatioUtility', ['$q', '$log', '_', 'ValintaryhmaModel', 'HakukohdeModel', 'OrganizationByOid', 'Hakukohde',
-        function ($q, $log, _, ValintaryhmaModel, HakukohdeModel, OrganizationByOid, Hakukohde) {
+    .service('OrganisaatioUtility', ['$q', '$log', '_', 'Valintaryhma', 'HakukohdeModel', 'OrganizationByOid', 'Hakukohde',
+        function ($q, $log, _, Valintaryhma, HakukohdeModel, OrganizationByOid, Hakukohde) {
 
             // isOidList === true => return the oids of organizations as array
             // isOidList === false => return organization objects as array
@@ -11,16 +11,16 @@ angular.module('valintaperusteet')
                 var deferred = $q.defer();
                 var organizations = [];
                 if (valintaryhmaId) {
-                    ValintaryhmaModel.refreshIfNeeded(valintaryhmaId);
-                    ValintaryhmaModel.loaded.promise.then(function () {
-                        if (ValintaryhmaModel.valintaryhma.organisaatiot) {
+
+                    Valintaryhma.get({oid: valintaryhmaId}, function (result) {
+                        if (result.organisaatiot) {
                             
                             if(isOidList) {
-                                _.forEach(ValintaryhmaModel.valintaryhma.organisaatiot, function (org) {
+                                _.forEach(result.organisaatiot, function (org) {
                                     organizations.push(org.oid);
                                 });
                             } else {
-                                organizations = ValintaryhmaModel.valintaryhma.organisaatiot;
+                                organizations = result.organisaatiot;
                             }
 
                         }
