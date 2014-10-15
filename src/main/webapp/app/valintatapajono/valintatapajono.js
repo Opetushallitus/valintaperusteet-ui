@@ -234,7 +234,7 @@ app.factory('ValintatapajonoModel', ['$q', 'Valintatapajono', 'ValinnanvaiheVali
             };
 
             $scope.cancel = function () {
-                $location.path("/hakukohde/" + $scope.hakukohdeOid + '/]alinnan.aihe/' + $scope.valinnanvaiheOid);
+                $location.path("/hakukohde/" + $scope.hakukohdeOid + '/valinnanvaihe/' + $scope.valinnanvaiheOid);
             };
 
             $scope.addKriteeri = function () {
