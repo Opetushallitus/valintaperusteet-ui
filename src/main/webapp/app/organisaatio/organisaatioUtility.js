@@ -1,20 +1,18 @@
-
-
 // Organisaatiotiedot erillisessä
 angular.module('valintaperusteet')
-    .service('OrganisaatioUtility', ['$q', '$log', '_', 'Valintaryhma', 'HakukohdeModel', 'OrganizationByOid', 'Hakukohde',
-        function ($q, $log, _, Valintaryhma, HakukohdeModel, OrganizationByOid, Hakukohde) {
+    .service('OrganisaatioUtility', ['$q', '$log', '_', 'Valintaryhma', 'HakukohdeModel', 'OrganizationByOid', 'Hakukohde', 'TarjontaHakukohde',
+        function ($q, $log, _, Valintaryhma, HakukohdeModel, OrganizationByOid, Hakukohde, TarjontaHakukohde) {
 
             // isOidList === true => return the oids of organizations as array
             // isOidList === false => return organization objects as array
-            this.getOrganizations = function (isOidList, valintaryhmaId, hakukohdeOid) {
+            this.getOrganizations = function (returnAsOidList, valintaryhmaId, hakukohdeOid) {
                 var deferred = $q.defer();
                 var organizations = [];
                 if (valintaryhmaId) {
                     Valintaryhma.get({oid: valintaryhmaId}, function (result) {
                         if (result.organisaatiot) {
-                            
-                            if(isOidList) {
+
+                            if (returnAsOidList) {
                                 _.forEach(result.organisaatiot, function (org) {
                                     organizations.push(org.oid);
                                 });
@@ -23,45 +21,55 @@ angular.module('valintaperusteet')
                             }
 
                         }
-                        
+
                         deferred.resolve(organizations);
                     }, function () {
                         $log.error('valintaryhmän tietojen hakeminen epäonnistui');
                         deferred.reject();
                     });
-                } else  if (hakukohdeOid) {
-
-                    Hakukohde.get({oid: hakukohdeOid}, function (hakukohde) {
-                        if(isOidList) {
-                            organizations.push(hakukohde.tarjoajaOid);
-                            deferred.resolve(organizations);
+                } else if (hakukohdeOid) {
+                    TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function (result) {
+                        if (returnAsOidList) {
+                            deferred.resolve(result.tarjoajaOids);
                         } else {
-                            var hakukohdeOrgDeferred = $q.defer();
-                            OrganizationByOid.get({oid: hakukohde.tarjoajaOid}, function (result) {
-                                organizations.push(result);
-                                hakukohdeOrgDeferred.resolve();
-                            }, function (error) {
-                                hakukohdeOrgDeferred.reject('Hakukohteen organisaation hakeminen epäonnistui', error);
+                            var organizationsPromises = [];
+
+                            _.forEach(result.tarjoajaOids, function (tarjoajaOid) {
+                                var organizationDefer = $q.organizationDefer();
+                                organizationsPromises.push(organizationDefer.promise);
+                                OrganizationByOid.get({oid: tarjoajaOid}, function (result) {
+                                    organizations.push(result);
+                                    organizationDefer.resolve();
+                                }, function (error) {
+                                    $log.error('Organisaation ' + tarjoajaOid + ' hakeminen epäonnistui', error);
+                                    organizationDefer.reject();
+                                });
                             });
 
-                            hakukohdeOrgDeferred.promise.then(function (result) {
+                            $q.all(organizationsPromises).then(function () {
                                 deferred.resolve(organizations);
-                            }, function (error) {
-                                deferred.reject('Hakukohteen organisaation hakeminen epäonnistui', error);
+                            }, function () {
+                                if (!_.isEmpty(organizations)) {
+                                    $log.info('Hakukohteen ' + hakukohdeOid + ' kaikkien organisaatioiden tietoja ei saatu haettua');
+                                    deferred.resolve(organizations);
+                                } else {
+                                    deferred.reject();
+                                }
                             });
                         }
+
                     }, function (error) {
-                        $log.error('Hakukohteen hakeminen epäonnistui', error);
+                        $log.error('Hakukohteen tietojen hakeminen epäonnistui');
                         deferred.reject();
                     });
 
+            } else {
+                deferred.resolve(organizations);
+            }
 
-                } else {
-                    deferred.resolve(organizations);
-                }
+            return deferred.promise;
+        };
 
-                return deferred.promise;
-            };
-
-    }]);
+}])
+;
 

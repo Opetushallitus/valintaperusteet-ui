@@ -111,7 +111,6 @@ angular.module('valintaperusteet')
                 // set user rights for ORGREAD or continue to next level
                 var readOrgSuccessFn = function () { model.setReadRights("org"); model.deferred.resolve(); };
                 var readOrgRejectFn = function () {
-                    console.log('readOrgRejectFn');
                     // check if user has rights to this application
                     crudAppPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET');
                     updateAppPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET');
