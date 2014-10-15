@@ -382,6 +382,12 @@ app.factory('HakukohdeNimi', function($resource) {
     });
 });
 
+app.factory('TarjontaHakukohde', function ($resource) {
+    return $resource(TARJONTA_URL_BASE + "v1/hakukohde/:hakukohdeoid", {hakukohdeoid: "@hakukohdeoid"});
+});
+
+
+
 
 
 app.factory('Organizations', function ($resource) {
