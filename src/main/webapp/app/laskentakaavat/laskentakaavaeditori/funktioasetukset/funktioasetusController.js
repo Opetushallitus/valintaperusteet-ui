@@ -38,8 +38,8 @@ angular.module('valintaperusteet')
             };
 
             $scope.persistOsakaava = function (osakaava, funktiokutsu, closeModal) {
-                KaavaValidation.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
-                if ($scope.errors.length === 0) {
+                KaavaValidation.validateTree($scope.model.laskentakaavapuu.funktiokutsu);
+                if (ErrorService.noErrors()) {
                     closeModal();
                     Laskentakaava.insert({}, osakaava, function (savedKaava) {
                         $scope.funktiokutsuSavedAsLaskentakaava(FunktioFactory.getLaskentakaavaviiteFromLaskentakaava(savedKaava));

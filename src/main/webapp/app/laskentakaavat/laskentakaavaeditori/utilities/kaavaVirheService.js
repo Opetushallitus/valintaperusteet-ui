@@ -29,7 +29,7 @@ angular.module('valintaperusteet')
             this.noErrors = function () {
                 return _.isEmpty(model.errors);
             };
-        };
+        }();
 
     return model;
 
@@ -39,23 +39,19 @@ angular.module('valintaperusteet')
         return {
             restrict: 'E',
             template: '<div class="alert alert-danger" ng-transclude></div>',
-            link: function ($scope, element, attrs) {
-                $scope.errors = ErrorService.errors;
+            link: function (iScope, element, attrs) {
+                iScope.errorService = ErrorService;
+                console.log('directive',iScope);
+
             },
-            priority:1,
             transclude: true
-        }
+        };
     }])
 
 .directive('validationError', ['KaavaVirheTyypit', function (KaavaVirheTyypit) {
     return {
         restrict: 'E',
-        priority: 0,
         templateUrl: 'laskentakaavat/laskentakaavaeditori/puu/errors.html'
     }
 }]);
 
-
-
-//<span ng-if="virhe.funktiokutsu"
-// ng-click="setFunktioSelection(virhe.funktiokutsu, virhe.isFunktiokutsu, virhe.parent, virhe.index)">Funktiokutsu: {{virhe.kuvaus}}</span>

@@ -3,18 +3,19 @@
 
     <div class="gradingformula">
         <div class="clear"></div>
-        <kaava-validation>
+
+        <kaava-validation ng-show="errorService.errors.length > 0">
             <h3>{{ t('laskentakaavapuu.eitalletettu') || 'Laskentakaavaa ei voitu tallentaa.' }}</h3>
 
             <p>{{ t('laskentakaavapuu.eitalletettutext') || 'Alla olevasta listasta saat vihjeitä kaavan virheistä
                 ja
-                virheellisen funktiokutsun tapauksessa pääset muo kkaamaan sitä suoraan klikkaamalla
+                virheellisen funktiokutsun tapauksessa pääset muokkaamaan sitä suoraan klikkaamalla
                 virheilmoitusta.
                 Yritä laskentakaavan tallennusta uudestaan heti virheet korjattuasi.' }}</p>
             <ol>
 
                 <!--ng-click="setFunktioSelection(error.funktiokutsu, error.isFunktiokutsu, error.parent, error.index)">{{error.nimi}} {{ t('laskentakaavapuu.funktiossavirhe') || '-funktiokutsussa on virhe.' }} {{error.kuvaus}}</span>-->
-                <li ng-repeat="error in errors">
+                <li ng-repeat="error in errorService.errors">
                     <validation-error></validation-error>
                 </li>
             </ol>

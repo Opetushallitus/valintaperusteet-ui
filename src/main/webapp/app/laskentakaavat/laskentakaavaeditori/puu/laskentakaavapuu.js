@@ -15,8 +15,8 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
 
             $scope.model = {};
             $scope.openAll = false;
-
             $scope.hideKaavaBasics = true;
+            console.log($scope);
 
             //Pidetään laskentakaaviitevalinta objektissa. Laskentakaavaviitettä kaavaan liitettäessä radio-inputit iteroidaan ng-repeatissa,
             //joka luo uuden skoopin joka itemille, jolloin laskentakaavaviitteen tallentaminen  suoraan skoopissa olevaan muuttujaan ei toimi oikein

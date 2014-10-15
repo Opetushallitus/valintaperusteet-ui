@@ -6,6 +6,7 @@ angular.module('valintaperusteet')
         var utility = this;
 
         this.validateTree = function (rootFunktiokutsu) {
+            
             utility.makeRootValidations(rootFunktiokutsu);
 
             _.forEach(rootFunktiokutsu.funktioargumentit, function (funktioargumentti, funktioargumenttiIndex) {
@@ -24,7 +25,8 @@ angular.module('valintaperusteet')
         };
 
         this.addValidationError = function (funktionimi, virhetyyppi, parent, funktiokutsu, funktiokutsuIndex) {
-            ErrorService.addError({
+            console.log(ErrorService.errors);
+            ErrorService.errors.push({
                 nimi: funktionimi,
                 parent: parent,
                 funktiokutsu: funktiokutsu,
@@ -32,6 +34,7 @@ angular.module('valintaperusteet')
                 isFunktiokutsu: FunktioService.isFunktiokutsu(funktiokutsu),
                 tyyppi: virhetyyppi
             });
+            console.log(ErrorService.errors);
         };
 
         this.makeRootValidations = function (rootFunktiokutsu) {
@@ -51,7 +54,6 @@ angular.module('valintaperusteet')
             // tallennatulos valittu -tarkistus rootin lapsille
             // pakollisten arvokonvertterien puuttumistarkistus rootin lapsille
             _.forEach(rootFunktiokutsu.funktioargumentit, function (funktioargumentti, funktioargumenttiIndex) {
-                console.log(funktioargumentti);
                 //tallennatulosvalidointi tehdään aina funktiokutsun funktioargumenteille, jotta funktioargumentin indeksi saadaan mukaan virheilmoitukseen
                 //tästä syystä validointi tehdään rootissa erikseen juuren funktiokutsulle ja sen funktioargument(e)ille
                 if (funktioargumentti.lapsi.tallennaTulos === true && _.isEmpty(funktioargumentti.lapsi.tulosTunniste)) {
