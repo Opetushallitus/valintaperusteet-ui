@@ -12,9 +12,10 @@
                 virheellisen funktiokutsun tapauksessa pääset muokkaamaan sitä suoraan klikkaamalla
                 virheilmoitusta.
                 Yritä laskentakaavan tallennusta uudestaan heti virheet korjattuasi.' }}</p>
-            <ol>
 
-                <!--ng-click="setFunktioSelection(error.funktiokutsu, error.isFunktiokutsu, error.parent, error.index)">{{error.nimi}} {{ t('laskentakaavapuu.funktiossavirhe') || '-funktiokutsussa on virhe.' }} {{error.kuvaus}}</span>-->
+            <p>{{t('laskentakaavapuu.eitalletettuhuom') || 'Huomaa, että käyttöliittymässä suoritettava laskentakaavan validointi ei huomaa kaikkia virheitä. Tarkasta kaava ilmeisten virheiden varalta ja yritä tallennusta uudestaan'}}</p>
+            <ol class="margin-top-2">
+
                 <li ng-repeat="error in errorService.errors">
                     <validation-error></validation-error>
                 </li>
@@ -48,7 +49,6 @@
                 <modal-open></modal-open>
             </modal>
         </div>
-
 
         <!-- LASKENTAKAAVAPUUN JUURI -->
         <div class="frame open" ng-class="isRootSelected ? 'active' : ''">

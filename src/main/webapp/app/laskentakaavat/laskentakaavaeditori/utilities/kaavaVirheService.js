@@ -10,6 +10,7 @@ angular.module('valintaperusteet')
         PKPARITONMAARAFUNKIOARGUMENTTEJA: 'PKPARITONMAARAFUNKIOARGUMENTTEJA',
         PKLIIANVAHANFUNKTIOARGUMENTTEJA: 'PKLIIANVAHANFUNKTIOARGUMENTTEJA',
         PKPUUTTUVAFUNKTIOARGUMENTTI: 'PKPUUTTUVAFUNKTIOARGUMENTTI',
+        HAETOTUUSARVOJAKONVERTOILUKUARVOKSIPUUTTUVAARVOKONVERTTERI: 'HAETOTUUSARVOJAKONVERTOILUKUARVOKSIPUUTTUVAARVOKONVERTTERI',
         TAUSTAPALVELU: 'TAUSTAPALVELU'
     })
 
@@ -39,10 +40,8 @@ angular.module('valintaperusteet')
         return {
             restrict: 'E',
             template: '<div class="alert alert-danger" ng-transclude></div>',
-            link: function (iScope, element, attrs) {
-                iScope.errorService = ErrorService;
-                console.log('directive',iScope);
-
+            link: function ($scope, element, attrs) {
+                $scope.errorService = ErrorService;
             },
             transclude: true
         };

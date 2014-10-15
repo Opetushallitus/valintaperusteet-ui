@@ -2,7 +2,7 @@ describe('LaskentakaavaController', function () {
 
     var scope, $location, ctrl, createController, _, $routeParams, $httpBackend, $timeout, KaavaValidointi, Laskentakaava, LaskentakaavaLista,
         TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet, FunktioNimiService,
-        FunktioFactory, KaavaValidationService, KaavaVirheService, funktiokuvaus, laskentakaavaoneJSON;
+        FunktioFactory, ErrorService, funktiokuvaus, laskentakaavaoneJSON, KaavaValidation;
 
     beforeEach(function () {
         module('MockData');
@@ -27,7 +27,7 @@ describe('LaskentakaavaController', function () {
         FunktioNimiService = $injector.get('FunktioNimiService');
         FunktioFactory = $injector.get('FunktioFactory');
         KaavaValidation = $injector.get('KaavaValidation');
-        KaavaVirheService = $injector.get('KaavaVirheService');
+        ErrorService = $injector.get('ErrorService');
 
         //Mockdata
         funktiokuvaus = $injector.get('Funktiokuvaukset');
@@ -50,7 +50,7 @@ describe('LaskentakaavaController', function () {
                 FunktioFactory: FunktioFactory,
                 KaavaValidation:  KaavaValidation,
                 KaavaValidointi: KaavaValidointi,
-                KaavaVirheService: KaavaVirheService
+                ErrorService: ErrorService
             });
         };
 
