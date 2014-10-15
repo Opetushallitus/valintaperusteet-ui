@@ -53,7 +53,7 @@
                     {{kaava.kuvaus}}
                 </td>
                 <td>
-                    <button auth ng-disabled="!(userModel.isKKUser || userModel.isOphUser)" class="btn btn-default btn-sm" ng-click="kaavaKopiointiModal(kaava)"><i class="fa fa-file-o"></i>
+                    <button auth ng-disabled="!userAccess.updateApp" class="btn btn-default btn-sm" ng-click="kaavaKopiointiModal(kaava)"><i class="fa fa-file-o"></i>
                         <i class="fa fa-long-arrow-right"></i> <i class="fa fa-users"></i></button>
                 </td>
 

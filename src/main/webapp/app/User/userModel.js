@@ -32,7 +32,6 @@ angular.module('valintaperusteet')
                     $q.all(organizationPromises).then(function () {
                         model.organizationsDeferred.resolve();
                         model.analyzeOrganizations();
-                        console.log('usermodel', model);
                     }, function () {
                         model.organizationsDeferred.reject();
                     });
@@ -106,16 +105,12 @@ angular.module('valintaperusteet')
         } else if($routeParams.hakukohdeOid) {
             $scope.isHakukohde = true;
         }
-
-        $scope.getOrganizations = function () {
-            OrganisaatioUtility.getOrganizations(false, $routeParams.id, $routeParams.hakukohdeOid).then(function (result) {
-                $scope.vrhkOrgs = result;
-            }, function (error) {
-                $log.error('valintaryhmän/hakukohteen organisaatioiden haku epäonnistui', error);
-            });
-        };
-
-
+        
+        OrganisaatioUtility.getOrganizations(false, $routeParams.id, $routeParams.hakukohdeOid).then(function (result) {
+            $scope.vrhkOrgs = result;
+        }, function (error) {
+            $log.error('valintaryhmän/hakukohteen organisaatioiden haku epäonnistui', error);
+        });
 
     }]);
 

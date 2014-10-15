@@ -20,8 +20,8 @@
                     <tr>
                         <th></th>
                         <th>CRUD</th>
-                        <th>ORG</th>
-                        <th>APP</th>
+                        <th>UPDATE</th>
+                        <th>READ</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -62,18 +62,22 @@
                     </tr>
                     </thead>
                     <tbody>
-                <tr>
-                    <td>{{userModel.isOphUser}}</td>
-                    <td>{{userModel.isKKUser}}</td>
-                    <td>{{userModel.hasOtherThanKKUserOrgs}}</td>
-                </tr>
+                    <tr>
+                        <td>{{userModel.isOphUser}}</td>
+                        <td>{{userModel.isKKUser}}</td>
+                        <td>{{userModel.hasOtherThanKKUserOrgs}}</td>
+                    </tr>
                     </tbody>
                 </table>
                 <h3>Organizations</h3>
                 <ul>
-                    <li ng-repeat="organization in userModel.organizations"><span ng-show="allOrgData">{{organization}}</span><span ng-show="!allOrgData">{{organization.oid}} - {{organization.nimi.fi}}</span></li>
+                    <li ng-repeat="organization in userModel.organizations"><span
+                            ng-show="allOrgData">{{organization}}</span><span ng-show="!allOrgData">{{organization.oid}} - {{organization.nimi.fi}}</span>
+                    </li>
                 </ul>
-                <button class="btn btn-sm btn-default" ng-init="allOrgData = false" ng-click="allOrgData = !allOrgData">show all data</button>
+                <button class="btn btn-sm btn-default" ng-init="allOrgData = false" ng-click="allOrgData = !allOrgData">
+                    show all data
+                </button>
 
             </div>
         </div>
@@ -82,19 +86,24 @@
             <label class="control-label col-md-2">Organization Utility</label>
 
             <div class="col-md-10">
-                <button class="btn btn-sm btn-default" ng-click="getOrganizations()">Fetch organizations for <span ng-if="isValintaryhma">valintaryhma</span>
-                    <span ng-if="isHakukohde">hakukohde</span>
-                    </button>
-                <button ng-show="vrhkOrgs" class="btn btn-sm btn-default" ng-click="allData = !allData" ng-init="allData = false">show all data</button>
                 <p ng-show="vrhkOrgs >= 0">
                     <span ng-if="isValintaryhma">valintaryhma</span>
                     <span ng-if="isHakukohde">Hakukohde</span>- Organisaatioden määrä: {{vrhkOrgs.length}}
                 </p>
-                <ul>
-                    <li ng-repeat="vrhkOrg in vrhkOrgs">
+                <button class="btn btn-default btn-sm" ng-click="showAll = !showAll">show orgs</button>
+                <ul ng-init="showAll = false">
+                    <li ng-show="!showAll" ng-repeat="vrhkOrg in vrhkOrgs">
                         <span ng-show="allData">{{vrhkOrg}}</span>
-                        <span ng-show="!allData">{{vrhkOrg.oid}} - {{vrhkOrg.nimi.fi}}</span>
+
+                        <div ng-show="!allData">
+                            <p>{{vrhkOrg.oid}} - {{vrhkOrg.nimi.fi}} </p>
+
+                            <p>parentoid: {{vrhkOrg.parentOid}}</p>
+
+                            <p>parentOidPath: {{vrhkOrg.parentOidPath}}</p>
+                        </div>
                     </li>
+                    <li ng-show="showAll" ng-repeat="org in vrhkOrgs">{{org}}</li>
                 </ul>
 
             </div>
