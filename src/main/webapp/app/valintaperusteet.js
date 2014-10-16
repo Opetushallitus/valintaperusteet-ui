@@ -401,3 +401,9 @@ app.factory('OrganizationByOid', function ($resource) {
         get: {method: "GET", cache: true}
     });
 });
+
+app.factory('OrganizationParentOids', function ($resource) {
+    return $resource(ORGANIZATION_SERVICE_URL_BASE + "rest/organisaatio/:oid/parentoids", {oid: "@oid"}, {
+        get: {method: "GET", cache: true}
+    });
+});
