@@ -10,7 +10,7 @@ angular.module('valintaperusteet')
     .constant('READ', "_READ")
     .constant('UPDATE', "_READ_UPDATE")
     .constant('CRUD', "_CRUD")
-    .constant('OPH_ORG', "1.2.246.562.10.00000000001")
+    .constant('OPH_ORG_OID', "1.2.246.562.10.00000000001")
 
     .factory('MyRolesModel', ['$q', '$http', function ($q, $http) {
         var deferred = $q.defer();
@@ -71,8 +71,8 @@ angular.module('valintaperusteet')
             };
         }])
 
-    .factory('AuthService', ['$q', '$http', '$timeout', 'MyRolesModel', 'READ', 'UPDATE', 'CRUD', 'OPH_ORG',
-        function ($q, $http, $timeout, MyRolesModel, READ, UPDATE, CRUD, OPH_ORG) {
+    .factory('AuthService', ['$q', '$http', '$timeout', 'MyRolesModel', 'READ', 'UPDATE', 'CRUD', 'OPH_ORG_OID',
+        function ($q, $http, $timeout, MyRolesModel, READ, UPDATE, CRUD, OPH_ORG_OID) {
             // organisation check
             var readAccess = function (service, org, model) {
 
@@ -129,19 +129,19 @@ angular.module('valintaperusteet')
 
             // OPH check -- voidaan ohittaa organisaatioiden haku
             var ophRead = function (service, model) {
-                return (model.myroles.indexOf(service + READ + "_" + OPH_ORG) > -1
-                    || model.myroles.indexOf(service + UPDATE + "_" + OPH_ORG) > -1
-                    || model.myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1);
+                return (model.myroles.indexOf(service + READ + "_" + OPH_ORG_OID) > -1
+                    || model.myroles.indexOf(service + UPDATE + "_" + OPH_ORG_OID) > -1
+                    || model.myroles.indexOf(service + CRUD + "_" + OPH_ORG_OID) > -1);
 
             };
 
             var ophUpdate = function (service, model) {
-                return (model.myroles.indexOf(service + UPDATE + "_" + OPH_ORG) > -1
-                    || model.myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1);
+                return (model.myroles.indexOf(service + UPDATE + "_" + OPH_ORG_OID) > -1
+                    || model.myroles.indexOf(service + CRUD + "_" + OPH_ORG_OID) > -1);
             };
 
             var ophCrud = function (service, model) {
-                return (model.myroles.indexOf(service + CRUD + "_" + OPH_ORG) > -1);
+                return (model.myroles.indexOf(service + CRUD + "_" + OPH_ORG_OID) > -1);
             };
 
             var ophAccessCheck = function (service, accessFunction) {

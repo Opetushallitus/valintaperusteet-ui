@@ -1,6 +1,6 @@
 angular.module('valintaperusteet')
 
-    .factory('UserModel', ['$q', '$log', '_', 'MyRolesModel', 'AuthService', 'OrganizationByOid', 'OPH_ORG', function ($q, $log, _, MyRolesModel, AuthService, OrganizationByOid, OPH_ORG) {
+    .factory('UserModel', ['$q', '$log', '_', 'MyRolesModel', 'AuthService', 'OrganizationByOid', 'OPH_ORG_OID', function ($q, $log, _, MyRolesModel, AuthService, OrganizationByOid, OPH_ORG_OID) {
         var model = new function () {
             this.organizationsDeferred = undefined;
 
@@ -74,7 +74,7 @@ angular.module('valintaperusteet')
             };
 
             this.isOphOrganization = function (organization) {
-                return organization.oid === OPH_ORG;
+                return organization.oid === OPH_ORG_OID;
             };
 
             this.isOtherThanKKOrganization = function (organization) {
