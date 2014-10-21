@@ -32,10 +32,11 @@ mod.factory('onCompleteInterceptor', function(loadingService, $q) {
 });
 
 mod.config(function($httpProvider) {
-    $httpProvider.responseInterceptors.push('onCompleteInterceptor');
+    $httpProvider.interceptors.push('onCompleteInterceptor');
 });
 
 mod.run(function($http, onStartInterceptor) {
+
     $http.defaults.transformRequest.push(onStartInterceptor);
 });
 

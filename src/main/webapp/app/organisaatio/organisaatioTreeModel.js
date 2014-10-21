@@ -1,4 +1,8 @@
-app.factory('OrganisaatioTreeModel', function(Organizations, AuthService, OrganizationByOid) {
+
+angular.module('valintaperusteet')
+
+    .factory('OrganisaatioTreeModel', ['Organizations', 'AuthService', 'OrganizationByOid',
+        function(Organizations, AuthService, OrganizationByOid) {
     "use strict";
 
     return (function() {
@@ -72,9 +76,10 @@ app.factory('OrganisaatioTreeModel', function(Organizations, AuthService, Organi
         return instance;
     })();
 
-});
+}])
 
-function OrganisaatioTreeController($scope, OrganisaatioTreeModel) {
+.controller('OrganisaatioTreeController', ['$scope', 'OrganisaatioTreeModel',
+        function($scope, OrganisaatioTreeModel) {
     "use strict";
 
     $scope.orgTree = OrganisaatioTreeModel;
@@ -107,4 +112,4 @@ function OrganisaatioTreeController($scope, OrganisaatioTreeModel) {
         OrganisaatioTreeModel.model = {};
         OrganisaatioTreeModel.searchStr = '';
     };
-}
+}]);
