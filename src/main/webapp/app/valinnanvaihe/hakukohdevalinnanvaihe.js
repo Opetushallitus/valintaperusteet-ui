@@ -26,11 +26,10 @@ angular.module('valintaperusteet').
     $scope.modifyJono = function(oid) {
         $location.path("/hakukohde/" + $scope.hakukohdeOid + "/valinnanvaihe/" + $scope.model.valinnanvaihe.oid + "/valintatapajono/" + oid);
     };
-}]);
+}])
 
-app.factory('HakukohdeValinnanVaiheModel', function(Valinnanvaihe, Valintatapajono, ValinnanvaiheValintatapajono,
-                                                    HakukohdeValinnanvaihe, ValinnanvaiheKuuluuSijoitteluun,
-                                                    ValintatapajonoJarjesta) {
+.factory('HakukohdeValinnanVaiheModel', ['Valinnanvaihe', 'Valintatapajono', 'ValinnanvaiheValintatapajono', 'HakukohdeValinnanvaihe', 'ValinnanvaiheKuuluuSijoitteluun', 'ValintatapajonoJarjesta',
+        function(Valinnanvaihe, Valintatapajono, ValinnanvaiheValintatapajono, HakukohdeValinnanvaihe, ValinnanvaiheKuuluuSijoitteluun, ValintatapajonoJarjesta) {
     "use strict";
 
     var model = new function() {
@@ -122,12 +121,12 @@ app.factory('HakukohdeValinnanVaiheModel', function(Valinnanvaihe, Valintatapajo
         }
     }();
     return model;
-});
+}])
 
 
 
-app.factory('HakukohdeValintakoeValinnanvaiheModel', function($q,HakukohdeValinnanvaihe, Valinnanvaihe,
-                                                              ValinnanvaiheValintakoe, Valintakoe) {
+.factory('HakukohdeValintakoeValinnanvaiheModel', ['$q', 'HakukohdeValinnanvaihe', 'Valinnanvaihe', 'ValinnanvaiheValintakoe', 'Valintakoe',
+        function($q, HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheValintakoe, Valintakoe) {
     "use strict";
 
 
@@ -200,11 +199,9 @@ app.factory('HakukohdeValintakoeValinnanvaiheModel', function($q,HakukohdeValinn
 
     return model;
 
-});
+}])
 
-
-angular.module('valintaperusteet').
-    controller('HakukohdeValintakoeValinnanvaiheController',['$scope', '$location', '$routeParams',
+    .controller('HakukohdeValintakoeValinnanvaiheController', ['$scope', '$location', '$routeParams',
         'HakukohdeValintakoeValinnanvaiheModel', 'HakukohdeModel',
         function ($scope, $location, $routeParams, HakukohdeValintakoeValinnanvaiheModel, HakukohdeModel) {
     "use strict";

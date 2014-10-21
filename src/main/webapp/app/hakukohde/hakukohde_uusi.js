@@ -1,5 +1,8 @@
-//domain .. this is both, service & domain layer
-app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu, AuthService) {
+
+angular.module('valintaperusteet')
+
+    .factory('Ylavalintaryhma', ['$resource', 'ValintaperusteetPuu', 'AuthService',
+        function($resource, ValintaperusteetPuu, AuthService) {
     "use strict";
 
     //and return interface for manipulating the model
@@ -111,9 +114,9 @@ app.factory('Ylavalintaryhma', function($resource, ValintaperusteetPuu, AuthServ
     };
     modelInterface.refresh();
     return modelInterface;
-});
+}])
 
-app.factory('UusiHakukohdeModel', function(NewHakukohde) {
+    .factory('UusiHakukohdeModel', ['NewHakukohde', function(NewHakukohde) {
     "use strict";
 
     var model = new function()  {
@@ -142,10 +145,10 @@ app.factory('UusiHakukohdeModel', function(NewHakukohde) {
     }();
 
     return model;
-});
+}])
 
-angular.module('valintaperusteet').
-    controller('UusiHakukohdeController',['$scope', '$location', 'UusiHakukohdeModel', 'Ylavalintaryhma', 'Haku',
+
+    .controller('UusiHakukohdeController',['$scope', '$location', 'UusiHakukohdeModel', 'Ylavalintaryhma', 'Haku',
         'TarjontaHaku', 'HaunTiedot', 'Hakukohde',
         function ($scope, $location, UusiHakukohdeModel, Ylavalintaryhma, Haku, TarjontaHaku, HaunTiedot, Hakukohde) {
     "use strict";

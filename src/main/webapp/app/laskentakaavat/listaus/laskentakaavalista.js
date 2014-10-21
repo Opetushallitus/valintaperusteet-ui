@@ -1,5 +1,7 @@
-angular.module('valintaperusteet').factory('LaskentakaavaLista', function (Laskentakaava, ParentValintaryhmas,
-                                                                              Hakukohde, Valintaryhma) {
+angular.module('valintaperusteet')
+
+    .factory('LaskentakaavaLista', ['Laskentakaava', 'ParentValintaryhmas', 'Hakukohde', 'Valintaryhma',
+        function (Laskentakaava, ParentValintaryhmas, Hakukohde, Valintaryhma) {
     'use strict';
 
     var valintaryhmaList = [];
@@ -81,9 +83,11 @@ angular.module('valintaperusteet').factory('LaskentakaavaLista', function (Laske
             }
         }
     };
-});
+}])
 
-angular.module('valintaperusteet').controller('LaskentakaavaListController', function($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista, FunktioService) {
+.controller('LaskentakaavaListController', [
+    '$scope', '$location', '$routeParams', 'Laskentakaava', 'LaskentakaavaLista', 'FunktioService',
+    function($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista, FunktioService) {
     'use strict';
 
     $scope.funktioService = FunktioService;
@@ -124,4 +128,4 @@ angular.module('valintaperusteet').controller('LaskentakaavaListController', fun
         $scope.$broadcast('kaavakopiointi', kaava);
     };
 
-});
+}]);

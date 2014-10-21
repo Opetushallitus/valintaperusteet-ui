@@ -1,5 +1,8 @@
-function HakukohdeLaskentakaavaListController($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista,
-                                              HakukohdeModel, Valintaryhma, Hakukohde) {
+angular.module('valintaperusteet')
+
+    .controller('HakukohdeLaskentakaavaListController', ['$scope', '$location', '$routeParams', 'Laskentakaava', 'LaskentakaavaLista',
+        'HakukohdeModel', 'Valintaryhma', 'Hakukohde',
+        function($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista, HakukohdeModel, Valintaryhma, Hakukohde) {
     'use strict';
 
     $scope.hakukohdeModel = HakukohdeModel;
@@ -26,4 +29,4 @@ function HakukohdeLaskentakaavaListController($scope, $location, $routeParams, L
         $scope.$broadcast('kaavakopiointi', kaava);
     };
 
-}
+}]);
