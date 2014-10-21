@@ -1,6 +1,12 @@
 angular.module('valintaperusteet')
 
-    .factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, HakijaryhmaJarjesta, KoodistoHakukohdekoodi,
+    .factory('ValintaryhmaModel', ['$q', '_', 'Valintaryhma', 'Hakijaryhma', 'HakijaryhmaJarjesta', 'KoodistoHakukohdekoodi',
+        'KoodistoValintakoekoodi', 'KoodistoHaunKohdejoukko', 'Laskentakaava', 'Treemodel',
+        'ValintaryhmaValintakoekoodi', 'Valinnanvaihe', 'ValintaryhmaValinnanvaihe',
+        'ValinnanvaiheJarjesta', 'ValintaryhmaHakukohdekoodi', 'ValintaryhmaHakijaryhma',
+        'OrganizationByOid', '$modal', 'Utils', 'Haku', 'HaunTiedot', 'ParentValintaryhmas',
+        'ChildValintaryhmas', '$location', '$log', 'RootValintaryhmas',
+        function ($q, _, Valintaryhma, Hakijaryhma, HakijaryhmaJarjesta, KoodistoHakukohdekoodi,
                                             KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel,
                                             ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe,
                                             ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma,
@@ -376,7 +382,7 @@ angular.module('valintaperusteet')
         }();
 
         return model;
-    })
+    }])
 
 
     .controller('ValintaryhmaController', ['$scope', '$q', '$location', '$routeParams', 'ValintaryhmaModel', 'Laskentakaava', 'UserAccessLevels',
@@ -479,5 +485,5 @@ angular.module('valintaperusteet')
 
         };
 
-    }])
+    }]);
 

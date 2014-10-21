@@ -1,5 +1,8 @@
-//domain .. this is both, service & domain layer
-app.factory('ValintatapajonoModel', ['$q', 'Valintatapajono', 'ValinnanvaiheValintatapajono', 'ValintatapajonoJarjestyskriteeri', 'Laskentakaava', 'Jarjestyskriteeri', 'JarjestyskriteeriJarjesta', 'ValintatapajonoHakijaryhma', 'HakukohdeHakijaryhma', 'ValintaryhmaHakijaryhma', 'HakijaryhmaValintatapajono', '$modal',
+
+
+angular.module('valintaperusteet')
+
+    .factory('ValintatapajonoModel', ['$q', 'Valintatapajono', 'ValinnanvaiheValintatapajono', 'ValintatapajonoJarjestyskriteeri', 'Laskentakaava', 'Jarjestyskriteeri', 'JarjestyskriteeriJarjesta', 'ValintatapajonoHakijaryhma', 'HakukohdeHakijaryhma', 'ValintaryhmaHakijaryhma', 'HakijaryhmaValintatapajono', '$modal',
     function ($q, Valintatapajono, ValinnanvaiheValintatapajono, ValintatapajonoJarjestyskriteeri, Laskentakaava, Jarjestyskriteeri, JarjestyskriteeriJarjesta, ValintatapajonoHakijaryhma, HakukohdeHakijaryhma, ValintaryhmaHakijaryhma, HakijaryhmaValintatapajono, $modal) {
     "use strict";
 
@@ -278,11 +281,11 @@ app.factory('ValintatapajonoModel', ['$q', 'Valintatapajono', 'ValinnanvaiheVali
             $scope.$on('hakijaryhmaliita', function () {
                 $scope.model.refresh($routeParams.valintatapajonoOid, $routeParams.valinnanvaiheOid);
             });
-        }]);
+        }])
 
 
-angular.module('valintaperusteet').
-    controller('ValintaryhmaValintatapajonoController', ['$scope', '$location', '$routeParams', '$timeout',
+
+    .controller('ValintaryhmaValintatapajonoController', ['$scope', '$location', '$routeParams', '$timeout',
         'ValintatapajonoModel', 'ValintaryhmaValinnanvaiheModel',
         function ($scope, $location, $routeParams, $timeout, ValintatapajonoModel, ValintaryhmaValinnanvaiheModel) {
             "use strict";
@@ -338,10 +341,11 @@ angular.module('valintaperusteet').
             $scope.$on('hakijaryhmaliita', function () {
                 $scope.model.refresh($routeParams.valintatapajonoOid, $routeParams.valinnanvaiheOid);
             });
-        }]);
+        }])
 
 
-app.factory('HakijaryhmaLiitaModel', function ($resource, $location, $routeParams, Hakijaryhma, HakijaryhmaLiita) {
+.factory('HakijaryhmaLiitaModel', ['$resource', '$location', '$routeParams', 'Hakijaryhma', 'HakijaryhmaLiita',
+    function ($resource, $location, $routeParams, Hakijaryhma, HakijaryhmaLiita) {
     "use strict";
 
     var model = new function () {
@@ -365,9 +369,10 @@ app.factory('HakijaryhmaLiitaModel', function ($resource, $location, $routeParam
     }();
 
     return model;
-});
+}])
 
-function HakijaryhmaValintaController($scope, $routeParams, HakijaryhmaLiitaModel, HakukohdeModel, Hakukohde, ValintaryhmaModel, HakijaryhmaLiita) {
+.controller('HakijaryhmaValintaController', ['$scope', '$routeParams', 'HakijaryhmaLiitaModel', 'HakukohdeModel', 'Hakukohde', 'ValintaryhmaModel', 'HakijaryhmaLiita',
+        function($scope, $routeParams, HakijaryhmaLiitaModel, HakukohdeModel, Hakukohde, ValintaryhmaModel, HakijaryhmaLiita) {
     "use strict";
     $scope.model = HakijaryhmaLiitaModel;
     $scope.model.refresh();
@@ -400,4 +405,4 @@ function HakijaryhmaValintaController($scope, $routeParams, HakijaryhmaLiitaMode
     $scope.openHakijaryhmaModal = function () {
         $scope.show();
     };
-}
+}]);

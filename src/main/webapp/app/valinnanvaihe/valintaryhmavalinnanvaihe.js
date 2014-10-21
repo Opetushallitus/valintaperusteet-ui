@@ -1,5 +1,7 @@
-app.factory('ValintaryhmaValinnanvaiheModel', function(Valinnanvaihe, Valintatapajono, ValinnanvaiheValintatapajono,
-                                                       NewValintaryhmaValinnanvaihe, ValintatapajonoJarjesta) {
+angular.module('valintaperusteet')
+
+.factory('ValintaryhmaValinnanvaiheModel', ['Valinnanvaihe', 'Valintatapajono', 'ValinnanvaiheValintatapajono', 'NewValintaryhmaValinnanvaihe', 'ValintatapajonoJarjesta',
+        function(Valinnanvaihe, Valintatapajono, ValinnanvaiheValintatapajono, NewValintaryhmaValinnanvaihe, ValintatapajonoJarjesta) {
 
     "use strict";
 
@@ -79,10 +81,9 @@ app.factory('ValintaryhmaValinnanvaiheModel', function(Valinnanvaihe, Valintatap
     }();
     return model;
 
-});
+}])
 
-angular.module('valintaperusteet').
-    controller('ValintaryhmaValinnanvaiheController', ['$scope', '$location', '$routeParams',
+    .controller('ValintaryhmaValinnanvaiheController', ['$scope', '$location', '$routeParams',
         'ValintaryhmaValinnanvaiheModel', 'ValintaryhmaModel',
     function ($scope, $location, $routeParams, ValintaryhmaValinnanvaiheModel, ValintaryhmaModel) {
     "use strict";
@@ -107,12 +108,12 @@ angular.module('valintaperusteet').
     $scope.modifyJono = function(oid) {
         $location.path("/valintaryhma/" + $scope.valintaryhmaOid + "/valinnanvaihe/" + $scope.model.valinnanvaihe.oid + "/valintatapajono/" + oid);
     };
-}]);
+}])
 
 
 
-app.factory('ValintaryhmaValintakoeValinnanvaiheModel', function(Valinnanvaihe, ValinnanvaiheValintakoe,
-                                                                 NewValintaryhmaValinnanvaihe, Valintakoe) {
+.factory('ValintaryhmaValintakoeValinnanvaiheModel', ['Valinnanvaihe', 'ValinnanvaiheValintakoe', 'NewValintaryhmaValinnanvaihe', 'Valintakoe',
+        function(Valinnanvaihe, ValinnanvaiheValintakoe, NewValintaryhmaValinnanvaihe, Valintakoe) {
     "use strict";
 
     var model = new function() {
@@ -183,11 +184,10 @@ app.factory('ValintaryhmaValintakoeValinnanvaiheModel', function(Valinnanvaihe, 
     }();
 
     return model;
-});
+}])
 
-angular.module('valintaperusteet').
-    controller('ValintaryhmaValintakoeValinnanvaiheController', ['$scope', '$location', '$routeParams',
-        'ValintaryhmaValintakoeValinnanvaiheModel', 'ValintaryhmaModel',
+
+    .controller('ValintaryhmaValintakoeValinnanvaiheController', ['$scope', '$location', '$routeParams', 'ValintaryhmaValintakoeValinnanvaiheModel', 'ValintaryhmaModel',
         function ($scope, $location, $routeParams, ValintaryhmaValintakoeValinnanvaiheModel, ValintaryhmaModel) {
     "use strict";
 

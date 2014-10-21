@@ -1,5 +1,8 @@
-//domain .. this is both, service & domain layer
-angular.module('valintaperusteet').factory('Treemodel', function ($resource, ValintaperusteetPuu, AuthService, HakuModel) {
+
+angular.module('valintaperusteet')
+
+    .factory('Treemodel', ['$resource', 'ValintaperusteetPuu', 'AuthService', 'HakuModel',
+        function ($resource, ValintaperusteetPuu, AuthService, HakuModel) {
     "use strict";
 
     //and return interface for manipulating the model
@@ -211,11 +214,11 @@ angular.module('valintaperusteet').factory('Treemodel', function ($resource, Val
     };
     modelInterface.refresh();
     return modelInterface;
-});
+}])
 
 
-angular.module('valintaperusteet').
-    controller('ValintaryhmaHakukohdeTreeController', ['$scope', '$q', '_', 'Treemodel', 'HakukohdeSiirra', 'HakuModel', 'UserModel', '$timeout',
+
+    .controller('ValintaryhmaHakukohdeTreeController', ['$scope', '$q', '_', 'Treemodel', 'HakukohdeSiirra', 'HakuModel', 'UserModel', '$timeout',
         function ($scope, $q, _, Treemodel, HakukohdeSiirra, HakuModel, UserModel, $timeout) {
             "use strict";
 

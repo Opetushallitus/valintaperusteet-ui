@@ -18,7 +18,7 @@ angular.module('valintaperusteet')
         };
     }])
 
-    .directive('nestedsortable', function (HakukohdeSiirra) {
+    .directive('nestedsortable', ['HakukohdeSiirra', function (HakukohdeSiirra) {
         return {
             restrict: 'A',
             require: "^ngController",
@@ -68,10 +68,10 @@ angular.module('valintaperusteet')
                 });
             }
         };
-    })
+    }])
 
 
-    .directive('uiSortable', function () {
+    .directive('uiSortable', [function () {
         var options;
         options = {};
         return {
@@ -111,27 +111,26 @@ angular.module('valintaperusteet')
                 return element.sortable(opts);
             }
         };
-    }
-)
+    }])
 
 
-    .directive('enter', function () {
+    .directive('enter', [function () {
         return function (scope, element, attrs) {
             element.bind('mouseover', function () {
                 element.addClass(attrs.enter);
             });
         }
-    })
+    }])
 
-    .directive('leave', function () {
+    .directive('leave', [function () {
         return function (scope, element, attrs) {
             element.bind('mouseleave', function () {
                 element.removeClass(attrs.leave);
             });
         }
-    })
+    }])
 
-    .directive('filterableList', function () {
+    .directive('filterableList', [function () {
         return {
             scope: true,
             controller: function ($scope) {
@@ -156,9 +155,9 @@ angular.module('valintaperusteet')
 
             }
         }
-    })
+    }])
 
-    .directive('flOption', function () {
+    .directive('flOption', [function () {
         return {
             require: '^filterableList',
 
@@ -186,10 +185,10 @@ angular.module('valintaperusteet')
 
             }
         }
-    })
+    }])
 
 
-    .directive('itemOnScreen', function ($timeout) {
+    .directive('itemOnScreen', ['$timeout', function ($timeout) {
         return {
             scope: true,
             link: function (scope, element, attrs) {
@@ -225,7 +224,7 @@ angular.module('valintaperusteet')
                 $timeout(checkHeight, 10);
             }
         };
-    })
+    }])
 
 
     .directive('dateInput', ['dateFilter', function (dateFilter) {
