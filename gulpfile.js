@@ -10,6 +10,7 @@ var gulp = require('gulp'),
 
 var paths = {
     jslib: 'src/main/webapp/common/jslib/',
+    testlib: 'src/test/ui/',
     bower_components: [
         'bower_components/angular/angular.js',
         'bower_components/angular/angular.min.js',
@@ -78,14 +79,24 @@ gulp.task('default', function (callback) {
 
 // Development
 gulp.task('dev', function (callback) {
-    runSequence(['test-watch', 'livereload'], callback);
+    runSequence(['test-watch', 'livereload'], function(){} );
 });
 
 
 gulp.task('scripts', function () {
+    runSequence(['sourceLibs', 'testLibs'], function(){});
+});
+
+gulp.task('sourceLibs', function () {
     return gulp
         .src(paths.bower_components)
         .pipe(gulp.dest(paths.jslib));
+});
+
+gulp.task('testLibs', function () {
+    return gulp
+        .src(paths.dev)
+        .pipe(gulp.dest(paths.testlib));
 });
 
 gulp.task('livereload', function () {

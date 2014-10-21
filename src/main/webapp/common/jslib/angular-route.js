@@ -23,7 +23,7 @@
  /* global -ngRouteModule */
 var ngRouteModule = angular.module('ngRoute', ['ng']).
                         provider('$route', $RouteProvider),
-    $routeMinErr = angular.$$minErr('ngRoute    ');
+    $routeMinErr = angular.$$minErr('ngRoute');
 
 /**
  * @ngdoc provider
