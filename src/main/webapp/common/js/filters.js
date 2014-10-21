@@ -1,4 +1,7 @@
-app.filter('hakukohdekoodiFullMatchFilter', function (ValintaryhmaModel) {
+
+angular.module('valintaperusteet')
+
+.filter('hakukohdekoodiFullMatchFilter', ['ValintaryhmaModel', function (ValintaryhmaModel) {
     return function (list) {
         var model = ValintaryhmaModel;
         var koodi;
@@ -26,10 +29,10 @@ app.filter('hakukohdekoodiFullMatchFilter', function (ValintaryhmaModel) {
         }
         return result;
     }
-});
+}])
 
 
-app.filter('valintakoekoodiFullMatchFilter', function (ValintaryhmaModel) {
+    .filter('valintakoekoodiFullMatchFilter', ['ValintaryhmaModel', function (ValintaryhmaModel) {
     return function (list) {
         var model = ValintaryhmaModel;
         var koodi;
@@ -58,10 +61,9 @@ app.filter('valintakoekoodiFullMatchFilter', function (ValintaryhmaModel) {
         }
         return result;
     }
-});
+}])
 
-
-app.filter('laskentakaavaFilter', function (_, ValintatapajonoModel) {
+.filter('laskentakaavaFilter', ['_', 'ValintatapajonoModel', function (_, ValintatapajonoModel) {
     return function (list) {
         return _.difference(list, _.filter(list, function (item) {
             return _.some(ValintatapajonoModel.jarjestyskriteerit, function (jk) {
@@ -69,9 +71,9 @@ app.filter('laskentakaavaFilter', function (_, ValintatapajonoModel) {
             });
         }));
     }
-});
+}])
 
-app.filter('hakijaryhmatFilter', function (_, ValintatapajonoModel) {
+.filter('hakijaryhmatFilter', ['_', 'ValintatapajonoModel', function (_, ValintatapajonoModel) {
     return function (hakijaryhmat) {
         return _.difference(hakijaryhmat, _.filter(hakijaryhmat, function(origItem) {
             return _.some(ValintatapajonoModel.hakijaryhmat, function(filterItem) {
@@ -79,4 +81,4 @@ app.filter('hakijaryhmatFilter', function (_, ValintatapajonoModel) {
             });
         }));
     }
-});
+}]);
