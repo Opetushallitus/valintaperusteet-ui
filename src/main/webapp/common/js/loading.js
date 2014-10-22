@@ -10,34 +10,29 @@ mod.factory('loadingService', function() {
   return service;
 });
 
-mod.factory('onStartInterceptor', function(loadingService) {
-    return function (data, headersGetter) {
-        loadingService.requestCount++;
-        return data;
-    };
-});
-
 mod.factory('onCompleteInterceptor', function(loadingService, $q) {
-  return function(promise) {
-    var decrementRequestCountSuccess = function(response) {
-        loadingService.requestCount--;
-        return response;
-    };
-    var decrementRequestCountError = function(response) {
-        loadingService.requestCount--;
-        return $q.reject(response);
-    };
-    return promise.then(decrementRequestCountSuccess, decrementRequestCountError);
-  };
+    return {
+        request: function (config) {
+            loadingService.requestCount++;
+            return config;
+        },
+        requestError: function (rejection) {
+            loadingService.requestCount--;
+            return $q.reject(rejection);
+        },
+        response: function (response) {
+            loadingService.requestCount--;
+            return response;
+        },
+        responseError: function (rejection) {
+            loadingService.requestCount--;
+            return $q.reject(rejection);
+        }
+    }
 });
 
 mod.config(function($httpProvider) {
     $httpProvider.interceptors.push('onCompleteInterceptor');
-});
-
-mod.run(function($http, onStartInterceptor) {
-
-    $http.defaults.transformRequest.push(onStartInterceptor);
 });
 
 mod.controller('LoadingCtrl', function($scope, loadingService) {
