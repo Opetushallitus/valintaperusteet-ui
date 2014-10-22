@@ -34,7 +34,7 @@ var paths = {
 
         'bower_components/jquery/dist/jquery.js',
         'bower_components/jquery/dist/jquery.min.js',
-        'bower_components/jquery/dist/jquery.min.js.map',
+        'bower_components/jquery/dist/jquery.min.map',
 
         'bower_components/jquery-ui/ui/minified/jquery-ui.min.js',
         'bower_components/jquery.i18n.properites/jquery.i18n.properties.js',
