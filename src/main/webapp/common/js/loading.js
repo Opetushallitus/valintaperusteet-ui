@@ -17,7 +17,6 @@ mod.factory('onCompleteInterceptor', function(loadingService, $q) {
             return config;
         },
         requestError: function (rejection) {
-            loadingService.requestCount--;
             return $q.reject(rejection);
         },
         response: function (response) {
