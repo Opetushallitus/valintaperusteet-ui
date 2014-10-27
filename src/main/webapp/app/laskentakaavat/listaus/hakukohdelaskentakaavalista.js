@@ -1,8 +1,8 @@
 angular.module('valintaperusteet')
 
-    .controller('HakukohdeLaskentakaavaListController', ['$scope', '$location', '$routeParams', 'Laskentakaava', 'LaskentakaavaLista',
+    .controller('HakukohdeLaskentakaavaListController', ['$scope', '$log', '$location', '$routeParams', 'Laskentakaava', 'LaskentakaavaLista',
         'HakukohdeModel', 'Valintaryhma', 'Hakukohde',
-        function($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista, HakukohdeModel, Valintaryhma, Hakukohde) {
+        function($scope, $log, $location, $routeParams, Laskentakaava, LaskentakaavaLista, HakukohdeModel, Valintaryhma, Hakukohde) {
     'use strict';
 
     $scope.hakukohdeModel = HakukohdeModel;
@@ -27,6 +27,14 @@ angular.module('valintaperusteet')
 
     $scope.kaavaKopiointiModal = function (kaava) {
         $scope.$broadcast('kaavakopiointi', kaava);
+    };
+
+    $scope.kaavaPoisto = function (kaava) {
+        Laskentakaava.delete({oid: kaava.id}, function () {
+            LaskentakaavaLista.refresh(null, $scope.hakukohdeOid, true);
+        }, function (error) {
+            $log.error('Laskentakaavan poistaminen epäonnistui', error);
+        });
     };
 
 }]);
