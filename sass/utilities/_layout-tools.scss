@@ -82,7 +82,7 @@
 
 @for $i from 1 through 10 {
     .width-#{$i}0 {
-        width: #{$i}0%;
+        width: #{$i} + 0%;
     }
 }
 

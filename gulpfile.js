@@ -6,6 +6,7 @@ var gulp = require('gulp'),
     watch = require('gulp-watch'),
     livereload = require('gulp-livereload'),
     karma = require('gulp-karma');
+    sass = require('gulp-sass');
 
 
 var paths = {
@@ -53,6 +54,8 @@ var paths = {
         'src/main/webapp/common/js/**/*.*',
         'src/main/webapp/common/partials/**/*.*'
     ],
+    css: 'src/main/webapp/common/css/',
+    sass: 'sass/valintaperusteet.scss',
     dev: [
         'bower_components/angular-mocks/angular-mocks.js',
         'bower_components/angular-mocks/angular-scenario.js'
@@ -93,6 +96,13 @@ gulp.task('sourceLibs', function () {
         .pipe(gulp.dest(paths.jslib));
 });
 
+gulp.task('styles', function () {
+    return gulp.src(paths.sass)
+        .pipe(sass())
+        .pipe(gulp.dest(paths.css));
+});
+
+
 gulp.task('testLibs', function () {
     return gulp
         .src(paths.dev)
@@ -115,6 +125,8 @@ gulp.task('test-singlerun', function () {
             throw err;
         }));
 });
+
+
 
 // Run tests
 gulp.task('test-watch', function () {
