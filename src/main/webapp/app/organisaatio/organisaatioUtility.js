@@ -140,6 +140,8 @@ angular.module('valintaperusteet')
                         deferred.reject();
                     });
 
+                } else {
+                    deferred.reject();
                 }
 
 
