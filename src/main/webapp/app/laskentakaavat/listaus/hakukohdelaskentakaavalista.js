@@ -1,8 +1,8 @@
 angular.module('valintaperusteet')
 
     .controller('HakukohdeLaskentakaavaListController', ['$scope', '$log', '$location', '$routeParams', 'Laskentakaava', 'LaskentakaavaLista',
-        'HakukohdeModel', 'Valintaryhma', 'Hakukohde',
-        function($scope, $log, $location, $routeParams, Laskentakaava, LaskentakaavaLista, HakukohdeModel, Valintaryhma, Hakukohde) {
+        'HakukohdeModel', 'Valintaryhma', 'Hakukohde', '$modal',
+        function($scope, $log, $location, $routeParams, Laskentakaava, LaskentakaavaLista, HakukohdeModel, Valintaryhma, Hakukohde, $modal) {
     'use strict';
 
     $scope.hakukohdeModel = HakukohdeModel;
@@ -35,6 +35,24 @@ angular.module('valintaperusteet')
         }, function (error) {
             $log.error('Laskentakaavan poistaminen epäonnistui', error);
         });
+    };
+
+    $scope.kaavaPoistoModal = function (kaava) {
+        var kaavapoistoModalInstance = $modal.open({
+            templateUrl: 'laskentakaavat/listaus/kaavapoistokuittausModal.html',
+            controller: 'KaavaPoistoController',
+            size: 'sm',
+            resolve: {
+                kaava: function() { return kaava }
+            }
+        });
+
+        kaavapoistoModalInstance.result.then(function (kaava) {
+            if(kaava) {
+                $scope.kaavaPoisto(kaava);
+            }
+        });
+
     };
 
 }]);

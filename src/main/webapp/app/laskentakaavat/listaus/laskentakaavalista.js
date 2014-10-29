@@ -2,138 +2,170 @@ angular.module('valintaperusteet')
 
     .factory('LaskentakaavaLista', ['Laskentakaava', 'ParentValintaryhmas', 'Hakukohde', 'Valintaryhma',
         function (Laskentakaava, ParentValintaryhmas, Hakukohde, Valintaryhma) {
-    'use strict';
+            'use strict';
 
-    var valintaryhmaList = [];
-    var hakukohde = [];
-    var valintaryhma = null;
+            var valintaryhmaList = [];
+            var hakukohde = [];
+            var valintaryhma = null;
 
-    var findWithValintaryhma = function (valintaryhmaId) {
-        var list = [];
-        ParentValintaryhmas.get({parentOid: valintaryhmaId}, function (data) {
-            for (var i = 0 ; i < data.length ; ++i) {
-                var valintaryhma = data[i];
-                valintaryhma['laskentakaavat'] = Laskentakaava.list({valintaryhma: valintaryhma.oid});
-            }
+            var findWithValintaryhma = function (valintaryhmaId) {
+                var list = [];
+                ParentValintaryhmas.get({parentOid: valintaryhmaId}, function (data) {
+                    for (var i = 0; i < data.length; ++i) {
+                        var valintaryhma = data[i];
+                        valintaryhma['laskentakaavat'] = Laskentakaava.list({valintaryhma: valintaryhma.oid});
+                    }
 
-            var paataso = findRootLevelLaskentakaavas();
-            list.push.apply(list, data);
-            list.push(paataso);
-        });
-        return list;
-    };
+                    var paataso = findRootLevelLaskentakaavas();
+                    list.push.apply(list, data);
+                    list.push(paataso);
+                });
+                return list;
+            };
 
-    var findWithHakukohde = function (hakukohdeOid) {
-        var list = [];
+            var findWithHakukohde = function (hakukohdeOid) {
+                var list = [];
 
-        Hakukohde.get({oid: hakukohdeOid}, function (hakukohdeData) {
-            hakukohdeData['laskentakaavat'] = Laskentakaava.list({hakukohde: hakukohdeOid});
-            hakukohde[0] = hakukohdeData;
+                Hakukohde.get({oid: hakukohdeOid}, function (hakukohdeData) {
+                    hakukohdeData['laskentakaavat'] = Laskentakaava.list({hakukohde: hakukohdeOid});
+                    hakukohde[0] = hakukohdeData;
 
-            if (hakukohdeData.valintaryhma_id) {
-                Valintaryhma.get({oid: hakukohdeData.valintaryhma_id}, function (valintaryhmaData) {
+                    if (hakukohdeData.valintaryhma_id) {
+                        Valintaryhma.get({oid: hakukohdeData.valintaryhma_id}, function (valintaryhmaData) {
 
-                    ParentValintaryhmas.get({parentOid: valintaryhmaData.oid}, function (data) {
-                        for (var i = 0 ; i < data.length ; ++i) {
-                            var valintaryhma = data[i];
-                            valintaryhma['laskentakaavat'] = Laskentakaava.list({valintaryhma: valintaryhma.oid});
-                        }
+                            ParentValintaryhmas.get({parentOid: valintaryhmaData.oid}, function (data) {
+                                for (var i = 0; i < data.length; ++i) {
+                                    var valintaryhma = data[i];
+                                    valintaryhma['laskentakaavat'] = Laskentakaava.list({valintaryhma: valintaryhma.oid});
+                                }
 
-                        var paataso = findRootLevelLaskentakaavas( );
-                        list.push.apply(list, data);
-                        list.push(paataso);
-                    });
+                                var paataso = findRootLevelLaskentakaavas();
+                                list.push.apply(list, data);
+                                list.push(paataso);
+                            });
+
+                        });
+                    }
 
                 });
-            }
 
-        });
+                return list;
+            };
 
-        return list;
-    };
+            var findRootLevelLaskentakaavas = function () {
+                var paataso = {
+                    nimi: "Yleiset kaavat",
+                    laskentakaavat: []
+                };
+                Laskentakaava.list({oid: null}, function (data) {
+                    paataso.laskentakaavat = data;
+                });
 
-    var findRootLevelLaskentakaavas = function () {
-        var paataso = {
-            nimi: "Yleiset kaavat",
-            laskentakaavat: []
-        };
-        Laskentakaava.list({oid: null}, function (data) {
-            paataso.laskentakaavat = data;
-        });
+                return paataso;
+            };
 
-        return paataso;
-    };
+            return {
+                valintaryhmaList: function () {
+                    return valintaryhmaList;
+                },
+                hakukohdeList: function () {
+                    return hakukohde;
+                },
+                refresh: function (valintaryhmaId, hakukohdeOid) {
+                    hakukohde = [];
+                    valintaryhma = null;
+                    if (valintaryhmaId) {
+                        valintaryhmaList[0] = findWithValintaryhma(valintaryhmaId);
+                    } else if (hakukohdeOid) {
+                        valintaryhmaList[0] = findWithHakukohde(hakukohdeOid);
+                    } else {
+                        valintaryhmaList[0] = findRootLevelLaskentakaavas();
+                    }
+                }
+            };
+        }])
 
-    return {
-        valintaryhmaList: function () {
-            return valintaryhmaList;
-        },
-        hakukohdeList: function () {
-            return hakukohde;
-        },
-        refresh: function (valintaryhmaId, hakukohdeOid) {
-            hakukohde = [];
-            valintaryhma = null;
-            if (valintaryhmaId) {
-                valintaryhmaList[0] = findWithValintaryhma(valintaryhmaId);
-            } else if (hakukohdeOid) {
-                valintaryhmaList[0] = findWithHakukohde(hakukohdeOid);
-            } else {
-                valintaryhmaList[0] = findRootLevelLaskentakaavas();
-            }
-        }
-    };
-}])
+    .controller('LaskentakaavaListController', [
+        '$scope', '$location', '$log', '$routeParams', 'Laskentakaava', 'LaskentakaavaLista', 'FunktioService', '_', '$modal',
+        function ($scope, $location, $log, $routeParams, Laskentakaava, LaskentakaavaLista, FunktioService, _, $modal) {
+            'use strict';
 
-.controller('LaskentakaavaListController', [
-    '$scope', '$location', '$routeParams', 'Laskentakaava', 'LaskentakaavaLista', 'FunktioService', '_',
-    function($scope, $location, $routeParams, Laskentakaava, LaskentakaavaLista, FunktioService, _) {
-    'use strict';
+            $scope.funktioService = FunktioService;
+            $scope.funktioService.refresh();
+            $scope.valintaryhmaOid = $routeParams.valintaryhmaOid;
+            $scope.linkprefix = '';
+            var params = {};
+            var saveParams = {};
 
-    $scope.funktioService = FunktioService;
-    $scope.funktioService.refresh();
-    $scope.valintaryhmaOid = $routeParams.valintaryhmaOid;
-    $scope.linkprefix = '';
-    var params = {};
-    var saveParams = {};
-
-    if ($routeParams.valintaryhmaOid) {
-        LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, null, true);
-        saveParams.valintaryhmaOid = $routeParams.valintaryhmaOid;
-        params.valintaryhma = $routeParams.valintaryhmaOid;
-        $scope.valintaryhmaOid = $routeParams.valintaryhmaOid;
-        $scope.linkprefix = '/valintaryhma/' + $scope.valintaryhmaOid;
-        $scope.valintaryhmat = LaskentakaavaLista;
-    }
-
-
-    $scope.laskentakaavat = Laskentakaava.list(params);
-    $scope.showForm = false;
-
-    $scope.createKaava = function () {
-        $location.path("/valintaryhma/" + $routeParams.valintaryhmaOid + "/laskentakaavalista/laskentakaava");
-    };
-
-    $scope.editKaava = function (kaava) {
-        $scope.showForm = true;
-        $scope.kaava = kaava;
-        $scope.originalKaava = angular.copy(kaava);
-    };
-
-    $scope.cancel = function () {
-        $location.path("/valintaryhma/" + $routeParams.valintaryhmaOid);
-    };
-
-    $scope.kaavaKopiointiModal = function (kaava) {
-        $scope.$broadcast('kaavakopiointi', kaava);
-    };
-
-        $scope.kaavaPoisto = function (kaava) {
-            Laskentakaava.delete({oid: kaava.id}, function () {
+            if ($routeParams.valintaryhmaOid) {
                 LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, null, true);
-            }, function (error) {
-                $log.error('Laskentakaavan poistaminen epäonnistui', error);
-            });
+                saveParams.valintaryhmaOid = $routeParams.valintaryhmaOid;
+                params.valintaryhma = $routeParams.valintaryhmaOid;
+                $scope.valintaryhmaOid = $routeParams.valintaryhmaOid;
+                $scope.linkprefix = '/valintaryhma/' + $scope.valintaryhmaOid;
+                $scope.valintaryhmat = LaskentakaavaLista;
+            }
+
+
+            $scope.laskentakaavat = Laskentakaava.list(params);
+            $scope.showForm = false;
+
+            $scope.createKaava = function () {
+                $location.path("/valintaryhma/" + $routeParams.valintaryhmaOid + "/laskentakaavalista/laskentakaava");
+            };
+
+            $scope.editKaava = function (kaava) {
+                $scope.showForm = true;
+                $scope.kaava = kaava;
+                $scope.originalKaava = angular.copy(kaava);
+            };
+
+            $scope.cancel = function () {
+                $location.path("/valintaryhma/" + $routeParams.valintaryhmaOid);
+            };
+
+            $scope.kaavaKopiointiModal = function (kaava) {
+                $scope.$broadcast('kaavakopiointi', kaava);
+            };
+
+            $scope.kaavaPoisto = function (kaava) {
+                Laskentakaava.delete({oid: kaava.id}, function () {
+                    LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, null, true);
+                }, function (error) {
+                    $log.error('Laskentakaavan poistaminen epäonnistui', error);
+                });
+            };
+
+            $scope.kaavaPoistoModal = function (kaava) {
+                var kaavapoistoModalInstance = $modal.open({
+                    templateUrl: 'laskentakaavat/listaus/kaavapoistokuittausModal.html',
+                    controller: 'KaavaPoistoController',
+                    size: 'sm',
+                    resolve: {
+                        kaava: function() { return kaava }
+                    }
+                });
+
+                kaavapoistoModalInstance.result.then(function (kaava) {
+                    if(kaava) {
+                        $scope.kaavaPoisto(kaava);
+                    }
+                });
+
+            };
+
+
+        }])
+
+    .controller('KaavaPoistoController', ['$scope', '$modalInstance', 'kaava', function ($scope, $modalInstance, kaava) {
+
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
         };
 
-}]);
+
+        
+        $scope.ok = function () {
+            $modalInstance.close(kaava);
+        };
+    }]);
