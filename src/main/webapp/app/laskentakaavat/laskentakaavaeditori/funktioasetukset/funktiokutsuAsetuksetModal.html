@@ -64,6 +64,8 @@
                 </div>
             </div>
 
+
+
             <div class="form-group">
                 <label class="col-sm-3 control-label">{{ t('laskentakaavaviiteasetuksetmodal.tunniste') || 'Tunniste'}}</label>
 
@@ -98,25 +100,26 @@
                       class="btn btn-sm btn-default">{{ t('laskentakaavaviiteasetuksetmodal.generoi') || 'Generoi tunniste' }}</button>
                 </div>
             </div>
-    </div>
+
+            <div class="form-group" ng-if="valintaperuste.lahde === 'SYOTETTAVA_ARVO'">
+
+                <label class="col-sm-3 control-label">{{ t('laskentakaavaviiteasetuksetmodal.vaatiiOsallistumisen') || 'Vaatii
+                    osallistumisen' }}</label>
+
+                <div class="col-sm-9">
+                    <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="checkbox"
+                           ng-model="valintaperuste.vaatiiOsallistumisen"/>
+
+                </div>
+
+            </div>
 
     <div class="col-sm-9" ng-if="valintaperusteviite.tyyppi == 'ARVOJOUKKO'">
         <select ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" ng-model="valintaperuste.tunniste"
                 ng-options="arvo.avain as arvo.arvo for arvo in valintaperusteviite.arvojoukko | orderBy:'arvo'"></select>
     </div>
 
-    </div>
-    <div class="form-group" ng-if="valintaperuste.lahde === 'SYOTETTAVA_ARVO'">
-        <label class="col-sm-3 control-label">{{ t('laskentakaavaviiteasetuksetmodal.vaatiiOsallistumisen') || 'Vaatii
-            osallistumisen' }}</label>
-
-        <div class="col-sm-9">
-            <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="checkbox"
-                   ng-model="valintaperuste.vaatiiOsallistumisen"
-                   required="required"/>
-
-        </div>
-    </div>
+    </form>
 
     <div id="valintaperusteviite-kuvaukset">
 
@@ -153,8 +156,6 @@
         </button>
     </div>
 
-    </form>
-    </div>
 </script>
 
 
