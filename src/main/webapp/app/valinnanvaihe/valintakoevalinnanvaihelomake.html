@@ -20,6 +20,7 @@
                        ng-model="model.valintakoevalinnanvaihe.nimi" required/>
             </div>
         </div>
+
         <div class="form-group">
 
             <label class="control-label col-md-2" for="kuvaus">{{ t('valintakoevalinnanvaihelomake.kuvaus') || 'Kuvaus'
@@ -69,12 +70,13 @@
 
         <div class="form-group">
             <div class="col-md-2 col-md-offset-2">
-                <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default"
+                <button auth ng-disabled="!userAccess.crudOrg || !model.valintakoevalinnanvaihe.oid" class="btn btn-sm btn-default"
                         ng-click="addValintakoe()"><i class="fa fa-plus"></i> {{
                     t('valintakoevalinnanvaihelomake.valintakoe') || 'Valintakoe' }}
                 </button>
             </div>
         </div>
+
         <div class="form-group">
             <div class="col-md-2">
                 <div class="pull-right">
