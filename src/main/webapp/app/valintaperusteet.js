@@ -407,3 +407,21 @@ app.factory('OrganizationParentOids', function ($resource) {
         get: {method: "GET", cache: true}
     });
 });
+
+angular.module('valintaperusteet')
+
+.factory('HakujenHakutyypit', ['$resource', function ($resource) {
+    return $resource(KOODISTO_URL_BASE + "codeelement/codes/hakutyyppi/1");
+}])
+
+    .factory('HakujenKohdejoukot', ['$resource', function ($resource) {
+        return $resource(KOODISTO_URL_BASE + "codeelement/codes/haunkohdejoukko/1");
+    }])
+
+    .factory('HakujenHakutavat', ['$resource', function ($resource) {
+        return $resource(KOODISTO_URL_BASE + "codeelement/codes/hakutapa/1");
+    }])
+
+    .factory('HakujenHakukaudet', ['$resource', function ($resource) {
+        return $resource(KOODISTO_URL_BASE + "codeelement/codes/kausi/1");
+    }]);

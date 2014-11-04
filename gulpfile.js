@@ -82,7 +82,7 @@ gulp.task('default', function (callback) {
 
 // Development
 gulp.task('dev', function (callback) {
-    runSequence(['test-watch', 'livereload'], function(){} );
+    runSequence(['test-watch', 'styles', 'livereload'], function(){} );
 });
 
 
