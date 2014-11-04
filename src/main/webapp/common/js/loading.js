@@ -1,6 +1,6 @@
-var mod = angular.module('loading', []);
+angular.module('loading', [])
 
-mod.factory('loadingService', function() {
+.factory('loadingService', [function() {
   var service = {
     requestCount: 0,
     isLoading: function() {
@@ -8,9 +8,9 @@ mod.factory('loadingService', function() {
     }
   };
   return service;
-});
+}])
 
-mod.factory('onCompleteInterceptor', function(loadingService, $q) {
+.factory('onCompleteInterceptor', ['loadingService', '$q', function(loadingService, $q) {
     return {
         request: function (config) {
             loadingService.requestCount++;
@@ -28,16 +28,16 @@ mod.factory('onCompleteInterceptor', function(loadingService, $q) {
             return $q.reject(rejection);
         }
     }
-});
+}])
 
-mod.config(function($httpProvider) {
+.config(['$httpProvider', function($httpProvider) {
     $httpProvider.interceptors.push('onCompleteInterceptor');
-});
+}])
 
-mod.controller('LoadingCtrl', function($scope, loadingService) {
+.controller('LoadingCtrl', ['$scope', 'loadingService', function($scope, loadingService) {
     $scope.$watch(function() {
         return loadingService.isLoading();
     }, function(value) {
         $scope.loading = value;
     });
-});
+}]);
