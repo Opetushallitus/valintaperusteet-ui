@@ -1,8 +1,8 @@
 angular.module('valintaperusteet')
 
     .controller('HakukohdeLaskentakaavaListController', ['$scope', '$log', '$location', '$routeParams', 'Laskentakaava', 'LaskentakaavaLista',
-        'HakukohdeModel', 'Valintaryhma', 'Hakukohde', '$modal',
-        function($scope, $log, $location, $routeParams, Laskentakaava, LaskentakaavaLista, HakukohdeModel, Valintaryhma, Hakukohde, $modal) {
+        'HakukohdeModel', 'Valintaryhma', 'Hakukohde', '$modal', '$timeout',
+        function($scope, $log, $location, $routeParams, Laskentakaava, LaskentakaavaLista, HakukohdeModel, Valintaryhma, Hakukohde, $modal, $timeout) {
     'use strict';
 
     $scope.hakukohdeModel = HakukohdeModel;
@@ -32,8 +32,13 @@ angular.module('valintaperusteet')
     $scope.kaavaPoisto = function (kaava) {
         Laskentakaava.delete({oid: kaava.id}, function () {
             LaskentakaavaLista.refresh(null, $scope.hakukohdeOid, true);
+            $scope.kaavaPoistoEpaonnistui = false;
         }, function (error) {
-            $log.error('Laskentakaavan poistaminen epäonnistui', error);
+            $scope.kaavaPoistoEpaonnistui = true;
+            $timeout(function () {
+                $scope.kaavaPoistoEpaonnistui = false;
+            }, 5000);
+
         });
     };
 

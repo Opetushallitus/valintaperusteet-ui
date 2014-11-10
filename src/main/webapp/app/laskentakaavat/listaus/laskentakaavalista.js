@@ -86,8 +86,8 @@ angular.module('valintaperusteet')
         }])
 
     .controller('LaskentakaavaListController', [
-        '$scope', '$location', '$log', '$routeParams', 'Laskentakaava', 'LaskentakaavaLista', 'FunktioService', '_', '$modal',
-        function ($scope, $location, $log, $routeParams, Laskentakaava, LaskentakaavaLista, FunktioService, _, $modal) {
+        '$scope', '$location', '$log', '$routeParams', 'Laskentakaava', 'LaskentakaavaLista', 'FunktioService', '_', '$modal', '$timeout',
+        function ($scope, $location, $log, $routeParams, Laskentakaava, LaskentakaavaLista, FunktioService, _, $modal, $timeout) {
             'use strict';
 
             $scope.funktioService = FunktioService;
@@ -131,8 +131,12 @@ angular.module('valintaperusteet')
             $scope.kaavaPoisto = function (kaava) {
                 Laskentakaava.delete({oid: kaava.id}, function () {
                     LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, null, true);
+                    $scope.kaavaPoistoEpaonnistui = false;
                 }, function (error) {
-                    $log.error('Laskentakaavan poistaminen epäonnistui', error);
+                    $scope.kaavaPoistoEpaonnistui = true;
+                    $timeout(function () {
+                        $scope.kaavaPoistoEpaonnistui = false;
+                    }, 5000);
                 });
             };
 
