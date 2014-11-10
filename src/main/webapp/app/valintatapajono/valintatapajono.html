@@ -186,7 +186,6 @@
 <div>
     <fieldset>
         <legend>{{ t('valintatapajono.varasijakasittelysaannot') || 'Varasijakäsittelysäännöt' }}</legend>
-
         <div class="form-group">
             <label class="control-label col-md-2" for="eivarasijatayttoa">{{ t('valintatapajono.eivarasijatayttoa') ||
                 'Ei
@@ -218,10 +217,9 @@
                     </label>
                 </div>
                 <p class="input-group">
-                    <input type="text" class="form-control" datepicker-popup="'yyyy-MM-dd"
+                    <input type="text" class="form-control" datepicker-popup="yyyy-MM-dd"
                            ng-model="model.valintatapajono.varasijojaKaytetaanAlkaen"
                            is-open="alkaenRajattuOpen" min-date="today"
-                           datepicker-options="dateOptions"
                            close-text="Close"
                            ng-disabled="!model.valintatapajono.alkaenRajattu"
                            required="model.valintatapajono.alkaenRajattu"
@@ -252,7 +250,6 @@
                     <input type="text" class="form-control" datepicker-popup="'yyyy-MM-dd"
                            ng-model="model.valintatapajono.varasijojaTaytetaanAsti"
                            is-open="astiRajattuOpen" min-date="today"
-                           datepicker-options="dateOptions"
                            close-text="Close"
                            ng-disabled="!model.valintatapajono.astiRajattu"
                            required="model.valintatapajono.astiRajattu"

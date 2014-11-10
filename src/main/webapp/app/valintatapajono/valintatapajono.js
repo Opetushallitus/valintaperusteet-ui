@@ -27,8 +27,8 @@ angular.module('valintaperusteet')
                 model.valintatapajono.rajattu = model.valintatapajono.varasijat > 0;
                 model.valintatapajono.alkaenRajattu = !!model.valintatapajono.varasijojaKaytetaanAlkaen;
                 model.valintatapajono.astiRajattu = !!model.valintatapajono.varasijojaTaytetaanAsti;
-                //model.valintatapajono.varasijojaKaytetaanAlkaen = model.valintatapajono.varasijojaKaytetaanAlkaen;
-                //model.valintatapajono.varasijojaTaytetaanAsti = model.valintatapajono.varasijojaTaytetaanAsti;
+                model.valintatapajono.varasijojaKaytetaanAlkaen = new Date(model.valintatapajono.varasijojaKaytetaanAlkaen);
+                model.valintatapajono.varasijojaTaytetaanAsti = new Date(model.valintatapajono.varasijojaTaytetaanAsti);
                 model.valintatapajono.siirretaanSijoitteluun = !!model.valintatapajono.siirretaanSijoitteluun;
                 model.valintatapajono.kaytetaanValintalaskentaa = !!model.valintatapajono.kaytetaanValintalaskentaa;
                 model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan = !!model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan;
@@ -97,6 +97,13 @@ angular.module('valintaperusteet')
                         model.valintatapajono.rajattu = model.valintatapajono.varasijat > 0;
                         model.valintatapajono.alkaenRajattu = !!model.valintatapajono.varasijojaKaytetaanAlkaen;
                         model.valintatapajono.astiRajattu = !!model.valintatapajono.varasijojaTaytetaanAsti;
+                        if(model.valintatapajono.varasijojaKaytetaanAlkaen) {
+                            model.valintatapajono.varasijojaKaytetaanAlkaen = new Date(model.valintatapajono.varasijojaKaytetaanAlkaen);
+                        }
+
+                        if(model.valintatapajono.varasijojaTaytetaanAsti) {
+                            model.valintatapajono.varasijojaTaytetaanAsti = new Date(model.valintatapajono.varasijojaTaytetaanAsti);
+                        }
                         valintatapajonot.push(result);
                     });
             } else {
@@ -112,6 +119,13 @@ angular.module('valintaperusteet')
                     model.valintatapajono.rajattu = model.valintatapajono.varasijat > 0;
                     model.valintatapajono.alkaenRajattu = !!model.valintatapajono.varasijojaKaytetaanAlkaen;
                     model.valintatapajono.astiRajattu = !!model.valintatapajono.varasijojaTaytetaanAsti;
+                    if(model.valintatapajono.varasijojaKaytetaanAlkaen) {
+                        model.valintatapajono.varasijojaKaytetaanAlkaen = new Date(model.valintatapajono.varasijojaKaytetaanAlkaen);
+                    }
+
+                    if(model.valintatapajono.varasijojaTaytetaanAsti) {
+                        model.valintatapajono.varasijojaTaytetaanAsti = new Date(model.valintatapajono.varasijojaTaytetaanAsti);
+                    }
                 });
 
                 model.hakijaryhmat.forEach(function (hr) {
@@ -282,6 +296,20 @@ angular.module('valintaperusteet')
             $scope.$on('hakijaryhmaliita', function () {
                 $scope.model.refresh($routeParams.valintatapajonoOid, $routeParams.valinnanvaiheOid);
             });
+
+            $scope.today = new Date();
+
+            $scope.openAlkaenRajattu = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+                $scope.alkaenRajattuOpen = true;
+            };
+
+            $scope.openAstiRajattu = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+                $scope.astiRajattuOpen = true;
+            };
         }])
 
 
@@ -345,10 +373,6 @@ angular.module('valintaperusteet')
 
             $scope.today = new Date();
 
-            $scope.clear = function () {
-                //$scope.model.valintatapajono. = null;
-            };
-
             $scope.openAlkaenRajattu = function($event) {
                 $event.preventDefault();
                 $event.stopPropagation();
@@ -360,17 +384,6 @@ angular.module('valintaperusteet')
                 $event.stopPropagation();
                 $scope.astiRajattuOpen = true;
             };
-
-            $scope.dateOptions = {
-                formatYear: 'yy',
-                startingDay: 1
-            };
-
-            $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-            $scope.format = $scope.formats[0];
-
-
-            //---
 
         }])
 
