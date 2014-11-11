@@ -146,7 +146,7 @@ angular.module('valintaperusteet')
                     controller: 'KaavaPoistoController',
                     size: 'sm',
                     resolve: {
-                        kaava: function() { return kaava }
+                        kaava: function() { return kaava; }
                     }
                 });
 
