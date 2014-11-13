@@ -229,6 +229,19 @@ factory('FunktioService', function (FunktioKuvausResource, $log, _) {
             return arr;
         };
 
+        this.hasFunktioargumentit = function (parentFunktiokutsu, childIndex) {
+            if(parentFunktiokutsu === undefined || childIndex === undefined) {
+                throw new Error('Missing parameter for Funktioservice.hasFunktioargumentit', arguments);
+            }
+
+            if(model.isRootFunktiokutsu(parentFunktiokutsu)) {
+                return true; // juurifunktiolla (nimetty luku- tai totuusarvo) on aina funktioargumentille paikka
+            }
+
+            var funktiokuvaus = model.getFunktiokuvaus(parentFunktiokutsu.lapsi.funktioargumentit[childIndex].lapsi.funktionimi);
+            return _.has(funktiokuvaus, 'funktioargumentit');
+        };
+
     }();
 
     return model;

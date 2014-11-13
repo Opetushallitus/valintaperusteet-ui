@@ -270,11 +270,11 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
 
 
             $scope.getSyoteparametriTemplate = function (syoteparametrityyppi) {
-                return $scope.templateService.getSyoteparametriTemplate(syoteparametrityyppi);
+                return TemplateService.getSyoteparametriTemplate(syoteparametrityyppi);
             };
 
             $scope.konvertteriTemplate = function (konvertteriparametriSelection) {
-                return $scope.templateService.getKonvertteriparametriTemplate(konvertteriparametriSelection);
+                return TemplateService.getKonvertteriparametriTemplate(konvertteriparametriSelection);
             };
 
             $scope.removeKonvertteriParametri = function (index, konvertteriparametriSelection) {
@@ -361,6 +361,10 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                     }
                 });
                 return text;
+            };
+
+            $scope.hasFunktioargumentit = function (parent, childIndex) {
+                return FunktioService.hasFunktioargumentit(parent, childIndex);
             };
 
             $scope.valintaperusteviiteDefined = function (valintaperusteviite) {

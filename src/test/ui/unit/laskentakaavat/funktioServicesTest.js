@@ -355,6 +355,29 @@ describe("FunktioService", function () {
             expect(funktioservice.isLaskentakaavaviite(laskentakaavaviite)).toBe(true);
         });
     });
+    
+    describe("hasFunktioargumentit(parentFunktiokutsu, index)", function () {
+        it("should throw erro if first parameter is missing", function () {
+            expect(function () { funktioservice.hasFunktioargumentit(undefined, 0); }).toThrow(new Error('Missing parameter for Funktioservice.hasFunktioargumentit'));
+        });
 
+        it("should throw error if second parameter is missing", function () {
+            expect(function () {funktioservice.hasFunktioargumentit({}, undefined); }).toThrow(new Error('Missing parameter for Funktioservice.hasFunktioargumentit'));
+        });
+
+        it("should return true for funktiokutsu JOS", function () { //JOS-funktiokutsu funktiokutsuSumma:n ensimmäisenä parametrina
+            expect(funktioservice.hasFunktioargumentit(funktiokutsuSumma, 0)).toBe(true);
+        });
+        
+        it("should return false for funktiokutsu LUKUARVO", function () { //LUKUARVO-funktiokutsu funktiokutsuJos:n toisena parametrina
+            expect(funktioservice.hasFunktioargumentit(funktiokutsuJos, 1)).toBe(false);
+        });
+        
+        it("should return true for rootfunktiokutsu", function () {
+            expect(funktioservice.hasFunktioargumentit(rootFunktiokutsu, 0)).toBe(true);
+        });
+
+
+    });
 
 });
