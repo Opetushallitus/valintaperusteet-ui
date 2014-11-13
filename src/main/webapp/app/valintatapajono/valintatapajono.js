@@ -27,8 +27,13 @@ angular.module('valintaperusteet')
                 model.valintatapajono.rajattu = model.valintatapajono.varasijat > 0;
                 model.valintatapajono.alkaenRajattu = !!model.valintatapajono.varasijojaKaytetaanAlkaen;
                 model.valintatapajono.astiRajattu = !!model.valintatapajono.varasijojaTaytetaanAsti;
-                model.valintatapajono.varasijojaKaytetaanAlkaen = new Date(model.valintatapajono.varasijojaKaytetaanAlkaen);
-                model.valintatapajono.varasijojaTaytetaanAsti = new Date(model.valintatapajono.varasijojaTaytetaanAsti);
+                if(model.valintatapajono.varasijojaTaytetaanAsti) {
+                    model.valintatapajono.varasijojaTaytetaanAsti = new Date(model.valintatapajono.varasijojaTaytetaanAsti);
+                } 
+
+                if(model.valintatapajono.varasijojaKaytetaanAlkaen) {
+                    model.valintatapajono.varasijojaKaytetaanAlkaen = new Date(model.valintatapajono.varasijojaKaytetaanAlkaen);
+                }
                 model.valintatapajono.siirretaanSijoitteluun = !!model.valintatapajono.siirretaanSijoitteluun;
                 model.valintatapajono.kaytetaanValintalaskentaa = !!model.valintatapajono.kaytetaanValintalaskentaa;
                 model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan = !!model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan;
