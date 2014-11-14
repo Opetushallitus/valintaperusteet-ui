@@ -10,8 +10,10 @@ var gulp = require('gulp'),
 
 
 var paths = {
-    jslib: 'src/main/webapp/common/jslib/',
-    testlib: 'src/test/ui/',
+    public: 'src/main/webapp/common/',
+    fonts: paths.public + 'fonts/',
+    jslib: paths.public + 'jslib/',
+    testSourceRoot: 'src/test/ui/',
     bower_components: [
         'bower_components/angular/angular.js',
         'bower_components/angular/angular.min.js',
@@ -86,9 +88,11 @@ gulp.task('dev', function (callback) {
 });
 
 
-gulp.task('scripts', function () {
+gulp.task('build', function () {
     runSequence(['sourceLibs', 'testLibs'], function(){});
 });
+
+
 
 gulp.task('sourceLibs', function () {
     return gulp
@@ -96,17 +100,22 @@ gulp.task('sourceLibs', function () {
         .pipe(gulp.dest(paths.jslib));
 });
 
-gulp.task('styles', function () {
+gulp.task('css', function () {
     return gulp.src(paths.sass)
         .pipe(sass())
         .pipe(gulp.dest(paths.css));
+});
+
+gulp.task('icons', function() { 
+    return gulp.src('bower_components/fontawesome/fonts/**.*') 
+    .pipe(gulp.dest('./public/fonts')); 
 });
 
 
 gulp.task('testLibs', function () {
     return gulp
         .src(paths.dev)
-        .pipe(gulp.dest(paths.testlib));
+        .pipe(gulp.dest(paths.testSourceRoot));
 });
 
 gulp.task('livereload', function () {
