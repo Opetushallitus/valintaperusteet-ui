@@ -1,8 +1,11 @@
 angular.module('valintaperusteet')
 
     .controller('funktiokutsuAsetuksetController', ['$scope', '$q', '$routeParams', '$location', '$timeout', 'Laskentakaava',
-        'FunktioNimiService', 'FunktioFactory', 'KaavaValidationService', 'GuidGenerator', 'HakemusavaimetLisakysymykset', 'HakemusavaimetLomake', 'ValintaryhmaModel', 'Treemodel', 'LaskentakaavaValintaryhma', '$cookieStore', '$window', 'UserModel',
-        function ($scope, $q, $routeParams, $location, $timeout, Laskentakaava, FunktioNimiService, FunktioFactory, KaavaValidationService, GuidGenerator, HakemusavaimetLisakysymykset, HakemusavaimetLomake, ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore, $window, UserModel) {
+        'FunktioNimiService', 'FunktioFactory', 'KaavaValidation', 'GuidGenerator', 'HakemusavaimetLisakysymykset', 'HakemusavaimetLomake',
+        'ValintaryhmaModel', 'Treemodel', 'LaskentakaavaValintaryhma', '$cookieStore', '$window', 'UserModel', 'ErrorService',
+        function ($scope, $q, $routeParams, $location, $timeout, Laskentakaava,
+                  FunktioNimiService, FunktioFactory, KaavaValidation, GuidGenerator, HakemusavaimetLisakysymykset, HakemusavaimetLomake,
+                  ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore, $window, UserModel, ErrorService) {
             UserModel.refreshIfNeeded();
             $scope.toggle = false;
             $scope.funktioFactory = FunktioFactory;
@@ -38,8 +41,8 @@ angular.module('valintaperusteet')
             };
 
             $scope.persistOsakaava = function (osakaava, funktiokutsu, closeModal) {
-                KaavaValidationService.validateTree($scope.model.laskentakaavapuu.funktiokutsu, $scope.errors);
-                if ($scope.errors.length === 0) {
+                KaavaValidation.validateTree($scope.model.laskentakaavapuu.funktiokutsu);
+                if (ErrorService.noErrors()) {
                     closeModal();
                     Laskentakaava.insert({}, osakaava, function (savedKaava) {
                         $scope.funktiokutsuSavedAsLaskentakaava(FunktioFactory.getLaskentakaavaviiteFromLaskentakaava(savedKaava));

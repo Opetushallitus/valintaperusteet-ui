@@ -1,5 +1,9 @@
-//domain .. this is both, service & domain layer
-app.factory('ValintatapajonoModel', function ($q, Valintatapajono, ValinnanvaiheValintatapajono, ValintatapajonoJarjestyskriteeri, Laskentakaava, Jarjestyskriteeri, JarjestyskriteeriJarjesta, ValintatapajonoHakijaryhma, HakukohdeHakijaryhma, ValintaryhmaHakijaryhma, HakijaryhmaValintatapajono, $modal) {
+
+
+angular.module('valintaperusteet')
+
+    .factory('ValintatapajonoModel', ['$q', 'Valintatapajono', 'ValinnanvaiheValintatapajono', 'ValintatapajonoJarjestyskriteeri', 'Laskentakaava', 'Jarjestyskriteeri', 'JarjestyskriteeriJarjesta', 'ValintatapajonoHakijaryhma', 'HakukohdeHakijaryhma', 'ValintaryhmaHakijaryhma', 'HakijaryhmaValintatapajono', '$modal',
+    function ($q, Valintatapajono, ValinnanvaiheValintatapajono, ValintatapajonoJarjestyskriteeri, Laskentakaava, Jarjestyskriteeri, JarjestyskriteeriJarjesta, ValintatapajonoHakijaryhma, HakukohdeHakijaryhma, ValintaryhmaHakijaryhma, HakijaryhmaValintatapajono, $modal) {
     "use strict";
 
     var model = new function () {
@@ -23,6 +27,18 @@ app.factory('ValintatapajonoModel', function ($q, Valintatapajono, Valinnanvaihe
                 model.valintatapajono.rajattu = model.valintatapajono.varasijat > 0;
                 model.valintatapajono.alkaenRajattu = !!model.valintatapajono.varasijojaKaytetaanAlkaen;
                 model.valintatapajono.astiRajattu = !!model.valintatapajono.varasijojaTaytetaanAsti;
+                if(model.valintatapajono.varasijojaTaytetaanAsti) {
+                    model.valintatapajono.varasijojaTaytetaanAsti = new Date(model.valintatapajono.varasijojaTaytetaanAsti);
+                } 
+
+                if(model.valintatapajono.varasijojaKaytetaanAlkaen) {
+                    model.valintatapajono.varasijojaKaytetaanAlkaen = new Date(model.valintatapajono.varasijojaKaytetaanAlkaen);
+                }
+                model.valintatapajono.siirretaanSijoitteluun = !!model.valintatapajono.siirretaanSijoitteluun;
+                model.valintatapajono.kaytetaanValintalaskentaa = !!model.valintatapajono.kaytetaanValintalaskentaa;
+                model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan = !!model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan;
+                model.valintatapajono.valisijoittelu = !!model.valintatapajono.valisijoittelu;
+                model.valintatapajono.automaattinenLaskentaanSiirto = !!model.valintatapajono.automaattinenLaskentaanSiirto;
             });
 
             ValintatapajonoHakijaryhma.get({oid: oid}, function (result) {
@@ -38,7 +54,12 @@ app.factory('ValintatapajonoModel', function ($q, Valintatapajono, Valinnanvaihe
                 model.jarjestyskriteerit = [];
                 model.hakijaryhmat = [];
                 model.valintatapajono.tasapistesaanto = "YLITAYTTO";
-                model.valintatapajono.kaytetaanValintalaskentaa = false;
+                model.valintatapajono.siirretaanSijoitteluun = !!model.valintatapajono.siirretaanSijoitteluun;
+                model.valintatapajono.kaytetaanValintalaskentaa = !!model.valintatapajono.kaytetaanValintalaskentaa;
+                model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan = !!model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan;
+                model.valintatapajono.valisijoittelu = !!model.valintatapajono.valisijoittelu;
+                model.valintatapajono.automaattinenLaskentaanSiirto = !!model.valintatapajono.automaattinenLaskentaanSiirto;
+
             } else if (oid !== model.valintatapajono.oid) {
                 this.refresh(oid, valinnanVaiheOid);
             }
@@ -81,6 +102,13 @@ app.factory('ValintatapajonoModel', function ($q, Valintatapajono, Valinnanvaihe
                         model.valintatapajono.rajattu = model.valintatapajono.varasijat > 0;
                         model.valintatapajono.alkaenRajattu = !!model.valintatapajono.varasijojaKaytetaanAlkaen;
                         model.valintatapajono.astiRajattu = !!model.valintatapajono.varasijojaTaytetaanAsti;
+                        if(model.valintatapajono.varasijojaKaytetaanAlkaen) {
+                            model.valintatapajono.varasijojaKaytetaanAlkaen = new Date(model.valintatapajono.varasijojaKaytetaanAlkaen);
+                        }
+
+                        if(model.valintatapajono.varasijojaTaytetaanAsti) {
+                            model.valintatapajono.varasijojaTaytetaanAsti = new Date(model.valintatapajono.varasijojaTaytetaanAsti);
+                        }
                         valintatapajonot.push(result);
                     });
             } else {
@@ -96,6 +124,13 @@ app.factory('ValintatapajonoModel', function ($q, Valintatapajono, Valinnanvaihe
                     model.valintatapajono.rajattu = model.valintatapajono.varasijat > 0;
                     model.valintatapajono.alkaenRajattu = !!model.valintatapajono.varasijojaKaytetaanAlkaen;
                     model.valintatapajono.astiRajattu = !!model.valintatapajono.varasijojaTaytetaanAsti;
+                    if(model.valintatapajono.varasijojaKaytetaanAlkaen) {
+                        model.valintatapajono.varasijojaKaytetaanAlkaen = new Date(model.valintatapajono.varasijojaKaytetaanAlkaen);
+                    }
+
+                    if(model.valintatapajono.varasijojaTaytetaanAsti) {
+                        model.valintatapajono.varasijojaTaytetaanAsti = new Date(model.valintatapajono.varasijojaTaytetaanAsti);
+                    }
                 });
 
                 model.hakijaryhmat.forEach(function (hr) {
@@ -204,10 +239,9 @@ app.factory('ValintatapajonoModel', function ($q, Valintatapajono, Valinnanvaihe
 
 
     return model;
-});
+}])
 
-angular.module('valintaperusteet').
-    controller('HakukohdeValintatapajonoController', ['$scope', '$location', '$routeParams', 'ValintatapajonoModel',
+    .controller('HakukohdeValintatapajonoController', ['$scope', '$location', '$routeParams', 'ValintatapajonoModel',
         'HakukohdeValinnanVaiheModel',
         function ($scope, $location, $routeParams, ValintatapajonoModel, HakukohdeValinnanVaiheModel) {
             "use strict";
@@ -267,11 +301,25 @@ angular.module('valintaperusteet').
             $scope.$on('hakijaryhmaliita', function () {
                 $scope.model.refresh($routeParams.valintatapajonoOid, $routeParams.valinnanvaiheOid);
             });
-        }]);
+
+            $scope.today = new Date();
+
+            $scope.openAlkaenRajattu = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+                $scope.alkaenRajattuOpen = true;
+            };
+
+            $scope.openAstiRajattu = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+                $scope.astiRajattuOpen = true;
+            };
+        }])
 
 
-angular.module('valintaperusteet').
-    controller('ValintaryhmaValintatapajonoController', ['$scope', '$location', '$routeParams', '$timeout',
+
+    .controller('ValintaryhmaValintatapajonoController', ['$scope', '$location', '$routeParams', '$timeout',
         'ValintatapajonoModel', 'ValintaryhmaValinnanvaiheModel',
         function ($scope, $location, $routeParams, $timeout, ValintatapajonoModel, ValintaryhmaValinnanvaiheModel) {
             "use strict";
@@ -327,10 +375,26 @@ angular.module('valintaperusteet').
             $scope.$on('hakijaryhmaliita', function () {
                 $scope.model.refresh($routeParams.valintatapajonoOid, $routeParams.valinnanvaiheOid);
             });
-        }]);
+
+            $scope.today = new Date();
+
+            $scope.openAlkaenRajattu = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+                $scope.alkaenRajattuOpen = true;
+            };
+
+            $scope.openAstiRajattu = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+                $scope.astiRajattuOpen = true;
+            };
+
+        }])
 
 
-app.factory('HakijaryhmaLiitaModel', function ($resource, $location, $routeParams, Hakijaryhma, HakijaryhmaLiita) {
+.factory('HakijaryhmaLiitaModel', ['$resource', '$location', '$routeParams', 'Hakijaryhma', 'HakijaryhmaLiita',
+    function ($resource, $location, $routeParams, Hakijaryhma, HakijaryhmaLiita) {
     "use strict";
 
     var model = new function () {
@@ -354,9 +418,10 @@ app.factory('HakijaryhmaLiitaModel', function ($resource, $location, $routeParam
     }();
 
     return model;
-});
+}])
 
-function HakijaryhmaValintaController($scope, $routeParams, HakijaryhmaLiitaModel, HakukohdeModel, Hakukohde, ValintaryhmaModel, HakijaryhmaLiita) {
+.controller('HakijaryhmaValintaController', ['$scope', '$routeParams', 'HakijaryhmaLiitaModel', 'HakukohdeModel', 'Hakukohde', 'ValintaryhmaModel', 'HakijaryhmaLiita',
+        function($scope, $routeParams, HakijaryhmaLiitaModel, HakukohdeModel, Hakukohde, ValintaryhmaModel, HakijaryhmaLiita) {
     "use strict";
     $scope.model = HakijaryhmaLiitaModel;
     $scope.model.refresh();
@@ -389,4 +454,4 @@ function HakijaryhmaValintaController($scope, $routeParams, HakijaryhmaLiitaMode
     $scope.openHakijaryhmaModal = function () {
         $scope.show();
     };
-}
+}]);

@@ -1,6 +1,6 @@
-var mod = angular.module('loading', []);
+angular.module('loading', [])
 
-mod.factory('loadingService', function() {
+.factory('loadingService', [function() {
   var service = {
     requestCount: 0,
     isLoading: function() {
@@ -8,41 +8,36 @@ mod.factory('loadingService', function() {
     }
   };
   return service;
-});
+}])
 
-mod.factory('onStartInterceptor', function(loadingService) {
-    return function (data, headersGetter) {
-        loadingService.requestCount++;
-        return data;
-    };
-});
+.factory('onCompleteInterceptor', ['loadingService', '$q', function(loadingService, $q) {
+    return {
+        request: function (config) {
+            loadingService.requestCount++;
+            return config;
+        },
+        requestError: function (rejection) {
+            return $q.reject(rejection);
+        },
+        response: function (response) {
+            loadingService.requestCount--;
+            return response;
+        },
+        responseError: function (rejection) {
+            loadingService.requestCount--;
+            return $q.reject(rejection);
+        }
+    }
+}])
 
-mod.factory('onCompleteInterceptor', function(loadingService, $q) {
-  return function(promise) {
-    var decrementRequestCountSuccess = function(response) {
-        loadingService.requestCount--;
-        return response;
-    };
-    var decrementRequestCountError = function(response) {
-        loadingService.requestCount--;
-        return $q.reject(response);
-    };
-    return promise.then(decrementRequestCountSuccess, decrementRequestCountError);
-  };
-});
+.config(['$httpProvider', function($httpProvider) {
+    $httpProvider.interceptors.push('onCompleteInterceptor');
+}])
 
-mod.config(function($httpProvider) {
-    $httpProvider.responseInterceptors.push('onCompleteInterceptor');
-});
-
-mod.run(function($http, onStartInterceptor) {
-    $http.defaults.transformRequest.push(onStartInterceptor);
-});
-
-mod.controller('LoadingCtrl', function($scope, loadingService) {
+.controller('LoadingCtrl', ['$scope', 'loadingService', function($scope, loadingService) {
     $scope.$watch(function() {
         return loadingService.isLoading();
     }, function(value) {
         $scope.loading = value;
     });
-});
+}]);

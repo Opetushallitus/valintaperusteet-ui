@@ -1,4 +1,5 @@
-function ValintakoekoodiController($scope) {
+angular.module('valintaperusteet')
+    .controller('ValintakoekoodiController', ['$scope', function($scope) {
     "use strict";
 
 	$scope.toggleValintaryhmaValintakokeet = false;
@@ -22,4 +23,4 @@ function ValintakoekoodiController($scope) {
 	$scope.removeValintakoeKoodi = function (valintakoekoodi) {
 		$scope.model.removeValintakoeKoodi(valintakoekoodi);
 	};
-}
+}]);

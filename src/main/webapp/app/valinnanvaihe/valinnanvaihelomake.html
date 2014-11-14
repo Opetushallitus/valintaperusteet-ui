@@ -65,9 +65,9 @@
                             <span ng-if="!jono.inheritance">{{t('valintaperusteet.periytyy.false') || 'Ei periydy'}}</span>
                         </td>
                         <td>
-                            <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default"
+                            <button auth ng-disabled="!userAccess.crudOrg" ng-show="!jono.inheritance" class="btn btn-sm btn-default"
                                     ng-click="model.remove(jono)">
-                                <i ng-show="!jono.inheritance"
+                                <i
                                    class="fa fa-trash-o"
                                         ></i></button>
 

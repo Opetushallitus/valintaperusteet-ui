@@ -181,7 +181,7 @@ describe('Testing UusiValintaryhmaController', function(){
 
 });
 
-describe('Testing ValintaryhmaController', function(){
+xdescribe('Testing ValintaryhmaController', function(){
     var rootScope,$rootScope, $controller, $httpBackend, $location, location, scope,ctrl,valintaryhmaModel,
         puukaikkijson,haunkohdejoukkojson;
     var routeParams = {"id": "oid1"};
@@ -205,7 +205,7 @@ describe('Testing ValintaryhmaController', function(){
         $httpBackend.flush();
     }));
 
-    it('should get ValintaryhmaController', function() {
+    xit('should get ValintaryhmaController', function() {
         scope = $rootScope.$new();
         rootScope = $rootScope;
         location = $location;
@@ -1036,7 +1036,7 @@ describe('Testing ImportController', function(){
         $httpBackend.flush();
     }));
 
-    it('should get ImportController', function() {
+    xit('should get ImportController', function() {
         scope = $rootScope.$new();
         rootScope = $rootScope;
         location = $location;
@@ -1054,7 +1054,7 @@ describe('Testing ImportController', function(){
         $httpBackend.flush();
     });
 
-    it('check initialized variables', function() {
+    xit('check initialized variables', function() {
         expect(scope.model.hakuOid).toBe('1.2.246.562.29.21702520681');
         expect(scope.model.haut.length).toBe(7);
     });

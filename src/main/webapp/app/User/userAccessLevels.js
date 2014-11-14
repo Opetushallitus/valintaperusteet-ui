@@ -9,6 +9,11 @@ angular.module('valintaperusteet')
         var model = new function () {
             this.deferred = undefined;
 
+            // valintaryhmaOid / hakukohdeOid user for matching users
+            // organizations against currently selected valintaryhma/hakukohde organizations
+            this.valintaryhmaOid = undefined;
+            this.hakukohdeOid = undefined;
+
             // OPH-users
             this.crudOph = false;
             this.updateOph = false;
@@ -24,17 +29,22 @@ angular.module('valintaperusteet')
             this.updateApp = false;
             this.readApp = false;
 
-            this.refreshIfNeeded = function () {
-                if(_.isEmpty(model.deferred)) {
-                    model.refresh();
+            this.refreshIfNeeded = function (valintaryhmaOid, hakukohdeOid) {
+                if(_.isEmpty(model.deferred) ||
+                     ( !_.isEmpty(valintaryhmaOid) && (valintaryhmaOid !== model.valintaryhmaOid) ) ||
+                      ( !_.isEmpty(hakukohdeOid) && (hakukohdeOid !== model.hakukohdeOid) ) )  {
+                    model.refresh(valintaryhmaOid, hakukohdeOid);
                 } else {
                     return model.deferred.promise;
                 }
             };
 
-            this.refresh = function () {
+            this.refresh = function (valintaryhmaOid, hakukohdeOid) {
 
+                model.valintaryhmaOid = valintaryhmaOid;
+                model.hakukohdeOid = hakukohdeOid;
                 model.deferred = $q.defer();
+
                 model.resetRights(); // reset all rights to false
 
                 // Make all authentication request asynchronously so there's no need to wait for consecutive calls
@@ -53,8 +63,7 @@ angular.module('valintaperusteet')
                 var crudAppPromise = undefined;
                 var updateAppPromise = undefined;
                 var readAppPromise = undefined;
-
-
+                
                 // set user rights for OPHCRUD or continue to next level
                 var crudOphSuccessFn = function () { model.setCrudRights("oph"); model.deferred.resolve(); };
                 var crudOphRejectFn = function () { updateOphPromise.then(updateOphSuccessFn, updateOphRejectFn); };
@@ -67,8 +76,7 @@ angular.module('valintaperusteet')
                 var readOphSuccessFn = function () { model.setReadRights("oph"); model.deferred.resolve();};
                 var readOphRejectFn = function () {
                     // If users organizations are found then use them getting access
-                    OrganisaatioUtility.getOrganizations(true).then(function (organizationOids) {
-
+                    OrganisaatioUtility.getOrganizations(true, valintaryhmaOid, hakukohdeOid).then(function (organizationOids) {
                         if(!_.isEmpty(organizationOids)) { //check rights against valintaryhma or hakukohde organizations
                             crudOrgPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET', organizationOids);
                             updateOrgPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET', organizationOids);
@@ -98,12 +106,11 @@ angular.module('valintaperusteet')
 
                 // set user rights for ORGUPDATE or continue to next level
                 var updateOrgSuccessFn = function () { model.setUpdateRights("org"); model.deferred.resolve(); };
-                var updateOrgRejectFn = function () {readOrgPromise.then(readOrgSuccessFn, readOrgRejectFn); };
+                var updateOrgRejectFn = function () { readOrgPromise.then(readOrgSuccessFn, readOrgRejectFn); };
 
                 // set user rights for ORGREAD or continue to next level
                 var readOrgSuccessFn = function () { model.setReadRights("org"); model.deferred.resolve(); };
                 var readOrgRejectFn = function () {
-
                     // check if user has rights to this application
                     crudAppPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET');
                     updateAppPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET');
@@ -117,9 +124,9 @@ angular.module('valintaperusteet')
                 var crudAppRejectFn = function () { updateAppPromise.then(updateAppSuccessFn, updateAppRejectFn); };
 
                 var updateAppSuccessFn = function() { model.setUpdateRights("noOrg"); model.deferred.resolve(); };
-                var updateAppRejectFn = function() {readAppPromise.then(readAppSuccessFn, readAppRejectFn); };
+                var updateAppRejectFn = function() { readAppPromise.then(readAppSuccessFn, readAppRejectFn); };
 
-                var readAppSuccessFn = function() {model.setReadRights("noOrg"); model.deferred.resolve(); };
+                var readAppSuccessFn = function() { model.setReadRights("noOrg"); model.deferred.resolve(); };
                 var readAppRejectFn = function() { $log.error('Ei oikeuksia'); model.deferred.reject(); };
 
                 // Start promisechain checking
@@ -141,7 +148,7 @@ angular.module('valintaperusteet')
             };
 
             this.hasCrudRights = function () {
-                return model.crudOph || model.crudOrg || model.readApp;
+                return model.crudOph || model.crudOrg || model.crudApp;
             };
 
             this.hasUpdateRights = function () {

@@ -1,4 +1,6 @@
-function HakukohdekoodiController($scope) {
+angular.module('valintaperusteet')
+
+    .controller('HakukohdekoodiController', ['$scope', function($scope) {
     "use strict";
 
     $scope.toggleValintaryhmaHakukohdekoodit = false;
@@ -27,5 +29,5 @@ function HakukohdekoodiController($scope) {
 		$scope.model.removeHakukohdeKoodi(hakukohdekoodi);
 	};
 
-}
+}]);
 

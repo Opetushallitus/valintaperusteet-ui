@@ -1,8 +1,15 @@
-app.factory('HakukohdeModel', function($q, HakukohdeHakukohdekoodi, KoodistoHakukohdekoodi, Hakukohde, Valintaryhma,
-                                        HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta,
-                                        HakukohdeKuuluuSijoitteluun, HakukohdeHakijaryhma, Laskentakaava,
-                                        HakijaryhmaJarjesta, Hakijaryhma, Haku, TarjontaHaku, HaunTiedot, HakukohdeNimi,
-                                        HakijaryhmanValintatapajonot) {
+angular.module('valintaperusteet')
+
+    .factory('HakukohdeModel', ['$q', 'HakukohdeHakukohdekoodi', 'KoodistoHakukohdekoodi', 'Hakukohde', 'Valintaryhma',
+        'HakukohdeValinnanvaihe', 'Valinnanvaihe', 'ValinnanvaiheJarjesta',
+        'HakukohdeKuuluuSijoitteluun', 'HakukohdeHakijaryhma', 'Laskentakaava',
+        'HakijaryhmaJarjesta', 'Hakijaryhma', 'Haku', 'TarjontaHaku', 'HaunTiedot', 'HakukohdeNimi',
+        'HakijaryhmanValintatapajonot',
+        function($q, HakukohdeHakukohdekoodi, KoodistoHakukohdekoodi, Hakukohde, Valintaryhma,
+        HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta,
+        HakukohdeKuuluuSijoitteluun, HakukohdeHakijaryhma, Laskentakaava,
+        HakijaryhmaJarjesta, Hakijaryhma, Haku, TarjontaHaku, HaunTiedot, HakukohdeNimi,
+        HakijaryhmanValintatapajonot) {
     "use strict";
 
     var model = new function()  {
@@ -164,14 +171,17 @@ app.factory('HakukohdeModel', function($q, HakukohdeHakukohdekoodi, KoodistoHaku
     }
 
     return model;
-});
+}])
 
-function HakukohdeController($scope, $location, $routeParams, HakukohdeModel) {
+.controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'UserAccessLevels',
+        function($scope, $location, $routeParams, HakukohdeModel, UserAccessLevels) {
     "use strict";
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
     $scope.model = HakukohdeModel;
     $scope.model.refreshIfNeeded($scope.hakukohdeOid);
+    $scope.userAccess = UserAccessLevels;
+    UserAccessLevels.refreshIfNeeded($routeParams.id, $routeParams.hakukohdeOid);
 
     $scope.submit = function() {
         $scope.model.persistHakukohde();
@@ -207,9 +217,10 @@ function HakukohdeController($scope, $location, $routeParams, HakukohdeModel) {
         $scope.model.refresh($scope.hakukohdeOid);
     });
 
-}
+}])
 
-app.factory('ValintaryhmaSiirtoModel', function($resource, $location, $routeParams, Valintaryhma, ChildValintaryhmas,
+.factory('ValintaryhmaSiirtoModel', ['$resource', '$location', '$routeParams', 'Valintaryhma', 'ChildValintaryhmas',
+        'Treemodel', 'HakukohdeSiirra', function($resource, $location, $routeParams, Valintaryhma, ChildValintaryhmas,
                                                 Treemodel, HakukohdeSiirra) {
     "use strict";
 
@@ -238,9 +249,10 @@ app.factory('ValintaryhmaSiirtoModel', function($resource, $location, $routePara
     }();
 
     return model;
-});
+}])
 
-function ValintaryhmanSiirtoController($scope, $routeParams, ValintaryhmaSiirtoModel, Ylavalintaryhma, HakukohdeSiirra) {
+.controller('ValintaryhmanSiirtoController', ['$scope', '$routeParams', 'ValintaryhmaSiirtoModel', 'Ylavalintaryhma', 'HakukohdeSiirra',
+        function($scope, $routeParams, ValintaryhmaSiirtoModel, Ylavalintaryhma, HakukohdeSiirra) {
     "use strict";
 
     $scope.valintaryhmaOid = $routeParams.id;
@@ -263,9 +275,10 @@ function ValintaryhmanSiirtoController($scope, $routeParams, ValintaryhmaSiirtoM
     $scope.openValintaryhmaModal = function () {
         $scope.show();
     };
-}
+}])
 
-app.factory('HakijaryhmaLiitaHakukohdeModel', function($resource, $location, $routeParams, Hakijaryhma, HakijaryhmaLiitaHakukohde) {
+.factory('HakijaryhmaLiitaHakukohdeModel', ['$resource', '$location', '$routeParams', 'Hakijaryhma', 'HakijaryhmaLiitaHakukohde',
+        function($resource, $location, $routeParams, Hakijaryhma, HakijaryhmaLiitaHakukohde) {
     "use strict";
 
     var model = new function() {
@@ -294,9 +307,10 @@ app.factory('HakijaryhmaLiitaHakukohdeModel', function($resource, $location, $ro
     }();
 
     return model;
-});
+}])
 
-function HakijaryhmaValintaHakukohdeController($scope, $routeParams, HakijaryhmaLiitaHakukohdeModel, ValintaryhmaModel, HakijaryhmaLiitaHakukohde, HakukohdeModel) {
+.controller('HakijaryhmaValintaHakukohdeController', ['$scope', '$routeParams', 'HakijaryhmaLiitaHakukohdeModel', 'ValintaryhmaModel', 'HakijaryhmaLiitaHakukohde', 'HakukohdeModel',
+        function($scope, $routeParams, HakijaryhmaLiitaHakukohdeModel, ValintaryhmaModel, HakijaryhmaLiitaHakukohde, HakukohdeModel) {
     "use strict";
 
     $scope.model = HakijaryhmaLiitaHakukohdeModel;
@@ -318,4 +332,4 @@ function HakijaryhmaValintaHakukohdeController($scope, $routeParams, Hakijaryhma
     $scope.openHakijaryhmaModal = function () {
         $scope.show();
     };
-}
+}]);

@@ -1,6 +1,6 @@
 angular.module('valintaperusteet')
 
-    .factory('UserModel', ['$q', '$log', '_', 'AuthService', 'OrganizationByOid', 'OPH_ORG', function ($q, $log, _, AuthService, OrganizationByOid, OPH_ORG) {
+    .factory('UserModel', ['$q', '$log', '_', 'MyRolesModel', 'AuthService', 'OrganizationByOid', 'OPH_ORG_OID', function ($q, $log, _, MyRolesModel, AuthService, OrganizationByOid, OPH_ORG_OID) {
         var model = new function () {
             this.organizationsDeferred = undefined;
 
@@ -53,35 +53,67 @@ angular.module('valintaperusteet')
             };
 
             this.analyzeOrganizations = function () {
-                var isKKUser = false;
+                model.isKKOrganization();
                 _.some(model.organizations, function (organisaatioData) {
-                    if(model.isKKOrganization(organisaatioData)) {
-                        model.isKKUser = true;
-                    } else if(model.isOphOrganization(organisaatioData)) {
+                    if(model.isOphOrganization(organisaatioData)) {
                         model.isOphUser = true;
-                    } else {
+                    } else if(model.isOtherThanKKOrganization(organisaatioData)) {
                         model.hasOtherThanKKUserOrgs = true;
                     }
                 });
             };
 
-            this.isKKOrganization = function (organization) {
-                var kkTunnisteet = ['_41', '_42', '_43']; // 41 == AMK, 42 = Yliopistot, 43 = Sotilaskorkeakoulut
-                return _.some(kkTunnisteet, function (kkTunniste) {
-                    if(organization.oppilaitosTyyppiUri && organization.oppilaitosTyyppiUri.indexOf(kkTunniste) > -1) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+            this.isKKOrganization = function () {
+                MyRolesModel.then(function (myrolesModel) {
+                    model.isKKUser = _.some(myrolesModel.myroles, function (role) {
+                        return role.indexOf("APP_VALINTAPERUSTEETKK") > -1;
+                    });
+                }, function (error) {
+                    $log.error('Käyttäjän roolien hakeminen korkeakoulukäyttöoikeuksien tarkistuksessa epäonnistui');
                 });
             };
 
             this.isOphOrganization = function (organization) {
-                return organization.oid === OPH_ORG;
+                return organization.oid === OPH_ORG_OID;
+            };
+
+            this.isOtherThanKKOrganization = function (organization) {
+                return !(!organization.oppilaitosTyyppiUri ||
+                    organization.oppilaitosTyyppiUri.indexOf('_41') > -1 ||
+                    organization.oppilaitosTyyppiUri.indexOf('_42') > -1 ||
+                    organization.oppilaitosTyyppiUri.indexOf('_43') > -1 );
             };
 
 
         };
 
         return model;
+    }])
+
+
+.controller('UserPageController', ['$scope', '$routeParams', '$log', 'UserAccessLevels', 'UserModel', 'OrganisaatioUtility',
+        function ($scope, $routeParams, $log, UserAccessLevels, UserModel, OrganisaatioUtility) {
+        $scope.userAccess = UserAccessLevels;
+        UserAccessLevels.refreshIfNeeded($routeParams.id, $routeParams.hakukohdeOid);
+
+        $scope.userModel = UserModel;
+        UserModel.refreshIfNeeded();
+
+        $scope.organisaatioUtility = OrganisaatioUtility;
+        if($routeParams.id) {
+            $scope.isValintaryhma = true;
+        } else if($routeParams.hakukohdeOid) {
+            $scope.isHakukohde = true;
+        }
+        
+        OrganisaatioUtility.getOrganizations(false, $routeParams.id, $routeParams.hakukohdeOid).then(function (result) {
+            $scope.vrhkOrgs = result;
+        }, function (error) {
+            $log.error('valintaryhmän/hakukohteen organisaatioiden haku epäonnistui', error);
+        });
+
     }]);
+
+
+
+

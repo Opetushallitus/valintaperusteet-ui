@@ -5,27 +5,21 @@ angular.module('valintaperusteet').factory('FunktioKuvausResource', function ($r
     return $resource(SERVICE_URL_BASE + "resources/laskentakaava/funktiokuvaus", {}, {
         get: {method: "GET", isArray: true, cache: true}
     });
-});
+})
 
-angular.module('valintaperusteet').factory('KaavaValidointi', function ($resource) {
+    .factory('KaavaValidointi', function ($resource) {
+        return $resource(SERVICE_URL_BASE + "resources/laskentakaava/validoi", {}, {
+            post: {method: "POST"}
+        });
+    })
 
-    return $resource(SERVICE_URL_BASE + "resources/laskentakaava/validoi", {}, {
-        post: {method: "POST"}
-    });
-});
-
-angular.module('valintaperusteet').factory('KaavaSiirto', function ($resource) {
-    'use strict';
-
-    return $resource(SERVICE_URL_BASE + "resources/laskentakaava/siirra", {}, {put: {method: "PUT"}});
-});
-
-angular.module('valintaperusteet')
+    .factory('KaavaSiirto', function ($resource) {
+        return $resource(SERVICE_URL_BASE + "resources/laskentakaava/siirra", {}, {put: {method: "PUT"}});
+    })
 
     .factory('Laskentakaava', function ($resource) {
-
         return $resource(SERVICE_URL_BASE + "resources/laskentakaava/:oid", {oid: "@oid"}, {
-            list: {method: "GET", isArray:true},
+            list: {method: "GET", isArray: true},
             get: {method: "GET"},
             insert: {method: "PUT"},
             update: {method: "POST"},
@@ -48,8 +42,11 @@ angular.module('valintaperusteet')
     })
 
     .factory('HakemusavaimetLisakysymykset', function ($resource) {
-        return $resource(HAKEMUS_URL_BASE + "/application-system-form-editor/theme-question/list/:hakuoid", {hakuoid: "@hakuoid", orgId: "@orgId"},{
-            get: {method: "GET", isArray:true}
+        return $resource(HAKEMUS_URL_BASE + "/application-system-form-editor/theme-question/list/:hakuoid", {
+            hakuoid: "@hakuoid",
+            orgId: "@orgId"
+        }, {
+            get: {method: "GET", isArray: true}
         });
     })
 

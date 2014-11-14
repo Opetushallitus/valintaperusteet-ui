@@ -1,28 +1,28 @@
 <div ng-controller="LaskentakaavaController">
 
 
-
     <div class="gradingformula">
-        <!-- Laskentakaavassa olevat virheet-->
-        <div class="alert alert-danger margin-top-2" collapse="errors.length === 0 && commonErrors.length === 0">
+        <div class="clear"></div>
+
+        <kaava-validation ng-show="errorService.errors.length > 0">
             <h3>{{ t('laskentakaavapuu.eitalletettu') || 'Laskentakaavaa ei voitu tallentaa.' }}</h3>
 
-            <p>{{ t('laskentakaavapuu.eitalletettutext') || 'Alla olevasta listasta saat vihjeitä kaavan virheistä ja
-                virheellisen funktiokutsun tapauksessa pääset muokkaamaan sitä suoraan klikkaamalla virheilmoitusta.
+            <p>{{ t('laskentakaavapuu.eitalletettutext') || 'Alla olevasta listasta saat vihjeitä kaavan virheistä
+                ja
+                virheellisen funktiokutsun tapauksessa pääset muokkaamaan sitä suoraan klikkaamalla
+                virheilmoitusta.
                 Yritä laskentakaavan tallennusta uudestaan heti virheet korjattuasi.' }}</p>
 
+            <p>{{t('laskentakaavapuu.eitalletettuhuom') || 'Huomaa, että käyttöliittymässä suoritettava laskentakaavan
+                validointi ei huomaa kaikkia virheitä. Tarkasta kaava ilmeisten virheiden varalta ja yritä tallennusta
+                uudestaan'}}</p>
             <ol class="margin-top-2">
-                <li ng-repeat="error in errors">
-                    <span add-class-on-mouseover="bold"
-                          ng-click="setFunktioSelection(error.funktiokutsu, error.isFunktiokutsu, error.parent, error.index)">{{error.nimi}} {{ t('laskentakaavapuu.funktiossavirhe') || '-funktiokutsussa on virhe.' }} {{error.kuvaus}}</span>
-                </li>
 
-                <li ng-repeat="commonerr in commonErrors">
-                    <span>{{commonerr.kuvaus}}</span>
+                <li ng-repeat="error in errorService.errors">
+                    <validation-error></validation-error>
                 </li>
-
             </ol>
-        </div>
+        </kaava-validation>
 
         <div class="alert alert-success margin-top-2" collapse="!saved">
             <p>{{ t('laskentakaavapuu.onnistui') || 'Laskentakaavan tallentaminen onnistui' }}</p>
@@ -45,13 +45,11 @@
         </div>
 
         <!--MUOKKAA KAAVAN NIMEÄ TAI KUVAUSTA -->
-
         <div ng-controller="laskentakaavaAsetuksetController">
             <modal modal-template="laskentakaavat/laskentakaavaeditori/funktioasetukset/laskentakaavaAsetuksetModal.html">
                 <modal-open></modal-open>
             </modal>
         </div>
-
 
         <!-- LASKENTAKAAVAPUUN JUURI -->
         <div class="frame open" ng-class="isRootSelected ? 'active' : ''">
@@ -83,8 +81,7 @@
          ng-include="templateService.getTemplateName(funktiowrapper.lapsi.funktionimi)"></div>
 
     <!-- käydään rekursiivisesti nykyisen funktion lapset läpi -->
-    <ul ng-if="funktiowrapper.open && funktiowrapper.lapsi.funktioargumentit" ng-init="parent = funktiowrapper">
-
+    <ul ng-if="funktiowrapper.open && hasFunktioargumentit(parent, $index)" ng-init="parent = funktiowrapper">
         <li ng-if="parent.lapsi.funktioargumentit.length > 0 && parent.lapsi.funktioargumentit[0] !== null || isNimettyFunktioargumentti(parent)"
             class="item" ng-repeat="funktiowrapper in parent.lapsi.funktioargumentit track by $index">
             <div ng-if="funktiowrapper.lapsi.lapsityyppi === 'funktiokutsu'" ng-include="'funktiokutsu'"></div>
@@ -385,15 +382,14 @@ YHTASUURI
     <span add-class-on-mouseover="bold" class="node" ng-click="showNewFunktioList = {visible: true}; hideFunktioMenu()"><i
             style="font-size: 18px;" class="fa fa-plus-square kaavaeditor-blue"></i> {{ t('laskentakaavapuu.funktioargumentti') || 'Funktioargumentti' }}</span>
 
-    <div ng-init="funktioSlotIndex = findFunktioSlotIndex(parent, $index)"
-         ng-if="showNewFunktioList.visible && isLukuarvoFunktioSlot(parent, funktioSlotIndex) && !isAlikaava"
-         class="function"
-         ng-include="'lukuarvoFunktiot'"></div>
-    <div ng-init="funktioSlotIndex = findFunktioSlotIndex(parent, $index)"
-         ng-if="showNewFunktioList.visible && !isLukuarvoFunktioSlot(parent, funktioSlotIndex) && !isAlikaava"
-         class="function"
-         ng-include="'totuusarvoFunktiot'"></div>
-
+        <div ng-init="funktioSlotIndex = findFunktioSlotIndex(parent, $index)"
+             ng-if="showNewFunktioList.visible && isLukuarvoFunktioSlot(parent, funktioSlotIndex) && !isAlikaava"
+             class="function"
+             ng-include="'lukuarvoFunktiot'"></div>
+        <div ng-init="funktioSlotIndex = findFunktioSlotIndex(parent, $index)"
+             ng-if="showNewFunktioList.visible && !isLukuarvoFunktioSlot(parent, funktioSlotIndex) && !isAlikaava"
+             class="function"
+             ng-include="'totuusarvoFunktiot'"></div>
 </script>
 
 
@@ -560,7 +556,8 @@ YHTASUURI
             <td ng-click="addFunktio(parent, 'HAKUKELPOISUUS', funktioSlotIndex); showNewFunktioList.visible = false">
                 <span>{{ t('laskentakaavapuu.hakukelpoisuus') || 'Hakukelpoisuus'}}</span>
             </td>
-            <td ng-if="parent.lapsi" ng-click="addLaskentakaavaviite(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.viittaus') || 'Viittaus toiseen kaavaan' }}</span>
+            <td ng-if="parent.lapsi"
+                ng-click="addLaskentakaavaviite(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.viittaus') || 'Viittaus toiseen kaavaan' }}</span>
             </td>
         </tr>
         </tbody>

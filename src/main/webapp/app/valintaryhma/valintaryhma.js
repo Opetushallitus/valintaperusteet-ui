@@ -1,6 +1,12 @@
 angular.module('valintaperusteet')
 
-    .factory('ValintaryhmaModel', function ($q, _, Valintaryhma, Hakijaryhma, HakijaryhmaJarjesta, KoodistoHakukohdekoodi,
+    .factory('ValintaryhmaModel', ['$q', '_', 'Valintaryhma', 'Hakijaryhma', 'HakijaryhmaJarjesta', 'KoodistoHakukohdekoodi',
+        'KoodistoValintakoekoodi', 'KoodistoHaunKohdejoukko', 'Laskentakaava', 'Treemodel',
+        'ValintaryhmaValintakoekoodi', 'Valinnanvaihe', 'ValintaryhmaValinnanvaihe',
+        'ValinnanvaiheJarjesta', 'ValintaryhmaHakukohdekoodi', 'ValintaryhmaHakijaryhma',
+        'OrganizationByOid', '$modal', 'Utils', 'Haku', 'HaunTiedot', 'ParentValintaryhmas',
+        'ChildValintaryhmas', '$location', '$log', 'RootValintaryhmas',
+        function ($q, _, Valintaryhma, Hakijaryhma, HakijaryhmaJarjesta, KoodistoHakukohdekoodi,
                                             KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel,
                                             ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe,
                                             ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma,
@@ -376,7 +382,7 @@ angular.module('valintaperusteet')
         }();
 
         return model;
-    })
+    }])
 
 
     .controller('ValintaryhmaController', ['$scope', '$q', '$location', '$routeParams', 'ValintaryhmaModel', 'Laskentakaava', 'UserAccessLevels',
@@ -387,7 +393,7 @@ angular.module('valintaperusteet')
             $scope.model = ValintaryhmaModel;
             $scope.model.refreshIfNeeded($scope.valintaryhmaOid);
 
-            UserAccessLevels.refresh();
+            UserAccessLevels.refreshIfNeeded($routeParams.id, $routeParams.hakukohdeOid);
 
             $scope.submit = function () {
                 $scope.model.persistValintaryhma($scope.valintaryhmaOid);
@@ -440,9 +446,6 @@ angular.module('valintaperusteet')
                 $scope.$broadcast('openHakijaryhmaKopiointiModal', hakijaryhma);
             };
 
-            $scope.showValintaryhmaKopiointi = function () {
-                $scope.$broadcast('showValintaryhmaKopiointi');
-            };
         }])
 
 
@@ -453,7 +456,6 @@ angular.module('valintaperusteet')
         $scope.model = {};
 
         $scope.hakijaryhma = {};
-
 
         $scope.$on('openHakijaryhmaKopiointiModal', function (event, hakijaryhma) {
             $scope.hakijaryhma = hakijaryhma;
@@ -483,11 +485,5 @@ angular.module('valintaperusteet')
 
         };
 
-
-
     }]);
-
-
-
-
 

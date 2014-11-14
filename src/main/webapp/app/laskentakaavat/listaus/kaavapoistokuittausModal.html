@@ -1,0 +1,10 @@
+<div class="modal-header">
+
+</div>
+<div class="modal-body">
+    <p>{{ t('laskentakaavalista.poisto.varmistus') || 'Oletko varma, että haluat poistaa laskentakaavan?'}}</p>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-sm btn-default" ng-click="cancel()">{{t('valintaperusteet.peruuta') || 'Peruuta'}}</button>
+    <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="ok()"><i class="fa fa-trash-o"></i> {{t('valintaperusteet.poista' || 'Poista')}}</button>
+</div>

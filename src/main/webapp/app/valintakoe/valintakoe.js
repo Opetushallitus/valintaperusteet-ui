@@ -1,4 +1,7 @@
-app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe, Laskentakaava, LaskentakaavaModel, UserModel, HakemusavaimetLisakysymykset, $cookieStore) {
+angular.module('valintaperusteet')
+
+.factory('ValintakoeModel', ['$q', 'Valintakoe', 'ValinnanvaiheValintakoe', 'Laskentakaava', 'LaskentakaavaModel', 'UserModel', 'HakemusavaimetLisakysymykset', '$cookieStore',
+        function($q, Valintakoe, ValinnanvaiheValintakoe, Laskentakaava, LaskentakaavaModel, UserModel, HakemusavaimetLisakysymykset, $cookieStore) {
     "use strict";
 
 	var model = new function() {
@@ -159,10 +162,10 @@ app.factory('ValintakoeModel', function($q, Valintakoe, ValinnanvaiheValintakoe,
 
 	return model;
 
-});
+}])
 
-angular.module('valintaperusteet').
-    controller('ValintaryhmaValintakoeController', ['$scope', '$location', '$routeParams', 'ValintakoeModel',
+
+    .controller('ValintaryhmaValintakoeController', ['$scope', '$location', '$routeParams', 'ValintakoeModel',
         'ValintaryhmaValintakoeValinnanvaiheModel',
         function ($scope, $location, $routeParams, ValintakoeModel, ValintaryhmaValintakoeValinnanvaiheModel) {
     "use strict";
@@ -184,10 +187,9 @@ angular.module('valintaperusteet').
 	$scope.cancel = function () {
 		$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.valintaryhmaOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid );
 	};
-}]);
+}])
 
-angular.module('valintaperusteet').
-    controller('HakukohdeValintakoeController',['$scope', '$location', '$routeParams', 'ValintakoeModel',
+    .controller('HakukohdeValintakoeController',['$scope', '$location', '$routeParams', 'ValintakoeModel',
         'ValintaryhmaValintakoeValinnanvaiheModel', 'HakukohdeValintakoeValinnanvaiheModel',
         function ($scope, $location, $routeParams, ValintakoeModel, ValintaryhmaValintakoeValinnanvaiheModel,
                   HakukohdeValintakoeValinnanvaiheModel) {
