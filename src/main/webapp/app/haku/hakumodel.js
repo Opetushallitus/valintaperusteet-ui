@@ -55,7 +55,7 @@ angular.module('valintaperusteet')
                                 }
                             });
 
-                            model.deferred.resolve();
+                            model.hakuDeferred.resolve();
                         }, function (error) {
                             model.reject();
                         });
@@ -64,7 +64,7 @@ angular.module('valintaperusteet')
                         model.hakuDeferred.reject();
                     });
                 } else {
-                    model.deferred.resolve();
+                    model.hakuDeferred.resolve();
                 }
 
             };
@@ -179,7 +179,7 @@ angular.module('valintaperusteet')
                     HakuModel.init();
                 }
 
-                HakuModel.deferred.promise.then(function () {
+                HakuModel.hakuDeferred.promise.then(function () {
                     that.hakuvuodetOpts = _.uniq(_.pluck(HakuModel.haut, 'hakukausiVuosi'));
                 });
 
