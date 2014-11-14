@@ -385,8 +385,8 @@ angular.module('valintaperusteet')
     }])
 
 
-    .controller('ValintaryhmaController', ['$scope', '$q', '$location', '$routeParams', 'ValintaryhmaModel', 'Laskentakaava', 'UserAccessLevels',
-        function ($scope, $q, $location, $routeParams, ValintaryhmaModel, Laskentakaava, UserAccessLevels) {
+    .controller('ValintaryhmaController', ['$scope', '$q', '$location', '$routeParams', 'ValintaryhmaModel', 'Laskentakaava', 'UserAccessLevels', 'ValintaryhmaKopiointi',
+        function ($scope, $q, $location, $routeParams, ValintaryhmaModel, Laskentakaava, UserAccessLevels, ValintaryhmaKopiointi) {
             "use strict";
 
             $scope.valintaryhmaOid = $routeParams.id;
@@ -440,6 +440,11 @@ angular.module('valintaperusteet')
                 if (!contains) {
                     $scope.model.valintaryhma.organisaatiot.push(data);
                 }
+            };
+
+            $scope.showValintaryhmaKopiointi = function () {
+                console.log('kopioidaan valintaryhmää');
+                ValintaryhmaKopiointi.put({parentOid: $routeParams.id, kopioitavaOid: "14083436817927594054886850576866"});
             };
 
             $scope.openHakijaryhmaKopiointiModal = function (hakijaryhma) {

@@ -83,6 +83,13 @@ angular.module('valintaperusteet')
         });
     }])
 
+    .factory('ValintaryhmaKopiointi', ['$resource', function ($resource) {
+        return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:parentOid/kopioiLapseksi", {parentOid: "@parentOid", lahdeOid: "@kopioitavaOid"},
+            {
+            put: {method: "PUT"}
+        });
+    }])
+
     .factory('ParentValintaryhmas', ['$resource', function ($resource) {
         return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:parentOid/parents", {parentOid: "@parentOid"}, {
             get: {method: "GET", isArray: true, cache: false}
