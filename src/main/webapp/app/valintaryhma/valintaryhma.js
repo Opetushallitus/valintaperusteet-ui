@@ -444,7 +444,7 @@ angular.module('valintaperusteet')
 
             $scope.showValintaryhmaKopiointi = function () {
                 console.log('kopioidaan valintaryhmää');
-                ValintaryhmaKopiointi.put({parentOid: $routeParams.id, kopioitavaOid: "14083436817927594054886850576866"});
+                ValintaryhmaKopiointi.put({parentOid: $routeParams.id, kopioitavaOid: "1408343679512-4578076136862797687"});
             };
 
             $scope.openHakijaryhmaKopiointiModal = function (hakijaryhma) {
