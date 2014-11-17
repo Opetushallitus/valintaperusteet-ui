@@ -84,7 +84,7 @@ angular.module('valintaperusteet')
     }])
 
     .factory('ValintaryhmaKopiointi', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:parentOid/kopioiLapseksi", {parentOid: "@parentOid", lahdeOid: "@kopioitavaOid"},
+        return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:parentOid/kopioiLapseksi", {parentOid: "@parentOid", lahdeOid: "@kopioitavaOid", nimi: "@nimi"},
             {
             put: {method: "PUT"}
         });
