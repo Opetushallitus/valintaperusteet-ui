@@ -453,11 +453,11 @@ angular.module('valintaperusteet')
                         $scope.kopioiValintaryhma = function () {
                             ValintaryhmaKopiointi.put({parentOid: $scope.kopioObj.value.oid, kopioitavaOid: $routeParams.id, nimi: $scope.model.uusinimi }, function () {
                                 $modalInstance.dismiss('cancel');
-                            }, function () {
-                                $scope.error = true;
+                            }, function (error) {
+                                $scope.error = error;
                                 $timeout(function () {
                                     $scope.error = false;
-                                }, 5000);
+                                }, 7000);
                             });
 
                         };
