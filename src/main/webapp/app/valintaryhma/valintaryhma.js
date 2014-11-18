@@ -449,9 +449,9 @@ angular.module('valintaperusteet')
                     size: 'lg',
                     controller: function ($scope, $window, $timeout, $modalInstance, kopioitavaOid, ValintaryhmaKopiointi) {
                         $scope.model = {};
-
+                        $scope.kopioObj = {};
                         $scope.kopioiValintaryhma = function () {
-                            ValintaryhmaKopiointi.put({parentOid: $routeParams.id, kopioitavaOid: "1408343679512-4578076136862797687", nimi: $scope.model.uusinimi }, function () {
+                            ValintaryhmaKopiointi.put({parentOid: $scope.kopioObj.value.oid, kopioitavaOid: $routeParams.id, nimi: $scope.model.uusinimi }, function () {
                                 $modalInstance.dismiss('cancel');
                             }, function () {
                                 $scope.error = true;
