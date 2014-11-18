@@ -447,15 +447,19 @@ angular.module('valintaperusteet')
                     backdrop: 'static',
                     templateUrl: 'valintaryhma/valintaryhmaKopiointi.html',
                     size: 'lg',
-                    controller: function ($scope, $window, $modalInstance, kopioitavaOid, ValintaryhmaKopiointi) {
+                    controller: function ($scope, $window, $timeout, $modalInstance, kopioitavaOid, ValintaryhmaKopiointi) {
+                        $scope.model = {};
+
                         $scope.kopioiValintaryhma = function () {
-                            /*
-                            ValintaryhmaKopiointi.put({parentOid: $routeParams.id, kopioitavaOid: "1408343679512-4578076136862797687", nimi: "kopioitu ryhmä"}, function () {
+                            ValintaryhmaKopiointi.put({parentOid: $routeParams.id, kopioitavaOid: "1408343679512-4578076136862797687", nimi: $scope.model.uusinimi }, function () {
                                 $modalInstance.dismiss('cancel');
                             }, function () {
                                 $scope.error = true;
+                                $timeout(function () {
+                                    $scope.error = false;
+                                }, 5000);
                             });
-                            */
+
                         };
 
                         $scope.error = false;

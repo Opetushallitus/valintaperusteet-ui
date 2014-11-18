@@ -4,15 +4,18 @@
 <div class="modal-body">
     <form class="form-horizontal" name="valintaryhmaKopio">
         <div class="form-group">
-            <label class="col-sm-4 control-label" for="uusinimi">{{t('valintaryhmalomake.kopioi.valintaryhma.nimi') ||
+            <label class="col-md-2 control-label" for="uusinimi">{{t('valintaryhmalomake.kopioi.valintaryhma.nimi') ||
                 'Kopioitavan valintaryhmän nimi'}}</label>
 
-            <div class="col-sm-8">
+            <div class="col-md-10">
                 <input ng-required="!nimi" type="text" id="uusinimi" class="form-control" ng-model="model.uusinimi"/>
             </div>
         </div>
         <div class="form-group">
-            <div ng-include="'../common/partials/valintaryhmavalitsin.html'"/>
+            <label class="col-md-2 control-label">{{t('valintaryhmalomake.kopioi.valintaryhma.valinta')|| 'Valintaryhmän valinta'}}</label>
+            <div class="col-md-10">
+                <div ng-include="'../common/partials/valintaryhmavalitsin.html'"/>
+            </div>
         </div>
         <div collapse="!error" class="alert alert-danger">
             <h3>Tallennus epäonnistui. Tarkista, että kohdevalintaryhmän lapsena ei valmiiksi ole kopioitavan
