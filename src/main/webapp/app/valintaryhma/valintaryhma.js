@@ -385,8 +385,8 @@ angular.module('valintaperusteet')
     }])
 
 
-    .controller('ValintaryhmaController', ['$scope', '$q', '$location', '$routeParams', 'ValintaryhmaModel', 'Laskentakaava', 'UserAccessLevels', 'ValintaryhmaKopiointi',
-        function ($scope, $q, $location, $routeParams, ValintaryhmaModel, Laskentakaava, UserAccessLevels, ValintaryhmaKopiointi) {
+    .controller('ValintaryhmaController', ['$scope', '$q', '$location', '$routeParams', 'ValintaryhmaModel', 'Laskentakaava', 'UserAccessLevels', '$modal',
+        function ($scope, $q, $location, $routeParams, ValintaryhmaModel, Laskentakaava, UserAccessLevels, $modal) {
             "use strict";
 
             $scope.valintaryhmaOid = $routeParams.id;
@@ -443,7 +443,41 @@ angular.module('valintaperusteet')
             };
 
             $scope.showValintaryhmaKopiointi = function () {
-                ValintaryhmaKopiointi.put({parentOid: $routeParams.id, kopioitavaOid: "1408343679512-4578076136862797687", nimi: "kopioitu ryhmä"});
+                $modal.open({
+                    backdrop: 'static',
+                    templateUrl: 'valintaryhma/valintaryhmaKopiointi.html',
+                    size: 'lg',
+                    controller: function ($scope, $window, $modalInstance, kopioitavaOid, ValintaryhmaKopiointi) {
+                        $scope.kopioiValintaryhma = function () {
+                            /*
+                            ValintaryhmaKopiointi.put({parentOid: $routeParams.id, kopioitavaOid: "1408343679512-4578076136862797687", nimi: "kopioitu ryhmä"}, function () {
+                                $modalInstance.dismiss('cancel');
+                            }, function () {
+                                $scope.error = true;
+                            });
+                            */
+                        };
+
+                        $scope.error = false;
+
+                        $scope.cancel = function () {
+                            $modalInstance.dismiss('cancel');
+                        };
+
+                    },
+                    resolve: {
+                        kopioitavaOid: function () {
+                            return ValintaryhmaModel.valintaryhma.oid;
+                        }
+                    }
+
+                }).result.then(function () {
+
+                    }, function () {
+
+                    });
+
+                //
             };
 
             $scope.openHakijaryhmaKopiointiModal = function (hakijaryhma) {

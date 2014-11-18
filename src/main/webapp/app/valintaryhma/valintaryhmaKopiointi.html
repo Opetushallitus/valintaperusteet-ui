@@ -4,18 +4,25 @@
 <div class="modal-body">
     <form class="form-horizontal" name="valintaryhmaKopio">
         <div class="form-group">
-            <label class="col-sm-4 control-label" for="uusinimi">{{t('valintaryhmalomake.kopioi.valintaryhma.nimi') || 'Kopioitavan valintaryhmän nimi'}}</label>
+            <label class="col-sm-4 control-label" for="uusinimi">{{t('valintaryhmalomake.kopioi.valintaryhma.nimi') ||
+                'Kopioitavan valintaryhmän nimi'}}</label>
 
             <div class="col-sm-8">
                 <input ng-required="!nimi" type="text" id="uusinimi" class="form-control" ng-model="model.uusinimi"/>
             </div>
         </div>
         <div class="form-group">
-            <div ng-include="'../common/partials/valintaryhmaPuuValitsin.html'"/>
+            <div ng-include="'../common/partials/valintaryhmavalitsin.html'"/>
+        </div>
+        <div collapse="!error" class="alert alert-danger">
+            <h3>Tallennus epäonnistui. Tarkista, että kohdevalintaryhmän lapsena ei valmiiksi ole kopioitavan
+                valintaryhmän nimistä valintaryhmää</h3>
         </div>
     </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-sm btn-default" ng-click="sulje()">{{ t('valintaperusteet.sulje') || 'Sulje'}}</button>
-    <button ng-click="kopioiValintaryhma()" ng-disabled="valintaryhmaKopio.$invalid" class="btn btn-sm btn-primary">{{t('valintaperusteet.kopioi') || 'Kopioi'}}</button>
+    <button class="btn btn-sm btn-default" ng-click="cancel()">{{ t('valintaperusteet.sulje') || 'Sulje'}}</button>
+    <button ng-click="kopioiValintaryhma()" ng-disabled="valintaryhmaKopio.$invalid" class="btn btn-sm btn-primary">
+        {{t('valintaperusteet.kopioi') || 'Kopioi'}}
+    </button>
 </div>
