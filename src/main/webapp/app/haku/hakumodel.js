@@ -91,7 +91,6 @@ angular.module('valintaperusteet')
             $scope.hakuModel.hakuOid = $scope.hakuModel.haku.oid;
             sessionStorage.setItem('valintaperusteHakuOid', $scope.hakuModel.hakuOid);
             $cookieStore.put('hakuoid', $scope.hakuModel.hakuOid);
-            console.log($scope.customHakuUtil);
         };
 
 
