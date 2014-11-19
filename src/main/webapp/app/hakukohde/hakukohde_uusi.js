@@ -160,12 +160,13 @@ angular.module('valintaperusteet')
     UusiHakukohdeModel.refresh();
     Ylavalintaryhma.refresh();
 
-    Haku.get({}, function(result) {
+    Haku.get({}, function(resultWrapper) {
+        var hakuArray = resultWrapper.result;
         var haut = [];
 
-        for(var i = 0 ; i < result.length ; ++i) {
-            HaunTiedot.get({hakuOid: result[i].oid}, function(tiedot) {
-                    haut.push(tiedot);
+        for(var i = 0 ; i < hakuArray.length ; ++i) {
+            HaunTiedot.get({hakuOid: hakuArray[i].oid}, function(resultWrapper) {
+                haut.push(resultWrapper.result);
             });
         }
 
@@ -173,6 +174,7 @@ angular.module('valintaperusteet')
 
     });
 
+    /* Hakua ei pysty muuttamaan uuden hakukohteen luonnin lomakkeella joten tämän ei pitäisi olla tarpeellinen
     $scope.$watch("model.hakukohde.hakuoid", function() {
         $scope.hakukohteet = [];
         $scope.model.selectedHakukohde = undefined;
@@ -189,6 +191,7 @@ angular.module('valintaperusteet')
             });
         }
     });
+    */
 
 
     $scope.setHakuoid = function(item) {

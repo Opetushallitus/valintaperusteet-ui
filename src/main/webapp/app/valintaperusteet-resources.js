@@ -9,18 +9,7 @@ angular.module('valintaperusteet')
         }])
 
 
-    //TARJONTA RESOURCES
-    .factory('Haku', ['$resource', function ($resource) {
-        return $resource(TARJONTA_URL_BASE + "haku?count=500", {}, {
-            get: {method: "GET", isArray: true}
-        });
-    }])
 
-    .factory('HaunTiedot', ['$resource', function ($resource) {
-        return $resource(TARJONTA_URL_BASE + "haku/:hakuOid", {hakuOid: "@hakuOid"}, {
-            get: {method: "GET"}
-        });
-    }])
 
     // HAKU-APP
     .factory('HakemusAvaimet', ['$resource', function ($resource) {
@@ -353,10 +342,10 @@ angular.module('valintaperusteet')
         });
     }])
 
-    //ulkoiset
+    //TARJONTA RESOURCES
     .factory('Haku', ['$resource', function ($resource) {
         return $resource(TARJONTA_URL_BASE + "haku?count=500", {}, {
-            get: {method: "GET", isArray: true, cache: true}
+            get: {method: "GET", cache: true}
         });
     }])
     .factory('HaunTiedot', ['$resource', function ($resource) {
@@ -364,12 +353,13 @@ angular.module('valintaperusteet')
             get: {method: "GET", cache: true}
         });
     }])
-
+    /*
     .factory('HakuHakukohdeChildren', ['$resource', function ($resource) {
         return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohde?count=99999", {hakuOid: "@hakuOid"}, {
             get: {method: "GET", isArray: true, cache: true}
         });
     }])
+    */
     .factory('TarjontaHaku', ['$resource', function ($resource) {
         return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohdeTulos", {}, {
             query: {method: 'GET', isArray: false, cache: true}
@@ -382,7 +372,7 @@ angular.module('valintaperusteet')
     }])
 
     .factory('TarjontaHakukohde', ['$resource', function ($resource) {
-        return $resource(TARJONTA_URL_BASE + "v1/hakukohde/:hakukohdeoid", {hakukohdeoid: "@hakukohdeoid"});
+        return $resource(TARJONTA_URL_BASE + "hakukohde/:hakukohdeoid", {hakukohdeoid: "@hakukohdeoid"});
     }])
 
 

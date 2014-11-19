@@ -83,15 +83,15 @@ angular.module('valintaperusteet')
 
                     if (!model.haettu) {
                         model.haettu = true;
-                        Haku.get({}, function (result) {
-
-                            model.hakuoidit = result;
+                        Haku.get({}, function (resultWrapper) {
+                            var hakuResult = resultWrapper.result;
+                            model.hakuoidit = hakuResult;
 
                             //iterate hakuoids and fetch corresponding hakuobjects
                             model.hakuoidit.forEach(function (element, index) {
-                                HaunTiedot.get({hakuOid: element.oid}, function (result) {
-                                    if (result.tila === "JULKAISTU") {
-                                        model.haut.push(result);
+                                HaunTiedot.get({hakuOid: element.oid}, function (resultWrapper) {
+                                    if (resultWrapper.result.tila === "JULKAISTU") {
+                                        model.haut.push(resultWrapper.result);
                                     }
 
                                 });

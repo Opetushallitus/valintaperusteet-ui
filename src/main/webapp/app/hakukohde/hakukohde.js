@@ -3,12 +3,12 @@ angular.module('valintaperusteet')
     .factory('HakukohdeModel', ['$q', 'HakukohdeHakukohdekoodi', 'KoodistoHakukohdekoodi', 'Hakukohde', 'Valintaryhma',
         'HakukohdeValinnanvaihe', 'Valinnanvaihe', 'ValinnanvaiheJarjesta',
         'HakukohdeKuuluuSijoitteluun', 'HakukohdeHakijaryhma', 'Laskentakaava',
-        'HakijaryhmaJarjesta', 'Hakijaryhma', 'Haku', 'TarjontaHaku', 'HaunTiedot', 'HakukohdeNimi',
+        'HakijaryhmaJarjesta', 'Hakijaryhma', 'Haku', 'HaunTiedot', 'HakukohdeNimi',
         'HakijaryhmanValintatapajonot',
         function($q, HakukohdeHakukohdekoodi, KoodistoHakukohdekoodi, Hakukohde, Valintaryhma,
         HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta,
         HakukohdeKuuluuSijoitteluun, HakukohdeHakijaryhma, Laskentakaava,
-        HakijaryhmaJarjesta, Hakijaryhma, Haku, TarjontaHaku, HaunTiedot, HakukohdeNimi,
+        HakijaryhmaJarjesta, Hakijaryhma, Haku, HaunTiedot, HakukohdeNimi,
         HakijaryhmanValintatapajonot) {
     "use strict";
 
@@ -38,12 +38,12 @@ angular.module('valintaperusteet')
                     });
                 }
 
-               HaunTiedot.get({hakuOid: result.hakuoid}, function(tiedot) {
-                   model.haku = tiedot;
+               HaunTiedot.get({hakuOid: result.hakuoid}, function(haunTiedotWrapper) {
+                   model.haku = haunTiedotWrapper.result;
                });
 
-               HakukohdeNimi.get({hakukohdeoid: oid}, function(result){
-                   model.hakukohdeNimi = result;
+               HakukohdeNimi.get({hakukohdeoid: oid}, function(resultWrapper){
+                   model.hakukohdeNimi = resultWrapper.result;
                });
 
                 HakukohdeKuuluuSijoitteluun.get({oid: oid}, function(result) {

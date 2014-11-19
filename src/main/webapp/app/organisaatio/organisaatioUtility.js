@@ -31,10 +31,10 @@ angular.module('valintaperusteet')
 
 
                 } else if (hakukohdeOid) {
-                    TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function (hakukohde) {
-                        var organizationsPromises = []; 
+                    TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function (hakukohdeWrapper) {
+                        var organizationsPromises = [];
                         if (returnAsOidList) {
-                            _.forEach(hakukohde.result.tarjoajaOids, function (tarjoajaOid) {
+                            _.forEach(hakukohdeWrapper.result.tarjoajaOids, function (tarjoajaOid) {
                                 var organizationDefer = $q.defer();
                                 organizationsPromises.push(organizationDefer.promise);
 

@@ -15,8 +15,10 @@ angular.module('valintaperusteet')
                 model.hakuDeferred = $q.defer();
                 UserModel.refreshIfNeeded();
 
-                    Haku.get({}, function (result) {
-                        var HakuOidObjects = result;
+                    UserModel.refreshIfNeeded();
+                    Haku.get({}, function (hakuResultWrapper) {
+                        var HakuOidObjects = hakuResultWrapper.result;
+                        
                         var promises = [];
                         promises.push(UserModel.organizationsDeferred.promise);
 
@@ -24,8 +26,8 @@ angular.module('valintaperusteet')
                         HakuOidObjects.forEach(function (element, index) {
                             promises[index] = (function () {
                                 var deferred = $q.defer();
-
-                                HaunTiedot.get({hakuOid: element.oid}, function (result) {
+                                HaunTiedot.get({hakuOid: element}, function (haunTiedotWrapper) {
+                                    var result = haunTiedotWrapper.result;
                                     if (result.tila === "JULKAISTU") {
                                         model.haut.push(result);
                                     }
