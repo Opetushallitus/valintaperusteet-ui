@@ -11,7 +11,7 @@ angular.module('valintaperusteet')
 
     //TARJONTA RESOURCES
     .factory('Haku', ['$resource', function ($resource) {
-        return $resource(TARJONTA_URL_BASE + "haku?count=500", {}, {
+        return $resource(TARJONTA_URL_BASE + "haku?count=9999", {}, {
             get: {method: "GET", isArray: true}
         });
     }])
@@ -348,7 +348,7 @@ angular.module('valintaperusteet')
 
     //ulkoiset
     .factory('Haku', ['$resource', function ($resource) {
-        return $resource(TARJONTA_URL_BASE + "haku?count=500", {}, {
+        return $resource(TARJONTA_URL_BASE + "haku?count=9999", {}, {
             get: {method: "GET", isArray: true, cache: true}
         });
     }])
