@@ -213,7 +213,7 @@ xdescribe('Testing ValintaryhmaController', function(){
         $httpBackend.expectGET('resources/valintaryhma/'+ routeParams.id+'/valinnanvaihe').respond('[{"nimi":"Harkinnanvaraisten kÃ¤sittelyvaihe","kuvaus":"Harkinnanvaraisten kÃ¤sittelyvaihe","aktiivinen":true,"valinnanVaiheTyyppi":"TAVALLINEN","oid":"1403080180051-8402607974762244585","inheritance":false},{"nimi":"Kielikokeen pakollisuus","kuvaus":"Kielikokeen pakollisuus","aktiivinen":true,"valinnanVaiheTyyppi":"VALINTAKOE","oid":"1403080180604-3934748042048289222","inheritance":false}]');
         $httpBackend.expectGET('resources/valintaryhma/'+ routeParams.id+'/hakijaryhma').respond('[]');
         $httpBackend.expectGET('json/haunkohdejoukko/koodi').respond(haunkohdejoukkojson);
-        $httpBackend.expectGET('haku?count=500').respond([]);
+        $httpBackend.expectGET('haku?count=9999').respond([]);
         $httpBackend.expectGET('resources/valintaryhma/14030801791808409465510859807597/parents').respond('[{"nimi":"Lukiokoulutus","kohdejoukko":null,"oid":"1403079862403-6606759132794079794"}]');
 
         ctrl = $controller('ValintaryhmaController', {'$scope' : scope, '$location': location, '$routeParams': routeParams,
@@ -806,7 +806,7 @@ describe('Testing UusiHakukohdeController', function(){
         rootScope = $rootScope;
         location = $location;
         $httpBackend.expectGET('resources/puu?hakukohteet=false').respond(puukaikkijson);
-        $httpBackend.expectGET('haku?count=500').respond(hakujson);
+        $httpBackend.expectGET('haku?count=9999').respond(hakujson);
         $httpBackend.expectGET('haku/1.2.246.562.29.21702520681').respond(hakuextrajson);
         $httpBackend.expectGET('haku/1.2.246.562.29.41647728207').respond(hakuextrajson);
         $httpBackend.expectGET('haku/1.2.246.562.5.2013112910452702965370').respond(hakuextrajson);
@@ -1041,7 +1041,7 @@ describe('Testing ImportController', function(){
         rootScope = $rootScope;
         location = $location;
 
-        $httpBackend.expectGET('haku?count=500').respond(hakujson);
+        $httpBackend.expectGET('haku?count=9999').respond(hakujson);
         $httpBackend.expectGET('haku/1.2.246.562.29.21702520681').respond(hakuextrajson);
         $httpBackend.expectGET('haku/1.2.246.562.29.41647728207').respond(hakuextrajson);
         $httpBackend.expectGET('haku/1.2.246.562.5.2013112910452702965370').respond(hakuextrajson);
