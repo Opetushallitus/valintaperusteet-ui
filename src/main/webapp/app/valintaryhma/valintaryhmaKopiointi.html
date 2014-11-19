@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <h3>{{t('valintaryhmalomake.kopioi.valintaryhma.kopioi') || 'Valintaryhmän kopiointi'}}</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" name="valintaryhmaKopio">
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="uusinimi">{{t('valintaryhmalomake.kopioi.valintaryhma.nimi') ||
+                'Kopioitavan valintaryhmän nimi'}}</label>
+
+            <div class="col-md-10">
+                <input ng-required="!nimi" type="text" id="uusinimi" class="form-control" ng-model="model.uusinimi"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">{{t('valintaryhmalomake.kopioi.valintaryhma.valinta')|| 'Valintaryhmän valinta'}}</label>
+            <div class="col-md-10">
+                <div ng-include="'../common/partials/valintaryhmavalitsin.html'"/>
+            </div>
+        </div>
+        <div collapse="!error" class="alert alert-danger">
+            <h3>{{error.data.message}}</h3>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-sm btn-default" ng-click="cancel()">{{ t('valintaperusteet.sulje') || 'Sulje'}}</button>
+    <button ng-click="kopioiValintaryhma()" ng-disabled="valintaryhmaKopio.$invalid" class="btn btn-sm btn-primary">
+        {{t('valintaperusteet.kopioi') || 'Kopioi'}}
+    </button>
+</div>

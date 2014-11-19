@@ -33,21 +33,21 @@ angular.module('valintaperusteet').controller('KaavaKopiointiController', ['$sco
     $scope.hakuModel = HakuModel;
 
     $scope.kopiointiModel = KaavaKopiointiModel;
-    $scope.kaavaKopioParams = {};
+    $scope.kopioObj = {};
 
     $scope.kopioiKaava = function() {
         var payload = {
-            uusinimi: $scope.kaavaKopioParams.uusinimi,
+            uusinimi: $scope.kopioObj.uusinimi,
             funktiokutsu: $scope.kopiointiModel.laskentakaava,
             onLuonnos: $scope.kaavaData.onLuonnos,
             nimi: $scope.kaavaData.nimi,
             kuvaus: $scope.kaavaData.kuvaus
         };
 
-        if(Treemodel.isHakukohde($scope.kaavaKopioParams.value)) {
-            payload.hakukohdeOid = $scope.kaavaKopioParams.value.oid;
+        if(Treemodel.isHakukohde($scope.kopioObj.value)) {
+            payload.hakukohdeOid = $scope.kopioObj.value.oid;
         } else {
-            payload.valintaryhmaOid = $scope.kaavaKopioParams.value.oid;
+            payload.valintaryhmaOid = $scope.kopioObj.value.oid;
         }
 
         KaavaSiirto.put(payload, function(result) {
@@ -57,8 +57,6 @@ angular.module('valintaperusteet').controller('KaavaKopiointiController', ['$sco
             $scope.$broadcast('suljemodal');
         });
     };
-
-
 
     $scope.cancel = function() {
         $scope.$broadcast('suljemodal');

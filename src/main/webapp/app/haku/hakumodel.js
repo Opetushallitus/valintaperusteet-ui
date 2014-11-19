@@ -3,18 +3,17 @@ angular.module('valintaperusteet')
     .factory('HakuModel', ['$q', 'Haku', 'HaunTiedot', '$cookieStore', '_', 'UserModel', function ($q, Haku, HaunTiedot, $cookieStore, _, UserModel) {
         "use strict";
 
-        var model;
-        model = new function () {
-            this.hakuOid = "";
-            this.haku = {};
-            this.haut = [];
-            this.deferred = undefined;
+    var model;
+    model = new function() {
+        this.hakuDeferred = undefined;
+        this.hakuOid = "";
+        this.haku = {};
+        this.haut = [];
 
-            this.init = function () {
-                model.deferred = $q.defer();
-                if (model.haut.length <= 0) {
-
-                    UserModel.refreshIfNeeded();
+        this.init = function(oid) {
+            if(model.haut.length < 1 && !model.hakuDeferred) {
+                model.hakuDeferred = $q.defer();
+                UserModel.refreshIfNeeded();
 
                     Haku.get({}, function (result) {
                         var HakuOidObjects = result;
@@ -56,13 +55,16 @@ angular.module('valintaperusteet')
                                 }
                             });
 
-                            model.deferred.resolve();
+                            model.hakuDeferred.resolve();
                         }, function (error) {
                             model.reject();
                         });
+                        model.hakuDeferred.resolve();
+                    }, function () {
+                        model.hakuDeferred.reject();
                     });
                 } else {
-                    model.deferred.resolve();
+                    model.hakuDeferred.resolve();
                 }
 
             };
@@ -177,7 +179,7 @@ angular.module('valintaperusteet')
                     HakuModel.init();
                 }
 
-                HakuModel.deferred.promise.then(function () {
+                HakuModel.hakuDeferred.promise.then(function () {
                     that.hakuvuodetOpts = _.uniq(_.pluck(HakuModel.haut, 'hakukausiVuosi'));
                 });
 

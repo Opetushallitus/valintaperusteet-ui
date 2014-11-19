@@ -7,8 +7,8 @@ angular.module('valintaperusteet')
         Treemodel.refresh();
         
         $scope.selection = {}; // input radio needs this empty object when mapping object reference
-
         $scope.changeSelection = function (puuNode) {
-            $scope.kaavaKopioParams.value = puuNode;
+            $scope.kopioObj.value = puuNode; //kopioObj must be set in parent scope
         };
+        
     }]);
