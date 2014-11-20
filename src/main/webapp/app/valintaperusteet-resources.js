@@ -353,13 +353,7 @@ angular.module('valintaperusteet')
             get: {method: "GET", cache: true}
         });
     }])
-    /*
-    .factory('HakuHakukohdeChildren', ['$resource', function ($resource) {
-        return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohde?count=99999", {hakuOid: "@hakuOid"}, {
-            get: {method: "GET", isArray: true, cache: true}
-        });
-    }])
-    */
+
     .factory('TarjontaHaku', ['$resource', function ($resource) {
         return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohdeTulos", {}, {
             query: {method: 'GET', isArray: false, cache: true}
