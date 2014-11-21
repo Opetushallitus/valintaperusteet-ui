@@ -1,6 +1,7 @@
 angular.module('valintaperusteet')
 
-    .factory('HakuModel', ['$q', 'Haku', 'HaunTiedot', '$cookieStore', '_', 'UserModel', function ($q, Haku, HaunTiedot, $cookieStore, _, UserModel) {
+    .factory('HakuModel', ['$q', 'Haku', 'HaunTiedot', '$cookieStore', '_', 'UserModel', 'TarjontaHaut',
+        function ($q, Haku, HaunTiedot, $cookieStore, _, UserModel, TarjontaHaut) {
         "use strict";
 
     var model;
@@ -15,68 +16,44 @@ angular.module('valintaperusteet')
                 model.hakuDeferred = $q.defer();
                 UserModel.refreshIfNeeded();
 
-                    UserModel.refreshIfNeeded();
-                    Haku.get({}, function (hakuResultWrapper) {
-                        var HakuOidObjects = hakuResultWrapper.result;
-                        
-                        var promises = [];
-                        promises.push(UserModel.organizationsDeferred.promise);
-
-                        //iterate hakuoids and fetch corresponding hakuobjects
-                        HakuOidObjects.forEach(function (element, index) {
-                            promises[index] = (function () {
-                                var deferred = $q.defer();
-                                HaunTiedot.get({hakuOid: element}, function (haunTiedotWrapper) {
-                                    var result = haunTiedotWrapper.result;
-                                    if (result.tila === "JULKAISTU") {
-                                        model.haut.push(result);
-                                    }
-
-                                    deferred.resolve();
-                                });
-
-                                return deferred.promise;
-                            })();
+                TarjontaHaut.get({}, function (resultWrapper) {
+                    model.haut = _.filter(resultWrapper.result, function (haku) {
+                        return haku.tila === 'JULKAISTU';
+                    });
+                    
+                    if ($cookieStore.get("hakuoid")) {
+                        var previouslySelectedHaku = _.find(model.haut, function (haku) {
+                            return haku.oid === $cookieStore.get("hakuoid");
                         });
+                        if (previouslySelectedHaku) {
+                            model.hakuOid = $cookieStore.get("hakuoid");
+                            model.haku = previouslySelectedHaku;
+                        }
 
-                        //wait until all hakuobjects have been fetched
-                        $q.all(promises).then(function () {
-                            model.hakuOid = model.haut[0].oid;
-
-                            //set the previously selected haku or first in list
-                            model.haut.forEach(function (haku) {
-                                if ($cookieStore.get("hakuoid")) {
-                                    var haluttuHaku = _.find(model.haut, function (h) {
-                                        return h.oid === $cookieStore.get("hakuoid");
-                                    });
-                                    if (haluttuHaku) {
-                                        model.hakuOid = $cookieStore.get("hakuoid");
-                                        model.haku = haluttuHaku;
-                                    }
-
-                                }
-                            });
-
-                            model.hakuDeferred.resolve();
-                        }, function (error) {
-                            model.reject();
-                        });
+                    } else {
+                        model.haku = model.haut[0];
+                    }
+                    
+                    UserModel.organizationsDeferred.promise.then(function () {
                         model.hakuDeferred.resolve();
-                    }, function () {
+                    }, function (error) {
                         model.hakuDeferred.reject();
                     });
-                } else {
-                    model.hakuDeferred.resolve();
-                }
+                }, function (error) {
 
-            };
+                });
 
-            this.isKKHaku = function (haku) {
-                return haku.kohdejoukkoUri.indexOf("_12") > -1;
-            };
+            } else {
+                model.hakuDeferred.resolve();
+            }
 
+        };
 
-        }();
+        this.isKKHaku = function (haku) {
+            return haku.kohdejoukkoUri.indexOf("_12") > -1;
+        };
+
+        };
 
         return model;
     }]).

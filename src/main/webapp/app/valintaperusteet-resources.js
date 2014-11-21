@@ -354,6 +354,10 @@ angular.module('valintaperusteet')
         });
     }])
 
+    .factory('TarjontaHaut', function($resource) {
+        return $resource(TARJONTA_URL_BASE + "haku/findAll");
+    })
+
     .factory('TarjontaHaku', ['$resource', function ($resource) {
         return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohdeTulos", {}, {
             query: {method: 'GET', isArray: false, cache: true}
