@@ -6,14 +6,19 @@ var gulp = require('gulp'),
     watch = require('gulp-watch'),
     livereload = require('gulp-livereload'),
     karma = require('gulp-karma');
-    sass = require('gulp-sass');
+    //sass = require('gulp-sass');
 
 
 var paths = {
-    public: 'src/main/webapp/common/',
-    fonts: paths.public + 'fonts/',
-    jslib: paths.public + 'jslib/',
+    common: 'src/main/webapp/common/',
+    awesomeFontsOutput: 'src/main/webapp/common/fonts/',
+    awesomeFontsSrc: 'bower_components/fontawesome/fonts/**.*',
+    fontAwesomeSrc: 'bower_components/fontawesome/css/font-awesome.min.css',
+    fontAwesomeOutput: 'src/main/webapp/common/css/',
+
+    jslib: 'src/main/webapp/common/jslib/',
     testSourceRoot: 'src/test/ui/',
+
     bower_components: [
         'bower_components/angular/angular.js',
         'bower_components/angular/angular.min.js',
@@ -89,10 +94,8 @@ gulp.task('dev', function (callback) {
 
 
 gulp.task('build', function () {
-    runSequence(['sourceLibs', 'testLibs'], function(){});
+    runSequence(['sourceLibs', 'testLibs', 'icons', 'fontAwesomeCss'], function(){});
 });
-
-
 
 gulp.task('sourceLibs', function () {
     return gulp
@@ -106,9 +109,17 @@ gulp.task('css', function () {
         .pipe(gulp.dest(paths.css));
 });
 
+gulp.task('fontAwesomeCss', function () {
+    return gulp
+        .src(paths.fontAwesomeSrc)
+        .pipe(gulp.dest(paths.fontAwesomeOutput));
+
+});
+
 gulp.task('icons', function() { 
-    return gulp.src('bower_components/fontawesome/fonts/**.*') 
-    .pipe(gulp.dest('./public/fonts')); 
+    return gulp
+        .src(paths.awesomeFontsSrc) 
+        .pipe(gulp.dest(paths.awesomeFontsOutput)); 
 });
 
 
