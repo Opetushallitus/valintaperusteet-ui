@@ -12,9 +12,11 @@ angular.module('valintaperusteet')
             link: function ($scope, $elems, $attrs) {
                 var template = $attrs.modalTemplate;
                 var windowClass = $attrs.windowClass;
+                var size = $attrs.size;
                 $scope.show = function () {
                     $modal.open({
                         scope: $scope,
+                        size: size,
                         templateUrl: template,
                         windowClass: windowClass,
                         controller: function ($scope, $modalInstance) {

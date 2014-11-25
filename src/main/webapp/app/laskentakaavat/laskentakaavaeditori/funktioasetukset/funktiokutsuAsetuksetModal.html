@@ -29,11 +29,11 @@
             <h3 ng-if="!valintaperusteviite.kuvaus">{{valintaperusteviite.nimi}}</h3>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label">{{ t('laskentakaavaviiteasetuksetmodal.tyyppi') || 'Tyyppi'
+                <label class="col-md-2 control-label">{{ t('laskentakaavaviiteasetuksetmodal.tyyppi') || 'Tyyppi'
                     }}</label>
 
-                <div class="col-sm-9">
-                    <select ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" ng-model="valintaperuste.lahde"
+                <div class="col-md-6">
+                    <select class="form-control" ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" ng-model="valintaperuste.lahde"
                             ng-if="!isYoFunktiokutsu(funktioSelection)"
                             ng-options="item.key as item.text for item in valintaperusteviitetyypit">
                     </select>
@@ -45,21 +45,24 @@
             </div>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label">{{ t('laskentakaavaviiteasetuksetmodal.pakollinen') || 'Pakollinen
+                <label class="col-md-2 control-label">{{ t('laskentakaavaviiteasetuksetmodal.pakollinen') || 'Pakollinen
                     tieto' }}</label>
 
-                <div class="col-sm-9">
-                    <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="checkbox" id="requiredparam"
-                           ng-model="valintaperuste.onPakollinen"/>
+                <div class="col-md-6">
+                    <div class="checkbox">
+                        <label>
+                            <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="checkbox" id="requiredparam" ng-model="valintaperuste.onPakollinen"/>
+                        </label>
+                    </div>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label">{{ t('laskentakaavaviiteasetuksetmodal.kuvaus') || 'Kuvaus'
+                <label class="col-md-2 control-label">{{ t('laskentakaavaviiteasetuksetmodal.kuvaus') || 'Kuvaus'
                     }}</label>
 
-                <div class="col-sm-9">
-                    <textarea ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" style="width: 330px"
+                <div class="col-md-6">
+                    <textarea ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" class="form-control"
                               ng-model="valintaperuste.kuvaus"></textarea>
                 </div>
             </div>
@@ -67,9 +70,9 @@
 
 
             <div class="form-group">
-                <label class="col-sm-3 control-label">{{ t('laskentakaavaviiteasetuksetmodal.tunniste') || 'Tunniste'}}</label>
+                <label class="col-md-2 control-label">{{ t('laskentakaavaviiteasetuksetmodal.tunniste') || 'Tunniste'}}</label>
 
-                <div class="col-sm-9">
+                <div class="col-md-6">
                     <div>
                         <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && bigdata.length > 0">
                             <p class="form-control-static">Hakulomakkeen tunniste</p>
@@ -91,8 +94,8 @@
                         </div>
                     </div>
                     <div>
-                        <p class="form-control-static">Vapaamuotoinen tunniste</p>
-                        <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" ng-model="valintaperuste.tunniste"
+                        <span class="help-block">Vapaamuotoinen tunniste</span>
+                        <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" ng-model="valintaperuste.tunniste" class="form-control"
                                required="required"/>
                     </div>
 
@@ -103,18 +106,21 @@
 
             <div class="form-group" ng-if="valintaperuste.lahde === 'SYOTETTAVA_ARVO'">
 
-                <label class="col-sm-3 control-label">{{ t('laskentakaavaviiteasetuksetmodal.vaatiiOsallistumisen') || 'Vaatii
+                <label class="col-md-2 control-label">{{ t('laskentakaavaviiteasetuksetmodal.vaatiiOsallistumisen') || 'Vaatii
                     osallistumisen' }}</label>
 
-                <div class="col-sm-9">
-                    <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="checkbox"
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        <label>
+                            <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="checkbox"
                            ng-model="valintaperuste.vaatiiOsallistumisen"/>
-
+                        </label>
+                    </div>
                 </div>
 
             </div>
 
-    <div class="col-sm-9" ng-if="valintaperusteviite.tyyppi == 'ARVOJOUKKO'">
+    <div class="col-md-10" ng-if="valintaperusteviite.tyyppi == 'ARVOJOUKKO'">
         <select ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" ng-model="valintaperuste.tunniste"
                 ng-options="arvo.avain as arvo.arvo for arvo in valintaperusteviite.arvojoukko | orderBy:'arvo'"></select>
     </div>
@@ -166,85 +172,109 @@
         <div class="settingsbox">
             <form ng-repeat="parametri in funktioSelection.lapsi.arvovalikonvertteriparametrit"
                   class="form-horizontal arvovalikonvertteri-form " role="form">
-                <div>
+
+                <div class="pull-right">
                     <button ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" class="btn btn-sm btn-default"
                             ng-click="removeKonvertteriParametri($index, 'ARVOVALIKONVERTTERI')"><i
-                            class="fa fa-trash-o"></i> {{ t('laskentakaavaviiteasetuksetmodal.poistaparametri') ||
-                        'Poista parametri' }}
+                            class="fa fa-trash-o"></i> {{ t('funktiokutsuasetuksetmodal.poista.arvovalikonvertteri') ||
+                        'Poista arvovälikonvertteri' }}
                     </button>
                 </div>
-                <div>
-                    <span>
-                        <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" size="10"
-                               ng-model="parametri.minValue" placeholder="Min"/>
-                   </span>
 
-                    <span ng-show="!$last" class="white-space-nowrap">&le; x &lt;</span>
-                    <span ng-show="$last" class="white-space-nowrap">&le; x &le;</span>
-
-                   <span>
+                <div class="form-group">
+                    <label class="control-label col-md-3">{{ t('laskentakaavaviiteasetuksetmodal.arvovali') || 'Arvoväli'}}</label>
+                    <div class="col-md-2">
                         <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" size="10"
+                               ng-model="parametri.minValue" placeholder="Min" class="form-control"/>
+                   </div>
+                    <div class="col-md-1">
+                        <span ng-show="!$last" class="white-space-nowrap">&le; x &lt;</span>
+                        <span ng-show="$last" class="white-space-nowrap">&le; x &le;</span>
+                    </div>
+                   <div class="col-md-2">
+                        <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" class="form-control" type="text" size="10"
                                ng-model="parametri.maxValue" placeholder="Max"/>
-                   </span>
+                    </div>
                 </div>
-                <div class="checkbox">
-                    <label>
-                        <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="checkbox"
-                               ng-model="parametri.palautaHaettuArvo" ng-true-value="'true'"
-                               ng-false-value="'false'"/> {{ t('laskentakaavaviiteasetuksetmodal.palauta') || 'Palauta
-                        haettu arvo' }}
-                    </label>
-                </div>
+
                 <div class="form-group">
-                    <label class="col-sm-5 control-label">{{ t('laskentakaavaviiteasetuksetmodal.pisteet') || 'Pisteet'
-                        }}</label>
-                    <input type="text" size="10" ng-model="parametri.paluuarvo"
-                           placeholder="{{ t('laskentakaavaviiteasetuksetmodal.pisteet') || 'Pisteet' }}"
-                           ng-disabled="parametri.palautaHaettuArvo == 'true' || alikaavaValues.isAlikaava || !userAccess.updateOrg"/>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-5 col-sm-7">
+                    <label class="control-label col-md-3" for="palautahaettu">{{ t('laskentakaavaviiteasetuksetmodal.palauta') || 'Palauta
+                        haettu arvo' }}</label>
+
+                    <div class="col-md-3">
                         <div class="checkbox">
                             <label>
-                                <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="checkbox"
-                                       ng-model="parametri.hylkaysperuste" ng-true-value="'true'"
-                                       ng-false-value="'false'"/> {{ t('laskentakaavaviiteasetuksetmodal.hylkaysperuste')
-                                || 'Hylkäysperuste' }}
+                                <input id="palautahaettu" ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="checkbox"
+                                       ng-model="parametri.palautaHaettuArvo" ng-true-value="'true'"
+                                       ng-false-value="'false'"/>
                             </label>
                         </div>
                     </div>
                 </div>
-                <div id="arvovalikonvertteri-kuvaukset" ng-if="parametri.hylkaysperuste">
-                    <table class="table" ng-if="parametri.kuvaukset.tekstit.length > 0">
-                        <thead>
-                        <tr>
-                            <td>{{ t('laskentakaavaviiteasetuksetmodal.kieli') || 'Kieli' }}</td>
-                            <td>{{ t('laskentakaavaviiteasetuksetmodal.kuvaus') || 'Kuvaus' }}</td>
-                            <td></td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="kuvaus in parametri.kuvaukset.tekstit">
-                            <td><select ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" ng-model="kuvaus.kieli"
-                                        ng-options="item.key as item.text for item in arvokonvertterikuvauskielet"></select>
-                            </td>
-                            <td><input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" size="15"
-                                       ng-model="kuvaus.teksti"/></td>
-                            <td>
-                                <button class="btn btn-sm btn-default" ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg"
-                                        ng-click="removeKonvertteriParametriKuvaus($index, parametri)"><i
-                                        class="fa fa-trash-o"></i></button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                    <div><b>{{ t('laskentakaavaviiteasetuksetmodal.hylkays') || 'Hylkäysperustekuvaukset' }}</b></div>
-                    <button ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" class="btn btn-sm btn-default"
-                            ng-click="addArvokonvertterikuvaus(parametri)"><i
-                            class="fa fa-plus"></i> {{ t('laskentakaavaviiteasetuksetmodal.kuvaus') || 'Kuvaus' }}
-                    </button>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">{{ t('laskentakaavaviiteasetuksetmodal.pisteet') || 'Pisteet'
+                        }}</label>
+                    <div class="col-md-6">
+                        <input type="text" size="10" ng-model="parametri.paluuarvo" class="form-control"
+                           placeholder="{{ t('laskentakaavaviiteasetuksetmodal.pisteet') || 'Pisteet' }}"
+                           ng-disabled="parametri.palautaHaettuArvo == 'true' || alikaavaValues.isAlikaava || !userAccess.updateOrg"/>
+                    </div>
                 </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="hylkaysperuste">{{ t('laskentakaavaviiteasetuksetmodal.hylkaysperuste')
+                        || 'Hylkäysperuste' }}</label>
+                    <div class="col-md-3">
+                        <div class="checkbox">
+                            <label>
+                                <input id="hylkaysperuste" ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="checkbox"
+                                       ng-model="parametri.hylkaysperuste" ng-true-value="'true'"
+                                       ng-false-value="'false'"/>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group" ng-if="parametri.hylkaysperuste === 'true'">
+                    <label class="control-label col-md-3">{{ t('laskentakaavaviiteasetuksetmodal.hylkays') || 'Hylkäysperustekuvaukset' }}</label>
+                    <div class="col-md-6">
+                        <button ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" class="btn btn-sm btn-default"
+                                ng-click="addArvokonvertterikuvaus(parametri)"><i
+                                class="fa fa-plus"></i> {{ t('laskentakaavaviiteasetuksetmodal.kuvaus') || 'Kuvaus' }}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="parametri.hylkaysperuste === 'true'">
+
+                    <div class="col-md-offset-3 col-md-6" arvovalikonvertteri-kuvaukset" ng-if="parametri.hylkaysperuste">
+                        <table class="table" ng-if="parametri.kuvaukset.tekstit.length > 0">
+                            <thead>
+                                <tr>
+                                    <td>{{ t('laskentakaavaviiteasetuksetmodal.kieli') || 'Kieli' }}</td>
+                                    <td>{{ t('laskentakaavaviiteasetuksetmodal.kuvaus') || 'Kuvaus' }}</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="kuvaus in parametri.kuvaukset.tekstit">
+                                <td><select ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" ng-model="kuvaus.kieli"
+                                            ng-options="item.key as item.text for item in arvokonvertterikuvauskielet"></select>
+                                </td>
+                                <td><input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" size="15"
+                                           ng-model="kuvaus.teksti"/></td>
+                                <td>
+                                    <button class="btn btn-sm btn-default" ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg"
+                                            ng-click="removeKonvertteriParametriKuvaus($index, parametri)"><i
+                                            class="fa fa-trash-o"></i></button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
+                    </div>
             </form>
 
 
@@ -260,79 +290,92 @@
     <div class="settingsbox">
         <form ng-repeat="parametri in funktioSelection.lapsi.arvokonvertteriparametrit"
               class="form-horizontal arvokonvertteri-form" role="form">
-            <div class="pull-left">
-                <button ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg"
-                        ng-click="removeKonvertteriParametri($index, 'ARVOKONVERTTERI')"><i
-                        class="fa fa-trash-o"></i></button>
-            </div>
-            <div class="clearfix"/>
-            <div class="form-group">
-                <label class="col-sm-5 control-label">{{ t('laskentakaavaviiteasetuksetmodal.arvo') || 'Arvo' }}</label>
 
-                <div class="col-sm-7"
+                <div class="pull-right">
+                        <button ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" class="btn btn-sm btn-default pull-right"
+                            ng-click="removeKonvertteriParametri($index, 'ARVOKONVERTTERI')"><i
+                            class="fa fa-trash-o"></i> {{ t('funktiokutsuasetuksetmodal.poista.arvokonvertteri') || 'Poista arvokonvertteri'}}</button>
+                </div>
+
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">{{ t('laskentakaavaviiteasetuksetmodal.arvo') || 'Arvo' }}</label>
+
+                <div class="col-md-6"
                      ng-if="funktiokuvausForSelection.konvertteri.konvertteriTyypit[0].arvotyyppi != 'ARVOJOUKKO'">
-                    <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" size="9" ng-model="parametri.arvo"
+                    <input class="form-control" ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" size="9" ng-model="parametri.arvo"
                            placeholder="{{ t('laskentakaavaviiteasetuksetmodal.arvo') || 'Arvo' }}"/>
                 </div>
 
-                <div class="col-sm-7"
+                <div class="col-md-6"
                      ng-if="funktiokuvausForSelection.konvertteri.konvertteriTyypit[0].arvotyyppi == 'ARVOJOUKKO'">
-                    <select ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" ng-model="parametri.arvo"
+                    <select ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" ng-model="parametri.arvo" class="form-control"
                             ng-options="arvo.avain as arvo.arvo for arvo in funktiokuvausForSelection.konvertteri.konvertteriTyypit[0].arvojoukko | orderBy:'arvo'"></select>
                 </div>
 
             </div>
             <div class="form-group">
-                <label class="col-sm-5 control-label">{{ t('laskentakaavaviiteasetuksetmodal.pisteet') || 'Pisteet'
+                <label class="col-md-3 control-label" for="pisteet">{{ t('laskentakaavaviiteasetuksetmodal.pisteet') || 'Pisteet'
                     }}</label>
 
-                <div class="col-sm-7">
-                    <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" size="9" ng-model="parametri.paluuarvo"
+                <div class="col-md-6">
+                    <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" id="pisteet" size="9" ng-model="parametri.paluuarvo" class="form-control"
                            placeholder="{{ t('laskentakaavaviiteasetuksetmodal.pisteet') || 'Pisteet' }}"/>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-sm-offset-5 col-sm-7">
+                <label class="control-label col-md-3" for="hylkaysperuste">{{ t('laskentakaavaviiteasetuksetmodal.hylkaysperuste') || 'Hylkäysperuste' }}</label>
+                <div class="col-md-9">
                     <div class="checkbox">
                         <label>
-                            <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="checkbox"
-                                   ng-model="parametri.hylkaysperuste" ng-true-value="true"
-                                   ng-false-value="false"/> {{ t('laskentakaavaviiteasetuksetmodal.hylkaysperuste') ||
-                            'Hylkäysperuste' }}
+                            <input id="hylkaysperuste" ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="checkbox"
+                                   ng-model="parametri.hylkaysperuste" ng-true-value="'true'"
+                                   ng-false-value="'false'"/>
                         </label>
                     </div>
                 </div>
             </div>
-            <div id="arvokonvertteri-kuvaukset" ng-if="parametri.hylkaysperuste">
-                <table class="table" ng-if="parametri.kuvaukset.tekstit.length > 0">
-                    <thead>
-                    <tr>
-                        <td>{{ t('laskentakaavaviiteasetuksetmodal.kieli') || 'Kieli' }}</td>
-                        <td>{{ t('laskentakaavaviiteasetuksetmodal.kuvaus') || 'Kuvaus' }}</td>
-                        <td></td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="kuvaus in parametri.kuvaukset.tekstit">
-                        <td><select ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" ng-model="kuvaus.kieli"
-                                    ng-options="item.key as item.text for item in arvokonvertterikuvauskielet"></select>
-                        </td>
-                        <td><input type="text" size="15" ng-model="kuvaus.teksti"/></td>
-                        <td>
-                            <button ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg"
-                                    ng-click="removeKonvertteriParametriKuvaus($index, parametri)"><i
-                                    class="fa fa-trash-o"></i></button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
 
-                <div><b>{{ t('laskentakaavaviiteasetuksetmodal.hylkays') || 'Hylkäysperustekuvaukset' }}</b></div>
-                <button ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" class="button small"
-                        ng-click="addArvokonvertterikuvaus(parametri)"><i class="fa fa-plus"></i> {{
-                    t('laskentakaavaviiteasetuksetmodal.kuvaus') || 'Kuvaus' }}
-                </button>
+            <div class="from-group" ng-if="parametri.hylkaysperuste === 'true'">
+                <label class="col-md-3 control-label">{{ t('laskentakaavaviiteasetuksetmodal.Hylkäysperustekuvaukset') || 'Hylkäysperustekuvaukset' }}</label>
+
+                <div class="col-md-9">
+                    <button ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" class="btn btn-sm btn-default"
+                            ng-click="addArvokonvertterikuvaus(parametri)"><i class="fa fa-plus"></i> {{
+                        t('laskentakaavaviiteasetuksetmodal.kuvaus') || 'Kuvaus' }}
+                    </button>
+                </div>
+
             </div>
+
+
+            <div class="form-group" id="arvokonvertteri-kuvaukset" ng-if="parametri.hylkaysperuste === 'true'">
+                <div class="col-md-offset-3 col-md-6">
+                    <table class="table" ng-if="parametri.kuvaukset.tekstit.length > 0">
+                        <thead>
+                        <tr>
+                            <td>{{ t('laskentakaavaviiteasetuksetmodal.kieli') || 'Kieli' }}</td>
+                            <td>{{ t('laskentakaavaviiteasetuksetmodal.kuvaus') || 'Kuvaus' }}</td>
+                            <td></td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="kuvaus in parametri.kuvaukset.tekstit">
+                            <td><select ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" ng-model="kuvaus.kieli"
+                                        ng-options="item.key as item.text for item in arvokonvertterikuvauskielet"></select>
+                            </td>
+                            <td><input type="text" size="15" ng-model="kuvaus.teksti"/></td>
+                            <td>
+                                <button ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" class="btn btn-default btn-sm"
+                                        ng-click="removeKonvertteriParametriKuvaus($index, parametri)"><i
+                                        class="fa fa-trash-o"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </form>
     </div>
 
@@ -489,35 +532,35 @@
         <form name="kaavaForm" class="form-horizontal margin-top-2">
 
             <div class="form-group">
-                <label class="col-sm-4 control-label">{{ t('laskentakaavaviiteasetuksetmodal.laskentakaavaksi') ||
+                <label class="col-md-4 control-label">{{ t('laskentakaavaviiteasetuksetmodal.laskentakaavaksi') ||
                     'Laskentakaavaksi tallennettava funktiokutsu' }}</label>
-                <span class="col-sm-8 control-content" ng-if="funktioSelection">{{getFunktiokutsuName(funktioSelection)}}</span>
+                <span class="col-md-8 control-content" ng-if="funktioSelection">{{getFunktiokutsuName(funktioSelection)}}</span>
             </div>
 
 
             <div class="form-group">
-                <label class="col-sm-4 control-label">{{ t('laskentakaavaviiteasetuksetmodal.laskentakaavannimi') ||
+                <label class="col-md-4 control-label">{{ t('laskentakaavaviiteasetuksetmodal.laskentakaavannimi') ||
                     'Laskentakaavan nimi' }}</label>
 
-                <div class="col-sm-8">
+                <div class="col-md-8">
                     <input ng-disabled="!userAccess.crudOrg" type="text" ng-model="newKaavaNimi" required/>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-sm-4 control-label">{{ t('laskentakaavaviiteasetuksetmodal.laskentakaavankuvaus') ||
+                <label class="col-md-4 control-label">{{ t('laskentakaavaviiteasetuksetmodal.laskentakaavankuvaus') ||
                     'Laskentakaavan kuvaus' }}</label>
 
-                <div class="col-sm-8">
+                <div class="col-md-8">
                     <textarea ng-disabled="!userAccess.crudOrg" ng-model="newKaavaKuvaus"></textarea>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-sm-4 control-label">{{ t('laskentakaavaviiteasetuksetmodal.laskentakaavantyyppi') ||
+                <label class="col-md-4 control-label">{{ t('laskentakaavaviiteasetuksetmodal.laskentakaavantyyppi') ||
                     'Laskentakaavan tyyppi' }}</label>
 
-                <div class="col-sm-8">
+                <div class="col-md-8">
                     <input ng-disabled="true" type="radio" name="tyyppi" value="TOTUUSARVOFUNKTIO"
                            ng-model="funktioSelection.lapsi.tyyppi"/>
                     {{ t('laskentakaavaviiteasetuksetmodal.totuusarvofunktio') || 'Totuusarvofunktio' }}

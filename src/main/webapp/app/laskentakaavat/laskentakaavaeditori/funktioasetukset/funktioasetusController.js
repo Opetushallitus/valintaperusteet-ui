@@ -1,11 +1,11 @@
 angular.module('valintaperusteet')
 
-    .controller('funktiokutsuAsetuksetController', ['$scope', '$q', '$routeParams', '$location', '$timeout', 'Laskentakaava',
+    .controller('funktiokutsuAsetuksetController', ['$scope', '$log', '$q', '$routeParams', '$location', '$timeout', 'Laskentakaava',
         'FunktioNimiService', 'FunktioFactory', 'KaavaValidation', 'GuidGenerator', 'HakemusavaimetLisakysymykset', 'HakemusavaimetLomake',
-        'ValintaryhmaModel', 'Treemodel', 'LaskentakaavaValintaryhma', '$cookieStore', '$window', 'UserModel', 'ErrorService',
-        function ($scope, $q, $routeParams, $location, $timeout, Laskentakaava,
+        'ValintaryhmaModel', 'Treemodel', 'LaskentakaavaValintaryhma', '$cookieStore', '$window', 'UserModel', 'ErrorService', '_',
+        function ($scope, $log, $q, $routeParams, $location, $timeout, Laskentakaava,
                   FunktioNimiService, FunktioFactory, KaavaValidation, GuidGenerator, HakemusavaimetLisakysymykset, HakemusavaimetLomake,
-                  ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore, $window, UserModel, ErrorService) {
+                  ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore, $window, UserModel, ErrorService, _) {
             UserModel.refreshIfNeeded();
             $scope.toggle = false;
             $scope.funktioFactory = FunktioFactory;
@@ -67,11 +67,11 @@ angular.module('valintaperusteet')
                         if(!_.isEmpty(valintaryhma.hakuoid)) {
                             $scope.getHakemusAvaimet(valintaryhma.hakuoid);
                         } else {
-                            console.log("hakuoidia ei löydy");
+                            $log.log("hakuoidia ei löydy");
                         }
                     });
                 } else {
-                    console.log("hakuoidia ei löydy");
+                    $log.log("hakuoidia ei löydy");
                 }
             };
 
