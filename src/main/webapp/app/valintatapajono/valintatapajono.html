@@ -217,22 +217,22 @@
                     </label>
                 </div>
                 <p class="input-group">
-                    <input type="text" class="form-control" datepicker-popup="yyyy-MM-dd"
+                    <input class="form-control" class="form-control" datepicker-popup="dd.MM.yyyy"
                            ng-model="model.valintatapajono.varasijojaKaytetaanAlkaen"
-                           is-open="alkaenRajattuOpen" min-date="today"
-                           close-text="Close"
+                           is-open="alkaenRajattuOpen"
+                           close-text="Sulje"
+                           clear-text="Tyhjennä"
+                           current-text="Tänään"
                            ng-disabled="!model.valintatapajono.alkaenRajattu"
                             />
                     <span class="input-group-btn">
-                        <button type="button" class="btn btn-default btn-sm"
-                                ng-disabled="!model.valintatapajono.alkaenRajattu" ng-click="openAlkaenRajattu($event)">
-                            <i
-                                    class="glyphicon glyphicon-calendar"></i></button>
+                        <button class="btn btn-default btn-sm" ng-disabled="!model.valintatapajono.alkaenRajattu" ng-click="openAlkaenRajattu($event)">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </button>
                     </span>
                 </p>
             </div>
         </div>
-
 
         <div class="form-group">
             <label class="control-label col-md-2" for="varasijojaTaytetaanAsti">{{ t('valintatapajono.varasijoja') ||
@@ -246,14 +246,17 @@
                     </label>
                 </div>
                 <p class="input-group">
-                    <input type="text" class="form-control" datepicker-popup="'yyyy-MM-dd"
+
+                    <input class="form-control" datepicker-popup="dd.MM.yyyy"
                            ng-model="model.valintatapajono.varasijojaTaytetaanAsti"
-                           is-open="astiRajattuOpen" min-date="today"
-                           close-text="Close"
+                           is-open="astiRajattuOpen"
+                           close-text="Sulje"
+                           clear-text="Tyhjennä"
+                           current-text="Tänään"
                            ng-disabled="!model.valintatapajono.astiRajattu"
                             />
                     <span class="input-group-btn">
-                        <button type="button" ng-disabled="!model.valintatapajono.astiRajattu"
+                        <button ng-disabled="!model.valintatapajono.astiRajattu"
                                 class="btn btn-default btn-sm" ng-click="openAstiRajattu($event)"><i
                                 class="glyphicon glyphicon-calendar"></i></button>
                     </span>
