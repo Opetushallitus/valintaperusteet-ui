@@ -28,8 +28,10 @@ angular.module('valintaperusteet').
     };
 }])
 
-.factory('HakukohdeValinnanVaiheModel', ['Valinnanvaihe', 'Valintatapajono', 'ValinnanvaiheValintatapajono', 'HakukohdeValinnanvaihe', 'ValinnanvaiheKuuluuSijoitteluun', 'ValintatapajonoJarjesta',
-        function(Valinnanvaihe, Valintatapajono, ValinnanvaiheValintatapajono, HakukohdeValinnanvaihe, ValinnanvaiheKuuluuSijoitteluun, ValintatapajonoJarjesta) {
+.factory('HakukohdeValinnanVaiheModel', ['Valinnanvaihe', 'Valintatapajono', 'ValinnanvaiheValintatapajono',
+        'HakukohdeValinnanvaihe', 'ValinnanvaiheKuuluuSijoitteluun', 'ValintatapajonoJarjesta', 'Ilmoitus',
+        function(Valinnanvaihe, Valintatapajono, ValinnanvaiheValintatapajono, HakukohdeValinnanvaihe,
+                 ValinnanvaiheKuuluuSijoitteluun, ValintatapajonoJarjesta, Ilmoitus) {
     "use strict";
 
     var model = new function() {
@@ -84,11 +86,13 @@ angular.module('valintaperusteet').
 
                 HakukohdeValinnanvaihe.insert({"parentOid": hakukohdeParentOid}, valinnanvaihe, function(result) {
                     model.valinnanvaihe = result;
+                    Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                     valinnanvaiheet.push(result);
                 });
             } else {
                 Valinnanvaihe.post(model.valinnanvaihe, function(result) {
                     model.valinnanvaihe = result;
+                    Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                     // Päivitetään myös edellisen näkymän modeli
                     var i;
                     for(i in valinnanvaiheet) {

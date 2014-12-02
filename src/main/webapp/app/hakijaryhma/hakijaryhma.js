@@ -3,7 +3,7 @@ angular.module('valintaperusteet')
 
     .factory('HakijaryhmaModel', function ($q, Hakijaryhma, LaskentakaavaModel, ValintaryhmaHakijaryhma,
                                            HakukohdeHakijaryhma, HakijaryhmanValintatapajonot, ValintatapajonoHakijaryhma,
-                                           HakijaryhmaValintatapajono, Ilmoitus) {
+                                           HakijaryhmaValintatapajono, Ilmoitus, IlmoitusTila) {
         "use strict";
 
         var factory = (function () {
@@ -48,6 +48,7 @@ angular.module('valintaperusteet')
                             Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                             deferred.resolve();
                         }, function (err) {
+                            Ilmoitus.avaa("Tallennus epäonnistui", "Hakijaryhmän tallentaminen hakukohteelle tai valintatapajonolle epäonnistui", IlmoitusTila.ERROR);
                             deferred.reject('Hakijaryhmän tallentaminen hakukohteelle tai valintatapajonolle epäonnistui', err);
                         });
                     } else {
@@ -56,6 +57,7 @@ angular.module('valintaperusteet')
                             Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                             deferred.resolve();
                         }, function (err) {
+                            Ilmoitus.avaa("Tallennus epäonnistui", "Hakijaryhmän tallentaminen valintaryhmään epäonnistui", IlmoitusTila.ERROR);
                             deferred.reject('Hakijaryhmän tallentaminen valintaryhmään epäonnistui', err);
                         });
                     }
@@ -65,6 +67,7 @@ angular.module('valintaperusteet')
                         Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                         deferred.resolve();
                     }, function (err) {
+                        Ilmoitus.avaa("Tallennus epäonnistui", "Hakijaryhmän tallentaminen valintatapajonoon epäonnistui", IlmoitusTila.ERROR);
                         deferred.reject('Hakijaryhmän tallentaminen valintatapajonoon epäonnistui', err);
                     });
 
@@ -74,6 +77,7 @@ angular.module('valintaperusteet')
                         Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                         deferred.resolve();
                     }, function (err) {
+                        Ilmoitus.avaa("Tallennus epäonnistui", "Hakijaryhmän tallentaminen hakukohteeseen epäonnistui", IlmoitusTila.ERROR);
                         deferred.reject('Hakijaryhmän tallentaminen hakukohteeseen epäonnistui', err);
                     });
                 }
@@ -83,6 +87,7 @@ angular.module('valintaperusteet')
                         instance.hakijaryhma = result;
                         deferred.resolve();
                     }, function (err) {
+                        Ilmoitus.avaa("Tallennus epäonnistui", "Hakijaryhmän tallentaminen valintaryhmään epäonnistui", IlmoitusTila.ERROR);
                         deferred.reject('Hakijaryhmän tallentaminen valintaryhmään epäonnistui', err);
                     });
                 } else {
