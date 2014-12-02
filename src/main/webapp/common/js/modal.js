@@ -1,7 +1,39 @@
 'use strict';
 
 angular.module('valintaperusteet')
+    .constant('IlmoitusTila', {
+        INFO: 'success',
+        WARNING: 'warning',
+        ERROR: 'danger'
+    })
+//MODAALISET IKKUNAT
+    .factory('Ilmoitus', ['$modal', 'IlmoitusTila', function($modal, IlmoitusTila) {
+        return {
+            avaa: function(otsikko, ilmoitus, tila) {
+                $modal.open({
+                    backdrop: 'static',
+                    templateUrl: '../common/modaalinen/ilmoitus.html',
+                    controller: function($scope, $window, $modalInstance) {
+                        $scope.ilmoitus = ilmoitus;
+                        $scope.otsikko = otsikko;
+                        if(!tila) {
+                            tila = IlmoitusTila.INFO;
+                        }
+                        $scope.tila = tila;
+                        $scope.sulje = function() {
+                            $modalInstance.dismiss('cancel');
+                        };
+                    },
+                    resolve: {
 
+                    }
+                }).result.then(function() {
+                    }, function() {
+                    });
+
+            }
+        };
+    }])
     .directive('modal', ['$modal', function ($modal) {
 
         return {

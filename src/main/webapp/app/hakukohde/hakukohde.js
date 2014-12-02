@@ -4,12 +4,12 @@ angular.module('valintaperusteet')
         'HakukohdeValinnanvaihe', 'Valinnanvaihe', 'ValinnanvaiheJarjesta',
         'HakukohdeKuuluuSijoitteluun', 'HakukohdeHakijaryhma', 'Laskentakaava',
         'HakijaryhmaJarjesta', 'Hakijaryhma', 'Haku', 'HaunTiedot', 'HakukohdeNimi',
-        'HakijaryhmanValintatapajonot',
+        'HakijaryhmanValintatapajonot', 'Ilmoitus', 'IlmoitusTila',
         function($q, HakukohdeHakukohdekoodi, KoodistoHakukohdekoodi, Hakukohde, Valintaryhma,
         HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta,
         HakukohdeKuuluuSijoitteluun, HakukohdeHakijaryhma, Laskentakaava,
         HakijaryhmaJarjesta, Hakijaryhma, Haku, HaunTiedot, HakukohdeNimi,
-        HakijaryhmanValintatapajonot) {
+        HakijaryhmanValintatapajonot, Ilmoitus, IlmoitusTila) {
     "use strict";
 
     var model = new function()  {
@@ -76,7 +76,9 @@ angular.module('valintaperusteet')
 
         this.persistHakukohde = function() {
             Hakukohde.post(model.hakukohde, function(result) {
-
+                Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
+            }, function (error) {
+                Ilmoitus.avaa("Tallennus epäonnistui", "Tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
             });
             if(model.valinnanvaiheet.length > 0) {
                 ValinnanvaiheJarjesta.post(getValinnanvaiheOids(), function(result) {
@@ -89,7 +91,9 @@ angular.module('valintaperusteet')
             }
 
             if(model.hakijaryhmat.length > 0) {
-                HakijaryhmaJarjesta.post(model.hakijaryhmat, function(result) {});
+                HakijaryhmaJarjesta.post(model.hakijaryhmat, function (result) {
+                }, function (error) {
+                });
             }
         };
 

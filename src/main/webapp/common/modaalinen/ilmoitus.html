@@ -1,0 +1,14 @@
+<div class="modal-header">
+	<h3>{{otsikko}}</h3>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<div class="alert alert-{{tila}}">{{ilmoitus}}</div>
+	</div>
+	
+</div>
+<div class="modal-footer">
+	<div class="row">
+		<a class="btn btn-default btn-sm" ng-click="sulje();"  role="button">{{ t('ilmoitus.ok') || 'Ok' }}</a>
+	</div>
+</div>
