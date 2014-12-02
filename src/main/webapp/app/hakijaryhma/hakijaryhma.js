@@ -1,7 +1,9 @@
 // Valintaryhma Järjestyskriteerit
 angular.module('valintaperusteet')
 
-    .factory('HakijaryhmaModel', function ($q, Hakijaryhma, LaskentakaavaModel, ValintaryhmaHakijaryhma, HakukohdeHakijaryhma, HakijaryhmanValintatapajonot, ValintatapajonoHakijaryhma, HakijaryhmaValintatapajono) {
+    .factory('HakijaryhmaModel', function ($q, Hakijaryhma, LaskentakaavaModel, ValintaryhmaHakijaryhma,
+                                           HakukohdeHakijaryhma, HakijaryhmanValintatapajonot, ValintatapajonoHakijaryhma,
+                                           HakijaryhmaValintatapajono, Ilmoitus) {
         "use strict";
 
         var factory = (function () {
@@ -43,6 +45,7 @@ angular.module('valintaperusteet')
                     if (hakukohdeOid || valintatapajonoOid) {
                         HakijaryhmaValintatapajono.update({oid: instance.hakijaryhma.oid}, instance.hakijaryhma, function (result) {
                             instance.hakijaryhma = result;
+                            Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                             deferred.resolve();
                         }, function (err) {
                             deferred.reject('Hakijaryhmän tallentaminen hakukohteelle tai valintatapajonolle epäonnistui', err);
@@ -50,6 +53,7 @@ angular.module('valintaperusteet')
                     } else {
                         Hakijaryhma.update({oid: instance.hakijaryhma.oid}, instance.hakijaryhma, function (result) {
                             instance.hakijaryhma = result;
+                            Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                             deferred.resolve();
                         }, function (err) {
                             deferred.reject('Hakijaryhmän tallentaminen valintaryhmään epäonnistui', err);
@@ -58,6 +62,7 @@ angular.module('valintaperusteet')
                 } else if (hakukohdeOid && valintatapajonoOid) {
                     ValintatapajonoHakijaryhma.insert({oid: valintatapajonoOid}, instance.hakijaryhma, function (result) {
                         instance.hakijaryhma = result;
+                        Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                         deferred.resolve();
                     }, function (err) {
                         deferred.reject('Hakijaryhmän tallentaminen valintatapajonoon epäonnistui', err);
@@ -66,6 +71,7 @@ angular.module('valintaperusteet')
                 } else if (hakukohdeOid) {
                     HakukohdeHakijaryhma.insert({oid: hakukohdeOid}, instance.hakijaryhma, function (result) {
                         instance.hakijaryhma = result;
+                        Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                         deferred.resolve();
                     }, function (err) {
                         deferred.reject('Hakijaryhmän tallentaminen hakukohteeseen epäonnistui', err);
@@ -73,6 +79,7 @@ angular.module('valintaperusteet')
                 }
                 else if (valintaryhmaOid) {
                     ValintaryhmaHakijaryhma.insert({oid: valintaryhmaOid}, instance.hakijaryhma, function (result) {
+                        Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                         instance.hakijaryhma = result;
                         deferred.resolve();
                     }, function (err) {

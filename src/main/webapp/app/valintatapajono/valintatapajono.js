@@ -2,8 +2,12 @@
 
 angular.module('valintaperusteet')
 
-    .factory('ValintatapajonoModel', ['$q', 'Valintatapajono', 'ValinnanvaiheValintatapajono', 'ValintatapajonoJarjestyskriteeri', 'Laskentakaava', 'Jarjestyskriteeri', 'JarjestyskriteeriJarjesta', 'ValintatapajonoHakijaryhma', 'HakukohdeHakijaryhma', 'ValintaryhmaHakijaryhma', 'HakijaryhmaValintatapajono', '$modal',
-    function ($q, Valintatapajono, ValinnanvaiheValintatapajono, ValintatapajonoJarjestyskriteeri, Laskentakaava, Jarjestyskriteeri, JarjestyskriteeriJarjesta, ValintatapajonoHakijaryhma, HakukohdeHakijaryhma, ValintaryhmaHakijaryhma, HakijaryhmaValintatapajono, $modal) {
+    .factory('ValintatapajonoModel', ['$q', 'Valintatapajono', 'ValinnanvaiheValintatapajono', 'ValintatapajonoJarjestyskriteeri',
+        'Laskentakaava', 'Jarjestyskriteeri', 'JarjestyskriteeriJarjesta', 'ValintatapajonoHakijaryhma', 'HakukohdeHakijaryhma',
+        'ValintaryhmaHakijaryhma', 'HakijaryhmaValintatapajono', '$modal', 'Ilmoitus',
+    function ($q, Valintatapajono, ValinnanvaiheValintatapajono, ValintatapajonoJarjestyskriteeri, Laskentakaava,
+              Jarjestyskriteeri, JarjestyskriteeriJarjesta, ValintatapajonoHakijaryhma, HakukohdeHakijaryhma,
+              ValintaryhmaHakijaryhma, HakijaryhmaValintatapajono, $modal, Ilmoitus) {
     "use strict";
 
     var model = new function () {
@@ -110,6 +114,7 @@ angular.module('valintaperusteet')
                             model.valintatapajono.varasijojaTaytetaanAsti = new Date(model.valintatapajono.varasijojaTaytetaanAsti);
                         }
                         valintatapajonot.push(result);
+                        Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                     });
             } else {
 
@@ -131,6 +136,8 @@ angular.module('valintaperusteet')
                     if(model.valintatapajono.varasijojaTaytetaanAsti) {
                         model.valintatapajono.varasijojaTaytetaanAsti = new Date(model.valintatapajono.varasijojaTaytetaanAsti);
                     }
+
+                    Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                 });
 
                 model.hakijaryhmat.forEach(function (hr) {

@@ -1,6 +1,7 @@
 // Valintaryhma Järjestyskriteerit
 app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskriteeri, ValintatapajonoJarjestyskriteeri,
-                                                ParentValintaryhmas, Hakukohde, LaskentakaavaModel, ValintatapajonoModel) {
+                                                ParentValintaryhmas, Hakukohde, LaskentakaavaModel, ValintatapajonoModel,
+                                                Ilmoitus) {
     "use strict";
 
     var model;
@@ -54,6 +55,7 @@ app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskrit
                             jk.nimi = result.nimi;
                         });
                         jarjestyskriteerit.push(jk);
+                        Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                         deferred.resolve();
                     });
             } else {
@@ -68,6 +70,7 @@ app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskrit
                             });
 
                             jarjestyskriteerit[i] = jk;
+                            Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                             deferred.resolve();
                         }
                     }
