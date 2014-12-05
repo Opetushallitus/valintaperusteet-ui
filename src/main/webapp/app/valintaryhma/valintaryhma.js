@@ -4,14 +4,14 @@ angular.module('valintaperusteet')
         'KoodistoValintakoekoodi', 'KoodistoHaunKohdejoukko', 'Laskentakaava', 'Treemodel',
         'ValintaryhmaValintakoekoodi', 'Valinnanvaihe', 'ValintaryhmaValinnanvaihe',
         'ValinnanvaiheJarjesta', 'ValintaryhmaHakukohdekoodi', 'ValintaryhmaHakijaryhma',
-        'OrganizationByOid', '$modal', 'Utils', 'Haku', 'HaunTiedot', 'ParentValintaryhmas',
-        'ChildValintaryhmas', '$location', '$log', 'RootValintaryhmas',
+        'OrganizationByOid', '$modal', 'Utils','ParentValintaryhmas',
+        'ChildValintaryhmas', '$location', '$log', 'RootValintaryhmas', 'TarjontaHaut',
         function ($q, _, Valintaryhma, Hakijaryhma, HakijaryhmaJarjesta, KoodistoHakukohdekoodi,
                                             KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel,
                                             ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe,
                                             ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma,
-                                            OrganizationByOid, $modal, Utils, Haku, HaunTiedot, ParentValintaryhmas,
-                                            ChildValintaryhmas, $location, $log, RootValintaryhmas) {
+                                            OrganizationByOid, $modal, Utils, ParentValintaryhmas,
+                                            ChildValintaryhmas, $location, $log, RootValintaryhmas, TarjontaHaut) {
         "use strict";
 
 
@@ -83,18 +83,10 @@ angular.module('valintaperusteet')
 
                     if (!model.haettu) {
                         model.haettu = true;
-                        Haku.get({}, function (resultWrapper) {
-                            var hakuResult = resultWrapper.result;
-                            model.hakuoidit = hakuResult;
 
-                            //iterate hakuoids and fetch corresponding hakuobjects
-                            model.hakuoidit.forEach(function (element, index) {
-                                HaunTiedot.get({hakuOid: element.oid}, function (resultWrapper) {
-                                    if (resultWrapper.result.tila === "JULKAISTU") {
-                                        model.haut.push(resultWrapper.result);
-                                    }
-
-                                });
+                        TarjontaHaut.get({}, function (resultWrapper) {
+                            model.haut = _.filter(resultWrapper.result, function (haku) {
+                                return haku.tila === "JULKAISTU";
                             });
                         });
                     }
