@@ -1,12 +1,11 @@
 ﻿
 
 angular.module('valintaperusteet').
-    controller('ImportController',['$scope', '$location', '$routeParams', 'HakuModel', 'TarjontaImport', 'Treemodel',
-        function ($scope, $location, $routeParams, HakuModel, TarjontaImport, Treemodel) {
+    controller('ImportController',['$scope', '$location', '$q', '$routeParams', '$filter', 'HakuModel', 'TarjontaImport', 'Treemodel', 'UserAccessLevels', 'UserModel', '_',
+                          function ($scope, $location, $q, $routeParams, $filter, HakuModel, TarjontaImport, Treemodel, UserAccessLevels, UserModel, _) {
     "use strict";
-
     $scope.model = HakuModel;
-    HakuModel.init($routeParams.hakuOid);
+    HakuModel.init();
 
     $scope.aktivoi = function() {
         TarjontaImport.aktivoi({hakuOid: $scope.model.hakuOid.oid}, function() {  
@@ -14,4 +13,7 @@ angular.module('valintaperusteet').
         });
     };
 }]);
+
+
+
 

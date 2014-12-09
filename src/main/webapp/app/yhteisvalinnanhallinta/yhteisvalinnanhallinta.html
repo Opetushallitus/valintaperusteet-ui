@@ -9,11 +9,8 @@
 
     <breadcrumb></breadcrumb>
     <h2>{{ t('yhteisvalinnanhallinta.synkronoi') || 'Synkronoi tarjonta' }}</h2>
-
-    <div>
-        <select ng-model="model.hakuOid" ng-options="haku.nimi.kieli_fi for haku in model.haut | orderBy:'nimi.kieli_fi'"></select>
-        <button auth ng-disabled="!userAccess.crudOph" ng-click="aktivoi()" class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.synkronoi') || 'Synkronoi tarjonta' }}</button>
-    </div>
+    <select auth ng-if="userAccess.hasCrudRights() && (userModel.isOphUser || userModel.isKKUser) && (model.haut.length > 0)" ng-model="selection" ng-options="haku.nimi.kieli_fi for haku in model.haut | HakuOwnerFilter | orderBy:'nimi.kieli_fi'"></select>
+    <button auth ng-disabled="!( userAccess.crudOph || (userModel.isKKUSer && userAccess.hasCrudRights()) )" ng-click="aktivoi()" class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.synkronoi') || 'Synkronoi tarjonta' }}</button>
 
 </div>
 

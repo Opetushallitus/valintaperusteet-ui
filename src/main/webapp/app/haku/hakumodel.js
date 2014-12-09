@@ -11,7 +11,7 @@ angular.module('valintaperusteet')
         this.haku = {};
         this.haut = [];
 
-        this.init = function(oid) {
+        this.init = function() {
             if(model.haut.length < 1 && !model.hakuDeferred) {
                 model.hakuDeferred = $q.defer();
                 UserModel.refreshIfNeeded();
@@ -20,7 +20,6 @@ angular.module('valintaperusteet')
                     model.haut = _.filter(resultWrapper.result, function (haku) {
                         return haku.tila === 'JULKAISTU';
                     });
-                    
                     if ($cookieStore.get("hakuoid")) {
                         var previouslySelectedHaku = _.find(model.haut, function (haku) {
                             return haku.oid === $cookieStore.get("hakuoid");
@@ -53,9 +52,10 @@ angular.module('valintaperusteet')
             return haku.kohdejoukkoUri.indexOf("_12") > -1;
         };
 
-        };
+    };
 
-        return model;
+    return model;
+
     }]).
 
     controller('HakuController', ['$scope', 'HakuModel', '$cookieStore', 'CustomHakuUtil', function ($scope, HakuModel, $cookieStore, CustomHakuUtil) {

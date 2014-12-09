@@ -28,7 +28,7 @@ angular.module('valintaperusteet')
             }
         }
         return result;
-    }
+    };
 }])
 
 
@@ -60,7 +60,7 @@ angular.module('valintaperusteet')
             }
         }
         return result;
-    }
+    };
 }])
 
 .filter('laskentakaavaFilter', ['_', 'ValintatapajonoModel', function (_, ValintatapajonoModel) {
@@ -70,15 +70,24 @@ angular.module('valintaperusteet')
                 return jk.laskentakaavaId == item.id;
             });
         }));
-    }
+    };
 }])
 
 .filter('hakijaryhmatFilter', ['_', 'ValintatapajonoModel', function (_, ValintatapajonoModel) {
     return function (hakijaryhmat) {
         return _.difference(hakijaryhmat, _.filter(hakijaryhmat, function(origItem) {
             return _.some(ValintatapajonoModel.hakijaryhmat, function(filterItem) {
-                return origItem.oid == filterItem.masterOid;
+                return origItem.oid === filterItem.masterOid;
             });
         }));
-    }
-}]);
+    };
+}])
+
+    .filter('HakuOwnerFilter', ['UserModel','_', 'UserAccessLevels', function (UserModel, _, UserAccessLevels) {
+        return function (haut) {
+            var userOrgs = UserModel.organisaatioOids;
+            return UserModel.isOphUser ? haut : _.filter(haut, function (haku) {
+                return _.union(UserModel.organisaatioOids, haku.organisaatioOids).length !== _.uniq(_.union(UserModel.organisaatioOids, haku.organisaatioOids)).length;
+            });
+        };
+    }]);
