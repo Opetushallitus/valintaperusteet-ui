@@ -83,11 +83,13 @@ angular.module('valintaperusteet')
     };
 }])
 
-    .filter('HakuOwnerFilter', ['UserModel','_', 'UserAccessLevels', function (UserModel, _, UserAccessLevels) {
+    .filter('HakuOwnerFilter', ['UserModel','_', function (UserModel, _) {
         return function (haut) {
-            var userOrgs = UserModel.organisaatioOids;
+            var userOrgs = UserModel.organizationOids;
             return UserModel.isOphUser ? haut : _.filter(haut, function (haku) {
-                return _.union(UserModel.organisaatioOids, haku.organisaatioOids).length !== _.uniq(_.union(UserModel.organisaatioOids, haku.organisaatioOids)).length;
+                return _.some(userOrgs, function (userOrgOid) {
+                    return _.contains(haku.organisaatioOids, userOrgOid);
+                });
             });
         };
     }]);

@@ -15,7 +15,6 @@ angular.module('valintaperusteet')
 
                 AuthService.getOrganizations('APP_VALINTAPERUSTEET').then(function (oidList) {
                     model.organizationOids = oidList;
-
                     var organizationPromises = [];
                     _.forEach(oidList, function (oid) {
                         var deferred = $q.defer();
