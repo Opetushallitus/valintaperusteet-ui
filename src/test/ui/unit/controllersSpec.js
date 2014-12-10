@@ -1045,7 +1045,7 @@ describe('Testing ImportController', function(){
     });
 
     it('check initialized variables', function() {
-        expect(scope.model.haut.length).toBe(3);
+        expect(scope.model.haut.length).toBe(4);
     });
 
     afterEach(function() {
