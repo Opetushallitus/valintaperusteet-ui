@@ -11,6 +11,16 @@ angular.module('valintaperusteet')
         this.haku = {};
         this.haut = [];
 
+        this.getHakuNimi = function (haku) {
+            var kielet = ['kieli_fi', 'kieli_sv', 'kieli_en'];
+
+            var kieli = _.find(kielet, function (kieli) {
+                return !(_.isEmpty(haku.nimi[kieli]));
+            });
+
+            return haku.nimi[kieli];
+        };
+
         this.init = function() {
             if(model.haut.length < 1 && !model.hakuDeferred) {
                 model.hakuDeferred = $q.defer();
@@ -18,8 +28,14 @@ angular.module('valintaperusteet')
 
                 TarjontaHaut.get({}, function (resultWrapper) {
                     model.haut = _.filter(resultWrapper.result, function (haku) {
-                        return haku.tila === 'JULKAISTU';
+                        return haku.tila === 'JULKAISTU' || haku.tila === 'VALMIS';
                     });
+
+                    //select and set name for haku
+                    _.map(model.haut, function (haku) {
+                        haku.uiNimi = model.getHakuNimi(haku);
+                    });
+
                     if ($cookieStore.get("hakuoid")) {
                         var previouslySelectedHaku = _.find(model.haut, function (haku) {
                             return haku.oid === $cookieStore.get("hakuoid");
@@ -65,9 +81,12 @@ angular.module('valintaperusteet')
         CustomHakuUtil.refreshIfNeeded();
 
         $scope.changeHaku = function () {
-            $scope.hakuModel.hakuOid = $scope.hakuModel.haku.oid;
-            sessionStorage.setItem('valintaperusteHakuOid', $scope.hakuModel.hakuOid);
-            $cookieStore.put('hakuoid', $scope.hakuModel.hakuOid);
+            if($scope.hakuModel && $scope.hakuModel.haku) {
+                $scope.hakuModel.hakuOid = $scope.hakuModel.haku.oid;
+                sessionStorage.setItem('valintaperusteHakuOid', $scope.hakuModel.hakuOid);
+                $cookieStore.put('hakuoid', $scope.hakuModel.hakuOid);
+            }
+
         };
 
 

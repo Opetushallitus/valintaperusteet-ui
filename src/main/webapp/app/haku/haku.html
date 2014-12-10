@@ -6,7 +6,7 @@
             <!-- Show all hakus -->
             <select auth ng-if="!userModel.isKKUser" id="haku" class="form-control"
                     ng-model="hakuModel.haku"
-                    ng-options="haku.nimi.kieli_fi for haku in hakuModel.haut | CustomHakuFilter | orderBy:'nimi.kieli_fi'"
+                    ng-options="haku.uiNimi for haku in hakuModel.haut | CustomHakuFilter | orderBy:'nimi.kieli_fi'"
                     ng-change="changeHaku()">
                 <option value=""></option>
             </select>
@@ -14,7 +14,7 @@
             <!-- For KKUser filter out all other than KKHaut-->
             <select auth ng-if="userModel.isKKUser" id="haku" class="form-control"
                     ng-model="hakuModel.haku"
-                    ng-options="haku.nimi.kieli_fi for haku in hakuModel.haut | CustomHakuFilter | kkHakuFilter | orderBy:'nimi.kieli_fi'"
+                    ng-options="haku.uiNimi for haku in hakuModel.haut | CustomHakuFilter | kkHakuFilter | orderBy:'nimi.kieli_fi'"
                     ng-change="changeHaku()">
                 <option value=""></option>
             </select>
