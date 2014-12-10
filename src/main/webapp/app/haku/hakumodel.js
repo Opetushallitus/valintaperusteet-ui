@@ -18,8 +18,9 @@ angular.module('valintaperusteet')
 
                 TarjontaHaut.get({}, function (resultWrapper) {
                     model.haut = _.filter(resultWrapper.result, function (haku) {
-                        return haku.tila === 'JULKAISTU';
+                        return haku.tila === 'JULKAISTU' || haku.tila === 'VALMIS';
                     });
+
                     if ($cookieStore.get("hakuoid")) {
                         var previouslySelectedHaku = _.find(model.haut, function (haku) {
                             return haku.oid === $cookieStore.get("hakuoid");
