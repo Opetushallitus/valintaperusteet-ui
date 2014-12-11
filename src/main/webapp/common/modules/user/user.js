@@ -19,6 +19,7 @@ angular.module('User', [])
         
         this.refresh = function () {
             User.organizations = RoleParser.getOrganizations(palvelutHARDCODE);
+            console.log(User.organizations);
         };
     };
 

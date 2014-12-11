@@ -1,6 +1,6 @@
 
 
-angular.module('valintaperusteet')
+angular.module('User')
 
     .service('RoleParser', ['_', function (_) {
         this.parseMyRoles = function (myroles) {
@@ -11,7 +11,7 @@ angular.module('valintaperusteet')
 
         };
 
-        this.getOrganizations = function (services) {
+        this.parseOrganizations = function (services) {
             return _.pluck(services, 'name');
         };
     }])
