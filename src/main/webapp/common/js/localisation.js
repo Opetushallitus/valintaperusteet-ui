@@ -86,11 +86,10 @@ angular.module('oph.localisation', [])
             this.getTranslationsForArray = function(array){
                 var self = this;
                 array.forEach(function(item) {
+                    item.text = item.default_text;
                     self.getTranslation(item.text).then(function (text) {
                         if (text) {
                             item.text = text;
-                        } else {
-                            item.text = item.default_text;
                         }
                     });
                 });
