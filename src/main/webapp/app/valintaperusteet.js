@@ -1,7 +1,7 @@
 "use strict";
 
 var app = angular.module('valintaperusteet', ['ngResource', 'ngCookies', 'loading', 'ngRoute',
-    'ui.bootstrap', 'lodash', 'ng-breadcrumbs', 'oph.localisation', 'oph.utils'])
+    'ui.bootstrap', 'lodash', 'ng-breadcrumbs', 'oph.localisation', 'oph.utils', 'User'])
 
     .run(function ($http, LocalisationService) {
         $http.get(SERVICE_URL_BASE + "buildversion.txt?auth");
@@ -10,13 +10,15 @@ var app = angular.module('valintaperusteet', ['ngResource', 'ngCookies', 'loadin
 
     .constant('CAS_URL', CAS_URL || "/cas/myroles")
 
-    .controller('mainCtrl', ['$scope', '$routeParams', 'breadcrumbs', 'UserAccessLevels', 'UserModel',
-        function ($scope, $routeParams, breadcrumbs, UserAccessLevels, UserModel) {
+    .controller('mainCtrl', ['$scope', '$routeParams', 'breadcrumbs', 'UserAccessLevels', 'UserModel', 'AuthenticationServices', 'User',
+        function ($scope, $routeParams, breadcrumbs, UserAccessLevels, UserModel, AuthenticationServices, User) {
 
             $scope.breadcrumbs = breadcrumbs;
             UserAccessLevels.refreshIfNeeded($routeParams.id, $routeParams.hakukohdeOid);
             UserModel.refreshIfNeeded();
 
+            User.refreshIfNeeded();
+            
         }])
 
     .controller('RootCtrl', ['$rootScope', '$scope' ,'LocalisationService', 'breadcrumbs',
