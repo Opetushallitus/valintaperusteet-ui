@@ -1,19 +1,22 @@
 'use strict';
 
 describe('Testing ValintaryhmaHakukohdeTreeController', function(){
-    var rootScope,$rootScope, $controller, $httpBackend, $location, location,
-        hakuModel, treemodel, hakukohdeSiirra,scope,ctrl, puukaikkijson, hakujson, hakuextrajson;
+    var rootScope,$rootScope, $controller, $httpBackend, $location, location, $q,
+        hakuModel, treemodel, hakukohdeSiirra,scope,ctrl, puukaikkijson, hakujson, hakuextrajson, userModel, _;
     var routeParams = {"hakukohdeOid": "oid2", "hakuOid": "oid1"};
-    beforeEach(module('valintaperusteet','MockData'));
+    beforeEach(module('valintaperusteet','MockData', 'lodash'));
 
     beforeEach(inject(function($injector, puuKaikkiJSON, hakuJSON, hakuExtraJSON) {
         $httpBackend = $injector.get('$httpBackend');
         $rootScope = $injector.get('$rootScope');
         $location = $injector.get('$location');
         $controller = $injector.get('$controller');
+        $q = $injector.get('$q');
+        _ = $injector.get('_');
         hakuModel = $injector.get('HakuModel');
         treemodel = $injector.get('Treemodel');
         hakukohdeSiirra = $injector.get('HakukohdeSiirra');
+        userModel = $injector.get('UserModel');
         puukaikkijson = puuKaikkiJSON;
         hakujson = hakuJSON;
         hakuextrajson = hakuExtraJSON;
@@ -33,8 +36,8 @@ describe('Testing ValintaryhmaHakukohdeTreeController', function(){
         rootScope = $rootScope;
         location = $location;
         $httpBackend.expectGET('resources/puu?hakuOid=&kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
-        ctrl = $controller('ValintaryhmaHakukohdeTreeController', {'$scope' : scope, 'Treemodel': treemodel,
-            'HakukohdeSiirra': hakukohdeSiirra, 'HakuModel': hakuModel});
+        ctrl = $controller('ValintaryhmaHakukohdeTreeController', {'$scope' : scope, '$q': $q, '_': _, 'Treemodel': treemodel,
+            'HakukohdeSiirra': hakukohdeSiirra, 'HakuModel': hakuModel, 'UserModel': userModel});
         $httpBackend.flush();
     });
 

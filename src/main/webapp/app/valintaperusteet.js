@@ -8,6 +8,7 @@ var app = angular.module('valintaperusteet', ['ngResource', 'ngCookies', 'loadin
         LocalisationService.getTranslation("");
     })
 
+    .constant('CAS_URL', CAS_URL || "/cas/myroles")
 
     .controller('mainCtrl', ['$scope', '$routeParams', 'breadcrumbs', 'UserAccessLevels', 'UserModel',
         function ($scope, $routeParams, breadcrumbs, UserAccessLevels, UserModel) {
@@ -56,5 +57,6 @@ var TARJONTA_URL_BASE = TARJONTA_URL_BASE || "";
 var VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE || "";
 var LOCALISATION_URL_BASE = LOCALISATION_URL_BASE || "";
 var HAKEMUS_URL_BASE = HAKEMUS_URL_BASE || "";
+var CAS_URL = CAS_URL || "/cas/myroles";
 
 

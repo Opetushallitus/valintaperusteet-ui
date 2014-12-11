@@ -20,6 +20,7 @@ module.exports = function(config) {
       'main/webapp/app/valintaperusteet.js',
       'main/webapp/app/**/*.js',
       'main/webapp/common/js/**/*.js',
+      'main/webapp/common/modules/**/*.js',
       'test/ui/angular-mocks.js',
       'test/ui/unit/**/*.js'
     ],

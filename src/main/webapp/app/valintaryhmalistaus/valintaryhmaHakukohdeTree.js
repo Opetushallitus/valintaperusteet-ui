@@ -218,8 +218,8 @@ angular.module('valintaperusteet')
 
 
 
-    .controller('ValintaryhmaHakukohdeTreeController', ['$scope', '$q', '_', 'Treemodel', 'HakukohdeSiirra', 'HakuModel', 'UserModel', '$timeout',
-        function ($scope, $q, _, Treemodel, HakukohdeSiirra, HakuModel, UserModel, $timeout) {
+    .controller('ValintaryhmaHakukohdeTreeController', ['$scope', '$q', '_', 'Treemodel', 'HakukohdeSiirra', 'HakuModel', 'UserModel',
+        function ($scope, $q, _, Treemodel, HakukohdeSiirra, HakuModel, UserModel) {
             "use strict";
 
             $scope.predicate = 'nimi';
