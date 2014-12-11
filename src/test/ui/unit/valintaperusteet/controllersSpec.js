@@ -280,7 +280,7 @@ describe('Testing HakijaryhmaController', function(){
     var routeParams = {"id": "oid1","hakukohdeOid": null};
     beforeEach(module('valintaperusteet','MockData'));
 
-    beforeEach(inject(function($injector,puuKaikkiJSON,laskentakaavaJSON) {
+    beforeEach(inject(function($injector,puuKaikkiJSON) {
         $httpBackend = $injector.get('$httpBackend');
         $rootScope = $injector.get('$rootScope');
         $location = $injector.get('$location');
@@ -289,7 +289,7 @@ describe('Testing HakijaryhmaController', function(){
         hakijaryhmaModel = $injector.get('HakijaryhmaModel');
         hakukohdeModel = $injector.get('HakukohdeModel');
         puukaikkijson = puuKaikkiJSON;
-        laskentakaavajson = laskentakaavaJSON;
+        laskentakaavajson = $injector.get('laskentakaavaJSON');
 
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
