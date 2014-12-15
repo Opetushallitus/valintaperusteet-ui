@@ -1,7 +1,9 @@
 angular.module('valintaperusteet')
 
-.factory('ValintaryhmaValinnanvaiheModel', ['Valinnanvaihe', 'Valintatapajono', 'ValinnanvaiheValintatapajono', 'NewValintaryhmaValinnanvaihe', 'ValintatapajonoJarjesta',
-        function(Valinnanvaihe, Valintatapajono, ValinnanvaiheValintatapajono, NewValintaryhmaValinnanvaihe, ValintatapajonoJarjesta) {
+.factory('ValintaryhmaValinnanvaiheModel', ['Valinnanvaihe', 'Valintatapajono', 'ValinnanvaiheValintatapajono',
+        'NewValintaryhmaValinnanvaihe', 'ValintatapajonoJarjesta', 'Ilmoitus',
+        function(Valinnanvaihe, Valintatapajono, ValinnanvaiheValintatapajono, NewValintaryhmaValinnanvaihe,
+                 ValintatapajonoJarjesta, Ilmoitus) {
 
     "use strict";
 
@@ -43,6 +45,7 @@ angular.module('valintaperusteet')
                         }
                     }
                 });
+                Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
 
                 ValintatapajonoJarjesta.post(getValintatapajonoOids(), function(result) {});
 
@@ -61,6 +64,7 @@ angular.module('valintaperusteet')
                 NewValintaryhmaValinnanvaihe.put({valintaryhmaOid: parentValintaryhmaOid}, valinnanvaihe, function(result){
                     model.valinnanvaihe = result;
                     valinnanvaiheet.push(result);
+                    Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                 });
             }
         };
