@@ -8,7 +8,7 @@ angular.module('valintaperusteet').
     HakuModel.init();
 
     $scope.aktivoi = function() {
-        TarjontaImport.aktivoi({hakuOid: $scope.model.hakuOid.oid}, function() {  
+        TarjontaImport.aktivoi({hakuOid: HakuModel.haku.oid}, function() {
             Treemodel.refresh();
         });
     };
