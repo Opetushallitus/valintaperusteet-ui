@@ -5,13 +5,14 @@ angular.module('valintaperusteet')
         'ValintaryhmaValintakoekoodi', 'Valinnanvaihe', 'ValintaryhmaValinnanvaihe',
         'ValinnanvaiheJarjesta', 'ValintaryhmaHakukohdekoodi', 'ValintaryhmaHakijaryhma',
         'OrganizationByOid', '$modal', 'Utils','ParentValintaryhmas',
-        'ChildValintaryhmas', '$location', '$log', 'RootValintaryhmas', 'TarjontaHaut',
+        'ChildValintaryhmas', '$location', '$log', 'RootValintaryhmas', 'TarjontaHaut', 'Ilmoitus',
         function ($q, _, Valintaryhma, Hakijaryhma, HakijaryhmaJarjesta, KoodistoHakukohdekoodi,
                                             KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel,
                                             ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe,
                                             ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma,
                                             OrganizationByOid, $modal, Utils, ParentValintaryhmas,
-                                            ChildValintaryhmas, $location, $log, RootValintaryhmas, TarjontaHaut) {
+                                            ChildValintaryhmas, $location, $log, RootValintaryhmas, TarjontaHaut,
+                                            Ilmoitus) {
         "use strict";
 
 
@@ -157,7 +158,7 @@ angular.module('valintaperusteet')
                         if (model.valintaryhma.level === 1) {
                             model.updateKohdejoukot(model.valintaryhma.kohdejoukko, model.valintaryhma.oid);
                         }
-
+                        Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                         Treemodel.refresh();
                     });
 
