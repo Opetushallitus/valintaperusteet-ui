@@ -18,6 +18,7 @@ module.exports = function(config) {
       'main/webapp/common/jslib/jquery.js',
       'main/webapp/common/jslib/*.js',
       'main/webapp/app/valintaperusteet.js',
+      'main/webapp/common/modules/user/user.js',
       'main/webapp/app/**/*.js',
       'main/webapp/common/js/**/*.js',
       'main/webapp/common/modules/**/*.js',

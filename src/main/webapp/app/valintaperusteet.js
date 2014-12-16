@@ -1,7 +1,7 @@
 "use strict";
 
 var app = angular.module('valintaperusteet', ['ngResource', 'ngCookies', 'loading', 'ngRoute',
-    'ui.bootstrap', 'lodash', 'ng-breadcrumbs', 'oph.localisation', 'oph.utils', 'User'])
+    'ui.bootstrap', 'lodash', 'ng-breadcrumbs', 'oph.localisation', 'oph.utils', 'user'])
 
     .run(function ($http, LocalisationService) {
         $http.get(SERVICE_URL_BASE + "buildversion.txt?auth");
@@ -10,15 +10,22 @@ var app = angular.module('valintaperusteet', ['ngResource', 'ngCookies', 'loadin
 
     .constant('CAS_URL', CAS_URL || "/cas/myroles")
 
-    .controller('mainCtrl', ['$scope', '$routeParams', 'breadcrumbs', 'UserAccessLevels', 'UserModel', 'AuthenticationServices', 'User',
-        function ($scope, $routeParams, breadcrumbs, UserAccessLevels, UserModel, AuthenticationServices, User) {
+    // Applications in myroles this module uses
+    .constant('ValintaperusteRoles', ['APP_VALINTAPERUSTEET', 'APP_VALINTAPERUSTEETKK'])
 
+    .controller('mainCtrl', ['$scope', '$routeParams', '$log', 'breadcrumbs', 'UserAccessLevels', 'UserModel', 'AuthenticationServices', 'User', 'MyRolesModel', 'ValintaperusteRoles',
+        function ($scope, $routeParams, $log, breadcrumbs, UserAccessLevels, UserModel, AuthenticationServices, User, MyRolesModel, ValintaperusteRoles) {
             $scope.breadcrumbs = breadcrumbs;
-            UserAccessLevels.refreshIfNeeded($routeParams.id, $routeParams.hakukohdeOid);
-            UserModel.refreshIfNeeded();
 
-            User.refreshIfNeeded();
-            
+            MyRolesModel.then(function (roles) {
+                UserAccessLevels.refreshIfNeeded($routeParams.id, $routeParams.hakukohdeOid);
+                UserModel.refreshIfNeeded();
+
+                User.refreshIfNeeded(roles.myroles, ValintaperusteRoles);
+            }, function (error) {
+                $log.error('Fetching Myroles from cas failed:', error);
+            });
+
         }])
 
     .controller('RootCtrl', ['$rootScope', '$scope' ,'LocalisationService', 'breadcrumbs',

@@ -1,16 +1,14 @@
 
 describe('Testing RoleParser service', function () {
     var palveluResource, palvelut, user;
-    beforeEach(module('MockData', 'User'));
+    beforeEach(module('MockData', 'user'));
     
-    beforeEach(inject(function (palveluResourceMock, palvelut, user) {
+    beforeEach(inject(function (palveluResourceMock, palvelut, User) {
         palvelut = palvelut;
         palveluResource = palveluResourceMock;
-        user = user;
+        user = User;
     }));
     
-    it('should return palvelut from getOrganizations', function () {
-        expect(user.parseOrganizations(palveluResource)).toBe(palvelut);
-    });
+
     
 });

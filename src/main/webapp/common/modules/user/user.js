@@ -1,28 +1,29 @@
 
-angular.module('User', [])
+angular.module('user', [])
 
-.factory('User', ['$q', '_', 'RoleParser', 'palvelutHARDCODE', function ($q, _, RoleParser, palvelutHARDCODE) {
-    var deferred = undefined;
+    .factory('User', ['$q', '_', 'RoleParser', function ($q, _, RoleParser) {
+        var deferred = undefined;
 
-    var User = new function () {
+        var User = new function () {
 
-        this.organizations = [];
-        
-        this.refreshIfNeeded = function () {
-            if(_.isEmpty(deferred)) {
-                deferred = $q.defer();
-                User.refresh();
-            }
-            return deferred.promise;
+            this.deferred = undefined;
+            this.myRoles = [];
+            this.organizations = [];
 
+            this.refreshIfNeeded = function (myRoles, appRoles) {
+                if(_.isEmpty(deferred)) {
+                    User.deferred = $q.defer();
+                    User.refresh(myRoles, appRoles);
+                }
+                return User.deferred.promise;
+            };
+
+            this.refresh = function (myRoles, appRoles) {
+                User.myRoles = myRoles;
+                User.organizations = RoleParser.getParsedRoles(myRoles, appRoles);
+                User.deferred.resolve();
+            };
         };
-        
-        this.refresh = function () {
-            User.organizations = RoleParser.getOrganizations(palvelutHARDCODE);
-            console.log(User.organizations);
-        };
-    };
 
-    return User;
-}]);
-
+        return User;
+    }]);
