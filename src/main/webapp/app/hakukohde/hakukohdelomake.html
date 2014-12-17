@@ -147,13 +147,13 @@
 
 <div class="form-group">
     <div class="col-md-offset-2 col-md-10" ng-show="model.hakukohde.oid">
-        <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="lisaaValinnanVaihe()"><i
+        <a auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="lisaaValinnanVaihe()"><i
                 class="fa fa-plus"></i> {{ t('hakukohdelomake.valinnanvaihe') || 'Valinnanvaihe' }}
-        </button>
-        <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default"
+        </a>
+        <a auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default"
                 ng-click="lisaaValintakoeValinnanVaihe()"><i
                 class="fa fa-plus"></i> {{ t('hakukohdelomake.valintakoevalinnanvaihe') || 'Valintakoevalinnanvaihe' }}
-        </button>
+        </a>
     </div>
 </div>
 
@@ -212,9 +212,9 @@
 
 <div class="form-group" ng-if="model.hakukohde.oid">
     <div class="col-md-offset-2 col-md-10">
-        <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()"><i
+        <a auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()"><i
                 class="fa fa-plus"></i> Hakijaryhma
-        </button>
+        </a>
     </div>
 </div>
 
