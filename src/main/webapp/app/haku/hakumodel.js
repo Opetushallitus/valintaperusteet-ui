@@ -30,7 +30,6 @@ angular.module('valintaperusteet')
                     model.haut = _.filter(resultWrapper.result, function (haku) {
                         return haku.tila === 'JULKAISTU' || haku.tila === 'VALMIS';
                     });
-
                     //select and set name for haku
                     _.map(model.haut, function (haku) {
                         haku.uiNimi = model.getHakuNimi(haku);
@@ -58,8 +57,6 @@ angular.module('valintaperusteet')
 
                 });
 
-            } else {
-                model.hakuDeferred.resolve();
             }
 
         };

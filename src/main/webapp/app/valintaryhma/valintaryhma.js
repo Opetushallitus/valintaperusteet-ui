@@ -5,14 +5,14 @@ angular.module('valintaperusteet')
         'ValintaryhmaValintakoekoodi', 'Valinnanvaihe', 'ValintaryhmaValinnanvaihe',
         'ValinnanvaiheJarjesta', 'ValintaryhmaHakukohdekoodi', 'ValintaryhmaHakijaryhma',
         'OrganizationByOid', '$modal', 'Utils','ParentValintaryhmas',
-        'ChildValintaryhmas', '$location', '$log', 'RootValintaryhmas', 'TarjontaHaut', 'Ilmoitus',
+        'ChildValintaryhmas', '$location', '$log', 'RootValintaryhmas', 'TarjontaHaut', 'Ilmoitus', 'HakuModel',
         function ($q, _, Valintaryhma, Hakijaryhma, HakijaryhmaJarjesta, KoodistoHakukohdekoodi,
                                             KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel,
                                             ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe,
                                             ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma,
                                             OrganizationByOid, $modal, Utils, ParentValintaryhmas,
                                             ChildValintaryhmas, $location, $log, RootValintaryhmas, TarjontaHaut,
-                                            Ilmoitus) {
+                                            Ilmoitus, HakuModel) {
         "use strict";
 
 
@@ -82,15 +82,15 @@ angular.module('valintaperusteet')
                         model.kohdejoukot = result;
                     });
 
-                    if (!model.haettu) {
-                        model.haettu = true;
+                    if(_.isEmpty(HakuModel.hakuDeferred)) {
+                        HakuModel.init();
+                    }  
 
-                        TarjontaHaut.get({}, function (resultWrapper) {
-                            model.haut = _.filter(resultWrapper.result, function (haku) {
-                                return haku.tila === "JULKAISTU";
-                            });
-                        });
-                    }
+                    HakuModel.hakuDeferred.promise.then(function () {
+                        model.haut = HakuModel.haut;
+                    }, function (error) {
+                        $log.error('Hakujen haku epäonnistui', error);
+                    });
                 }
             };
 

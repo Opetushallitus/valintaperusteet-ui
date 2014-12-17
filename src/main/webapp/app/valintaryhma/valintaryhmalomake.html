@@ -101,7 +101,7 @@
 
     <div class="col-md-4">
         <select auth ng-disabled="!userAccess.updateOrg" id="hakunimi" class="form-control" ng-model="model.valintaryhma.hakuoid"
-                ng-options="h.oid as h.nimi.kieli_fi for h in model.haut | orderBy:'nimi.kieli_fi'">
+                ng-options="h.oid as h.uiNimi for h in model.haut | orderBy:'nimi.kieli_fi'">
             <option value=""></option>
         </select>
     </div>
