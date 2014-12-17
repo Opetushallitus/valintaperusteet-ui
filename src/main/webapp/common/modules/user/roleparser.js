@@ -7,6 +7,9 @@ angular.module('user')
     .constant('CRUD', "_CRUD")
     .constant('OID_REGEXP', /\d(\d|\.)+\d/)
 
+
+
+    //AppRole == part of a role in myroles list - for example APP_VALINTAPERUSTEET & APP_VALINTOJENTOTEUTTAMINEN are AppRoles
     .service('RoleParser', ['_', 'READ', 'UPDATE', 'CRUD', 'OID_REGEXP', function (_, READ, UPDATE, CRUD, OID_REGEXP) {
         var that = this;
         
@@ -38,6 +41,17 @@ angular.module('user')
             function isKorkeakouluRole(myRole, appRole) {
                 console.log(myRole.slice(0, appRole.length));
             }
+            
+        };
+
+        this.getOrganizationOidsByAppRole = function () {
+            
+        };
+
+
+        //check that myRole includes appRole and appRole isn't a substring of another appRole
+
+        this.matchesAppRole = function (appRole, myRole) {
             
         };
         
