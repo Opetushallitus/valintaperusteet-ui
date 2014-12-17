@@ -285,9 +285,9 @@
 <div auth ng-if="userAccess.crudOrg" class="form-group">
     <label class="control-label col-md-2">{{ t('valintaryhmalomake.hallinnoi') || 'Hallinnoi valintaryhmää'}}</label>
     <div class="col-md-10">
-        <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-default btn-sm" ng-click="showValintaryhmaKopiointi()">
+        <a auth ng-disabled="!userAccess.crudOrg" class="btn btn-default btn-sm" ng-click="showValintaryhmaKopiointi()">
             {{t('valintaryhmalomake.kopioi.valintaryhma.kopiointi') || 'Valintaryhmän kopiointi'}}
-        </button>
+        </a>
         <button auth ng-disabled="!model.okToDelete || !userAccess.crudOrg" class="btn btn-sm btn-primary" type="button"
                 ng-click="deleteValintaryhma()">
             <i class="fa fa-trash-o"></i>
