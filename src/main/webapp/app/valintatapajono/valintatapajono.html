@@ -332,7 +332,8 @@
         <table class="virkailija-table-1" ng-show="model.jarjestyskriteerit">
             <thead>
             <tr>
-                <th>{{ t('valintatapajono.aktiivinen') || 'Aktiivinen' }}</th>
+                <th>#</th>
+                <th>{{ t('valintatapajono.prioriteetti') || 'Aktiivinen'}}</th>
                 <th>{{ t('valintatapajono.laskentakaava') || 'Laskentakaava' }}</th>
                 <th>{{ t('valintatapajono.metatiedot') || 'Metatiedot' }}</th>
                 <th>{{ t('valintatapajono.peritty') || 'Peritty' }}</th>
@@ -341,6 +342,7 @@
             </thead>
             <tbody ui-sortable class="margin-top-2" ng-model="model.jarjestyskriteerit">
             <tr ng-repeat="data in model.jarjestyskriteerit">
+                <td>{{$index + 1}}</td>
                 <td><input auth ng-disabled="!userAccess.updateOrg" type="checkbox" ng-model="data.aktiivinen"/></td>
                 <td>
                     <a ng-class="{true:'', false:'line-through'}[data.aktiivinen]"
