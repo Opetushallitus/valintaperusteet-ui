@@ -3,15 +3,15 @@
         <label class="control-label col-md-2">{{ t('valintakoekoodit.header') || 'Valintakoekoodit' }}</label>
 
         <div class="col-md-10">
-            <button ng-click="toggleValintakokeet()" class="btn btn-sm btn-default">
+            <a ng-click="toggleValintakokeet()" class="btn btn-sm btn-default">
                 <i ng-if="toggleValintaryhmaValintakokeet" class="fa fa-eye-slash"></i>
                 <i ng-if="!toggleValintaryhmaValintakokeet" class="fa fa-eye"></i> {{ t('valintakoekoodit.header') ||
                 'Valintakoekoodit' }}
-            </button>
-            <button auth ng-disabled="!userAccess.updateOrg" ng-click="showValintakoeKoodit()" type="button"
+            </a>
+            <a auth ng-disabled="!userAccess.updateOrg" ng-click="showValintakoeKoodit()" type="button"
                     class="btn btn-sm btn-default">
                 <span><i class="fa fa-plus"></i> {{ t('valintakoekoodit.uusi') || 'Uusi valintakoekoodi' }}</span>
-            </button>
+            </a>
             <modal modal-template="../common/partials/valintakoekoodinValinta.html" auth="update">
                 <modal-open></modal-open>
             </modal>
@@ -39,7 +39,7 @@
                     <td>{{valintakoekoodit.arvo}}</td>
                     <td>{{valintakoekoodit.nimiFi}}</td>
                     <td>
-                        <button auth ng-disabled="!userAccess.updateOrg" ng-click="removeValintakoeKoodi(valintakoekoodit)">
+                        <button class="btn btn-sm btn-default" auth ng-disabled="!userAccess.updateOrg" ng-click="removeValintakoeKoodi(valintakoekoodit)">
                             <i class="fa fa-trash-o"></i>
                         </button>
                     </td>

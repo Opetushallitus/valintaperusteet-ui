@@ -3,15 +3,15 @@
         <label class="control-label col-md-2" for="">{{ t('hakukohdekoodit.header') || 'Hakukohdekoodit' }}</label>
 
         <div class="col-md-10">
-            <button class="btn btn-sm btn-default" ng-click="toggleHakukohdekoodit()">
+            <a class="btn btn-sm btn-default" ng-click="toggleHakukohdekoodit()">
                 <i ng-if="!toggleValintaryhmaHakukohdekoodit" class="fa fa-eye"></i>
                 <i ng-if="toggleValintaryhmaHakukohdekoodit" class="fa fa-eye-slash"></i> {{ t('hakukohdekoodit.header')
                 || 'Hakukohdekoodit' }}
-            </button>
-            <button auth ng-disabled="!userAccess.updateOrg" ng-click="showHakukohdeKoodit()" type="button"
+            </a>
+            <a auth ng-disabled="!userAccess.updateOrg" ng-click="showHakukohdeKoodit()" type="button"
                     class="btn btn-sm btn-default">
                 <i class="fa fa-plus"></i> {{ t('hakukohdekoodit.uusi') || 'Uusi hakukohdekoodi' }}
-            </button>
+            </a>
 
             <modal modal-template="../common/partials/hakukohdekoodinValinta.html" auth="update">
                 <modal-open></modal-open>

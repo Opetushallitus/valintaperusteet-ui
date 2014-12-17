@@ -194,10 +194,10 @@
                     <span ng-if="data.valinnanVaiheTyyppi === 'VALINTAKOE'">{{t('valintaperusteet.tyyppi.VALINTAKOE') || 'Valintakoe'}}</span>
                 </td>
                 <td>
-                    <button auth ng-disabled="!userAccess.crudOrg" ng-show="!data.inheritance"
+                    <a auth ng-disabled="!userAccess.crudOrg" ng-show="!data.inheritance"
                             class="btn btn-sm btn-default" ng-click="model.removeValinnanvaihe(data)">
                         <i class="fa fa-trash-o"></i>
-                    </button>
+                    </a>
                 </td>
             </tr>
             </tbody>
@@ -276,9 +276,9 @@
 
 <div ng-show="model.valintaryhma.oid" class="form-group">
     <div class="col-md-4 col-md-offset-2">
-        <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()">
+        <a auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()">
             <i class="fa fa-plus"></i> {{ t('valintaryhmalomake.hakijaryhma') || 'Hakijaryhmä' }}
-        </button>
+        </a>
     </div>
 </div>
 

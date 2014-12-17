@@ -135,21 +135,21 @@ angular.module('valintaperusteet')
                 });
             };
 
-            this.persistValintaryhma = function (oid) {
+            this.persistValintaryhma = function (oid, buttonPressed) {
                 if (model.valintaryhma.level === 1) {
                     RootValintaryhmas.get({parentOid: model.parentOid}, function (all) {
-                        model.persist(all, all);
+                        model.persist(all, all, buttonPressed);
                     });
                 } else {
                     ParentValintaryhmas.get({parentOid: oid}, function (parents) {
                         ChildValintaryhmas.get({"parentOid": parents[0].oid}, function (children) {
-                            model.persist(parents, children);
+                            model.persist(parents, children, buttonPressed);
                         });
                     });
                 }
             };
 
-            this.persist = function(parents, children) {
+            this.persist = function(parents, children, buttonPressed) {
                 if (!Utils.hasSameName(model, parents, children)) {
                     model.nameerror = false;
 
@@ -158,7 +158,8 @@ angular.module('valintaperusteet')
                         if (model.valintaryhma.level === 1) {
                             model.updateKohdejoukot(model.valintaryhma.kohdejoukko, model.valintaryhma.oid);
                         }
-                        Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
+                        if (buttonPressed)
+                            Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                         Treemodel.refresh();
                     });
 
@@ -389,7 +390,7 @@ angular.module('valintaperusteet')
             UserAccessLevels.refreshIfNeeded($routeParams.id, $routeParams.hakukohdeOid);
 
             $scope.submit = function () {
-                $scope.model.persistValintaryhma($scope.valintaryhmaOid);
+                $scope.model.persistValintaryhma($scope.valintaryhmaOid, true);
             };
 
             $scope.cancel = function () {
