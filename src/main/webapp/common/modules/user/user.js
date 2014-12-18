@@ -1,5 +1,5 @@
 
-angular.module('user', [])
+angular.module('user', ['lodash'])
 
     .factory('User', ['$q', '_', 'RoleParser', function ($q, _, RoleParser) {
         var deferred = undefined;
