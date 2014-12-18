@@ -51,11 +51,7 @@ var app = angular.module('valintaperusteet', ['ngResource', 'ngCookies', 'loadin
 
 
 
-angular.module('lodash', [])
 
-.factory('_', function () {
-    return window._; // assumes lodash has already been loaded on the page
-});
 
 var SERVICE_URL_BASE = SERVICE_URL_BASE || "";
 var TEMPLATE_URL_BASE = TEMPLATE_URL_BASE || "";

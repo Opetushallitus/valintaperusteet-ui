@@ -79,17 +79,23 @@ angular.module('user')
             return myRole.match(OID_REGEXP)[0];
         };
         
-        this.getOrganizations = function (myRoles, appRole) {
-            _.filter(myRoles, function (myRole) {
-
-            });
-        };
-
         //Get the items from myRoles list that include appRole -string
         this.getMyAppRoles = function (myRoles, appRole) {
             return _.filter(myRoles, function (myRole) {
                 return that.matchesAppRole(appRole, myRole);
             });
+        };
+                        
+        this.getMyRolesWithOrganizationAndAppRole = function (myRoles, appRole) {
+            return _.filter(that.getMyAppRoles(myRoles, appRole), function (role) {
+                return that.containsOid(role);
+            });
+        };
+
+        this.getOrganizationsByAppRole = function (myRoles, appRole) {
+            return _.uniq(_.map(that.getMyRolesWithOrganizationAndAppRole(myRoles, appRole), function (myAppRole) {
+                return that.getRoleOrganizationOid(myAppRole);
+            }));
         };
         
         
