@@ -392,6 +392,12 @@ angular.module('valintaperusteet')
         });
     }])
 
+    .factory('OrganizationChildOids', ['$resource', function ($resource) {
+        return $resource(ORGANIZATION_SERVICE_URL_BASE + "rest/organisaatio/:oid/childoids", {oid: "@oid"}, {
+            get: {method: "GET", cache: true, isArray: true}
+        });
+    }])
+
     .factory('HakujenHakutyypit', ['$resource', function ($resource) {
         return $resource(KOODISTO_URL_BASE + "codeelement/codes/hakutyyppi/1");
     }])
