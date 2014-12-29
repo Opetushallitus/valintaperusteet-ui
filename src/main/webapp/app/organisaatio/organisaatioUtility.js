@@ -72,7 +72,7 @@ angular.module('valintaperusteet')
             /**
              *
              * @param {String} valintaryhma oid
-             * @returns {Promise object} returning organization objects for this valintaryhma
+             * @returns {Promise object} returning organization objects for this hakukohde
              */
             this.getHakukohdeOrganizationsWithChildOrganizations = function (hakukohdeOid) {
                 var deferred = $q.defer();
@@ -151,7 +151,7 @@ angular.module('valintaperusteet')
             /**
              *
              * @param {String} valintaryhma oid
-             * @returns {Promise object} returning organization objects for this valintaryhma
+             * @returns {Promise object} returning organization oids and parent organizations oids for this hakukohde
              */
             this.getHakukohdeOrganizationsWithChildOrganizationsOidList = function (hakukohdeOid) {
                 var deferred = $q.defer();
