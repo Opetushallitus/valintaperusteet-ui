@@ -7,7 +7,7 @@ angular.module('valintaperusteet')
                   FunktioNimiService, FunktioFactory, KaavaValidation, GuidGenerator, HakemusavaimetLisakysymykset, HakemusavaimetLomake,
                   ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore, $window, UserModel, ErrorService, _) {
             UserModel.refreshIfNeeded();
-            $scope.toggle = false;
+
             $scope.funktioFactory = FunktioFactory;
             $scope.valintaryhmaModel = ValintaryhmaModel;
             $scope.treemodel = Treemodel;
@@ -20,6 +20,34 @@ angular.module('valintaperusteet')
             $scope.$on('showFunktiokutsuAsetukset', function () {
                 $scope.show();
             });
+
+            $scope.modalSelection = {
+                asetukset: true,
+                tallennusKaavana: false,
+                wrapping: false
+            };
+
+            $scope.toggleModalSelection = function (selection) {
+                if(selection === 'asetukset') {
+                    $scope.modalSelection = {
+                        asetukset: true,
+                        tallennusKaavana: false,
+                        wrapping: false
+                    };
+                } else if (selection === 'tallennusKaavana') {
+                    $scope.modalSelection = {
+                        asetukset: false,
+                        tallennusKaavana: true,
+                        wrapping: false
+                    };
+                } else if (selection === 'wrapping') {
+                    $scope.modalSelection = {
+                        asetukset: false,
+                        tallennusKaavana: false,
+                        wrapping: true
+                    };
+                }
+            };
 
             $scope.guidGenerator = GuidGenerator;
 
@@ -51,8 +79,6 @@ angular.module('valintaperusteet')
                     });
                 }
             };
-
-            $scope.toggle = false;
 
             $scope.resolveHaku = function() {
                 var hakuoid = $cookieStore.get('hakuoid');
