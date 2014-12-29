@@ -104,12 +104,21 @@ angular.module('valintaperusteet')
         } else if($routeParams.hakukohdeOid) {
             $scope.isHakukohde = true;
         }
-        
-        OrganisaatioUtility.getOrganizations(false, $routeParams.id, $routeParams.hakukohdeOid).then(function (result) {
-            $scope.vrhkOrgs = result;
-        }, function (error) {
-            $log.error('valintaryhmän/hakukohteen organisaatioiden haku epäonnistui', error);
-        });
+
+
+        if($routeParams.id) {
+            OrganisaatioUtility.getValintaryhmaOrganizationsWithChildOrganizations($routeParams.id).then(function setValintaryhmaOrganizations(result) {
+                $scope.vrhkOrgs = result;
+            }, function (error) {
+                $log.error('valintaryhmän/hakukohteen organisaatioiden haku epäonnistui', error);
+            });
+        } else if($routeParams.hakukohdeOid) {
+            OrganisaatioUtility.getHakukohdeOrganizationsWithChildOrganizations($routeParams.hakukohdeOid).then(function setHakukohdeOrganizations(result) {
+                $scope.vrhkOrgs = result;
+            }, function (error) {
+                $log.error('valintaryhmän/hakukohteen organisaatioiden haku epäonnistui', error);
+            });
+        }
 
     }]);
 
