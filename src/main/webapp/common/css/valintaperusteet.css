@@ -1506,14 +1506,8 @@ table.dropmenu-table {
 ************************************************/
 table.funktiokutsut {
   border-collapse: separate;
-  border-spacing: 1px; }
-  table.funktiokutsut thead th {
-    background-image: url(../img/table-header-bg.png);
-    background-repeat: repeat;
-    background-position: left top;
-    text-align: center;
-    border: 1px solid #ccc;
-    padding: 0.5em 1em 0.5em 1em; }
+  border-spacing: 1px;
+  width: 100%; }
   table.funktiokutsut tbody td {
     padding: 0.5em;
     background: #eee;

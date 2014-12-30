@@ -1,253 +1,263 @@
 angular.module('valintaperusteet').
-factory('FunktioService', function (FunktioKuvausResource, $log, _) {
+service('FunktioService', function (FunktioKuvausResource, $log, _) {
     'use strict';
 
-    var model = new function () {
-        this.funktiokuvaukset = {};
+    var api = this;
 
-        this.refresh = function () {
-            if (_.isEmpty(model.funktiokuvaukset) ) {
-                FunktioKuvausResource.get({}, function (result) {
-                    model.funktiokuvaukset = result;
-                }, function(error) {
-                    $log.error('Funktiokuvausten hakeminen epäonnistui', error);
-                });
-            }
-        };
+    this.funktiokuvaukset = {};
 
-        this.getFunktiokuvaukset = function () {
-            return model.funktiokuvaukset;
-        };
-
-        this.getFunktiokuvaus = function (funktionimi) {
-            var result;
-            if (model.funktiokuvaukset) {
-                model.funktiokuvaukset.forEach(function (funktiokuvaus) {
-                    if (funktiokuvaus.nimi === funktionimi) {
-                        result = funktiokuvaus;
-                    }
-                });
-            }
-
-            return result;
-        };
-
-        this.isNimettyFunktioargumentti = function (parent) {
-            if(_.isEmpty(parent)) {return undefined}
-            if(!(model.isFunktiokutsu(parent))) {return false;}
-            var parentFunktionimi = model.getFunktionimi(parent);
-            var funktiokuvaus = model.getFunktiokuvaus(parentFunktionimi);
-            return funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti !== 'n' && !model.isPainotettukeskiarvoChildByParentNimi(parentFunktionimi) );
-        };
-        
-        this.isNimettyFunktioargumenttiByFunktionimi = function (parentFunktionimi) {
-            var funktiokuvaus = model.getFunktiokuvaus(parentFunktionimi);
-            return funktiokuvaus.funktioargumentit !== undefined && funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti !== 'n' && !model.isPainotettukeskiarvoChildByParentNimi(parentFunktionimi) );
-        };
-
-        this.getNimettyFunktioargumenttiCount = function(parent) {
-            if(_.isEmpty(parent)) {return undefined;}
-            if(model.isNimettyFunktioargumentti(parent)) {
-                var funktiokuvaus = model.getFunktiokuvaus(model.getFunktionimi(parent));
-                return funktiokuvaus.funktioargumentit.length;
-            } else {
-                return 0;
-            }
-        };
-
-        this.isFunktiokutsuWithFunktioargumenttiSizeN = function(parent) {
-            if(_.isEmpty(parent)) {return undefined;}
-            if(model.isFunktiokutsu(parent) && !(_.isEmpty(model.getFunktiokuvaus(model.getFunktionimi(parent)).funktioargumentit)) ) {
-
-                var funktiokuvaus = model.getFunktiokuvaus(model.getFunktionimi(parent));
-                if(funktiokuvaus.funktioargumentit) {
-                    return funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'n';
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        };
-
-        this.isPainotettukeskiarvoChild = function (parent) {
-            if (_.isEmpty(parent)) {return undefined;}
-            if(!(model.isFunktiokutsu(parent))) {return false;}
-            var funktiokuvaus = model.getFunktiokuvaus(model.getFunktionimi(parent));
-            return funktiokuvaus.funktioargumentit && funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'lista_pareja';
-        };
-
-        this.isPainotettukeskiarvoChildByParentNimi = function (parentFunktionimi) {
-            if (_.isEmpty(parentFunktionimi)) {
-                return false;
-            }
-            var funktiokuvaus = model.getFunktiokuvaus(parentFunktionimi);
-            return funktiokuvaus.funktioargumentit && funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'lista_pareja';
-        };
-
-        this.isEmptyNimettyFunktioargumentti = function (parent, funktioargumenttiIndex) {
-            if (parent === undefined || funktioargumenttiIndex === undefined) {
-                return undefined;
-            }
-
-            if (model.isRootFunktiokutsu(parent)) {
-                return model.isNimettyFunktioargumentti(parent) && _.isEmpty(parent.funktioargumentit[funktioargumenttiIndex]) ? true : false;
-            } else {
-                return model.isNimettyFunktioargumentti(parent) && _.isEmpty(parent.lapsi.funktioargumentit[funktioargumenttiIndex]) ? true : false;
-            }
-        };
-
-        this.isRootFunktiokutsu = function (funktiokutsu) {
-            if (_.isEmpty(funktiokutsu)) {
-                return undefined;
-            }
-            return _.isEmpty(funktiokutsu.lapsi) ? true : false;
-        };
-
-
-        this.getFunktionimi = function (funktiokutsu) {
-            if (_.isEmpty(funktiokutsu)) {
-                return undefined;
-            }
-            if (model.isRootFunktiokutsu(funktiokutsu)) {
-                //laskentakaavan juurifunktiolla ei ole lapsi-objektia
-                return funktiokutsu.funktionimi;
-            } else {
-                //jos funktio-parametri ei ole laskentakaavan ensimmäinen lapsi, niin funktiolla on lapsi-kääre
-                return funktiokutsu.lapsi.funktionimi;
-            }
-        };
-
-
-        this.isLukuarvoFunktioSlot = function (parent, funktioargumenttiIndex) {
-            var isOnNimettySlot = model.isNimettyFunktioargumentti(parent);
-            if (model.isRootFunktiokutsu(parent)) {
-                var funktiokuvaus = model.getFunktiokuvaus(parent.funktionimi);
-                var tyyppi = isOnNimettySlot ? funktiokuvaus.funktioargumentit[funktioargumenttiIndex].tyyppi : funktiokuvaus.funktioargumentit[0].tyyppi;
-                return tyyppi === 'LUKUARVOFUNKTIO';
-            } else {
-                var funktiokuvaus = model.getFunktiokuvaus(parent.lapsi.funktionimi);
-                var tyyppi = isOnNimettySlot ? funktiokuvaus.funktioargumentit[funktioargumenttiIndex].tyyppi : funktiokuvaus.funktioargumentit[0].tyyppi;
-                return tyyppi === 'LUKUARVOFUNKTIO';
-            }
-        };
-
-
-        //Montako funktioargumenttia funktiokutsulle luotu
-        this.getDefinedFunktioargumenttiCount = function (funktiokutsu) {
-            if (funktiokutsu.lapsi) {
-                return _.filter(funktiokutsu.lapsi.funktioargumentit, function (item) {
-                    return !_.isEmpty(item);
-                }).length;
-            } else {
-                return _.filter(funktiokutsu.funktioargumentit, function (item) {
-                    return !_.isEmpty(item);
-                }).length;
-            }
-        };
-
-        this.isFunktiokutsu = function (funktiokutsu) {
-            if (funktiokutsu === undefined) {
-                return undefined;
-            }
-            if (model.isRootFunktiokutsu(funktiokutsu)) {
-                return funktiokutsu.lapsityyppi === 'funktiokutsu';
-            } else {
-                return funktiokutsu.lapsi.lapsityyppi === 'funktiokutsu';
-            }
-        };
-
-        this.isLaskentakaavaviite = function(param) {
-            if(_.isEmpty(param)) {return undefined;}
-            return param.lapsi.lapsityyppi === 'laskentakaava' ? true : false;
-        };
-
-        this.cleanLaskentakaavaPKObjects = function (funktioargumentit) {
-            if (funktioargumentit) {
-                var isRootFunktiokutsu;
-                _.forEach(funktioargumentit, function (item) {
-                    isRootFunktiokutsu = model.isRootFunktiokutsu(item);
-                    if (isRootFunktiokutsu === true) {
-                        item.funktioargumentit = model.cleanLaskentakaavaPKObjects(item.funktioargumentit);
-                    } else {
-                        if (item && item.lapsi) {
-                            item.lapsi.funktioargumentit = model.cleanLaskentakaavaPKObjects(item.lapsi.funktioargumentit);
-                        }
-                    }
-                });
-            }
-            return _.filter(funktioargumentit, function (item) {
-                return !_.isEmpty(item);
+    this.refresh = function () {
+        if (_.isEmpty(api.funktiokuvaukset) ) {
+            FunktioKuvausResource.get({}, function (result) {
+                api.funktiokuvaukset = result;
+            }, function(error) {
+                $log.error('Funktiokuvausten hakeminen epäonnistui', error);
             });
-        };
+        }
+    };
 
-        this.addPKObjects = function (funktioargumentit) {
-            if (funktioargumentit) {
-                _.forEach(funktioargumentit, function (item) {
-                    if (item.lapsi) {
-                        model.addPKObjects(item.lapsi.funktioargumentit);
-                        if (item.lapsi.funktionimi === 'PAINOTETTUKESKIARVO') {
-                            item.lapsi.funktioargumentit = model.addPainotettukeskiarvoParametrit(item.lapsi.funktioargumentit);
-                        }
-                    }
-                });
-            }
-            return funktioargumentit;
-        };
+    this.getFunktiokuvaukset = function () {
+        return api.funktiokuvaukset;
+    };
 
-        this.addMissingSyoteparametrit = function(funktiokutsu) {
-            var funktiokuvaus = model.getFunktiokuvaus(model.getFunktionimi(funktiokutsu));
-            model.addSyoteparametrit(funktiokuvaus, funktiokutsu.lapsi.syoteparametrit);
-            if(funktiokutsu.lapsi.funktioargumentit) {
-                _.forEach(funktiokutsu.funktioargumentit, function(funktioargumentti) {
-                    if(funktioargumentti.lapsi) {
-                        model.addMissingSyoteparametrit(funktioargumentti);
-                    }
-                });
+    this.getFunktiokuvaus = function (funktionimi) {
+        var result;
+        if (api.funktiokuvaukset) {
+            api.funktiokuvaukset.forEach(function (funktiokuvaus) {
+                if (funktiokuvaus.nimi === funktionimi) {
+                    result = funktiokuvaus;
+                }
+            });
+        }
+
+        return result;
+    };
+
+    this.isNimettyFunktioargumentti = function (parent) {
+        if(_.isEmpty(parent)) {return undefined}
+        if(!(api.isFunktiokutsu(parent))) {return false;}
+        var parentFunktionimi = api.getFunktionimi(parent);
+        var funktiokuvaus = api.getFunktiokuvaus(parentFunktionimi);
+        return funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti !== 'n' && !api.isPainotettukeskiarvoChildByParentNimi(parentFunktionimi) );
+    };
+
+    this.isNimettyFunktioargumenttiByFunktionimi = function (parentFunktionimi) {
+        var funktiokuvaus = api.getFunktiokuvaus(parentFunktionimi);
+        return funktiokuvaus.funktioargumentit !== undefined && funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti !== 'n' && !api.isPainotettukeskiarvoChildByParentNimi(parentFunktionimi) );
+    };
+
+    this.getNimettyFunktioargumenttiCount = function(parent) {
+        if(_.isEmpty(parent)) {return undefined;}
+        if(api.isNimettyFunktioargumentti(parent)) {
+            var funktiokuvaus = api.getFunktiokuvaus(api.getFunktionimi(parent));
+            return funktiokuvaus.funktioargumentit.length;
+        } else {
+            return 0;
+        }
+    };
+
+    this.isFunktiokutsuWithFunktioargumenttiSizeN = function(parent) {
+        if(_.isEmpty(parent)) {return undefined;}
+        if(api.isFunktiokutsu(parent) && !(_.isEmpty(api.getFunktiokuvaus(api.getFunktionimi(parent)).funktioargumentit)) ) {
+
+            var funktiokuvaus = api.getFunktiokuvaus(api.getFunktionimi(parent));
+            if(funktiokuvaus.funktioargumentit) {
+                return funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'n';
+            } else {
+                return false;
             }
-        };
+        } else {
+            return false;
+        }
+    };
+
+    this.isPainotettukeskiarvoChild = function (parent) {
+        if (_.isEmpty(parent)) {return undefined;}
+        if(!(api.isFunktiokutsu(parent))) {return false;}
+        var funktiokuvaus = api.getFunktiokuvaus(api.getFunktionimi(parent));
+        return funktiokuvaus.funktioargumentit && funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'lista_pareja';
+    };
+
+    this.isPainotettukeskiarvoChildByParentNimi = function (parentFunktionimi) {
+        if (_.isEmpty(parentFunktionimi)) {
+            return false;
+        }
+        var funktiokuvaus = api.getFunktiokuvaus(parentFunktionimi);
+        return funktiokuvaus.funktioargumentit && funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'lista_pareja';
+    };
+
+    this.isEmptyNimettyFunktioargumentti = function (parent, funktioargumenttiIndex) {
+        if (parent === undefined || funktioargumenttiIndex === undefined) {
+            return undefined;
+        }
+
+        if (api.isRootFunktiokutsu(parent)) {
+            return api.isNimettyFunktioargumentti(parent) && _.isEmpty(parent.funktioargumentit[funktioargumenttiIndex]) ? true : false;
+        } else {
+            return api.isNimettyFunktioargumentti(parent) && _.isEmpty(parent.lapsi.funktioargumentit[funktioargumenttiIndex]) ? true : false;
+        }
+    };
+
+    this.isRootFunktiokutsu = function (funktiokutsu) {
+        try {
+            if(_.isEmpty(funktiokutsu)) {
+                throw new Error('Funktiokutsua ei ole määritelty');
+            } else {
+                return !_.has(funktiokutsu, 'lapsi');
+            }
+        } catch(error) {
+            $log.error(error);
+        }
+    };
+
+
+    this.getFunktionimi = function (funktiokutsu) {
+        if (_.isEmpty(funktiokutsu)) {
+            return undefined;
+        }
+        if (api.isRootFunktiokutsu(funktiokutsu)) {
+            //laskentakaavan juurifunktiolla ei ole lapsi-objektia
+            return funktiokutsu.funktionimi;
+        } else {
+            //jos funktio-parametri ei ole laskentakaavan ensimmäinen lapsi, niin funktiolla on lapsi-kääre
+            return funktiokutsu.lapsi.funktionimi;
+        }
+    };
+
+
+    this.isLukuarvoFunktioSlot = function (parent, funktioargumenttiIndex) {
+        var isOnNimettySlot = api.isNimettyFunktioargumentti(parent);
+        if (api.isRootFunktiokutsu(parent)) {
+            var funktiokuvaus = api.getFunktiokuvaus(parent.funktionimi);
+            var tyyppi = isOnNimettySlot ? funktiokuvaus.funktioargumentit[funktioargumenttiIndex].tyyppi : funktiokuvaus.funktioargumentit[0].tyyppi;
+            return tyyppi === 'LUKUARVOFUNKTIO';
+        } else {
+            var funktiokuvaus = api.getFunktiokuvaus(parent.lapsi.funktionimi);
+            var tyyppi = isOnNimettySlot ? funktiokuvaus.funktioargumentit[funktioargumenttiIndex].tyyppi : funktiokuvaus.funktioargumentit[0].tyyppi;
+            return tyyppi === 'LUKUARVOFUNKTIO';
+        }
+    };
+
+
+    //Montako funktioargumenttia funktiokutsulle luotu
+    this.getDefinedFunktioargumenttiCount = function (funktiokutsu) {
+        if (funktiokutsu.lapsi) {
+            return _.filter(funktiokutsu.lapsi.funktioargumentit, function (item) {
+                return !_.isEmpty(item);
+            }).length;
+        } else {
+            return _.filter(funktiokutsu.funktioargumentit, function (item) {
+                return !_.isEmpty(item);
+            }).length;
+        }
+    };
+
+    this.isFunktiokutsu = function (funktiokutsu) {
+        if (funktiokutsu === undefined) {
+            return undefined;
+        }
+        if (api.isRootFunktiokutsu(funktiokutsu)) {
+            return funktiokutsu.lapsityyppi === 'funktiokutsu';
+        } else {
+            return funktiokutsu.lapsi.lapsityyppi === 'funktiokutsu';
+        }
+    };
+
+    this.isLaskentakaavaviite = function(param) {
+        if(_.isEmpty(param)) {return undefined;}
+        return param.lapsi.lapsityyppi === 'laskentakaava' ? true : false;
+    };
+
+    this.cleanLaskentakaavaPKObjects = function (funktioargumentit) {
+        if (funktioargumentit) {
+            var isRootFunktiokutsu;
+            _.forEach(funktioargumentit, function (item) {
+                isRootFunktiokutsu = api.isRootFunktiokutsu(item);
+                if (isRootFunktiokutsu === true) {
+                    item.funktioargumentit = api.cleanLaskentakaavaPKObjects(item.funktioargumentit);
+                } else {
+                    if (item && item.lapsi) {
+                        item.lapsi.funktioargumentit = api.cleanLaskentakaavaPKObjects(item.lapsi.funktioargumentit);
+                    }
+                }
+            });
+        }
+        return _.filter(funktioargumentit, function (item) {
+            return !_.isEmpty(item);
+        });
+    };
+
+    this.addPKObjects = function (funktioargumentit) {
+        if (funktioargumentit) {
+            _.forEach(funktioargumentit, function (item) {
+                if (item.lapsi) {
+                    api.addPKObjects(item.lapsi.funktioargumentit);
+                    if (item.lapsi.funktionimi === 'PAINOTETTUKESKIARVO') {
+                        item.lapsi.funktioargumentit = api.addPainotettukeskiarvoParametrit(item.lapsi.funktioargumentit);
+                    }
+                }
+            });
+        }
+        return funktioargumentit;
+    };
+
+    this.addMissingSyoteparametrit = function(funktiokutsu) {
+        var funktiokuvaus = api.getFunktiokuvaus(api.getFunktionimi(funktiokutsu));
+        api.addSyoteparametrit(funktiokuvaus, funktiokutsu.lapsi.syoteparametrit);
+        if(funktiokutsu.lapsi.funktioargumentit) {
+            _.forEach(funktiokutsu.funktioargumentit, function(funktioargumentti) {
+                if(funktioargumentti.lapsi) {
+                    api.addMissingSyoteparametrit(funktioargumentti);
+                }
+            });
+        }
+    };
+
+    this.addSyoteparametrit = function(funktiokuvaus, syoteparametrit) {
+        if(funktiokuvaus && funktiokuvaus.syoteparametrit && funktiokuvaus.syoteparametrit.length > syoteparametrit.length) {
+            _.forEach(funktiokuvaus.syoteparametrit, function(kuvausSyoteparametri) {
+                var found = _.some(syoteparametrit, function(funktioSyoteparametri) {
+                    return kuvausSyoteparametri.avain === funktioSyoteparametri.avain;
+                });
+
+                if(!found) {
+                    syoteparametrit.push({avain: kuvausSyoteparametri.avain, arvo: ""});
+                }
+            });
+        }
+    };
+
+    this.addPainotettukeskiarvoParametrit = function (arr) {
+        arr.push(null);
+        arr.push(null);
+        return arr;
+    };
+
+    this.hasFunktioargumentit = function (parentFunktiokutsu, childIndex) {
+        if(parentFunktiokutsu === undefined || childIndex === undefined) {
+            throw new Error('Missing parameter for Funktioservice.hasFunktioargumentit', arguments);
+        }
+
+        if(api.isRootFunktiokutsu(parentFunktiokutsu)) {
+            return true; // juurifunktiolla (nimetty luku- tai totuusarvo) on aina funktioargumentille paikka
+        }
+
+        var funktiokuvaus = api.getFunktiokuvaus(parentFunktiokutsu.lapsi.funktioargumentit[childIndex].lapsi.funktionimi);
+        return _.has(funktiokuvaus, 'funktioargumentit');
+    };
         
-        this.addSyoteparametrit = function(funktiokuvaus, syoteparametrit) {
-            if(funktiokuvaus && funktiokuvaus.syoteparametrit && funktiokuvaus.syoteparametrit.length > syoteparametrit.length) {
-                _.forEach(funktiokuvaus.syoteparametrit, function(kuvausSyoteparametri) {
-                    var found = false;
-                    _.forEach(syoteparametrit, function(funktioSyoteparametri) {
-                        if(kuvausSyoteparametri.avain === funktioSyoteparametri.avain) {
-                            found = true;
-                        }
-                    });
-                    if(!found) {
-                        syoteparametrit.push({avain: kuvausSyoteparametri.avain, arvo: ""});
-                    }
-                });
-            }
-        };
+    this.funktiokuvausHasFunktioargumentit = function (funktionimi) {
+        var funktiokuvaus = api.getFunktiokuvaus(funktionimi);
+        return _.has(funktiokuvaus, 'funktioargumentit');
+    };
 
-        this.addPainotettukeskiarvoParametrit = function (arr) {
-            arr.push(null);
-            arr.push(null);
-            return arr;
-        };
+    this.getCurrentFunktiokutsu = function (parentFunktiokutsu, childIndex) {
+        return api.isRootFunktiokutsu(parentFunktiokutsu) ? parentFunktiokutsu.funktioargumentit[childIndex] : parentFunktiokutsu.lapsi.funktioargumentit[childIndex];
+    };
 
-        this.hasFunktioargumentit = function (parentFunktiokutsu, childIndex) {
-            if(parentFunktiokutsu === undefined || childIndex === undefined) {
-                throw new Error('Missing parameter for Funktioservice.hasFunktioargumentit', arguments);
-            }
+})
 
-            if(model.isRootFunktiokutsu(parentFunktiokutsu)) {
-                return true; // juurifunktiolla (nimetty luku- tai totuusarvo) on aina funktioargumentille paikka
-            }
-
-            var funktiokuvaus = model.getFunktiokuvaus(parentFunktiokutsu.lapsi.funktioargumentit[childIndex].lapsi.funktionimi);
-            return _.has(funktiokuvaus, 'funktioargumentit');
-        };
-
-    }();
-
-    return model;
-}).
-
-factory('Valintaperusteviitetyypit', function () {
+.factory('Valintaperusteviitetyypit', function () {
     'use strict';
 
     return [
@@ -256,9 +266,9 @@ factory('Valintaperusteviitetyypit', function () {
         { key: 'HAKUKOHTEEN_ARVO', text: 'Hakukohteen arvo' },
         { key: 'HAKUKOHTEEN_SYOTETTAVA_ARVO', text: 'Hakukohteen syötettävä arvo' }
     ];
-}).
+})
 
-factory('Arvokonvertterikuvauskielet', function () {
+.factory('Arvokonvertterikuvauskielet', function () {
    'use strict';
 
     return [

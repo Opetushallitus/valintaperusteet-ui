@@ -4,14 +4,14 @@ describe("FunktioService", function () {
     var funktioservice, funktiokutsuKeskiarvo, funktiokutsuJos,
         funktiokutsuSumma, funktiokutsuHylkaaarvovalilla, funktiokutsuPainotettukeskiarvo,
         laskentakaavaviite, rootFunktiokutsu, funktiokutsuPainotettukeskiarvoWith2EmptySlots,
-        funktiokutsuPainotettukeskiarvoWith4EmptySlots;
+        funktiokutsuPainotettukeskiarvoWith4EmptySlots, funktiokutsuXParent, funktiokutsuXFirstChild;
     beforeEach(module('MockData'));
     beforeEach(module('valintaperusteet'));
 
     beforeEach(inject(function (FunktioService, Funktiokuvaukset, FunktiokutsuKeskiarvo, FunktiokutsuJos,
                                 FunktiokutsuSumma, FunktiokutsuHylkaaarvovalilla, FunktiokutsuPainotettukeskiarvo,
                                 Laskentakaavaviite, RootFunktiokutsu, FunktiokutsuPainotettukeskiarvoWith2EmptySlots,
-                                FunktiokutsuPainotettukeskiarvoWith4EmptySlots) {
+                                FunktiokutsuPainotettukeskiarvoWith4EmptySlots, FunktiokutsuXParent, FunktiokutsuXFirstChild) {
         funktioservice = FunktioService;
         funktioservice.funktiokuvaukset = Funktiokuvaukset;
         funktiokutsuKeskiarvo = FunktiokutsuKeskiarvo;
@@ -23,6 +23,8 @@ describe("FunktioService", function () {
         rootFunktiokutsu = RootFunktiokutsu;
         funktiokutsuPainotettukeskiarvoWith2EmptySlots = FunktiokutsuPainotettukeskiarvoWith2EmptySlots;
         funktiokutsuPainotettukeskiarvoWith4EmptySlots = FunktiokutsuPainotettukeskiarvoWith4EmptySlots;
+        funktiokutsuXParent = FunktiokutsuXParent;
+        funktiokutsuXFirstChild = FunktiokutsuXFirstChild;
     }));
 
     //getFunktiokuvaukset
@@ -255,6 +257,7 @@ describe("FunktioService", function () {
         it("should return undefined for a root object of laskentakaava", function () {
             expect(funktioservice.isRootFunktiokutsu(undefined)).toBe(undefined);
         });
+
     });
 
     //getFunktionimi
@@ -355,9 +358,10 @@ describe("FunktioService", function () {
             expect(funktioservice.isLaskentakaavaviite(laskentakaavaviite)).toBe(true);
         });
     });
-    
+
+    //hasFunktioargumentit
     describe("hasFunktioargumentit(parentFunktiokutsu, index)", function () {
-        it("should throw erro if first parameter is missing", function () {
+        it("should throw error if first parameter is missing", function () {
             expect(function () { funktioservice.hasFunktioargumentit(undefined, 0); }).toThrow(new Error('Missing parameter for Funktioservice.hasFunktioargumentit'));
         });
 
@@ -376,7 +380,44 @@ describe("FunktioService", function () {
         it("should return true for rootfunktiokutsu", function () {
             expect(funktioservice.hasFunktioargumentit(rootFunktiokutsu, 0)).toBe(true);
         });
+    });
 
+    //getCurrentFunktiokutsu
+    describe("getCurrentFunktiokutsu(parentFunktiokutsu, index)", function () {
+        it('should return the correct child for parent and index', function () {
+            expect(funktioservice.getCurrentFunktiokutsu(funktiokutsuXParent,0)).toEqual(funktiokutsuXFirstChild);
+        });
+    });
+
+    //funktiokuvausHasFunktioargumentit
+    describe("funktiokuvausHasFunktioargumentit(funktionimi)", function () {
+        it('should return true for JOS', function () {
+            expect(funktioservice.funktiokuvausHasFunktioargumentit('JOS')).toBe(true);
+        });
+
+        it('should return false for LUKUARVO', function () {
+            expect(funktioservice.funktiokuvausHasFunktioargumentit('LUKUARVO')).toBe(false);
+        });
+
+        it('should return true for MAKSIMI', function () {
+            expect(funktioservice.funktiokuvausHasFunktioargumentit('MAKSIMI')).toBe(true);
+        });
+
+        it('should return false for PIENEMPITAIYHTASUURI', function () {
+            expect(funktioservice.funktiokuvausHasFunktioargumentit('PIENEMPITAIYHTASUURI')).toBe(true);
+        });
+
+        it('should return false for HAEYOARVOSANA', function () {
+            expect(funktioservice.funktiokuvausHasFunktioargumentit('HAEYOARVOSANA')).toBe(false);
+        });
+
+        it('should return false for HAETOTUUSARVO', function () {
+            expect(funktioservice.funktiokuvausHasFunktioargumentit('HAETOTUUSARVO')).toBe(false);
+        });
+
+        it('should return false for PAINOTETTUKESKIARVO', function () {
+            expect(funktioservice.funktiokuvausHasFunktioargumentit('PAINOTETTUKESKIARVO')).toBe(true);
+        });
 
     });
 

@@ -2,16 +2,23 @@ angular.module('valintaperusteet')
 
     .controller('funktiokutsuAsetuksetController', ['$scope', '$log', '$q', '$routeParams', '$location', '$timeout', 'Laskentakaava',
         'FunktioNimiService', 'FunktioFactory', 'KaavaValidation', 'GuidGenerator', 'HakemusavaimetLisakysymykset', 'HakemusavaimetLomake',
-        'ValintaryhmaModel', 'Treemodel', 'LaskentakaavaValintaryhma', '$cookieStore', '$window', 'UserModel', 'ErrorService', '_',
+        'ValintaryhmaModel', 'Treemodel', 'LaskentakaavaValintaryhma', '$cookieStore', '$window', 'UserModel', 'ErrorService', '_', 'FunktioService',
         function ($scope, $log, $q, $routeParams, $location, $timeout, Laskentakaava,
                   FunktioNimiService, FunktioFactory, KaavaValidation, GuidGenerator, HakemusavaimetLisakysymykset, HakemusavaimetLomake,
-                  ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore, $window, UserModel, ErrorService, _) {
+                  ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore, $window, UserModel, ErrorService, _, FunktioService) {
             UserModel.refreshIfNeeded();
 
-            $scope.funktioFactory = FunktioFactory;
             $scope.valintaryhmaModel = ValintaryhmaModel;
             $scope.treemodel = Treemodel;
             $scope.guidGenerator = GuidGenerator;
+            $scope.funktioService = FunktioService;
+
+            $scope.$watch('funktioasetukset.parentFunktiokutsu', function () {
+                if(!_.isEmpty($scope.funktioasetukset.parentFunktiokutsu)) {
+                    $scope.selectedFunktiokutsuIsLukuarvoFunktio = FunktioService.isLukuarvoFunktioSlot($scope.funktioasetukset.parentFunktiokutsu, $scope.funktioasetukset.selectedFunktioIndex);
+                    $scope.selectedFunktiokutsunHasFunktioArgumentit = FunktioService.hasFunktioargumentit($scope.funktioasetukset.parentFunktiokutsu, $scope.funktioasetukset.selectedFunktioIndex);
+                }
+            });
 
             if ($routeParams.valintaryhmaOid !== undefined) {
                 $scope.valintaryhmaModel.refreshIfNeeded($routeParams.valintaryhmaOid);
@@ -32,6 +39,14 @@ angular.module('valintaperusteet')
                 _.forIn($scope.modalSelection, function (value, key) {
                     $scope.modalSelection[key] = key === selection ? true : false;
                 });
+            };
+
+            $scope.resetModalSelection = function () {
+                $scope.modalSelection = {
+                    asetukset: true,
+                    tallennusKaavana: false,
+                    kaare: false
+                };
             };
 
             $scope.generateSyoteId = function (valintaperuste) {
@@ -198,7 +213,10 @@ angular.module('valintaperusteet')
                 });
             };
 
+            $scope.kaariFunktiokutsu = function (kaarivaFunktioNimi) {
+                var funktiokutsu = FunktioService.getCurrentFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu, $scope.funktioasetukset.selectedFunktioIndex);
 
+            };
 
             $scope.isYoFunktiokutsu = function (funktio, valintaperuste) {
                 var funktionimi = funktio.lapsi.funktionimi;
