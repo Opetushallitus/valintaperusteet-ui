@@ -11,7 +11,8 @@ angular.module('valintaperusteet')
             $scope.funktioFactory = FunktioFactory;
             $scope.valintaryhmaModel = ValintaryhmaModel;
             $scope.treemodel = Treemodel;
-            
+            $scope.guidGenerator = GuidGenerator;
+
             if ($routeParams.valintaryhmaOid !== undefined) {
                 $scope.valintaryhmaModel.refreshIfNeeded($routeParams.valintaryhmaOid);
             }
@@ -24,32 +25,14 @@ angular.module('valintaperusteet')
             $scope.modalSelection = {
                 asetukset: true,
                 tallennusKaavana: false,
-                wrapping: false
+                kaare: false
             };
 
             $scope.toggleModalSelection = function (selection) {
-                if(selection === 'asetukset') {
-                    $scope.modalSelection = {
-                        asetukset: true,
-                        tallennusKaavana: false,
-                        wrapping: false
-                    };
-                } else if (selection === 'tallennusKaavana') {
-                    $scope.modalSelection = {
-                        asetukset: false,
-                        tallennusKaavana: true,
-                        wrapping: false
-                    };
-                } else if (selection === 'wrapping') {
-                    $scope.modalSelection = {
-                        asetukset: false,
-                        tallennusKaavana: false,
-                        wrapping: true
-                    };
-                }
+                _.forIn($scope.modalSelection, function (value, key) {
+                    $scope.modalSelection[key] = key === selection ? true : false;
+                });
             };
-
-            $scope.guidGenerator = GuidGenerator;
 
             $scope.generateSyoteId = function (valintaperuste) {
                 valintaperuste.tunniste = $scope.guidGenerator();
@@ -162,7 +145,7 @@ angular.module('valintaperusteet')
 
                             $scope.bigdata = avaimet;
                         }, function (error) {
-                            console.log("hakulomakkeen avaimia ei löytynyt");
+                            $log.log("hakulomakkeen avaimia ei löytynyt", error);
                         }
                     );
                     
@@ -183,7 +166,7 @@ angular.module('valintaperusteet')
                                 });
                                 $scope.lisakysymysAvaimet = avaimet;
                             }, function (error) {
-                                console.log("lisakysymyksiä ei löytynyt");
+                                $log.log("lisakysymyksiä ei löytynyt", error);
                             }
                         );
                     }, function () {
@@ -203,7 +186,7 @@ angular.module('valintaperusteet')
                                 });
                                 $scope.lisakysymysAvaimet = avaimet;
                             }, function (error) {
-                                console.log("lisakysymyksiä ei löytynyt");
+                                $log.error("lisakysymyksiä ei löytynyt", error);
                             }
                         );
                     });
@@ -211,7 +194,7 @@ angular.module('valintaperusteet')
 
 
                 }, function(reject) {
-                    console.log('rejected');
+                    $log.error('Valintaryhmän lataaminen epäonnistui', reject);
                 });
             };
 
@@ -224,21 +207,10 @@ angular.module('valintaperusteet')
 
             $scope.resolveHaku();
 
-            /*
-             var def2 = $q.defer();
-             promises.push(def2.promise);
-             Hakemusavaimet.query({hakuoid: "1.2.246.562.29.173465377510"}, function(result) {
-             def2.resolve();
-             }, function(error) {
-             def2.reject('Avaimien haku epäonnistui: ', error);
-             });
-             */
-
         }])
 
             
-    .
-    controller('laskentakaavaviiteAsetuksetController', ['$scope', 'FunktioService', function ($scope, FunktioService) {
+    .controller('laskentakaavaviiteAsetuksetController', ['$scope', 'FunktioService', function ($scope, FunktioService) {
         "use strict";
 
         $scope.$on('showLaskentakaavaviiteAsetukset', function () {

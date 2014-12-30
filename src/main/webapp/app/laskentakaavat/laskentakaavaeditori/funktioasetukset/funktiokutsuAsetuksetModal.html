@@ -528,27 +528,24 @@
 
     <div class="modal-footer">
         <!-- Funktiokutsun asetukset -->
-        <div>
-            <button class="btn btn-default btn-sm"
-                    ng-disabled="alikaavaValues.isAlikaava || funktioasetukset.parentFunktiokutsu === model.laskentakaavapuu.funktiokutsu || !userAccess.crudOrg"
-                    ng-click="toggleModalSelection('tallennusKaavana')">{{ t('laskentakaavaviiteasetuksetmodal.kaavanosantallennus') || 'Kaavan osan
-                tallennus' }}
-            </button>
-            <button ng-disabled="alikaavaValues.isAlikaava || !userAccess.crudOrg" class="btn btn-sm btn-default"
-                    ng-click="removeFunktiokutsu(); sulje()" popover-popup-delay="500" popover-placement="top"
-                    popover-trigger="mouseenter"
-                    popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
-                <i class="fa fa-trash-o"></i> {{ t('laskentakaavaviiteasetuksetmodal.poistafunktiokutsu') || 'Poista
-                funktiokutsu' }}
-            </button>
-            <button class="btn btn-default btn-sm" ng-click="sulje()"
-                    role="button" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter"
-                    popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
-                {{ t('laskentakaavaviiteasetuksetmodal.sulje') || 'Sulje' }}
-            </button>
-        </div>
-
-
+        <button class="btn btn-default btn-sm" ng-disabled="!userAccess.crudOrg" ng-click="toggleModalSelection('kaare')">{{ t('laskentakaavaviiteasetuksetmodal.funktiokutsunKaariminen') || 'Funktiokutsun kääriminen toisella funktiokutsulla'}}</button>
+        <button class="btn btn-default btn-sm"
+                ng-disabled="alikaavaValues.isAlikaava || funktioasetukset.parentFunktiokutsu === model.laskentakaavapuu.funktiokutsu || !userAccess.crudOrg"
+                ng-click="toggleModalSelection('tallennusKaavana')">{{ t('laskentakaavaviiteasetuksetmodal.kaavanosantallennus') || 'Kaavan osan
+            tallennus' }}
+        </button>
+        <button ng-disabled="alikaavaValues.isAlikaava || !userAccess.crudOrg" class="btn btn-sm btn-default"
+                ng-click="removeFunktiokutsu(); sulje()" popover-popup-delay="500" popover-placement="top"
+                popover-trigger="mouseenter"
+                popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
+            <i class="fa fa-trash-o"></i> {{ t('laskentakaavaviiteasetuksetmodal.poistafunktiokutsu') || 'Poista
+            funktiokutsu' }}
+        </button>
+        <button class="btn btn-default btn-sm" ng-click="sulje()"
+                role="button" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter"
+                popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
+            {{ t('laskentakaavaviiteasetuksetmodal.sulje') || 'Sulje' }}
+        </button>
     </div>
 </div>
 
@@ -612,24 +609,137 @@
     </div>
     <div class="modal-footer">
         <!-- tallenna funktiokutsu laskentakaavana -->
-        <div>
-            <button class="btn btn-default btn-sm" ng-click="toggleModalSelection('asetukset')" popover-popup-delay="500"
-                    popover-placement="top" popover-trigger="mouseenter"
-                    popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
-                <i class="fa fa-arrow-left"></i> {{ t('laskentakaavaviiteasetuksetmodal.palaafunktioasetuksiin') || 'Palaa
-                funktioasetuksiin' }}
-            </button>
-            <button class="btn btn-primary btn-sm" ng-disabled="!newKaavaNimi || !userAccess.crudOrg"
-                    ng-click="saveAsNewLaskentakaava(funktioasetukset.parentFunktiokutsu, funktioSelection, newKaavaNimi, newKaavaKuvaus, sulje)">
-                <i class="fa fa-floppy-o"></i> {{ t('laskentakaavaviiteasetuksetmodal.tallenna') || 'Tallenna uutena
-                laskentakaavana' }}
-            </button>
-            <button class="btn btn-default btn-sm" ng-click="sulje()" popover-popup-delay="500" popover-placement="top"
-                    popover-trigger="mouseenter"
-                    popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
-                {{ t('laskentakaavaviiteasetuksetmodal.sulje') || 'Sulje' }}
-            </button>
-        </div>
+        <button class="btn btn-default btn-sm" ng-click="toggleModalSelection('asetukset')" popover-popup-delay="500"
+                popover-placement="top" popover-trigger="mouseenter"
+                popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
+            <i class="fa fa-arrow-left"></i> {{ t('laskentakaavaviiteasetuksetmodal.palaafunktioasetuksiin') || 'Palaa
+            funktioasetuksiin' }}
+        </button>
+        <button class="btn btn-primary btn-sm" ng-disabled="!newKaavaNimi || !userAccess.crudOrg"
+                ng-click="saveAsNewLaskentakaava(funktioasetukset.parentFunktiokutsu, funktioSelection, newKaavaNimi, newKaavaKuvaus, sulje)">
+            <i class="fa fa-floppy-o"></i> {{ t('laskentakaavaviiteasetuksetmodal.tallenna') || 'Tallenna uutena
+            laskentakaavana' }}
+        </button>
+        <button class="btn btn-default btn-sm" ng-click="sulje()" popover-popup-delay="500" popover-placement="top"
+                popover-trigger="mouseenter"
+                popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
+            {{ t('laskentakaavaviiteasetuksetmodal.sulje') || 'Sulje' }}
+        </button>
+    </div>
+
+</div>
+
+<div ng-show="modalSelection.kaare">
+
+    <div class="modal-header">
+        <h3>{{ t('funktiokutsukaaremodal.header') || 'Funktiokutsun kääriminen toisella funktiokutsulla'}}</h3>
+    </div>
+    <div class="modal-body">
+        <table class="funktiokutsut">
+            <tbody>
+            <tr>
+                <td ng-click="addFunktio(parent, 'HAELUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.haelukuarvo') || 'Hae lukuarvo' }}</span></td>
+                <td ng-click="addFunktio(parent, 'LUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.vakio') || 'Vakio' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'SUMMA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.summa') || 'Summa' }}</span></td>
+                <td ng-click="addFunktio(parent, 'JOS', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.jos') || 'Jos' }}</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'TULO', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.tulo') || 'Tulo' }}</span></td>
+                <td ng-click="addFunktio(parent, 'OSAMAARA', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.osamaara') || 'Osamäärä' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'KESKIARVO', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.keskiarvo') || 'Keskiarvo' }}</span>
+                </td>
+                <td ng-click="addFunktio(parent, 'MEDIAANI', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.mediaani') || 'Mediaani' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'MINIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.minimi') || 'Minimi' }}</span>
+                </td>
+                <td ng-click="addFunktio(parent, 'MAKSIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.maksimi') || 'Maksimi' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'SUMMANPARASTA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.nparastasumma') || 'N parasta summa' }}</span></td>
+                <td ng-click="addFunktio(parent, 'KESKIARVONPARASTA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.nparastakeskiarvo') || 'N parasta keskiarvo' }}</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'NMAKSIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.nparas') || 'N paras' }}</span>
+                </td>
+                <td ng-click="addFunktio(parent, 'NMINIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.nhuonoin') || 'N huonoin' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'NEGAATIO', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.negaatio') || 'Negaatio' }}</span>
+                </td>
+                <td ng-click="addFunktio(parent, 'PYORISTYS', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.pyoristys') || 'Pyöristys' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'HYLKAA', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.hylkaa') || 'Hylkää' }}</span>
+                </td>
+                <td ng-click="addFunktio(parent, 'HYLKAAARVOVALILLA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.hylkaaarvovalilla') || 'Hylkää arvovälillä' }}</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'KONVERTOILUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.konversio') || 'Konversio' }}</span></td>
+                <td ng-click="addFunktio(parent, 'HAEOSAKOEARVOSANA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.yoosakoearvosana') || 'YO-osakoearvosana' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'HAETOTUUSARVOJAKONVERTOILUKUARVOKSI', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.haetotuusarvojakonvertoilukuarvoksi') || 'Hae totuusarvo ja konvertoi lukuarvoksi' }}</span>
+                </td>
+                <td ng-click="addFunktio(parent, 'NIMETTYLUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.nimettylukuarvo') || 'Nimetty lukuarvo' }}</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'SKAALAUS', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.skaalaus') || 'Skaalaus' }}</span>
+                </td>
+                <td ng-click="addFunktio(parent, 'PAINOTETTUKESKIARVO', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.painotettukeskiarvo') || 'Painotettu keskiarvo' }}</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'HAELUKUARVOEHDOLLA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.haelukuarvoehdolla') || 'Hae lukuarvo ehdolla' }}</span></td>
+                <td ng-click="addFunktio(parent, 'HAEYOARVOSANA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.yoarvosana') || 'YO-arvosana' }}</span></td>
+            </tr>
+            <tr ng-if="parent.lapsi">
+                <td ng-click="addLaskentakaavaviite(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.viittaus') || 'Viittaus toiseen kaavaan' }}</span>
+                </td>
+                <td ng-click="addFunktio(parent, 'HAEMERKKIJONOJAKONVERTOILUKUARVOKSI', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.haemerkkijono') || 'Hae merkkijono ja konvertoi lukuarvoksi' }}</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-default btn-sm" ng-click="toggleModalSelection('asetukset')" popover-popup-delay="500"
+                popover-placement="top" popover-trigger="mouseenter"
+                popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
+            <i class="fa fa-arrow-left"></i> {{ t('laskentakaavaviiteasetuksetmodal.palaafunktioasetuksiin') || 'Palaa
+            funktioasetuksiin' }}
+        </button>
+
+        <button class="btn btn-default btn-sm" ng-click="sulje()" popover-popup-delay="500" popover-placement="top"
+                popover-trigger="mouseenter"
+                popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
+            {{ t('laskentakaavaviiteasetuksetmodal.sulje') || 'Sulje' }}
+        </button>
     </div>
 
 </div>
