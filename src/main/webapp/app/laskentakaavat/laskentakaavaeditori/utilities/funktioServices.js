@@ -5,7 +5,7 @@ service('FunktioService', function (FunktioKuvausResource, $log, _) {
     var api = this;
 
     this.funktiokuvaukset = {};
-
+    
     this.refresh = function () {
         if (_.isEmpty(api.funktiokuvaukset) ) {
             FunktioKuvausResource.get({}, function (result) {
@@ -23,11 +23,14 @@ service('FunktioService', function (FunktioKuvausResource, $log, _) {
     this.getFunktiokuvaus = function (funktionimi) {
         var result;
         if (api.funktiokuvaukset) {
-            api.funktiokuvaukset.forEach(function (funktiokuvaus) {
-                if (funktiokuvaus.nimi === funktionimi) {
-                    result = funktiokuvaus;
-                }
+            result = _.find(api.funktiokuvaukset, function (funktiokuvaus) {
+                return funktiokuvaus.nimi === funktionimi;
             });
+            //api.funktiokuvaukset.forEach(function (funktiokuvaus) {
+            //    if (funktiokuvaus.nimi === funktionimi) {
+            //        result = funktiokuvaus;
+            //    }
+            //});
         }
 
         return result;
@@ -116,6 +119,10 @@ service('FunktioService', function (FunktioKuvausResource, $log, _) {
             //jos funktio-parametri ei ole laskentakaavan ensimmäinen lapsi, niin funktiolla on lapsi-kääre
             return funktiokutsu.lapsi.funktionimi;
         }
+    };
+
+    this.isLukuarvoFunktiokutsu = function (funktiokuvaus) {
+        return funktiokuvaus.tyyppi === 'LUKUARVOFUNKTIO';
     };
 
 

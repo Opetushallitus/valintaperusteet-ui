@@ -761,15 +761,15 @@
         <h3>{{ t('funktiokutsukaaremodal.header') || 'Funktiokutsun kääriminen'}}</h3>
     </div>
     <div class="modal-body">
-
-        <button ng-click="kaariNimettyFunktioargumentti()"></button>
+        <h3>{{ t('laskentakaavaviiteasetuksetmodal.kaareenvalinta.ohje') || ''}}</h3>
+        <select ng-model="childFunktiokutsuIndex" ng-options="option.index as option.label for option in kaareFunktiokutsuAsetukset.argumenttiOptions"></select>
+        <button class="btn btn-default btn-sm" ng-click="kaariNimettyFunktioargumentti(kaareFunktiokutsuAsetukset.funktiokutsuNimi, childFunktiokutsuIndex)">{{ t('laskentakaavaviiteasetuksetmodal.kaareenvalinta.tallenna') || 'Kääri funktiokutsu'}}</button>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-click="laskentakaavaModalService.toggleModalSelection('asetukset')" popover-popup-delay="500"
+        <button class="btn btn-default btn-sm" ng-click="laskentakaavaModalService.toggleModalSelection('kaare')" popover-popup-delay="500"
                 popover-placement="top" popover-trigger="mouseenter"
                 popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
-            <i class="fa fa-arrow-left"></i> {{ t('laskentakaavaviiteasetuksetmodal.palaafunktioasetuksiin') || 'Palaa
-            funktioasetuksiin' }}
+            <i class="fa fa-arrow-left"></i> {{ t('laskentakaavaviiteasetuksetmodal.kaareenvalinta.palaa') || 'Palaa funktiokutsun käärefunktion valintaan' }}
         </button>
 
         <button class="btn btn-default btn-sm" ng-click="sulje()" popover-popup-delay="500" popover-placement="top"

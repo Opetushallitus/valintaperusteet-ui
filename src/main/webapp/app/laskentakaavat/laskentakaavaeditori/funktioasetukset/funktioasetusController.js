@@ -14,12 +14,12 @@ angular.module('valintaperusteet')
                 $scope.valintaryhmaModel.refreshIfNeeded($routeParams.valintaryhmaOid);
             }
 
-
             $scope.valintaryhmaModel = ValintaryhmaModel;
             $scope.treemodel = Treemodel;
             $scope.guidGenerator = GuidGenerator;
             $scope.funktioService = FunktioService;
             $scope.laskentakaavaModalService = LaskentakaavaModalService;
+            $scope.kaareFunktiokutsuAsetukset = NimettyFunktioargumenttiKaareService.kaareFunktiokutsuAsetukset;
 
             $scope.$watch('funktioasetukset.parentFunktiokutsu', function () {
                 if(!_.isEmpty($scope.funktioasetukset.parentFunktiokutsu)) {
@@ -210,7 +210,7 @@ angular.module('valintaperusteet')
             $scope.kaariFunktiokutsuNFunktioargumentiksi = function (kaarivaFunktiokutsuNimi) {
                 var isRootFunktiokutsu = FunktioService.isRootFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu);
                 var kaarittavaFunktiokutsu = FunktioService.getCurrentFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu, $scope.funktioasetukset.selectedFunktioIndex);
-                var kaarivaFunktiokutsu  = FunktioFactory.createFunktioInstance($scope.funktioasetukset.parentFunktiokutsu, kaarivaFunktiokutsuNimi, FunktioService.isRootFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu));
+                var kaarivaFunktiokutsu  = FunktioFactory.createFunktioInstance($scope.funktioasetukset.parentFunktiokutsu, kaarivaFunktiokutsuNimi, isRootFunktiokutsu);
                 kaarivaFunktiokutsu.open = true;
 
                 if(isRootFunktiokutsu) {
@@ -224,8 +224,24 @@ angular.module('valintaperusteet')
                 LaskentakaavaModalService.resetModalSelection();
             };
 
-            $scope.kaariNimettyFunktioargumentti = function (kaarivaFunktioNimi) {
+            $scope.setKaareFunktiokutsuType = function (kaarivaFunktioNimi) {
+                NimettyFunktioargumenttiKaareService.setKaareFunktiokutsuType(kaarivaFunktioNimi);
+            };
 
+            $scope.kaariNimettyFunktioargumentti = function (kaarivaFunktiokutsuNimi, slotIndex) {
+                var isRootFunktiokutsu = FunktioService.isRootFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu);
+                var kaarittavaFunktiokutsu = FunktioService.getCurrentFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu, $scope.funktioasetukset.selectedFunktioIndex);
+                var kaarivaFunktiokutsu  = FunktioFactory.createFunktioInstance($scope.funktioasetukset.parentFunktiokutsu, kaarivaFunktiokutsuNimi, isRootFunktiokutsu);
+                kaarivaFunktiokutsu.open = true;
+                if(isRootFunktiokutsu) {
+                    kaarivaFunktiokutsu.funktioargumentit[slotIndex] = kaarittavaFunktiokutsu;
+                    $scope.funktioasetukset.parentFunktiokutsu.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = kaarivaFunktiokutsu;
+                } else {
+                    kaarivaFunktiokutsu.lapsi.funktioargumentit[slotIndex] = kaarittavaFunktiokutsu;
+                    $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = kaarivaFunktiokutsu;
+                }
+
+                LaskentakaavaModalService.resetModalSelection();
             };
 
             $scope.isYoFunktiokutsu = function (funktio, valintaperuste) {
