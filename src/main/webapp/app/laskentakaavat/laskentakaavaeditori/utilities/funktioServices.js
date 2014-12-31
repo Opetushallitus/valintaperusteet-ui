@@ -1,5 +1,6 @@
 angular.module('valintaperusteet').
-service('FunktioService', function (FunktioKuvausResource, $log, _) {
+service('FunktioService', ['FunktioKuvausResource', '$log', '_',
+                function (FunktioKuvausResource, $log, _) {
     'use strict';
 
     var api = this;
@@ -26,11 +27,6 @@ service('FunktioService', function (FunktioKuvausResource, $log, _) {
             result = _.find(api.funktiokuvaukset, function (funktiokuvaus) {
                 return funktiokuvaus.nimi === funktionimi;
             });
-            //api.funktiokuvaukset.forEach(function (funktiokuvaus) {
-            //    if (funktiokuvaus.nimi === funktionimi) {
-            //        result = funktiokuvaus;
-            //    }
-            //});
         }
 
         return result;
@@ -257,9 +253,13 @@ service('FunktioService', function (FunktioKuvausResource, $log, _) {
         return api.isRootFunktiokutsu(parentFunktiokutsu) ? parentFunktiokutsu.funktioargumentit[childIndex] : parentFunktiokutsu.lapsi.funktioargumentit[childIndex];
     };
 
-})
+    this.getFunktioNimiLista = function () {
+        return _.pluck(api.funktiokuvaukset, 'nimi');
+    };
 
-.factory('Valintaperusteviitetyypit', function () {
+}])
+
+.factory('Valintaperusteviitetyypit', [function () {
     'use strict';
 
     return [
@@ -268,9 +268,9 @@ service('FunktioService', function (FunktioKuvausResource, $log, _) {
         { key: 'HAKUKOHTEEN_ARVO', text: 'Hakukohteen arvo' },
         { key: 'HAKUKOHTEEN_SYOTETTAVA_ARVO', text: 'Hakukohteen syötettävä arvo' }
     ];
-})
+}])
 
-.factory('Arvokonvertterikuvauskielet', function () {
+.factory('Arvokonvertterikuvauskielet', [function () {
    'use strict';
 
     return [
@@ -278,6 +278,6 @@ service('FunktioService', function (FunktioKuvausResource, $log, _) {
         { key: 'SV', text: 'Ruotsi' },
         { key: 'EN', text: 'Englanti' }
     ];
-});
+}]);
 
 
