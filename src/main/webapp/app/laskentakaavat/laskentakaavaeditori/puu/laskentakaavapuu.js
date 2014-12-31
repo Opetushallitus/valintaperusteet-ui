@@ -164,7 +164,7 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
             $scope.findFunktioSlotIndex = function (parent, index) {
                 var isNimetty = $scope.isNimettyFunktioargumentti(parent);
                 var resultIndex = undefined;
-                var isPainotettukeskiarvoChild = $scope.funktioService.isPainotettukeskiarvoChild(parent);
+                var isPainotettukeskiarvoChild = FunktioService.isPainotettukeskiarvo(parent);
                 if (isNimetty || isPainotettukeskiarvoChild) {
                     resultIndex = index;
                 } else {
@@ -295,7 +295,7 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
             };
 
             $scope.getDefinedFunktioargumenttiCount = function (parent) {
-                return $scope.funktioService.getDefinedFunktioargumenttiCount(parent);
+                return FunktioService.getDefinedFunktioargumenttiCount(parent);
             };
 
             $scope.changeKonvertteriparametriTypeSelection = function (konvertteriparametriSelection) {
@@ -386,7 +386,7 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
 
             $scope.isPainotettukeskiarvoChild = function (funktiokutsu) {
                 if (funktiokutsu) {
-                    return $scope.funktioService.isPainotettukeskiarvoChild(funktiokutsu);
+                    return FunktioService.isPainotettukeskiarvo(funktiokutsu);
                 } else {
                     return false;
                 }

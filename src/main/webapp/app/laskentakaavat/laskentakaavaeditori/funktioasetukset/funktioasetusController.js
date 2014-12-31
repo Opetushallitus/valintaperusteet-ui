@@ -3,15 +3,23 @@ angular.module('valintaperusteet')
     .controller('funktiokutsuAsetuksetController', ['$scope', '$log', '$q', '$routeParams', '$location', '$timeout', 'Laskentakaava',
         'FunktioNimiService', 'FunktioFactory', 'KaavaValidation', 'GuidGenerator', 'HakemusavaimetLisakysymykset', 'HakemusavaimetLomake',
         'ValintaryhmaModel', 'Treemodel', 'LaskentakaavaValintaryhma', '$cookieStore', '$window', 'UserModel', 'ErrorService', '_', 'FunktioService',
+        'LaskentakaavaModalService', 'NimettyFunktioargumenttiKaareService',
         function ($scope, $log, $q, $routeParams, $location, $timeout, Laskentakaava,
                   FunktioNimiService, FunktioFactory, KaavaValidation, GuidGenerator, HakemusavaimetLisakysymykset, HakemusavaimetLomake,
-                  ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore, $window, UserModel, ErrorService, _, FunktioService) {
+                  ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore, $window, UserModel, ErrorService, _, FunktioService,
+                  LaskentakaavaModalService, NimettyFunktioargumenttiKaareService) {
+
             UserModel.refreshIfNeeded();
+            if ($routeParams.valintaryhmaOid !== undefined) {
+                $scope.valintaryhmaModel.refreshIfNeeded($routeParams.valintaryhmaOid);
+            }
+
 
             $scope.valintaryhmaModel = ValintaryhmaModel;
             $scope.treemodel = Treemodel;
             $scope.guidGenerator = GuidGenerator;
             $scope.funktioService = FunktioService;
+            $scope.laskentakaavaModalService = LaskentakaavaModalService;
 
             $scope.$watch('funktioasetukset.parentFunktiokutsu', function () {
                 if(!_.isEmpty($scope.funktioasetukset.parentFunktiokutsu)) {
@@ -20,34 +28,10 @@ angular.module('valintaperusteet')
                 }
             });
 
-            if ($routeParams.valintaryhmaOid !== undefined) {
-                $scope.valintaryhmaModel.refreshIfNeeded($routeParams.valintaryhmaOid);
-            }
-
             $scope.valintaryhmaPromise = $scope.valintaryhmaModel.loaded.promise;
             $scope.$on('showFunktiokutsuAsetukset', function () {
                 $scope.show();
             });
-
-            $scope.modalSelection = {
-                asetukset: true,
-                tallennusKaavana: false,
-                kaare: false
-            };
-
-            $scope.toggleModalSelection = function (selection) {
-                _.forIn($scope.modalSelection, function (value, key) {
-                    $scope.modalSelection[key] = key === selection ? true : false;
-                });
-            };
-
-            $scope.resetModalSelection = function () {
-                $scope.modalSelection = {
-                    asetukset: true,
-                    tallennusKaavana: false,
-                    kaare: false
-                };
-            };
 
             $scope.generateSyoteId = function (valintaperuste) {
                 valintaperuste.tunniste = $scope.guidGenerator();
@@ -213,8 +197,34 @@ angular.module('valintaperusteet')
                 });
             };
 
-            $scope.kaariFunktiokutsu = function (kaarivaFunktioNimi) {
-                var funktiokutsu = FunktioService.getCurrentFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu, $scope.funktioasetukset.selectedFunktioIndex);
+            $scope.kaariFunktiokutsu = function (kaarivaFunktiokutsuNimi) {
+                if(FunktioService.hasNSizeFunktioargumenttiByFunktionimi(kaarivaFunktiokutsuNimi)) {
+                    $scope.kaariFunktiokutsuNFunktioargumentiksi(kaarivaFunktiokutsuNimi);
+                } else {
+                    NimettyFunktioargumenttiKaareService.setKaareFunktiokutsuType(kaarivaFunktiokutsuNimi);
+                    LaskentakaavaModalService.toggleModalSelection('kaariFunktiokutsuNimettyargumentti');
+                }
+            };
+
+            //Käärivällä funktiokutsulla voi olla N määrä funktioargumentteja
+            $scope.kaariFunktiokutsuNFunktioargumentiksi = function (kaarivaFunktiokutsuNimi) {
+                var isRootFunktiokutsu = FunktioService.isRootFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu);
+                var kaarittavaFunktiokutsu = FunktioService.getCurrentFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu, $scope.funktioasetukset.selectedFunktioIndex);
+                var kaarivaFunktiokutsu  = FunktioFactory.createFunktioInstance($scope.funktioasetukset.parentFunktiokutsu, kaarivaFunktiokutsuNimi, FunktioService.isRootFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu));
+                kaarivaFunktiokutsu.open = true;
+
+                if(isRootFunktiokutsu) {
+                    kaarivaFunktiokutsu.funktioargumentit[0] = kaarittavaFunktiokutsu;
+                    $scope.funktioasetukset.parentFunktiokutsu.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = kaarivaFunktiokutsu;
+                } else {
+                    kaarivaFunktiokutsu.lapsi.funktioargumentit[0] = kaarittavaFunktiokutsu;
+                    $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = kaarivaFunktiokutsu;
+                }
+
+                LaskentakaavaModalService.resetModalSelection();
+            };
+
+            $scope.kaariNimettyFunktioargumentti = function (kaarivaFunktioNimi) {
 
             };
 

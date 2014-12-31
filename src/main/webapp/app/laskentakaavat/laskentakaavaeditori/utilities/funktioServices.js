@@ -56,25 +56,19 @@ service('FunktioService', function (FunktioKuvausResource, $log, _) {
         }
     };
 
-    this.isFunktiokutsuWithFunktioargumenttiSizeN = function(parent) {
-        if(_.isEmpty(parent)) {return undefined;}
-        if(api.isFunktiokutsu(parent) && !(_.isEmpty(api.getFunktiokuvaus(api.getFunktionimi(parent)).funktioargumentit)) ) {
-
-            var funktiokuvaus = api.getFunktiokuvaus(api.getFunktionimi(parent));
-            if(funktiokuvaus.funktioargumentit) {
-                return funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'n';
-            } else {
-                return false;
-            }
+    this.hasNSizeFunktioargumenttiByFunktionimi = function(funktionimi) {
+        var funktiokuvaus = api.getFunktiokuvaus(funktionimi);
+        if(funktiokuvaus.funktioargumentit) {
+            return funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'n';
         } else {
             return false;
         }
     };
 
-    this.isPainotettukeskiarvoChild = function (parent) {
-        if (_.isEmpty(parent)) {return undefined;}
-        if(!(api.isFunktiokutsu(parent))) {return false;}
-        var funktiokuvaus = api.getFunktiokuvaus(api.getFunktionimi(parent));
+    this.isPainotettukeskiarvo = function (funktiokutsu) {
+        if (_.isEmpty(funktiokutsu)) {return undefined;}
+        if(!(api.isFunktiokutsu(funktiokutsu))) {return false;}
+        var funktiokuvaus = api.getFunktiokuvaus(api.getFunktionimi(funktiokutsu));
         return funktiokuvaus.funktioargumentit && funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'lista_pareja';
     };
 
@@ -126,14 +120,15 @@ service('FunktioService', function (FunktioKuvausResource, $log, _) {
 
 
     this.isLukuarvoFunktioSlot = function (parent, funktioargumenttiIndex) {
+        var funktiokuvaus, tyyppi;
         var isOnNimettySlot = api.isNimettyFunktioargumentti(parent);
         if (api.isRootFunktiokutsu(parent)) {
-            var funktiokuvaus = api.getFunktiokuvaus(parent.funktionimi);
-            var tyyppi = isOnNimettySlot ? funktiokuvaus.funktioargumentit[funktioargumenttiIndex].tyyppi : funktiokuvaus.funktioargumentit[0].tyyppi;
+            funktiokuvaus = api.getFunktiokuvaus(parent.funktionimi);
+            tyyppi = isOnNimettySlot ? funktiokuvaus.funktioargumentit[funktioargumenttiIndex].tyyppi : funktiokuvaus.funktioargumentit[0].tyyppi;
             return tyyppi === 'LUKUARVOFUNKTIO';
         } else {
-            var funktiokuvaus = api.getFunktiokuvaus(parent.lapsi.funktionimi);
-            var tyyppi = isOnNimettySlot ? funktiokuvaus.funktioargumentit[funktioargumenttiIndex].tyyppi : funktiokuvaus.funktioargumentit[0].tyyppi;
+            funktiokuvaus = api.getFunktiokuvaus(parent.lapsi.funktionimi);
+            tyyppi = isOnNimettySlot ? funktiokuvaus.funktioargumentit[funktioargumenttiIndex].tyyppi : funktiokuvaus.funktioargumentit[0].tyyppi;
             return tyyppi === 'LUKUARVOFUNKTIO';
         }
     };
@@ -246,7 +241,7 @@ service('FunktioService', function (FunktioKuvausResource, $log, _) {
         return _.has(funktiokuvaus, 'funktioargumentit');
     };
         
-    this.funktiokuvausHasFunktioargumentit = function (funktionimi) {
+    this.hasFunktioargumentitByFunktionimi = function (funktionimi) {
         var funktiokuvaus = api.getFunktiokuvaus(funktionimi);
         return _.has(funktiokuvaus, 'funktioargumentit');
     };

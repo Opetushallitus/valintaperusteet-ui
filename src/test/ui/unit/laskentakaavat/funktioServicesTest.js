@@ -165,44 +165,38 @@ describe("FunktioService", function () {
 
     //isFunktiokutsuWithFunktioargumenttiSizeN
     describe("isFunktiokutsuWithFunktioargumenttiSizeN(parent)", function () {
-        it("should return undefined if parent is undefined", function () {
-            expect(funktioservice.getNimettyFunktioargumenttiCount(undefined)).toBe(undefined);
-        });
 
         it("should return true for funktiokutsu SUMMA", function () {
-            expect(funktioservice.isFunktiokutsuWithFunktioargumenttiSizeN(funktiokutsuSumma)).toBe(true);
+            expect(funktioservice.hasNSizeFunktioargumenttiByFunktionimi(funktioservice.getFunktionimi(funktiokutsuSumma))).toBe(true);
         });
 
         it("should return true for funktiokutsu KESKIARVO", function () {
-            expect(funktioservice.isFunktiokutsuWithFunktioargumenttiSizeN(funktiokutsuKeskiarvo)).toBe(true);
+            expect(funktioservice.hasNSizeFunktioargumenttiByFunktionimi(funktioservice.getFunktionimi(funktiokutsuKeskiarvo))).toBe(true);
         });
 
         it("should return false for funktiokutsu PAINOTETTUKESKIARVO", function () {
-            expect(funktioservice.isFunktiokutsuWithFunktioargumenttiSizeN(funktiokutsuPainotettukeskiarvo)).toBe(false);
+            expect(funktioservice.hasNSizeFunktioargumenttiByFunktionimi(funktioservice.getFunktionimi(funktiokutsuPainotettukeskiarvo))).toBe(false);
         });
 
-        it("should return false for laskentakaavaviite", function () {
-            expect(funktioservice.isFunktiokutsuWithFunktioargumenttiSizeN(laskentakaavaviite)).toBe(false);
-        })
     });
 
     //isPainotettukeskiarvoChild
-    describe("isPainotettukeskiarvoChild(name)", function () {
+    describe("isPainotettukeskiarvo(name)", function () {
 
         it("should return true if parent is of type PAINOTETTUKESKIARVO", function () {
-            expect(funktioservice.isPainotettukeskiarvoChild(funktiokutsuPainotettukeskiarvo)).toBe(true);
+            expect(funktioservice.isPainotettukeskiarvo(funktiokutsuPainotettukeskiarvo)).toBe(true);
         });
 
         it('should return false for a KESKIARVO-funktiokutsu', function () {
-            expect(funktioservice.isPainotettukeskiarvoChild(funktiokutsuKeskiarvo)).toBe(false);
+            expect(funktioservice.isPainotettukeskiarvo(funktiokutsuKeskiarvo)).toBe(false);
         });
 
         it('should return false for a JOS-funktiokutsu', function () {
-            expect(funktioservice.isPainotettukeskiarvoChild(funktiokutsuJos)).toBe(false);
+            expect(funktioservice.isPainotettukeskiarvo(funktiokutsuJos)).toBe(false);
         });
 
         it('should return false for undefined parameter', function () {
-            expect(funktioservice.isPainotettukeskiarvoChild()).toBe();
+            expect(funktioservice.isPainotettukeskiarvo()).toBe();
         });
     });
 
@@ -390,33 +384,33 @@ describe("FunktioService", function () {
     });
 
     //funktiokuvausHasFunktioargumentit
-    describe("funktiokuvausHasFunktioargumentit(funktionimi)", function () {
+    describe("hasFunktioargumentitByFunktionimi(funktionimi)", function () {
         it('should return true for JOS', function () {
-            expect(funktioservice.funktiokuvausHasFunktioargumentit('JOS')).toBe(true);
+            expect(funktioservice.hasFunktioargumentitByFunktionimi('JOS')).toBe(true);
         });
 
         it('should return false for LUKUARVO', function () {
-            expect(funktioservice.funktiokuvausHasFunktioargumentit('LUKUARVO')).toBe(false);
+            expect(funktioservice.hasFunktioargumentitByFunktionimi('LUKUARVO')).toBe(false);
         });
 
         it('should return true for MAKSIMI', function () {
-            expect(funktioservice.funktiokuvausHasFunktioargumentit('MAKSIMI')).toBe(true);
+            expect(funktioservice.hasFunktioargumentitByFunktionimi('MAKSIMI')).toBe(true);
         });
 
         it('should return false for PIENEMPITAIYHTASUURI', function () {
-            expect(funktioservice.funktiokuvausHasFunktioargumentit('PIENEMPITAIYHTASUURI')).toBe(true);
+            expect(funktioservice.hasFunktioargumentitByFunktionimi('PIENEMPITAIYHTASUURI')).toBe(true);
         });
 
         it('should return false for HAEYOARVOSANA', function () {
-            expect(funktioservice.funktiokuvausHasFunktioargumentit('HAEYOARVOSANA')).toBe(false);
+            expect(funktioservice.hasFunktioargumentitByFunktionimi('HAEYOARVOSANA')).toBe(false);
         });
 
         it('should return false for HAETOTUUSARVO', function () {
-            expect(funktioservice.funktiokuvausHasFunktioargumentit('HAETOTUUSARVO')).toBe(false);
+            expect(funktioservice.hasFunktioargumentitByFunktionimi('HAETOTUUSARVO')).toBe(false);
         });
 
         it('should return false for PAINOTETTUKESKIARVO', function () {
-            expect(funktioservice.funktiokuvausHasFunktioargumentit('PAINOTETTUKESKIARVO')).toBe(true);
+            expect(funktioservice.hasFunktioargumentitByFunktionimi('PAINOTETTUKESKIARVO')).toBe(true);
         });
 
     });

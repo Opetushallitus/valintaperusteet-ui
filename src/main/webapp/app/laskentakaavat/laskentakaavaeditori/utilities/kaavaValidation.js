@@ -140,7 +140,7 @@ angular.module('valintaperusteet')
 
             // Funktiokutsulle voidaan määritellä N määrä funktioargumentteja - vähintään yksi on määriteltävä
             this.atLeastOneFunktioargumenttiDefined = function (parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount) {
-                if (FunktioService.isFunktiokutsuWithFunktioargumenttiSizeN(funktiokutsu) && definedFunktioargumenttiCount === 0) {
+                if (FunktioService.isFunktiokutsu(funktiokutsu) && FunktioService.hasNSizeFunktioargumenttiByFunktionimi(FunktioService.getFunktionimi(funktiokutsu)) && definedFunktioargumenttiCount === 0) {
                     var nimi, kuvaus, isFunktiokutsu;
                     nimi = FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi);
                     isFunktiokutsu = FunktioService.isFunktiokutsu(funktiokutsu);

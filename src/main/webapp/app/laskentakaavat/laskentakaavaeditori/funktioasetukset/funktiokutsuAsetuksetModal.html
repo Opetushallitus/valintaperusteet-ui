@@ -382,7 +382,7 @@
 </script>
 
 
-<div ng-show="modalSelection.asetukset">
+<div ng-show="laskentakaavaModalService.selection.asetukset">
     <div class="modal-header">
         <!-- Funktiokutsun asetukset -->
         <h3>{{ t('laskentakaavaviiteasetuksetmodal.funktioasetukset') || 'Funktioasetukset' }}</h3>
@@ -528,10 +528,10 @@
 
     <div class="modal-footer">
         <!-- Funktiokutsun asetukset -->
-        <button class="btn btn-default btn-sm" ng-disabled="!userAccess.crudOrg" ng-click="toggleModalSelection('kaare')">{{ t('laskentakaavaviiteasetuksetmodal.funktiokutsunKaariminen') || 'Funktiokutsun kääriminen toisella funktiokutsulla'}}</button>
+        <button class="btn btn-default btn-sm" ng-disabled="!userAccess.crudOrg" ng-click="laskentakaavaModalService.toggleModalSelection('kaare')">{{ t('laskentakaavaviiteasetuksetmodal.funktiokutsunKaariminen') || 'Funktiokutsun kääriminen toisella funktiokutsulla'}}</button>
         <button class="btn btn-default btn-sm"
                 ng-disabled="alikaavaValues.isAlikaava || funktioasetukset.parentFunktiokutsu === model.laskentakaavapuu.funktiokutsu || !userAccess.crudOrg"
-                ng-click="toggleModalSelection('tallennusKaavana')">{{ t('laskentakaavaviiteasetuksetmodal.kaavanosantallennus') || 'Kaavan osan
+                ng-click="laskentakaavaModalService.toggleModalSelection('tallennusKaavana')">{{ t('laskentakaavaviiteasetuksetmodal.kaavanosantallennus') || 'Kaavan osan
             tallennus' }}
         </button>
         <button ng-disabled="alikaavaValues.isAlikaava || !userAccess.crudOrg" class="btn btn-sm btn-default"
@@ -550,7 +550,7 @@
 </div>
 
 
-<div ng-show="modalSelection.tallennusKaavana">
+<div ng-show="laskentakaavaModalService.selection.tallennusKaavana">
 
     <div class="modal-header">
         <!-- tallenna funktiokutsu laskentakaavana -->
@@ -609,7 +609,7 @@
     </div>
     <div class="modal-footer">
         <!-- tallenna funktiokutsu laskentakaavana -->
-        <button class="btn btn-default btn-sm" ng-click="toggleModalSelection('asetukset')" popover-popup-delay="500"
+        <button class="btn btn-default btn-sm" ng-click="laskentakaavaModalService.toggleModalSelection('asetukset')" popover-popup-delay="500"
                 popover-placement="top" popover-trigger="mouseenter"
                 popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
             <i class="fa fa-arrow-left"></i> {{ t('laskentakaavaviiteasetuksetmodal.palaafunktioasetuksiin') || 'Palaa
@@ -629,7 +629,7 @@
 
 </div>
 
-<div ng-show="modalSelection.kaare">
+<div ng-show="laskentakaavaModalService.selection.kaare">
 
     <div class="modal-header">
         <h3>{{ t('funktiokutsukaaremodal.header') || 'Funktiokutsun kääriminen'}}</h3>
@@ -638,101 +638,101 @@
         <table class="funktiokutsut">
             <tbody ng-if="selectedFunktiokutsuIsLukuarvoFunktio">
                 <tr>
-                    <td ng-click="kaariFunktiokutsu('SUMMA')">
+                    <td ng-click="kaariFunktiokutsu('SUMMA'); ">
                         <span>{{ t('laskentakaavapuu.summa') || 'Summa' }}</span></td>
-                    <td ng-click="kaariFunktiokutsu('JOS')">
+                    <td ng-click="kaariFunktiokutsu('JOS'); ">
                         <span>{{ t('laskentakaavapuu.jos') || 'Jos' }}</span></td>
                 </tr>
                 <tr>
-                    <td ng-click="kaariFunktiokutsu('TULO')">
+                    <td ng-click="kaariFunktiokutsu('TULO'); ">
                         <span>{{ t('laskentakaavapuu.tulo') || 'Tulo' }}</span></td>
-                    <td ng-click="kaariFunktiokutsu('OSAMAARA')"><span>{{ t('laskentakaavapuu.osamaara') || 'Osamäärä' }}</span>
+                    <td ng-click="kaariFunktiokutsu('OSAMAARA'); "><span>{{ t('laskentakaavapuu.osamaara') || 'Osamäärä' }}</span>
                     </td>
                 </tr>
                 <tr>
-                    <td ng-click="kaariFunktiokutsu('KESKIARVO')"><span>{{ t('laskentakaavapuu.keskiarvo') || 'Keskiarvo' }}</span>
+                    <td ng-click="kaariFunktiokutsu('KESKIARVO'); "><span>{{ t('laskentakaavapuu.keskiarvo') || 'Keskiarvo' }}</span>
                     </td>
-                    <td ng-click="kaariFunktiokutsu('MEDIAANI')"><span>{{ t('laskentakaavapuu.mediaani') || 'Mediaani' }}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td ng-click="kaariFunktiokutsu('MINIMI')"><span>{{ t('laskentakaavapuu.minimi') || 'Minimi' }}</span>
-                    </td>
-                    <td ng-click="kaariFunktiokutsu('MAKSIMI')"><span>{{ t('laskentakaavapuu.maksimi') || 'Maksimi' }}</span>
+                    <td ng-click="kaariFunktiokutsu('MEDIAANI'); "><span>{{ t('laskentakaavapuu.mediaani') || 'Mediaani' }}</span>
                     </td>
                 </tr>
                 <tr>
-                    <td ng-click="kaariFunktiokutsu('SUMMANPARASTA')">
+                    <td ng-click="kaariFunktiokutsu('MINIMI'); "><span>{{ t('laskentakaavapuu.minimi') || 'Minimi' }}</span>
+                    </td>
+                    <td ng-click="kaariFunktiokutsu('MAKSIMI'); "><span>{{ t('laskentakaavapuu.maksimi') || 'Maksimi' }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td ng-click="kaariFunktiokutsu('SUMMANPARASTA'); ">
                         <span>{{ t('laskentakaavapuu.nparastasumma') || 'N parasta summa' }}</span></td>
-                    <td ng-click="kaariFunktiokutsu('KESKIARVONPARASTA')">
+                    <td ng-click="kaariFunktiokutsu('KESKIARVONPARASTA'); ">
                         <span>{{ t('laskentakaavapuu.nparastakeskiarvo') || 'N parasta keskiarvo' }}</span></td>
                 </tr>
                 <tr>
-                    <td ng-click="kaariFunktiokutsu('NMAKSIMI')"><span>{{ t('laskentakaavapuu.nparas') || 'N paras' }}</span>
+                    <td ng-click="kaariFunktiokutsu('NMAKSIMI'); "><span>{{ t('laskentakaavapuu.nparas') || 'N paras' }}</span>
                     </td>
-                    <td ng-click="kaariFunktiokutsu('NMINIMI')"><span>{{ t('laskentakaavapuu.nhuonoin') || 'N huonoin' }}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td ng-click="kaariFunktiokutsu('NEGAATIO')"><span>{{ t('laskentakaavapuu.negaatio') || 'Negaatio' }}</span>
-                    </td>
-                    <td ng-click="kaariFunktiokutsu('PYORISTYS')"><span>{{ t('laskentakaavapuu.pyoristys') || 'Pyöristys' }}</span>
+                    <td ng-click="kaariFunktiokutsu('NMINIMI'); "><span>{{ t('laskentakaavapuu.nhuonoin') || 'N huonoin' }}</span>
                     </td>
                 </tr>
                 <tr>
-                    <td ng-click="kaariFunktiokutsu('HYLKAA')"><span>{{ t('laskentakaavapuu.hylkaa') || 'Hylkää' }}</span>
+                    <td ng-click="kaariFunktiokutsu('NEGAATIO'); "><span>{{ t('laskentakaavapuu.negaatio') || 'Negaatio' }}</span>
                     </td>
-                    <td ng-click="kaariFunktiokutsu('HYLKAAARVOVALILLA')">
+                    <td ng-click="kaariFunktiokutsu('PYORISTYS'); "><span>{{ t('laskentakaavapuu.pyoristys') || 'Pyöristys' }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td ng-click="kaariFunktiokutsu('HYLKAA'); "><span>{{ t('laskentakaavapuu.hylkaa') || 'Hylkää' }}</span>
+                    </td>
+                    <td ng-click="kaariFunktiokutsu('HYLKAAARVOVALILLA'); ">
                         <span>{{ t('laskentakaavapuu.hylkaaarvovalilla') || 'Hylkää arvovälillä' }}</span></td>
                 </tr>
                 <tr>
-                    <td ng-click="kaariFunktiokutsu('KONVERTOILUKUARVO')">
+                    <td ng-click="kaariFunktiokutsu('KONVERTOILUKUARVO'); ">
                         <span>{{ t('laskentakaavapuu.konversio') || 'Konversio' }}</span></td>
-                    <td ng-click="kaariFunktiokutsu('NIMETTYLUKUARVO')">
+                    <td ng-click="kaariFunktiokutsu('NIMETTYLUKUARVO'); ">
                         <span>{{ t('laskentakaavapuu.nimettylukuarvo') || 'Nimetty lukuarvo' }}</span></td>
                 </tr>
                 <tr>
-                    <td ng-click="kaariFunktiokutsu('SKAALAUS')"><span>{{ t('laskentakaavapuu.skaalaus') || 'Skaalaus' }}</span>
+                    <td ng-click="kaariFunktiokutsu('SKAALAUS'); "><span>{{ t('laskentakaavapuu.skaalaus') || 'Skaalaus' }}</span>
                     </td>
-                    <td ng-click="kaariFunktiokutsu('PAINOTETTUKESKIARVO')">
+                    <td ng-click="kaariFunktiokutsu('PAINOTETTUKESKIARVO'); ">
                         <span>{{ t('laskentakaavapuu.painotettukeskiarvo') || 'Painotettu keskiarvo' }}</span></td>
                 </tr>
                 <tr>
-                    <td ng-click="kaariFunktiokutsu('HAELUKUARVOEHDOLLA')">
+                    <td ng-click="kaariFunktiokutsu('HAELUKUARVOEHDOLLA'); ">
                         <span>{{ t('laskentakaavapuu.haelukuarvoehdolla') || 'Hae lukuarvo ehdolla' }}</span></td>
-                    <td ng-click="kaariFunktiokutsu('HAEYOARVOSANA')">
+                    <td ng-click="kaariFunktiokutsu('HAEYOARVOSANA'); ">
                         <span>{{ t('laskentakaavapuu.yoarvosana') || 'YO-arvosana' }}</span></td>
                 </tr>
                 <tr>
-                    <td ng-click="kaariFunktiokutsu('HAEMERKKIJONOJAKONVERTOILUKUARVOKSI')">
+                    <td ng-click="kaariFunktiokutsu('HAEMERKKIJONOJAKONVERTOILUKUARVOKSI'); ">
                         <span>{{ t('laskentakaavapuu.haemerkkijono') || 'Hae merkkijono ja konvertoi lukuarvoksi' }}</span></td>
                     <td>
                 </tr>
             </tbody>
             <tbody ng-if="!selectedFunktiokutsuIsLukuarvoFunktio">
                 <tr>
-                    <td ng-click="kaariFunktiokutsu('TAI')">
+                    <td ng-click="kaariFunktiokutsu('TAI'); ">
                         <span>{{ t('laskentakaavapuu.tai') || 'Tai' }}</span></td>
-                    <td ng-click="kaariFunktiokutsu('JA')">
+                    <td ng-click="kaariFunktiokutsu('JA'); ">
                         <span>{{ t('laskentakaavapuu.ja') || 'Ja' }}</span></td>
                 </tr>
                 <tr>
-                    <td ng-click="kaariFunktiokutsu('SUUREMPITAIYHTASUURI')">
+                    <td ng-click="kaariFunktiokutsu('SUUREMPITAIYHTASUURI'); ">
                         <span>{{ t('laskentakaavapuu.suurempitaiyhtasuuri') || 'Suurempi tai yhtä suuri' }}</span></td>
-                    <td ng-click="kaariFunktiokutsu('SUUREMPI')"><span>{{ t('laskentakaavapuu.suurempi') || 'Suurempi' }}</span>
+                    <td ng-click="kaariFunktiokutsu('SUUREMPI'); "><span>{{ t('laskentakaavapuu.suurempi') || 'Suurempi' }}</span>
                     </td>
                 </tr>
                 <tr>
-                    <td ng-click="kaariFunktiokutsu('YHTASUURI')"><span>{{ t('laskentakaavapuu.yhtasuuri') || 'Yhtä suuri' }}</span>
+                    <td ng-click="kaariFunktiokutsu('YHTASUURI'); "><span>{{ t('laskentakaavapuu.yhtasuuri') || 'Yhtä suuri' }}</span>
                     </td>
 
-                    <td ng-click="kaariFunktiokutsu('PIENEMPI')"><span>{{ t('laskentakaavapuu.pienempi') || 'Pienempi' }}</span>
+                    <td ng-click="kaariFunktiokutsu('PIENEMPI'); "><span>{{ t('laskentakaavapuu.pienempi') || 'Pienempi' }}</span>
                     </td>
                 </tr>
                 <tr>
-                    <td ng-click="kaariFunktiokutsu('PIENEMPITAIYHTASUURI')">
+                    <td ng-click="kaariFunktiokutsu('PIENEMPITAIYHTASUURI'); ">
                         <span>{{ t('laskentakaavapuu.pienempitaiyhtasuuri') || 'Pienempi tai yhtä suuri' }}</span></td>
-                    <td ng-click="kaariFunktiokutsu('EI')">
+                    <td ng-click="kaariFunktiokutsu('EI'); ">
                         <span>{{ t('laskentakaavapuu.ei') || 'Ei' }}</span></td>
                 </tr>
             </tbody>
@@ -740,7 +740,7 @@
     </div>
 
     <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-click="toggleModalSelection('asetukset')" popover-popup-delay="500"
+        <button class="btn btn-default btn-sm" ng-click="laskentakaavaModalService.toggleModalSelection('asetukset')" popover-popup-delay="500"
                 popover-placement="top" popover-trigger="mouseenter"
                 popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
             <i class="fa fa-arrow-left"></i> {{ t('laskentakaavaviiteasetuksetmodal.palaafunktioasetuksiin') || 'Palaa
@@ -754,4 +754,28 @@
         </button>
     </div>
 
+</div>
+
+<div ng-show="laskentakaavaModalService.selection.kaariFunktiokutsuNimettyargumentti">
+    <div class="modal-header">
+        <h3>{{ t('funktiokutsukaaremodal.header') || 'Funktiokutsun kääriminen'}}</h3>
+    </div>
+    <div class="modal-body">
+
+        <button ng-click="kaariNimettyFunktioargumentti()"></button>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default btn-sm" ng-click="laskentakaavaModalService.toggleModalSelection('asetukset')" popover-popup-delay="500"
+                popover-placement="top" popover-trigger="mouseenter"
+                popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
+            <i class="fa fa-arrow-left"></i> {{ t('laskentakaavaviiteasetuksetmodal.palaafunktioasetuksiin') || 'Palaa
+            funktioasetuksiin' }}
+        </button>
+
+        <button class="btn btn-default btn-sm" ng-click="sulje()" popover-popup-delay="500" popover-placement="top"
+                popover-trigger="mouseenter"
+                popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
+            {{ t('laskentakaavaviiteasetuksetmodal.sulje') || 'Sulje' }}
+        </button>
+    </div>
 </div>
