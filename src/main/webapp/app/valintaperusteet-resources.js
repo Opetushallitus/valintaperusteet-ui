@@ -234,6 +234,11 @@ angular.module('valintaperusteet')
             delete: {method: "DELETE"}
         });
     }])
+    .factory('ValintatapajonoValmisSijoiteltavaksi', ['$resource', function ($resource) {
+        return $resource(VALINTALASKENTA_URL_BASE + "resources/valintatapajono/:oid/valmissijoiteltavaksi", {valintatapajonoOid: "@valintatapajonoOid"}, {
+            get: {method: "GET", cache: false}
+        });
+    }])
     .factory('ValintatapajonoJarjestyskriteeri', ['$resource', function ($resource) {
         return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:parentOid/jarjestyskriteeri", {parentOid: "@parentOid"}, {
             get: {method: "GET", isArray: true, cache: false},
