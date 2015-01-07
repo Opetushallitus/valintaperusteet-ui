@@ -3,7 +3,6 @@ angular.module('valintaperusteet').controller('UusiLaskentakaavaController', ['$
     'use strict';
 
     $scope.funktioService = FunktioService;
-    $scope.funktioService.refresh();
 
     $scope.kaava = { tyyppi: "NIMETTYLUKUARVO" };
     

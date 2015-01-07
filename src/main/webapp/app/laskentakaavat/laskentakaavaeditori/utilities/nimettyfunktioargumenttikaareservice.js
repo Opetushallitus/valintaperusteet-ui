@@ -36,10 +36,9 @@ angular.module('valintaperusteet')
             }];
         };
 
-
         this.getJosFunktiokutsuOptions = function (funktiokuvaus) {
             var options = undefined;
-            if(funktiokuvaus.tyyppi === 'LUKUARVOFUNKTIO') {
+            if(FunktioService.isLukuarvoFunktiokutsu(funktiokuvaus)) {
                 options = [ { label: 'Sitten', index: 1 },
                             { label: 'Muuten', index: 2} ];
             } else {
@@ -49,16 +48,12 @@ angular.module('valintaperusteet')
         };
 
         this.getArgumentsNimettyFunktioargumenttiType = function (funktiokuvaus) {
-
             var result = [];
-            var index = 0;
-            _.pluck(funktiokuvaus.funktioargumentit, 'nimi').forEach(function (nimi) {
+            _.pluck(funktiokuvaus.funktioargumentit, 'nimi').forEach(function (nimi, index) {
                 result.push({
                     label: nimi,
                     index: index
                 });
-
-                index += 1;
             });
             return result;
         };

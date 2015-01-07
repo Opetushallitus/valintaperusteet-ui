@@ -1,4 +1,6 @@
-angular.module('valintaperusteet').factory('FunktioFactory', function(FunktioService){
+angular.module('valintaperusteet')
+	.factory('FunktioFactory', ['FunktiokuvausService', 'FunktioService',
+	function(FunktiokuvausService, FunktioService){
     "use strict";
 
     var factory = new function() {
@@ -41,7 +43,7 @@ angular.module('valintaperusteet').factory('FunktioFactory', function(FunktioSer
             var kaavatree = {};
             var newfunktioFunktionimi = funktiokutsu.lapsi.tyyppi === 'LUKUARVOFUNKTIO' ? 'NIMETTYLUKUARVO' : 'NIMETTYTOTUUSARVO';
 
-            var funktiokuvaus = FunktioService.getFunktiokuvaus(funktiokutsu.lapsi.funktionimi);
+            var funktiokuvaus = FunktiokuvausService.getFunktiokuvaus(funktiokutsu.lapsi.funktionimi);
 
             angular.copy(funktiokutsu, kaavatree);
 
@@ -156,8 +158,8 @@ angular.module('valintaperusteet').factory('FunktioFactory', function(FunktioSer
 
 		this.createFunktioInstance = function(parentFunktiokutsu, newFunktioType, isDirectChildForRoot) {
 
-			var parentFunktiokuvaus = isDirectChildForRoot ? FunktioService.getFunktiokuvaus(parentFunktiokutsu.funktionimi) : FunktioService.getFunktiokuvaus(parentFunktiokutsu.lapsi.funktionimi);
-			var newFunktioFunktiokuvaus = FunktioService.getFunktiokuvaus(newFunktioType);
+			var parentFunktiokuvaus = isDirectChildForRoot ? FunktiokuvausService.getFunktiokuvaus(parentFunktiokutsu.funktionimi) : FunktiokuvausService.getFunktiokuvaus(parentFunktiokutsu.lapsi.funktionimi);
+			var newFunktioFunktiokuvaus = FunktiokuvausService.getFunktiokuvaus(newFunktioType);
 			var funktioprototype = generateFunktioPrototype();
 
 			//Funktionimi
@@ -220,4 +222,4 @@ angular.module('valintaperusteet').factory('FunktioFactory', function(FunktioSer
 	}();
 
 	return factory;
-});
+}]);

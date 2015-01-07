@@ -25,7 +25,6 @@ angular.module('valintaperusteet')
             };
 
             this.addValidationError = function (funktionimi, virhetyyppi, parent, funktiokutsu, funktiokutsuIndex) {
-                console.log('error arguments', arguments);
                 ErrorService.errors.push({
                     nimi: funktionimi,
                     parent: parent,

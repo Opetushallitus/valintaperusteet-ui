@@ -3,8 +3,6 @@ angular.module('valintaperusteet').factory('TemplateService', function() {
 
 	var templateservice = new function() {
 
-
-
 		this.getSyoteparametriTemplate = function(syoteparametrityyppi) {
 
 			switch(syoteparametrityyppi) {
@@ -32,8 +30,6 @@ angular.module('valintaperusteet').factory('TemplateService', function() {
                     return "valintaperuste-default-template";
             }
         };
-
-
 
 		this.getKonvertteriparametriTemplate = function(konvertteriparametriSelection) {
 			switch(konvertteriparametriSelection) {
@@ -104,7 +100,7 @@ angular.module('valintaperusteet').factory('TemplateService', function() {
 			return map[key];
 		};
 
-	}();
+	};
 
 	return templateservice;
 });

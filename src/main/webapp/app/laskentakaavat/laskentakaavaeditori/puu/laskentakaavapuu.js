@@ -1,13 +1,14 @@
 angular.module('valintaperusteet').controller('LaskentakaavaController',
     ['$scope', '_', '$location', '$routeParams', '$timeout', 'KaavaValidointi', 'Laskentakaava', 'LaskentakaavaLista',
         'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'Arvokonvertterikuvauskielet',
-        'FunktioNimiService', 'FunktioFactory', 'KaavaValidation', 'KaavaVirheTyypit', 'ErrorService',
-        function ($scope, _, $location, $routeParams, $timeout, KaavaValidointi, Laskentakaava, LaskentakaavaLista, TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet, FunktioNimiService, FunktioFactory, KaavaValidation, KaavaVirheTyypit, ErrorService) {
+        'FunktioNimiService', 'FunktioFactory', 'KaavaValidation', 'KaavaVirheTyypit', 'ErrorService', 'FunktiokuvausService',
+        function ($scope, _, $location, $routeParams, $timeout, KaavaValidointi, Laskentakaava, LaskentakaavaLista,
+                  TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet, FunktioNimiService,
+                  FunktioFactory, KaavaValidation, KaavaVirheTyypit, ErrorService, FunktiokuvausService) {
             'use strict';
             //servicet laskentakaavapuun piirtämiseen
             $scope.templateService = TemplateService;
             $scope.funktioService = FunktioService;
-            $scope.funktioService.refresh();
             $scope.funktionimiService = FunktioNimiService;
             $scope.funktioFactory = FunktioFactory;
             $scope.valintaperusteviitetyypit = Valintaperusteviitetyypit;
@@ -79,7 +80,7 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                 $scope.alikaavaValues.hasParentAlikaava = hasParentAlikaava;
 
                 if (isFunktiokutsu) {
-                    $scope.funktiokuvausForSelection = $scope.funktioService.getFunktiokuvaus(funktio.lapsi.funktionimi);
+                    $scope.funktiokuvausForSelection = FunktiokuvausService.getFunktiokuvaus(funktio.lapsi.funktionimi);
                 }
 
                 //päätellään funktiolle esivalittu konvertteriparametrityyppi, jos funktiolla on konvertteriparametreja

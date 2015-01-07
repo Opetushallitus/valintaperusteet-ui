@@ -10,16 +10,19 @@ angular.module('valintaperusteet')
                   LaskentakaavaModalService, NimettyFunktioargumenttiKaareService) {
 
             UserModel.refreshIfNeeded();
-            if ($routeParams.valintaryhmaOid !== undefined) {
-                $scope.valintaryhmaModel.refreshIfNeeded($routeParams.valintaryhmaOid);
-            }
 
             $scope.valintaryhmaModel = ValintaryhmaModel;
             $scope.treemodel = Treemodel;
             $scope.guidGenerator = GuidGenerator;
             $scope.funktioService = FunktioService;
             $scope.laskentakaavaModalService = LaskentakaavaModalService;
+
             $scope.kaareFunktiokutsuAsetukset = NimettyFunktioargumenttiKaareService.kaareFunktiokutsuAsetukset;
+            $scope.valintaryhmaPromise = $scope.valintaryhmaModel.loaded.promise;
+
+            if ($routeParams.valintaryhmaOid !== undefined) {
+                $scope.valintaryhmaModel.refreshIfNeeded($routeParams.valintaryhmaOid);
+            }
 
             $scope.$watch('funktioasetukset.parentFunktiokutsu', function () {
                 if(!_.isEmpty($scope.funktioasetukset.parentFunktiokutsu)) {
@@ -28,7 +31,6 @@ angular.module('valintaperusteet')
                 }
             });
 
-            $scope.valintaryhmaPromise = $scope.valintaryhmaModel.loaded.promise;
             $scope.$on('showFunktiokutsuAsetukset', function () {
                 $scope.show();
             });
@@ -83,7 +85,6 @@ angular.module('valintaperusteet')
                 }
             };
 
-
             $scope.getHakemusAvaimet = function (hakuoid) {
 
 
@@ -108,19 +109,19 @@ angular.module('valintaperusteet')
                             var flattenRecursively = function(array) {
                                 var result = [];
                                 _.forEach(array, function(phase) {
-                                    if(phase.type == hakutoiveRivi) {
+                                    if(phase.type === hakutoiveRivi) {
                                         _.forEach(hakutoivePostfixes, function(postfix) {
                                             result.push({type: hakutoiveRivi, id: phase.id+postfix});
-                                        })
+                                        });
                                     }
                                     else if(phase.children) {
                                         var current = _.omit(phase, phase.children);
-                                        if(tyypit.indexOf(phase.type) != -1) {
+                                        if(tyypit.indexOf(phase.type) !== -1) {
                                             result.push(current);
                                         }
                                         result = _.union(result, flattenRecursively(phase.children));
                                     } else {
-                                        if(tyypit.indexOf(phase.type) != -1) {
+                                        if(tyypit.indexOf(phase.type) !== -1) {
                                             result.push(phase);
                                         }
                                     }
