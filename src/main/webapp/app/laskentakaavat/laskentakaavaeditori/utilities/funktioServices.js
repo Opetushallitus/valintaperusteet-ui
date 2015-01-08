@@ -10,13 +10,9 @@ service('FunktioService', ['FunktioKuvausResource', '$log', '_', '$q', 'Funktiok
         if(!(api.isFunktiokutsu(parent))) {return false;}
         var parentFunktionimi = api.getFunktionimi(parent);
         var funktiokuvaus = FunktiokuvausService.getFunktiokuvaus(parentFunktionimi);
-        return funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti !== 'n' && !api.isPainotettukeskiarvoChildByParentNimi(parentFunktionimi) );
+        return funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti !== 'n' && !FunktiokuvausService.isPainotettukeskiarvoByFunktioNimi(parentFunktionimi) );
     };
 
-    this.isNimettyFunktioargumenttiByFunktionimi = function (parentFunktionimi) {
-        var funktiokuvaus = FunktiokuvausService.getFunktiokuvaus(parentFunktionimi);
-        return funktiokuvaus.funktioargumentit !== undefined && funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti !== 'n' && !api.isPainotettukeskiarvoChildByParentNimi(parentFunktionimi) );
-    };
 
     this.getNimettyFunktioargumenttiCount = function(parent) {
         if(_.isEmpty(parent)) {return undefined;}
@@ -44,13 +40,7 @@ service('FunktioService', ['FunktioKuvausResource', '$log', '_', '$q', 'Funktiok
         return funktiokuvaus.funktioargumentit && funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'lista_pareja';
     };
 
-    this.isPainotettukeskiarvoChildByParentNimi = function (parentFunktionimi) {
-        if (_.isEmpty(parentFunktionimi)) {
-            return false;
-        }
-        var funktiokuvaus = FunktiokuvausService.getFunktiokuvaus(parentFunktionimi);
-        return funktiokuvaus.funktioargumentit && funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'lista_pareja';
-    };
+
 
     this.isEmptyNimettyFunktioargumentti = function (parent, funktioargumenttiIndex) {
         if (parent === undefined || funktioargumenttiIndex === undefined) {

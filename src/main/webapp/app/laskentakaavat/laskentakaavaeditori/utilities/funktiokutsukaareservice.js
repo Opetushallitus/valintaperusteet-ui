@@ -1,24 +1,34 @@
 
 angular.module('valintaperusteet')
 
-    .service('NimettyFunktioargumenttiKaareService', ['_', 'FunktioService', function (_, FunktioService) {
+    .service('FunktiokutsuKaareService', ['_', 'FunktioService', 'FunktiokuvausService',
+        function (_, FunktioService, FunktiokuvausService) {
 
         var api = this;
 
-        this.kaareFunktiokutsuAsetukset = {
+        this.funktioKaare = {
+            funktioKaareLista: undefined,
             funktiokutsuNimi: undefined,
             argumenttiOptions: undefined
         };
-        
+
+
+        this.setFunktioKaareLista = function () {
+            FunktiokuvausService.refresh().then(function () {
+                api.funktioKaare.funktioKaareLista = FunktiokuvausService.getFunktioNimiListaWithFunktioargumentit();
+            });
+            
+        };
+
         this.setKaareFunktiokutsuType = function (funktiokutsuNimi) {
-            api.kaareFunktiokutsuAsetukset.funktiokutsuNimi = funktiokutsuNimi;
-            var funktiokuvaus = FunktioService.getFunktiokuvaus(funktiokutsuNimi);
+            api.funktioKaare.funktiokutsuNimi = funktiokutsuNimi;
+            var funktiokuvaus = FunktiokuvausService.getFunktiokuvaus(funktiokutsuNimi);
             if(funktiokutsuNimi === 'PAINOTETTUKESKIARVO') {
-                api.kaareFunktiokutsuAsetukset.argumenttiOptions = api.getPainotettukeskiarvoOptions();
+                api.funktioKaare.argumenttiOptions = api.getPainotettukeskiarvoOptions();
             } else if (funktiokutsuNimi === 'JOS') {
-                api.kaareFunktiokutsuAsetukset.argumenttiOptions = api.getJosFunktiokutsuOptions(funktiokuvaus);
+                api.funktioKaare.argumenttiOptions = api.getJosFunktiokutsuOptions(funktiokuvaus);
             } else {
-                api.kaareFunktiokutsuAsetukset.argumenttiOptions = api.getArgumentsNimettyFunktioargumenttiType(funktiokuvaus);
+                api.funktioKaare.argumenttiOptions = api.getArgumentsNimettyFunktioargumenttiType(funktiokuvaus);
             }
         };
         

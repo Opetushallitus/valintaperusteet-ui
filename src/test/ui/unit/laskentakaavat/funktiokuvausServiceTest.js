@@ -90,7 +90,77 @@ describe("FunktiokuvausService", function () {
                 expect(funktiokuvausService.getFunktiokuvaus()).toEqual(undefined);
             });
         });
+
+
     });
 
+    //isNimettyFunktioargumenttiByFunktionimi
+    describe("hasFunktioargumentitByFunktionimi(name)", function () {
+
+        it('should return false for KESKIARVO-funktiokutsu', function () {
+            expect(funktiokuvausService.hasNimettyFunktioargumenttiByFunktioNimi('KESKIARVO')).toBeFalsy();
+        });
+
+        it('should return true for JOS-funktiokutsu', function () {
+            expect(funktiokuvausService.hasNimettyFunktioargumenttiByFunktioNimi('JOS')).toBeTruthy();
+        });
+
+        it('should return false for SUMMA-funktiokutsu', function () {
+            expect(funktiokuvausService.hasNimettyFunktioargumenttiByFunktioNimi('SUMMA')).toBeFalsy();
+        });
+
+        it('should return true for HYLKAAARVOVALILLA-funktiokutsu', function () {
+            expect(funktiokuvausService.hasNimettyFunktioargumenttiByFunktioNimi('HYLKAAARVOVALILLA')).toBeTruthy();
+        });
+
+        it('should return false for PAINOTETTUKESKIARVO-funktiokutsu', function () {
+            expect(funktiokuvausService.hasNimettyFunktioargumenttiByFunktioNimi('PAINOTETTUKESKIARVO')).toBeFalsy();
+        });
+
+        it('should return false for HAELUKUARVO-funktiokutsu', function () {
+            expect(funktiokuvausService.hasNimettyFunktioargumenttiByFunktioNimi('HAELUKUARVO')).toBeFalsy();
+        });
+
+        it('should return true for NEGAATIO-funktiokutsu', function () {
+            expect(funktiokuvausService.hasNimettyFunktioargumenttiByFunktioNimi('NEGAATIO')).toBeTruthy();
+        });
+
+        it('should return false for HAEYOARVOSANA-funktiokutsu', function () {
+            expect(funktiokuvausService.hasNimettyFunktioargumenttiByFunktioNimi('HAEYOARVOSANA')).toBeFalsy();
+        });
+
+    });
+
+    //funktiokuvausHasFunktioargumentit
+    describe("hasFunktioargumentitByFunktionimi(funktionimi)", function () {
+        it('should return true for JOS', function () {
+            expect(funktiokuvausService.hasFunktioargumentitByFunktionimi('JOS')).toBeTruthy();
+        });
+
+        it('should return false for LUKUARVO', function () {
+            expect(funktiokuvausService.hasFunktioargumentitByFunktionimi('LUKUARVO')).toBeFalsy();
+        });
+
+        it('should return true for MAKSIMI', function () {
+            expect(funktiokuvausService.hasFunktioargumentitByFunktionimi('MAKSIMI')).toBeTruthy();
+        });
+
+        it('should return false for PIENEMPITAIYHTASUURI', function () {
+            expect(funktiokuvausService.hasFunktioargumentitByFunktionimi('PIENEMPITAIYHTASUURI')).toBeTruthy();
+        });
+
+        it('should return false for HAEYOARVOSANA', function () {
+            expect(funktiokuvausService.hasFunktioargumentitByFunktionimi('HAEYOARVOSANA')).toBeFalsy();
+        });
+
+        it('should return false for HAETOTUUSARVO', function () {
+            expect(funktiokuvausService.hasFunktioargumentitByFunktionimi('HAETOTUUSARVO')).toBeFalsy();
+        });
+
+        it('should return false for PAINOTETTUKESKIARVO', function () {
+            expect(funktiokuvausService.hasFunktioargumentitByFunktionimi('PAINOTETTUKESKIARVO')).toBeTruthy();
+        });
+
+    });
 
 });

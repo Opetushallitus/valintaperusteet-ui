@@ -54,42 +54,7 @@ describe("FunktioService", function () {
 
     });
 
-    //isNimettyFunktioargumenttiByFunktionimi
-    describe("isNimettyFunktioargumenttiByFunktionimi(name)", function () {
 
-        it('should return false for KESKIARVO-funktiokutsu', function () {
-            expect(funktioservice.isNimettyFunktioargumenttiByFunktionimi('KESKIARVO')).toBeFalsy();
-        });
-
-        it('should return true for JOS-funktiokutsu', function () {
-            expect(funktioservice.isNimettyFunktioargumenttiByFunktionimi('JOS')).toBeTruthy();
-        });
-
-        it('should return false for SUMMA-funktiokutsu', function () {
-            expect(funktioservice.isNimettyFunktioargumenttiByFunktionimi('SUMMA')).toBeFalsy();
-        });
-
-        it('should return true for HYLKAAARVOVALILLA-funktiokutsu', function () {
-            expect(funktioservice.isNimettyFunktioargumenttiByFunktionimi('HYLKAAARVOVALILLA')).toBeTruthy();
-        });
-
-        it('should return false for PAINOTETTUKESKIARVO-funktiokutsu', function () {
-            expect(funktioservice.isNimettyFunktioargumenttiByFunktionimi('PAINOTETTUKESKIARVO')).toBeFalsy();
-        });
-
-        it('should return false for HAELUKUARVO-funktiokutsu', function () {
-            expect(funktioservice.isNimettyFunktioargumenttiByFunktionimi('HAELUKUARVO')).toBeFalsy();
-        });
-
-        it('should return true for NEGAATIO-funktiokutsu', function () {
-            expect(funktioservice.isNimettyFunktioargumenttiByFunktionimi('NEGAATIO')).toBeTruthy();
-        });
-
-        it('should return false for HAEYOARVOSANA-funktiokutsu', function () {
-            expect(funktioservice.isNimettyFunktioargumenttiByFunktionimi('HAEYOARVOSANA')).toBeFalsy();
-        });
-
-    });
 
     //getNimettyFunktioargumenttiCount
     describe("getNimettyFunktioargumenttiCount(parent)", function () {
@@ -330,37 +295,7 @@ describe("FunktioService", function () {
         });
     });
 
-    //funktiokuvausHasFunktioargumentit
-    describe("hasFunktioargumentitByFunktionimi(funktionimi)", function () {
-        it('should return true for JOS', function () {
-            expect(funktioservice.hasFunktioargumentitByFunktionimi('JOS')).toBeTruthy();
-        });
 
-        it('should return false for LUKUARVO', function () {
-            expect(funktioservice.hasFunktioargumentitByFunktionimi('LUKUARVO')).toBeFalsy();
-        });
-
-        it('should return true for MAKSIMI', function () {
-            expect(funktioservice.hasFunktioargumentitByFunktionimi('MAKSIMI')).toBeTruthy();
-        });
-
-        it('should return false for PIENEMPITAIYHTASUURI', function () {
-            expect(funktioservice.hasFunktioargumentitByFunktionimi('PIENEMPITAIYHTASUURI')).toBeTruthy();
-        });
-
-        it('should return false for HAEYOARVOSANA', function () {
-            expect(funktioservice.hasFunktioargumentitByFunktionimi('HAEYOARVOSANA')).toBeFalsy();
-        });
-
-        it('should return false for HAETOTUUSARVO', function () {
-            expect(funktioservice.hasFunktioargumentitByFunktionimi('HAETOTUUSARVO')).toBeFalsy();
-        });
-
-        it('should return false for PAINOTETTUKESKIARVO', function () {
-            expect(funktioservice.hasFunktioargumentitByFunktionimi('PAINOTETTUKESKIARVO')).toBeTruthy();
-        });
-
-    });
 
     //isLukuarvoFunktiokutsu
     describe("isLukuarvoFunktiokutsu(funktiokuvaus)", function () {

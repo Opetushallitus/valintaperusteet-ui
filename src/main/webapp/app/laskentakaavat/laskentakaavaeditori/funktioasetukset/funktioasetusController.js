@@ -3,11 +3,11 @@ angular.module('valintaperusteet')
     .controller('funktiokutsuAsetuksetController', ['$scope', '$log', '$q', '$routeParams', '$location', '$timeout', 'Laskentakaava',
         'FunktioNimiService', 'FunktioFactory', 'KaavaValidation', 'GuidGenerator', 'HakemusavaimetLisakysymykset', 'HakemusavaimetLomake',
         'ValintaryhmaModel', 'Treemodel', 'LaskentakaavaValintaryhma', '$cookieStore', '$window', 'UserModel', 'ErrorService', '_', 'FunktioService',
-        'LaskentakaavaModalService', 'NimettyFunktioargumenttiKaareService',
+        'LaskentakaavaModalService', 'FunktiokutsuKaareService', 'FunktiokuvausService',
         function ($scope, $log, $q, $routeParams, $location, $timeout, Laskentakaava,
                   FunktioNimiService, FunktioFactory, KaavaValidation, GuidGenerator, HakemusavaimetLisakysymykset, HakemusavaimetLomake,
                   ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore, $window, UserModel, ErrorService, _, FunktioService,
-                  LaskentakaavaModalService, NimettyFunktioargumenttiKaareService) {
+                  LaskentakaavaModalService, FunktiokutsuKaareService, FunktiokuvausService) {
 
             UserModel.refreshIfNeeded();
 
@@ -15,10 +15,11 @@ angular.module('valintaperusteet')
             $scope.treemodel = Treemodel;
             $scope.guidGenerator = GuidGenerator;
             $scope.funktioService = FunktioService;
+            $scope.funktiokuvausService = FunktiokuvausService;
             $scope.laskentakaavaModalService = LaskentakaavaModalService;
-
-            $scope.kaareFunktiokutsuAsetukset = NimettyFunktioargumenttiKaareService.kaareFunktiokutsuAsetukset;
+            $scope.funktioKaare = FunktiokutsuKaareService;
             $scope.valintaryhmaPromise = $scope.valintaryhmaModel.loaded.promise;
+            FunktiokutsuKaareService.setFunktioKaareLista();
 
             if ($routeParams.valintaryhmaOid !== undefined) {
                 $scope.valintaryhmaModel.refreshIfNeeded($routeParams.valintaryhmaOid);
@@ -30,7 +31,7 @@ angular.module('valintaperusteet')
                     $scope.selectedFunktiokutsunHasFunktioArgumentit = FunktioService.hasFunktioargumentit($scope.funktioasetukset.parentFunktiokutsu, $scope.funktioasetukset.selectedFunktioIndex);
                 }
             });
-
+            
             $scope.$on('showFunktiokutsuAsetukset', function () {
                 $scope.show();
             });

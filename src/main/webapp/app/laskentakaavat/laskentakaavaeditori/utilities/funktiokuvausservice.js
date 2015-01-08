@@ -17,8 +17,10 @@ angular.module('valintaperusteet')
             if (_.isEmpty(api.funktiokuvaukset) ) {
                 FunktioKuvausResource.get({}, function (result) {
                     api.funktiokuvaukset = result;
+                    deferred.resolve();
                 }, function(error) {
                     $log.error('Funktiokuvausten hakeminen epäonnistui', error);
+                    deferred.reject();
                 });
             } else {
                 deferred.resolve();
@@ -41,11 +43,11 @@ angular.module('valintaperusteet')
         };
 
         this.refresh = function () {
-            return fetchFunktiokuvaukset();
+            return fetchFunktiokuvaukset(); //returns promise
         };
 
         this.hasFunktioargumentitByFunktionimi = function (funktionimi) {
-            var funktiokuvaus = FunktiokuvausService.getFunktiokuvaus(funktionimi);
+            var funktiokuvaus = api.getFunktiokuvaus(funktionimi);
             return _.has(funktiokuvaus, 'funktioargumentit');
         };
 
@@ -56,11 +58,24 @@ angular.module('valintaperusteet')
         this.getFunktioNimiListaObjects = function () {
             var funktionimet = api.getFunktioNimiLista();
             return _.map(funktionimet, function (funktionimi) {
-                return {funktionimi: funktionimi, UINimi: FunktioNimiService.getName(funktionimi)
-            };
-        });
+                return {funktionimi: funktionimi, UIName: FunktioNimiService.getName(funktionimi)};
+            });
+        };
 
-        /**
+        this.hasNimettyFunktioargumenttiByFunktioNimi = function (funktionimi) {
+            var funktiokuvaus = api.getFunktiokuvaus(funktionimi);
+            return funktiokuvaus.funktioargumentit !== undefined && funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti !== 'n' && !api.isPainotettukeskiarvoByFunktioNimi(funktionimi) );
+        };
+
+        this.isPainotettukeskiarvoByFunktioNimi = function (parentFunktionimi) {
+            if (_.isEmpty(parentFunktionimi)) {
+                return false;
+            }
+            var funktiokuvaus = api.getFunktiokuvaus(parentFunktionimi);
+            return funktiokuvaus.funktioargumentit && funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'lista_pareja';
+        };
+
+            /**
          *
          * @returns {array} returns array of objects that contain funktionimi and corresponding readable name
          * for all funktiokuvaukset that contain 'funktioargumentit'
@@ -68,9 +83,8 @@ angular.module('valintaperusteet')
         this.getFunktioNimiListaWithFunktioargumentit = function () {
             var funktioNimiLista = api.getFunktioNimiListaObjects();
             return _.filter(funktioNimiLista, function (item) {
-                return FunktioService.hasFunktioargumentitByFunktionimi(item.funktionimi);
+                return api.hasFunktioargumentitByFunktionimi(item.funktionimi);
             });
         };
-    };
 
 }]);

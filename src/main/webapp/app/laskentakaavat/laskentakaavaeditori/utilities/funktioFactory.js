@@ -5,41 +5,7 @@ angular.module('valintaperusteet')
 
     var factory = new function() {
 
-		function generateFunktioPrototype() {
-			return {
-				lapsi: {
-					funktionimi: null,
-					arvokonvertteriparametrit: [],
-					arvovalikonvertteriparametrit: [],
-					syoteparametrit: [],
-					funktioargumentit: [],
-					valintaperusteviitteet: [],
-					validointivirheet: [],
-					onLuonnos: null,
-					nimi: null,
-					kuvaus: null,
-					tyyppi: null,
-					lapsityyppi: null,
-					tulosTunniste: null,
-					tallennaTulos: false,
-					tulosTekstiFi: null,
-					tulosTekstiSv: null,
-					tulosTekstiEn: null
-				},
-
-				indeksi: 0
-			};
-		}
-
-		function setLapsityyppi(funktioprototype, funktiotyyppi) {
-			if(funktiotyyppi === 'LASKENTAKAAVAVIITE') {
-				funktioprototype.lapsi.lapsityyppi = "laskentakaava";
-			} else {
-				funktioprototype.lapsi.lapsityyppi = "funktiokutsu";
-			}
-		}
-
-        this.createEmptyLaskentakaava = function(funktiokutsu, routeParams, kaavaNimi, kaavaKuvaus) {
+        this.createEmptyLaskentakaava = function(funktiokutsu, routeParams, nimi, kuvaus) {
             var kaavatree = {};
             var newfunktioFunktionimi = funktiokutsu.lapsi.tyyppi === 'LUKUARVOFUNKTIO' ? 'NIMETTYLUKUARVO' : 'NIMETTYTOTUUSARVO';
 
@@ -56,7 +22,7 @@ angular.module('valintaperusteet')
                         funktionimi: newfunktioFunktionimi,
                         arvokonvertteriparametrit: [],
                         arvovalikonvertteriparametrit: [],
-                        syoteparametrit: [{arvo: kaavaNimi, avain: "nimi"}],
+                        syoteparametrit: [{arvo: nimi, avain: "nimi"}],
                         tulosTunniste: null,
                         tulosTekstiFi: null,
                         tulosTekstiSv: null,
@@ -68,7 +34,7 @@ angular.module('valintaperusteet')
                     id: undefined,
                     onLuonnos: false,
                     tyyppi: funktiokuvaus.tyyppi,
-                    kuvaus: kaavaKuvaus,
+                    kuvaus: kuvaus,
                     nimi: kaavaNimi,
                     kardinaliteetti: 1
                 }
@@ -174,7 +140,7 @@ angular.module('valintaperusteet')
 
 			//Generoidaan funktioargumentit
 			if(newFunktioFunktiokuvaus.funktioargumentit) {
-				populateFunktioargumentit(funktioprototype, newFunktioFunktiokuvaus, FunktioService.isNimettyFunktioargumenttiByFunktionimi(newFunktioType), FunktioService.isPainotettukeskiarvoChildByParentNimi(newFunktioType) );
+				populateFunktioargumentit(funktioprototype, newFunktioFunktiokuvaus, FunktiokuvausService.hasNimettyFunktioargumenttiByFunktioNimi(newFunktioType), FunktiokuvausService.isPainotettukeskiarvoByFunktioNimi(newFunktioType) );
 			}
 
 			return funktioprototype;
@@ -216,6 +182,40 @@ angular.module('valintaperusteet')
 			} else {
 				//jos funktiolla on nimeämätön määrä funktioargumentteja, lisätään listaan yksi null
 				funktioprototype.lapsi.funktioargumentit.push(null);
+			}
+		}
+
+		function generateFunktioPrototype() {
+			return {
+				lapsi: {
+					funktionimi: null,
+					arvokonvertteriparametrit: [],
+					arvovalikonvertteriparametrit: [],
+					syoteparametrit: [],
+					funktioargumentit: [],
+					valintaperusteviitteet: [],
+					validointivirheet: [],
+					onLuonnos: null,
+					nimi: null,
+					kuvaus: null,
+					tyyppi: null,
+					lapsityyppi: null,
+					tulosTunniste: null,
+					tallennaTulos: false,
+					tulosTekstiFi: null,
+					tulosTekstiSv: null,
+					tulosTekstiEn: null
+				},
+
+				indeksi: 0
+			};
+		}
+
+		function setLapsityyppi(funktioprototype, funktiotyyppi) {
+			if(funktiotyyppi === 'LASKENTAKAAVAVIITE') {
+				funktioprototype.lapsi.lapsityyppi = "laskentakaava";
+			} else {
+				funktioprototype.lapsi.lapsityyppi = "funktiokutsu";
 			}
 		}
 
