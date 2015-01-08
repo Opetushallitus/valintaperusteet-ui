@@ -75,22 +75,7 @@ describe("FunktioService", function () {
         });
     });
 
-    //isFunktiokutsuWithFunktioargumenttiSizeN
-    describe("isFunktiokutsuWithFunktioargumenttiSizeN(parent)", function () {
 
-        it("should return true for funktiokutsu SUMMA", function () {
-            expect(funktioservice.hasNSizeFunktioargumenttiByFunktionimi(funktioservice.getFunktionimi(funktiokutsuSumma))).toBeTruthy();
-        });
-
-        it("should return true for funktiokutsu KESKIARVO", function () {
-            expect(funktioservice.hasNSizeFunktioargumenttiByFunktionimi(funktioservice.getFunktionimi(funktiokutsuKeskiarvo))).toBeTruthy();
-        });
-
-        it("should return false for funktiokutsu PAINOTETTUKESKIARVO", function () {
-            expect(funktioservice.hasNSizeFunktioargumenttiByFunktionimi(funktioservice.getFunktionimi(funktiokutsuPainotettukeskiarvo))).toBeFalsy();
-        });
-
-    });
 
     //isPainotettukeskiarvoChild
     describe("isPainotettukeskiarvo(name)", function () {

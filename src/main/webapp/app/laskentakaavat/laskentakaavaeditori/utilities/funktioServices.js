@@ -24,14 +24,7 @@ service('FunktioService', ['FunktioKuvausResource', '$log', '_', '$q', 'Funktiok
         }
     };
 
-    this.hasNSizeFunktioargumenttiByFunktionimi = function(funktionimi) {
-        var funktiokuvaus = FunktiokuvausService.getFunktiokuvaus(funktionimi);
-        if(funktiokuvaus.funktioargumentit) {
-            return funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'n';
-        } else {
-            return false;
-        }
-    };
+
 
     this.isPainotettukeskiarvo = function (funktiokutsu) {
         if (_.isEmpty(funktiokutsu)) {return undefined;}
@@ -132,14 +125,17 @@ service('FunktioService', ['FunktioKuvausResource', '$log', '_', '$q', 'Funktiok
         if (funktioargumentit) {
             var isRootFunktiokutsu;
             _.forEach(funktioargumentit, function (item) {
-                isRootFunktiokutsu = api.isRootFunktiokutsu(item);
-                if (isRootFunktiokutsu === true) {
-                    item.funktioargumentit = api.cleanLaskentakaavaPKObjects(item.funktioargumentit);
-                } else {
-                    if (item && item.lapsi) {
-                        item.lapsi.funktioargumentit = api.cleanLaskentakaavaPKObjects(item.lapsi.funktioargumentit);
+                if(!_.isEmpty(item)) {
+                    isRootFunktiokutsu = api.isRootFunktiokutsu(item);
+                    if (isRootFunktiokutsu === true) {
+                        item.funktioargumentit = api.cleanLaskentakaavaPKObjects(item.funktioargumentit);
+                    } else {
+                        if (item && item.lapsi) {
+                            item.lapsi.funktioargumentit = api.cleanLaskentakaavaPKObjects(item.lapsi.funktioargumentit);
+                        }
                     }
                 }
+
             });
         }
         return _.filter(funktioargumentit, function (item) {

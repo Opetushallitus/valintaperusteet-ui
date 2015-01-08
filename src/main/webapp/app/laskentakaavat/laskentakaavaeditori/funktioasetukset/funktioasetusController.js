@@ -198,12 +198,11 @@ angular.module('valintaperusteet')
                 });
             };
 
-            $scope.kaariFunktiokutsu = function (kaarivaFunktiokutsuNimi) {
-                if(FunktioService.hasNSizeFunktioargumenttiByFunktionimi(kaarivaFunktiokutsuNimi)) {
+            $scope.kaariFunktiokutsu = function (kaarivaFunktiokutsuNimi, childFunktiokutsuIndex) {
+                if(FunktiokuvausService.hasNSizeFunktioargumenttiByFunktionimi(kaarivaFunktiokutsuNimi)) {
                     $scope.kaariFunktiokutsuNFunktioargumentiksi(kaarivaFunktiokutsuNimi);
                 } else {
-                    NimettyFunktioargumenttiKaareService.setKaareFunktiokutsuType(kaarivaFunktiokutsuNimi);
-                    LaskentakaavaModalService.toggleModalSelection('kaariFunktiokutsuNimettyargumentti');
+                    $scope.kaariNimettyFunktioargumentti(kaarivaFunktiokutsuNimi, childFunktiokutsuIndex);
                 }
                 LaskentakaavaModalService.resetModalSelection();
             };
@@ -226,16 +225,16 @@ angular.module('valintaperusteet')
                 LaskentakaavaModalService.resetModalSelection();
             };
 
-            $scope.kaariNimettyFunktioargumentti = function (kaarivaFunktiokutsuNimi, slotIndex) {
+            $scope.kaariNimettyFunktioargumentti = function (kaarivaFunktiokutsuNimi, childFunktiokutsuIndex) {
                 var isRootFunktiokutsu = FunktioService.isRootFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu);
                 var kaarittavaFunktiokutsu = FunktioService.getCurrentFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu, $scope.funktioasetukset.selectedFunktioIndex);
                 var kaarivaFunktiokutsu  = FunktioFactory.createFunktioInstance($scope.funktioasetukset.parentFunktiokutsu, kaarivaFunktiokutsuNimi, isRootFunktiokutsu);
                 kaarivaFunktiokutsu.open = true;
                 if(isRootFunktiokutsu) {
-                    kaarivaFunktiokutsu.funktioargumentit[slotIndex] = kaarittavaFunktiokutsu;
+                    kaarivaFunktiokutsu.funktioargumentit[childFunktiokutsuIndex] = kaarittavaFunktiokutsu;
                     $scope.funktioasetukset.parentFunktiokutsu.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = kaarivaFunktiokutsu;
                 } else {
-                    kaarivaFunktiokutsu.lapsi.funktioargumentit[slotIndex] = kaarittavaFunktiokutsu;
+                    kaarivaFunktiokutsu.lapsi.funktioargumentit[childFunktiokutsuIndex] = kaarittavaFunktiokutsu;
                     $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = kaarivaFunktiokutsu;
                 }
 

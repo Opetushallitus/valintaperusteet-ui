@@ -33,6 +33,13 @@ angular.module('valintaperusteet')
         };
 
         this.getFunktiokuvaus = function (funktionimi) {
+            try {
+                if(_.isEmpty(funktionimi)) {
+                    throw Error('Funktionimi -parametri on tyhjä');
+                }
+            } catch(error) {
+                $log.error(error);
+            }
             var result;
             if (api.funktiokuvaukset) {
                 result = _.find(api.funktiokuvaukset, function (funktiokuvaus) {
@@ -67,6 +74,15 @@ angular.module('valintaperusteet')
             });
         };
 
+        this.hasNSizeFunktioargumenttiByFunktionimi = function(funktionimi) {
+            var funktiokuvaus = api.getFunktiokuvaus(funktionimi);
+            if(funktiokuvaus.funktioargumentit) {
+                return funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'n';
+            } else {
+                return false;
+            }
+        };
+
         this.hasNimettyFunktioargumenttiByFunktioNimi = function (funktionimi) {
             var funktiokuvaus = api.getFunktiokuvaus(funktionimi);
             return funktiokuvaus.funktioargumentit !== undefined && funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti !== 'n' && !api.isPainotettukeskiarvoByFunktioNimi(funktionimi) );
@@ -80,7 +96,18 @@ angular.module('valintaperusteet')
             return funktiokuvaus.funktioargumentit && funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'lista_pareja';
         };
 
-            /**
+        /**
+         * This should only be used for 'funktiokutsu' that has 'nimetyt funktioargumentti'
+         *
+         * @param {String} funktionimi
+         * @returns {Number} return the length of funktioargumentit for this funktiotype
+         */
+        this.getFunktioargumenttiCountByFunktionimi = function (funktionimi) {
+            var funktiokuvaus = api.getFunktiokuvaus(funktionimi);
+            return funktiokuvaus.funktioargumentit.length;
+        };
+
+        /**
          *
          * @returns {array} returns array of objects that contain funktionimi and corresponding readable name
          * for all funktiokuvaukset that contain 'funktioargumentit'
