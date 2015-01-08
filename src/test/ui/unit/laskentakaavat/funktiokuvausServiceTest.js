@@ -163,4 +163,19 @@ describe("FunktiokuvausService", function () {
 
     });
 
+    //isPainotettukeskiarvoChildByParentNimi
+    describe("isPainotettukeskiarvoChildByParentNimi", function () {
+        it("should return true if PAINOTETTUKESKIARVO", function () {
+            expect(funktiokuvausService.isPainotettukeskiarvoByFunktioNimi("PAINOTETTUKESKIARVO")).toBeTruthy();
+        });
+
+        it("should return false if KESKIARVO", function () {
+            expect(funktiokuvausService.isPainotettukeskiarvoByFunktioNimi("KESKIARVO")).toBeFalsy();
+        });
+
+        it("should return false if parameter is undefined", function () {
+            expect(funktiokuvausService.isPainotettukeskiarvoByFunktioNimi()).toBeFalsy();
+        });
+    });
+
 });

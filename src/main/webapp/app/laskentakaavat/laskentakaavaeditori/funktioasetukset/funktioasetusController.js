@@ -15,9 +15,8 @@ angular.module('valintaperusteet')
             $scope.treemodel = Treemodel;
             $scope.guidGenerator = GuidGenerator;
             $scope.funktioService = FunktioService;
-            $scope.funktiokuvausService = FunktiokuvausService;
             $scope.laskentakaavaModalService = LaskentakaavaModalService;
-            $scope.funktioKaare = FunktiokutsuKaareService;
+            $scope.kaareService = FunktiokutsuKaareService;
             $scope.valintaryhmaPromise = $scope.valintaryhmaModel.loaded.promise;
             FunktiokutsuKaareService.setFunktioKaareLista();
 
@@ -206,6 +205,7 @@ angular.module('valintaperusteet')
                     NimettyFunktioargumenttiKaareService.setKaareFunktiokutsuType(kaarivaFunktiokutsuNimi);
                     LaskentakaavaModalService.toggleModalSelection('kaariFunktiokutsuNimettyargumentti');
                 }
+                LaskentakaavaModalService.resetModalSelection();
             };
 
             //Käärivällä funktiokutsulla voi olla N määrä funktioargumentteja
@@ -226,10 +226,6 @@ angular.module('valintaperusteet')
                 LaskentakaavaModalService.resetModalSelection();
             };
 
-            $scope.setKaareFunktiokutsuType = function (kaarivaFunktioNimi) {
-                NimettyFunktioargumenttiKaareService.setKaareFunktiokutsuType(kaarivaFunktioNimi);
-            };
-
             $scope.kaariNimettyFunktioargumentti = function (kaarivaFunktiokutsuNimi, slotIndex) {
                 var isRootFunktiokutsu = FunktioService.isRootFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu);
                 var kaarittavaFunktiokutsu = FunktioService.getCurrentFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu, $scope.funktioasetukset.selectedFunktioIndex);
@@ -246,9 +242,22 @@ angular.module('valintaperusteet')
                 LaskentakaavaModalService.resetModalSelection();
             };
 
+            $scope.selectedKaarivaFunktionimiChanged = function (selectedKaarivaFunktionimi) {
+                var hasNimettyFunktioargumentti = FunktiokuvausService.hasNimettyFunktioargumenttiByFunktioNimi(selectedKaarivaFunktionimi);
+                var isPainotettuKeskiarvo = FunktiokuvausService.isPainotettukeskiarvoByFunktioNimi(selectedKaarivaFunktionimi);
+                $scope.showFunktioargumenttiSelection = isPainotettuKeskiarvo || (hasNimettyFunktioargumentti && FunktiokuvausService.hasMoreThanOneFunktioargumentti(selectedKaarivaFunktionimi));
+                if($scope.showFunktioargumenttiSelection) {
+                    FunktiokutsuKaareService.setKaareFunktiokutsuType(selectedKaarivaFunktionimi);
+                }
+            };
+
             $scope.isYoFunktiokutsu = function (funktio, valintaperuste) {
                 var funktionimi = funktio.lapsi.funktionimi;
                 return funktionimi === "HAEOSAKOEARVOSANA" || funktionimi === "HAEYOARVOSANA";
+            };
+
+            $scope.resetModalSelection = function () {
+                LaskentakaavaModalService.resetModalSelection();
             };
 
             $scope.resolveHaku();

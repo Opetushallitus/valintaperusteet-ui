@@ -112,20 +112,7 @@ describe("FunktioService", function () {
         });
     });
 
-    //isPainotettukeskiarvoChildByParentNimi
-    describe("isPainotettukeskiarvoChildByParentNimi", function () {
-        it("should return true if PAINOTETTUKESKIARVO", function () {
-            expect(funktioservice.isPainotettukeskiarvoChildByParentNimi("PAINOTETTUKESKIARVO")).toBeTruthy();
-        });
 
-        it("should return false if KESKIARVO", function () {
-            expect(funktioservice.isPainotettukeskiarvoChildByParentNimi("KESKIARVO")).toBeFalsy();
-        });
-
-        it("should return false if parameter is undefined", function () {
-            expect(funktioservice.isPainotettukeskiarvoChildByParentNimi()).toBeFalsy();
-        });
-    });
 
     //isEmptyNimettyFunktioargumentti
     describe("isEmptyNimettyFunktioargumentti(parent, index)", function () {

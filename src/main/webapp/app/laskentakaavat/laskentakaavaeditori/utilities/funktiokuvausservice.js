@@ -51,6 +51,11 @@ angular.module('valintaperusteet')
             return _.has(funktiokuvaus, 'funktioargumentit');
         };
 
+        this.hasMoreThanOneFunktioargumentti = function (funktionimi) {
+            var funktiokuvaus = api.getFunktiokuvaus(funktionimi);
+            return api.hasFunktioargumentitByFunktionimi(funktionimi) && funktiokuvaus.funktioargumentit.length > 1;
+        };
+
         this.getFunktioNimiLista = function () {
             return _.pluck(api.funktiokuvaukset, 'nimi');
         };

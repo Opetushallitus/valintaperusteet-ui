@@ -8,8 +8,7 @@ angular.module('valintaperusteet')
     this.selection = {
         asetukset: true,
         tallennusKaavana: false,
-        kaare: false,
-        kaariFunktiokutsuNimettyargumentti: false
+        kaare: false
     };
 
     // Switch selection

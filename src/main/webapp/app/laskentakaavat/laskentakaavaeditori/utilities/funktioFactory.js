@@ -127,7 +127,7 @@ angular.module('valintaperusteet')
 			var parentFunktiokuvaus = isDirectChildForRoot ? FunktiokuvausService.getFunktiokuvaus(parentFunktiokutsu.funktionimi) : FunktiokuvausService.getFunktiokuvaus(parentFunktiokutsu.lapsi.funktionimi);
 			var newFunktioFunktiokuvaus = FunktiokuvausService.getFunktiokuvaus(newFunktioType);
 			var funktioprototype = generateFunktioPrototype();
-
+			
 			//Funktionimi
 			funktioprototype.lapsi.funktionimi = newFunktioType;
             funktioprototype.lapsi.tyyppi = newFunktioFunktiokuvaus.tyyppi;
