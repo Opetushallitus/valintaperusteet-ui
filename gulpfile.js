@@ -6,7 +6,7 @@ var gulp = require('gulp'),
     watch = require('gulp-watch'),
     livereload = require('gulp-livereload'),
     karma = require('gulp-karma');
-    sass = require('gulp-sass');
+    //sass = require('gulp-sass');
 
 
 var paths = {
