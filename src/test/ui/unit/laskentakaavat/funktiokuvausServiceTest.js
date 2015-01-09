@@ -273,16 +273,7 @@ describe("FunktiokuvausService", function () {
         });
     });
 
-    //getFunktioNimiListaWithFunktioargumentit
-    xdescribe("isFunktiokutsuWithFunktioargumenttiSizeN(parent)", function () {
-
-        it('should return array of objects with funktionimi and corresbonding UIName', function () {
-            expect(funktiokuvausService.getFunktioNimiListaWithFunktioargumentit('LUKUARVOFUNKTIO')).toEqual(funktionimiUINamePairsWithFunktioarguments);
-            expect(funktiokuvausService.getFunktioNimiListaWithFunktioargumentit('TOTUUSARVOFUNKTIO')).toEqual(funktionimiUINamePairsWithFunktioarguments);
-        });
-
-
-    });
+   
 
     //isFunktiokutsuWithFunktioargumenttiSizeN
     describe("isFunktiokutsuWithFunktioargumenttiSizeN(parent)", function () {
