@@ -274,11 +274,14 @@ describe("FunktiokuvausService", function () {
     });
 
     //getFunktioNimiListaWithFunktioargumentit
-    describe("isFunktiokutsuWithFunktioargumenttiSizeN(parent)", function () {
+    xdescribe("isFunktiokutsuWithFunktioargumenttiSizeN(parent)", function () {
 
         it('should return array of objects with funktionimi and corresbonding UIName', function () {
-            expect(funktiokuvausService.getFunktioNimiListaWithFunktioargumentit()).toEqual(funktionimiUINamePairsWithFunktioarguments);
+            expect(funktiokuvausService.getFunktioNimiListaWithFunktioargumentit('LUKUARVOFUNKTIO')).toEqual(funktionimiUINamePairsWithFunktioarguments);
+            expect(funktiokuvausService.getFunktioNimiListaWithFunktioargumentit('TOTUUSARVOFUNKTIO')).toEqual(funktionimiUINamePairsWithFunktioarguments);
         });
+
+
     });
 
     //isFunktiokutsuWithFunktioargumenttiSizeN
@@ -298,4 +301,24 @@ describe("FunktiokuvausService", function () {
 
     });
 
+    //getFunktioTyyppiByFunktionimi
+    describe("getFunktioTyyppiByFunktionimi(funktionimi)", function () {
+
+        it('should return LUKUARVOFUNKTIO for funktionimi JOS', function () {
+            expect(funktiokuvausService.getFunktioTyyppiByFunktionimi('JOS')).toBe('LUKUARVOFUNKTIO');
+        });
+
+        it('should return TOTUUSARVOFUNKTIO for funktionimi JA', function () {
+            expect(funktiokuvausService.getFunktioTyyppiByFunktionimi('JA')).toBe('TOTUUSARVOFUNKTIO');
+        });
+
+        it('should return TOTUUSARVOFUNKTIO for funktionimi YHTASUURI', function () {
+            expect(funktiokuvausService.getFunktioTyyppiByFunktionimi('YHTASUURI')).toBe('TOTUUSARVOFUNKTIO');
+        });
+
+        it('should return LUKUARVOFUNKTIO for funktionimi NEGAATIO', function () {
+            expect(funktiokuvausService.getFunktioTyyppiByFunktionimi('NEGAATIO')).toBe('LUKUARVOFUNKTIO');
+        });
+
+    });
 });
