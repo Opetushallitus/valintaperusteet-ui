@@ -24,16 +24,11 @@ service('FunktioService', ['FunktioKuvausResource', '$log', '_', '$q', 'Funktiok
         }
     };
 
-
-
     this.isPainotettukeskiarvo = function (funktiokutsu) {
         if (_.isEmpty(funktiokutsu)) {return undefined;}
         if(!(api.isFunktiokutsu(funktiokutsu))) {return false;}
-        var funktiokuvaus = FunktiokuvausService.getFunktiokuvaus(api.getFunktionimi(funktiokutsu));
-        return funktiokuvaus.funktioargumentit && funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'lista_pareja';
+        return FunktiokuvausService.isPainotettukeskiarvoByFunktioNimi(api.getFunktionimi(funktiokutsu))
     };
-
-
 
     this.isEmptyNimettyFunktioargumentti = function (parent, funktioargumenttiIndex) {
         if (parent === undefined || funktioargumenttiIndex === undefined) {
@@ -141,6 +136,10 @@ service('FunktioService', ['FunktioKuvausResource', '$log', '_', '$q', 'Funktiok
         return _.filter(funktioargumentit, function (item) {
             return !_.isEmpty(item);
         });
+    };
+
+    this.getFunktiokutsuTyyppi = function (funktiokutsu) {
+        return api.isRootFunktiokutsu(funktiokutsu) ? funktiokutsu.tyyppi : funktiokutsu.lapsi.tyyppi;
     };
 
     this.addPKObjects = function (funktioargumentit) {

@@ -5,7 +5,7 @@ describe("FunktiokuvausService", function () {
         funktiokutsuSumma, funktiokutsuHylkaaarvovalilla, funktiokutsuPainotettukeskiarvo,
         laskentakaavaviite, rootFunktiokutsu, funktiokutsuPainotettukeskiarvoWith2EmptySlots,
         funktiokutsuPainotettukeskiarvoWith4EmptySlots, funktiokutsuXParent, funktiokutsuXFirstChild, ei, pienempitaiyhtasuuri, skaalaus,
-        funktiokuvausService;
+        funktiokuvausService, funktionimiUINamePairsWithFunktioarguments;
     beforeEach(module('MockData'));
     beforeEach(module('valintaperusteet'));
 
@@ -13,7 +13,7 @@ describe("FunktiokuvausService", function () {
                                 FunktiokutsuSumma, FunktiokutsuHylkaaarvovalilla, FunktiokutsuPainotettukeskiarvo,
                                 Laskentakaavaviite, RootFunktiokutsu, FunktiokutsuPainotettukeskiarvoWith2EmptySlots,
                                 FunktiokutsuPainotettukeskiarvoWith4EmptySlots, FunktiokutsuXParent, FunktiokutsuXFirstChild,
-                                PIENEMPITAIYHTASUURI, EI, SKAALAUS, FunktiokuvausService) {
+                                PIENEMPITAIYHTASUURI, EI, SKAALAUS, FunktiokuvausService, FunktionimiUINamePairsWithFunktioarguments) {
         funktioservice = FunktioService;
         funktiokutsuKeskiarvo = FunktiokutsuKeskiarvo;
         funktiokutsuJos = FunktiokutsuJos;
@@ -31,7 +31,7 @@ describe("FunktiokuvausService", function () {
         skaalaus = SKAALAUS;
         funktiokuvausService = FunktiokuvausService;
         funktiokuvausService.funktiokuvaukset = Funktiokuvaukset;
-        
+        funktionimiUINamePairsWithFunktioarguments = FunktionimiUINamePairsWithFunktioarguments;
     }));
 
     //getFunktiokuvaukset
@@ -90,12 +90,79 @@ describe("FunktiokuvausService", function () {
                 expect(funktiokuvausService.getFunktiokuvaus()).toEqual(undefined);
             });
         });
+    });
 
+    //hasMoreThanOneFunktioargumentti
+    describe("hasMoreThanOneFunktioargumentti(funktionimi)", function () {
+
+        it('should return true for JOS', function () {
+            expect(funktiokuvausService.hasMoreThanOneFunktioargumentti('JOS')).toBeTruthy();
+        });
+
+        it('should return false for SUMMA', function () {
+            expect(funktiokuvausService.hasMoreThanOneFunktioargumentti('SUMMA')).toBeFalsy();
+        });
+
+        it('should return true for PIENEMPI', function () {
+            expect(funktiokuvausService.hasMoreThanOneFunktioargumentti('PIENEMPI')).toBeTruthy();
+        });
+
+        it('should return false for EI', function () {
+            expect(funktiokuvausService.hasMoreThanOneFunktioargumentti('EI')).toBeFalsy();
+        });
+
+        it('should return true for MAKSIMI', function () {
+            expect(funktiokuvausService.hasMoreThanOneFunktioargumentti('MAKSIMI')).toBeFalsy();
+        });
 
     });
 
+
+    //getFunktioNimiLista
+    describe("getFunktioNimiLista()", function () {
+        it('should return array of funktionames', function () {
+            expect(funktiokuvausService.getFunktioNimiLista()).toEqual(['HYLKAAARVOVALILLA', 'SKAALAUS', 'NIMETTYTOTUUSARVO', 'PIENEMPITAIYHTASUURI', 'NEGAATIO', 'DEMOGRAFIA', 'PIENEMPI', 'KESKIARVO', 'LUKUARVO', 'TULO', 'JOS', 'MEDIAANI', 'HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI', 'HAELUKUARVOEHDOLLA', 'HAELUKUARVO', 'OSAMAARA', 'JA', 'NMINIMI', 'VALINTAPERUSTEYHTASUURUUS', 'SUMMA', 'SUUREMPI', 'HYLKAA', 'HAETOTUUSARVO', 'TOTUUSARVO', 'HAEYOARVOSANA', 'EI', 'SUUREMPITAIYHTASUURI', 'HAEMERKKIJONOJAVERTAAYHTASUURUUS', 'KONVERTOILUKUARVO', 'KESKIARVONPARASTA', 'HAKUTOIVE', 'MINIMI', 'NMAKSIMI', 'PYORISTYS', 'TAI', 'NIMETTYLUKUARVO', 'YHTASUURI', 'MAKSIMI', 'PAINOTETTUKESKIARVO', 'HAEMERKKIJONOJAKONVERTOILUKUARVOKSI', 'SUMMANPARASTA']);
+            expect(funktiokuvausService.getFunktioNimiLista().length).toEqual(funktiokuvausService.funktiokuvaukset.length);
+        });
+    });
+
+    //kaarittavaFunktiokutsuCanBeSetToFirstChildByFunktionimi
+    describe("kaarittavaFunktiokutsuCanBeSetToFirstChildByFunktionimi(name)", function () {
+
+        it('should return true for funktionimi SUMMA', function () {
+            expect(funktiokuvausService.kaarittavaFunktiokutsuCanBeSetToFirstChildByFunktionimi('SUMMA')).toBeTruthy();
+        });
+
+        it('should return true for funktionimi SKAALAUS', function () {
+            expect(funktiokuvausService.kaarittavaFunktiokutsuCanBeSetToFirstChildByFunktionimi('SKAALAUS')).toBeTruthy();
+        });
+
+        it('should return true for funktionimi SUUREMPI', function () {
+            expect(funktiokuvausService.kaarittavaFunktiokutsuCanBeSetToFirstChildByFunktionimi('SUUREMPI')).toBeFalsy();
+        });
+
+        it('should return true for funktionimi NMINIMI', function () {
+            expect(funktiokuvausService.kaarittavaFunktiokutsuCanBeSetToFirstChildByFunktionimi('NMINIMI')).toBeTruthy();
+        });
+
+        it('should return true for funktionimi HAEYOARVOSANA', function () {
+            expect(funktiokuvausService.kaarittavaFunktiokutsuCanBeSetToFirstChildByFunktionimi('HAEYOARVOSANA')).toBeFalsy();
+        });
+
+        it('should return true for funktionimi JOS', function () {
+            expect(funktiokuvausService.kaarittavaFunktiokutsuCanBeSetToFirstChildByFunktionimi('JOS')).toBeFalsy();
+        });
+
+        it('should return true for funktionimi PAINOTETTUKESKIARVO', function () {
+            expect(funktiokuvausService.kaarittavaFunktiokutsuCanBeSetToFirstChildByFunktionimi('PAINOTETTUKESKIARVO')).toBeFalsy();
+        });
+
+    });
+
+
+
     //isNimettyFunktioargumenttiByFunktionimi
-    describe("hasFunktioargumentitByFunktionimi(name)", function () {
+    describe("hasNimettyFunktioargumenttiByFunktioNimi(name)", function () {
 
         it('should return false for KESKIARVO-funktiokutsu', function () {
             expect(funktiokuvausService.hasNimettyFunktioargumenttiByFunktioNimi('KESKIARVO')).toBeFalsy();
@@ -145,7 +212,7 @@ describe("FunktiokuvausService", function () {
             expect(funktiokuvausService.hasFunktioargumentitByFunktionimi('MAKSIMI')).toBeTruthy();
         });
 
-        it('should return false for PIENEMPITAIYHTASUURI', function () {
+        it('should return true for PIENEMPITAIYHTASUURI', function () {
             expect(funktiokuvausService.hasFunktioargumentitByFunktionimi('PIENEMPITAIYHTASUURI')).toBeTruthy();
         });
 
@@ -157,7 +224,7 @@ describe("FunktiokuvausService", function () {
             expect(funktiokuvausService.hasFunktioargumentitByFunktionimi('HAETOTUUSARVO')).toBeFalsy();
         });
 
-        it('should return false for PAINOTETTUKESKIARVO', function () {
+        it('should return true for PAINOTETTUKESKIARVO', function () {
             expect(funktiokuvausService.hasFunktioargumentitByFunktionimi('PAINOTETTUKESKIARVO')).toBeTruthy();
         });
 
@@ -175,6 +242,42 @@ describe("FunktiokuvausService", function () {
 
         it("should return false if parameter is undefined", function () {
             expect(funktiokuvausService.isPainotettukeskiarvoByFunktioNimi()).toBeFalsy();
+        });
+    });
+
+    //getFunktioargumenttiCountByFunktionimi
+    describe("getFunktioargumenttiCountByFunktionimi(funktionimi)", function () {
+
+        it('should return 3 for funktionimi JOS', function () {
+            expect(funktiokuvausService.getFunktioargumenttiCountByFunktionimi('JOS')).toBe(3);
+        });
+
+        it('should return 1 for funktionimi SUMMA', function () {
+            expect(funktiokuvausService.getFunktioargumenttiCountByFunktionimi('SUMMA')).toBe(1);
+        });
+
+        it('should return 1 for funktionimi PAINOTETTUKESKIARVO', function () {
+            expect(funktiokuvausService.getFunktioargumenttiCountByFunktionimi('PAINOTETTUKESKIARVO')).toBe(1);
+        });
+
+        it('should return 2 for funktionimi OSAMAARA', function () {
+            expect(funktiokuvausService.getFunktioargumenttiCountByFunktionimi('OSAMAARA')).toBe(2);
+        });
+
+        it('should return 2 for funktionimi YHTASUURI', function () {
+            expect(funktiokuvausService.getFunktioargumenttiCountByFunktionimi('YHTASUURI')).toBe(2);
+        });
+
+        it('should return 1 for funktionimi EI', function () {
+            expect(funktiokuvausService.getFunktioargumenttiCountByFunktionimi('EI')).toBe(1);
+        });
+    });
+
+    //getFunktioNimiListaWithFunktioargumentit
+    describe("isFunktiokutsuWithFunktioargumenttiSizeN(parent)", function () {
+
+        it('should return array of objects with funktionimi and corresbonding UIName', function () {
+            expect(funktiokuvausService.getFunktioNimiListaWithFunktioargumentit()).toEqual(funktionimiUINamePairsWithFunktioarguments);
         });
     });
 

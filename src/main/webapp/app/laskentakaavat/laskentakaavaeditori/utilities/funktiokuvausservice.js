@@ -83,17 +83,27 @@ angular.module('valintaperusteet')
             }
         };
 
+        this.getFunktioTyyppiByFunktionimi = function (funktionimi) {
+            var funktiokuvaus = api.getFunktiokuvaus(funktionimi);
+            return funktiokuvaus.tyyppi;
+        };
+
+        this.kaarittavaFunktiokutsuCanBeSetToFirstChildByFunktionimi = function (funktionimi) {
+            var funktiokuvaus = api.getFunktiokuvaus(funktionimi);
+            return api.hasFunktioargumentitByFunktionimi(funktionimi) && funktiokuvaus.funktioargumentit.length === 1 && !api.isPainotettukeskiarvoByFunktioNimi(funktionimi);
+        };
+
         this.hasNimettyFunktioargumenttiByFunktioNimi = function (funktionimi) {
             var funktiokuvaus = api.getFunktiokuvaus(funktionimi);
             return funktiokuvaus.funktioargumentit !== undefined && funktiokuvaus.funktioargumentit && (funktiokuvaus.funktioargumentit.length > 1 || funktiokuvaus.funktioargumentit[0].kardinaliteetti !== 'n' && !api.isPainotettukeskiarvoByFunktioNimi(funktionimi) );
         };
 
-        this.isPainotettukeskiarvoByFunktioNimi = function (parentFunktionimi) {
-            if (_.isEmpty(parentFunktionimi)) {
+        this.isPainotettukeskiarvoByFunktioNimi = function (funktionimi) {
+            if (_.isEmpty(funktionimi)) {
                 return false;
             }
-            var funktiokuvaus = api.getFunktiokuvaus(parentFunktionimi);
-            return funktiokuvaus.funktioargumentit && funktiokuvaus.funktioargumentit[0].kardinaliteetti === 'lista_pareja';
+            var funktiokuvaus = api.getFunktiokuvaus(funktionimi);
+            return funktiokuvaus.nimi === 'PAINOTETTUKESKIARVO';
         };
 
         /**
@@ -112,10 +122,10 @@ angular.module('valintaperusteet')
          * @returns {array} returns array of objects that contain funktionimi and corresponding readable name
          * for all funktiokuvaukset that contain 'funktioargumentit'
          */
-        this.getFunktioNimiListaWithFunktioargumentit = function () {
+        this.getFunktioNimiListaWithFunktioargumentit = function (funktiotyyppi) {
             var funktioNimiLista = api.getFunktioNimiListaObjects();
             return _.filter(funktioNimiLista, function (item) {
-                return api.hasFunktioargumentitByFunktionimi(item.funktionimi);
+                return api.hasFunktioargumentitByFunktionimi(item.funktionimi) && api.getFunktioTyyppiByFunktionimi(item.funktionimi) === funktiotyyppi;
             });
         };
 

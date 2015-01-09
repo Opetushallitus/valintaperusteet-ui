@@ -528,7 +528,10 @@
 
     <div class="modal-footer">
         <!-- Funktiokutsun asetukset -->
-        <button class="btn btn-default btn-sm" ng-disabled="!userAccess.crudOrg" ng-click="laskentakaavaModalService.toggleModalSelection('kaare')">{{ t('funktiokutsuasetuksetmodal.kaariminen') || 'Funktiokutsun kääriminen'}}</button>
+        <button class="btn btn-default btn-sm"
+                ng-disabled="!userAccess.crudOrg"
+                ng-click="showFunktiokutsunKaarintaModal()">{{ t('funktiokutsuasetuksetmodal.kaariminen') || 'Funktiokutsun kääriminen'}}
+        </button>
         <button class="btn btn-default btn-sm"
                 ng-disabled="alikaavaValues.isAlikaava || funktioasetukset.parentFunktiokutsu === model.laskentakaavapuu.funktiokutsu || !userAccess.crudOrg"
                 ng-click="laskentakaavaModalService.toggleModalSelection('tallennusKaavana')">{{ t('laskentakaavaviiteasetuksetmodal.kaavanosantallennus') || 'Kaavan osan

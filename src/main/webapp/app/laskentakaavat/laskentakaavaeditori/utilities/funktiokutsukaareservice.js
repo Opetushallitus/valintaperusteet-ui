@@ -13,11 +13,10 @@ angular.module('valintaperusteet')
         };
 
 
-        this.setFunktioKaareLista = function () {
+        this.setFunktioKaareLista = function (funktiotyyppi) {
             FunktiokuvausService.refresh().then(function () {
-                api.funktioKaare.funktioKaareLista = FunktiokuvausService.getFunktioNimiListaWithFunktioargumentit();
+                api.funktioKaare.funktioKaareLista = FunktiokuvausService.getFunktioNimiListaWithFunktioargumentit(funktiotyyppi);
             });
-            
         };
 
         this.setKaareFunktiokutsuType = function (funktiokutsuNimi) {
@@ -58,14 +57,12 @@ angular.module('valintaperusteet')
         };
 
         this.getArgumentsNimettyFunktioargumenttiType = function (funktiokuvaus) {
-            var result = [];
-            _.pluck(funktiokuvaus.funktioargumentit, 'nimi').forEach(function (nimi, index) {
-                result.push({
+            return _.map( _.pluck(funktiokuvaus.funktioargumentit, 'nimi'), function (nimi, index) {
+                return {
                     label: nimi,
                     index: index
-                });
+                };
             });
-            return result;
         };
 
     }]);

@@ -18,7 +18,6 @@ angular.module('valintaperusteet')
             $scope.laskentakaavaModalService = LaskentakaavaModalService;
             $scope.kaareService = FunktiokutsuKaareService;
             $scope.valintaryhmaPromise = $scope.valintaryhmaModel.loaded.promise;
-            FunktiokutsuKaareService.setFunktioKaareLista();
 
             if ($routeParams.valintaryhmaOid !== undefined) {
                 $scope.valintaryhmaModel.refreshIfNeeded($routeParams.valintaryhmaOid);
@@ -191,18 +190,21 @@ angular.module('valintaperusteet')
                         );
                     });
 
-
-
                 }, function(reject) {
                     $log.error('Valintaryhmän lataaminen epäonnistui', reject);
                 });
             };
 
+            $scope.showFunktiokutsunKaarintaModal = function () {
+                FunktiokutsuKaareService.setFunktioKaareLista(FunktioService.getFunktiokutsuTyyppi($scope.funktioSelection));
+                LaskentakaavaModalService.toggleModalSelection('kaare');
+            };
+
             $scope.kaariFunktiokutsu = function (kaarivaFunktiokutsuNimi, childFunktiokutsuIndex) {
-                if(FunktiokuvausService.hasNSizeFunktioargumenttiByFunktionimi(kaarivaFunktiokutsuNimi)) {
+                if(FunktiokuvausService.kaarittavaFunktiokutsuCanBeSetToFirstChildByFunktionimi(kaarivaFunktiokutsuNimi)) {
                     $scope.kaariFunktiokutsuNFunktioargumentiksi(kaarivaFunktiokutsuNimi);
                 } else {
-                    $scope.kaariNimettyFunktioargumentti(kaarivaFunktiokutsuNimi, childFunktiokutsuIndex);
+                    $scope.kaariFunktiokutsuFunktioargumentiksiIndeksilla(kaarivaFunktiokutsuNimi, childFunktiokutsuIndex);
                 }
                 LaskentakaavaModalService.resetModalSelection();
             };
@@ -225,7 +227,7 @@ angular.module('valintaperusteet')
                 LaskentakaavaModalService.resetModalSelection();
             };
 
-            $scope.kaariNimettyFunktioargumentti = function (kaarivaFunktiokutsuNimi, childFunktiokutsuIndex) {
+            $scope.kaariFunktiokutsuFunktioargumentiksiIndeksilla = function (kaarivaFunktiokutsuNimi, childFunktiokutsuIndex) {
                 var isRootFunktiokutsu = FunktioService.isRootFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu);
                 var kaarittavaFunktiokutsu = FunktioService.getCurrentFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu, $scope.funktioasetukset.selectedFunktioIndex);
                 var kaarivaFunktiokutsu  = FunktioFactory.createFunktioInstance($scope.funktioasetukset.parentFunktiokutsu, kaarivaFunktiokutsuNimi, isRootFunktiokutsu);
