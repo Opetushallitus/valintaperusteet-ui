@@ -84,6 +84,33 @@ angular.module('valintaperusteet')
                 }
             };
 
+            $scope.parseLisakysymysAvaimet = function(haetutAvaimet) {
+                var avaimet = [];
+                _.forEach(haetutAvaimet, function(phase) {
+
+                    var obj = {};
+                    obj.key = phase._id;
+                    if(phase.messageText) {
+                        obj.value = phase._id + ' - ' + phase.messageText.translations.fi;
+                    } else {
+                        obj.value = phase._id;
+                    }
+                    if(phase.options) {
+                        obj.options = [];
+                        _.forEach(phase.options, function(option) {
+                            var opt = {};
+                            opt.id = option.id;
+                            opt.text = option.translations.fi;
+                            obj.options.push(opt);
+                        })
+                    }
+
+                    avaimet.push(obj);
+
+                });
+                return avaimet;
+            };
+
             $scope.getHakemusAvaimet = function (hakuoid) {
 
 
@@ -150,40 +177,14 @@ angular.module('valintaperusteet')
                     
                     UserModel.organizationsDeferred.promise.then(function () {
                         HakemusavaimetLisakysymykset.get({hakuoid: hakuoid, orgId: UserModel.organizationOids[0]},function (haetutAvaimet) {
-                                var avaimet = [];
-                                _.forEach(haetutAvaimet, function(phase) {
-
-                                    var obj = {};
-                                    obj.key = phase._id;
-                                    if(phase.messageText) {
-                                        obj.value = phase._id + ' - ' + phase.messageText.translations.fi;
-                                    } else {
-                                        obj.value = phase._id;
-                                    }
-                                    avaimet.push(obj);
-
-                                });
-                                $scope.lisakysymysAvaimet = avaimet;
+                                $scope.lisakysymysAvaimet = $scope.parseLisakysymysAvaimet(haetutAvaimet);
                             }, function (error) {
                                 $log.log("lisakysymyksiä ei löytynyt", error);
                             }
                         );
                     }, function () {
                         HakemusavaimetLisakysymykset.get({hakuoid: hakuoid},function (haetutAvaimet) {
-                                var avaimet = [];
-                                _.forEach(haetutAvaimet, function(phase) {
-
-                                    var obj = {};
-                                    obj.key = phase._id;
-                                    if(phase.messageText) {
-                                        obj.value = phase._id + ' - ' + phase.messageText.translations.fi;
-                                    } else {
-                                        obj.value = phase._id;
-                                    }
-                                    avaimet.push(obj);
-
-                                });
-                                $scope.lisakysymysAvaimet = avaimet;
+                               $scope.lisakysymysAvaimet = $scope.parseLisakysymysAvaimet(haetutAvaimet);
                             }, function (error) {
                                 $log.error("lisakysymyksiä ei löytynyt", error);
                             }
@@ -194,6 +195,14 @@ angular.module('valintaperusteet')
                     $log.error('Valintaryhmän lataaminen epäonnistui', reject);
                 });
             };
+
+            $scope.parseOptions = function(tunniste) {
+                return [];
+            };
+
+            $scope.$watch('valintaperuste.tunniste', function(){
+                //timanttia
+            });
 
             $scope.showFunktiokutsunKaarintaModal = function () {
                 FunktiokutsuKaareService.setFunktioKaareLista(FunktioService.getFunktiokutsuTyyppi($scope.funktioSelection));
