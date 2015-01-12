@@ -29,6 +29,9 @@ public class ConfigController {
     @Value("${valintaperusteet-ui.valintalaskentakoostepalvelu-service-url.rest}")
     private String valintalaskentakoostepalvelu;
 
+    @Value("${valintaperusteet-ui.valintalaskenta-service-url.rest}")
+    private String valintalaskentaServiceURL;
+
     @Value("${valintalaskenta-ui.hakemus-ui-url}")
     private String hakemusServiceUrl;
 
@@ -52,6 +55,7 @@ public class ConfigController {
         append(b, "TARJONTA_URL_BASE", tarjontaServiceRestURL);
         append(b, "ORGANIZATION_SERVICE_URL_BASE", organisaatioServiceURL);
         append(b, "VALINTALASKENTAKOOSTE_URL_BASE", valintalaskentakoostepalvelu);
+        append(b, "VALINTALASKENTA_URL_BASE", valintalaskentaServiceURL);
         append(b, "LOKALISOINTIPALVELU_URL_BASE", lokalisointiServiceUrl);
         append(b, "HAKEMUS_URL_BASE", hakemusServiceUrl);
         append(b, "TEMPLATE_URL_BASE", "");

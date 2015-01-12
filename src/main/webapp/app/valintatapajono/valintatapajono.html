@@ -148,7 +148,7 @@
     <div class="col-md-2">
         <div class="checkbox">
             <label>
-                <input auth ng-disabled="!userAccess.updateOrg" type="checkbox" id="automaattinenLaskentaanSiirto"
+                <input auth ng-disabled="!userAccess.updateOrg || (model.valmisSijoiteltavaksi && !userAccess.crudOph)" type="checkbox" id="automaattinenLaskentaanSiirto"
                        name="automaattinenLaskentaanSiirto"
                        ng-model="model.valintatapajono.automaattinenLaskentaanSiirto">
             </label>

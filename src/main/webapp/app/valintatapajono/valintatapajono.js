@@ -4,10 +4,10 @@ angular.module('valintaperusteet')
 
     .factory('ValintatapajonoModel', ['$q', 'Valintatapajono', 'ValinnanvaiheValintatapajono', 'ValintatapajonoJarjestyskriteeri',
         'Laskentakaava', 'Jarjestyskriteeri', 'JarjestyskriteeriJarjesta', 'ValintatapajonoHakijaryhma', 'HakukohdeHakijaryhma',
-        'ValintaryhmaHakijaryhma', 'HakijaryhmaValintatapajono', '$modal', 'Ilmoitus',
+        'ValintaryhmaHakijaryhma', 'HakijaryhmaValintatapajono', 'ValintatapajonoValmisSijoiteltavaksi', '$modal', 'Ilmoitus',
     function ($q, Valintatapajono, ValinnanvaiheValintatapajono, ValintatapajonoJarjestyskriteeri, Laskentakaava,
               Jarjestyskriteeri, JarjestyskriteeriJarjesta, ValintatapajonoHakijaryhma, HakukohdeHakijaryhma,
-              ValintaryhmaHakijaryhma, HakijaryhmaValintatapajono, $modal, Ilmoitus) {
+              ValintaryhmaHakijaryhma, HakijaryhmaValintatapajono, ValintatapajonoValmisSijoiteltavaksi, $modal, Ilmoitus) {
     "use strict";
 
     var model = new function () {
@@ -25,6 +25,10 @@ angular.module('valintaperusteet')
                     });
                 }
             );
+
+            ValintatapajonoValmisSijoiteltavaksi.get({oid: oid}, function(result) {
+               model.valmisSijoiteltavaksi = !!result.value;
+            });
 
             Valintatapajono.get({oid: oid}, function (result) {
                 model.valintatapajono = result;
@@ -63,6 +67,7 @@ angular.module('valintaperusteet')
                 model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan = !!model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan;
                 model.valintatapajono.valisijoittelu = !!model.valintatapajono.valisijoittelu;
                 model.valintatapajono.automaattinenLaskentaanSiirto = !!model.valintatapajono.automaattinenLaskentaanSiirto;
+                model.valintatapajono.automaattinenLaskentaanSiirtoMuokattavissa = !!model.valintatapajono.automaattinenLaskentaanSiirtoMuokattavissa;
 
             } else if (oid !== model.valintatapajono.oid) {
                 this.refresh(oid, valinnanVaiheOid);
