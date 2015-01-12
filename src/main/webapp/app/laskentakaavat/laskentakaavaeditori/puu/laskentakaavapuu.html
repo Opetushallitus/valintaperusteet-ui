@@ -27,7 +27,6 @@
         <div class="alert alert-success margin-top-2" collapse="!saved">
             <p>{{ t('laskentakaavapuu.onnistui') || 'Laskentakaavan tallentaminen onnistui' }}</p>
         </div>
-
         <h2>{{ t('laskentakaavapuu.laskentakaava') || 'Laskentakaava' }}</h2>
 
         <!-- FUNKTIOASETUKSET -->
@@ -57,8 +56,9 @@
             <span class="node bold" ng-click="setRootSelection(model.laskentakaavapuu.funktiokutsu)">{{model.laskentakaavapuu.nimi}}</span>
         </div>
 
-        <funktiokutsu-label></funktiokutsu-label>
 
+
+<div class="clear"></div>
         <!-- piirretään laskentakaavapuu, oletetaan että kaavan sisältö ei voi olla pelkästään yksi laskentakaavaviite -->
         <ul class="frame-content">
             <li class="item" ng-repeat="funktiowrapper in model.laskentakaavapuu.funktiokutsu.funktioargumentit"
@@ -201,11 +201,12 @@
 <script type="text/ng-template" id="lukuarvo">
     <div class="parameter" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon">&#8302;</span>
-        <span add-class-on-mouseover="bold" class="node" ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo"
-              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
-        <span add-class-on-mouseover="bold" class="node" ng-if="funktiowrapper.lapsi.syoteparametrit[0]"
-              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}}</span>
-
+        <funktiokutsu-label laskentakaavaToolsDropdown="'funktiokutsu">
+            <span add-class-on-mouseover="bold" class="node" ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo"
+                  ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
+            <span add-class-on-mouseover="bold" class="node" ng-if="funktiowrapper.lapsi.syoteparametrit[0]"
+                  ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}}</span>
+        </funktiokutsu-label>
     </div>
 </script>
 

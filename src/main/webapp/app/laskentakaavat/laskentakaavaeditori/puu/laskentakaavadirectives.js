@@ -3,6 +3,7 @@ angular.module('valintaperusteet')
     .directive('funktiokutsuLabel', [function () {
         return {
             restrict: 'E',
+            transclude: true,
             templateUrl: 'laskentakaavat/laskentakaavaeditori/puu/funktiokutsuLabel.html',
             link: function ($scope, elem, attrs) {
                 $scope.toggled = function (open) {
