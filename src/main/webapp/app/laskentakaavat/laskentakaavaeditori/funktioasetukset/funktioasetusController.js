@@ -201,8 +201,9 @@ angular.module('valintaperusteet')
             };
 
             $scope.kaariFunktiokutsu = function (kaarivaFunktiokutsuNimi, childFunktiokutsuIndex) {
-                if(FunktiokuvausService.kaarittavaFunktiokutsuCanBeSetToFirstChildByFunktionimi(kaarivaFunktiokutsuNimi)) {
-                    $scope.kaariFunktiokutsuNFunktioargumentiksi(kaarivaFunktiokutsuNimi);
+
+                if(FunktioService.isRootFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu) && FunktiokuvausService.kaarittavaFunktiokutsuCanBeSetToFirstChildByFunktionimi(kaarivaFunktiokutsuNimi)) {
+                    $scope.kaariFunktiokutsuFirstFunktioargumentti(kaarivaFunktiokutsuNimi);
                 } else {
                     $scope.kaariFunktiokutsuFunktioargumentiksiIndeksilla(kaarivaFunktiokutsuNimi, childFunktiokutsuIndex);
                 }
@@ -210,14 +211,14 @@ angular.module('valintaperusteet')
             };
 
             //Käärivällä funktiokutsulla voi olla N määrä funktioargumentteja
-            $scope.kaariFunktiokutsuNFunktioargumentiksi = function (kaarivaFunktiokutsuNimi) {
+            $scope.kaariFunktiokutsuFirstFunktioargumentti = function (kaarivaFunktiokutsuNimi) {
                 var isRootFunktiokutsu = FunktioService.isRootFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu);
                 var kaarittavaFunktiokutsu = FunktioService.getCurrentFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu, $scope.funktioasetukset.selectedFunktioIndex);
                 var kaarivaFunktiokutsu  = FunktioFactory.createFunktioInstance($scope.funktioasetukset.parentFunktiokutsu, kaarivaFunktiokutsuNimi, isRootFunktiokutsu);
                 kaarivaFunktiokutsu.open = true;
 
                 if(isRootFunktiokutsu) {
-                    kaarivaFunktiokutsu.funktioargumentit[0] = kaarittavaFunktiokutsu;
+                    kaarivaFunktiokutsu.lapsi.funktioargumentit[0] = kaarittavaFunktiokutsu;
                     $scope.funktioasetukset.parentFunktiokutsu.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = kaarivaFunktiokutsu;
                 } else {
                     kaarivaFunktiokutsu.lapsi.funktioargumentit[0] = kaarittavaFunktiokutsu;
@@ -233,7 +234,7 @@ angular.module('valintaperusteet')
                 var kaarivaFunktiokutsu  = FunktioFactory.createFunktioInstance($scope.funktioasetukset.parentFunktiokutsu, kaarivaFunktiokutsuNimi, isRootFunktiokutsu);
                 kaarivaFunktiokutsu.open = true;
                 if(isRootFunktiokutsu) {
-                    kaarivaFunktiokutsu.funktioargumentit[childFunktiokutsuIndex] = kaarittavaFunktiokutsu;
+                    kaarivaFunktiokutsu.lapsi.funktioargumentit[childFunktiokutsuIndex] = kaarittavaFunktiokutsu;
                     $scope.funktioasetukset.parentFunktiokutsu.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = kaarivaFunktiokutsu;
                 } else {
                     kaarivaFunktiokutsu.lapsi.funktioargumentit[childFunktiokutsuIndex] = kaarittavaFunktiokutsu;
@@ -258,7 +259,9 @@ angular.module('valintaperusteet')
             };
 
             $scope.resetModalSelection = function () {
+                //choose modal for funktiokutsuasetukset & set flag for showing funktioargumenttiindexselection to false
                 LaskentakaavaModalService.resetModalSelection();
+                $scope.showFunktioargumenttiSelection = false;
             };
 
             $scope.resolveHaku();
