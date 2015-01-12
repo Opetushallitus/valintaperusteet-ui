@@ -178,7 +178,6 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                 return resultIndex;
             };
 
-
             $scope.noFunktioarguments = function (funktioargumentit) {
                 return funktioargumentit.length === 1 && _.isEmpty(funktioargumentit[0]);
             };
@@ -269,6 +268,10 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                 return result;
             };
 
+
+            $scope.showFunktiokutsuTools = function () {
+
+            };
 
             $scope.getSyoteparametriTemplate = function (syoteparametrityyppi) {
                 return TemplateService.getSyoteparametriTemplate(syoteparametrityyppi);

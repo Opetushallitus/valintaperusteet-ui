@@ -57,6 +57,8 @@
             <span class="node bold" ng-click="setRootSelection(model.laskentakaavapuu.funktiokutsu)">{{model.laskentakaavapuu.nimi}}</span>
         </div>
 
+        <funktiokutsu-label></funktiokutsu-label>
+
         <!-- piirretään laskentakaavapuu, oletetaan että kaavan sisältö ei voi olla pelkästään yksi laskentakaavaviite -->
         <ul class="frame-content">
             <li class="item" ng-repeat="funktiowrapper in model.laskentakaavapuu.funktiokutsu.funktioargumentit"
