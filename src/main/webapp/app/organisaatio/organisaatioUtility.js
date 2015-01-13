@@ -9,10 +9,9 @@ angular.module('valintaperusteet')
              * @param {String} valintaryhma oid
              * @returns {Promise object} returning organization objects for this valintaryhma
              */
-            this.getValintaryhmaOrganizationsWithChildOrganizations = function (valintaryhmaOid) {
+            this.getChildOrganizationsForValintaryhma = function (valintaryhmaOid) {
                 var deferred = $q.defer();
                 var organizations = [];
-                console.log('getting organizations', valintaryhmaOid);
                 Valintaryhma.get({oid: valintaryhmaOid}, function (result) {
                     var organizationsDeferreds = [];
                     if (result.organisaatiot) {
@@ -33,7 +32,7 @@ angular.module('valintaperusteet')
              * @param {String} valintaryhma oid
              * @returns {Promise object} returning organization oids and child organization oids for this valintaryhma
              */
-            this.getValintaryhmaOrganizationsWithChildOrganizationsOidList = function (valintaryhmaOid) {
+            this.getChildOrganizationsForValintaryhmaAsOidList = function (valintaryhmaOid) {
                 var deferred = $q.defer();
                 var organizations = [];
 
@@ -74,7 +73,7 @@ angular.module('valintaperusteet')
              * @param {String} valintaryhma oid
              * @returns {Promise object} returning organization objects for this hakukohde
              */
-            this.getHakukohdeOrganizationsWithChildOrganizations = function (hakukohdeOid) {
+            this.getChildOrganizationsforHakukohde = function (hakukohdeOid) {
                 var deferred = $q.defer();
                 var organizations = [];
 
@@ -153,7 +152,7 @@ angular.module('valintaperusteet')
              * @param {String} valintaryhma oid
              * @returns {Promise object} returning organization oids and parent organizations oids for this hakukohde
              */
-            this.getHakukohdeOrganizationsWithChildOrganizationsOidList = function (hakukohdeOid) {
+            this.getChildOrganizationsForHakukohdeAsOidList = function (hakukohdeOid) {
                 var deferred = $q.defer();
                 var organizations = [];
 

@@ -33,7 +33,7 @@ angular.module('valintaperusteet')
                 if(_.isEmpty(model.deferred) ||
                      ( !_.isEmpty(valintaryhmaOid) && (valintaryhmaOid !== model.valintaryhmaOid) ) ||
                       ( !_.isEmpty(hakukohdeOid) && (hakukohdeOid !== model.hakukohdeOid) ) )  {
-                    model.refresh(valintaryhmaOid, hakukohdeOid);
+                    return model.refresh(valintaryhmaOid, hakukohdeOid);
                 } else {
                     return model.deferred.promise;
                 }
@@ -79,9 +79,9 @@ angular.module('valintaperusteet')
                     var organizationOidsPromise = undefined;
 
                     if(valintaryhmaOid !== undefined) {
-                        organizationOidsPromise = OrganisaatioUtility.getValintaryhmaOrganizationsWithChildOrganizationsOidList(valintaryhmaOid);
+                        organizationOidsPromise = OrganisaatioUtility.getChildOrganizationsForValintaryhmaAsOidList(valintaryhmaOid);
                     } else if(hakukohdeOid !== undefined) {
-                        organizationOidsPromise = OrganisaatioUtility.getHakukohdeOrganizationsWithChildOrganizationsOidList(hakukohdeOid);
+                        organizationOidsPromise = OrganisaatioUtility.getChildOrganizationsforHakukohdeAsOidList(hakukohdeOid);
                     }
 
                     if(organizationOidsPromise !== undefined) {
