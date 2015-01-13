@@ -98,6 +98,24 @@
                         <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" ng-model="valintaperuste.tunniste" class="form-control"
                                required="required"/>
                     </div>
+                    <div ng-show="avainOptions.length > 0">
+                        <div class="valintaperuste-form">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <td>{{ t('laskentakaavaviiteasetuksetmodal.avaimenArvo') || 'Lisäkysymyksen arvo' }}</td>
+                                    <td>{{ t('laskentakaavaviiteasetuksetmodal.avaimenKysymys') || 'Lisäkysymyksen selite' }}</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="avain in avainOptions">
+                                    <td>{{avain.id}}</td>
+                                    <td>{{avain.text}}<td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
                 <button ng-if="valintaperuste.lahde === 'SYOTETTAVA_ARVO'" ng-disabled="!userAccess.updateOrg" ng-click="generateSyoteId(valintaperuste)"
                       class="btn btn-sm btn-default">{{ t('laskentakaavaviiteasetuksetmodal.generoi') || 'Generoi tunniste' }}</button>

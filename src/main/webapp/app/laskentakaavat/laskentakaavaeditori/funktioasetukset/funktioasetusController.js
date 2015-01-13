@@ -187,6 +187,7 @@ angular.module('valintaperusteet')
                                $scope.lisakysymysAvaimet = $scope.parseLisakysymysAvaimet(haetutAvaimet);
                             }, function (error) {
                                 $log.error("lisakysymyksiä ei löytynyt", error);
+
                             }
                         );
                     });
@@ -196,12 +197,8 @@ angular.module('valintaperusteet')
                 });
             };
 
-            $scope.parseOptions = function(tunniste) {
-                return [];
-            };
-
-            $scope.$watch('valintaperuste.tunniste', function(){
-                //timanttia
+            $scope.$watch('valintaperuste.tunniste', function() {
+                $scope.avainOptions = _.find($scope.lisakysymysAvaimet, function(avain) {return avain.key == $scope.valintaperuste.tunniste});
             });
 
             $scope.showFunktiokutsunKaarintaModal = function () {
