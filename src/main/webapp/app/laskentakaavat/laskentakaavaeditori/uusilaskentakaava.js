@@ -1,5 +1,5 @@
-angular.module('valintaperusteet').controller('UusiLaskentakaavaController', ['$scope', 'FunktioService',
-    '$routeParams', function ($scope, FunktioService) {
+angular.module('valintaperusteet').controller('UusiLaskentakaavaController', ['$scope', 'FunktioService', 'FunktiokuvausService',
+    '$routeParams', function ($scope, FunktioService, FunktiokuvausService) {
     'use strict';
 
     $scope.funktioService = FunktioService;
@@ -8,7 +8,7 @@ angular.module('valintaperusteet').controller('UusiLaskentakaavaController', ['$
     
         
     $scope.$on('initializeKaava', function () {
-        var funktiokuvaus = $scope.funktioService.getFunktiokuvaus($scope.kaava.tyyppi);
+        var funktiokuvaus = FunktiokuvausService.getFunktiokuvaus($scope.kaava.tyyppi);
         var laskentakaava = {
             nimi: $scope.kaava.nimi,
             kuvaus: $scope.kaava.kuvaus,
