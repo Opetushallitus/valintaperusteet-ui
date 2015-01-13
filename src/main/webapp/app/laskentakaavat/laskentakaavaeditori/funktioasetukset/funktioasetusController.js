@@ -100,7 +100,7 @@ angular.module('valintaperusteet')
                         _.forEach(phase.options, function(option) {
                             var opt = {};
                             opt.id = option.id;
-                            opt.text = option.translations.fi;
+                            opt.text = option.optionText.translations.fi;
                             obj.options.push(opt);
                         })
                     }
