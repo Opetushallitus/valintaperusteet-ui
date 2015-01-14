@@ -14,9 +14,30 @@ angular.module('valintaperusteet')
                 var organizations = [];
                 Valintaryhma.get({oid: valintaryhmaOid}, function (result) {
                     var organizationsDeferreds = [];
-                    if (result.organisaatiot) {
-                        organizations = result.organisaatiot;
-                    }
+                    var parentValintaryhmaOrganizationPromises = [];
+                    _.forEach(result.organisaatiot, function (organisaatioOidWrapper) {
+                        var organisaatioOids = [];
+                        organisaatioOids.push(organisaatioOidWrapper.oid);
+                        if(!_.isEmpty(organisaatioOidWrapper.parentOidPath)) {
+
+                            _.forEach(organisaatioOidWrapper.parentOidPath.split("/"), function (organisaatioOid) {
+                                organisaatioOids.push(organisaatioOid);
+                            });
+                        }
+
+                        var uniqueParentOrganisaatioOids = _.uniq(organisaatioOids);
+
+                        var parentOrgDefer = $q.defer();
+                        parentValintaryhmaOrganizationPromises.push(parentOrgDefer.promise);
+                        _.forEach(uniqueParentOrganisaatioOids, function (uniqueParentOrganisaatioOid) {
+                            OrganizationByOid.get({oid: uniqueParentOrganisaatioOid}, function (organisaatio) {
+                                organizations.push(organisaatio);
+                                parentOrgDefer.resolve();
+                            }, function (error) {
+                                parentOrgDefer.reject();
+                            });
+                        });
+                    });
 
                     deferred.resolve(organizations);
                 }, function () {
@@ -30,7 +51,7 @@ angular.module('valintaperusteet')
             /**
              *
              * @param {String} valintaryhma oid
-             * @returns {Promise object} returning organization oids and child organization oids for this valintaryhma
+             * @returns {Promise object} returning organization oids and child organization oids for this valintaryhma - oph-organization is filtered out
              */
             this.getChildOrganizationsForValintaryhmaAsOidList = function (valintaryhmaOid) {
                 var deferred = $q.defer();
