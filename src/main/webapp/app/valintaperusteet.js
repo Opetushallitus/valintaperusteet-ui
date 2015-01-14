@@ -7,6 +7,16 @@ var app = angular.module('valintaperusteet', ['ngResource', 'ngCookies', 'loadin
         LocalisationService.getTranslation("");
     });
 
+angular.module('valintaperusteet')
+    .controller('mainCtrl', ['$scope', '$routeParams', 'breadcrumbs', 'UserAccessLevels', 'UserModel',
+        function ($scope, $routeParams, breadcrumbs, UserAccessLevels, UserModel) {
+
+            $scope.breadcrumbs = breadcrumbs;
+            UserAccessLevels.refreshIfNeeded($routeParams.id, $routeParams.hakukohdeOid);
+            UserModel.refreshIfNeeded();
+
+        }]);
+
 
 angular.module('lodash', [])
 .factory('_', function () {
