@@ -3,11 +3,11 @@ angular.module('valintaperusteet')
     .controller('funktiokutsuAsetuksetController', ['$scope', '$log', '$q', '$routeParams', '$location', '$timeout', 'Laskentakaava',
         'FunktioNimiService', 'FunktioFactory', 'KaavaValidation', 'GuidGenerator', 'HakemusavaimetLisakysymykset', 'HakemusavaimetLomake',
         'ValintaryhmaModel', 'Treemodel', 'LaskentakaavaValintaryhma', '$cookieStore', '$window', 'UserModel', 'ErrorService', '_', 'FunktioService',
-        'LaskentakaavaModalService', 'FunktiokutsuKaareService', 'FunktiokuvausService',
+        'LaskentakaavaModalService', 'FunktiokutsuKaareService', 'FunktiokuvausService', 'HakukohdeModel',
         function ($scope, $log, $q, $routeParams, $location, $timeout, Laskentakaava,
                   FunktioNimiService, FunktioFactory, KaavaValidation, GuidGenerator, HakemusavaimetLisakysymykset, HakemusavaimetLomake,
                   ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore, $window, UserModel, ErrorService, _, FunktioService,
-                  LaskentakaavaModalService, FunktiokutsuKaareService, FunktiokuvausService) {
+                  LaskentakaavaModalService, FunktiokutsuKaareService, FunktiokuvausService, HakukohdeModel) {
 
             UserModel.refreshIfNeeded();
 
@@ -19,8 +19,20 @@ angular.module('valintaperusteet')
             $scope.kaareService = FunktiokutsuKaareService;
             $scope.valintaryhmaPromise = $scope.valintaryhmaModel.loaded.promise;
 
-            if ($routeParams.valintaryhmaOid !== undefined) {
+            if ($routeParams.valintaryhmaOid !== undefined) { //if laskentakaava belongs to a valintaryhma
                 $scope.valintaryhmaModel.refreshIfNeeded($routeParams.valintaryhmaOid);
+                $scope.valintaryhmaPromise.then(function (result) {
+                    $scope.resolveHaku();
+                }, function(reject) {
+                    $log.error('Valintaryhmän lataaminen epäonnistui', reject);
+                });
+            } else if($routeParams.hakukohdeOid !== undefined) { //if laskentakaava belongs to a hakukohde
+                HakukohdeModel.refreshIfNeeded($routeParams.hakukohdeOid);
+                HakukohdeModel.loaded.promise.then(function () {
+                    $scope.resolveHaku();
+                }, function (error) {
+                    $log.error('Hakukohteen lataaminen epäonnistui', error);
+                });
             }
 
             $scope.$watch('funktioasetukset.parentFunktiokutsu', function () {
@@ -64,6 +76,7 @@ angular.module('valintaperusteet')
             };
 
             $scope.resolveHaku = function() {
+
                 var hakuoid = $cookieStore.get('hakuoid');
                 if(hakuoid) {
                     $scope.getHakemusAvaimet(hakuoid);
@@ -113,8 +126,6 @@ angular.module('valintaperusteet')
 
             $scope.getHakemusAvaimet = function (hakuoid) {
 
-
-                $scope.valintaryhmaPromise.then(function (result) {
                     HakemusavaimetLomake.get({hakuoid: hakuoid}, function (haetutAvaimet) {
                             var tyypit = ["TextQuestion","DropdownSelect","Radio","DateQuestion","SocialSecurityNumber","PostalCode","GradeGridOptionQuestion"];
                             var avaimet = [];
@@ -192,9 +203,7 @@ angular.module('valintaperusteet')
                         );
                     });
 
-                }, function(reject) {
-                    $log.error('Valintaryhmän lataaminen epäonnistui', reject);
-                });
+
             };
 
             $scope.$watch('valintaperuste.tunniste', function() {
@@ -269,8 +278,6 @@ angular.module('valintaperusteet')
                 LaskentakaavaModalService.resetModalSelection();
                 $scope.showFunktioargumenttiSelection = false;
             };
-
-            $scope.resolveHaku();
 
         }])
 
