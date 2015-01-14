@@ -81,7 +81,7 @@ angular.module('valintaperusteet')
                     if(valintaryhmaOid !== undefined) {
                         organizationOidsPromise = OrganisaatioUtility.getChildOrganizationsForValintaryhmaAsOidList(valintaryhmaOid);
                     } else if(hakukohdeOid !== undefined) {
-                        organizationOidsPromise = OrganisaatioUtility.getChildOrganizationsforHakukohdeAsOidList(hakukohdeOid);
+                        organizationOidsPromise = OrganisaatioUtility.getChildOrganizationsForHakukohdeAsOidList(hakukohdeOid);
                     }
 
                     if(organizationOidsPromise !== undefined) {
