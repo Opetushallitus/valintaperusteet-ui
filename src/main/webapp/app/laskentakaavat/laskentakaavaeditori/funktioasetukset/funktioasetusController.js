@@ -178,6 +178,9 @@ angular.module('valintaperusteet')
                     UserModel.organizationsDeferred.promise.then(function () {
                         HakemusavaimetLisakysymykset.get({hakuoid: hakuoid, orgId: UserModel.organizationOids[0]},function (haetutAvaimet) {
                                 $scope.lisakysymysAvaimet = $scope.parseLisakysymysAvaimet(haetutAvaimet);
+                                if(!$scope.avainOptions) {
+                                    $scope.avainOptions = _.find($scope.lisakysymysAvaimet, function(avain) {return avain.key == $scope.valintaperuste.tunniste});
+                                }
                             }, function (error) {
                                 $log.log("lisakysymyksiä ei löytynyt", error);
                             }
@@ -185,6 +188,9 @@ angular.module('valintaperusteet')
                     }, function () {
                         HakemusavaimetLisakysymykset.get({hakuoid: hakuoid},function (haetutAvaimet) {
                                $scope.lisakysymysAvaimet = $scope.parseLisakysymysAvaimet(haetutAvaimet);
+                                if(!$scope.avainOptions) {
+                                    $scope.avainOptions = _.find($scope.lisakysymysAvaimet, function(avain) {return avain.key == $scope.valintaperuste.tunniste});
+                                }
                             }, function (error) {
                                 $log.error("lisakysymyksiä ei löytynyt", error);
 
