@@ -212,9 +212,14 @@ angular.module('valintaperusteet')
 
             };
 
-            $scope.$watch('valintaperuste.tunniste', function() {
-                $scope.avainOptions = _.find($scope.lisakysymysAvaimet, function(avain) {return avain.key == $scope.valintaperuste.tunniste});
-            });
+            $scope.changeAvainOptions = function(valintaperuste) {
+                valintaperuste.avainOptions = _.find($scope.lisakysymysAvaimet, function(avain) {return avain.key == $scope.valintaperuste.tunniste});
+            };
+
+//            $scope.$watch('valintaperuste.tunniste', function() {
+//                console.log('watch!');
+//                $scope.avainOptions = _.find($scope.lisakysymysAvaimet, function(avain) {return avain.key == $scope.valintaperuste.tunniste});
+//            }, true);
 
             $scope.showFunktiokutsunKaarintaModal = function () {
                 FunktiokutsuKaareService.setFunktioKaareLista(FunktioService.getFunktiokutsuTyyppi($scope.funktioSelection));
