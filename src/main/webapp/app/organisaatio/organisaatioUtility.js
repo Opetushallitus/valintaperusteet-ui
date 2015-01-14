@@ -37,16 +37,28 @@ angular.module('valintaperusteet')
                 var organizations = [];
 
                 Valintaryhma.get({oid: valintaryhmaOid}, function (result) {
-                    var organizationsDeferreds = [];
+                    var organizationsPromises = [];
                     if (result.organisaatiot) {
-
                         _.forEach(result.organisaatiot, function (org) {
+                            organizations.push(org.oid);
+
+                            //find parent oids for this organization
+                            var parentOids = [];
+                            if(!_.isEmpty(org.parentOidPath)) {
+                                _.forEach(org.parentOidPath.split("/"), function (orgOid) {
+                                    organizations.push(orgOid);
+                                });
+                            }
+
+                            //find child for this oids
                             if(org.oid !== OPH_ORG_OID) {
                                 var defer = $q.defer();
+                                organizationsPromises.push(defer.promise);
                                 OrganizationChildOids.get({oid: org.oid}, function(childOids) {
                                     _.forEach(childOids.oids, function (oid) {
                                         organizations.push(oid);
                                     });
+
                                     defer.resolve();
                                 }, function (error) {
                                     $log.error('Organisaation: ' + org.oid + ' tietojen hakeminen epäonnistui.', error);
@@ -54,12 +66,19 @@ angular.module('valintaperusteet')
                                     defer.resolve();
                                 });
                             }
-                            organizations.push(org.oid);
+
                         });
 
                     }
+                    $q.all(organizationsPromises).then(function () {
+                        organizations = _.uniq(organizations);
+                        organizations = _.filter(organizations, function (orgoid) {
+                            return orgoid !== OPH_ORG_OID;
+                        });
+                        deferred.resolve(organizations);
+                    });
+                    
 
-                    deferred.resolve(organizations);
                 }, function () {
                     $log.error('valintaryhmän tietojen hakeminen epäonnistui');
                     deferred.reject();
