@@ -73,30 +73,48 @@
                 <label class="col-md-2 control-label">{{ t('laskentakaavaviiteasetuksetmodal.tunniste') || 'Tunniste'}}</label>
 
                 <div class="col-md-6">
-                    <div>
+                    <div ng-if="!isYoFunktiokutsu(funktioSelection)">
                         <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && bigdata.length > 0">
                             <p class="form-control-static">Hakulomakkeen tunniste</p>
                             <select ng-model="valintaperuste.tunniste"
                                     ng-options="data.key as data.value for data in bigdata"
-                                    ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg">
+                                    ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" ng-change="changeAvainOptions(valintaperuste)">
                                 <option value=""></option>
                             </select>
                         </div>
                     </div>
-                    <div>
+                    <div ng-if="!isYoFunktiokutsu(funktioSelection)">
                         <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && lisakysymysAvaimet.length > 0">
                             <p class="form-control-static">Lisäkysymyksen tunniste</p>
                             <select ng-model="valintaperuste.tunniste"
                                     ng-options="data.key as data.value for data in lisakysymysAvaimet"
-                                    ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg">
+                                    ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" ng-change="changeAvainOptions(valintaperuste)">
                                 <option value=""></option>
                             </select>
                         </div>
                     </div>
-                    <div>
+                    <div ng-if="!isYoFunktiokutsu(funktioSelection)">
                         <span class="help-block">Vapaamuotoinen tunniste</span>
                         <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" ng-model="valintaperuste.tunniste" class="form-control"
-                               required="required"/>
+                               required="required" ng-change="changeAvainOptions(valintaperuste)"/>
+                    </div>
+                    <div ng-show="valintaperuste.avainOptions.length > 0">
+                        <div class="valintaperuste-form">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <td>{{ t('laskentakaavaviiteasetuksetmodal.avaimenArvo') || 'Lisäkysymyksen arvo' }}</td>
+                                    <td>{{ t('laskentakaavaviiteasetuksetmodal.avaimenKysymys') || 'Lisäkysymyksen selite' }}</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="avain in avainOptions">
+                                    <td>{{avain.id}}</td>
+                                    <td>{{avain.text}}<td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                 <button ng-if="valintaperuste.lahde === 'SYOTETTAVA_ARVO'" ng-disabled="!userAccess.updateOrg" ng-click="generateSyoteId(valintaperuste)"

@@ -86,24 +86,26 @@
             <label class="control-label col-md-2">Organization Utility</label>
 
             <div class="col-md-10">
-                <p ng-show="vrhkOrgs >= 0">
+                <h3>Organisaation lapset</h3>
+                <p ng-show="valitunOrganisaationLapset.length >= 0">
                     <span ng-if="isValintaryhma">valintaryhma</span>
-                    <span ng-if="isHakukohde">Hakukohde</span>- Organisaatioden määrä: {{vrhkOrgs.length}}
+                    <span ng-if="isHakukohde">Hakukohde</span>- Lapsiorganisaatioden määrä: {{valitunOrganisaationLapset.length}}
                 </p>
-                <button class="btn btn-default btn-sm" ng-click="showAll = !showAll">show orgs</button>
+
+                <button class="btn btn-default btn-sm" ng-click="showAll = !showAll">Näytä lapsiorganisaatiot</button>
                 <ul ng-init="showAll = false">
-                    <li ng-show="!showAll" ng-repeat="vrhkOrg in vrhkOrgs">
-                        <span ng-show="allData">{{vrhkOrg}}</span>
+                    <li ng-show="!showAll" ng-repeat="organisaatioLapsi in valitunOrganisaationLapset">
+                        <span ng-show="allData">{{organisaatioLapsi}}</span>
 
                         <div ng-show="!allData">
-                            <p>{{vrhkOrg.oid}} - {{vrhkOrg.nimi.fi}} </p>
+                            <p>{{organisaatioLapsi.oid}} - {{organisaatioLapsi.nimi.fi}} </p>
 
-                            <p>parentoid: {{vrhkOrg.parentOid}}</p>
+                            <p>parentoid: {{organisaatioLapsi.parentOid}}</p>
 
-                            <p>parentOidPath: {{vrhkOrg.parentOidPath}}</p>
+                            <p>parentOidPath: {{organisaatioLapsi.parentOidPath}}</p>
                         </div>
                     </li>
-                    <li ng-show="showAll" ng-repeat="org in vrhkOrgs">{{org}}</li>
+                    <li ng-show="showAll" ng-repeat="org in valitunOrganisaationLapset">{{org}}</li>
                 </ul>
 
             </div>

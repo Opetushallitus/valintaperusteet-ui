@@ -33,7 +33,7 @@ angular.module('valintaperusteet')
                 if(_.isEmpty(model.deferred) ||
                      ( !_.isEmpty(valintaryhmaOid) && (valintaryhmaOid !== model.valintaryhmaOid) ) ||
                       ( !_.isEmpty(hakukohdeOid) && (hakukohdeOid !== model.hakukohdeOid) ) )  {
-                    model.refresh(valintaryhmaOid, hakukohdeOid);
+                    return model.refresh(valintaryhmaOid, hakukohdeOid);
                 } else {
                     return model.deferred.promise;
                 }
@@ -79,9 +79,9 @@ angular.module('valintaperusteet')
                     var organizationOidsPromise = undefined;
 
                     if(valintaryhmaOid !== undefined) {
-                        organizationOidsPromise = OrganisaatioUtility.getValintaryhmaOrganizationsWithChildOrganizationsOidList(valintaryhmaOid);
+                        organizationOidsPromise = OrganisaatioUtility.getChildOrganizationsForValintaryhmaAsOidList(valintaryhmaOid);
                     } else if(hakukohdeOid !== undefined) {
-                        organizationOidsPromise = OrganisaatioUtility.getHakukohdeOrganizationsWithChildOrganizationsOidList(hakukohdeOid);
+                        organizationOidsPromise = OrganisaatioUtility.getChildOrganizationsForHakukohdeAsOidList(hakukohdeOid);
                     }
 
                     if(organizationOidsPromise !== undefined) {
@@ -99,20 +99,20 @@ angular.module('valintaperusteet')
                             }
                         }, function () {
                             // check users rights to application if organizations can't be fetched
-                            crudOrgPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET');
-                            updateOrgPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET');
-                            readOrgPromise = AuthService.readOrg('APP_VALINTAPERUSTEET');
+                            crudAppPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET');
+                            updateAppPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET');
+                            readAppPromise = AuthService.readOrg('APP_VALINTAPERUSTEET');
 
-                            crudOrgPromise.then(crudOrgSuccessFn, crudOrgRejectFn);
+                            crudAppPromise.then(crudAppSuccessFn, crudAppRejectFn);
                         });
                     } else {
                         // if valintaryhmaOid or hakukohdeOid aren't found
                         // check users rights to application if organizations can't be fetched
-                        crudOrgPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET');
-                        updateOrgPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET');
-                        readOrgPromise = AuthService.readOrg('APP_VALINTAPERUSTEET');
+                        crudAppPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET');
+                        updateAppPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET');
+                        readAppPromise = AuthService.readOrg('APP_VALINTAPERUSTEET');
 
-                        crudOrgPromise.then(crudOrgSuccessFn, crudOrgRejectFn);
+                        crudAppPromise.then(crudAppSuccessFn, crudAppRejectFn);
                     }
 
                 };

@@ -9,15 +9,35 @@ angular.module('valintaperusteet')
              * @param {String} valintaryhma oid
              * @returns {Promise object} returning organization objects for this valintaryhma
              */
-            this.getValintaryhmaOrganizationsWithChildOrganizations = function (valintaryhmaOid) {
+            this.getChildOrganizationsForValintaryhma = function (valintaryhmaOid) {
                 var deferred = $q.defer();
                 var organizations = [];
-                console.log('getting organizations', valintaryhmaOid);
                 Valintaryhma.get({oid: valintaryhmaOid}, function (result) {
                     var organizationsDeferreds = [];
-                    if (result.organisaatiot) {
-                        organizations = result.organisaatiot;
-                    }
+                    var parentValintaryhmaOrganizationPromises = [];
+                    _.forEach(result.organisaatiot, function (organisaatioOidWrapper) {
+                        var organisaatioOids = [];
+                        organisaatioOids.push(organisaatioOidWrapper.oid);
+                        if(!_.isEmpty(organisaatioOidWrapper.parentOidPath)) {
+
+                            _.forEach(organisaatioOidWrapper.parentOidPath.split("/"), function (organisaatioOid) {
+                                organisaatioOids.push(organisaatioOid);
+                            });
+                        }
+
+                        var uniqueParentOrganisaatioOids = _.uniq(organisaatioOids);
+
+                        var parentOrgDefer = $q.defer();
+                        parentValintaryhmaOrganizationPromises.push(parentOrgDefer.promise);
+                        _.forEach(uniqueParentOrganisaatioOids, function (uniqueParentOrganisaatioOid) {
+                            OrganizationByOid.get({oid: uniqueParentOrganisaatioOid}, function (organisaatio) {
+                                organizations.push(organisaatio);
+                                parentOrgDefer.resolve();
+                            }, function (error) {
+                                parentOrgDefer.reject();
+                            });
+                        });
+                    });
 
                     deferred.resolve(organizations);
                 }, function () {
@@ -31,23 +51,35 @@ angular.module('valintaperusteet')
             /**
              *
              * @param {String} valintaryhma oid
-             * @returns {Promise object} returning organization oids and child organization oids for this valintaryhma
+             * @returns {Promise object} returning organization oids and child organization oids for this valintaryhma - oph-organization is filtered out
              */
-            this.getValintaryhmaOrganizationsWithChildOrganizationsOidList = function (valintaryhmaOid) {
+            this.getChildOrganizationsForValintaryhmaAsOidList = function (valintaryhmaOid) {
                 var deferred = $q.defer();
                 var organizations = [];
 
                 Valintaryhma.get({oid: valintaryhmaOid}, function (result) {
-                    var organizationsDeferreds = [];
+                    var organizationsPromises = [];
                     if (result.organisaatiot) {
-
                         _.forEach(result.organisaatiot, function (org) {
+                            organizations.push(org.oid);
+
+                            //find parent oids for this organization
+                            var parentOids = [];
+                            if(!_.isEmpty(org.parentOidPath)) {
+                                _.forEach(org.parentOidPath.split("/"), function (orgOid) {
+                                    organizations.push(orgOid);
+                                });
+                            }
+
+                            //find child for this oids
                             if(org.oid !== OPH_ORG_OID) {
                                 var defer = $q.defer();
+                                organizationsPromises.push(defer.promise);
                                 OrganizationChildOids.get({oid: org.oid}, function(childOids) {
                                     _.forEach(childOids.oids, function (oid) {
                                         organizations.push(oid);
                                     });
+
                                     defer.resolve();
                                 }, function (error) {
                                     $log.error('Organisaation: ' + org.oid + ' tietojen hakeminen epäonnistui.', error);
@@ -55,12 +87,19 @@ angular.module('valintaperusteet')
                                     defer.resolve();
                                 });
                             }
-                            organizations.push(org.oid);
+
                         });
 
                     }
+                    $q.all(organizationsPromises).then(function () {
+                        organizations = _.uniq(organizations);
+                        organizations = _.filter(organizations, function (orgoid) {
+                            return orgoid !== OPH_ORG_OID;
+                        });
+                        deferred.resolve(organizations);
+                    });
+                    
 
-                    deferred.resolve(organizations);
                 }, function () {
                     $log.error('valintaryhmän tietojen hakeminen epäonnistui');
                     deferred.reject();
@@ -74,7 +113,7 @@ angular.module('valintaperusteet')
              * @param {String} valintaryhma oid
              * @returns {Promise object} returning organization objects for this hakukohde
              */
-            this.getHakukohdeOrganizationsWithChildOrganizations = function (hakukohdeOid) {
+            this.getChildOrganizationsforHakukohde = function (hakukohdeOid) {
                 var deferred = $q.defer();
                 var organizations = [];
 
@@ -153,7 +192,7 @@ angular.module('valintaperusteet')
              * @param {String} valintaryhma oid
              * @returns {Promise object} returning organization oids and parent organizations oids for this hakukohde
              */
-            this.getHakukohdeOrganizationsWithChildOrganizationsOidList = function (hakukohdeOid) {
+            this.getChildOrganizationsForHakukohdeAsOidList = function (hakukohdeOid) {
                 var deferred = $q.defer();
                 var organizations = [];
 

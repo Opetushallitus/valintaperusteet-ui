@@ -20,6 +20,8 @@ describe('Testing Utils', function(){
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
         $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
+
+
         $httpBackend.expectGET('resources/puu?hakuOid=&kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
         $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
 
