@@ -85,7 +85,7 @@ angular.module('valintaperusteet')
 
     .filter('HakuOwnerFilter', ['UserModel','_', function (UserModel, _) {
         return function (haut) {
-            var userOrgs = UserModel.organizationOids;
+            var userOrgs = UserModel.organizationOids.concat(UserModel.organizationChildrenOids).concat(UserModel.organizationParentsOids);
             return UserModel.isOphUser ? haut : _.filter(haut, function (haku) {
                 return _.some(userOrgs, function (userOrgOid) {
                     return _.contains(haku.organisaatioOids, userOrgOid);
