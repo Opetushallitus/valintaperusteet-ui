@@ -55,7 +55,7 @@ describe('LaskentakaavaController', function () {
         };
 
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
-        //$httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
 
     }));

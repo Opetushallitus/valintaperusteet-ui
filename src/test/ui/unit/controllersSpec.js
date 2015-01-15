@@ -19,7 +19,7 @@ describe('Testing ValintaryhmaHakukohdeTreeController', function(){
         hakuextrajson = hakuExtraJSON;
 
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
-        //$httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
 
         $httpBackend.expectGET('resources/puu?hakuOid=&kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
@@ -32,7 +32,6 @@ describe('Testing ValintaryhmaHakukohdeTreeController', function(){
         scope = $rootScope.$new();
         rootScope = $rootScope;
         location = $location;
-        $httpBackend.expectGET('/organisaatio-service/rest/organisaatio/1.2.246.562.10.727160772010').respond({});
         $httpBackend.expectGET('resources/puu?hakuOid=&kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
         ctrl = $controller('ValintaryhmaHakukohdeTreeController', {'$scope' : scope, 'Treemodel': treemodel,
             'HakukohdeSiirra': hakukohdeSiirra, 'HakuModel': hakuModel});
@@ -107,7 +106,7 @@ describe('Testing UusiValintaryhmaController', function(){
         haunkohdejoukkojson = haunkohdejoukkoJSON;
 
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
-        //$httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
         $httpBackend.expectGET('resources/puu?hakuOid=&kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
         $httpBackend.expectGET('resources/puu?hakukohteet=false').respond(puukaikkijson);
@@ -123,7 +122,6 @@ describe('Testing UusiValintaryhmaController', function(){
 
         $httpBackend.expectGET('json/haunkohdejoukko/koodi').respond(haunkohdejoukkojson);
         $httpBackend.expectGET('resources/puu?hakukohteet=false').respond(puukaikkijson);
-        $httpBackend.expectGET('/organisaatio-service/rest/organisaatio/1.2.246.562.10.727160772010').respond({});
 
         ctrl = $controller('UusiValintaryhmaController', {'$scope' : scope, '$location': location, '$routeParams': routeParams,
             'ValintaryhmaCreatorModel': valintaryhmaCreatorModel, 'Ylavalintaryhma': ylavalintaryhma});
@@ -191,7 +189,7 @@ describe('Testing ValintaryhmaController', function(){
         haunkohdejoukkojson = haunkohdejoukkoJSON;
         findalljson = findallJSON;
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
-        //$httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
         $httpBackend.expectGET('resources/puu?hakuOid=&kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
 
@@ -209,7 +207,6 @@ describe('Testing ValintaryhmaController', function(){
         $httpBackend.expectGET('json/haunkohdejoukko/koodi').respond(haunkohdejoukkojson);
         $httpBackend.expectGET('haku/findAll')
             .respond(201,findalljson);
-        $httpBackend.expectGET('/organisaatio-service/rest/organisaatio/1.2.246.562.10.727160772010').respond({});
         $httpBackend.expectGET('resources/valintaryhma/'+ routeParams.id).respond('{"nimi":"Ammatillinen koulutus","kohdejoukko":null,"organisaatiot":[],"oid":"14030801791808409465510859807597","hakukohdekoodit":[],"valintakoekoodit":[],"lapsivalintaryhma":null,"lapsihakukohde":null}');
         $httpBackend.expectGET('resources/valintaryhma/14030801791808409465510859807597/parents').respond('[{"nimi":"Lukiokoulutus","kohdejoukko":null,"oid":"1403079862403-6606759132794079794"}]');
 
@@ -292,7 +289,7 @@ describe('Testing HakijaryhmaController', function(){
         laskentakaavajson = laskentakaavaJSON;
 
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
-        //$httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
         $httpBackend.expectGET('resources/puu?hakuOid=&kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
 
@@ -350,7 +347,7 @@ describe('Testing ValintaryhmaValinnanvaiheController', function(){
         puukaikkijson = puuKaikkiJSON;
 
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
-        //$httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
         $httpBackend.expectGET('resources/puu?hakuOid=&kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
 
@@ -411,7 +408,7 @@ describe('Testing ValintaryhmaValintatapajonoController', function(){
         valintaryhmaValinnanvaiheModel = $injector.get('ValintaryhmaValinnanvaiheModel');
 
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
-        //$httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
         $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
@@ -486,7 +483,7 @@ describe('Testing JarjestyskriteeriController', function(){
         laskentakaavaonejson = laskentakaavaoneJSON;
 
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
-        //$httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
         $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
@@ -560,7 +557,7 @@ describe('Testing ValintaryhmaValintakoeValinnanvaiheController', function(){
         puukaikkijson = puuKaikkiJSON;
 
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
-        //$httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
         $httpBackend.expectGET('resources/puu?hakuOid=&kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
         $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
@@ -619,7 +616,7 @@ describe('Testing ValintaryhmaValintakoeController', function(){
         laskentakaavajson = laskentakaavaJSON;
 
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
-        //$httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
         $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
@@ -669,7 +666,7 @@ describe('Testing HakukohdeValintakoeValinnanvaiheController', function(){
         hakukohdeModel = $injector.get('HakukohdeModel');
 
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
-        //$httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
         $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
@@ -729,7 +726,7 @@ describe('Testing HakukohdeValintakoeController', function(){
         hakukohdejson = hakukohdeJSON;
 
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
-        //$httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
         $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
@@ -793,7 +790,7 @@ describe('Testing UusiHakukohdeController', function(){
         hakukohde = $injector.get('Hakukohde');
 
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
-        //$httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
         $httpBackend.expectGET('resources/puu?hakukohteet=false').respond(puukaikkijson);
         $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
@@ -878,7 +875,7 @@ describe('Testing ValinnanVaiheController', function(){
         valintatapajonoalljson = valintatapajonoallJSON;
 
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
-        //$httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
         $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
@@ -943,7 +940,7 @@ describe('Testing HakukohdeValintatapajonoController', function(){
         laskentakaavaonejson = laskentakaavaoneJSON;
 
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
-        //$httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
         $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
         $httpBackend.flush();
@@ -1030,7 +1027,7 @@ describe('Testing ImportController', function(){
         hakuextrajson = hakuExtraJSON;
         findalljson = findallJSON;
         var casString = ["APP_VALINTOJENTOTEUTTAMINEN_CRUD_1.2.246.562.10.00000000001"];
-        //$httpBackend.expectGET('/cas/myroles').respond(casString);
+        $httpBackend.expectGET('/cas/myroles').respond(casString);
         $httpBackend.expectGET('buildversion.txt?auth').respond("1.0");
         $httpBackend.expectGET('resources/puu?hakuOid=&kohdejoukko=&tila=VALMIS&tila=JULKAISTU').respond(puukaikkijson);
         $httpBackend.expectGET('/localisation?category=valintaperusteet').respond("");
@@ -1044,7 +1041,6 @@ describe('Testing ImportController', function(){
 
         $httpBackend.expectGET('haku/findAll')
             .respond(201,findalljson);
-        $httpBackend.expectGET('/organisaatio-service/rest/organisaatio/1.2.246.562.10.727160772010').respond({});
         ctrl = $controller('ImportController', {'$scope' : scope, '$location': location, '$routeParams': routeParams,
             'HakuModel':hakuModel, 'TarjontaImport': tarjontaImport, 'Treemodel': treemodel});
         $httpBackend.flush();
