@@ -74,7 +74,7 @@
 
                 <div class="col-md-6">
                     <div>
-                        <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && bigdata.length > 0">
+                        <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && bigdata.length > 0 && !isYoFunktiokutsu(funktioSelection)">
                             <p class="form-control-static">Hakulomakkeen tunniste</p>
                             <select ng-model="valintaperuste.tunniste"
                                     ng-options="data.key as data.value for data in bigdata"
@@ -84,7 +84,7 @@
                         </div>
                     </div>
                     <div>
-                        <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && lisakysymysAvaimet.length > 0">
+                        <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && lisakysymysAvaimet.length > 0 && !isYoFunktiokutsu(funktioSelection)">
                             <p class="form-control-static">Lisäkysymyksen tunniste</p>
                             <select ng-model="valintaperuste.tunniste"
                                     ng-options="data.key as data.value for data in lisakysymysAvaimet"
@@ -93,7 +93,7 @@
                             </select>
                         </div>
                     </div>
-                    <div>
+                    <div ng-if="!isYoFunktiokutsu(funktioSelection)">
                         <span class="help-block">Vapaamuotoinen tunniste</span>
                         <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" ng-model="valintaperuste.tunniste" class="form-control"
                                required="required" ng-change="changeAvainOptions(valintaperuste)"/>
