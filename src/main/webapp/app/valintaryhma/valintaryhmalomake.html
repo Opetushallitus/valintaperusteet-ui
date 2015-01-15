@@ -100,7 +100,7 @@
     <label class="control-label col-md-2" for="hakunimi">{{ t('valintaryhmalomake.haku') || 'Haku' }}</label>
 
     <div class="col-md-4">
-        <select auth ng-disabled="!userAccess.updateOrg" id="hakunimi" class="form-control" ng-model="model.valintaryhma.hakuoid"
+        <select auth ng-disabled="!userAccess.updateOrg || model.valintaryhma.level > 1" id="hakunimi" class="form-control" ng-model="model.valintaryhma.hakuoid"
                 ng-options="h.oid as h.uiNimi for h in model.haut | orderBy:'nimi.kieli_fi'">
             <option value=""></option>
         </select>
