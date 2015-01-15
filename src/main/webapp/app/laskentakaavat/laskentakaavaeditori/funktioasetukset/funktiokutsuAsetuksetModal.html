@@ -73,8 +73,8 @@
                 <label class="col-md-2 control-label">{{ t('laskentakaavaviiteasetuksetmodal.tunniste') || 'Tunniste'}}</label>
 
                 <div class="col-md-6">
-                    <div>
-                        <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && bigdata.length > 0 && !isYoFunktiokutsu(funktioSelection)">
+                    <div ng-if="!isYoFunktiokutsu(funktioSelection)">
+                        <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && bigdata.length > 0">
                             <p class="form-control-static">Hakulomakkeen tunniste</p>
                             <select ng-model="valintaperuste.tunniste"
                                     ng-options="data.key as data.value for data in bigdata"
@@ -83,8 +83,8 @@
                             </select>
                         </div>
                     </div>
-                    <div>
-                        <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && lisakysymysAvaimet.length > 0 && !isYoFunktiokutsu(funktioSelection)">
+                    <div ng-if="!isYoFunktiokutsu(funktioSelection)">
+                        <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && lisakysymysAvaimet.length > 0">
                             <p class="form-control-static">Lisäkysymyksen tunniste</p>
                             <select ng-model="valintaperuste.tunniste"
                                     ng-options="data.key as data.value for data in lisakysymysAvaimet"
