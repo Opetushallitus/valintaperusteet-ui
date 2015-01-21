@@ -114,11 +114,16 @@ angular.module('valintaperusteet')
                 }
             };
 
-            $scope.parseOptions = function(options) {
+            $scope.parseOptions = function(options, lomake) {
                 return _.map(options, function(option) {
                     var opt = {};
-                    opt.id = option.id;
-                    opt.text = option.optionText.translations.fi;
+                    if(lomake) {
+                        opt.id = option.value;
+                        opt.text = option.i18nText.translations.fi;
+                    } else {
+                        opt.id = option.id;
+                        opt.text = option.optionText.translations.fi;
+                    }
                     return opt;
                 });
             };
@@ -135,7 +140,7 @@ angular.module('valintaperusteet')
                         obj.value = phase._id;
                     }
                     if(phase.options) {
-                        obj.options = $scope.parseOptions(phase.options);
+                        obj.options = $scope.parseOptions(phase.options, false);
                     }
 
                     avaimet.push(obj);
@@ -199,7 +204,7 @@ angular.module('valintaperusteet')
                                     obj.value = phase.id;
                                 }
                                 if(phase.options) {
-                                    obj.options = $scope.parseOptions(phase.options);
+                                    obj.options = $scope.parseOptions(phase.options, true);
                                 }
                                 avaimet.push(obj);
                             });
