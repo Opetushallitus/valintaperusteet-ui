@@ -154,7 +154,8 @@
     N MINIMI
     N MAKSIMI
     N PARASTA KESKIARVO
-    SUMMA N PARASTA 
+    SUMMA N PARASTA
+    TULO N PARASTA
 -->
 <script type="text/ng-template" id="fargumentticount_funktio_handle">
     <div class="function" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
@@ -170,6 +171,7 @@
             <span ng-if="funktiowrapper.lapsi.funktionimi == 'NMAKSIMI'">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} {{ t('laskentakaavapuu.paras') || 'paras' }}</span>
             <span ng-if="funktiowrapper.lapsi.funktionimi == 'KESKIARVONPARASTA'">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} {{ t('laskentakaavapuu.suurimmankeskiarvo') || 'suurimman keskiarvo' }}</span>
             <span ng-if="funktiowrapper.lapsi.funktionimi == 'SUMMANPARASTA'">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} {{ t('laskentakaavapuu.suurimmansumma') || 'suurimman summa' }}</span>
+            <span ng-if="funktiowrapper.lapsi.funktionimi == 'TULONPARASTA'">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} {{ t('laskentakaavapuu.suurimmantulo') || 'suurimman tulo' }}</span>
         </span>
     </div>
 </script>
@@ -443,6 +445,12 @@ YHTASUURI
                 <span>{{ t('laskentakaavapuu.nparastakeskiarvo') || 'N parasta keskiarvo' }}</span></td>
         </tr>
         <tr>
+            <td ng-click="addFunktio(parent, 'TULONPARASTA', funktioSlotIndex); showNewFunktioList.visible = false">
+                <span>{{ t('laskentakaavapuu.nparastatulo') || 'N parasta tulo' }}</span></td>
+            <td ng-click="addFunktio(parent, 'PAINOTETTUKESKIARVO', funktioSlotIndex); showNewFunktioList.visible = false">
+                <span>{{ t('laskentakaavapuu.painotettukeskiarvo') || 'Painotettu keskiarvo' }}</span></td>
+        </tr>
+        <tr>
             <td ng-click="addFunktio(parent, 'NMAKSIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.nparas') || 'N paras' }}</span>
             </td>
             <td ng-click="addFunktio(parent, 'NMINIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.nhuonoin') || 'N huonoin' }}</span>
@@ -475,12 +483,6 @@ YHTASUURI
                 <span>{{ t('laskentakaavapuu.nimettylukuarvo') || 'Nimetty lukuarvo' }}</span></td>
         </tr>
         <tr>
-            <td ng-click="addFunktio(parent, 'SKAALAUS', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.skaalaus') || 'Skaalaus' }}</span>
-            </td>
-            <td ng-click="addFunktio(parent, 'PAINOTETTUKESKIARVO', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.painotettukeskiarvo') || 'Painotettu keskiarvo' }}</span></td>
-        </tr>
-        <tr>
             <td ng-click="addFunktio(parent, 'HAELUKUARVOEHDOLLA', funktioSlotIndex); showNewFunktioList.visible = false">
                 <span>{{ t('laskentakaavapuu.haelukuarvoehdolla') || 'Hae lukuarvo ehdolla' }}</span></td>
             <td ng-click="addFunktio(parent, 'HAEYOARVOSANA', funktioSlotIndex); showNewFunktioList.visible = false">
@@ -491,6 +493,10 @@ YHTASUURI
             </td>
             <td ng-click="addFunktio(parent, 'HAEMERKKIJONOJAKONVERTOILUKUARVOKSI', funktioSlotIndex); showNewFunktioList.visible = false">
                 <span>{{ t('laskentakaavapuu.haemerkkijono') || 'Hae merkkijono ja konvertoi lukuarvoksi' }}</span></td>
+        </tr>
+        <tr>
+            <td ng-click="addFunktio(parent, 'SKAALAUS', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.skaalaus') || 'Skaalaus' }}</span>
+            </td>
         </tr>
         </tbody>
     </table>
