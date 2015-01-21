@@ -20,16 +20,7 @@ angular.module('valintaperusteet')
             $scope.valintaryhmaPromise = $scope.valintaryhmaModel.loaded.promise;
 
             $scope.lisakysymysAvaimet = [];
-
-            var testobj = {};
-            testobj.key = '53b550ace4b00c5103adf89d';
-            testobj.value = 'testi';
-            testobj.options = [];
-            var testopt = {};
-            testopt.id = 'option_0';
-            testopt.text = 'nönönöö';
-            testobj.options.push(testopt);
-            $scope.lisakysymysAvaimet.push(testobj);
+            $scope.bigdata = [];
 
             if ($routeParams.valintaryhmaOid !== undefined) { //if laskentakaava belongs to a valintaryhma
                 $scope.valintaryhmaModel.refreshIfNeeded($routeParams.valintaryhmaOid);
