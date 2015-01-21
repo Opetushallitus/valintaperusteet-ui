@@ -229,7 +229,7 @@ angular.module('valintaperusteet')
 
             $scope.changeAvainOptions = function(valintaperuste) {
                 valintaperuste.avainOptions = _.flatten(_.pluck(_.filter($scope.lisakysymysAvaimet, function(avain) {return avain.key == valintaperuste.tunniste}), 'options'));
-                if(!valintaperuste.avainOptions || !valintaperuste.avainOptions.length == 0) {
+                if(!valintaperuste.avainOptions || valintaperuste.avainOptions.length == 0) {
                     valintaperuste.avainOptions = _.flatten(_.pluck(_.filter($scope.bigdata, function(avain) {return avain.key == valintaperuste.tunniste}), 'options'));
                 }
             };
