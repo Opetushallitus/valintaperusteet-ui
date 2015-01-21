@@ -145,7 +145,7 @@ angular.module('valintaperusteet')
             $scope.getHakemusAvaimet = function (hakuoid) {
 
                     HakemusavaimetLomake.get({hakuoid: hakuoid}, function (haetutAvaimet) {
-                            var tyypit = ["TextQuestion","DropdownSelect","Radio","DateQuestion","SocialSecurityNumber","PostalCode","GradeGridOptionQuestion", "Option"];
+                            var tyypit = ["TextQuestion","DropdownSelect","Radio","DateQuestion","SocialSecurityNumber","PostalCode","GradeGridOptionQuestion"];
                             var avaimet = [];
                             var hakutoiveRivi = "PreferenceRow";
                             var hakutoivePostfixes = ["-Koulutus",
@@ -229,7 +229,7 @@ angular.module('valintaperusteet')
 
             $scope.changeAvainOptions = function(valintaperuste) {
                 valintaperuste.avainOptions = _.flatten(_.pluck(_.filter($scope.lisakysymysAvaimet, function(avain) {return avain.key == valintaperuste.tunniste}), 'options'));
-                if(!valintaperuste.avainOptions) {
+                if(!valintaperuste.avainOptions || !valintaperuste.avainOptions.length == 0) {
                     valintaperuste.avainOptions = _.flatten(_.pluck(_.filter($scope.bigdata, function(avain) {return avain.key == valintaperuste.tunniste}), 'options'));
                 }
             };
