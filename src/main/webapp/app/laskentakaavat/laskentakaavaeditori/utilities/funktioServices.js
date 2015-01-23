@@ -24,6 +24,20 @@ service('FunktioService', ['FunktioKuvausResource', '$log', '_', '$q', 'Funktiok
         }
     };
 
+    this.checkLaskentakaavaIndexes = function (funktiokutsu) {
+        if(funktiokutsu.lapsi) {
+            _.forEach(funktiokutsu.lapsi.funktioargumentit, function (item, index) {
+                item.indeksi = index;
+                api.checkLaskentakaavaIndexes(item);
+            });
+        } else {
+            _.forEach(funktiokutsu.funkioargumentit, function (item, index) {
+                item.indeksi = 1;
+                api.checkLaskentakaavaIndexes(item);
+            });
+        }
+    };
+
     this.isPainotettukeskiarvo = function (funktiokutsu) {
         if (_.isEmpty(funktiokutsu)) {return undefined;}
         if(!(api.isFunktiokutsu(funktiokutsu))) {return false;}
@@ -41,6 +55,8 @@ service('FunktioService', ['FunktioKuvausResource', '$log', '_', '$q', 'Funktiok
             return api.isNimettyFunktioargumentti(parent) && _.isEmpty(parent.lapsi.funktioargumentit[funktioargumenttiIndex]) ? true : false;
         }
     };
+
+
 
     this.isRootFunktiokutsu = function (funktiokutsu) {
         try {

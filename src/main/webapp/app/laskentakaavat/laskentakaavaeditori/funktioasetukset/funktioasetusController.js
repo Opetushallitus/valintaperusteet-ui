@@ -293,6 +293,16 @@ angular.module('valintaperusteet')
                 }
             };
 
+            $scope.kopioiFunktiokutsu = function () {
+                $scope.toggleAll();
+                $scope.setClipboard($scope.funktioSelection);
+            };
+
+            $scope.siirraFunktiokutsu = function () {
+                $scope.toggleAll();
+                $scope.setClipboard($scope.funktioSelection);
+            };
+
             $scope.isYoFunktiokutsu = function (funktio, valintaperuste) {
                 var funktionimi = funktio.lapsi.funktionimi;
                 return funktionimi === "HAEOSAKOEARVOSANA" || funktionimi === "HAEYOARVOSANA";

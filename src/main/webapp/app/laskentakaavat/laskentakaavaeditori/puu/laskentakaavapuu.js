@@ -50,6 +50,8 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
             $scope.laskentakaavalista = LaskentakaavaLista;
             $scope.reloadLaskentakaavaLista();
 
+            // leikepöytä funktiokutsujen kopioimiseen ja siirtämiseen
+            $scope.clipboard = undefined;
 
             // Valitun funktio/laskentakaavaviitteen tietoja
             $scope.funktioasetukset = {
@@ -64,6 +66,20 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                 $scope.hideKaavaBasics = !$scope.hideKaavaBasics;
                 $scope.$broadcast('editKaavaMetadata');
             };
+
+            $scope.funktiokutsuClicked = function (funktiokutsu, isFunktiokutsu, parentFunktiokutsu, index, isAlikaava, hasParentAlikaava) {
+                $scope.setFunktioSelection(funktiokutsu, isFunktiokutsu, parentFunktiokutsu, index, isAlikaava, hasParentAlikaava);
+                $scope.showFunktiokutsuAsetukset(isFunktiokutsu);
+            };
+
+            $scope.showFunktiokutsuAsetukset = function (isFunktiokutsu) {
+                if (isFunktiokutsu) {
+                    $scope.$broadcast('showFunktiokutsuAsetukset');
+                } else {
+                    $scope.$broadcast('showLaskentakaavaviiteAsetukset');
+                }
+            };
+
 
 
             // funktio = valittu funktiokutsu tai laskentakaavaviite
@@ -85,14 +101,6 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
 
                 //päätellään funktiolle esivalittu konvertteriparametrityyppi, jos funktiolla on konvertteriparametreja
                 $scope.setKonvertteriType();
-
-                // päätellään mikä muokkausnäkymä tuodaan näkyviin. Funktiokutsuille, alikaavan funktiokutsuille,
-                // laskentakaavaviitteille ja alikaavan laskentakaavaviitteille on omat muokkausnäkymänsä
-                if (isFunktiokutsu) {
-                    $scope.$broadcast('showFunktiokutsuAsetukset');
-                } else {
-                    $scope.$broadcast('showLaskentakaavaviiteAsetukset');
-                }
 
                 $scope.laskentakaavaviite.selection = funktio || undefined;
                 $scope.saved = false;
@@ -118,14 +126,14 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                     item.open = $scope.openAll;
                     toggleAllLower(item.lapsi);
                 });
-            };
 
-            function toggleAllLower(item) {
-                item.funktioargumentit.forEach(function (item) {
-                    item.open = $scope.openAll;
-                    toggleAllLower(item.lapsi);
-                });
-            }
+                function toggleAllLower(item) {
+                    item.funktioargumentit.forEach(function (item) {
+                        item.open = $scope.openAll;
+                        toggleAllLower(item.lapsi);
+                    });
+                }
+            };
 
             $scope.addLaskentakaavaviite = function (parent, index) {
                 $scope.funktioasetukset.parentFunktiokutsu = parent;
@@ -148,6 +156,7 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                 }
 
                 $scope.setFunktioSelection(createdFunktio, true, parent, index, undefined, undefined);
+                $scope.showFunktiokutsuAsetukset(true);
                 //lisätään uusi pari funktioargumentteja, kun edelliset on täytetty
                 if ($scope.getFunktionimi(parent) === 'PAINOTETTUKESKIARVO') {
                     var argCount = $scope.getDefinedFunktioargumenttiCount(parent);
@@ -268,11 +277,6 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                 return result;
             };
 
-
-            $scope.showFunktiokutsuTools = function () {
-
-            };
-
             $scope.getSyoteparametriTemplate = function (syoteparametrityyppi) {
                 return TemplateService.getSyoteparametriTemplate(syoteparametrityyppi);
             };
@@ -352,9 +356,38 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                 $scope.alikaavaValues = {};
             };
 
-            $scope.isFirstChildForRoot = function (parent) {
-                return parent.lapsi ? false : true;
+            $scope.isFirstChildForRoot = function (funktiokutsu) {
+                return FunktioService.isRootFunktiokutsu(funktiokutsu);
             };
+            
+            $scope.setClipboard = function (funktiokutsu) {
+                $scope.clipboard = funktiokutsu;
+            };
+
+            $scope.clipboardAction = function (funktiokutsu, parentFunktiokutsu, childIndex) {
+                if($scope.isFirstChildForRoot(parentFunktiokutsu)) {
+                    parentFunktiokutsu.funktioargumentit[childIndex] = $scope.clipboard;
+                } else {
+                    parentFunktiokutsu.lapsi.funktioargumentit[childIndex] = $scope.clipboard;
+                }
+
+                // uudelleenasetetaan kopioinnin yhteydessä sekaisin menevät palvelimella asetetut funktiokutsuargumentti-indeksit
+                FunktioService.checkLaskentakaavaIndexes($scope.model.laskentakaavapuu);
+                $scope.clearClipboard();
+            };
+
+            $scope.clearClipboard = function () {
+                $scope.clipboard = undefined;
+            };
+
+            $scope.copyAndReplace = function (funktiokutsu, parent, childIndex) {
+                $scope.clipboardAction(funktiokutsu, parent, childIndex);
+            };
+
+            $scope.copyAndShift = function (funktiokutsu, parent, childIndex) {
+
+            };
+
 
             $scope.getValintaperusteviitetyyppiText = function (valintaperusteviite) {
                 var text = "";

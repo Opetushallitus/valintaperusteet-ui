@@ -3,6 +3,14 @@
 
     <div class="gradingformula">
         <div class="clear"></div>
+        <div class="alert alert-warning" collapse="!clipboard">
+            <h3>Laskentakaavaeditori on kopiointi-tilassa</h3>
+            <p>Klikkaa funktiokutsun nimeä, tai uuden funktioargumentin lisäyspainiketta, haluamassasi kohdassa, niin voit kopioida funktiokutsun laskentakaavapuuhun</p>
+            <p>Leikepöydällä on funktiokutsu: {{funktionimiService.getName(clipboard.lapsi.funktionimi)}}</p>
+            <p>
+                <button class="btn btn-sm btn-default" ng-click="clearClipboard()">Poistu kopiointi tilasta</button>
+            </p>
+        </div>
 
         <kaava-validation ng-show="errorService.errors.length > 0">
             <h3>{{ t('laskentakaavapuu.eitalletettu') || 'Laskentakaavaa ei voitu tallentaa.' }}</h3>
@@ -103,7 +111,7 @@
         <div class="frame" ng-class="showAlikaava ? 'open':''">
             <span ng-click="toggleAlikaava(funktiowrapper.lapsi.id)" class="icon">&#8302;</span>
             <span add-class-on-mouseover="bold" class="node"
-                  ng-click="setFunktioSelection(funktiowrapper, false, parent, $index, isAlikaava, hasParentAlikaava)">{{funktiowrapper.lapsi.nimi}}</span>
+                  ng-click="funktiokutsuClicked(funktiowrapper, false, parent, $index, isAlikaava, hasParentAlikaava)">{{funktiowrapper.lapsi.nimi}}</span>
         </div>
         <ul collapse="!showAlikaava" class="alikaava">
             <li class="item" ng-repeat="funktiowrapper in alikaava.funktiokutsu.funktioargumentit"
@@ -128,11 +136,12 @@
     YOARVOSANA
     YOOSAKOEARVOSANA
  -->
+
 <script type="text/ng-template" id="haettava_arvo">
     <div class="parameter" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon" ng-click="funktiowrapper.open = funktiowrapper.open ? false : true">&#8302;</span>
         <span add-class-on-mouseover="bold" class="node"
-              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">
+              ng-click="funktiokutsuClicked(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">
             <span>{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}
                 <span ng-if="funktiowrapper.lapsi.valintaperusteviitteet"
                       ng-repeat="valintaperusteviite in funktiowrapper.lapsi.valintaperusteviitteet">
@@ -142,11 +151,12 @@
                     <span>{{valintaperusteviite.tunniste}}</span>
                     <span ng-if="valintaperusteviite.tunniste && valintaperusteviite.kuvaus"> - </span>
                     <span ng-if="valintaperusteviite.kuvaus">{{valintaperusteviite.kuvaus}}</span>
-                        <span ng-if="valintaperusteviiteDefined(valintaperusteviite)">) </span>
+                    <span ng-if="valintaperusteviiteDefined(valintaperusteviite)">) </span>
                 </span>
             </span>
         </span>
     </div>
+    <funktiokutsu-copy></funktiokutsu-copy>
 </script>
 
 
@@ -161,11 +171,11 @@
     <div class="function" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon" ng-click="funktiowrapper.open = funktiowrapper.open ? false : true">&#8302;</span>
         <span add-class-on-mouseover="bold" ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo" class="node"
-              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">
+              ng-click="funktiokutsuClicked(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">
             <span>{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
         </span>
         <span add-class-on-mouseover="bold" ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo"
-              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)"
+              ng-click="funktiokutsuClicked(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)"
               class="node">
             <span ng-if="funktiowrapper.lapsi.funktionimi == 'NMINIMI'">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} {{ t('laskentakaavapuu.huonoin') || 'huonoin' }}</span>
             <span ng-if="funktiowrapper.lapsi.funktionimi == 'NMAKSIMI'">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} {{ t('laskentakaavapuu.paras') || 'paras' }}</span>
@@ -174,6 +184,7 @@
             <span ng-if="funktiowrapper.lapsi.funktionimi == 'TULONPARASTA'">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}} {{ t('laskentakaavapuu.suurimmantulo') || 'suurimman tulo' }}</span>
         </span>
     </div>
+    <funktiokutsu-copy></funktiokutsu-copy>
 </script>
 
 
@@ -182,10 +193,11 @@
     <div class="frame" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon" ng-click="funktiowrapper.open = funktiowrapper.open ? false : true">&#8302;</span>
         <span add-class-on-mouseover="bold" class="node" ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo"
-              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{ t('laskentakaavapuu.nimettylukuarvo') || 'Nimetty lukuarvo' }}</span>
+              ng-click="funktiokutsuClicked(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{ t('laskentakaavapuu.nimettylukuarvo') || 'Nimetty lukuarvo' }}</span>
         <span add-class-on-mouseover="bold" class="node" ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo"
-              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}}</span>
+              ng-click="funktiokutsuClicked(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}}</span>
     </div>
+    <funktiokutsu-copy></funktiokutsu-copy>
 </script>
 
 <!-- NIMETTY TOTUUSARVO -->
@@ -193,23 +205,23 @@
     <div class="frame" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon" ng-click="funktiowrapper.open = funktiowrapper.open ? false : true">&#8302;</span>
         <span add-class-on-mouseover="bold" class="node" ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo"
-              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{ t('laskentakaavapuu.nimettytotuusarvo') || 'Nimetty totuusarvo' }}</span>
+              ng-click="funktiokutsuClicked(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{ t('laskentakaavapuu.nimettytotuusarvo') || 'Nimetty totuusarvo' }}</span>
         <span add-class-on-mouseover="bold" class="node" ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo"
-              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}}</span>
+              ng-click="funktiokutsuClicked(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}}</span>
     </div>
+    <funktiokutsu-copy></funktiokutsu-copy>
 </script>
 
 <!-- LUKUARVO -->
 <script type="text/ng-template" id="lukuarvo">
     <div class="parameter" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon">&#8302;</span>
-        <funktiokutsu-label laskentakaavaToolsDropdown="'funktiokutsu">
             <span add-class-on-mouseover="bold" class="node" ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo"
-                  ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
+                  ng-click="funktiokutsuClicked(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
             <span add-class-on-mouseover="bold" class="node" ng-if="funktiowrapper.lapsi.syoteparametrit[0]"
-                  ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}}</span>
-        </funktiokutsu-label>
+                  ng-click="funktiokutsuClicked(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}}</span>
     </div>
+    <funktiokutsu-copy></funktiokutsu-copy>
 </script>
 
 <!-- TOTUUSARVO -->
@@ -218,7 +230,7 @@
         <span class="icon">&#8302;</span>
         
         <span add-class-on-mouseover="bold" class="node"
-              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">
+              ng-click="funktiokutsuClicked(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">
             <span ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
             <span add-class-on-mouseover="bold" class="node"
                   ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo !== undefined">
@@ -227,6 +239,8 @@
             </span>
         </span>
     </div>
+
+    <funktiokutsu-copy></funktiokutsu-copy>
 </script>
 
 <!-- HAKUTOIVE -->
@@ -234,11 +248,12 @@
     <div class="parameter" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon" ng-click="funktiowrapper.open = funktiowrapper.open ? false : true">&#8302;</span>
         <span add-class-on-mouseover="bold" class="node"
-              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">
+              ng-click="funktiokutsuClicked(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">
             <span ng-if="funktiowrapper.lapsi.syoteparametrit[0].arvo">{{funktiowrapper.lapsi.syoteparametrit[0].arvo}}. hakutoive</span>
             <span ng-if="!funktiowrapper.lapsi.syoteparametrit[0].arvo">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
         </span>
     </div>
+    <funktiokutsu-copy></funktiokutsu-copy>
 </script>
 
 <!-- DEMOGRAFIA -->
@@ -246,7 +261,7 @@
     <div class="parameter" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon" ng-click="funktiowrapper.open = funktiowrapper.open ? false : true">&#8302;</span>
         <span add-class-on-mouseover="bold" class="node"
-              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
+              ng-click="funktiokutsuClicked(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
     </div>
 </script>
 
@@ -255,7 +270,7 @@
     <div class="function" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon" ng-click="funktiowrapper.open = funktiowrapper.open ? false : true">&#8302;</span>
         <span add-class-on-mouseover="bold" class="node"
-              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}:
+              ng-click="funktiokutsuClicked(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}:
         <span>{{getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'arvovaliMin')}}</span>
         <span ng-if="!getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'arvovaliMin')">?</span>
         <span> - </span>
@@ -271,7 +286,7 @@
     <div class="function" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon sum" ng-click="funktiowrapper.open = funktiowrapper.open ? false : true">&#8302;</span>
         <span add-class-on-mouseover="bold" class="node"
-              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{ t('laskentakaavapuu.summa') || 'Summa' }}</span>
+              ng-click="funktiokutsuClicked(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{ t('laskentakaavapuu.summa') || 'Summa' }}</span>
     </div>
 </script>
 
@@ -280,7 +295,7 @@
     <div class="function" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon" ng-click="funktiowrapper.open = funktiowrapper.open ? false : true">&#8302;</span>
         <span add-class-on-mouseover="bold" class="node"
-              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}} <span
+              ng-click="funktiokutsuClicked(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}} <span
                 ng-if="funktiowrapper.lapsi.syoteparametrit[0].avain === 'hylkaysperustekuvaus_FI' && funktiowrapper.lapsi.syoteparametrit[0].arvo">- {{funktiowrapper.lapsi.syoteparametrit[0].arvo}}</span></span>
     </div>
 </script>
@@ -310,8 +325,9 @@ YHTASUURI
 <script type="text/ng-template" id="funktio">
     <div class="function" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
         <span class="icon" ng-click="funktiowrapper.open = funktiowrapper.open ? false : true">&#8302;</span>
-        <span add-class-on-mouseover="bold" class="node"
-              ng-click="setFunktioSelection(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
+        <span  add-class-on-mouseover="bold" class="node"
+              ng-click="funktiokutsuClicked(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">{{funktionimiService.getName(funktiowrapper.lapsi.funktionimi)}}</span>
+        <funktiokutsu-copy></funktiokutsu-copy>
     </div>
 </script>
 
