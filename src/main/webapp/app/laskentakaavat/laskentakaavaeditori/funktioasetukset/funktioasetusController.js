@@ -223,8 +223,6 @@ angular.module('valintaperusteet')
                             }
                         );
                     });
-
-
             };
 
             $scope.changeAvainOptions = function(valintaperuste) {
@@ -233,7 +231,6 @@ angular.module('valintaperusteet')
                     valintaperuste.avainOptions = _.flatten(_.pluck(_.filter($scope.bigdata, function(avain) {return avain.key == valintaperuste.tunniste}), 'options'));
                 }
             };
-
 
             $scope.showFunktiokutsunKaarintaModal = function () {
                 FunktiokutsuKaareService.setFunktioKaareLista(FunktioService.getFunktiokutsuTyyppi($scope.funktioSelection));
@@ -291,16 +288,6 @@ angular.module('valintaperusteet')
                 if($scope.showFunktioargumenttiSelection) {
                     FunktiokutsuKaareService.setKaareFunktiokutsuType(selectedKaarivaFunktionimi);
                 }
-            };
-
-            $scope.kopioiFunktiokutsu = function () {
-                $scope.toggleAll();
-                $scope.setClipboard($scope.funktioSelection);
-            };
-
-            $scope.siirraFunktiokutsu = function () {
-                $scope.toggleAll();
-                $scope.setClipboard($scope.funktioSelection);
             };
 
             $scope.isYoFunktiokutsu = function (funktio, valintaperuste) {

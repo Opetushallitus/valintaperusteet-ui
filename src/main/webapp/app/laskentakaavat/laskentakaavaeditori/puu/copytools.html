@@ -1,7 +1,8 @@
 <span ng-if="clipboard" class="dropdown" dropdown >
-  <a href class="dropdown-toggle" dropdown-toggle>Kopioi</a>
+  <a href class="dropdown-toggle" dropdown-toggle><span ng-transclude></span></a>
+  <!--<a href class="dropdown-toggle" dropdown-toggle>Kopioi</a>-->
   <ol class="dropdown-menu">
-      <li><a href ng-click="copyAndReplace(funktiowrapper, parent, $index)">Kopioi ja korvaa</a></li>
-      <li><a href ng-click="copyAndShift(funktiowrapper, parent, $index)">Kopioi ja siirrä</a></li>
+      <li><a href ng-click="copyAndReplace(parent, $index)">Liitä leikepöydältä tähän ja korvaa nykyinen funktiokutsu</a></li>
+      <li><a href ng-click="copyAndShift(parent, $index)">Liitä leikepöydältä tähän ja siirrä nykyinen funktiokutsu eteenpäin</a></li>
   </ol>
 </span>

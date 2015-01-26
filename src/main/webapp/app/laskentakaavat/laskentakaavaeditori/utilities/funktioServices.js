@@ -24,19 +24,19 @@ service('FunktioService', ['FunktioKuvausResource', '$log', '_', '$q', 'Funktiok
         }
     };
 
-    this.checkLaskentakaavaIndexes = function (funktiokutsu) {
-        if(funktiokutsu.lapsi) {
-            _.forEach(funktiokutsu.lapsi.funktioargumentit, function (item, index) {
-                item.indeksi = index;
-                api.checkLaskentakaavaIndexes(item);
-            });
-        } else {
-            _.forEach(funktiokutsu.funkioargumentit, function (item, index) {
-                item.indeksi = 1;
-                api.checkLaskentakaavaIndexes(item);
-            });
-        }
-    };
+    //this.checkLaskentakaavaIndexes = function (funktiokutsu) {
+    //    if(funktiokutsu.lapsi) {
+    //        _.forEach(funktiokutsu.lapsi.funktioargumentit, function (item, index) {
+    //            item.indeksi = index;
+    //            api.checkLaskentakaavaIndexes(item);
+    //        });
+    //    } else {
+    //        _.forEach(funktiokutsu.funkioargumentit, function (item, index) {
+    //            item.indeksi = 1;
+    //            api.checkLaskentakaavaIndexes(item);
+    //        });
+    //    }
+    //};
 
     this.isPainotettukeskiarvo = function (funktiokutsu) {
         if (_.isEmpty(funktiokutsu)) {return undefined;}
@@ -56,7 +56,17 @@ service('FunktioService', ['FunktioKuvausResource', '$log', '_', '$q', 'Funktiok
         }
     };
 
-
+    this.getFunktioargumentit = function (funktiokutsu) {
+        if(api.hasFunktioargumentit(funktiokutsu)) {
+            if(api.isRootFunktiokutsu(funktiokutsu)) {
+                return funktiokutsu.funktioargumentit;
+            } else {
+                return funktiokutsu.lapsi.funktioargumentit;
+            }
+        } else {
+            return [];
+        }
+    };
 
     this.isRootFunktiokutsu = function (funktiokutsu) {
         try {
@@ -204,16 +214,16 @@ service('FunktioService', ['FunktioKuvausResource', '$log', '_', '$q', 'Funktiok
         return arr;
     };
 
-    this.hasFunktioargumentit = function (parentFunktiokutsu, childIndex) {
-        if(parentFunktiokutsu === undefined || childIndex === undefined) {
+    this.hasFunktioargumentit = function (funktiokutsu) {
+        if(_.isEmpty(funktiokutsu)) {
             throw new Error('Missing parameter for Funktioservice.hasFunktioargumentit', arguments);
         }
 
-        if(api.isRootFunktiokutsu(parentFunktiokutsu)) {
-            return true; // juurifunktiolla (nimetty luku- tai totuusarvo) on aina funktioargumentille paikka
+        if(api.isRootFunktiokutsu(funktiokutsu)) {
+            return _.has(funktiokutsu, 'funktioargumentit');
         }
 
-        var funktiokuvaus = FunktiokuvausService.getFunktiokuvaus(parentFunktiokutsu.lapsi.funktioargumentit[childIndex].lapsi.funktionimi);
+        var funktiokuvaus = FunktiokuvausService.getFunktiokuvaus(funktiokutsu.lapsi.funktionimi);
         return _.has(funktiokuvaus, 'funktioargumentit');
     };
         

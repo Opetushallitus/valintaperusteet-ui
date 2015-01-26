@@ -107,7 +107,7 @@ angular.module('valintaperusteet')
         };
 
         /**
-         * This should only be used for 'funktiokutsu' that has 'nimetyt funktioargumentti'
+         * This should only be used for funktiokutsu that has 'nimetyt funktioargumentti'
          *
          * @param {String} funktionimi
          * @returns {Number} return the length of funktioargumentit for this funktiotype

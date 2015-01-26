@@ -67,9 +67,16 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                 $scope.$broadcast('editKaavaMetadata');
             };
 
-            $scope.funktiokutsuClicked = function (funktiokutsu, isFunktiokutsu, parentFunktiokutsu, index, isAlikaava, hasParentAlikaava) {
-                $scope.setFunktioSelection(funktiokutsu, isFunktiokutsu, parentFunktiokutsu, index, isAlikaava, hasParentAlikaava);
+            $scope.showFunktiokutsuEdit = function (parent, childIndex, isAlikaava, hasParentAlikaava) {
+                var funktioargumentit = FunktioService.getFunktioargumentit(parent);
+                var funktiokutsu = funktioargumentit[childIndex];
+                var isFunktiokutsu = FunktioService.isFunktiokutsu(funktiokutsu);
+                $scope.setFunktioSelection(funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava);
                 $scope.showFunktiokutsuAsetukset(isFunktiokutsu);
+            };
+
+            $scope.showFunktiokutsuTools = function (funktiokutsu, isFunktiokutsu, parentFunktiokutsu, index, isAlikaava, hasParentAlikaava) {
+
             };
 
             $scope.showFunktiokutsuAsetukset = function (isFunktiokutsu) {
@@ -317,7 +324,8 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
 
             };
 
-            $scope.removeFunktiokutsu = function () {
+            $scope.removeFunktiokutsu = function (funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava) {
+                $scope.setFunktioSelection(funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava);
                 var isNimettyFunktio = $scope.isNimettyFunktioargumentti($scope.funktioasetukset.parentFunktiokutsu);
                 var isPainotettukeskiarvoChild = undefined;
                 if ($scope.funktioasetukset.parentFunktiokutsu.lapsi) {
@@ -363,31 +371,25 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
             $scope.setClipboard = function (funktiokutsu) {
                 $scope.clipboard = funktiokutsu;
             };
-
-            $scope.clipboardAction = function (funktiokutsu, parentFunktiokutsu, childIndex) {
-                if($scope.isFirstChildForRoot(parentFunktiokutsu)) {
-                    parentFunktiokutsu.funktioargumentit[childIndex] = $scope.clipboard;
-                } else {
-                    parentFunktiokutsu.lapsi.funktioargumentit[childIndex] = $scope.clipboard;
-                }
-
-                // uudelleenasetetaan kopioinnin yhteydessä sekaisin menevät palvelimella asetetut funktiokutsuargumentti-indeksit
-                FunktioService.checkLaskentakaavaIndexes($scope.model.laskentakaavapuu);
-                $scope.clearClipboard();
+            
+            $scope.copyToClipboard = function (funktiokutsu) {
+                $scope.setClipboard(funktiokutsu);
             };
+
+            $scope.cutToClipboard = function (funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava) {
+                $scope.setFunktioSelection(funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava);
+                $scope.setClipboard(funktiokutsu);
+                $scope.removeFunktiokutsu(funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava);
+            }
 
             $scope.clearClipboard = function () {
                 $scope.clipboard = undefined;
             };
 
-            $scope.copyAndReplace = function (funktiokutsu, parent, childIndex) {
-                $scope.clipboardAction(funktiokutsu, parent, childIndex);
+            $scope.pasteFunktiokutsu = function (parent, childIndex) {
+                parent.lapsi.funktioargumentit[childIndex] = $scope.clipboard;
+                $scope.clearClipboard();
             };
-
-            $scope.copyAndShift = function (funktiokutsu, parent, childIndex) {
-
-            };
-
 
             $scope.getValintaperusteviitetyyppiText = function (valintaperusteviite) {
                 var text = "";

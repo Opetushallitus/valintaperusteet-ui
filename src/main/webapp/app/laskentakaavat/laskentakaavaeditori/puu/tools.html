@@ -1,0 +1,30 @@
+<span class="dropdown" dropdown >
+    <span class="dropdown-toggle" dropdown-toggle><span ng-transclude></span></span>
+  <!--<a href class="dropdown-toggle" dropdown-toggle>Kopioi</a>-->
+  <ol class="dropdown-menu">
+      <li>
+          <a ng-click="showFunktiokutsuEdit(parent, $index, isAlikaava, hasParentAlikaava)"><i class="fa fa-pencil"></i> Muokkaa</a>
+      </li>
+
+      <li>
+          <a ng-click="copyToClipboard(funktiowrapper)"><i class="fa fa-files-o"></i> Kopioi</a>
+      </li>
+
+      <li>
+          <a ng-click="cutToClipboard(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)"><i class="fa fa-scissors"></i> Leikkaa</a>
+      </li>
+
+      <li>
+          <a ng-if="clipboard" ng-click="pasteFunktiokutsu(parent, $index)"><i class="fa fa-clipboard"></i> Liitä</a>
+      </li>
+
+      <li>
+          <a ng-click="funktiokutsuClicked(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">Kääri</a>
+      </li>
+
+      <li>
+          <a ng-click="removeFunktiokutsu(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)"><i class="fa fa-trash"></i> Poista</a>
+      </li>
+
+    </ol>
+</span>
