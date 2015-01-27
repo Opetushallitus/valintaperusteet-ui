@@ -14,7 +14,7 @@ angular.module('valintaperusteet')
             angular.copy(funktiokutsu, kaavatree);
 
             var kaava = {
-                valintaryhmaOid: routeParams.valintaryhmaOid,
+                valintaryhmaOid: routeParams.id,
                 hakukohdeOid: routeParams.hakukohdeOid,
                 laskentakaava: {
                     funktiokutsu: {
@@ -174,7 +174,7 @@ angular.module('valintaperusteet')
 			if(hasNimetytFunktioargumentit) {
 				//Lisätään yhtä monta null objektia, kuin nimettyjä funktioargumentteja.
 				funktiokuvaus.funktioargumentit.forEach(function() {
-					funktioprototype.lapsi.funktioargumentit.push(null)
+					funktioprototype.lapsi.funktioargumentit.push(null);
 				});
 			} else if(isPainotettukeskiarvoChild) {
 				funktioprototype.lapsi.funktioargumentit.push({});

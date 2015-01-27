@@ -1,45 +1,139 @@
 angular.module('valintaperusteet')
 
-    .factory('UserModel', ['$q', '$log', '_', 'MyRolesModel', 'AuthService', 'OrganizationByOid', 'OPH_ORG_OID', function ($q, $log, _, MyRolesModel, AuthService, OrganizationByOid, OPH_ORG_OID) {
+    .factory('UserModel', ['$q', '$log', '_', 'MyRolesModel', 'AuthService', 'OrganizationByOid', 'OPH_ORG_OID', 'OrganizationChildOids', 'OrganizationParentOids',
+        function ($q, $log, _, MyRolesModel, AuthService, OrganizationByOid, OPH_ORG_OID, OrganizationChildOids, OrganizationParentOids) {
         var model = new function () {
             this.organizationsDeferred = undefined;
+            this.organizationChildrenDeferred = undefined;
+            this.organizationParentDeferred = undefined;
 
             this.organizationOids = [];
             this.organizations = [];
+
+            this.organizationChildren = []; //array of organizations that are children for users organizations
+            this.organizationChildrenOids = [];
+
+            this.organizationParents = [];
+            this.organizationParentsOids = [];
+
             this.isKKUser = false;
             this.hasOtherThanKKUserOrgs = false;
             this.isOphUser = false;
 
             this.refresh = function () {
                 model.organizationsDeferred = $q.defer();
+                model.organizationChildrenDeferred = $q.defer();
+                model.organizationParentDeferred = $q.defer();
 
-                AuthService.getOrganizations('APP_VALINTAPERUSTEET').then(function (oidList) {
-                    model.organizationOids = oidList;
-                    var organizationPromises = [];
-                    _.forEach(oidList, function (oid) {
-                        var deferred = $q.defer();
-                        organizationPromises.push(deferred.promise);
-                        OrganizationByOid.get({oid: oid}, function (organization) {
-                            model.organizations.push(organization);
-                            deferred.resolve();
-                        }, function (error) {
-                            $log.error('Organisaation tietojen hakeminen epäonnistui:', error);
-                            deferred.reject(error);
+                MyRolesModel.then(function (myroles) {
+
+                    AuthService.getOrganizations('APP_VALINTAPERUSTEET').then(function (oidList) {
+                        model.organizationOids = oidList;
+                        var organizationPromises = [];
+
+                        //Organizations for user
+                        _.forEach(oidList, function (oid) {
+                            var deferred = $q.defer();
+                            organizationPromises.push(deferred.promise);
+                            OrganizationByOid.get({oid: oid}, function (organization) {
+                                model.organizations.push(organization);
+
+                                deferred.resolve();
+                            }, function (error) {
+                                $log.error('Organisaation tietojen hakeminen epäonnistui:', error);
+                                deferred.reject(error);
+                            });
+
+
                         });
-                    });
 
-                    $q.all(organizationPromises).then(function () {
-                        model.organizationsDeferred.resolve();
-                        model.analyzeOrganizations();
-                    }, function () {
-                        model.organizationsDeferred.reject();
-                    });
 
-                }, function (error) {
-                    $log.error('Käyttäjän organisaatiolistan hakeminen epäonnistui:', error);
-                    model.organizationsDeferred.reject(error);
+                        $q.all(organizationPromises).then(function () {
+                            model.organizationsDeferred.resolve();
+                            model.analyzeOrganizations();
+
+                            //Find child and parent organizations for the users organizations, if user isn't ophuser
+                            if(!model.isOphUser) {
+
+
+                                _.forEach(model.organizationOids, function (oid) {
+                                    var childOidsDefer = $q.defer();
+
+                                    //child organizations
+                                    OrganizationChildOids.get({oid: oid}, function (childOids) {
+                                        var childOidPromises = [];
+                                        model.organizationChildrenOids = childOids.oids;
+                                        _.forEach(childOids.oids, function (childOid) {
+                                            var childOidDefer = $q.defer();
+                                            childOidPromises.push(childOidDefer.promise);
+                                            OrganizationByOid.get({oid: childOid}, function (childOrganization) {
+                                                model.organizationChildren.push(childOrganization);
+                                                childOidDefer.resolve();
+                                            }, function (error) {
+                                                $log.error('Organisaation tietojen hakeminen epäonnistui', error);
+                                                parentOidDeferred.resolve();
+                                                childOidDefer.resolve();
+                                            });
+                                        });
+
+                                        $q.all(childOidPromises).then(function () {
+                                            model.organizationChildrenDeferred.resolve();
+                                        }, function (error) {
+                                            $log.error('Lapsiorganisaatioiden tietojen hakeminen epäonnistui', error);
+                                            model.organizationChildrenDeferred.reject();
+                                        });
+
+                                    }, function (error) {
+                                        $log.error('Lapsiorganisaatioiden haku epäonnistui organisaatiolle:', oid, error);
+                                        childOidsDefer.reject();
+                                    });
+
+                                    //Parent organizations
+                                    var parentOids = _.uniq(_.flatten(_.map(model.organizations, function (organization) {
+                                        if (_.has(organization, 'parentOidPath')) {
+                                            return _.filter(organization.parentOidPath.split("|"), function (parentOid) {
+                                                return parentOid !== OPH_ORG_OID && !_.isEmpty(parentOid);
+                                            });
+                                        } else {
+                                            return [];
+                                        }
+                                    })));
+
+                                    model.organizationParentsOids = parentOids;
+                                    var parentOidsPromises = [];
+
+                                    _.forEach(parentOids, function (parentOid) {
+                                        var parentOidDefer = $q.defer();
+                                        parentOidsPromises.push(parentOidDefer.promise);
+                                        OrganizationByOid.get({oid: parentOid}, function (parentOrganization) {
+                                            model.organizationParents.push(parentOrganization);
+
+                                            parentOidDefer.resolve();
+                                        }, function (error) {
+                                            $log.error('Organisaation tietojen hakeminen epäonnistui', error);
+                                            parentOidDeferred.resolve();
+                                            parentOidDefer.resolve();
+                                        });
+                                    });
+
+                                    $q.all(parentOidsPromises).then(function () {
+                                        model.organizationParentDeferred.resolve();
+                                    }, function (error) {
+                                        $log.error(error);
+                                        model.organizationParentDeferred.reject();
+                                    });
+                                });
+                            }
+
+                        }, function () {
+                            model.organizationsDeferred.reject();
+                        });
+
+                    }, function (error) {
+                        $log.error('Käyttäjän organisaatiolistan hakeminen epäonnistui:', error);
+                        model.organizationsDeferred.reject(error);
+                    });
                 });
-
                 return model.organizationsDeferred.promise;
             };
 

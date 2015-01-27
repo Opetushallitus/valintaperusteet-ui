@@ -19,8 +19,11 @@ angular.module('valintaperusteet')
             $scope.kaareService = FunktiokutsuKaareService;
             $scope.valintaryhmaPromise = $scope.valintaryhmaModel.loaded.promise;
 
-            if ($routeParams.valintaryhmaOid !== undefined) { //if laskentakaava belongs to a valintaryhma
-                $scope.valintaryhmaModel.refreshIfNeeded($routeParams.valintaryhmaOid);
+            $scope.lisakysymysAvaimet = [];
+            $scope.bigdata = [];
+
+            if ($routeParams.id !== undefined) { //if laskentakaava belongs to a valintaryhma
+                $scope.valintaryhmaModel.refreshIfNeeded($routeParams.id);
                 $scope.valintaryhmaPromise.then(function (result) {
                     $scope.resolveHaku();
                 }, function(reject) {
@@ -43,6 +46,11 @@ angular.module('valintaperusteet')
             });
             
             $scope.$on('showFunktiokutsuAsetukset', function () {
+                if($scope.funktioSelection.lapsi && $scope.funktioSelection.lapsi.valintaperusteviitteet.length > 0) {
+                    _.forEach($scope.funktioSelection.lapsi.valintaperusteviitteet, function(valintaperuste) {
+                        $scope.changeAvainOptions(valintaperuste);
+                    });
+                }
                 $scope.show();
             });
 
@@ -97,6 +105,20 @@ angular.module('valintaperusteet')
                 }
             };
 
+            $scope.parseOptions = function(options, lomake) {
+                return _.map(options, function(option) {
+                    var opt = {};
+                    if(lomake) {
+                        opt.id = option.value;
+                        opt.text = option.i18nText.translations.fi;
+                    } else {
+                        opt.id = option.id;
+                        opt.text = option.optionText.translations.fi;
+                    }
+                    return opt;
+                });
+            };
+
             $scope.parseLisakysymysAvaimet = function(haetutAvaimet) {
                 var avaimet = [];
                 _.forEach(haetutAvaimet, function(phase) {
@@ -109,13 +131,7 @@ angular.module('valintaperusteet')
                         obj.value = phase._id;
                     }
                     if(phase.options) {
-                        obj.options = [];
-                        _.forEach(phase.options, function(option) {
-                            var opt = {};
-                            opt.id = option.id;
-                            opt.text = option.optionText.translations.fi;
-                            obj.options.push(opt);
-                        })
+                        obj.options = $scope.parseOptions(phase.options, false);
                     }
 
                     avaimet.push(obj);
@@ -123,6 +139,8 @@ angular.module('valintaperusteet')
                 });
                 return avaimet;
             };
+
+
 
             $scope.getHakemusAvaimet = function (hakuoid) {
 
@@ -176,6 +194,9 @@ angular.module('valintaperusteet')
                                 } else {
                                     obj.value = phase.id;
                                 }
+                                if(phase.options) {
+                                    obj.options = $scope.parseOptions(phase.options, true);
+                                }
                                 avaimet.push(obj);
                             });
 
@@ -189,9 +210,6 @@ angular.module('valintaperusteet')
                     UserModel.organizationsDeferred.promise.then(function () {
                         HakemusavaimetLisakysymykset.get({hakuoid: hakuoid, orgId: UserModel.organizationOids[0]},function (haetutAvaimet) {
                                 $scope.lisakysymysAvaimet = $scope.parseLisakysymysAvaimet(haetutAvaimet);
-//                                if(!$scope.avainOptions) {
-//                                    $scope.avainOptions = _.find($scope.lisakysymysAvaimet, function(avain) {return avain.key == $scope.valintaperuste.tunniste});
-//                                }
                             }, function (error) {
                                 $log.log("lisakysymyksiä ei löytynyt", error);
                             }
@@ -199,85 +217,26 @@ angular.module('valintaperusteet')
                     }, function () {
                         HakemusavaimetLisakysymykset.get({hakuoid: hakuoid},function (haetutAvaimet) {
                                $scope.lisakysymysAvaimet = $scope.parseLisakysymysAvaimet(haetutAvaimet);
-//                                if(!$scope.avainOptions) {
-//                                    $scope.avainOptions = _.find($scope.lisakysymysAvaimet, function(avain) {return avain.key == $scope.valintaperuste.tunniste});
-//                                }
                             }, function (error) {
                                 $log.error("lisakysymyksiä ei löytynyt", error);
 
                             }
                         );
                     });
-
-
             };
 
             $scope.changeAvainOptions = function(valintaperuste) {
-                valintaperuste.avainOptions = _.find($scope.lisakysymysAvaimet, function(avain) {return avain.key == valintaperuste.tunniste});
+                valintaperuste.avainOptions = _.flatten(_.pluck(_.filter($scope.lisakysymysAvaimet, function(avain) {return avain.key == valintaperuste.tunniste}), 'options'));
+                if(!valintaperuste.avainOptions || valintaperuste.avainOptions.length == 0) {
+                    valintaperuste.avainOptions = _.flatten(_.pluck(_.filter($scope.bigdata, function(avain) {return avain.key == valintaperuste.tunniste}), 'options'));
+                }
             };
-
-//            $scope.$watch('valintaperuste.tunniste', function() {
-//                console.log('watch!');
-//                $scope.avainOptions = _.find($scope.lisakysymysAvaimet, function(avain) {return avain.key == $scope.valintaperuste.tunniste});
-//            }, true);
 
             $scope.showFunktiokutsunKaarintaModal = function () {
                 FunktiokutsuKaareService.setFunktioKaareLista(FunktioService.getFunktiokutsuTyyppi($scope.funktioSelection));
                 LaskentakaavaModalService.toggleModalSelection('kaare');
             };
 
-            $scope.kaariFunktiokutsu = function (kaarivaFunktiokutsuNimi, childFunktiokutsuIndex) {
-
-                if(FunktioService.isRootFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu) && FunktiokuvausService.kaarittavaFunktiokutsuCanBeSetToFirstChildByFunktionimi(kaarivaFunktiokutsuNimi)) {
-                    $scope.kaariFunktiokutsuFirstFunktioargumentti(kaarivaFunktiokutsuNimi);
-                } else {
-                    $scope.kaariFunktiokutsuFunktioargumentiksiIndeksilla(kaarivaFunktiokutsuNimi, childFunktiokutsuIndex);
-                }
-                LaskentakaavaModalService.resetModalSelection();
-            };
-
-            //Käärivällä funktiokutsulla voi olla N määrä funktioargumentteja
-            $scope.kaariFunktiokutsuFirstFunktioargumentti = function (kaarivaFunktiokutsuNimi) {
-                var isRootFunktiokutsu = FunktioService.isRootFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu);
-                var kaarittavaFunktiokutsu = FunktioService.getCurrentFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu, $scope.funktioasetukset.selectedFunktioIndex);
-                var kaarivaFunktiokutsu  = FunktioFactory.createFunktioInstance($scope.funktioasetukset.parentFunktiokutsu, kaarivaFunktiokutsuNimi, isRootFunktiokutsu);
-                kaarivaFunktiokutsu.open = true;
-
-                if(isRootFunktiokutsu) {
-                    kaarivaFunktiokutsu.lapsi.funktioargumentit[0] = kaarittavaFunktiokutsu;
-                    $scope.funktioasetukset.parentFunktiokutsu.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = kaarivaFunktiokutsu;
-                } else {
-                    kaarivaFunktiokutsu.lapsi.funktioargumentit[0] = kaarittavaFunktiokutsu;
-                    $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = kaarivaFunktiokutsu;
-                }
-
-                LaskentakaavaModalService.resetModalSelection();
-            };
-
-            $scope.kaariFunktiokutsuFunktioargumentiksiIndeksilla = function (kaarivaFunktiokutsuNimi, childFunktiokutsuIndex) {
-                var isRootFunktiokutsu = FunktioService.isRootFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu);
-                var kaarittavaFunktiokutsu = FunktioService.getCurrentFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu, $scope.funktioasetukset.selectedFunktioIndex);
-                var kaarivaFunktiokutsu  = FunktioFactory.createFunktioInstance($scope.funktioasetukset.parentFunktiokutsu, kaarivaFunktiokutsuNimi, isRootFunktiokutsu);
-                kaarivaFunktiokutsu.open = true;
-                if(isRootFunktiokutsu) {
-                    kaarivaFunktiokutsu.lapsi.funktioargumentit[childFunktiokutsuIndex] = kaarittavaFunktiokutsu;
-                    $scope.funktioasetukset.parentFunktiokutsu.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = kaarivaFunktiokutsu;
-                } else {
-                    kaarivaFunktiokutsu.lapsi.funktioargumentit[childFunktiokutsuIndex] = kaarittavaFunktiokutsu;
-                    $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = kaarivaFunktiokutsu;
-                }
-
-                LaskentakaavaModalService.resetModalSelection();
-            };
-
-            $scope.selectedKaarivaFunktionimiChanged = function (selectedKaarivaFunktionimi) {
-                var hasNimettyFunktioargumentti = FunktiokuvausService.hasNimettyFunktioargumenttiByFunktioNimi(selectedKaarivaFunktionimi);
-                var isPainotettuKeskiarvo = FunktiokuvausService.isPainotettukeskiarvoByFunktioNimi(selectedKaarivaFunktionimi);
-                $scope.showFunktioargumenttiSelection = isPainotettuKeskiarvo || (hasNimettyFunktioargumentti && FunktiokuvausService.hasMoreThanOneFunktioargumentti(selectedKaarivaFunktionimi));
-                if($scope.showFunktioargumenttiSelection) {
-                    FunktiokutsuKaareService.setKaareFunktiokutsuType(selectedKaarivaFunktionimi);
-                }
-            };
 
             $scope.isYoFunktiokutsu = function (funktio, valintaperuste) {
                 var funktionimi = funktio.lapsi.funktionimi;

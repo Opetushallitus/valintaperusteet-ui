@@ -103,12 +103,12 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <td>{{ t('laskentakaavaviiteasetuksetmodal.avaimenArvo') || 'Lisäkysymyksen arvo' }}</td>
-                                    <td>{{ t('laskentakaavaviiteasetuksetmodal.avaimenKysymys') || 'Lisäkysymyksen selite' }}</td>
+                                    <td>{{ t('laskentakaavaviiteasetuksetmodal.avaimenArvo') || 'Kysymyksen arvo' }}</td>
+                                    <td>{{ t('laskentakaavaviiteasetuksetmodal.avaimenKysymys') || 'Kysymyksen selite' }}</td>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="avain in avainOptions">
+                                <tr ng-repeat="avain in valintaperuste.avainOptions">
                                     <td>{{avain.id}}</td>
                                     <td>{{avain.text}}<td>
                                 </tr>
@@ -545,23 +545,13 @@
 
 
     <div class="modal-footer">
-        <!-- Funktiokutsun asetukset -->
-        <button class="btn btn-default btn-sm"
-                ng-disabled="!userAccess.crudOrg"
-                ng-click="showFunktiokutsunKaarintaModal()">{{ t('funktiokutsuasetuksetmodal.kaariminen') || 'Funktiokutsun kääriminen'}}
-        </button>
+
         <button class="btn btn-default btn-sm"
                 ng-disabled="alikaavaValues.isAlikaava || funktioasetukset.parentFunktiokutsu === model.laskentakaavapuu.funktiokutsu || !userAccess.crudOrg"
                 ng-click="laskentakaavaModalService.toggleModalSelection('tallennusKaavana')">{{ t('laskentakaavaviiteasetuksetmodal.kaavanosantallennus') || 'Kaavan osan
             tallennus' }}
         </button>
-        <button ng-disabled="alikaavaValues.isAlikaava || !userAccess.crudOrg" class="btn btn-sm btn-default"
-                ng-click="removeFunktiokutsu(); sulje()" popover-popup-delay="500" popover-placement="top"
-                popover-trigger="mouseenter"
-                popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
-            <i class="fa fa-trash-o"></i> {{ t('laskentakaavaviiteasetuksetmodal.poistafunktiokutsu') || 'Poista
-            funktiokutsu' }}
-        </button>
+
         <button class="btn btn-default btn-sm" ng-click="sulje()"
                 role="button" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter"
                 popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
@@ -650,55 +640,5 @@
 
 </div>
 
-<div ng-show="laskentakaavaModalService.selection.kaare">
 
-    <div class="modal-header">
-        <h3>{{ t('funktiokutsukaaremodal.header') || 'Funktiokutsun kääriminen'}}</h3>
-    </div>
-    <div class="modal-body">
-
-        <form name="form" class="form-horizontal" ng-submit="submit()">
-
-            <div class="form-group">
-                <label class="control-label col-md-3" for="kaarivaFunktiokutsuTyyppi">{{ t('funktiokutsuasetuksetmodal.kaareenvalinta.kaarija') || 'Käärivä funktiokutsu' }}</label>
-
-                <div class="col-md-6">
-                    <select id="kaarivaFunktiokutsuTyyppi"
-                            ng-change="selectedKaarivaFunktionimiChanged(selectedKaarivaFunktionimi)"
-                            ng-model="selectedKaarivaFunktionimi"
-                            ng-options="option.funktionimi as option.UIName for option in kaareService.funktioKaare.funktioKaareLista"></select>
-                </div>
-            </div>
-
-            <div class="form-group" collapse="!showFunktioargumenttiSelection">
-                <label class="control-label col-md-3" for="kaarittavanSijaintiKaarijassa">{{ t('funktiokutsuasetuksetmodal.kaareenvalinta.sijainti') || 'Käärittävän sijoittaminen' }}</label>
-                <div class="col-md-9">
-                    <select id="kaarittavanSijaintiKaarijassa" ng-model="childFunktiokutsuIndex" ng-options="option.index as option.label for option in kaareService.funktioKaare.argumenttiOptions"></select>
-                    <span class="help-block">{{ t('funktiokutsuasetuksetmodal.kaareenvalinta.sijainti.help') || 'Valitulle käärivälle funktiokutsulle on määritelty nimettyjä funktioargumentteja, valitse mihin kohtaan nimettyjen funktioargumenttien listaa haluat laskentakaavasta valitun funktiokutsun kääriä'}}</span>
-                </div>
-            </div>
-
-        </form>
-    </div>
-
-    <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-click="laskentakaavaModalService.toggleModalSelection('asetukset')" popover-popup-delay="500"
-                popover-placement="top" popover-trigger="mouseenter"
-                popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
-            <i class="fa fa-arrow-left"></i> {{ t('laskentakaavaviiteasetuksetmodal.palaafunktioasetuksiin') || 'Palaa funktioasetuksiin' }}
-        </button>
-
-        <button class="btn btn-default btn-sm" ng-click="kaariFunktiokutsu(selectedKaarivaFunktionimi, childFunktiokutsuIndex); sulje()"
-                ng-disabled="!selectedKaarivaFunktionimi"
-                popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter"
-                popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">{{ t('funktiokutsuasetuksetmodal.kaareenvalinta.tallenna') || 'Kääri funktiokutsu'}}</button>
-
-        <button class="btn btn-default btn-sm" ng-click="resetModalSelection(); sulje()" popover-popup-delay="500" popover-placement="top"
-                popover-trigger="mouseenter"
-                popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
-            {{ t('laskentakaavaviiteasetuksetmodal.sulje') || 'Sulje' }}
-        </button>
-    </div>
-
-</div>
 

@@ -1,10 +1,10 @@
 angular.module('valintaperusteet').controller('LaskentakaavaController',
     ['$scope', '_', '$location', '$routeParams', '$timeout', 'KaavaValidointi', 'Laskentakaava', 'LaskentakaavaLista',
         'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'Arvokonvertterikuvauskielet',
-        'FunktioNimiService', 'FunktioFactory', 'KaavaValidation', 'KaavaVirheTyypit', 'ErrorService', 'FunktiokuvausService',
+        'FunktioNimiService', 'FunktioFactory', 'KaavaValidation', 'KaavaVirheTyypit', 'ErrorService', 'FunktiokuvausService', 'FunktiokutsuKaareService', '$modal',
         function ($scope, _, $location, $routeParams, $timeout, KaavaValidointi, Laskentakaava, LaskentakaavaLista,
                   TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet, FunktioNimiService,
-                  FunktioFactory, KaavaValidation, KaavaVirheTyypit, ErrorService, FunktiokuvausService) {
+                  FunktioFactory, KaavaValidation, KaavaVirheTyypit, ErrorService, FunktiokuvausService, FunktiokutsuKaareService, $modal) {
             'use strict';
             //servicet laskentakaavapuun piirtämiseen
             $scope.templateService = TemplateService;
@@ -38,8 +38,8 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
             }
 
             $scope.reloadLaskentakaavaLista = function () {
-                if ($routeParams.valintaryhmaOid) {
-                    LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, null);
+                if ($routeParams.id) {
+                    LaskentakaavaLista.refresh($routeParams.id, null);
                 } else if ($routeParams.hakukohdeOid) {
                     LaskentakaavaLista.refresh(null, $routeParams.hakukohdeOid);
                 } else {
@@ -50,6 +50,8 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
             $scope.laskentakaavalista = LaskentakaavaLista;
             $scope.reloadLaskentakaavaLista();
 
+            // leikepöytä funktiokutsujen kopioimiseen ja siirtämiseen
+            $scope.clipboard = undefined;
 
             // Valitun funktio/laskentakaavaviitteen tietoja
             $scope.funktioasetukset = {
@@ -65,6 +67,21 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                 $scope.$broadcast('editKaavaMetadata');
             };
 
+            $scope.showFunktiokutsuEdit = function (parent, childIndex, isAlikaava, hasParentAlikaava) {
+                var funktioargumentit = FunktioService.getFunktioargumentit(parent);
+                var funktiokutsu = funktioargumentit[childIndex];
+                var isFunktiokutsu = FunktioService.isFunktiokutsu(funktiokutsu);
+                $scope.setFunktioSelection(funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava);
+                $scope.showFunktiokutsuAsetukset(isFunktiokutsu);
+            };
+
+            $scope.showFunktiokutsuAsetukset = function (isFunktiokutsu) {
+                if (isFunktiokutsu) {
+                    $scope.$broadcast('showFunktiokutsuAsetukset');
+                } else {
+                    $scope.$broadcast('showLaskentakaavaviiteAsetukset');
+                }
+            };
 
             // funktio = valittu funktiokutsu tai laskentakaavaviite
             // isFunktiokutsu = onko funktio-parametri funktiokutsu vai laskentakavaaviite
@@ -85,14 +102,6 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
 
                 //päätellään funktiolle esivalittu konvertteriparametrityyppi, jos funktiolla on konvertteriparametreja
                 $scope.setKonvertteriType();
-
-                // päätellään mikä muokkausnäkymä tuodaan näkyviin. Funktiokutsuille, alikaavan funktiokutsuille,
-                // laskentakaavaviitteille ja alikaavan laskentakaavaviitteille on omat muokkausnäkymänsä
-                if (isFunktiokutsu) {
-                    $scope.$broadcast('showFunktiokutsuAsetukset');
-                } else {
-                    $scope.$broadcast('showLaskentakaavaviiteAsetukset');
-                }
 
                 $scope.laskentakaavaviite.selection = funktio || undefined;
                 $scope.saved = false;
@@ -118,14 +127,14 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                     item.open = $scope.openAll;
                     toggleAllLower(item.lapsi);
                 });
-            };
 
-            function toggleAllLower(item) {
-                item.funktioargumentit.forEach(function (item) {
-                    item.open = $scope.openAll;
-                    toggleAllLower(item.lapsi);
-                });
-            }
+                function toggleAllLower(item) {
+                    item.funktioargumentit.forEach(function (item) {
+                        item.open = $scope.openAll;
+                        toggleAllLower(item.lapsi);
+                    });
+                }
+            };
 
             $scope.addLaskentakaavaviite = function (parent, index) {
                 $scope.funktioasetukset.parentFunktiokutsu = parent;
@@ -148,6 +157,7 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                 }
 
                 $scope.setFunktioSelection(createdFunktio, true, parent, index, undefined, undefined);
+                $scope.showFunktiokutsuAsetukset(true);
                 //lisätään uusi pari funktioargumentteja, kun edelliset on täytetty
                 if ($scope.getFunktionimi(parent) === 'PAINOTETTUKESKIARVO') {
                     var argCount = $scope.getDefinedFunktioargumenttiCount(parent);
@@ -177,7 +187,6 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                 }
                 return resultIndex;
             };
-
 
             $scope.noFunktioarguments = function (funktioargumentit) {
                 return funktioargumentit.length === 1 && _.isEmpty(funktioargumentit[0]);
@@ -269,7 +278,6 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                 return result;
             };
 
-
             $scope.getSyoteparametriTemplate = function (syoteparametrityyppi) {
                 return TemplateService.getSyoteparametriTemplate(syoteparametrityyppi);
             };
@@ -310,7 +318,8 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
 
             };
 
-            $scope.removeFunktiokutsu = function () {
+            $scope.removeFunktiokutsu = function (funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava) {
+                $scope.setFunktioSelection(funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava);
                 var isNimettyFunktio = $scope.isNimettyFunktioargumentti($scope.funktioasetukset.parentFunktiokutsu);
                 var isPainotettukeskiarvoChild = undefined;
                 if ($scope.funktioasetukset.parentFunktiokutsu.lapsi) {
@@ -349,8 +358,31 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                 $scope.alikaavaValues = {};
             };
 
-            $scope.isFirstChildForRoot = function (parent) {
-                return parent.lapsi ? false : true;
+            $scope.isFirstChildForRoot = function (funktiokutsu) {
+                return FunktioService.isRootFunktiokutsu(funktiokutsu);
+            };
+            
+            $scope.setClipboard = function (funktiokutsu) {
+                $scope.clipboard = funktiokutsu;
+            };
+            
+            $scope.copyToClipboard = function (funktiokutsu) {
+                $scope.setClipboard(funktiokutsu);
+            };
+
+            $scope.cutToClipboard = function (funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava) {
+                $scope.setFunktioSelection(funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava);
+                $scope.setClipboard(funktiokutsu);
+                $scope.removeFunktiokutsu(funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava);
+            }
+
+            $scope.clearClipboard = function () {
+                $scope.clipboard = undefined;
+            };
+
+            $scope.pasteFunktiokutsu = function (parent, childIndex) {
+                parent.lapsi.funktioargumentit[childIndex] = $scope.clipboard;
+                $scope.clearClipboard();
             };
 
             $scope.getValintaperusteviitetyyppiText = function (valintaperusteviite) {
@@ -366,6 +398,18 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
 
             $scope.hasFunktioargumentit = function (parent, childIndex) {
                 return FunktioService.hasFunktioargumentit(parent, childIndex);
+            };
+
+            $scope.showFunktiokutsunKaarintaModal = function (funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava) {
+                $scope.setFunktioSelection(funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava);
+                FunktiokutsuKaareService.setFunktioKaareLista(FunktioService.getFunktiokutsuTyyppi($scope.funktioSelection));
+                var modalInstance = $modal.open({
+                    templateUrl: 'laskentakaavat/laskentakaavaeditori/kaariminen/funktiokutsunkaariminen.html',
+                    controller: 'FunktiokutsunKaariminenController',
+                    resolve: {
+                        funktioasetukset: function() { return $scope.funktioasetukset; }
+                    }
+                });
             };
 
             $scope.valintaperusteviiteDefined = function (valintaperusteviite) {
@@ -417,7 +461,7 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
 
             $scope.persistNewKaava = function () {
                 var kaava = {
-                    valintaryhmaOid: $routeParams.valintaryhmaOid,
+                    valintaryhmaOid: $routeParams.id,
                     hakukohdeOid: $routeParams.hakukohdeOid,
                     laskentakaava: $scope.model.laskentakaavapuu
                 };
