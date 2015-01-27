@@ -3,7 +3,6 @@ angular.module('valintaperusteet')
 
 
 
-
     // HAKU-APP
     .factory('HakemusAvaimet', ['$resource', function ($resource) {
         return $resource(HAKEMUS_URL_BASE + "application-system-form-editor/application-system-form/:asId", {asId: "@asId"}, {
@@ -227,6 +226,11 @@ angular.module('valintaperusteet')
             delete: {method: "DELETE"}
         });
     }])
+    .factory('ValintatapajonoValmisSijoiteltavaksi', ['$resource', function ($resource) {
+        return $resource(VALINTALASKENTA_URL_BASE + "resources/valintatapajono/:oid/valmissijoiteltavaksi", {valintatapajonoOid: "@valintatapajonoOid"}, {
+            get: {method: "GET", cache: false}
+        });
+    }])
     .factory('ValintatapajonoJarjestyskriteeri', ['$resource', function ($resource) {
         return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:parentOid/jarjestyskriteeri", {parentOid: "@parentOid"}, {
             get: {method: "GET", isArray: true, cache: false},
@@ -381,6 +385,12 @@ angular.module('valintaperusteet')
 
     .factory('OrganizationParentOids', ['$resource', function ($resource) {
         return $resource(ORGANIZATION_SERVICE_URL_BASE + "rest/organisaatio/:oid/parentoids", {oid: "@oid"}, {
+            get: {method: "GET", cache: true}
+        });
+    }])
+
+    .factory('OrganizationChildOids', ['$resource', function ($resource) {
+        return $resource(ORGANIZATION_SERVICE_URL_BASE + "rest/organisaatio/:oid/childoids", {oid: "@oid"}, {
             get: {method: "GET", cache: true}
         });
     }])

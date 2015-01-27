@@ -4,16 +4,17 @@ describe("FunktioService", function () {
     var funktioservice, funktiokutsuKeskiarvo, funktiokutsuJos,
         funktiokutsuSumma, funktiokutsuHylkaaarvovalilla, funktiokutsuPainotettukeskiarvo,
         laskentakaavaviite, rootFunktiokutsu, funktiokutsuPainotettukeskiarvoWith2EmptySlots,
-        funktiokutsuPainotettukeskiarvoWith4EmptySlots;
+        funktiokutsuPainotettukeskiarvoWith4EmptySlots, funktiokutsuXParent, funktiokutsuXFirstChild, ei, pienempitaiyhtasuuri, skaalaus,
+        funktiokuvausService;
     beforeEach(module('MockData'));
     beforeEach(module('valintaperusteet'));
 
     beforeEach(inject(function (FunktioService, Funktiokuvaukset, FunktiokutsuKeskiarvo, FunktiokutsuJos,
                                 FunktiokutsuSumma, FunktiokutsuHylkaaarvovalilla, FunktiokutsuPainotettukeskiarvo,
                                 Laskentakaavaviite, RootFunktiokutsu, FunktiokutsuPainotettukeskiarvoWith2EmptySlots,
-                                FunktiokutsuPainotettukeskiarvoWith4EmptySlots) {
+                                FunktiokutsuPainotettukeskiarvoWith4EmptySlots, FunktiokutsuXParent, FunktiokutsuXFirstChild,
+                                PIENEMPITAIYHTASUURI, EI, SKAALAUS, FunktiokuvausService) {
         funktioservice = FunktioService;
-        funktioservice.funktiokuvaukset = Funktiokuvaukset;
         funktiokutsuKeskiarvo = FunktiokutsuKeskiarvo;
         funktiokutsuJos = FunktiokutsuJos;
         funktiokutsuSumma = FunktiokutsuSumma;
@@ -23,124 +24,37 @@ describe("FunktioService", function () {
         rootFunktiokutsu = RootFunktiokutsu;
         funktiokutsuPainotettukeskiarvoWith2EmptySlots = FunktiokutsuPainotettukeskiarvoWith2EmptySlots;
         funktiokutsuPainotettukeskiarvoWith4EmptySlots = FunktiokutsuPainotettukeskiarvoWith4EmptySlots;
+        funktiokutsuXParent = FunktiokutsuXParent;
+        funktiokutsuXFirstChild = FunktiokutsuXFirstChild;
+        ei = EI;
+        pienempitaiyhtasuuri = PIENEMPITAIYHTASUURI;
+        skaalaus = SKAALAUS;
+        funktiokuvausService = FunktiokuvausService;
+        funktiokuvausService.funktiokuvaukset = Funktiokuvaukset;
     }));
-
-    //getFunktiokuvaukset
-    describe('getFunktiokuvaukset()', function () {
-        it('should return funktiokuvaukset', function () {
-            expect(funktioservice.getFunktiokuvaukset()).toEqual(funktioservice.funktiokuvaukset);
-        });
-    });
-
-
-    //getFunktiokuvaus
-    describe('getFunktiokuvaus(', function () {
-
-        describe("'PIENEMPITAIYHTASUURI' )", function () {
-            var funktiokutsu;
-            beforeEach(function () {
-                funktiokutsu = funktioservice.getFunktiokuvaus('PIENEMPITAIYHTASUURI');
-            });
-
-            it('should return correct funktiokuvaus', function () {
-                expect(funktiokutsu.nimi).toBe('PIENEMPITAIYHTASUURI');
-            });
-
-            it("should be of type lukuarvofunktio", function () {
-                expect(funktiokutsu.tyyppi).toBe('TOTUUSARVOFUNKTIO');
-            });
-
-            it('should have funktioargumentit-array with length 2', function () {
-                expect(funktiokutsu.funktioargumentit.length).toBe(2);
-            });
-
-        });
-
-        describe("'LUKUARVO' )", function () {
-            var funktiokutsu;
-
-            beforeEach(function () {
-                funktiokutsu = funktioservice.getFunktiokuvaus('LUKUARVO');
-            });
-
-            it("should return correct funktiokuvaus ", function () {
-                expect(funktiokutsu.nimi).toBe('LUKUARVO');
-            });
-
-            it("should be of type lukuarvofunktio", function () {
-                expect(funktiokutsu.tyyppi).toBe('LUKUARVOFUNKTIO');
-            });
-
-            it("should be of type lukuarvofunktio", function () {
-                expect(funktiokutsu.syoteparametrit.length).toBe(1);
-            });
-
-        });
-
-        describe("'noFunktiokutsuWithThisName' )", function () {
-            it('should return undefined if not found', function () {
-                expect(funktioservice.getFunktiokuvaus()).toEqual(undefined);
-            });
-        });
-    });
 
     //isNimettyFunktioargumentti()
     describe("isNimettyFunktioargumentti(parent)", function () {
 
         it('should return false for keskiarvo-funktiokutsu', function () {
-            expect(funktioservice.isNimettyFunktioargumentti(funktiokutsuKeskiarvo)).toBe(false);
+            expect(funktioservice.isNimettyFunktioargumentti(funktiokutsuKeskiarvo)).toBeFalsy();
         });
 
         it('should return true for jos-funktiokutsu', function () {
-            expect(funktioservice.isNimettyFunktioargumentti(funktiokutsuJos)).toBe(true);
+            expect(funktioservice.isNimettyFunktioargumentti(funktiokutsuJos)).toBeTruthy();
         });
 
         it('should return false for summa-funktiokutsu', function () {
-            expect(funktioservice.isNimettyFunktioargumentti(funktiokutsuSumma)).toBe(false);
+            expect(funktioservice.isNimettyFunktioargumentti(funktiokutsuSumma)).toBeFalsy();
         });
 
         it('should return true for hylkaaarvovalilla-funktiokutsu', function () {
-            expect(funktioservice.isNimettyFunktioargumentti(funktiokutsuHylkaaarvovalilla)).toBe(true);
+            expect(funktioservice.isNimettyFunktioargumentti(funktiokutsuHylkaaarvovalilla)).toBeTruthy();
         });
 
     });
 
-    //isNimettyFunktioargumenttiByFunktionimi
-    describe("isNimettyFunktioargumenttiByFunktionimi(name)", function () {
 
-        it('should return false for KESKIARVO-funktiokutsu', function () {
-            expect(funktioservice.isNimettyFunktioargumenttiByFunktionimi('KESKIARVO')).toBe(false);
-        });
-
-        it('should return true for JOS-funktiokutsu', function () {
-            expect(funktioservice.isNimettyFunktioargumenttiByFunktionimi('JOS')).toBe(true);
-        });
-
-        it('should return false for SUMMA-funktiokutsu', function () {
-            expect(funktioservice.isNimettyFunktioargumenttiByFunktionimi('SUMMA')).toBe(false);
-        });
-
-        it('should return true for HYLKAAARVOVALILLA-funktiokutsu', function () {
-            expect(funktioservice.isNimettyFunktioargumenttiByFunktionimi('HYLKAAARVOVALILLA')).toBe(true);
-        });
-
-        it('should return false for PAINOTETTUKESKIARVO-funktiokutsu', function () {
-            expect(funktioservice.isNimettyFunktioargumenttiByFunktionimi('PAINOTETTUKESKIARVO')).toBe(false);
-        });
-
-        it('should return false for HAELUKUARVO-funktiokutsu', function () {
-            expect(funktioservice.isNimettyFunktioargumenttiByFunktionimi('HAELUKUARVO')).toBe(false);
-        });
-
-        it('should return true for NEGAATIO-funktiokutsu', function () {
-            expect(funktioservice.isNimettyFunktioargumenttiByFunktionimi('NEGAATIO')).toBe(true);
-        });
-
-        it('should return false for HAEYOARVOSANA-funktiokutsu', function () {
-            expect(funktioservice.isNimettyFunktioargumenttiByFunktionimi('HAEYOARVOSANA')).toBe(false);
-        });
-
-    });
 
     //getNimettyFunktioargumenttiCount
     describe("getNimettyFunktioargumenttiCount(parent)", function () {
@@ -161,80 +75,46 @@ describe("FunktioService", function () {
         });
     });
 
-    //isFunktiokutsuWithFunktioargumenttiSizeN
-    describe("isFunktiokutsuWithFunktioargumenttiSizeN(parent)", function () {
-        it("should return undefined if parent is undefined", function () {
-            expect(funktioservice.getNimettyFunktioargumenttiCount(undefined)).toBe(undefined);
-        });
 
-        it("should return true for funktiokutsu SUMMA", function () {
-            expect(funktioservice.isFunktiokutsuWithFunktioargumenttiSizeN(funktiokutsuSumma)).toBe(true);
-        });
-
-        it("should return true for funktiokutsu KESKIARVO", function () {
-            expect(funktioservice.isFunktiokutsuWithFunktioargumenttiSizeN(funktiokutsuKeskiarvo)).toBe(true);
-        });
-
-        it("should return false for funktiokutsu PAINOTETTUKESKIARVO", function () {
-            expect(funktioservice.isFunktiokutsuWithFunktioargumenttiSizeN(funktiokutsuPainotettukeskiarvo)).toBe(false);
-        });
-
-        it("should return false for laskentakaavaviite", function () {
-            expect(funktioservice.isFunktiokutsuWithFunktioargumenttiSizeN(laskentakaavaviite)).toBe(false);
-        })
-    });
 
     //isPainotettukeskiarvoChild
-    describe("isPainotettukeskiarvoChild(name)", function () {
+    describe("isPainotettukeskiarvo(name)", function () {
 
         it("should return true if parent is of type PAINOTETTUKESKIARVO", function () {
-            expect(funktioservice.isPainotettukeskiarvoChild(funktiokutsuPainotettukeskiarvo)).toBe(true);
+            expect(funktioservice.isPainotettukeskiarvo(funktiokutsuPainotettukeskiarvo)).toBeTruthy();
         });
 
         it('should return false for a KESKIARVO-funktiokutsu', function () {
-            expect(funktioservice.isPainotettukeskiarvoChild(funktiokutsuKeskiarvo)).toBe(false);
+            expect(funktioservice.isPainotettukeskiarvo(funktiokutsuKeskiarvo)).toBeFalsy();
         });
 
         it('should return false for a JOS-funktiokutsu', function () {
-            expect(funktioservice.isPainotettukeskiarvoChild(funktiokutsuJos)).toBe(false);
+            expect(funktioservice.isPainotettukeskiarvo(funktiokutsuJos)).toBeFalsy();
         });
 
         it('should return false for undefined parameter', function () {
-            expect(funktioservice.isPainotettukeskiarvoChild()).toBe();
+            expect(funktioservice.isPainotettukeskiarvo()).toBe();
         });
     });
 
-    //isPainotettukeskiarvoChildByParentNimi
-    describe("isPainotettukeskiarvoChildByParentNimi", function () {
-        it("should return true if PAINOTETTUKESKIARVO", function () {
-            expect(funktioservice.isPainotettukeskiarvoChildByParentNimi("PAINOTETTUKESKIARVO")).toBe(true);
-        });
 
-        it("should return false if KESKIARVO", function () {
-            expect(funktioservice.isPainotettukeskiarvoChildByParentNimi("KESKIARVO")).toBe(false);
-        });
-
-        it("should return false if parameter is undefined", function () {
-            expect(funktioservice.isPainotettukeskiarvoChildByParentNimi()).toBe(false);
-        });
-    });
 
     //isEmptyNimettyFunktioargumentti
     describe("isEmptyNimettyFunktioargumentti(parent, index)", function () {
         it("should return false if child funktiokutsu of KESKIARVO", function () {
-            expect(funktioservice.isEmptyNimettyFunktioargumentti(funktiokutsuKeskiarvo, 0)).toBe(false);
+            expect(funktioservice.isEmptyNimettyFunktioargumentti(funktiokutsuKeskiarvo, 0)).toBeFalsy();
         });
 
         it("should return false if child funktiokutsu of SUMMA", function () {
-            expect(funktioservice.isEmptyNimettyFunktioargumentti(funktiokutsuSumma, 0)).toBe(false);
+            expect(funktioservice.isEmptyNimettyFunktioargumentti(funktiokutsuSumma, 0)).toBeFalsy();
         });
 
         it("should return false if child funktiokutsu of PAINOTETTUKESKIARVO", function () {
-            expect(funktioservice.isEmptyNimettyFunktioargumentti(funktiokutsuPainotettukeskiarvo, 0)).toBe(false);
+            expect(funktioservice.isEmptyNimettyFunktioargumentti(funktiokutsuPainotettukeskiarvo, 0)).toBeFalsy();
         });
 
         it("should return true if child funktiokutsu of JOS", function () {
-            expect(funktioservice.isEmptyNimettyFunktioargumentti(funktiokutsuJos, 2)).toBe(true);
+            expect(funktioservice.isEmptyNimettyFunktioargumentti(funktiokutsuJos, 2)).toBeTruthy();
         });
 
         it("should return undefined if either of params is undefined", function () {
@@ -245,16 +125,17 @@ describe("FunktioService", function () {
     //isRootFunktiokutsu
     describe("isRootFunktiokutsu(funktiokutsu)", function () {
         it("should return false for an object with a key called 'lapsi'", function () {
-            expect(funktioservice.isRootFunktiokutsu(funktiokutsuKeskiarvo)).toBe(false);
+            expect(funktioservice.isRootFunktiokutsu(funktiokutsuKeskiarvo)).toBeFalsy();
         });
 
         it("should return true for a root object of laskentakaava", function () {
-            expect(funktioservice.isRootFunktiokutsu(rootFunktiokutsu)).toBe(true);
+            expect(funktioservice.isRootFunktiokutsu(rootFunktiokutsu)).toBeTruthy();
         });
 
         it("should return undefined for a root object of laskentakaava", function () {
             expect(funktioservice.isRootFunktiokutsu(undefined)).toBe(undefined);
         });
+
     });
 
     //getFunktionimi
@@ -275,27 +156,27 @@ describe("FunktioService", function () {
     //isLukuarvoFunktioSlot
     describe("isLukuarvoFunktioSlot(funktiokutsu, index)", function () {
         it("should return true for JOS-funktiokutsu and 2nd index", function () {
-            expect(funktioservice.isLukuarvoFunktioSlot(funktiokutsuJos, 2)).toBe(true);
+            expect(funktioservice.isLukuarvoFunktioSlot(funktiokutsuJos, 2)).toBeTruthy();
         });
 
         it("should return false for JOS-funktiokutsu and 1st index", function () {
-            expect(funktioservice.isLukuarvoFunktioSlot(funktiokutsuJos, 0)).toBe(false);
+            expect(funktioservice.isLukuarvoFunktioSlot(funktiokutsuJos, 0)).toBeFalsy();
         });
 
         it("should return true for SUMMA-funktiokutsu and 1nd index", function () {
-            expect(funktioservice.isLukuarvoFunktioSlot(funktiokutsuSumma, 0)).toBe(true);
+            expect(funktioservice.isLukuarvoFunktioSlot(funktiokutsuSumma, 0)).toBeTruthy();
         });
 
         it("should return true for KESKIARVO-funktiokutsu and 1nd index", function () {
-            expect(funktioservice.isLukuarvoFunktioSlot(funktiokutsuSumma, 0)).toBe(true);
+            expect(funktioservice.isLukuarvoFunktioSlot(funktiokutsuSumma, 0)).toBeTruthy();
         });
 
         it("should return true for PAINOTETTUKESKIARVO-funktiokutsu and 1st index", function () {
-            expect(funktioservice.isLukuarvoFunktioSlot(funktiokutsuPainotettukeskiarvo, 0)).toBe(true);
+            expect(funktioservice.isLukuarvoFunktioSlot(funktiokutsuPainotettukeskiarvo, 0)).toBeTruthy();
         });
 
         it("should return true for root-funktiokutsu and 1st index", function () {
-            expect(funktioservice.isLukuarvoFunktioSlot(rootFunktiokutsu, 0)).toBe(true);
+            expect(funktioservice.isLukuarvoFunktioSlot(rootFunktiokutsu, 0)).toBeTruthy();
         });
     });
 
@@ -317,15 +198,15 @@ describe("FunktioService", function () {
     //isFunktiokutsu
     describe("isFunktiokutsu(parameter)", function () {
         it("should return true if given a funktiokutsu", function () {
-            expect(funktioservice.isFunktiokutsu(funktiokutsuJos)).toBe(true);
+            expect(funktioservice.isFunktiokutsu(funktiokutsuJos)).toBeTruthy();
         });
 
         it("should return true if given a funktiokutsu", function () {
-            expect(funktioservice.isFunktiokutsu(funktiokutsuKeskiarvo)).toBe(true);
+            expect(funktioservice.isFunktiokutsu(funktiokutsuKeskiarvo)).toBeTruthy();
         });
 
         it("should return false if given a laskentakaavaviite", function () {
-            expect(funktioservice.isFunktiokutsu(laskentakaavaviite)).toBe(false);
+            expect(funktioservice.isFunktiokutsu(laskentakaavaviite)).toBeFalsy();
         });
 
         it("should return undefined if parameter is undefined", function () {
@@ -340,24 +221,25 @@ describe("FunktioService", function () {
         });
 
         it("should return false for hylkää arvovälillä -funktiokutsulla", function () {
-            expect(funktioservice.isLaskentakaavaviite(funktiokutsuHylkaaarvovalilla)).toBe(false);
+            expect(funktioservice.isLaskentakaavaviite(funktiokutsuHylkaaarvovalilla)).toBeFalsy();
         });
 
         it("should return false for keskiarvo -funktiokutsulla", function () {
-            expect(funktioservice.isLaskentakaavaviite(funktiokutsuKeskiarvo)).toBe(false);
+            expect(funktioservice.isLaskentakaavaviite(funktiokutsuKeskiarvo)).toBeFalsy();
         });
 
         it("should return false for painotettukeskiarvo -funktiokutsulla", function () {
-            expect(funktioservice.isLaskentakaavaviite(funktiokutsuPainotettukeskiarvo)).toBe(false);
+            expect(funktioservice.isLaskentakaavaviite(funktiokutsuPainotettukeskiarvo)).toBeFalsy();
         });
 
         it("should return true for a laskentakaavaviite", function () {
-            expect(funktioservice.isLaskentakaavaviite(laskentakaavaviite)).toBe(true);
+            expect(funktioservice.isLaskentakaavaviite(laskentakaavaviite)).toBeTruthy();
         });
     });
-    
+
+    //hasFunktioargumentit
     describe("hasFunktioargumentit(parentFunktiokutsu, index)", function () {
-        it("should throw erro if first parameter is missing", function () {
+        it("should throw error if first parameter is missing", function () {
             expect(function () { funktioservice.hasFunktioargumentit(undefined, 0); }).toThrow(new Error('Missing parameter for Funktioservice.hasFunktioargumentit'));
         });
 
@@ -366,18 +248,40 @@ describe("FunktioService", function () {
         });
 
         it("should return true for funktiokutsu JOS", function () { //JOS-funktiokutsu funktiokutsuSumma:n ensimmäisenä parametrina
-            expect(funktioservice.hasFunktioargumentit(funktiokutsuSumma, 0)).toBe(true);
+            expect(funktioservice.hasFunktioargumentit(funktiokutsuSumma, 0)).toBeTruthy();
         });
         
         it("should return false for funktiokutsu LUKUARVO", function () { //LUKUARVO-funktiokutsu funktiokutsuJos:n toisena parametrina
-            expect(funktioservice.hasFunktioargumentit(funktiokutsuJos, 1)).toBe(false);
+            expect(funktioservice.hasFunktioargumentit(funktiokutsuJos, 1)).toBeFalsy();
         });
         
         it("should return true for rootfunktiokutsu", function () {
-            expect(funktioservice.hasFunktioargumentit(rootFunktiokutsu, 0)).toBe(true);
+            expect(funktioservice.hasFunktioargumentit(rootFunktiokutsu, 0)).toBeTruthy();
+        });
+    });
+
+    //getCurrentFunktiokutsu
+    describe("getCurrentFunktiokutsu(parentFunktiokutsu, index)", function () {
+        it('should return the correct child for parent and index', function () {
+            expect(funktioservice.getCurrentFunktiokutsu(funktiokutsuXParent,0)).toEqual(funktiokutsuXFirstChild);
+        });
+    });
+
+
+
+    //isLukuarvoFunktiokutsu
+    describe("isLukuarvoFunktiokutsu(funktiokuvaus)", function () {
+        it('should return false for funktiokuvaus EI', function () {
+            expect(funktioservice.isLukuarvoFunktiokutsu(ei)).toBeFalsy();
         });
 
+        it('should return true for funktiokuvaus SKAALAUS', function () {
+            expect(funktioservice.isLukuarvoFunktiokutsu(skaalaus)).toBeTruthy();
+        });
 
+        it('should return false for funktiokuvaus PIENEMPITAIYHTASUURI', function () {
+            expect(funktioservice.isLukuarvoFunktiokutsu(pienempitaiyhtasuuri)).toBeFalsy();
+        });
     });
 
 });

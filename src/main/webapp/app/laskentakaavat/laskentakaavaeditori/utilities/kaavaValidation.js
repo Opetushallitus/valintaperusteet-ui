@@ -1,7 +1,7 @@
 angular.module('valintaperusteet')
 
-    .service('KaavaValidation', ['_', 'FunktioNimiService', 'FunktioService', 'ErrorService', 'KaavaVirheTyypit',
-        function (_, FunktioNimiService, FunktioService, ErrorService, KaavaVirheTyypit) {
+    .service('KaavaValidation', ['_', 'FunktioNimiService', 'FunktioService', 'ErrorService', 'KaavaVirheTyypit', 'FunktiokuvausService',
+        function (_, FunktioNimiService, FunktioService, ErrorService, KaavaVirheTyypit, FunktiokuvausService) {
 
             var utility = this;
 
@@ -25,7 +25,6 @@ angular.module('valintaperusteet')
             };
 
             this.addValidationError = function (funktionimi, virhetyyppi, parent, funktiokutsu, funktiokutsuIndex) {
-                console.log('error arguments', arguments);
                 ErrorService.errors.push({
                     nimi: funktionimi,
                     parent: parent,
@@ -140,7 +139,7 @@ angular.module('valintaperusteet')
 
             // Funktiokutsulle voidaan määritellä N määrä funktioargumentteja - vähintään yksi on määriteltävä
             this.atLeastOneFunktioargumenttiDefined = function (parent, funktiokutsu, funktiokutsuIndex, definedFunktioargumenttiCount) {
-                if (FunktioService.isFunktiokutsuWithFunktioargumenttiSizeN(funktiokutsu) && definedFunktioargumenttiCount === 0) {
+                if (FunktioService.isFunktiokutsu(funktiokutsu) && FunktiokuvausService.hasNSizeFunktioargumenttiByFunktionimi(FunktioService.getFunktionimi(funktiokutsu)) && definedFunktioargumenttiCount === 0) {
                     var nimi, kuvaus, isFunktiokutsu;
                     nimi = FunktioNimiService.getName(funktiokutsu.lapsi.funktionimi);
                     isFunktiokutsu = FunktioService.isFunktiokutsu(funktiokutsu);

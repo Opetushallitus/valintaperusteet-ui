@@ -1,15 +1,14 @@
-angular.module('valintaperusteet').controller('UusiLaskentakaavaController', ['$scope', 'FunktioService',
-    '$routeParams', function ($scope, FunktioService) {
+angular.module('valintaperusteet').controller('UusiLaskentakaavaController', ['$scope', 'FunktioService', 'FunktiokuvausService',
+    '$routeParams', function ($scope, FunktioService, FunktiokuvausService) {
     'use strict';
 
     $scope.funktioService = FunktioService;
-    $scope.funktioService.refresh();
 
     $scope.kaava = { tyyppi: "NIMETTYLUKUARVO" };
     
         
     $scope.$on('initializeKaava', function () {
-        var funktiokuvaus = $scope.funktioService.getFunktiokuvaus($scope.kaava.tyyppi);
+        var funktiokuvaus = FunktiokuvausService.getFunktiokuvaus($scope.kaava.tyyppi);
         var laskentakaava = {
             nimi: $scope.kaava.nimi,
             kuvaus: $scope.kaava.kuvaus,

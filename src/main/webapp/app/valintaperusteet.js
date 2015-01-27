@@ -51,6 +51,16 @@ var app = angular.module('valintaperusteet', ['ngResource', 'ngCookies', 'loadin
 
 
 
+angular.module('valintaperusteet')
+    .controller('mainCtrl', ['$scope', '$routeParams', 'breadcrumbs', 'UserAccessLevels', 'UserModel',
+        function ($scope, $routeParams, breadcrumbs, UserAccessLevels, UserModel) {
+
+            $scope.breadcrumbs = breadcrumbs;
+            UserAccessLevels.refreshIfNeeded($routeParams.id, $routeParams.hakukohdeOid);
+            UserModel.refreshIfNeeded();
+
+        }]);
+
 
 
 var SERVICE_URL_BASE = SERVICE_URL_BASE || "";
@@ -60,6 +70,7 @@ var ORGANIZATION_SERVICE_URL_BASE = ORGANIZATION_SERVICE_URL_BASE || "/organisaa
 var LOKALISOINTIPALVELU_URL_BASE = LOKALISOINTIPALVELU_URL_BASE || "";
 var TARJONTA_URL_BASE = TARJONTA_URL_BASE || "";
 var VALINTALASKENTAKOOSTE_URL_BASE = VALINTALASKENTAKOOSTE_URL_BASE || "";
+var VALINTALASKENTA_URL_BASE = VALINTALASKENTA_URL_BASE || "";
 var LOCALISATION_URL_BASE = LOCALISATION_URL_BASE || "";
 var HAKEMUS_URL_BASE = HAKEMUS_URL_BASE || "";
 var CAS_URL = CAS_URL || "/cas/myroles";

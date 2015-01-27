@@ -3,8 +3,6 @@ angular.module('valintaperusteet').factory('TemplateService', function() {
 
 	var templateservice = new function() {
 
-
-
 		this.getSyoteparametriTemplate = function(syoteparametrityyppi) {
 
 			switch(syoteparametrityyppi) {
@@ -32,8 +30,6 @@ angular.module('valintaperusteet').factory('TemplateService', function() {
                     return "valintaperuste-default-template";
             }
         };
-
-
 
 		this.getKonvertteriparametriTemplate = function(konvertteriparametriSelection) {
 			switch(konvertteriparametriSelection) {
@@ -95,6 +91,7 @@ angular.module('valintaperusteet').factory('TemplateService', function() {
 				NMAKSIMI: 'fargumentticount_funktio_handle',
 				KESKIARVONPARASTA: 'fargumentticount_funktio_handle',
 				SUMMANPARASTA: 'fargumentticount_funktio_handle',
+				TULONPARASTA: 'fargumentticount_funktio_handle',
 
 				HYLKAAARVOVALILLA: 'hylkaa_arvovalilla',
 				NIMETTYLUKUARVO: 'nimetty_lukuarvo',
@@ -104,7 +101,7 @@ angular.module('valintaperusteet').factory('TemplateService', function() {
 			return map[key];
 		};
 
-	}();
+	};
 
 	return templateservice;
 });

@@ -504,6 +504,7 @@ describe('Testing JarjestyskriteeriController', function(){
 
         // KORJAA
         $httpBackend.expectGET('resources/valinnanvaihe/'+routeParams.valinnanvaiheOid+'/valintatapajono').respond([valintatapajonojson]);
+        $httpBackend.expectGET('resources/valintatapajono/'+routeParams.valintatapajonoOid+'/valmissijoiteltavaksi').respond(false);
         $httpBackend.expectGET('resources/valintatapajono/'+routeParams.valintatapajonoOid).respond(valintatapajonojson);
         $httpBackend.expectGET('resources/valintatapajono/'+routeParams.valintatapajonoOid+"/hakijaryhma").respond("[]");
         $httpBackend.expectGET('resources/valintatapajono/'+routeParams.valintatapajonoOid+"/jarjestyskriteeri").respond('[{"metatiedot":"Ulkomailla suoritettu koulutus tai oppivelvollisuuden suorittaminen keskeytynyt","aktiivinen":true,"oid":"1403080024594-3389074374885820341","valintatapajonoOid":"14030800242802764498205598029585","inheritance":false,"laskentakaavaId":4140}]');
@@ -954,6 +955,7 @@ describe('Testing HakukohdeValintatapajonoController', function(){
         location = $location;
 
         $httpBackend.expectGET('resources/valinnanvaihe/'+routeParams.valinnanvaiheOid+'/valintatapajono').respond([valintatapajonojson]);
+        $httpBackend.expectGET('resources/valintatapajono/'+routeParams.valintatapajonoOid+'/valmissijoiteltavaksi').respond(false);
         $httpBackend.expectGET('resources/valintatapajono/'+routeParams.valintatapajonoOid).respond(valintatapajonojson);
         $httpBackend.expectGET('resources/valintatapajono/'+routeParams.valintatapajonoOid+"/hakijaryhma").respond("[]");
         $httpBackend.expectGET('resources/valintatapajono/'+routeParams.valintatapajonoOid+"/jarjestyskriteeri").respond('[{"metatiedot":"Ulkomailla suoritettu koulutus tai oppivelvollisuuden suorittaminen keskeytynyt","aktiivinen":true,"oid":"1403080024594-3389074374885820341","valintatapajonoOid":"14030800242802764498205598029585","inheritance":false,"laskentakaavaId":4140}]');

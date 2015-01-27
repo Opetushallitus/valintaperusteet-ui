@@ -91,7 +91,6 @@ angular.module('valintaperusteet')
             'use strict';
 
             $scope.funktioService = FunktioService;
-            $scope.funktioService.refresh();
             $scope.valintaryhmaOid = $routeParams.valintaryhmaOid;
             $scope.linkprefix = '';
             var params = {};

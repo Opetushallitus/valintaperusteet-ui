@@ -42,6 +42,7 @@ factory('FunktioNimiService', function() {
 			NMAKSIMI: 'N paras',
 			KESKIARVONPARASTA: 'N:n suurimman keskiarvo',
 			SUMMANPARASTA: 'N:n suurimman summa',
+			TULONPARASTA: 'N:n suurimman tulo',
 			HYLKAAARVOVALILLA: 'Hylkää arvovälillä',
 			NIMETTYLUKUARVO: 'Nimetty lukuarvo',
 			NIMETTYTOTUUSARVO: 'Nimetty totuusarvo',

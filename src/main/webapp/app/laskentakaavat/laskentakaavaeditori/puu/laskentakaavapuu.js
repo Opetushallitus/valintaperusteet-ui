@@ -1,13 +1,14 @@
 angular.module('valintaperusteet').controller('LaskentakaavaController',
     ['$scope', '_', '$location', '$routeParams', '$timeout', 'KaavaValidointi', 'Laskentakaava', 'LaskentakaavaLista',
         'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'Arvokonvertterikuvauskielet',
-        'FunktioNimiService', 'FunktioFactory', 'KaavaValidation', 'KaavaVirheTyypit', 'ErrorService',
-        function ($scope, _, $location, $routeParams, $timeout, KaavaValidointi, Laskentakaava, LaskentakaavaLista, TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet, FunktioNimiService, FunktioFactory, KaavaValidation, KaavaVirheTyypit, ErrorService) {
+        'FunktioNimiService', 'FunktioFactory', 'KaavaValidation', 'KaavaVirheTyypit', 'ErrorService', 'FunktiokuvausService',
+        function ($scope, _, $location, $routeParams, $timeout, KaavaValidointi, Laskentakaava, LaskentakaavaLista,
+                  TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet, FunktioNimiService,
+                  FunktioFactory, KaavaValidation, KaavaVirheTyypit, ErrorService, FunktiokuvausService) {
             'use strict';
             //servicet laskentakaavapuun piirtämiseen
             $scope.templateService = TemplateService;
             $scope.funktioService = FunktioService;
-            $scope.funktioService.refresh();
             $scope.funktionimiService = FunktioNimiService;
             $scope.funktioFactory = FunktioFactory;
             $scope.valintaperusteviitetyypit = Valintaperusteviitetyypit;
@@ -79,7 +80,7 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                 $scope.alikaavaValues.hasParentAlikaava = hasParentAlikaava;
 
                 if (isFunktiokutsu) {
-                    $scope.funktiokuvausForSelection = $scope.funktioService.getFunktiokuvaus(funktio.lapsi.funktionimi);
+                    $scope.funktiokuvausForSelection = FunktiokuvausService.getFunktiokuvaus(funktio.lapsi.funktionimi);
                 }
 
                 //päätellään funktiolle esivalittu konvertteriparametrityyppi, jos funktiolla on konvertteriparametreja
@@ -164,7 +165,7 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
             $scope.findFunktioSlotIndex = function (parent, index) {
                 var isNimetty = $scope.isNimettyFunktioargumentti(parent);
                 var resultIndex = undefined;
-                var isPainotettukeskiarvoChild = $scope.funktioService.isPainotettukeskiarvoChild(parent);
+                var isPainotettukeskiarvoChild = FunktioService.isPainotettukeskiarvo(parent);
                 if (isNimetty || isPainotettukeskiarvoChild) {
                     resultIndex = index;
                 } else {
@@ -295,7 +296,7 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
             };
 
             $scope.getDefinedFunktioargumenttiCount = function (parent) {
-                return $scope.funktioService.getDefinedFunktioargumenttiCount(parent);
+                return FunktioService.getDefinedFunktioargumenttiCount(parent);
             };
 
             $scope.changeKonvertteriparametriTypeSelection = function (konvertteriparametriSelection) {
@@ -386,7 +387,7 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
 
             $scope.isPainotettukeskiarvoChild = function (funktiokutsu) {
                 if (funktiokutsu) {
-                    return $scope.funktioService.isPainotettukeskiarvoChild(funktiokutsu);
+                    return FunktioService.isPainotettukeskiarvo(funktiokutsu);
                 } else {
                     return false;
                 }

@@ -33,7 +33,7 @@ angular.module('valintaperusteet')
                 if(_.isEmpty(model.deferred) ||
                      ( !_.isEmpty(valintaryhmaOid) && (valintaryhmaOid !== model.valintaryhmaOid) ) ||
                       ( !_.isEmpty(hakukohdeOid) && (hakukohdeOid !== model.hakukohdeOid) ) )  {
-                    model.refresh(valintaryhmaOid, hakukohdeOid);
+                    return model.refresh(valintaryhmaOid, hakukohdeOid);
                 } else {
                     return model.deferred.promise;
                 }
@@ -76,28 +76,45 @@ angular.module('valintaperusteet')
                 var readOphSuccessFn = function () { model.setReadRights("oph"); model.deferred.resolve();};
                 var readOphRejectFn = function () {
                     // If users organizations are found then use them getting access
-                    OrganisaatioUtility.getOrganizations(true, valintaryhmaOid, hakukohdeOid).then(function (organizationOids) {
-                        if(!_.isEmpty(organizationOids)) { //check rights against valintaryhma or hakukohde organizations
-                            crudOrgPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET', organizationOids);
-                            updateOrgPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET', organizationOids);
-                            readOrgPromise = AuthService.readOrg('APP_VALINTAPERUSTEET', organizationOids);
-                            crudOrgPromise.then(crudOrgSuccessFn, crudOrgRejectFn);
-                        } else { // check if user has rights to this application
+                    var organizationOidsPromise = undefined;
+
+                    if(valintaryhmaOid !== undefined) {
+                        organizationOidsPromise = OrganisaatioUtility.getChildOrganizationsForValintaryhmaAsOidList(valintaryhmaOid);
+                    } else if(hakukohdeOid !== undefined) {
+                        organizationOidsPromise = OrganisaatioUtility.getChildOrganizationsForHakukohdeAsOidList(hakukohdeOid);
+                    }
+
+                    if(organizationOidsPromise !== undefined) {
+                        organizationOidsPromise.then(function (organizationOids) {
+                            if(!_.isEmpty(organizationOids)) { //check rights against valintaryhma or hakukohde organizations
+                                crudOrgPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET', organizationOids);
+                                updateOrgPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET', organizationOids);
+                                readOrgPromise = AuthService.readOrg('APP_VALINTAPERUSTEET', organizationOids);
+                                crudOrgPromise.then(crudOrgSuccessFn, crudOrgRejectFn);
+                            } else { // check if user has rights to this application
+                                crudAppPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET');
+                                updateAppPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET');
+                                readAppPromise = AuthService.readOrg('APP_VALINTAPERUSTEET');
+                                crudAppPromise.then(crudAppSuccessFn, crudAppRejectFn);
+                            }
+                        }, function () {
+                            // check users rights to application if organizations can't be fetched
                             crudAppPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET');
                             updateAppPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET');
                             readAppPromise = AuthService.readOrg('APP_VALINTAPERUSTEET');
+
                             crudAppPromise.then(crudAppSuccessFn, crudAppRejectFn);
-                        }
-
-
-                    }, function () {
+                        });
+                    } else {
+                        // if valintaryhmaOid or hakukohdeOid aren't found
                         // check users rights to application if organizations can't be fetched
-                        crudOrgPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET');
-                        updateOrgPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET');
-                        readOrgPromise = AuthService.readOrg('APP_VALINTAPERUSTEET');
+                        crudAppPromise = AuthService.crudOrg('APP_VALINTAPERUSTEET');
+                        updateAppPromise = AuthService.updateOrg('APP_VALINTAPERUSTEET');
+                        readAppPromise = AuthService.readOrg('APP_VALINTAPERUSTEET');
 
-                        crudOrgPromise.then(crudOrgSuccessFn, crudOrgRejectFn);
-                    });
+                        crudAppPromise.then(crudAppSuccessFn, crudAppRejectFn);
+                    }
+
                 };
 
                 // set user rights for ORGCRUD or continue to next level

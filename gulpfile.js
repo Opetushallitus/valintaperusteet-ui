@@ -48,6 +48,7 @@ var paths = {
         'bower_components/jquery.i18n.properites/jquery.i18n.properties.js',
 
         'bower_components/lodash/dist/lodash.underscore.js',
+        'bower_components/lodash/dist/lodash.compat.js',
 
         'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
 
@@ -89,7 +90,7 @@ gulp.task('default', function (callback) {
 
 // Development
 gulp.task('dev', function (callback) {
-    runSequence(['test-watch', 'styles', 'livereload'], function(){} );
+    runSequence(['test-watch', 'css', 'livereload'], function(){} );
 });
 
 

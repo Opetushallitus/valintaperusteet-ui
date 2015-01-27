@@ -1,47 +1,15 @@
-angular.module('valintaperusteet').factory('FunktioFactory', function(FunktioService){
+angular.module('valintaperusteet')
+	.factory('FunktioFactory', ['FunktiokuvausService', 'FunktioService',
+	function(FunktiokuvausService, FunktioService){
     "use strict";
 
     var factory = new function() {
 
-		function generateFunktioPrototype() {
-			return {
-				lapsi: {
-					funktionimi: null,
-					arvokonvertteriparametrit: [],
-					arvovalikonvertteriparametrit: [],
-					syoteparametrit: [],
-					funktioargumentit: [],
-					valintaperusteviitteet: [],
-					validointivirheet: [],
-					onLuonnos: null,
-					nimi: null,
-					kuvaus: null,
-					tyyppi: null,
-					lapsityyppi: null,
-					tulosTunniste: null,
-					tallennaTulos: false,
-					tulosTekstiFi: null,
-					tulosTekstiSv: null,
-					tulosTekstiEn: null
-				},
-
-				indeksi: 0
-			};
-		}
-
-		function setLapsityyppi(funktioprototype, funktiotyyppi) {
-			if(funktiotyyppi === 'LASKENTAKAAVAVIITE') {
-				funktioprototype.lapsi.lapsityyppi = "laskentakaava";
-			} else {
-				funktioprototype.lapsi.lapsityyppi = "funktiokutsu";
-			}
-		}
-
-        this.createEmptyLaskentakaava = function(funktiokutsu, routeParams, kaavaNimi, kaavaKuvaus) {
+        this.createEmptyLaskentakaava = function(funktiokutsu, routeParams, nimi, kuvaus) {
             var kaavatree = {};
             var newfunktioFunktionimi = funktiokutsu.lapsi.tyyppi === 'LUKUARVOFUNKTIO' ? 'NIMETTYLUKUARVO' : 'NIMETTYTOTUUSARVO';
 
-            var funktiokuvaus = FunktioService.getFunktiokuvaus(funktiokutsu.lapsi.funktionimi);
+            var funktiokuvaus = FunktiokuvausService.getFunktiokuvaus(funktiokutsu.lapsi.funktionimi);
 
             angular.copy(funktiokutsu, kaavatree);
 
@@ -54,7 +22,7 @@ angular.module('valintaperusteet').factory('FunktioFactory', function(FunktioSer
                         funktionimi: newfunktioFunktionimi,
                         arvokonvertteriparametrit: [],
                         arvovalikonvertteriparametrit: [],
-                        syoteparametrit: [{arvo: kaavaNimi, avain: "nimi"}],
+                        syoteparametrit: [{arvo: nimi, avain: "nimi"}],
                         tulosTunniste: null,
                         tulosTekstiFi: null,
                         tulosTekstiSv: null,
@@ -66,7 +34,7 @@ angular.module('valintaperusteet').factory('FunktioFactory', function(FunktioSer
                     id: undefined,
                     onLuonnos: false,
                     tyyppi: funktiokuvaus.tyyppi,
-                    kuvaus: kaavaKuvaus,
+                    kuvaus: kuvaus,
                     nimi: kaavaNimi,
                     kardinaliteetti: 1
                 }
@@ -156,10 +124,10 @@ angular.module('valintaperusteet').factory('FunktioFactory', function(FunktioSer
 
 		this.createFunktioInstance = function(parentFunktiokutsu, newFunktioType, isDirectChildForRoot) {
 
-			var parentFunktiokuvaus = isDirectChildForRoot ? FunktioService.getFunktiokuvaus(parentFunktiokutsu.funktionimi) : FunktioService.getFunktiokuvaus(parentFunktiokutsu.lapsi.funktionimi);
-			var newFunktioFunktiokuvaus = FunktioService.getFunktiokuvaus(newFunktioType);
+			var parentFunktiokuvaus = isDirectChildForRoot ? FunktiokuvausService.getFunktiokuvaus(parentFunktiokutsu.funktionimi) : FunktiokuvausService.getFunktiokuvaus(parentFunktiokutsu.lapsi.funktionimi);
+			var newFunktioFunktiokuvaus = FunktiokuvausService.getFunktiokuvaus(newFunktioType);
 			var funktioprototype = generateFunktioPrototype();
-
+			
 			//Funktionimi
 			funktioprototype.lapsi.funktionimi = newFunktioType;
             funktioprototype.lapsi.tyyppi = newFunktioFunktiokuvaus.tyyppi;
@@ -172,7 +140,7 @@ angular.module('valintaperusteet').factory('FunktioFactory', function(FunktioSer
 
 			//Generoidaan funktioargumentit
 			if(newFunktioFunktiokuvaus.funktioargumentit) {
-				populateFunktioargumentit(funktioprototype, newFunktioFunktiokuvaus, FunktioService.isNimettyFunktioargumenttiByFunktionimi(newFunktioType), FunktioService.isPainotettukeskiarvoChildByParentNimi(newFunktioType) );
+				populateFunktioargumentit(funktioprototype, newFunktioFunktiokuvaus, FunktiokuvausService.hasNimettyFunktioargumenttiByFunktioNimi(newFunktioType), FunktiokuvausService.isPainotettukeskiarvoByFunktioNimi(newFunktioType) );
 			}
 
 			return funktioprototype;
@@ -217,7 +185,41 @@ angular.module('valintaperusteet').factory('FunktioFactory', function(FunktioSer
 			}
 		}
 
+		function generateFunktioPrototype() {
+			return {
+				lapsi: {
+					funktionimi: null,
+					arvokonvertteriparametrit: [],
+					arvovalikonvertteriparametrit: [],
+					syoteparametrit: [],
+					funktioargumentit: [],
+					valintaperusteviitteet: [],
+					validointivirheet: [],
+					onLuonnos: null,
+					nimi: null,
+					kuvaus: null,
+					tyyppi: null,
+					lapsityyppi: null,
+					tulosTunniste: null,
+					tallennaTulos: false,
+					tulosTekstiFi: null,
+					tulosTekstiSv: null,
+					tulosTekstiEn: null
+				},
+
+				indeksi: 0
+			};
+		}
+
+		function setLapsityyppi(funktioprototype, funktiotyyppi) {
+			if(funktiotyyppi === 'LASKENTAKAAVAVIITE') {
+				funktioprototype.lapsi.lapsityyppi = "laskentakaava";
+			} else {
+				funktioprototype.lapsi.lapsityyppi = "funktiokutsu";
+			}
+		}
+
 	}();
 
 	return factory;
-});
+}]);

@@ -101,7 +101,7 @@
 
     <div class="col-md-4">
         <select auth ng-disabled="!userAccess.updateOrg" id="hakunimi" class="form-control" ng-model="model.valintaryhma.hakuoid"
-                ng-options="h.oid as h.nimi.kieli_fi for h in model.haut | orderBy:'nimi.kieli_fi'">
+                ng-options="h.oid as h.uiNimi for h in model.haut | orderBy:'nimi.kieli_fi'">
             <option value=""></option>
         </select>
     </div>
@@ -194,10 +194,10 @@
                     <span ng-if="data.valinnanVaiheTyyppi === 'VALINTAKOE'">{{t('valintaperusteet.tyyppi.VALINTAKOE') || 'Valintakoe'}}</span>
                 </td>
                 <td>
-                    <button auth ng-disabled="!userAccess.crudOrg" ng-show="!data.inheritance"
+                    <a auth ng-disabled="!userAccess.crudOrg" ng-show="!data.inheritance"
                             class="btn btn-sm btn-default" ng-click="model.removeValinnanvaihe(data)">
                         <i class="fa fa-trash-o"></i>
-                    </button>
+                    </a>
                 </td>
             </tr>
             </tbody>
@@ -276,18 +276,18 @@
 
 <div ng-show="model.valintaryhma.oid" class="form-group">
     <div class="col-md-4 col-md-offset-2">
-        <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()">
+        <a auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="lisaaHakijaryhma()">
             <i class="fa fa-plus"></i> {{ t('valintaryhmalomake.hakijaryhma') || 'Hakijaryhmä' }}
-        </button>
+        </a>
     </div>
 </div>
 
 <div auth ng-if="userAccess.crudOrg" class="form-group">
     <label class="control-label col-md-2">{{ t('valintaryhmalomake.hallinnoi') || 'Hallinnoi valintaryhmää'}}</label>
     <div class="col-md-10">
-        <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-default btn-sm" ng-click="showValintaryhmaKopiointi()">
+        <a auth ng-disabled="!userAccess.crudOrg" class="btn btn-default btn-sm" ng-click="showValintaryhmaKopiointi()">
             {{t('valintaryhmalomake.kopioi.valintaryhma.kopiointi') || 'Valintaryhmän kopiointi'}}
-        </button>
+        </a>
         <button auth ng-disabled="!model.okToDelete || !userAccess.crudOrg" class="btn btn-sm btn-primary" type="button"
                 ng-click="deleteValintaryhma()">
             <i class="fa fa-trash-o"></i>
