@@ -19,7 +19,7 @@ angular.module('valintaperusteet')
                 var isRootFunktiokutsu = FunktioService.isRootFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu);
                 var kaarittavaFunktiokutsu = FunktioService.getCurrentFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu, $scope.funktioasetukset.selectedFunktioIndex);
                 var kaarivaFunktiokutsu  = FunktioFactory.createFunktioInstance($scope.funktioasetukset.parentFunktiokutsu, kaarivaFunktiokutsuNimi, isRootFunktiokutsu);
-                kaarivaFunktiokutsu.open = true;
+                kaarivaFunktiokutsu.open = false;
                 
                 if(isRootFunktiokutsu) {
                     kaarivaFunktiokutsu.lapsi.funktioargumentit[0] = kaarittavaFunktiokutsu;
@@ -36,7 +36,7 @@ angular.module('valintaperusteet')
                 var isRootFunktiokutsu = FunktioService.isRootFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu);
                 var kaarittavaFunktiokutsu = FunktioService.getCurrentFunktiokutsu($scope.funktioasetukset.parentFunktiokutsu, $scope.funktioasetukset.selectedFunktioIndex);
                 var kaarivaFunktiokutsu  = FunktioFactory.createFunktioInstance($scope.funktioasetukset.parentFunktiokutsu, kaarivaFunktiokutsuNimi, isRootFunktiokutsu);
-                kaarivaFunktiokutsu.open = true;
+                kaarivaFunktiokutsu.open = false;
 
                 if(isRootFunktiokutsu) {
                     kaarivaFunktiokutsu.lapsi.funktioargumentit[childFunktiokutsuIndex] = kaarittavaFunktiokutsu;
