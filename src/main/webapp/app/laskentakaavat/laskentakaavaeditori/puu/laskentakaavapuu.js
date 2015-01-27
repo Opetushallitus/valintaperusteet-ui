@@ -1,10 +1,10 @@
 angular.module('valintaperusteet').controller('LaskentakaavaController',
     ['$scope', '_', '$location', '$routeParams', '$timeout', 'KaavaValidointi', 'Laskentakaava', 'LaskentakaavaLista',
         'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'Arvokonvertterikuvauskielet',
-        'FunktioNimiService', 'FunktioFactory', 'KaavaValidation', 'KaavaVirheTyypit', 'ErrorService', 'FunktiokuvausService',
+        'FunktioNimiService', 'FunktioFactory', 'KaavaValidation', 'KaavaVirheTyypit', 'ErrorService', 'FunktiokuvausService', 'FunktiokutsuKaareService', '$modal',
         function ($scope, _, $location, $routeParams, $timeout, KaavaValidointi, Laskentakaava, LaskentakaavaLista,
                   TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet, FunktioNimiService,
-                  FunktioFactory, KaavaValidation, KaavaVirheTyypit, ErrorService, FunktiokuvausService) {
+                  FunktioFactory, KaavaValidation, KaavaVirheTyypit, ErrorService, FunktiokuvausService, FunktiokutsuKaareService, $modal) {
             'use strict';
             //servicet laskentakaavapuun piirtämiseen
             $scope.templateService = TemplateService;
@@ -75,10 +75,6 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                 $scope.showFunktiokutsuAsetukset(isFunktiokutsu);
             };
 
-            $scope.showFunktiokutsuTools = function (funktiokutsu, isFunktiokutsu, parentFunktiokutsu, index, isAlikaava, hasParentAlikaava) {
-
-            };
-
             $scope.showFunktiokutsuAsetukset = function (isFunktiokutsu) {
                 if (isFunktiokutsu) {
                     $scope.$broadcast('showFunktiokutsuAsetukset');
@@ -86,8 +82,6 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                     $scope.$broadcast('showLaskentakaavaviiteAsetukset');
                 }
             };
-
-
 
             // funktio = valittu funktiokutsu tai laskentakaavaviite
             // isFunktiokutsu = onko funktio-parametri funktiokutsu vai laskentakavaaviite
@@ -404,6 +398,18 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
 
             $scope.hasFunktioargumentit = function (parent, childIndex) {
                 return FunktioService.hasFunktioargumentit(parent, childIndex);
+            };
+
+            $scope.showFunktiokutsunKaarintaModal = function (funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava) {
+                $scope.setFunktioSelection(funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava);
+                FunktiokutsuKaareService.setFunktioKaareLista(FunktioService.getFunktiokutsuTyyppi($scope.funktioSelection));
+                var modalInstance = $modal.open({
+                    templateUrl: 'laskentakaavat/laskentakaavaeditori/kaariminen/funktiokutsunkaariminen.html',
+                    controller: 'FunktiokutsunKaariminenController',
+                    resolve: {
+                        funktioasetukset: function() { return $scope.funktioasetukset; }
+                    }
+                });
             };
 
             $scope.valintaperusteviiteDefined = function (valintaperusteviite) {

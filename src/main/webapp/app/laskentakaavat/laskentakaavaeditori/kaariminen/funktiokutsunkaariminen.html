@@ -29,20 +29,12 @@
 </div>
 
 <div class="modal-footer">
-    <button class="btn btn-default btn-sm" ng-click="laskentakaavaModalService.toggleModalSelection('asetukset')" popover-popup-delay="500"
-            popover-placement="top" popover-trigger="mouseenter"
-            popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
-        <i class="fa fa-arrow-left"></i> {{ t('laskentakaavaviiteasetuksetmodal.palaafunktioasetuksiin') || 'Palaa funktioasetuksiin' }}
-    </button>
-
     <button class="btn btn-default btn-sm" ng-click="kaariFunktiokutsu(selectedKaarivaFunktionimi, childFunktiokutsuIndex); sulje()"
             ng-disabled="!selectedKaarivaFunktionimi"
             popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter"
             popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">{{ t('funktiokutsuasetuksetmodal.kaareenvalinta.tallenna') || 'Kääri funktiokutsu'}}</button>
 
-    <button class="btn btn-default btn-sm" ng-click="resetModalSelection(); sulje()" popover-popup-delay="500" popover-placement="top"
-            popover-trigger="mouseenter"
-            popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
+    <button class="btn btn-default btn-sm" ng-click="close()">
         {{ t('laskentakaavaviiteasetuksetmodal.sulje') || 'Sulje' }}
     </button>
 </div>

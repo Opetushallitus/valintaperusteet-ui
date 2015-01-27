@@ -547,22 +547,9 @@
     <div class="modal-footer">
 
         <button class="btn btn-default btn-sm"
-                ng-disabled="!userAccess.crudOrg"
-                ng-click="showFunktiokutsunKaarintaModal()">{{ t('funktiokutsuasetuksetmodal.kaariminen') || 'Funktiokutsun kääriminen'}}
-        </button>
-
-        <button class="btn btn-default btn-sm"
                 ng-disabled="alikaavaValues.isAlikaava || funktioasetukset.parentFunktiokutsu === model.laskentakaavapuu.funktiokutsu || !userAccess.crudOrg"
                 ng-click="laskentakaavaModalService.toggleModalSelection('tallennusKaavana')">{{ t('laskentakaavaviiteasetuksetmodal.kaavanosantallennus') || 'Kaavan osan
             tallennus' }}
-        </button>
-
-        <button ng-disabled="alikaavaValues.isAlikaava || !userAccess.crudOrg" class="btn btn-sm btn-default"
-                ng-click="removeFunktiokutsu(); sulje()" popover-popup-delay="500" popover-placement="top"
-                popover-trigger="mouseenter"
-                popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
-            <i class="fa fa-trash-o"></i> {{ t('laskentakaavaviiteasetuksetmodal.poistafunktiokutsu') || 'Poista
-            funktiokutsu' }}
         </button>
 
         <button class="btn btn-default btn-sm" ng-click="sulje()"

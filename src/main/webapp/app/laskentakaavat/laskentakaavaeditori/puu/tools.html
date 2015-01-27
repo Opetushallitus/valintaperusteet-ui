@@ -15,11 +15,11 @@
       </li>
 
       <li>
-          <a ng-if="clipboard" ng-click="pasteFunktiokutsu(parent, $index)"><i class="fa fa-clipboard"></i> Liitä</a>
+          <a ng-if="clipboard" ng-click="pasteFunktiokutsu(parent, $index)"><i class="fa fa-clipboard"></i> Liitä ({{templateService.getName(clipboard.lapsi.funktionimi)}})</a>
       </li>
 
       <li>
-          <a ng-click="funktiokutsuClicked(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">Kääri</a>
+          <a ng-click="showFunktiokutsunKaarintaModal(funktiowrapper, true, parent, $index, isAlikaava, hasParentAlikaava)">Kääri</a>
       </li>
 
       <li>
