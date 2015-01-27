@@ -530,7 +530,7 @@ YHTASUURI
         <tr>
             <td ng-click="addFunktio(parent, 'SKAALAUS', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.skaalaus') || 'Skaalaus' }}</span>
             </td>
-            <td ng-if="clipboard" ng-click="pasteFunktiokutsu(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.lisaaleikepoydalta') || 'Lisää funktiokutsu leikepöydältä'}}</span></td>
+            <td ng-if="clipboard && clipboard.lapsi.tyyppi === 'LUKUARVOFUNKTIO'" ng-click="pasteFunktiokutsu(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.lisaaleikepoydalta') || 'Lisää funktiokutsu leikepöydältä'}}</span></td>
         </tr>
         </tbody>
     </table>
@@ -603,7 +603,7 @@ YHTASUURI
                 ng-click="addLaskentakaavaviite(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.viittaus') || 'Viittaus toiseen kaavaan' }}</span>
             </td>
         </tr>
-        <tr ng-if="clipboard">
+        <tr ng-if="clipboard && clipboard.lapsi.tyyppi === 'TOTUUSARVOFUNKTIO'">
             <td ng-click="pasteFunktiokutsu(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.lisaaleikepoydalta') || 'Lisää funktiokutsu leikepöydältä'}}</span></td>
         </tr>
         </tbody>

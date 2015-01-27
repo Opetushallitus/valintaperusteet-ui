@@ -2,6 +2,7 @@
     <span class="dropdown-toggle" dropdown-toggle><span ng-transclude></span></span>
   <!--<a href class="dropdown-toggle" dropdown-toggle>Kopioi</a>-->
   <ol class="dropdown-menu">
+
       <li>
           <a ng-click="showFunktiokutsuEdit(parent, $index, isAlikaava, hasParentAlikaava)"><i class="fa fa-pencil"></i> Muokkaa</a>
       </li>
@@ -15,7 +16,7 @@
       </li>
 
       <li>
-          <a ng-if="clipboard" ng-click="pasteFunktiokutsu(parent, $index)"><i class="fa fa-clipboard"></i> Liitä ({{templateService.getName(clipboard.lapsi.funktionimi)}})</a>
+          <a ng-if="clipboard && clipboard.lapsi.tyyppi === funktiowrapper.lapsi.tyyppi" ng-click="pasteFunktiokutsu(parent, $index)"><i class="fa fa-clipboard"></i> Liitä ({{funktionimiService.getName(clipboard.lapsi.funktionimi)}})</a>
       </li>
 
       <li>
