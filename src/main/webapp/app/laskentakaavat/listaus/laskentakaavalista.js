@@ -91,17 +91,17 @@ angular.module('valintaperusteet')
             'use strict';
 
             $scope.funktioService = FunktioService;
-            $scope.valintaryhmaOid = $routeParams.valintaryhmaOid;
+            $scope.valintaryhmaOid = $routeParams.id;
             $scope.linkprefix = '';
             var params = {};
             var saveParams = {};
 
-            if ($routeParams.valintaryhmaOid) {
-                LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, null, true);
-                saveParams.valintaryhmaOid = $routeParams.valintaryhmaOid;
-                params.valintaryhma = $routeParams.valintaryhmaOid;
-                $scope.valintaryhmaOid = $routeParams.valintaryhmaOid;
-                $scope.linkprefix = '/valintaryhma/' + $scope.valintaryhmaOid;
+            if ($routeParams.id) {
+                LaskentakaavaLista.refresh($routeParams.id, null, true);
+                saveParams.valintaryhmaOid = $routeParams.id;
+                params.valintaryhma = $routeParams.id;
+                $scope.valintaryhmaOid = $routeParams.id;
+                $scope.linkprefix = '/valintaryhma/' + $scope.id;
                 $scope.valintaryhmat = LaskentakaavaLista;
             }
 
@@ -110,7 +110,7 @@ angular.module('valintaperusteet')
             $scope.showForm = false;
 
             $scope.createKaava = function () {
-                $location.path("/valintaryhma/" + $routeParams.valintaryhmaOid + "/laskentakaavalista/laskentakaava");
+                $location.path("/valintaryhma/" + $routeParams.id + "/laskentakaavalista/laskentakaava");
             };
 
             $scope.editKaava = function (kaava) {
@@ -120,7 +120,7 @@ angular.module('valintaperusteet')
             };
 
             $scope.cancel = function () {
-                $location.path("/valintaryhma/" + $routeParams.valintaryhmaOid);
+                $location.path("/valintaryhma/" + $routeParams.id);
             };
 
             $scope.kaavaKopiointiModal = function (kaava) {
@@ -129,7 +129,7 @@ angular.module('valintaperusteet')
 
             $scope.kaavaPoisto = function (kaava) {
                 Laskentakaava.delete({oid: kaava.id}, function () {
-                    LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, null, true);
+                    LaskentakaavaLista.refresh($routeParams.id, null, true);
                     $scope.kaavaPoistoEpaonnistui = false;
                 }, function (error) {
                     $scope.kaavaPoistoEpaonnistui = true;

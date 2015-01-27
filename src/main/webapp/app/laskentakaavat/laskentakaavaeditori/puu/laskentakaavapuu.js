@@ -38,8 +38,8 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
             }
 
             $scope.reloadLaskentakaavaLista = function () {
-                if ($routeParams.valintaryhmaOid) {
-                    LaskentakaavaLista.refresh($routeParams.valintaryhmaOid, null);
+                if ($routeParams.id) {
+                    LaskentakaavaLista.refresh($routeParams.id, null);
                 } else if ($routeParams.hakukohdeOid) {
                     LaskentakaavaLista.refresh(null, $routeParams.hakukohdeOid);
                 } else {
@@ -461,7 +461,7 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
 
             $scope.persistNewKaava = function () {
                 var kaava = {
-                    valintaryhmaOid: $routeParams.valintaryhmaOid,
+                    valintaryhmaOid: $routeParams.id,
                     hakukohdeOid: $routeParams.hakukohdeOid,
                     laskentakaava: $scope.model.laskentakaavapuu
                 };

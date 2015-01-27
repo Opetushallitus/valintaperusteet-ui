@@ -22,8 +22,8 @@ angular.module('valintaperusteet')
             $scope.lisakysymysAvaimet = [];
             $scope.bigdata = [];
 
-            if ($routeParams.valintaryhmaOid !== undefined) { //if laskentakaava belongs to a valintaryhma
-                $scope.valintaryhmaModel.refreshIfNeeded($routeParams.valintaryhmaOid);
+            if ($routeParams.id !== undefined) { //if laskentakaava belongs to a valintaryhma
+                $scope.valintaryhmaModel.refreshIfNeeded($routeParams.id);
                 $scope.valintaryhmaPromise.then(function (result) {
                     $scope.resolveHaku();
                 }, function(reject) {

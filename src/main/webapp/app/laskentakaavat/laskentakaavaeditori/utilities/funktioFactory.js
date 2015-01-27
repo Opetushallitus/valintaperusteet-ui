@@ -14,7 +14,7 @@ angular.module('valintaperusteet')
             angular.copy(funktiokutsu, kaavatree);
 
             var kaava = {
-                valintaryhmaOid: routeParams.valintaryhmaOid,
+                valintaryhmaOid: routeParams.id,
                 hakukohdeOid: routeParams.hakukohdeOid,
                 laskentakaava: {
                     funktiokutsu: {

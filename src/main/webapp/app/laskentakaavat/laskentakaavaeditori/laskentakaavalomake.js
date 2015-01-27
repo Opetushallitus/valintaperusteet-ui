@@ -26,8 +26,8 @@ angular.module('valintaperusteet').
             }
 
             $scope.back = function () {
-                if ($routeParams.valintaryhmaOid) {
-                    $location.path("/valintaryhma/" + $routeParams.valintaryhmaOid + "/laskentakaavalista")
+                if ($routeParams.id) {
+                    $location.path("/valintaryhma/" + $routeParams.id + "/laskentakaavalista")
                 } else if ($routeParams.hakukohdeOid) {
                     $location.path("/hakukohde/" + $routeParams.hakukohdeOid + "/laskentakaavalista")
                 } else {
