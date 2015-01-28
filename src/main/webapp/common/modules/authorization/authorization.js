@@ -11,8 +11,8 @@ angular.module('valintaperusteet')
 
 
 
-    .directive('auth', ['$routeParams', '$q', '$animate', '$timeout', '$log', 'AuthService', 'UserAccessLevels', 'UserModel',
-        function ($routeParams, $q, $animate, $timeout, $log, AuthService, UserAccessLevels, UserModel) {
+    .directive('auth', ['$routeParams', '$q', '$animate', '$timeout', '$log', 'UserAccessLevels', 'UserModel',
+        function ($routeParams, $q, $animate, $timeout, $log, UserAccessLevels, UserModel) {
             return {
                 priority: 1000,
                 link: function ($scope, element, attrs) {

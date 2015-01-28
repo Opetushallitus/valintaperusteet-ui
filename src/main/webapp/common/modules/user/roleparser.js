@@ -13,10 +13,10 @@ angular.module('user')
     .service('RoleParser', ['$log', '_', 'READ', 'UPDATE', 'CRUD', 'OID_REGEXP',
                     function ($log, _, READ, UPDATE, CRUD, OID_REGEXP) {
 
-        var that = this;
+        var api = this;
         
         this.getParsedRoles = function (myRoles, appRoles) {
-            var RIGHT_LEVELS = [CRUD, UPDATE, READ];
+            var RoleParser = [CRUD, UPDATE, READ];
             var roles =  _.map(appRoles, function (appRole) {
                 var appRoleObj = {
                     app: appRole
@@ -24,27 +24,23 @@ angular.module('user')
 
                 var oidRegExp = new RegExp(OID_REGEXP);
 
-                var filtered = _.filter(myRoles, function (myRole) {
-                    that.matchesAppRole(appRole, myRole);
-
-                    if(myRole.search(oidRegExp) >= 0) {
-                        console.log(myRole.slice(myRole.search(oidRegExp), myRole.length));
-                    }
-
-
-                    return myRole.indexOf(appRole) >= 0;
-
-                });
+                var filtered = [];
+                //var filtered = _.filter(myRoles, function (myRole) {
+                //    api.matchesAppRole(appRole, myRole);
+                //
+                //    if(myRole.search(oidRegExp) >= 0) {
+                //        console.log(myRole.slice(myRole.search(oidRegExp), myRole.length));
+                //    }
+                //
+                //
+                //    return myRole.indexOf(appRole) >= 0;
+                //
+                //});
                 
                 return filtered;
 
             });
 
-
-            function isKorkeakouluRole(myRole, appRole) {
-
-            }
-            
         };
 
         this.getOrganizationOidsByAppRole = function () {
@@ -52,7 +48,7 @@ angular.module('user')
         };
 
 
-        //check that myRole includes appRole and appRole isn't a substring of another appRole
+        //check api myRole includes appRole and appRole isn't a substring of another appRole
         this.matchesAppRole = function (appRole, myRole) {
 
             if(myRole.indexOf(appRole) >= 0) {
@@ -72,7 +68,7 @@ angular.module('user')
         };
 
         this.getRoleOrganizationOid = function(myRole) {
-            if(!that.containsOid(myRole)) {
+            if(!api.containsOid(myRole)) {
                 $log.error('Oidin parsiminen käyttäjän epäonnistui roolista: ', myRole);
                 return;
             }
@@ -82,37 +78,22 @@ angular.module('user')
         //Get the items from myRoles list that include appRole -string
         this.getMyAppRoles = function (myRoles, appRole) {
             return _.filter(myRoles, function (myRole) {
-                return that.matchesAppRole(appRole, myRole);
+                return api.matchesAppRole(appRole, myRole);
             });
         };
                         
         this.getMyRolesWithOrganizationAndAppRole = function (myRoles, appRole) {
-            return _.filter(that.getMyAppRoles(myRoles, appRole), function (role) {
-                return that.containsOid(role);
+            return _.filter(api.getMyAppRoles(myRoles, appRole), function (role) {
+                return api.containsOid(role);
             });
         };
 
         this.getOrganizationsByAppRole = function (myRoles, appRole) {
-            return _.uniq(_.map(that.getMyRolesWithOrganizationAndAppRole(myRoles, appRole), function (myAppRole) {
-                return that.getRoleOrganizationOid(myAppRole);
+            return _.uniq(_.map(api.getMyRolesWithOrganizationAndAppRole(myRoles, appRole), function (myAppRole) {
+                return api.getRoleOrganizationOid(myAppRole);
             }));
         };
         
         
     }]);
 
-/*
-[
-    {
-        app: APP_VALINTAPERUSTEET,
-        rights: [
-            {
-                
-            }
-        ]
-    },
-    {
-        app:
-    }
-]
-    */

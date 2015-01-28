@@ -13,15 +13,13 @@ var app = angular.module('valintaperusteet', ['ngResource', 'ngCookies', 'loadin
     // Applications in myroles this module uses
     .constant('ValintaperusteRoles', ['APP_VALINTAPERUSTEET', 'APP_VALINTAPERUSTEETKK'])
 
-    .controller('mainCtrl', ['$scope', '$routeParams', '$log', 'breadcrumbs', 'UserAccessLevels', 'UserModel', 'AuthenticationServices', 'User', 'MyRolesModel', 'ValintaperusteRoles',
-        function ($scope, $routeParams, $log, breadcrumbs, UserAccessLevels, UserModel, AuthenticationServices, User, MyRolesModel, ValintaperusteRoles) {
+    .controller('mainCtrl', ['$scope', '$routeParams', '$log', 'breadcrumbs', 'UserAccessLevels', 'UserModel', 'AuthenticationServices', 'MyRolesModel', 'ValintaperusteRoles',
+        function ($scope, $routeParams, $log, breadcrumbs, UserAccessLevels, UserModel, AuthenticationServices, MyRolesModel, ValintaperusteRoles) {
             $scope.breadcrumbs = breadcrumbs;
 
             MyRolesModel.then(function (roles) {
                 UserAccessLevels.refreshIfNeeded($routeParams.id, $routeParams.hakukohdeOid);
                 UserModel.refreshIfNeeded();
-
-                User.refreshIfNeeded(roles.myroles, ValintaperusteRoles);
             }, function (error) {
                 $log.error('Fetching Myroles from cas failed:', error);
             });
