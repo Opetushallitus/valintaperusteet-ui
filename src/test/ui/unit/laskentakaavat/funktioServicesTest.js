@@ -1,6 +1,6 @@
 "use strict";
 
-xdescribe("FunktioService", function () {
+describe("FunktioService", function () {
     var funktioservice, funktiokutsuKeskiarvo, funktiokutsuJos,
         funktiokutsuSumma, funktiokutsuHylkaaarvovalilla, funktiokutsuPainotettukeskiarvo,
         laskentakaavaviite, rootFunktiokutsu, funktiokutsuPainotettukeskiarvoWith2EmptySlots,

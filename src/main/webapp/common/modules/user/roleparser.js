@@ -6,10 +6,6 @@ angular.module('valintaperusteet')
     .constant('UPDATE', "_READ_UPDATE")
     .constant('CRUD', "_CRUD")
 
-    .constant('Myroles_READ', '_READ_')
-    .constant('Myroles_READ_UPDATE_')
-    .constant('Myroles_CRUD_')
-
     .constant('OID_REGEXP', /\d(\d|\.)+\d/)
 
     //AppRole == part of a role in myroles list - for example APP_VALINTAPERUSTEET & APP_VALINTOJENTOTEUTTAMINEN are AppRoles

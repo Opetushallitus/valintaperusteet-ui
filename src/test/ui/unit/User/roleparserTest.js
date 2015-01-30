@@ -1,5 +1,5 @@
 
-xdescribe('Testing RoleParser service', function () {
+describe('Testing RoleParser service', function () {
     var roleParser, userMockData;
     beforeEach(module('MockData'));
     beforeEach(module('valintaperusteet'));
@@ -38,37 +38,5 @@ xdescribe('Testing RoleParser service', function () {
         });
     });
 
-    describe('getMyAppRoles', function () {
-         it('should return only roles matching the given appRole exactly', function () {
-            expect(roleParser.getMyAppRoles(userMockData.kkCrud, userMockData.valintaperusteetAppRole)).toEqual([
-                "APP_VALINTAPERUSTEET",
-                "APP_VALINTAPERUSTEET_CRUD",
-                "APP_VALINTAPERUSTEET_CRUD_1.2.246.562.10.64582714578",
-                "APP_VALINTAPERUSTEET",
-                "APP_VALINTAPERUSTEET_CRUD",
-                "APP_VALINTAPERUSTEET_CRUD_1.2.246.562.10.69981965515"
-            ]);
 
-             expect(roleParser.getMyAppRoles(userMockData.kkCrud, userMockData.valintojentoteuttaminenKK)).toEqual([
-                     "APP_VALINTOJENTOTEUTTAMINENKK",
-                     "APP_VALINTOJENTOTEUTTAMINENKK_CRUD",
-                     "APP_VALINTOJENTOTEUTTAMINENKK_CRUD_1.2.246.562.10.64582714578",
-                     "APP_VALINTOJENTOTEUTTAMINENKK",
-                     "APP_VALINTOJENTOTEUTTAMINENKK_CRUD",
-                     "APP_VALINTOJENTOTEUTTAMINENKK_CRUD_1.2.246.562.10.69981965515"
-             ]);
-
-             expect(roleParser.getMyAppRoles(userMockData.kkCrud, "EIOLEOLEMASSA")).toEqual([]);
-         });
-    });
-    
-    describe('getOrganizationsByApprole', function () {
-        it('should return all organization oids for the given appRole', function () {
-            expect(roleParser.getOrganizationsByAppRole(userMockData.kkCrud, userMockData.valintaperusteetAppRole)).toEqual([
-                "1.2.246.562.10.64582714578", "1.2.246.562.10.69981965515"
-            ]);
-        });
-    });
-
-    
 });
