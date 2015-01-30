@@ -1,7 +1,7 @@
 "use strict";
 
 var app = angular.module('valintaperusteet', ['ngResource', 'ngCookies', 'loading', 'ngRoute',
-    'ui.bootstrap', 'lodash', 'ng-breadcrumbs', 'oph.localisation', 'oph.utils', 'user'])
+    'ui.bootstrap', 'lodash', 'ng-breadcrumbs', 'oph.localisation', 'oph.utils'])
 
     .run(function ($http, LocalisationService) {
         $http.get(SERVICE_URL_BASE + "buildversion.txt?auth");
@@ -11,10 +11,10 @@ var app = angular.module('valintaperusteet', ['ngResource', 'ngCookies', 'loadin
     .constant('CAS_URL', CAS_URL || "/cas/myroles")
 
     // Applications in myroles this module uses
-    .constant('ValintaperusteRoles', ['APP_VALINTAPERUSTEET', 'APP_VALINTAPERUSTEETKK'])
+    .constant('ValintaperusteApps', ['APP_VALINTAPERUSTEET', 'APP_VALINTOJENTOTEUTTAMINEN'])
 
-    .controller('mainCtrl', ['$scope', '$routeParams', '$log', 'breadcrumbs', 'UserAccessLevels', 'UserModel', 'AuthenticationServices', 'MyRolesModel', 'ValintaperusteRoles',
-        function ($scope, $routeParams, $log, breadcrumbs, UserAccessLevels, UserModel, AuthenticationServices, MyRolesModel, ValintaperusteRoles) {
+    .controller('mainCtrl', ['$scope', '$routeParams', '$log', 'breadcrumbs', 'UserAccessLevels', 'UserModel', 'AuthenticationServices', 'MyRolesModel',
+        function ($scope, $routeParams, $log, breadcrumbs, UserAccessLevels, UserModel, AuthenticationServices, MyRolesModel) {
             $scope.breadcrumbs = breadcrumbs;
 
             MyRolesModel.then(function (roles) {

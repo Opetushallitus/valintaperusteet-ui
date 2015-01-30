@@ -14,17 +14,17 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'main/webapp/common/jslib/angular.js',
-      'main/webapp/common/jslib/jquery.js',
-      'main/webapp/common/jslib/*.js',
-      'main/webapp/app/valintaperusteet.js',
-      'main/webapp/common/modules/user/user.js',
-      'main/webapp/app/**/*.js',
-      'main/webapp/common/js/**/*.js',
-      'main/webapp/common/modules/**/*.js',
-      'test/ui/angular-mocks.js',
-      'test/ui/unit/mockdata/**/*.js',
-      'test/ui/unit/**/*.js'
+        'main/webapp/common/jslib/angular.js',
+        'main/webapp/common/jslib/jquery.js',
+        'test/ui/angular-mocks.js',
+        'main/webapp/common/jslib/lodash.min.js',
+        'main/webapp/app/valintaperusteet.js',
+        'main/webapp/common/jslib/*.js',
+        'main/webapp/app/**/*.js',
+        'main/webapp/common/modules/**/*.js',
+        'main/webapp/common/js/**/*.js',
+        'test/ui/unit/mockdata/**/*.js',
+        'test/ui/unit/**/*.js'
     ],
 
 

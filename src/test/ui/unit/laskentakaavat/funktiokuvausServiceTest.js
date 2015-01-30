@@ -9,6 +9,7 @@ describe("FunktiokuvausService", function () {
     beforeEach(module('MockData'));
     beforeEach(module('valintaperusteet'));
 
+
     beforeEach(inject(function (FunktioService, Funktiokuvaukset, FunktiokutsuKeskiarvo, FunktiokutsuJos,
                                 FunktiokutsuSumma, FunktiokutsuHylkaaarvovalilla, FunktiokutsuPainotettukeskiarvo,
                                 Laskentakaavaviite, RootFunktiokutsu, FunktiokutsuPainotettukeskiarvoWith2EmptySlots,
@@ -212,9 +213,9 @@ describe("FunktiokuvausService", function () {
             expect(funktiokuvausService.hasFunktioargumentitByFunktionimi('MAKSIMI')).toBeTruthy();
         });
 
-        it('should return true for PIENEMPITAIYHTASUURI', function () {
-            expect(funktiokuvausService.hasFunktioargumentitByFunktionimi('PIENEMPITAIYHTASUURI')).toBeTruthy();
-        });
+        //it('should return true for PIENEMPITAIYHTASUURI', function () {
+        //    expect(funktiokuvausService.hasFunktioargumentitByFunktionimi('PIENEMPITAIYHTASUURI')).toBeTruthy();
+        //});
 
         it('should return false for HAEYOARVOSANA', function () {
             expect(funktiokuvausService.hasFunktioargumentitByFunktionimi('HAEYOARVOSANA')).toBeFalsy();

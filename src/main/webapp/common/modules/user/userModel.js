@@ -1,7 +1,7 @@
 angular.module('valintaperusteet')
 
-    .factory('UserModel', ['$q', '$log', '_', 'MyRolesModel', 'AuthService', 'OrganizationByOid', 'OPH_ORG_OID', 'OrganizationChildOids', 'OrganizationParentOids', 'ValintaperusteRoles', 'RoleParser',
-        function ($q, $log, _, MyRolesModel, AuthService, OrganizationByOid, OPH_ORG_OID, OrganizationChildOids, OrganizationParentOids, ValintaperusteRoles, RoleParser) {
+    .factory('UserModel', ['$q', '$log', '_', 'MyRolesModel', 'AuthService', 'OrganizationByOid', 'OPH_ORG_OID', 'OrganizationChildOids', 'OrganizationParentOids', 'ValintaperusteApps', 'RoleParser',
+        function ($q, $log, _, MyRolesModel, AuthService, OrganizationByOid, OPH_ORG_OID, OrganizationChildOids, OrganizationParentOids, ValintaperusteApps, RoleParser) {
         var model = new function () {
             this.organizationsDeferred = undefined;
             this.organizationChildrenDeferred = undefined;
@@ -29,7 +29,7 @@ angular.module('valintaperusteet')
 
                 MyRolesModel.then(function (myroles) {
 
-                    model.parsedRoles = RoleParser.getParsedRoles(myroles, ValintaperusteRoles);
+                    model.parsedRoles = RoleParser.getParsedRoles(myroles, ValintaperusteApps);
 
 
                     AuthService.getOrganizations('APP_VALINTAPERUSTEET').then(function (oidList) {
