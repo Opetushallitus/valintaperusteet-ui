@@ -13,60 +13,89 @@ angular.module('valintaperusteet')
                     function ($log, _, READ, UPDATE, CRUD, OID_REGEXP) {
 
         var api = this;
-        
+
+        /**
+         * Parse rights for the apps defined in apps-parameter and for the organizations (and their accessLevel) for the apps
+         *
+         * @param {Object, String}
+         * @returns {Array} of objects containing app, its access level and apps organizations and their accesslevels
+         */
         this.getParsedRoles = function (myRoles, apps) {
-            var accessLeveltokens = [CRUD, UPDATE, READ];
-            var rolesWithMyApp = api.getRolesWithApps(myRoles, apps);
+            var rolesArr = myRoles.myroles;
 
             //parse rightlevels for each organization in roles
             return _.map(apps, function (app) {
-                var appRightLevel = 'READ';
-
-                //parse oids and highest corresponding level of rights for each oid
-                var rolesByApp = api.getRolesByApp(rolesWithMyApp, app);
-                var organizationRights = api.getOrganizationRights(rolesByApp);
+                var rolesByApp = api.getRolesByApp(rolesArr, app);
 
                 return {
                     app: app,
-                    rightsLevel: appRightLevel,
-                    organizationRights: organizationRights
+                    accessRights: api.getAppRights(rolesByApp, app),
+                    organizationRights: api.getOrganizationRights(rolesByApp)
                 };
             });
         };
 
         /**
-         *  Get roles that include one of the apps in apps
+         * Get rightslevel for the app (e.g. 'VALINTAPERUSTEET' or 'VALINTOJENTOTEUTTAMINEN')
          *
-         * @param {myroles#Array, apps#Array}
-         * @returns {Array} roles
+         * @param {Array, String}
+         * @returns {Array} of objects containing oid and corresponding highest rightlevel
          */
-        this.getRolesWithApps = function (roles, apps) {
-            //filter out roles that aren't in apps-array
-            return _.filter(roles, function (item) {
-                return _.some(apps, function (app) {
-                    return _.startsWith(item, app);
-                });
+        this.getAppRights = function (roles, app) {
+            var accessRights = 'READ';
+            _.some(roles, function (role) {
+                if(!api.containsOid(role) && api.getRoleRightLevel(role) !== undefined && api.isHigherAccessLevel(accessRights, api.getRoleRightLevel(role))) {
+                    accessRights = api.getRoleRightLevel(role);
+                }
+                return accessRights === 'CRUD' ? true : false;
             });
+            return accessRights;
         };
 
         /**
-         * Get organizations and highest corresponding rightlevel for them
+         * Get organizations and highest corresponding highest
          *
          * @param {myroles#Array}
-         * @returns {Array} of objects containing oid and corresponding rightlevel
+         * @returns {Array} of objects containing oid and corresponding highest rightlevel
          */
         this.getOrganizationRights = function (roles) {
-            return _(roles)
-                .filter(function (approle) {
-                    return api.containsOid(approle) && !_.isEmpty(api.getRoleRightLevel(approle));
+
+            //unique oids found in roles-parameter
+            var oids = _(roles)
+                .filter(function (role) {
+                    return api.containsOid(role);
                 })
-                .map(function (approle) {
-                    return {
-                        rightLevel: api.getRoleRightLevel(approle),
-                        oid: api.getOrganizationOid(approle)
-                    };
+                .map(function (role) {
+                    return api.getOrganizationOid(role);
                 })
+                .uniq()
                 .value();
+
+            return _.map(oids, function (oid) {
+                var accessRights = 'READ'; //default rights
+                _.some(roles, function (role) {
+
+                    if(api.containsOid(role) && api.getOrganizationOid(role) === oid && api.isHigherAccessLevel(accessRights, api.getRoleRightLevel(role))) {
+                        accessRights = api.getRoleRightLevel(role);
+                    }
+                    return accessRights === 'CRUD' ? true : false; //if crud-rights found no need to continue
+                });
+
+                return {
+                    oid: oid,
+                    accessRights: accessRights
+                };
+            });
+        };
+        
+        /**
+         *  Compare rightlevels and determine if second argument is higher
+         *
+         * @param {String, String}
+         * @returns {Boolean} true if second argument is higher than first
+         */
+        this.isHigherAccessLevel = function (comparated, comparator) {
+            return (comparated === comparator) || (comparated === 'READ_UPDATE' || comparated === 'READ') && (comparator === 'CRUD' || comparator === 'READ_UPDATE');
         };
         
 
@@ -78,9 +107,7 @@ angular.module('valintaperusteet')
          */
         this.getRolesByApp = function (roles, app) {
             return _.filter(roles, function (role) {
-                return _.some(accessLeveltokens, function (accessLevelToken) {
-                    return app === role || _.startsWith(role, app + "_");
-                });
+                return app === role || _.startsWith(role, app + "_" + 'CRUD') || _.startsWith(role, app + "_" + 'READ_UPDATE') || _.startsWith(role, app + "_" + 'READ');
             });
         };
 

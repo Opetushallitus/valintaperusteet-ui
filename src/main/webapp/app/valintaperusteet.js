@@ -11,7 +11,7 @@ var app = angular.module('valintaperusteet', ['ngResource', 'ngCookies', 'loadin
     .constant('CAS_URL', CAS_URL || "/cas/myroles")
 
     // Applications in myroles this module uses
-    .constant('ValintaperusteApps', ['APP_VALINTAPERUSTEET', 'APP_VALINTOJENTOTEUTTAMINEN'])
+    .constant('ValintaperusteApps', ['APP_VALINTAPERUSTEET'])
 
     .controller('mainCtrl', ['$scope', '$routeParams', '$log', 'breadcrumbs', 'UserAccessLevels', 'UserModel', 'AuthenticationServices', 'MyRolesModel',
         function ($scope, $routeParams, $log, breadcrumbs, UserAccessLevels, UserModel, AuthenticationServices, MyRolesModel) {
