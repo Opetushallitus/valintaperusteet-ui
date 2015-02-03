@@ -30,27 +30,27 @@ describe('Testing RoleParser service', function () {
     describe('getOrganizationRights', function () {
         it('should return a list of organizations and highest level of rights for those organizations', function () {
 
-            expect(roleParser.getParsedRoles({myroles: ["APP_VALINTAPERUSTEET", "APP_VALINTAPERUSTEET_READ_UPDATE"]}, ['APP_VALINTAPERUSTEET'])).toEqual(
+            expect(roleParser.parseRoles({myroles: ["APP_VALINTAPERUSTEET", "APP_VALINTAPERUSTEET_READ_UPDATE"]}, ['APP_VALINTAPERUSTEET'])).toEqual(
                 [{app: 'APP_VALINTAPERUSTEET', accessRights: 'READ_UPDATE', organizationRights: []}]
             );
 
-            expect(roleParser.getParsedRoles({myroles: ['APP_VALINTAPERUSTEET', 'APP_VALINTAPERUSTEET_CRUD']}, ['APP_VALINTAPERUSTEET'])).toEqual(
+            expect(roleParser.parseRoles({myroles: ['APP_VALINTAPERUSTEET', 'APP_VALINTAPERUSTEET_CRUD']}, ['APP_VALINTAPERUSTEET'])).toEqual(
                 [{app: 'APP_VALINTAPERUSTEET', accessRights: 'CRUD', organizationRights: []}]
             );
 
-            expect(roleParser.getParsedRoles({myroles: ['APP_VALINTAPERUSTEET', 'APP_VALINTAPERUSTEET_READ', 'APP_VALINTAPERUSTEET_READ_UPDATE']}, ['APP_VALINTAPERUSTEET'])).toEqual(
+            expect(roleParser.parseRoles({myroles: ['APP_VALINTAPERUSTEET', 'APP_VALINTAPERUSTEET_READ', 'APP_VALINTAPERUSTEET_READ_UPDATE']}, ['APP_VALINTAPERUSTEET'])).toEqual(
                 [{app: 'APP_VALINTAPERUSTEET', accessRights: 'READ_UPDATE', organizationRights: []}]
             );
 
-            expect(roleParser.getParsedRoles({myroles: ['APP_VALINTAPERUSTEET', 'APP_VALINTAPERUSTEET_READ', 'APP_VALINTAPERUSTEET_READ_1.2.3.4.5','APP_VALINTAPERUSTEET_READ_UPDATE', ]}, ['APP_VALINTAPERUSTEET'])).toEqual(
+            expect(roleParser.parseRoles({myroles: ['APP_VALINTAPERUSTEET', 'APP_VALINTAPERUSTEET_READ', 'APP_VALINTAPERUSTEET_READ_1.2.3.4.5','APP_VALINTAPERUSTEET_READ_UPDATE', ]}, ['APP_VALINTAPERUSTEET'])).toEqual(
                 [{app: 'APP_VALINTAPERUSTEET', accessRights: 'READ_UPDATE', organizationRights: [{oid: '1.2.3.4.5', accessRights: 'READ'}]}]
             );
 
-            expect(roleParser.getParsedRoles({myroles: ['APP_VALINTAPERUSTEET', 'APP_VALINTAPERUSTEET_CRUD', 'APP_VALINTAPERUSTEET_CRUD_1.2.3.4.5','APP_VALINTAPERUSTEET_READ_UPDATE', ]}, ['APP_VALINTAPERUSTEET'])).toEqual(
+            expect(roleParser.parseRoles({myroles: ['APP_VALINTAPERUSTEET', 'APP_VALINTAPERUSTEET_CRUD', 'APP_VALINTAPERUSTEET_CRUD_1.2.3.4.5','APP_VALINTAPERUSTEET_READ_UPDATE', ]}, ['APP_VALINTAPERUSTEET'])).toEqual(
                 [{app: 'APP_VALINTAPERUSTEET', accessRights: 'CRUD', organizationRights: [{oid: '1.2.3.4.5', accessRights: 'CRUD'}]}]
             );
 
-            expect(roleParser.getParsedRoles({myroles: ['APP_VALINTAPERUSTEET', 'APP_VALINTAPERUSTEET_CRUD', 'APP_VALINTAPERUSTEET_READ_UPDATE_1.2.3.4.5','APP_VALINTAPERUSTEET_READ_UPDATE', ]}, ['APP_VALINTAPERUSTEET'])).toEqual(
+            expect(roleParser.parseRoles({myroles: ['APP_VALINTAPERUSTEET', 'APP_VALINTAPERUSTEET_CRUD', 'APP_VALINTAPERUSTEET_READ_UPDATE_1.2.3.4.5','APP_VALINTAPERUSTEET_READ_UPDATE', ]}, ['APP_VALINTAPERUSTEET'])).toEqual(
                 [{app: 'APP_VALINTAPERUSTEET', accessRights: 'CRUD', organizationRights: [{oid: '1.2.3.4.5', accessRights: 'READ_UPDATE'}]}]
             );
 

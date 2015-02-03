@@ -1,10 +1,11 @@
+
+
 angular.module('valintaperusteet')
 
-    .constant('OPH_ORG_OID', "1.2.246.562.10.00000000001")
-    .constant('ORGANISAATIO_URL_BASE', ORGANIZATION_SERVICE_URL_BASE + "rest/")
+    
 
-    .directive('auth', ['$routeParams', '$q', '$animate', '$timeout', '$log', 'UserAccessLevels', 'UserModel',
-        function ($routeParams, $q, $animate, $timeout, $log, UserAccessLevels, UserModel) {
+    .directive('auth', ['$routeParams', '$q', '$animate', '$timeout', '$log', 'AuthService', 'UserAccessLevels', 'UserModel',
+        function ($routeParams, $q, $animate, $timeout, $log, AuthService, UserAccessLevels, UserModel) {
             return {
                 priority: 1000,
                 link: function ($scope, element, attrs) {
@@ -33,4 +34,6 @@ angular.module('valintaperusteet')
                 }
             };
         }])
+
+
 

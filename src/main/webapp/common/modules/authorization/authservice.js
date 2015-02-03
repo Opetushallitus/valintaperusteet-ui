@@ -1,7 +1,7 @@
 angular.module('valintaperusteet')
 
-    .service('AuthService', ['$q', '$http', '$timeout', 'MyRolesModel', 'READ', 'UPDATE', 'CRUD', 'OPH_ORG_OID', 'RoleService', 'ValintaperusteApps',
-        function ($q, $http, $timeout, MyRolesModel, READ, UPDATE, CRUD, OPH_ORG_OID, RoleService, ValintaperusteApps) {
+    .service('AuthService', ['$q', '$http', '$timeout', 'MyRolesModel', 'READ', 'UPDATE', 'CRUD', 'OPH_ORG_OID', 'RoleParser', 'ValintaperusteApps',
+        function ($q, $http, $timeout, MyRolesModel, READ, UPDATE, CRUD, OPH_ORG_OID, RoleParser, ValintaperusteApps) {
 
             var api = this;
 

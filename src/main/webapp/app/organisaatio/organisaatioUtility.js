@@ -1,5 +1,8 @@
 // Organisaatiotiedot erillisessä
 angular.module('valintaperusteet')
+
+    .constant('OPH_ORG_OID', "1.2.246.562.10.00000000001")
+
     .service('OrganisaatioUtility', ['$q', '$log', '_', 'Valintaryhma', 'HakukohdeModel', 'OrganizationByOid', 'OrganizationParentOids', 'Hakukohde', 'TarjontaHakukohde', 'OPH_ORG_OID', 'OrganizationChildOids',
         function ($q, $log, _, Valintaryhma, HakukohdeModel, OrganizationByOid, OrganizationParentOids, Hakukohde, TarjontaHakukohde, OPH_ORG_OID, OrganizationChildOids) {
 

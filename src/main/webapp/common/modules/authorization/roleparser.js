@@ -2,14 +2,10 @@
 
 angular.module('valintaperusteet')
 
-    .constant('READ', "_READ")
-    .constant('UPDATE', "_READ_UPDATE")
-    .constant('CRUD', "_CRUD")
 
-    .constant('OID_REGEXP', /\d(\d|\.)+\d/)
 
     //AppRole == part of a role in myroles list - for example APP_VALINTAPERUSTEET & APP_VALINTOJENTOTEUTTAMINEN are AppRoles
-    .service('RoleService', ['$log', '_', 'READ', 'UPDATE', 'CRUD', 'OID_REGEXP', 'OPH_ORG_OID', 'MyRolesModel', 'ValintaperusteApps',
+    .service('RoleParser', ['$log', '_', 'READ', 'UPDATE', 'CRUD', 'OID_REGEXP', 'OPH_ORG_OID', 'MyRolesModel', 'ValintaperusteApps',
                     function ($log, _, READ, UPDATE, CRUD, OID_REGEXP, OPH_ORG_OID, MyRolesModel, ValintaperusteApps) {
 
         var api = this;
@@ -22,7 +18,6 @@ angular.module('valintaperusteet')
                 api.isOphUser = true;
             } else {
                 api.parsedRoles = api.parseRoles(myRoles, ValintaperusteApps);
-                console.log(api.getOrganizationsForApp('APP_VALINTAPERUSTEET'));
             }
         });
 
@@ -186,7 +181,7 @@ angular.module('valintaperusteet')
          * @param {Array} users myroles-array
          * @returns {String} oph-users rights (READ, READ_UPDATE, CRUD)
          */
-        this.getOrganizationRights = function (roles, organization) {
+        this.getRightsForOrganization = function (roles, organization) {
             var rights = 'READ';
             _(roles)
                 .filter(function (role) {
@@ -197,26 +192,10 @@ angular.module('valintaperusteet')
                         rights = api.getRoleRightLevel(role);
                         return true;
                     }
-                }).value();
+                });
 
             return rights;
         };
-
-        /**
-         *  Get organizations for app
-         *
-         * @param {Array, String} 
-         * @returns {String} oph-users rights (READ, READ_UPDATE, CRUD)
-         */
-        this.getOrganizationsForApp = function (app) {
-            return _(api.parsedRoles)
-                .filter(function (item) {
-                    item.app === app;
-                })
-                .pluck('organizationRights')
-                .pluck('oid').value();
-        };
-
 
     }]);
 
