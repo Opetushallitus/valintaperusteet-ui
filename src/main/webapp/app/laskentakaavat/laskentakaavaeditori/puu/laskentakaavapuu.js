@@ -345,14 +345,15 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
 
             };
 
-            $scope.removeLaskentakaavaviite = function () {
+            $scope.removeLaskentakaavaviite = function (funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava) {
+
                 //jos ei olla heti laskentakaavan juuren alla
-                if ($scope.isFirstChildForRoot($scope.funktioasetukset.parentFunktiokutsu)) {
-                    $scope.funktioasetukset.parentFunktiokutsu.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = {};
+                if ($scope.isFirstChildForRoot(parent)) {
+                    parent.funktioargumentit.splice(childIndex, 1);
                 }
                 //jos ollaan heti laskentakaavan juuren alla (laskentakaavan 'ensimmäisellä kerroksella' ei ole lapsi-wrapperia)
                 else {
-                    $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[$scope.funktioasetukset.selectedFunktioIndex] = {};
+                    parent.lapsi.funktioargumentit.splice(childIndex, 1);
                 }
                 $scope.funktioSelection = undefined;
                 $scope.alikaavaValues = {};
@@ -373,8 +374,8 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
             $scope.cutToClipboard = function (funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava) {
                 $scope.setFunktioSelection(funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava);
                 $scope.setClipboard(funktiokutsu);
-                $scope.removeFunktiokutsu(funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava);
-            }
+                FunktioService.isFunktiokutsu(funktiokutsu) ? $scope.removeFunktiokutsu(funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava) : $scope.removeLaskentakaavaviite(funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava);
+            };
 
             $scope.clearClipboard = function () {
                 $scope.clipboard = undefined;

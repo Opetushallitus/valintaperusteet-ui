@@ -30,5 +30,17 @@ angular.module('valintaperusteet')
                 };
             }
         };
+    }])
+
+    .directive('kaavaviiteLabel', [function () {
+        return {
+            transclude: true,
+            templateUrl: 'laskentakaavat/laskentakaavaeditori/puu/kaavaviitetools.html',
+            link: function ($scope, element, attrs) {
+                $scope.status = {
+                    isopen: false
+                };
+            }
+        };
     }]);
 
