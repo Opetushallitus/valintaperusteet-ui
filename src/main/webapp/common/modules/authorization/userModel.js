@@ -1,7 +1,7 @@
 angular.module('valintaperusteet')
 
-    .factory('UserModel', ['$q', '$log', '_', 'MyRolesModel', 'AuthService', 'OrganizationByOid', 'OPH_ORG_OID', 'OrganizationChildOids', 'OrganizationParentOids', 'ValintaperusteApps', 'RoleParser',
-        function ($q, $log, _, MyRolesModel, AuthService, OrganizationByOid, OPH_ORG_OID, OrganizationChildOids, OrganizationParentOids, ValintaperusteApps, RoleParser) {
+    .factory('UserModel', ['$q', '$log', '_', 'MyRolesModel', 'AuthService', 'OrganizationByOid', 'OPH_ORG_OID', 'OrganizationChildOids', 'OrganizationParentOids',
+        function ($q, $log, _, MyRolesModel, AuthService, OrganizationByOid, OPH_ORG_OID, OrganizationChildOids, OrganizationParentOids) {
         var model = new function () {
             this.organizationsDeferred = undefined;
             this.organizationChildrenDeferred = undefined;
@@ -20,17 +20,12 @@ angular.module('valintaperusteet')
             this.hasOtherThanKKUserOrgs = false;
             this.isOphUser = false;
 
-            this.parsedRoles = [];
-
             this.refresh = function () {
                 model.organizationsDeferred = $q.defer();
                 model.organizationChildrenDeferred = $q.defer();
                 model.organizationParentDeferred = $q.defer();
 
                 MyRolesModel.then(function (myroles) {
-
-                    model.parsedRoles = RoleParser.getParsedRoles(myroles, ValintaperusteApps);
-
 
                     AuthService.getOrganizations('APP_VALINTAPERUSTEET').then(function (oidList) {
                         model.organizationOids = oidList;
@@ -189,38 +184,6 @@ angular.module('valintaperusteet')
     }])
 
 
-.controller('UserPageController', ['$scope', '$routeParams', '$log', 'UserAccessLevels', 'UserModel', 'OrganisaatioUtility',
-        function ($scope, $routeParams, $log, UserAccessLevels, UserModel, OrganisaatioUtility) {
-        $scope.userAccess = UserAccessLevels;
-        UserAccessLevels.refreshIfNeeded($routeParams.id, $routeParams.hakukohdeOid);
-
-        $scope.userModel = UserModel;
-        UserModel.refreshIfNeeded();
-
-        $scope.organisaatioUtility = OrganisaatioUtility;
-        if($routeParams.id) {
-            $scope.isValintaryhma = true;
-
-        } else if($routeParams.hakukohdeOid) {
-            $scope.isHakukohde = true;
-        }
-
-
-        if($routeParams.id) {
-            OrganisaatioUtility.getChildOrganizationsForValintaryhma($routeParams.id).then(function setValintaryhmaOrganizations(result) {
-                $scope.valitunOrganisaationLapset = result;
-            }, function (error) {
-                $log.error('valintaryhmän/hakukohteen organisaatioiden haku epäonnistui', error);
-            });
-        } else if($routeParams.hakukohdeOid) {
-            OrganisaatioUtility.getChildOrganizationsforHakukohde($routeParams.hakukohdeOid).then(function setHakukohdeOrganizations(result) {
-                $scope.valitunOrganisaationLapset = result;
-            }, function (error) {
-                $log.error('valintaryhmän/hakukohteen organisaatioiden haku epäonnistui', error);
-            });
-        }
-
-    }]);
 
 
 

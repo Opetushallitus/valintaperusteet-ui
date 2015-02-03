@@ -9,10 +9,22 @@ angular.module('valintaperusteet')
     .constant('OID_REGEXP', /\d(\d|\.)+\d/)
 
     //AppRole == part of a role in myroles list - for example APP_VALINTAPERUSTEET & APP_VALINTOJENTOTEUTTAMINEN are AppRoles
-    .service('RoleParser', ['$log', '_', 'READ', 'UPDATE', 'CRUD', 'OID_REGEXP',
-                    function ($log, _, READ, UPDATE, CRUD, OID_REGEXP) {
+    .service('RoleService', ['$log', '_', 'READ', 'UPDATE', 'CRUD', 'OID_REGEXP', 'OPH_ORG_OID', 'MyRolesModel', 'ValintaperusteApps',
+                    function ($log, _, READ, UPDATE, CRUD, OID_REGEXP, OPH_ORG_OID, MyRolesModel, ValintaperusteApps) {
 
         var api = this;
+
+        this.parsedRoles = [];
+        this.isOphUser = false;
+
+        MyRolesModel.then(function (myRoles) {
+            if(api.isOphUser(myRoles.myRoles)) {
+                api.isOphUser = true;
+            } else {
+                api.parsedRoles = api.parseRoles(myRoles, ValintaperusteApps);
+                console.log(api.getOrganizationsForApp('APP_VALINTAPERUSTEET'));
+            }
+        });
 
         /**
          * Parse rights for the apps defined in apps-parameter and for the organizations (and their accessLevel) for the apps
@@ -20,7 +32,7 @@ angular.module('valintaperusteet')
          * @param {Object, String}
          * @returns {Array} of objects containing app, its access level and apps organizations and their accesslevels
          */
-        this.getParsedRoles = function (myRoles, apps) {
+        this.parseRoles = function (myRoles, apps) {
             var rolesArr = myRoles.myroles;
 
             //parse rightlevels for each organization in roles
@@ -55,7 +67,7 @@ angular.module('valintaperusteet')
         /**
          * Get organizations and highest corresponding highest
          *
-         * @param {myroles#Array}
+         * @param {Array}
          * @returns {Array} of objects containing oid and corresponding highest rightlevel
          */
         this.getOrganizationRights = function (roles) {
@@ -114,7 +126,7 @@ angular.module('valintaperusteet')
         /**
          *  Search for rightlevel-string in role
          *
-         * @param {role} a role from myroles
+         * @param {String} a role from myroles
          * @returns {String} returns CRUD, READ_UPDATE, READ or undefined rightlevel isn't found
          */
         this.getRoleRightLevel = function (role) {
@@ -135,7 +147,7 @@ angular.module('valintaperusteet')
         /**
          *  Does this role contain an oid
          *
-         * @param {role} a role from myroles
+         * @param {String} a role from myroles
          * @returns {Boolean} role contains oid
          */
         this.containsOid = function (role) {
@@ -145,7 +157,7 @@ angular.module('valintaperusteet')
         /**
          *  get oid-string from role
          *
-         * @param {role} a role from myroles
+         * @param {String} a role from myroles
          * @returns {String} organization oid found from role
          */
         this.getOrganizationOid = function(role) {
@@ -155,6 +167,56 @@ angular.module('valintaperusteet')
             }
             return role.match(OID_REGEXP)[0];
         };
+
+        /**
+         *  oph-user
+         *
+         * @param {Array} users myroles-array
+         * @returns {Boolean} is user oph-user
+         */
+        this.isOphUser = function (roles) {
+            return _.some(roles, function (role) {
+                return _.includes(role, OPH_ORG_OID);
+            });
+        };
+
+        /**
+         *  Get highest. expect roles include oph-user -organization
+         *
+         * @param {Array} users myroles-array
+         * @returns {String} oph-users rights (READ, READ_UPDATE, CRUD)
+         */
+        this.getOrganizationRights = function (roles, organization) {
+            var rights = 'READ';
+            _(roles)
+                .filter(function (role) {
+                    return _.includes(role, organization);
+                })
+                .some(function (role) {
+                    if( api.isHigherAccessLevel(rights, api.getRoleRightLevel(role)) ) {
+                        rights = api.getRoleRightLevel(role);
+                        return true;
+                    }
+                }).value();
+
+            return rights;
+        };
+
+        /**
+         *  Get organizations for app
+         *
+         * @param {Array, String} 
+         * @returns {String} oph-users rights (READ, READ_UPDATE, CRUD)
+         */
+        this.getOrganizationsForApp = function (app) {
+            return _(api.parsedRoles)
+                .filter(function (item) {
+                    item.app === app;
+                })
+                .pluck('organizationRights')
+                .pluck('oid').value();
+        };
+
 
     }]);
 
