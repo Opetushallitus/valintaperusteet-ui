@@ -20,8 +20,17 @@ angular.module('valintaperusteet')
                         organisaatioOids.push(organisaatioOidWrapper.oid);
                         if(!_.isEmpty(organisaatioOidWrapper.parentOidPath)) {
 
-                            _.forEach(organisaatioOidWrapper.parentOidPath.split("/"), function (organisaatioOid) {
-                                organisaatioOids.push(organisaatioOid);
+                            var oidPath;
+                            if(organisaatioOidWrapper.parentOidPath.indexOf("|") != -1) {
+                                oidPath = organisaatioOidWrapper.parentOidPath.split("|");
+                            } else {
+                                oidPath = organisaatioOidWrapper.parentOidPath.split("/");
+                            }
+
+                            _.forEach(oidPath, function (organisaatioOid) {
+                                if(!_.isEmpty(organisaatioOid)) {
+                                    organisaatioOids.push(organisaatioOid);
+                                }
                             });
                         }
 
@@ -66,8 +75,16 @@ angular.module('valintaperusteet')
                             //find parent oids for this organization
                             var parentOids = [];
                             if(!_.isEmpty(org.parentOidPath)) {
-                                _.forEach(org.parentOidPath.split("/"), function (orgOid) {
-                                    organizations.push(orgOid);
+                                var oidPath;
+                                if(org.parentOidPath.indexOf("|") != -1) {
+                                    oidPath = org.parentOidPath.split("|");
+                                } else {
+                                    oidPath = org.parentOidPath.split("/");
+                                }
+                                _.forEach(oidPath, function (orgOid) {
+                                    if(!_.isEmpty(orgOid)) {
+                                        organizations.push(orgOid);
+                                    }
                                 });
                             }
 
