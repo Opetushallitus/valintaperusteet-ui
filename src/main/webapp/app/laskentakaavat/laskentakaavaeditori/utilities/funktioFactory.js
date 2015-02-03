@@ -35,7 +35,7 @@ angular.module('valintaperusteet')
                     onLuonnos: false,
                     tyyppi: funktiokuvaus.tyyppi,
                     kuvaus: kuvaus,
-                    nimi: kaavaNimi,
+                    nimi: nimi,
                     kardinaliteetti: 1
                 }
             };
