@@ -134,8 +134,10 @@
                 <td class="text-center">{{data.inheritance ? 'Kyllä' : 'Ei'}}</td>
                 <td class="text-center">{{data.valinnanVaiheTyyppi}}</td>
                 <td class="text-center">
-                                <span auth ng-disabled="!userAccess.updateOrg || data.inheritance" class="btn remove"
-                                      ng-click="model.remove(data)"></span>
+                    <a auth ng-disabled="!userAccess.crudOrg" ng-show="!data.inheritance"
+                       class="btn btn-sm btn-default" ng-click="model.remove(data)">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
                 </td>
 
             </tr>

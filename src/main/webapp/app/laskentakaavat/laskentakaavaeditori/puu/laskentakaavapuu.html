@@ -103,8 +103,10 @@
     <div ng-controller="AlikaavaController">
         <div class="frame" ng-class="showAlikaava ? 'open':''">
             <span ng-click="toggleAlikaava(funktiowrapper.lapsi.id)" class="icon">&nbsp;</span>
-            <span add-class-on-mouseover="bold" class="node"
+            <kaavaviite-label>
+                <span add-class-on-mouseover="bold" class="node"
                   ng-click="showFunktiokutsuTools(funktiowrapper, false, parent, $index, isAlikaava, hasParentAlikaava)">{{funktiowrapper.lapsi.nimi}}</span>
+            </kaavaviite-label>
         </div>
         <ul collapse="!showAlikaava" class="alikaava">
             <li class="item" ng-repeat="funktiowrapper in alikaava.funktiokutsu.funktioargumentit"
