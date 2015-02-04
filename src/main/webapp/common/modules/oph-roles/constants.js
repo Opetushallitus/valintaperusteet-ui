@@ -3,7 +3,7 @@ var CAS_URL = CAS_URL || "/cas/myroles";
 var ORGANISAATIO_URL_BASE = ORGANISAATIO_URL_BASE;
 
 //Constants for auth
-angular.module('RoleParser')
+angular.module('oph-roles')
 
     .constant('READ', "_READ")
     .constant('UPDATE', "_READ_UPDATE")

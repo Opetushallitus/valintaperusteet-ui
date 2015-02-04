@@ -1,7 +1,7 @@
-angular.module('auth', ['lodash'])
+angular.module('valintaperusteet')
 
-    .service('AuthService', ['$q', '$http', '$timeout', 'MyRolesModel', 'READ', 'UPDATE', 'CRUD', 'OPH_ORG_OID', 'RoleParser', 'ValintaperusteApps',
-        function ($q, $http, $timeout, MyRolesModel, READ, UPDATE, CRUD, OPH_ORG_OID, RoleParser, ValintaperusteApps) {
+    .service('AuthService', ['$q', '$http', '$timeout', 'MyRolesModel', 'READ', 'UPDATE', 'CRUD', 'OPH_ORG_OID', 'RoleService',
+        function ($q, $http, $timeout, MyRolesModel, READ, UPDATE, CRUD, OPH_ORG_OID, RoleService) {
 
             var api = this;
 
@@ -117,6 +117,15 @@ angular.module('auth', ['lodash'])
             };
 
             this.organizationsPromise = undefined;
+
+            //this.getOrganizations = function (services) {
+            //    if (!api.organizationsPromise) {
+            //        var deferred = $q.defer();
+            //        api.organizationsPromise = deferred.promise;
+            //        RoleService.getOrganizations(services);
+            //    }
+            //    return api.organizationsPromise;
+            //};
 
             this.getOrganizations = function (service) {
                 if (!api.organizationsPromise) {

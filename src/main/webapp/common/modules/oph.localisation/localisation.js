@@ -1,7 +1,7 @@
 /**
  * Hakee käännöspalvelusta resurssit sovelluksen lokalisointiin
  */
-angular.module('oph.localisation', [])
+angular.module('oph.localisation', ['oph-roles'])
     .factory('Localisations',[ '$resource','$q', function ($resource, $q) {
         var localisations ={};
         var locals = $resource(LOCALISATION_URL_BASE+'/localisation',{},{

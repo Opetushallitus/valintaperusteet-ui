@@ -1,7 +1,7 @@
 "use strict";
 
 var app = angular.module('valintaperusteet', ['ngResource', 'ngCookies', 'loading', 'ngRoute',
-    'ui.bootstrap', 'lodash', 'ng-breadcrumbs', 'oph.localisation', 'oph.utils', 'RoleParser'])
+    'ui.bootstrap', 'lodash', 'ng-breadcrumbs', 'oph-roles', 'oph.localisation', 'oph.utils', ])
 
     .run(function ($http, LocalisationService) {
         $http.get(SERVICE_URL_BASE + "buildversion.txt?auth");
@@ -11,24 +11,26 @@ var app = angular.module('valintaperusteet', ['ngResource', 'ngCookies', 'loadin
     .constant('CAS_URL', CAS_URL || "/cas/myroles")
 
     // Applications in myroles this module uses
-    .constant('ValintaperusteApps', ['APP_VALINTAPERUSTEET'])
+    .constant('ValintaperusteApps', ['APP_VALINTAPERUSTEET', 'APP_VALINTAPERUSTEETKK'])
 
     .controller('mainCtrl', ['$scope', '$routeParams', '$log', 'breadcrumbs', 'UserAccessLevels', 'UserModel', 'AuthenticationServices', 'MyRolesModel',
         function ($scope, $routeParams, $log, breadcrumbs, UserAccessLevels, UserModel, AuthenticationServices, MyRolesModel) {
-            $scope.breadcrumbs = breadcrumbs;
+
+
+
+        }])
+
+    .controller('RootCtrl', ['$rootScope', '$scope', '$routeParams','LocalisationService', 'breadcrumbs', 'MyRolesModel', 'UserAccessLevels', 'UserModel', 'RoleService', 'ValintaperusteApps',
+        function($rootScope, $scope, $routeParams, LocalisationService, breadcrumbs, MyRolesModel, UserAccessLevels, UserModel, RoleService, ValintaperusteApps) {
+        $scope.breadcrumbs = breadcrumbs;
 
             MyRolesModel.then(function (roles) {
+                RoleService.parseRoles(roles, ValintaperusteApps);
                 UserAccessLevels.refreshIfNeeded($routeParams.id, $routeParams.hakukohdeOid);
                 UserModel.refreshIfNeeded();
             }, function (error) {
                 $log.error('Fetching Myroles from cas failed:', error);
             });
-
-        }])
-
-    .controller('RootCtrl', ['$rootScope', '$scope' ,'LocalisationService', 'breadcrumbs',
-        function($rootScope, $scope, LocalisationService, breadcrumbs) {
-        $scope.breadcrumbs = breadcrumbs;
 
         /**
          * katsotaan käyttäjän käyttöprofiilista cas/myroles tiedostosta

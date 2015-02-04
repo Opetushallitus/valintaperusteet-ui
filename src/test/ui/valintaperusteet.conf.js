@@ -18,6 +18,7 @@ module.exports = function(config) {
           'main/webapp/common/jslib/jquery.js',
           'main/webapp/common/jslib/lodash.min.js',
           'main/webapp/common/jslib/*.js',
+          'main/webapp/common/modules/oph-roles/roleparser.js',
           'main/webapp/app/valintaperusteet.js',
           'main/webapp/common/modules/**/*.js',
           'main/webapp/app/**/*.js',

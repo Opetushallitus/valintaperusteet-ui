@@ -1,45 +1,44 @@
 
 
-angular.module('RoleParser')
-
-
+angular.module('oph-roles', ['lodash'])
 
     //AppRole == part of a role in myroles list - for example APP_VALINTAPERUSTEET & APP_VALINTOJENTOTEUTTAMINEN are AppRoles
-    .service('RoleParser', ['$log', '_', 'READ', 'UPDATE', 'CRUD', 'OID_REGEXP', 'OPH_ORG_OID', 'MyRolesModel', 'ValintaperusteApps',
-                    function ($log, _, READ, UPDATE, CRUD, OID_REGEXP, OPH_ORG_OID, MyRolesModel, ValintaperusteApps) {
+    .service('RoleParser', ['$log', '_', 'READ', 'UPDATE', 'CRUD', 'OID_REGEXP', 'OPH_ORG_OID',
+                    function ($log, _, READ, UPDATE, CRUD, OID_REGEXP, OPH_ORG_OID) {
 
         var api = this;
 
-
-
         /**
-         * Parse rights for the apps defined in apps-parameter and for the organizations (and their accessLevel) for the apps
+         * Parse rights for the services defined in services-parameter and for the organizations (and their accessLevel) for the services
          *
-         * @param {Object, String}
-         * @returns {Array} of objects containing app, its access level and apps organizations and their accesslevels
+         * @param {Object, Array}
+         * @returns {Array} of objects containing service, its access level and services organizations and their accesslevels
          */
-        this.parseRoles = function (myRoles, apps) {
+        this.parseRoles = function (myRoles, services) {
             var rolesArr = myRoles.myroles;
 
             //parse rightlevels for each organization in roles
-            return _.map(apps, function (app) {
-                var rolesByApp = api.getRolesByApp(rolesArr, app);
-
-                return {
-                    app: app,
-                    accessRights: api.getAppRights(rolesByApp, app),
-                    organizationRights: api.getOrganizationRights(rolesByApp)
-                };
-            });
+            return _(services)
+                .filter(function (service) {
+                    return api.getRolesByApp(rolesArr, service).length !== 0;
+                })
+                .map(function (service) {
+                    var rolesByApp = api.getRolesByApp(rolesArr, service);
+                    return {
+                        service: service,
+                        accessRights: api.getAppRights(rolesByApp, service),
+                        organizationRights: api.getOrganizationRights(rolesByApp)
+                    };
+                }).value();
         };
 
         /**
-         * Get rightslevel for the app (e.g. 'VALINTAPERUSTEET' or 'VALINTOJENTOTEUTTAMINEN')
+         * Get rightslevel for the service (e.g. 'VALINTAPERUSTEET' or 'VALINTOJENTOTEUTTAMINEN')
          *
          * @param {Array, String}
          * @returns {Array} of objects containing oid and corresponding highest rightlevel
          */
-        this.getAppRights = function (roles, app) {
+        this.getAppRights = function (roles, service) {
             var accessRights = 'READ';
             _.some(roles, function (role) {
                 if(!api.containsOid(role) && api.getRoleRightLevel(role) !== undefined && api.isHigherAccessLevel(accessRights, api.getRoleRightLevel(role))) {
@@ -70,7 +69,6 @@ angular.module('RoleParser')
                 .value();
 
             return _.map(oids, function (oid) {
-                console.log(oid);
                 var accessRights = 'READ'; //default rights
                 _.some(roles, function (role) {
 
@@ -79,14 +77,6 @@ angular.module('RoleParser')
                     }
                     return accessRights === 'CRUD' ? true : false; //if crud-rights found no need to continue
                 });
-
-                var obj = {
-                    oid: oid
-                };
-
-                var inv = _.invert(obj);
-                inv[oid] = accessRights;
-                console.log(inv);   
 
                 return {
                     oid: oid,
@@ -107,14 +97,14 @@ angular.module('RoleParser')
         
 
         /**
-         *   Parse out roles that aren't exact matches for app (e.g. APP_VALINTAPERUSTEET vs. APP_VALINTAPERUSTEETKK)
+         *   Parse out roles that aren't exact matches for service (e.g. APP_VALINTAPERUSTEET vs. APP_VALINTAPERUSTEETKK)
          *
-         * @param {myroles#Array, app#String}
+         * @param {Array, String}
          * @returns {Array} roles
          */
-        this.getRolesByApp = function (roles, app) {
+        this.getRolesByApp = function (roles, service) {
             return _.filter(roles, function (role) {
-                return app === role || _.startsWith(role, app + "_" + 'CRUD') || _.startsWith(role, app + "_" + 'READ_UPDATE') || _.startsWith(role, app + "_" + 'READ');
+                return service === role || _.startsWith(role, service + "_" + 'CRUD') || _.startsWith(role, service + "_" + 'READ_UPDATE') || _.startsWith(role, service + "_" + 'READ');
             });
         };
 
