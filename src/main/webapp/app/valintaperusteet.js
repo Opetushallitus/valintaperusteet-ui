@@ -1,7 +1,7 @@
 "use strict";
 
 var app = angular.module('valintaperusteet', ['ngResource', 'ngCookies', 'loading', 'ngRoute',
-    'ui.bootstrap', 'lodash', 'ng-breadcrumbs', 'oph.localisation', 'oph.utils'])
+    'ui.bootstrap', 'lodash', 'ng-breadcrumbs', 'oph.localisation', 'oph.utils', 'RoleParser'])
 
     .run(function ($http, LocalisationService) {
         $http.get(SERVICE_URL_BASE + "buildversion.txt?auth");

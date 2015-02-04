@@ -1,6 +1,6 @@
 
 
-angular.module('valintaperusteet')
+angular.module('auth')
 
     
 

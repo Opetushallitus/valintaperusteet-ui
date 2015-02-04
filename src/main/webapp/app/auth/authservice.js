@@ -1,4 +1,4 @@
-angular.module('valintaperusteet')
+angular.module('auth', ['lodash'])
 
     .service('AuthService', ['$q', '$http', '$timeout', 'MyRolesModel', 'READ', 'UPDATE', 'CRUD', 'OPH_ORG_OID', 'RoleParser', 'ValintaperusteApps',
         function ($q, $http, $timeout, MyRolesModel, READ, UPDATE, CRUD, OPH_ORG_OID, RoleParser, ValintaperusteApps) {
@@ -89,7 +89,6 @@ angular.module('valintaperusteet')
 
                 return deferred.promise;
             };
-
 
             this.organisaatiot = {};
 

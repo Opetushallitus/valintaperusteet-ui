@@ -25,7 +25,7 @@
     <script type="text/javascript" src="valintaperusteet.js"></script>
     <script type="text/javascript" src="valintaperusteet-resources.js"></script>
     <script type="text/javascript" src="routes.js"></script>
-    <script type="text/javascript" src="organisaatio/organisaatioUtility.js"></script>
+    <script type="text/javascript" src="auth/organisaatioUtility.js"></script>
     <script type="text/javascript" src="valintaryhmalistaus/valintaryhmaHakukohdeTree.js"></script>
     <script type="text/javascript" src="valintaryhma/valintaryhma.js"></script>
     <script type="text/javascript" src="valintaryhma/valintakoekoodit.js"></script>
@@ -41,7 +41,9 @@
     <script type="text/javascript" src="jarjestyskriteeri/jarjestyskriteeri.js"></script>
     <script type="text/javascript" src="organisaatio/organisaatioTreeModel.js"></script>
     <script type="text/javascript" src="haku/hakumodel.js"></script>
-    <script type="text/javascript" src="user/userpagecontroller.js"></script>
+    <script type="text/javascript" src="auth/userpagecontroller.js"></script>
+    <script type="text/javascript" src="auth/userModel.js"></script>
+    <script type="text/javascript" src="auth/userAccessLevels.js"></script>
     <script type="text/javascript" src="../common/js/utils.js"></script>
     <script type="text/javascript" src="../common/js/directives.js"></script>
     <script type="text/javascript" src="../common/js/modal.js"></script>
@@ -82,13 +84,11 @@
     <script type="text/javascript" src="../common/modules/lodash/lodash-module.js"></script>
 
     <!-- Authorization -->
-    <script type="text/javascript" src="../common/modules/authorization/directives.js"></script>
-    <script type="text/javascript" src="../common/modules/authorization/authservice.js"></script>
-    <script type="text/javascript" src="../common/modules/authorization/constants.js"></script>
-    <script type="text/javascript" src="../common/modules/authorization/userModel.js"></script>
-    <script type="text/javascript" src="user/userAccessLevels.js"></script>
-    <script type="text/javascript" src="../common/modules/authorization/roleparser.js"></script>
-    <script type="text/javascript" src="../common/modules/authorization/myroles.js"></script>
+    <script type="text/javascript" src="auth/authservice.js"></script>
+    <script type="text/javascript" src="auth/directives.js"></script>
+    <script type="text/javascript" src="../common/modules/roleparser/constants.js"></script>
+    <script type="text/javascript" src="../common/modules/roleparser/roleparser.js"></script>
+    <script type="text/javascript" src="myroles.js"></script>
 
 
     <!--Virkailija layout script -->

@@ -1,6 +1,6 @@
 
 
-angular.module('valintaperusteet')
+angular.module('RoleParser')
 
 
 
@@ -10,16 +10,7 @@ angular.module('valintaperusteet')
 
         var api = this;
 
-        this.parsedRoles = [];
-        this.isOphUser = false;
 
-        MyRolesModel.then(function (myRoles) {
-            if(api.isOphUser(myRoles.myRoles)) {
-                api.isOphUser = true;
-            } else {
-                api.parsedRoles = api.parseRoles(myRoles, ValintaperusteApps);
-            }
-        });
 
         /**
          * Parse rights for the apps defined in apps-parameter and for the organizations (and their accessLevel) for the apps
@@ -79,6 +70,7 @@ angular.module('valintaperusteet')
                 .value();
 
             return _.map(oids, function (oid) {
+                console.log(oid);
                 var accessRights = 'READ'; //default rights
                 _.some(roles, function (role) {
 
@@ -87,6 +79,14 @@ angular.module('valintaperusteet')
                     }
                     return accessRights === 'CRUD' ? true : false; //if crud-rights found no need to continue
                 });
+
+                var obj = {
+                    oid: oid
+                };
+
+                var inv = _.invert(obj);
+                inv[oid] = accessRights;
+                console.log(inv);   
 
                 return {
                     oid: oid,
