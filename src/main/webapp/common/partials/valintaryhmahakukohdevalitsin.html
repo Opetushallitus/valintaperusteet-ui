@@ -1,14 +1,14 @@
 <!-- Node template -->
 <script type="text/ng-template" id="node.html">
 
-    <span class="node" ng-if="puuNode.nimi | filter:valintaryhmaPuu.search.q">
+    <span class="node" ng-if="puuNode.nimi">
         <i class="fa fa-users valintaryhma"
            ng-click="valintaryhmaPuu.expandNode(puuNode)"></i>
         <input type="radio" ng-model="selection.node" ng-change="changeSelection(puuNode)" id="{{puuNode.oid}}" ng-value="puuNode" name="puunode" /> <label for="{{puuNode.oid}}">{{puuNode.nimi}}</label>
     </span>
 
     <ol ng-if="puuNode.isVisible">
-        <li ng-repeat="puuNode in puuNode.alavalintaryhmat | filter:valintaryhmaPuu.search.q | orderBy:'nimi'"
+        <li ng-repeat="puuNode in puuNode.alavalintaryhmat | orderBy:'nimi'"
             ng-include="'node.html'">
         </li>
         <li ng-repeat="puuNode in puuNode.hakukohdeViitteet | orderBy:predicate"
@@ -55,7 +55,7 @@
                 </span>
             </li>
             <ol>
-                <li ng-repeat="puuNode in valintaryhmaPuu.valintaperusteList | filter:valintaryhmaPuu.search.q | orderBy:'nimi'"
+                <li ng-repeat="puuNode in valintaryhmaPuu.valintaperusteList | orderBy:'nimi'"
                     ng-model="puuNode"
                     class="{{addClass('uiExpanded',valintaryhmaPuu.isExpanded(puuNode))}} {{addClass('uiCollapsed',valintaryhmaPuu.isCollapsed(puuNode))}}"
                     ng-include="!valintaryhmaPuu.isHakukohde(puuNode) ? 'node.html' : 'hakukohde_leaf.html'">
