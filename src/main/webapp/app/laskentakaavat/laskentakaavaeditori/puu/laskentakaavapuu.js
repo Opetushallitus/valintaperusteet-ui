@@ -507,24 +507,18 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                 if (ErrorService.noErrors()) {
                     //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
                     $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.cleanLaskentakaavaPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
-                    KaavaValidointi.post({}, $scope.model.laskentakaavapuu, function () {
-                            $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function (result) {
-                                    $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
-                                    $scope.saved = true;
 
-                                    if (urlEnd === 'laskentakaava/') {
-                                        $location.path($location.path() + result.id);
-                                    }
+                    $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function (result) {
+                            $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
+                            $scope.saved = true;
 
-                                },
-                                function (error) {
+                            if (urlEnd === 'laskentakaava/') {
+                                $location.path($location.path() + result.id);
+                            }
 
-                                    ErrorService.addError({
-                                        tyyppi: KaavaVirheTyypit.TAUSTAPALVELU
-                                    });
-                                });
                         },
                         function (error) {
+
                             ErrorService.addError({
                                 tyyppi: KaavaVirheTyypit.TAUSTAPALVELU
                             });
