@@ -30,8 +30,8 @@ angular.module('valintaperusteet')
                     hakukohdeData['laskentakaavat'] = Laskentakaava.list({hakukohde: hakukohdeOid});
                     hakukohde[0] = hakukohdeData;
 
-                    if (hakukohdeData.valintaryhma_id) {
-                        Valintaryhma.get({oid: hakukohdeData.valintaryhma_id}, function (valintaryhmaData) {
+                    if (hakukohdeData.valintaryhmaOid) {
+                        Valintaryhma.get({oid: hakukohdeData.valintaryhmaOid}, function (valintaryhmaData) {
 
                             ParentValintaryhmas.get({parentOid: valintaryhmaData.oid}, function (data) {
                                 for (var i = 0; i < data.length; ++i) {
