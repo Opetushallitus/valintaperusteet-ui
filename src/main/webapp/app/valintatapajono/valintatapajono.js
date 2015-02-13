@@ -45,6 +45,7 @@ angular.module('valintaperusteet')
                 model.valintatapajono.siirretaanSijoitteluun = !!model.valintatapajono.siirretaanSijoitteluun;
                 model.valintatapajono.kaytetaanValintalaskentaa = !!model.valintatapajono.kaytetaanValintalaskentaa;
                 model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan = !!model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan;
+                model.valintatapajono.poistetaankoHylatyt = !!model.valintatapajono.poistetaankoHylatyt;
                 model.valintatapajono.valisijoittelu = !!model.valintatapajono.valisijoittelu;
                 model.valintatapajono.automaattinenLaskentaanSiirto = !!model.valintatapajono.automaattinenLaskentaanSiirto;
             });
@@ -65,6 +66,7 @@ angular.module('valintaperusteet')
                 model.valintatapajono.siirretaanSijoitteluun = !!model.valintatapajono.siirretaanSijoitteluun;
                 model.valintatapajono.kaytetaanValintalaskentaa = !!model.valintatapajono.kaytetaanValintalaskentaa;
                 model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan = !!model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan;
+                model.valintatapajono.poistetaankoHylatyt = !!model.valintatapajono.poistetaankoHylatyt;
                 model.valintatapajono.valisijoittelu = !!model.valintatapajono.valisijoittelu;
                 model.valintatapajono.automaattinenLaskentaanSiirto = !!model.valintatapajono.automaattinenLaskentaanSiirto;
                 model.valintatapajono.automaattinenLaskentaanSiirtoMuokattavissa = !!model.valintatapajono.automaattinenLaskentaanSiirtoMuokattavissa;

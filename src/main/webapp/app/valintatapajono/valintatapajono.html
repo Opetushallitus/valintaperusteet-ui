@@ -126,6 +126,21 @@
 </div>
 
 <div class="form-group">
+    <label class="control-label col-md-2" for="poistetaankoHylatyt">{{ t('valintatapajono.poistetaankohylatyt') ||
+        'Poistetaanko hylätyt valintalaskennan tuloksista' }}</label>
+
+    <div class="col-md-2">
+        <div class="checkbox">
+            <label>
+                <input auth ng-disabled="!userAccess.updateOrg" type="checkbox" id="poistetaankoHylatyt"
+                       name="poistetaankoHylatyt"
+                       ng-model="model.valintatapajono.poistetaankoHylatyt">
+            </label>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
     <label class="control-label col-md-2" for="valisijoittelu">{{ t('valintatapajono.valisijoittelu') || 'Suoritetaanko
         jonolle välisijoittelu' }}</label>
 
