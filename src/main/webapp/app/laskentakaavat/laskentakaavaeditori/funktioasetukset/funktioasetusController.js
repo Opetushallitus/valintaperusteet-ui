@@ -145,7 +145,7 @@ angular.module('valintaperusteet')
             $scope.getHakemusAvaimet = function (hakuoid) {
 
                     HakemusavaimetLomake.get({hakuoid: hakuoid}, function (haetutAvaimet) {
-                            var tyypit = ["TextQuestion","DropdownSelect","Radio","DateQuestion","SocialSecurityNumber","PostalCode","GradeGridOptionQuestion"];
+                            var tyypit = ["TextQuestion","DropdownSelect","Radio","DateQuestion","SocialSecurityNumber","PostalCode","GradeGridOptionQuestion", "CheckBox"];
                             var avaimet = [];
                             var hakutoiveRivi = "PreferenceRow";
                             var hakutoivePostfixes = ["-Koulutus",
