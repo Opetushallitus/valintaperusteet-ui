@@ -368,7 +368,7 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
             };
             
             $scope.copyToClipboard = function (funktiokutsu) {
-                $scope.setClipboard(funktiokutsu);
+                $scope.setClipboard(_.cloneDeep(funktiokutsu));
             };
 
             $scope.cutToClipboard = function (funktiokutsu, isFunktiokutsu, parent, childIndex, isAlikaava, hasParentAlikaava) {
