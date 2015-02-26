@@ -47,7 +47,7 @@ factory('FunktioNimiService', function() {
 			NIMETTYLUKUARVO: 'Nimetty lukuarvo',
 			NIMETTYTOTUUSARVO: 'Nimetty totuusarvo',
             HAEYOARVOSANA: 'Hae YO-arvosana',
-            HAEOSAKOEARVOSANA: 'Hae YO-osakoearvosana',
+            HAEOSAKOEARVOSANA: 'Hae YO-kokeen pisteet',
             HAKUKELPOISUUS: 'Hakukelpoisuus'
 		};
 
