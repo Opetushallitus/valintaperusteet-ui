@@ -447,8 +447,8 @@ angular.module('valintaperusteet')
     } else if($routeParams.hakukohdeOid) {
 
         Hakukohde.get({oid: $routeParams.hakukohdeOid}, function(result) {
-            if (result.valintaryhma_id) {
-                ValintaryhmaModel.refresh(result.valintaryhma_id);
+            if (result.valintaryhmaOid) {
+                ValintaryhmaModel.refresh(result.valintaryhmaOid);
             }
         });
 

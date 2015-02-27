@@ -32,8 +32,8 @@ angular.module('valintaperusteet')
 
             Hakukohde.get({oid: oid}, function(result) {
                 model.hakukohde = result;
-                if(model.hakukohde.valintaryhma_id) {
-                    Valintaryhma.get({oid: model.hakukohde.valintaryhma_id}, function(result) {
+                if(model.hakukohde.valintaryhmaOid) {
+                    Valintaryhma.get({oid: model.hakukohde.valintaryhmaOid}, function(result) {
                         model.parentValintaryhma = result;
                     });
                 }
@@ -320,7 +320,7 @@ angular.module('valintaperusteet')
     $scope.model = HakijaryhmaLiitaHakukohdeModel;
     $scope.model.refreshIfNeeded();
 
-    ValintaryhmaModel.refresh(HakukohdeModel.hakukohde.valintaryhma_id);
+    ValintaryhmaModel.refresh(HakukohdeModel.hakukohde.valintaryhmaOid);
     $scope.domain = ValintaryhmaModel;
 
 

@@ -33,7 +33,7 @@ app.factory('LaskentakaavaModel', function(Laskentakaava, ParentValintaryhmas, H
                     }
                 });
                 Hakukohde.get({oid: hakukohdeOid}, function(result) {
-                    Valintaryhmas(result.valintaryhma_id);
+                    Valintaryhmas(result.valintaryhmaOid);
                 });
             }
 
