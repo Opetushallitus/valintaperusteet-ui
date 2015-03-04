@@ -118,6 +118,13 @@
                             <th>{{ t('valintakoelomake.valintaryhma') || 'Valintaryhmä / Hakukohde' }}</th>
                         </tr>
                         </thead>
+                        <tr>
+                            <td><input auth ng-disabled="!userAccess.updateOrg" type="radio" name="laskentakaava"
+                                       value=""
+                                       ng-model="model.valintakoe.laskentakaavaId"/></td>
+                            <td>Ei laskentakaavaa</td>
+                            <td></td>
+                        </tr>
                         <tbody ng-repeat="group in model.laskentakaavaModel.laskentakaavat">
                         <tr ng-repeat="data in group.result">
 
