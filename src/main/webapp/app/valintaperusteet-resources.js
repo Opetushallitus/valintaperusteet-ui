@@ -352,7 +352,7 @@ angular.module('valintaperusteet')
     }])
 
     .factory('TarjontaHaut', function($resource) {
-        return $resource(TARJONTA_URL_BASE + "haku/findAll");
+        return $resource(TARJONTA_URL_BASE + "haku/find?addHakukohdes=false");
     })
 
     .factory('TarjontaHaku', ['$resource', function ($resource) {
