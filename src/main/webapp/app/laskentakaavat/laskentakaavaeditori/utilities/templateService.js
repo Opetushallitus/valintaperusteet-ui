@@ -16,6 +16,8 @@ angular.module('valintaperusteet').factory('TemplateService', function() {
 					return "merkkijono-template";
                 case "ARVOJOUKKO":
                     return "arvojoukko-template";
+                case "CHECKBOX":
+                    return "checkbox-template";
 				default:
 					return "";
 			}

@@ -11,6 +11,9 @@
     <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="radio" size="15" ng-model="syoteparametri.arvo"
            value="false"/> Epätosi
 </script>
+<script type="text/ng-template" id="checkbox-template">
+    <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="checkbox" size="15" ng-model="syoteparametri.arvo" ng-true-value="'true'" ng-false-value="'false'"/>
+</script>
 <script type="text/ng-template" id="merkkijono-template">
     <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" size="15" ng-model="syoteparametri.arvo"/>
 </script>
