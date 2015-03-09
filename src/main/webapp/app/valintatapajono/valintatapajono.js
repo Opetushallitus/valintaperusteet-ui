@@ -318,12 +318,6 @@ angular.module('valintaperusteet')
 
             $scope.today = new Date();
 
-            $scope.openAlkaenRajattu = function($event) {
-                $event.preventDefault();
-                $event.stopPropagation();
-                $scope.alkaenRajattuOpen = true;
-            };
-
             $scope.openAstiRajattu = function($event) {
                 $event.preventDefault();
                 $event.stopPropagation();

@@ -220,36 +220,6 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2" for="varasijojaKaytetaanAlkaen">{{
-                t('valintatapajono.varasijasaantoja') ||
-                'Varasijasääntöjä käytetään alkaen' }}</label>
-
-            <div class="col-md-4">
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" id="varasijojaKaytetaanAlkaen" name="varasijojaKaytetaanAlkaen"
-                               ng-model="model.valintatapajono.alkaenRajattu">
-                    </label>
-                </div>
-                <p class="input-group">
-                    <input class="form-control" class="form-control" datepicker-popup="dd.MM.yyyy"
-                           ng-model="model.valintatapajono.varasijojaKaytetaanAlkaen"
-                           is-open="alkaenRajattuOpen"
-                           close-text="Sulje"
-                           clear-text="Tyhjennä"
-                           current-text="Tänään"
-                           ng-disabled="!model.valintatapajono.alkaenRajattu"
-                            />
-                    <span class="input-group-btn">
-                        <button class="btn btn-default btn-sm" ng-disabled="!model.valintatapajono.alkaenRajattu" ng-click="openAlkaenRajattu($event)">
-                            <i class="glyphicon glyphicon-calendar"></i>
-                        </button>
-                    </span>
-                </p>
-            </div>
-        </div>
-
-        <div class="form-group">
             <label class="control-label col-md-2" for="varasijojaTaytetaanAsti">{{ t('valintatapajono.varasijoja') ||
                 'Varasijoja täytetään asti' }}</label>
 
