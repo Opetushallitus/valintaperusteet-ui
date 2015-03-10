@@ -94,6 +94,31 @@
         </div>
     </div>
 
+    <div class="form-group">
+        <label class="col-md-2 control-label"
+               for="kaytetaanRyhmaanKuuluvia"
+               popover-popup-delay="500"
+               popover-placement="right"
+               popover-trigger="mouseenter"
+               popover="Käytetäänkö hakijaryhmään kuuluvia">Käytetäänkö hakijaryhmään kuuluvia</label>
+
+        <div class="col-md-2 ">
+            <div class="checkbox">
+                <input type="checkbox"
+                       ng-model="model.hakijaryhma.kaytetaanRyhmaanKuuluvia"
+                       id="kaytetaanRyhmaanKuuluvia"
+                       popover-popup-delay="500"
+                       popover-placement="right"
+                       popover-trigger="mouseenter"
+                       popover="Käytetäänkö hakijaryhmään kuuluvia"
+                       auth ng-disabled="!userAccess.updateOrg"
+                        />
+            </div>
+        </div>
+    </div>
+
+
+
 
     <div class="form-group">
         <div class="col-md-2 text-right">

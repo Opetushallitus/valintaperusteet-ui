@@ -29,12 +29,24 @@
         </div>
 
         <div class="form-group">
+            <label class="control-label col-md-2" for="hakunimi">{{ t('valintaryhmalomake.haku') || 'Haku' }}</label>
+
+            <div class="col-md-6">
+                <select auth ng-disabled="model.parentOid" id="hakunimi" class="form-control" ng-model="model.valintaryhma.hakuoid"
+                        ng-options="h.oid as h.uiNimi for h in model.haut | orderBy:'nimi.kieli_fi'">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="control-label col-md-2" for="">{{ t('valintaryhmalomakeuusi.kohdejoukko') || 'Kohdejoukko'
                 }}</label>
 
             <div class="col-md-6">
                 <select class="form-control" ng-disabled="model.parentOid" ng-model="model.valintaryhma.kohdejoukko"
                         ng-options="k.koodiUri as k.metadata[0].nimi for k in model.kohdejoukot">
+                    <option value=""></option>
                 </select>
             </div>
         </div>

@@ -1,8 +1,8 @@
 angular.module('valintaperusteet')
     .factory('ValintaryhmaCreatorModel', ['$q', '$resource', '$location', '$routeParams', 'Valintaryhma', 'KoodistoHaunKohdejoukko', 'ChildValintaryhmas', 'Treemodel',
-    'ParentValintaryhmas', 'Utils', 'RootValintaryhmas', 'UserModel',
+    'ParentValintaryhmas', 'Utils', 'RootValintaryhmas', 'UserModel', 'HakuModel',
         function($q, $resource, $location, $routeParams, Valintaryhma, KoodistoHaunKohdejoukko, ChildValintaryhmas, Treemodel,
-                ParentValintaryhmas, Utils, RootValintaryhmas, UserModel) {
+                ParentValintaryhmas, Utils, RootValintaryhmas, UserModel, HakuModel) {
     "use strict";
 
     var model = new function() {
@@ -19,6 +19,16 @@ angular.module('valintaperusteet')
 
             KoodistoHaunKohdejoukko.get(function (result) {
                 model.kohdejoukot = result;
+            });
+
+            if(_.isEmpty(HakuModel.hakuDeferred)) {
+                HakuModel.init();
+            }
+
+            HakuModel.hakuDeferred.promise.then(function () {
+                model.haut = HakuModel.haut;
+            }, function (error) {
+                $log.error('Hakujen haku epäonnistui', error);
             });
 
             UserModel.refreshIfNeeded();
@@ -57,7 +67,8 @@ angular.module('valintaperusteet')
                     lapsivalintaryhma: false,
                     nimi: model.valintaryhma.nimi,
                     kohdejoukko: model.valintaryhma.kohdejoukko,
-                    organisaatiot: model.valintaryhma.organisaatiot
+                    organisaatiot: model.valintaryhma.organisaatiot,
+                    hakuoid: model.valintaryhma.hakuoid
                 };
                 if (!model.parentOid) {
                     Valintaryhma.insert(newValintaryhma, function (result) {

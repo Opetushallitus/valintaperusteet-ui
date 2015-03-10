@@ -186,9 +186,12 @@
                 <td class="text-center">{{data.kiintio}}</td>
 
                 <td class="text-center">
-                    <i auth ng-disabled="!userAccess.crudOrg" ng-show="!data.inheritance" class="fa fa-trash-o"
-                       ng-click="removeHakijaryhma(data.oid)"></i>
+                    <a auth ng-disabled="!userAccess.crudOrg" ng-show="!data.inheritance"
+                       class="btn btn-sm btn-default" ng-click="removeHakijaryhma(data.oid)">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
                 </td>
+
             </tr>
             </tbody>
         </table>

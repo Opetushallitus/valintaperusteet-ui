@@ -16,6 +16,7 @@ angular.module('valintaperusteet')
                 instance.hakijaryhma = {};
                 instance.hakijaryhma.kaytaKaikki = false;
                 instance.hakijaryhma.tarkkaKiintio = false;
+                instance.hakijaryhma.kaytetaanRyhmaanKuuluvia = true;
                 instance.valintatapajonot.length = 0;
 
                 if (oid) {

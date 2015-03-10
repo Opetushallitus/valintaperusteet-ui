@@ -4,12 +4,12 @@ angular.module('valintaperusteet')
         'HakukohdeValinnanvaihe', 'Valinnanvaihe', 'ValinnanvaiheJarjesta',
         'HakukohdeKuuluuSijoitteluun', 'HakukohdeHakijaryhma', 'Laskentakaava',
         'HakijaryhmaJarjesta', 'Hakijaryhma', 'Haku', 'HaunTiedot', 'HakukohdeNimi',
-        'HakijaryhmanValintatapajonot', 'Ilmoitus', 'IlmoitusTila',
+        'HakijaryhmanValintatapajonot', 'Ilmoitus', 'IlmoitusTila', 'HakijaryhmaValintatapajono',
         function($q, HakukohdeHakukohdekoodi, KoodistoHakukohdekoodi, Hakukohde, Valintaryhma,
         HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta,
         HakukohdeKuuluuSijoitteluun, HakukohdeHakijaryhma, Laskentakaava,
         HakijaryhmaJarjesta, Hakijaryhma, Haku, HaunTiedot, HakukohdeNimi,
-        HakijaryhmanValintatapajonot, Ilmoitus, IlmoitusTila) {
+        HakijaryhmanValintatapajonot, Ilmoitus, IlmoitusTila, HakijaryhmaValintatapajono) {
     "use strict";
 
     var model = new function()  {
@@ -147,7 +147,7 @@ angular.module('valintaperusteet')
 
 
         this.removeHakijaryhma = function(hakijaryhmaOid) {
-            Hakijaryhma.delete({oid: hakijaryhmaOid}, function(){
+            HakijaryhmaValintatapajono.delete({oid: hakijaryhmaOid}, function(){
                 for(var i in model.hakijaryhmat) {
                     if(hakijaryhmaOid === model.hakijaryhmat[i].oid) {
                         model.hakijaryhmat.splice(i,1);
