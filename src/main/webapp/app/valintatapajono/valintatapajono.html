@@ -241,9 +241,9 @@
                            ng-disabled="!model.valintatapajono.astiRajattu"
                             />
                     <span class="input-group-btn">
-                        <button ng-disabled="!model.valintatapajono.astiRajattu"
+                        <a ng-disabled="!model.valintatapajono.astiRajattu"
                                 class="btn btn-default btn-sm" ng-click="openAstiRajattu($event)"><i
-                                class="glyphicon glyphicon-calendar"></i></button>
+                                class="glyphicon glyphicon-calendar"></i></a>
                     </span>
                 </p>
             </div>
@@ -338,10 +338,10 @@
                 </td>
                 <td>{{data.inheritance}}</td>
                 <td>
-                    <button ng-show="!data.inheritance" class="btn btn-sm btn-default" auth
+                    <a ng-show="!data.inheritance" class="btn btn-sm btn-default" auth
                             ng-disabled="!userAccess.crudOrg">
                         <i class="fa fa-trash-o" ng-click="remove(data.oid)"></i>
-                    </button>
+                    </a>
                 </td>
             </tr>
             </tbody>
@@ -356,9 +356,9 @@
 
 <div class="form-group" ng-show="model.valintatapajono.oid">
     <div class="col-md-2 col-md-offset-2">
-        <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="addKriteeri()"><i
+        <a auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="addKriteeri()"><i
                 class="fa fa-plus"></i> {{ t('valintatapajono.kriteeri') || 'Kriteeri' }}
-        </button>
+        </a>
     </div>
 </div>
 
@@ -393,9 +393,9 @@
                 <td>{{data.kuvaus}}</td>
                 <td>{{data.kiintio}}</td>
                 <td>
-                    <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default"
+                    <a auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default"
                             ng-show="!data.inheritance"
-                            ng-click="model.removeHakijaryhma(data.oid)"><i class="fa fa-trash-o"></i></button>
+                            ng-click="model.removeHakijaryhma(data.oid)"><i class="fa fa-trash-o"></i></a>
                 </td>
             </tr>
             </tbody>
@@ -406,16 +406,16 @@
             <modal modal-template="hakijaryhma/hakijaryhmaModal.html">
                 <modal-open></modal-open>
             </modal>
-            <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-primary" type="button"
+            <a auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-primary" type="button"
                     ng-click="openHakijaryhmaModal()"><i
                     class="fa fa-plus"></i>
                 Liitä hakijaryhmä
-            </button>
+            </a>
         </div>
 
-        <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="addHakijaryhma()"><i
+        <a auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="addHakijaryhma()"><i
                 class="fa fa-plus"></i> Luo uusi hakijaryhmä
-        </button>
+        </a>
 
     </div>
     <span ng-if="model.valintatapajono.siirretaanSijoitteluun && !model.valintatapajono.oid">{{ t('valintatapajono.tallennahakijaryhma') || 'Tallenna jono lisätäksesi hakijaryhmä.' }}</span>
