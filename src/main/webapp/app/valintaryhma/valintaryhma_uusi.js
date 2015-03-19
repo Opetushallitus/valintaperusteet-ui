@@ -62,6 +62,9 @@ angular.module('valintaperusteet')
 
         this.persist = function(parents, children) {
             if (!Utils.hasSameName(model, parents, children)) {
+                if(model.parentOid) {
+                    model.valintaryhma.hakuoid = "";
+                }
                 var newValintaryhma = {
                     lapsihakukohde: false,
                     lapsivalintaryhma: false,
