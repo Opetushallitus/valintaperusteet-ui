@@ -129,27 +129,27 @@
 
                 <label class="col-md-2 control-label">{{ t('laskentakaavaviiteasetuksetmodal.tiedonSyotettavyys') || 'Tiedon syötettävyys' }}</label>
 
-                <div class="col-md-10" ng-init="valintaperuste.syotettavissa='KAIKILLE'">
-                    <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg"  type="radio" name="syotettavissa" value="KAIKILLE" ng-model="valintaperuste.syotettavissa">
+                <div class="col-md-10">
+                    <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg"  type="radio" name="syotettavissaKaikille" ng-value="true" ng-model="valintaperuste.syotettavissaKaikille">
                     {{ t('laskentakaavaviiteasetuksetmodal.kaikille') || 'Kaikille' }}
                     </input>
-                    <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg"  type="radio" name="syotettavissa" value="VALINTAKOELASKENNAN_PERUSTEELLA" ng-model="valintaperuste.syotettavissa">
+                    <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg"  type="radio" name="syotettavissaKaikille" ng-value="false" ng-model="valintaperuste.syotettavissaKaikille">
                     {{ t('laskentakaavaviiteasetuksetmodal.valintakoelaskennanPerusteella') || 'Valintakoelaskennan perusteella' }}
                     </input>
                 </div>
 
             </div>
 
-            <div class="form-group" ng-iinit="valintaperuste.lahde === 'SYOTETTAVA_ARVO'">
+            <div class="form-group" ng-if="valintaperuste.lahde === 'SYOTETTAVA_ARVO'">
 
                 <label class="col-md-2 control-label">{{ t('laskentakaavaviiteasetuksetmodal.osallistumistieto') || 'Osallistumistieto' }}</label>
 
-                <div class="col-md-10" ng-init="valintaperuste.osallistumistiedonVaikutus='VAIKUTTAA_LASKENTAAN'">
-                    <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg"  type="radio" name="osallistumistieto" value="VAIKUTTAA_LASKENTAAN" ng-model="valintaperuste.osallistumistiedonVaikutus">
+                <div class="col-md-10">
+                    <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg"  type="radio" name="vaatiiOsallistumisen" ng-value="true" ng-model="valintaperuste.vaatiiOsallistumisen">
                     {{ t('laskentakaavaviiteasetuksetmodal.vaikuttaaLaskentaan') || 'Vaikuttaa laskentaan' }}
                     </input>
                     <br/>
-                    <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg"  type="radio" name="osallistumistieto" value="EI_VAIKUTA_LASKENTAAN" ng-model="valintaperuste.osallistumistiedonVaikutus">
+                    <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg"  type="radio" name="vaatiiOsallistumisen" ng-value="false" ng-model="valintaperuste.vaatiiOsallistumisen">
                     {{ t('laskentakaavaviiteasetuksetmodal.eiVaikutaLaskentaan') || 'Ei vaikuta laskentaan' }}
                     </input>
                 </div>
