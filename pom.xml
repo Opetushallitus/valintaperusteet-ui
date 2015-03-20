@@ -105,7 +105,7 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
-        <!-- it-test -->
+        <!-- testing -->
         <dependency>
             <groupId>fi.vm.sade</groupId>
             <artifactId>embedded-tomcat</artifactId>

@@ -1,11 +1,8 @@
 package fi.vm.sade.valintaperusteet;
 
 import fi.vm.sade.integrationtest.tomcat.EmbeddedTomcat;
-import fi.vm.sade.integrationtest.tomcat.SharedTomcat;
-import fi.vm.sade.integrationtest.util.PortChecker;
 import fi.vm.sade.integrationtest.util.ProjectRootFinder;
 import org.apache.catalina.LifecycleException;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 
