@@ -265,7 +265,7 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
             $scope.getValintaperuste = function (viitteet, indeksi) {
                 var result = viitteet[indeksi];
                 if (result === undefined) {
-                    result = {tunniste: "", kuvaus: "", lahde: "", onPakollinen: false, kuvaukset: {tekstit: []}, vaatiiOsallistumisen: true};
+                    result = {tunniste: "", kuvaus: "", lahde: "", onPakollinen: false, kuvaukset: {tekstit: []}, vaatiiOsallistumisen: true, syotettavissaKaikille: true};
                 } else if (_.size(result) == 1 || _.isEmpty(result)) {
                     result.tunniste = "";
                     result.kuvaus = "";
@@ -273,6 +273,7 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                     result.onPakollinen = false;
                     result.kuvaukset = {tekstit: []};
                     result.vaatiiOsallistumisen = true;
+                    result.syotettavissaKaikille = true;
                 }
 
                 return result;
