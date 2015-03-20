@@ -10,7 +10,7 @@ public class ValintaPerusteetUiTomcat extends EmbeddedTomcat {
     static final String MODULE_ROOT = ProjectRootFinder.findProjectRoot() + "/ui/valintaperusteet-ui";
     static final String CONTEXT_PATH = "/valintaperusteet-ui";
     static final int DEFAULT_PORT = 9094;
-    static final int DEFAULT_AJP_PORT = 8530;
+    static final int DEFAULT_AJP_PORT = 18530;
 
     public ValintaPerusteetUiTomcat(int port, int ajpPort) {
         super(port, ajpPort, MODULE_ROOT, CONTEXT_PATH);
