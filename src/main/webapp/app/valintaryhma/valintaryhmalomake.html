@@ -108,6 +108,15 @@
 </div>
 
 <div class="form-group">
+    <label class="control-label col-md-2" for="hakuvuosi">{{ t('valintaryhmalomake.hakuvuosi') || 'Hakuvuosi' }}</label>
+
+    <div class="col-md-6">
+        <input auth ng-disabled="!userAccess.updateOrg" class="form-control"
+               type="text" id="hakuvuosi" ng-model="model.valintaryhma.hakuvuosi" />
+    </div>
+</div>
+
+<div class="form-group">
     <label class="control-label col-md-2" for="kohdejoukko">{{ t('valintaryhmalomake.kohdejoukko') || 'Kohdejoukko'
         }}</label>
 
