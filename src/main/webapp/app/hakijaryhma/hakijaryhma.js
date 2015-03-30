@@ -6,46 +6,45 @@ angular.module('valintaperusteet')
                                            HakijaryhmaValintatapajono, Ilmoitus, IlmoitusTila) {
         "use strict";
 
-        var factory = (function () {
-            var instance = {};
-            instance.hakijaryhma = {};
-            instance.valintatapajonot = [];
-            instance.onkoHakijaryhma = true;
+        var model = new function()  {
+            this.hakijaryhma = {};
+            this.valintatapajonot = [];
+            this.onkoHakijaryhma = true;
 
-            instance.refresh = function (oid, valintaryhmaOid, hakukohdeOid, valintatapajonoOid) {
-                instance.hakijaryhma = {};
-                instance.hakijaryhma.kaytaKaikki = false;
-                instance.hakijaryhma.tarkkaKiintio = false;
-                instance.hakijaryhma.kaytetaanRyhmaanKuuluvia = true;
-                instance.valintatapajonot.length = 0;
+            this.refresh = function (oid, valintaryhmaOid, hakukohdeOid, valintatapajonoOid) {
+                model.hakijaryhma = {};
+                model.hakijaryhma.kaytaKaikki = false;
+                model.hakijaryhma.tarkkaKiintio = false;
+                model.hakijaryhma.kaytetaanRyhmaanKuuluvia = true;
+                model.valintatapajonot.length = 0;
 
                 if (oid) {
                     if (hakukohdeOid || valintatapajonoOid) {
                         HakijaryhmaValintatapajono.get({oid: oid}, function (result) {
-                            instance.hakijaryhma = result;
-                            instance.onkoHakijaryhma = false;
+                            model.hakijaryhma = result;
+                            model.onkoHakijaryhma = false;
                         });
                     } else {
                         Hakijaryhma.get({oid: oid}, function (result) {
-                            instance.hakijaryhma = result;
+                            model.hakijaryhma = result;
+                            model.onkoHakijaryhma = true;
                         });
                     }
 
                 }
 
                 LaskentakaavaModel.refresh(valintaryhmaOid, hakukohdeOid);
-                instance.laskentakaavaModel = LaskentakaavaModel;
+                model.laskentakaavaModel = LaskentakaavaModel;
 
             };
 
-
-            instance.submit = function (valintaryhmaOid, hakukohdeOid, valintatapajonoOid) {
+            this.submit = function (valintaryhmaOid, hakukohdeOid, valintatapajonoOid) {
                 var deferred = $q.defer();
 
-                if (instance.hakijaryhma.oid) {
+                if (model.hakijaryhma.oid) {
                     if (hakukohdeOid || valintatapajonoOid) {
-                        HakijaryhmaValintatapajono.update({oid: instance.hakijaryhma.oid}, instance.hakijaryhma, function (result) {
-                            instance.hakijaryhma = result;
+                        HakijaryhmaValintatapajono.update({oid: model.hakijaryhma.oid}, model.hakijaryhma, function (result) {
+                            model.hakijaryhma = result;
                             Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                             deferred.resolve();
                         }, function (err) {
@@ -53,8 +52,8 @@ angular.module('valintaperusteet')
                             deferred.reject('Hakijaryhmän tallentaminen hakukohteelle tai valintatapajonolle epäonnistui', err);
                         });
                     } else {
-                        Hakijaryhma.update({oid: instance.hakijaryhma.oid}, instance.hakijaryhma, function (result) {
-                            instance.hakijaryhma = result;
+                        Hakijaryhma.update({oid: model.hakijaryhma.oid}, model.hakijaryhma, function (result) {
+                            model.hakijaryhma = result;
                             Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                             deferred.resolve();
                         }, function (err) {
@@ -63,8 +62,8 @@ angular.module('valintaperusteet')
                         });
                     }
                 } else if (hakukohdeOid && valintatapajonoOid) {
-                    ValintatapajonoHakijaryhma.insert({oid: valintatapajonoOid}, instance.hakijaryhma, function (result) {
-                        instance.hakijaryhma = result;
+                    ValintatapajonoHakijaryhma.insert({oid: valintatapajonoOid}, model.hakijaryhma, function (result) {
+                        model.hakijaryhma = result;
                         Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                         deferred.resolve();
                     }, function (err) {
@@ -73,8 +72,8 @@ angular.module('valintaperusteet')
                     });
 
                 } else if (hakukohdeOid) {
-                    HakukohdeHakijaryhma.insert({oid: hakukohdeOid}, instance.hakijaryhma, function (result) {
-                        instance.hakijaryhma = result;
+                    HakukohdeHakijaryhma.insert({oid: hakukohdeOid}, model.hakijaryhma, function (result) {
+                        model.hakijaryhma = result;
                         Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                         deferred.resolve();
                     }, function (err) {
@@ -83,9 +82,9 @@ angular.module('valintaperusteet')
                     });
                 }
                 else if (valintaryhmaOid) {
-                    ValintaryhmaHakijaryhma.insert({oid: valintaryhmaOid}, instance.hakijaryhma, function (result) {
+                    ValintaryhmaHakijaryhma.insert({oid: valintaryhmaOid}, model.hakijaryhma, function (result) {
                         Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
-                        instance.hakijaryhma = result;
+                        model.hakijaryhma = result;
                         deferred.resolve();
                     }, function (err) {
                         Ilmoitus.avaa("Tallennus epäonnistui", "Hakijaryhmän tallentaminen valintaryhmään epäonnistui", IlmoitusTila.ERROR);
@@ -98,10 +97,9 @@ angular.module('valintaperusteet')
                 return deferred.promise;
             };
 
-            return instance;
-        })();
+        }();
 
-        return factory;
+        return model;
     })
 
     .controller('HakijaryhmaController', ['$scope', '$location', '$routeParams', 'HakijaryhmaModel',
