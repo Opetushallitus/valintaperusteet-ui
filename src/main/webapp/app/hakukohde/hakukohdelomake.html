@@ -45,10 +45,10 @@
         <input auth ng-disabled="!userAccess.updateOrg" type="text" ng-model="uusiHakukohdeUri"
                typeahead-editable="false"
                typeahead="koodi as koodi.metadata[0].nimi + ' (' + koodi.koodiUri + ')' for koodi in model.hakukohdekoodit| filter:$viewValue | orderBy:'metadata[0].nimi' | limitTo :10 ">
-        <button class="btn btn-sm btn-primary" auth type="button" ng-click="addHakukohdeUri()"
+        <a class="btn btn-sm btn-primary" auth type="button" ng-click="addHakukohdeUri()"
                 ng-disabled="!uusiHakukohdeUri || !userAccess.updateOrg"><i class="fa fa-refresh"></i> {{
             t('hakukohdelomake.paivita') || 'Päivitä' }}
-        </button>
+        </a>
     </div>
 
 </div>
@@ -91,11 +91,11 @@
             <modal modal-template="hakukohde/valintaryhmanSiirtoModal.html">
                 <modal-open></modal-open>
             </modal>
-            <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-primary" type="button"
+            <a auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-primary" type="button"
                     ng-click="openValintaryhmaModal()"><i
                     class="fa fa-arrows"></i>
                 {{ t('hakukohdelomake.siirra') || 'Siirrä' }}
-            </button>
+            </a>
         </div>
 
     </div>
@@ -206,11 +206,11 @@
             <modal modal-template="hakijaryhma/hakijaryhmaModal.html">
                 <modal-open></modal-open>
             </modal>
-            <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-primary" type="button"
+            <a auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-primary" type="button"
                     ng-click="openHakijaryhmaModal()"><i
                     class="fa fa-plus"></i>
                 Liitä hakijaryhmä
-            </button>
+            </a>
         </div>
     </div>
 </div>

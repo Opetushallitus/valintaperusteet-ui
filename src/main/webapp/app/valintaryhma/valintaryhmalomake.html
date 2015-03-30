@@ -153,9 +153,9 @@
                 </td>
                 <td>{{organisaatio.oid}}</td>
                 <td>
-                    <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-default btn-sm"
+                    <a auth ng-disabled="!userAccess.updateOrg" class="btn btn-default btn-sm"
                             ng-click="model.valintaryhma.organisaatiot.splice($index,1)">
-                        <i class="fa fa-trash-o organisaatio"></i></button>
+                        <i class="fa fa-trash-o organisaatio"></i></a>
                 </td>
             </tr>
 
@@ -219,15 +219,15 @@
 
 <div ng-show="model.valintaryhma.oid" class="form-group">
     <div class="col-md-4 col-md-offset-2">
-        <button auth ng-disabled="!userAccess.crudOrg" type="button" class="btn btn-sm btn-default"
+        <a auth ng-disabled="!userAccess.crudOrg" type="button" class="btn btn-sm btn-default"
                 ng-click="lisaaValinnanVaihe()"><i
                 class="fa fa-plus"></i> {{ t('valintaperusteet.valinnanvaihe') || 'Valinnanvaihe'}}
-        </button>
-        <button auth ng-disabled="!userAccess.crudOrg" type="button" class="btn btn-sm btn-default"
+        </a>
+        <a auth ng-disabled="!userAccess.crudOrg" type="button" class="btn btn-sm btn-default"
                 ng-click="lisaaValintakoeValinnanVaihe()"><i
                 class="fa fa-plus"></i> {{ t('valintaperusteet.valintakoevalinnanvaihe') ||
             'Valintakoevalinnanvaihe'}}
-        </button>
+        </a>
     </div>
 </div>
 
@@ -257,16 +257,16 @@
                 <td>{{data.laskentakaava_nimi}}</td>
                 <td>{{data.kiintio}}</td>
                 <td>
-                    <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-default"
+                    <a auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-default"
                             ng-show="!data.inheritance" ng-click="model.removeHakijaryhma(data.oid)">
                         <i class="fa fa-trash-o"></i>
-                    </button>
+                    </a>
                 </td>
                 <td>
-                    <button auth ng-disabled="!userAccess.updateApp" class="btn btn-default btn-sm"
+                    <a auth ng-disabled="!userAccess.updateApp" class="btn btn-default btn-sm"
                             ng-click="openHakijaryhmaKopiointiModal(data)">
                         <i class="fa fa-file-o"></i> <i class="fa fa-long-arrow-right"></i> <i class="fa fa-users"></i>
-                    </button>
+                    </a>
                 </td>
             </tr>
             </tbody>
@@ -297,11 +297,11 @@
         <a auth ng-disabled="!userAccess.crudOrg" class="btn btn-default btn-sm" ng-click="showValintaryhmaKopiointi()">
             {{t('valintaryhmalomake.kopioi.valintaryhma.kopiointi') || 'Valintaryhmän kopiointi'}}
         </a>
-        <button auth ng-disabled="!model.okToDelete || !userAccess.crudOrg" class="btn btn-sm btn-primary" type="button"
+        <a auth ng-disabled="!model.okToDelete || !userAccess.crudOrg" class="btn btn-sm btn-primary" type="button"
                 ng-click="deleteValintaryhma()">
             <i class="fa fa-trash-o"></i>
             {{ t('common.poista') || 'Poista' }}
-        </button>
+        </a>
     </div>
 </div>
 

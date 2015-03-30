@@ -70,10 +70,10 @@
 
         <div class="form-group">
             <div class="col-md-2 col-md-offset-2">
-                <button auth ng-disabled="!userAccess.crudOrg || !model.valintakoevalinnanvaihe.oid" class="btn btn-sm btn-default"
+                <a auth ng-disabled="!userAccess.crudOrg || !model.valintakoevalinnanvaihe.oid" class="btn btn-sm btn-default"
                         ng-click="addValintakoe()"><i class="fa fa-plus"></i> {{
                     t('valintakoevalinnanvaihelomake.valintakoe') || 'Valintakoe' }}
-                </button>
+                </a>
             </div>
         </div>
 
