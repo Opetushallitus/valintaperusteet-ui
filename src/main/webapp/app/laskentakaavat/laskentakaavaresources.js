@@ -46,11 +46,13 @@ angular.module('valintaperusteet').factory('FunktioKuvausResource', function ($r
             hakuoid: "@hakuoid",
             orgId: "@orgId"
         }, {
-            get: {method: "GET", isArray: true}
+            get: {method: "GET", isArray: true, cache: true}
         });
     })
 
     .factory('HakemusavaimetLomake', function ($resource) {
-        return $resource(HAKEMUS_URL_BASE + "/lomake/:hakuoid/form", {hakuoid: "@hakuoid"});
+        return $resource(HAKEMUS_URL_BASE + "/lomake/:hakuoid/form", {hakuoid: "@hakuoid"}, {
+            get: {method: "GET", cache: true}
+        });
 
     });

@@ -51,7 +51,11 @@ var paths = {
 
         'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
 
-        'bower_components/angular-ui-tinymce/src/tinymce.js'
+        'bower_components/angular-ui-tinymce/src/tinymce.js',
+
+        'bower_components/angular-cache/dist/angular-cache.js',
+        'bower_components/angular-cache/dist/angular-cache.min.js',
+        'bower_components/angular-cache/dist/angular-cache.min.map'
 
     ],
     livereloadSources: [

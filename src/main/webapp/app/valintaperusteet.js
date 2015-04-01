@@ -1,11 +1,17 @@
 "use strict";
 
 var app = angular.module('valintaperusteet', ['ngResource', 'ngCookies', 'loading', 'ngRoute',
-    'ui.bootstrap', 'lodash', 'ng-breadcrumbs', 'oph-roles', 'oph.localisation', 'oph.utils', ])
+    'ui.bootstrap', 'lodash', 'ng-breadcrumbs', 'oph-roles', 'oph.localisation', 'oph.utils', 'angular-cache'])
 
-    .run(function ($http, LocalisationService) {
+    .run(function ($http, LocalisationService, CacheFactory) {
         $http.get(SERVICE_URL_BASE + "buildversion.txt?auth");
         LocalisationService.getTranslation("");
+
+        $http.defaults.cache = CacheFactory('defaultCache', {
+            maxAge: 30 * 60 * 1000, // 30 minuutin kakku
+            cacheFlushInterval: 60 * 60 * 1000, // Tunnin välein flush
+            deleteOnExpire: 'aggressive'
+        });
     })
 
     .constant('CAS_URL', CAS_URL || "/cas/myroles")
