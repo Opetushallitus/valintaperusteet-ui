@@ -23,7 +23,7 @@ angular.module('valintaperusteet').
 
             $scope.persistNewKaava = function () {
                 $scope.$broadcast('persistNewKaava');
-            }
+            };
 
             $scope.back = function () {
                 if ($routeParams.id) {

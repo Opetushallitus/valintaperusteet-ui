@@ -468,10 +468,6 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                     laskentakaava: $scope.model.laskentakaavapuu
                 };
 
-                var urlEnd = _.reduce(_.last($location.path(), 14), function (result, current) {
-                    return result + current;
-                }, "");
-
                 ErrorService.clearErrors();
 
                 KaavaValidation.validateTree($scope.model.laskentakaavapuu.funktiokutsu);
@@ -482,7 +478,7 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                         $scope.createNewKaava = false;
                         $scope.saved = true;
 
-                        if (urlEnd === 'laskentakaava/') {
+                        if (!$routeParams.laskentakaavaOid) {
                             $location.path($location.path() + result.id);
                         }
 
