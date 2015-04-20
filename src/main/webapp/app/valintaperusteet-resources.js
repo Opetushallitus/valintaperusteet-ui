@@ -6,13 +6,13 @@ angular.module('valintaperusteet')
     // HAKU-APP
     .factory('HakemusAvaimet', ['$resource', function ($resource) {
         return $resource(HAKEMUS_URL_BASE + "application-system-form-editor/application-system-form/:asId", {asId: "@asId"}, {
-            get: {method: "GET", isArray: false}
+            get: {method: "GET", isArray: false, cache: true}
         });
     }])
 
     .factory('HakemusLisakysymykset', ['$resource', function ($resource) {
         return $resource(HAKEMUS_URL_BASE + "application-system-form-editor/theme-question/list/:asId", {asId: "@asId"}, {
-            get: {method: "GET", isArray: false}
+            get: {method: "GET", isArray: false, cache: true}
         });
     }])
 
@@ -24,7 +24,7 @@ angular.module('valintaperusteet')
             tila: "@tila",
             kohdejoukko: "@kohdejoukko"
         }, {
-            get: {method: "GET", isArray: true}
+            get: {method: "GET", isArray: true, cache: false}
         });
     }])
 
@@ -32,7 +32,7 @@ angular.module('valintaperusteet')
     .factory('RootValintaryhmas', ['$resource', function ($resource) {
         return $resource(SERVICE_URL_BASE + "resources/valintaryhma", {}, {
             get: {
-                method: "GET", isArray: true,
+                method: "GET", isArray: true, cache: false,
                 params: {
                     paataso: true
                 }
@@ -42,14 +42,14 @@ angular.module('valintaperusteet')
 
     .factory('ChildValintaryhmas', ['$resource', function ($resource) {
         return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:parentOid/lapsi", {parentOid: "@parentOid"}, {
-            get: {method: "GET", isArray: true},
-            insert: {method: "PUT"}
+            get: {method: "GET", isArray: true, cache: false},
+            insert: {method: "PUT", cache: false}
         });
     }])
 
     .factory('ChildHakukohdes', ['$resource', function ($resource) {
         return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid/hakukohde", {}, {
-            get: {method: "GET", isArray: true}
+            get: {method: "GET", isArray: true, cache: false}
         });
     }])
 
@@ -59,7 +59,7 @@ angular.module('valintaperusteet')
             get: {method: "GET", cache: false},
             post: {method: "POST"},
             insert: {method: "PUT"},
-            query: {method: "GET", isArray: true},
+            query: {method: "GET", isArray: true, cache: false},
             delete: {method: "DELETE"}
         });
     }])
@@ -85,7 +85,7 @@ angular.module('valintaperusteet')
 
     .factory('NewValintaryhmaValinnanvaihe', ['$resource', function ($resource) {
         return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:valintaryhmaOid/valinnanvaihe", {valintaryhmaOid: "@valintaryhmaOid"}, {
-            put: {method: "PUT"}
+            put: {method: "PUT", cache: false}
         });
     }])
 
@@ -126,25 +126,25 @@ angular.module('valintaperusteet')
     //Hakukohde
     .factory('RootHakukohde', ['$resource', function ($resource) {
         return $resource(SERVICE_URL_BASE + "resources/hakukohde", {paataso: true}, {
-            get: {method: "GET", isArray: true}
+            get: {method: "GET", isArray: true, cache: false}
         });
     }])
 
     .factory('ChildHakukohdes', ['$resource', function ($resource) {
         return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid/hakukohde", {}, {
-            get: {method: "GET", isArray: true}
+            get: {method: "GET", isArray: true, cache: false}
         });
     }])
 
     .factory('HakukohdeKuuluuSijoitteluun', ['$resource', function ($resource) {
         return $resource(SERVICE_URL_BASE + "resources/hakukohde/:oid/kuuluuSijoitteluun", {}, {
-            get: {method: "GET"}
+            get: {method: "GET", cache: false}
         });
     }])
 
     .factory('NewHakukohde', ['$resource', function ($resource) {
         return $resource(SERVICE_URL_BASE + "resources/hakukohde", {}, {
-            insert: {method: "PUT"}
+            insert: {method: "PUT", cache: false}
         });
     }])
 
@@ -195,7 +195,7 @@ angular.module('valintaperusteet')
     }])
     .factory('ValinnanvaiheKuuluuSijoitteluun', ['$resource', function ($resource) {
         return $resource(SERVICE_URL_BASE + "resources/valinnanvaihe/:oid/kuuluuSijoitteluun", {}, {
-            get: {method: "GET"}
+            get: {method: "GET", cache: false}
         });
     }])
 
@@ -335,7 +335,7 @@ angular.module('valintaperusteet')
 
     .factory('TarjontaImport', ['$resource', function ($resource) {
         return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/hakuimport/aktivoi", {}, {
-            aktivoi: {method: "GET"}
+            aktivoi: {method: "GET", cache: false}
         });
     }])
 

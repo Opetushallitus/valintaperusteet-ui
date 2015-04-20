@@ -19,8 +19,8 @@ angular.module('valintaperusteet').factory('FunktioKuvausResource', function ($r
 
     .factory('Laskentakaava', function ($resource) {
         return $resource(SERVICE_URL_BASE + "resources/laskentakaava/:oid", {oid: "@oid"}, {
-            list: {method: "GET", isArray: true},
-            get: {method: "GET"},
+            list: {method: "GET", isArray: true, cache: false},
+            get: {method: "GET", cache: false},
             insert: {method: "PUT"},
             update: {method: "POST"},
             updateMetadata: {method: "POST", params: {metadata: "true"}}
@@ -30,14 +30,14 @@ angular.module('valintaperusteet').factory('FunktioKuvausResource', function ($r
     .factory('LaskentakaavaValintaryhma', function ($resource) {
 
         return $resource(SERVICE_URL_BASE + "resources/laskentakaava/:oid/valintaryhma", {oid: "@oid"}, {
-            get: {method: "GET"}
+            get: {method: "GET", cache: false}
         });
     })
 
     .factory('HakukohdeLaskentakaavat', function ($resource) {
 
         return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeOid/laskentakaava", {hakukohdeOid: "@hakukohdeOid"}, {
-            get: {method: "GET"}
+            get: {method: "GET", cache: false}
         });
     })
 
