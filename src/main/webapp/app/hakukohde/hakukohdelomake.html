@@ -10,9 +10,16 @@
 <breadcrumb></breadcrumb>
 <form class="form-horizontal" name="form" ng-submit="submit()">
 <div class="form-group">
-    <label class="col-md-2 control-label">{{ t('hakukohdelomake.hakukohteennimi') || 'Hakukohteen nimi' }}</label>
+    <label class="col-md-2 control-label">{{ t('hakukohdelomake.hakukohteennimi') || 'Hakukohteen nimi' }}: </label>
 
-    <div class="col-md-10 form-control-static">{{model.hakukohde.nimi}} ({{model.hakukohde.oid}})</div>
+    <div class="col-md-10 form-control-static">{{model.hakukohde.nimi}}</div>
+</div>
+<div class="form-group">
+    <label class="col-md-2 control-label">{{ t('hakukohdelomake.hakukohdeoid') || 'Oid' }}: </label>
+    <div class="col-md-10 form-control-static">
+        {{model.hakukohde.oid}}&nbsp;&nbsp;&nbsp;
+        <a href="/tarjonta-app/index.html#/hakukohde/{{model.hakukohde.oid}}" target="_blank">Tarjonta <i class="fa fa-external-link"></i></a>
+    </div>
 </div>
 
 <div class="form-group">
