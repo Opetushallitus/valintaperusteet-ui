@@ -197,7 +197,7 @@ angular.module('valintaperusteet')
 
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
 	$scope.valintakoeValinnanvaiheOid = $routeParams.valintakoevalinnanvaiheOid;
-	$scope.valintakoeOid = $routeParams.id;
+	$scope.valintakoeOid = $routeParams.valintakoeOid;
 	$scope.model = ValintakoeModel;
 	$scope.model.refreshIfNeeded($scope.valintakoeOid, undefined, $scope.hakukohdeOid);
 

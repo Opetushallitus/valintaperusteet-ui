@@ -31,7 +31,7 @@ app.config(function($routeProvider) {
 		when('/hakukohde/:hakukohdeOid/valintakoevalinnanvaihe/', {controller: 'HakukohdeValintakoeValinnanvaiheController', templateUrl:TEMPLATE_URL_BASE + 'valinnanvaihe/valintakoevalinnanvaihelomake.html', label: 'valintakoevalinnanvaihe'}).
 		when('/hakukohde/:hakukohdeOid/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid', {controller: 'HakukohdeValintakoeValinnanvaiheController', templateUrl:TEMPLATE_URL_BASE + 'valinnanvaihe/valintakoevalinnanvaihelomake.html', label: 'valintakoevalinnanvaihe'}).
 		when('/hakukohde/:hakukohdeOid/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid/valintakoe/', {controller: 'HakukohdeValintakoeController', templateUrl:TEMPLATE_URL_BASE + 'valintakoe/valintakoelomake.html', label: 'valintakoe'}).
-		when('/hakukohde/:hakukohdeOid/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid/valintakoe/:id', {controller: 'HakukohdeValintakoeController', templateUrl:TEMPLATE_URL_BASE + 'valintakoe/valintakoelomake.html', label: 'valintakoe'}).
+		when('/hakukohde/:hakukohdeOid/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid/valintakoe/:valintakoeOid', {controller: 'HakukohdeValintakoeController', templateUrl:TEMPLATE_URL_BASE + 'valintakoe/valintakoelomake.html', label: 'valintakoe'}).
 
 		// edit hakukohde
 		when('/hakukohde/', {controller: 'UusiHakukohdeController', templateUrl:TEMPLATE_URL_BASE + 'hakukohde/hakukohde_uusi.html', label: 'hakukohde'}).
