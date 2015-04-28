@@ -51,8 +51,7 @@
                        ng-model="model.valintakoe.lahetetaankoKoekutsut"/>
             </div>
         </div>
-
-        <div class="form-group">
+        <div class="form-group" ng-show="model.valintakoe.kutsunKohde != 'HAKIJAN_VALINTA'">
             <label class="control-label col-md-2" for="kutsutaankoKaikki">{{ t('valintakoelomake.kutsutaanko') ||
                 'Kutsutaanko
                 kaikki' }}</label>
