@@ -206,7 +206,7 @@ angular.module('valintaperusteet')
                             $log.log("hakulomakkeen avaimia ei löytynyt", error);
                         }
                     );
-                    
+
                     UserModel.organizationsDeferred.promise.then(function () {
                         HakemusavaimetLisakysymykset.get({hakuoid: hakuoid, orgId: UserModel.organizationOids[0]},function (haetutAvaimet) {
                                 $scope.lisakysymysAvaimet = $scope.parseLisakysymysAvaimet(haetutAvaimet);
