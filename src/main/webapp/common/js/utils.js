@@ -50,7 +50,7 @@ angular.module('oph.utils', [])
                 var obj = {};
                 obj.key = phase._id;
                 if(phase.messageText) {
-                    obj.value = phase._id + ' - ' + phase.messageText.translations.fi;
+                    obj.value = phase.messageText.translations.fi;
                 } else {
                     obj.value = phase._id;
                 }
