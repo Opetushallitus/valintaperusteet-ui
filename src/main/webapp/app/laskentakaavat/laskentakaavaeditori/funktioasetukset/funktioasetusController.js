@@ -3,11 +3,11 @@ angular.module('valintaperusteet')
     .controller('funktiokutsuAsetuksetController', ['$scope', '$log', '$q', '$routeParams', '$location', '$timeout', 'Laskentakaava',
         'FunktioNimiService', 'FunktioFactory', 'KaavaValidation', 'GuidGenerator', 'HakemusavaimetLisakysymykset', 'HakemusavaimetLomake',
         'ValintaryhmaModel', 'Treemodel', 'LaskentakaavaValintaryhma', '$cookieStore', '$window', 'UserModel', 'ErrorService', '_', 'FunktioService',
-        'LaskentakaavaModalService', 'FunktiokutsuKaareService', 'FunktiokuvausService', 'HakukohdeModel',
+        'LaskentakaavaModalService', 'FunktiokutsuKaareService', 'FunktiokuvausService', 'HakukohdeModel', 'HakemusavaimetLisakysymyksetAvaimet',
         function ($scope, $log, $q, $routeParams, $location, $timeout, Laskentakaava,
                   FunktioNimiService, FunktioFactory, KaavaValidation, GuidGenerator, HakemusavaimetLisakysymykset, HakemusavaimetLomake,
                   ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore, $window, UserModel, ErrorService, _, FunktioService,
-                  LaskentakaavaModalService, FunktiokutsuKaareService, FunktiokuvausService, HakukohdeModel) {
+                  LaskentakaavaModalService, FunktiokutsuKaareService, FunktiokuvausService, HakukohdeModel, HakemusavaimetLisakysymyksetAvaimet) {
 
             UserModel.refreshIfNeeded();
 
@@ -105,43 +105,6 @@ angular.module('valintaperusteet')
                 }
             };
 
-            $scope.parseOptions = function(options, lomake) {
-                return _.map(options, function(option) {
-                    var opt = {};
-                    if(lomake) {
-                        opt.id = option.value;
-                        opt.text = option.i18nText.translations.fi;
-                    } else {
-                        opt.id = option.id;
-                        opt.text = option.optionText.translations.fi;
-                    }
-                    return opt;
-                });
-            };
-
-            $scope.parseLisakysymysAvaimet = function(haetutAvaimet) {
-                var avaimet = [];
-                _.forEach(haetutAvaimet, function(phase) {
-
-                    var obj = {};
-                    obj.key = phase._id;
-                    if(phase.messageText) {
-                        obj.value = phase._id + ' - ' + phase.messageText.translations.fi;
-                    } else {
-                        obj.value = phase._id;
-                    }
-                    if(phase.options) {
-                        obj.options = $scope.parseOptions(phase.options, false);
-                    }
-
-                    avaimet.push(obj);
-
-                });
-                return avaimet;
-            };
-
-
-
             $scope.getHakemusAvaimet = function (hakuoid) {
 
                     HakemusavaimetLomake.get({hakuoid: hakuoid}, function (haetutAvaimet) {
@@ -195,7 +158,7 @@ angular.module('valintaperusteet')
                                     obj.value = phase.id;
                                 }
                                 if(phase.options) {
-                                    obj.options = $scope.parseOptions(phase.options, true);
+                                    obj.options = HakemusavaimetLisakysymyksetAvaimet.parseOptions(phase.options, true);
                                 }
                                 avaimet.push(obj);
                             });
@@ -207,22 +170,7 @@ angular.module('valintaperusteet')
                         }
                     );
 
-                    UserModel.organizationsDeferred.promise.then(function () {
-                        HakemusavaimetLisakysymykset.get({hakuoid: hakuoid, orgId: UserModel.organizationOids[0]},function (haetutAvaimet) {
-                                $scope.lisakysymysAvaimet = $scope.parseLisakysymysAvaimet(haetutAvaimet);
-                            }, function (error) {
-                                $log.log("lisakysymyksiä ei löytynyt", error);
-                            }
-                        );
-                    }, function () {
-                        HakemusavaimetLisakysymykset.get({hakuoid: hakuoid},function (haetutAvaimet) {
-                               $scope.lisakysymysAvaimet = $scope.parseLisakysymysAvaimet(haetutAvaimet);
-                            }, function (error) {
-                                $log.error("lisakysymyksiä ei löytynyt", error);
-
-                            }
-                        );
-                    });
+                HakemusavaimetLisakysymyksetAvaimet.parseLisakysymysAvaimet(hakuoid, $scope);
             };
 
             $scope.changeAvainOptions = function(valintaperuste) {

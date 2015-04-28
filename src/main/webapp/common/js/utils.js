@@ -64,6 +64,7 @@ angular.module('oph.utils', [])
 
         var service =
         {
+            parseOptions: parseOptions,
             parseLisakysymysAvaimet: function(hakuoid, model) {
                 UserModel.organizationsDeferred.promise.then(function () {
                     HakemusavaimetLisakysymykset.get({hakuoid: hakuoid, orgId: UserModel.organizationOids[0]}, function(haetutAvaimet) {
