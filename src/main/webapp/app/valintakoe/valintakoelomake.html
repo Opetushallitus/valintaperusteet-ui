@@ -97,10 +97,13 @@
                 </select>
                 <br />
                 <span>{{model.valintakoe.kutsunKohdeAvain}}</span>
+                <div ng-repeat="avain in model.lisakysymysAvaimet | filter: { key : model.valintakoe.kutsunKohdeAvain } " class="">
+                    <span ng-repeat="option in avain.options">
+                        {{option.id}} - {{option.text}} <br/>
+                    </span>
+                </div>
             </div>
         </div>
-
-
 
         <div class="form-group">
 
