@@ -96,11 +96,19 @@
                     <option value=""></option>
                 </select>
                 <br />
-                <span>{{model.valintakoe.kutsunKohdeAvain}}</span>
-                <div ng-repeat="avain in model.lisakysymysAvaimet | filter: { key : model.valintakoe.kutsunKohdeAvain } " class="">
+
+                <label>Vapaamuotoinen tunniste</label>
+                <div>{{model.valintakoe.kutsunKohdeAvain}}</div>
+                <br/>
+
+                <label>Vastausvaihtoehdot</label>
+                <div class="show-first-rows" ng-repeat="avain in model.lisakysymysAvaimet | filter: { key : model.valintakoe.kutsunKohdeAvain } " class="">
                     <span ng-repeat="option in avain.options">
-                        {{option.id}} - {{option.text}} <br/>
+                        {{option.text}} ({{option.id}}) <br/>
                     </span>
+                </div>
+                <div>
+                    <a href="#" onclick="$(this).parent().prev().toggleClass('show-first-rows'); return false;" >...</a>
                 </div>
             </div>
         </div>

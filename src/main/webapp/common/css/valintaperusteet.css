@@ -2208,6 +2208,10 @@ ul.actionmenu {
   width: 100%;
   height: 100%; }
 
+.show-first-rows {
+  max-height: 50px;
+  overflow: hidden; }
+
 /*** Notifications
 ************************************************/
 .alert {
