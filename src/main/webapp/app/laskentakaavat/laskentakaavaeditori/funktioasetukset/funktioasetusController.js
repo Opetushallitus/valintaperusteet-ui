@@ -153,7 +153,7 @@ angular.module('valintaperusteet')
                                 var obj = {};
                                 obj.key = phase.id;
                                 if(phase.i18nText) {
-                                    obj.value = phase.id + ' - ' + phase.i18nText.translations.fi;
+                                    obj.value = phase.i18nText.translations.fi;
                                 } else {
                                     obj.value = phase.id;
                                 }

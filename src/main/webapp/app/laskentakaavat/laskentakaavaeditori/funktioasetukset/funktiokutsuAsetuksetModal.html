@@ -80,7 +80,7 @@
                         <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && bigdata.length > 0">
                             <p class="form-control-static">Hakulomakkeen tunniste</p>
                             <select ng-model="valintaperuste.tunniste"
-                                    ng-options="data.key as data.value for data in bigdata"
+                                    ng-options="data.key as data.value for data in bigdata | orderBy:'value'"
                                     ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" ng-change="changeAvainOptions(valintaperuste)">
                                 <option value=""></option>
                             </select>
@@ -90,7 +90,7 @@
                         <div ng-if="valintaperuste.lahde === 'HAETTAVA_ARVO' && lisakysymysAvaimet.length > 0">
                             <p class="form-control-static">Lisäkysymyksen tunniste</p>
                             <select ng-model="valintaperuste.tunniste"
-                                    ng-options="data.key as data.value for data in lisakysymysAvaimet"
+                                    ng-options="data.key as data.value for data in lisakysymysAvaimet | orderBy:'value'"
                                     ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" ng-change="changeAvainOptions(valintaperuste)">
                                 <option value=""></option>
                             </select>
