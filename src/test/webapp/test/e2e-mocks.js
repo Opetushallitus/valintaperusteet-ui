@@ -1,10 +1,5 @@
-angular.module("e2e-mocks", ["ngMockE2E"]).config(function ($routeProvider, $cookieStore) {
-    /*
-    $routeProvider.
-        when('/haku/:hakuOid/hakukohde/:hakukohdeOid/pistesyotto/naytakaikki', {controller:'PistesyottoNaytaKaikkiController', templateUrl:TEMPLATE_URL_BASE + 'haku/hakukohteet/pistesyotto/nayta_kaikki/nayta_kaikki.html'})
-    */
+angular.module("e2e-mocks", ["ngMockE2E"]).run(function($httpBackend, $cookieStore) {
     $cookieStore.put('hakuoid', "HAKU1");
-}).run(function($httpBackend) {
     window.httpBackend = $httpBackend;
     httpBackend.when('GET', /.*\/valintaperusteet-ui\/.*/).passThrough();
     httpBackend.when('GET', /.*\/lokalisointi\/.*/).respond([]);

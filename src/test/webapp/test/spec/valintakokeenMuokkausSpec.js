@@ -69,7 +69,6 @@ describe('Valintakokeen muokkaus', function() {
             wait.forAngular,
             select(page.kutsunKohde, "HAKIJAN_VALINTA"),
             function() {
-                console.log("adf");
                 //expect(page).to.contain('Ilman');
                 /*
                 expect(page.nthNameInTable(1)).to.contain('Ilman');
