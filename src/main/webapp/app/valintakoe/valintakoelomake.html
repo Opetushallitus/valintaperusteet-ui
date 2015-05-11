@@ -10,7 +10,7 @@
 <div class="tabsheets">
     <breadcrumb></breadcrumb>
 
-    <form class="form-horizontal" name="form" ng-submit="submit()">
+    <form id="valintakoelomake" class="form-horizontal" name="form" ng-submit="submit()">
 
         <div class="form-group">
 
@@ -67,7 +67,7 @@
                 }}</label>
 
             <div class="col-md-6">
-                <select class="form-control" auth ng-disabled="!userAccess.updateOrg" id="kohde" name="kohde"
+                <select id="kutsunKohde" class="form-control" auth ng-disabled="!userAccess.updateOrg" id="kohde" name="kohde"
                         ng-model="model.valintakoe.kutsunKohde">
                     <option value="YLIN_TOIVE">{{ t('valintakoelomake.ylin_toive') || 'Hakijan ylin hakutoive' }}
                     </option>

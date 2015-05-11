@@ -55,6 +55,9 @@ var app = angular.module('valintaperusteet', ['ngResource', 'ngCookies', 'loadin
         };
     }]);
 
+if (window.mocksOn) {
+    angular.module('valintaperusteet').requires.push('e2e-mocks');
+}
 
 
 angular.module('valintaperusteet')
