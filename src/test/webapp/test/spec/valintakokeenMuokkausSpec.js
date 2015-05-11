@@ -4,7 +4,73 @@ describe('Valintakokeen muokkaus', function() {
     var page = valintakokeen_muokkausPage();
 
     beforeEach(function(done) {
-
+        addTestHook(
+            lisakysymyksetFixtures([
+                {
+                    type: "RadioButton",
+                    applicationSystemId: "1.2.246.562.29.95390561488",
+                    theme: "hakutoiveet_teema",
+                    learningOpportunityId: "1.2.246.562.20.71268712453",
+                    targetIsGroup: false,
+                    ordinal: 3,
+                    state: "ACTIVE",
+                    creatorPersonOid: "1.2.246.562.24.41575394116",
+                    ownerOrganizationOids: [
+                        "1.2.246.562.10.46932738936",
+                        "1.2.246.562.10.00000000001",
+                        "1.2.246.562.10.78522729439",
+                        "1.2.246.562.10.97096148164"
+                    ],
+                    messageText: {
+                        translations: {
+                            fi: "Millä kielellä osallistut valintakokeisiin?",
+                            sv: "På vilket språk ska du delta i urvalsprovet?",
+                            en: "Which language would you like to use in the entrance examinations?"
+                        }
+                    },
+                    helpText: {
+                        translations: { }
+                    },
+                    verboseHelpText: {
+                        translations: { }
+                    },
+                    requiredFieldValidator: false,
+                    onCompletedPage: false,
+                    options: [
+                        {
+                            id: "option_0",
+                            optionText: {
+                                translations: {
+                                    fi: "suomeksi",
+                                    sv: "på finska",
+                                    en: "Finnish"
+                                }
+                            }
+                        },
+                        {
+                            id: "option_1",
+                            optionText: {
+                                translations: {
+                                    fi: "ruotsiksi",
+                                    sv: "på svenska",
+                                    en: "Swedish"
+                                }
+                            }
+                        },
+                        {
+                            id: "option_2",
+                            optionText: {
+                                translations: {
+                                    fi: "englanniksi",
+                                    sv: "på engelska",
+                                    en: "English"
+                                }
+                            }
+                        }
+                    ],
+                    _id: "547733b7e4b0c2bb60201419"
+                }
+            ]))();
         addTestHook(
             valintaryhmatFixtures(
                 [

@@ -102,9 +102,9 @@
 
                 <label>Vastausvaihtoehdot</label>
                 <div class="show-first-rows"
-                     ng-repeat="avain in model.lisakysymysAvaimet | filter: { key : model.valintakoe.kutsunKohdeAvain } "
+                     ng-repeat="avain in model.lisakysymysAvaimet | filter: {key: model.valintakoe.kutsunKohdeAvain}"
                      ng-init="model.showExpand = (avain.options.length > 3)">
-                    <span ng-repeat="option in avain.options">
+                    <span ng-show="model.valintakoe.kutsunKohdeAvain" ng-repeat="option in avain.options">
                         ({{option.id}}) {{option.text}}<br/>
                     </span>
                 </div>
