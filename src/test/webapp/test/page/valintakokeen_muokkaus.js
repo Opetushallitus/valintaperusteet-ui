@@ -9,8 +9,14 @@ function valintakokeen_muokkausPage() {
     });
 
     var pageFunctions = {
+        lisakysymyksenTunniste: function() {
+            return S("#lisakysymyksenTunniste");
+        },
         kutsunKohde: function() {
             return S("#kutsunKohde");
+        },
+        vastausVaihtoehdot: function() {
+            return S("#vastausvaihtoehdot span:visible");
         },
         openPage: function (done) {
             return muokkausPage()

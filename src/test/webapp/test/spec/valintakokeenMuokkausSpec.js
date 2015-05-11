@@ -131,16 +131,19 @@ describe('Valintakokeen muokkaus', function() {
     });
 
     describe('Hakijan valitsema hakukohde', function() {
-        it('Vastausvaihtoehdot näkyy oikein', seqDone(
+        it('Vastausvaihtoehtoja ei näy kun lisäkysymyksen tunniste on valitsematta', seqDone(
             wait.forAngular,
             select(page.kutsunKohde, "HAKIJAN_VALINTA"),
             function() {
-                //expect(page).to.contain('Ilman');
-                /*
-                expect(page.nthNameInTable(1)).to.contain('Ilman');
-                expect(page.nthNameInTable(2)).to.contain('Yksikkötestihenkilö');
-                expect(page.allStudentsTable().length).to.equal(1)
-                */
+                expect(page.vastausVaihtoehdot().length).to.equal(0);
+            }
+        ))
+        it('Vastausvaihtoehdot tulee näkyviin kun tunniste valitaan', seqDone(
+            wait.forAngular,
+            select(page.kutsunKohde, "HAKIJAN_VALINTA"),
+            select(page.lisakysymyksenTunniste, "0"),
+            function() {
+                expect(page.vastausVaihtoehdot().length).to.equal(3);
             }
         ))
     })

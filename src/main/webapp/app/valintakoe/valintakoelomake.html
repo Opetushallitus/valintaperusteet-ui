@@ -89,7 +89,7 @@
             <label class="control-label col-md-2" for="kohdeavain">{{ t('valintakoelomake.kohdeavain') || 'Lisäkysymyksen tunniste'
                 }}</label>
             <div class="col-md-6">
-                <select class="form-control" auth ng-model="model.valintakoe.kutsunKohdeAvain" id="kohdeavain"
+                <select id="lisakysymyksenTunniste" class="form-control" auth ng-model="model.valintakoe.kutsunKohdeAvain" id="kohdeavain"
                         ng-options="data.key as data.value for data in model.lisakysymysAvaimet"
                         ng-disabled="!userAccess.updateOrg">
                     <option value=""></option>
@@ -98,18 +98,19 @@
 
                 <label>Tunniste</label>
                 <div>{{model.valintakoe.kutsunKohdeAvain}}</div>
-                <br/>
-
-                <label>Vastausvaihtoehdot</label>
-                <div class="show-first-rows"
-                     ng-repeat="avain in model.lisakysymysAvaimet | filter: {key: model.valintakoe.kutsunKohdeAvain}"
-                     ng-init="model.showExpand = (avain.options.length > 3)">
-                    <span ng-show="model.valintakoe.kutsunKohdeAvain" ng-repeat="option in avain.options">
-                        ({{option.id}}) {{option.text}}<br/>
-                    </span>
-                </div>
-                <div ng-show="model.showExpand">
-                    <a href="#" onclick="$(this).parent().prev().toggleClass('show-first-rows'); return false;" >...</a>
+                <br>
+                <div id="vastausvaihtoehdot">
+                    <label>Vastausvaihtoehdot</label>
+                    <div class="show-first-rows"
+                         ng-repeat="avain in model.lisakysymysAvaimet | filter: {key: model.valintakoe.kutsunKohdeAvain}"
+                         ng-init="model.showExpand = (avain.options.length > 3)">
+                        <span ng-show="model.valintakoe.kutsunKohdeAvain" ng-repeat="option in avain.options">
+                            ({{option.id}}) {{option.text}}<br/>
+                        </span>
+                    </div>
+                    <div ng-show="model.showExpand">
+                        <a href="#" onclick="$(this).parent().prev().toggleClass('show-first-rows'); return false;" >...</a>
+                    </div>
                 </div>
             </div>
         </div>

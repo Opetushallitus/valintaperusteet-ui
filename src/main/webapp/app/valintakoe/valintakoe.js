@@ -135,7 +135,7 @@ angular.module('valintaperusteet')
 	$scope.valintakoeOid = $routeParams.valintakoeOid;
 	$scope.model = ValintakoeModel;
 	$scope.model.refreshIfNeeded($scope.valintakoeOid, $scope.valintaryhmaOid, undefined);
-	
+
 	$scope.submit = function() {
 		var promise = $scope.model.persistValintakoe($scope.valintakoeValinnanvaiheOid, ValintaryhmaValintakoeValinnanvaiheModel.valintakokeet);
 		promise.then(function(){
