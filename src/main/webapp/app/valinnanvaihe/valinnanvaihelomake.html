@@ -49,6 +49,7 @@
                         <th>{{ t('valinnanvaihelomake.aktiivinen') || 'Aktiivinen' }}</th>
                         <th>{{ t('valinnanvaihelomake.nimi') || 'Nimi' }}</th>
                         <th>{{ t('valinnanvaihelomake.periytyminen') || 'Periytyminen' }}</th>
+                        <th>{{ t('valinnanvaihelomake.prioriteetti') || 'Prioriteetti' }}</th>
                         <th>{{ t('valinnanvaihelomake.poista') || 'Poista' }}</th>
                     </tr>
                     </thead>
@@ -64,6 +65,7 @@
                             <span ng-if="jono.inheritance">{{t('valintaperusteet.periytyy.true') || 'Periytyy'}}</span>
                             <span ng-if="!jono.inheritance">{{t('valintaperusteet.periytyy.false') || 'Ei periydy'}}</span>
                         </td>
+                        <td>{{$index}}</td>
                         <td>
                             <a auth ng-disabled="!userAccess.crudOrg" ng-show="!jono.inheritance" class="btn btn-sm btn-default"
                                     ng-click="model.remove(jono)">
