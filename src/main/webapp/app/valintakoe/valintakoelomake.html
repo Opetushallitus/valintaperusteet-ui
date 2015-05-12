@@ -90,7 +90,7 @@
                 }}</label>
             <div class="col-md-6">
                 <select id="lisakysymyksenTunniste" class="form-control" auth ng-model="model.valintakoe.kutsunKohdeAvain" id="kohdeavain"
-                        ng-options="data.key as data.value for data in model.lisakysymysAvaimet"
+                        ng-options="data.key as data.value for data in model.lisakysymysAvaimet | orderBy: 'value'"
                         ng-disabled="!userAccess.updateOrg">
                     <option value=""></option>
                 </select>
