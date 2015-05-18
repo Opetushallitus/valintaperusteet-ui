@@ -22,8 +22,7 @@ angular.module('valintaperusteet').factory('FunktioKuvausResource', function ($r
             list: {method: "GET", isArray: true, cache: false},
             get: {method: "GET", cache: false},
             insert: {method: "PUT"},
-            update: {method: "POST"},
-            updateMetadata: {method: "POST", params: {metadata: "true"}}
+            update: {method: "POST"}
         });
     })
 
