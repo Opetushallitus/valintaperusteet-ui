@@ -90,8 +90,7 @@
 
     <div class="col-md-10 form-control-static">
         <!--{{model.hakukohde.oid}}-->
-        <span>{{model.parentValintaryhma.nimi}}</span>
-
+        <span> <a href="#/valintaryhma/{{model.parentValintaryhma.oid}}" target="_blank">{{model.parentValintaryhma.nimi}} <i class="fa fa-external-link"></i></a></span>
         <!-- VALINTARYHMÄN SIIRTO -->
 
         <div ng-controller="ValintaryhmanSiirtoController" class="modal-controller-div">
