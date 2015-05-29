@@ -172,7 +172,7 @@ service('FunktioService', ['FunktioKuvausResource', '$log', '_', '$q', 'Funktiok
         var funktiokuvaus = FunktiokuvausService.getFunktiokuvaus(api.getFunktionimi(funktiokutsu));
         api.addSyoteparametrit(funktiokuvaus, funktiokutsu.lapsi.syoteparametrit);
         if(funktiokutsu.lapsi.funktioargumentit) {
-            _.forEach(funktiokutsu.funktioargumentit, function(funktioargumentti) {
+            _.forEach(funktiokutsu.lapsi.funktioargumentit, function(funktioargumentti) {
                 if(funktioargumentti.lapsi) {
                     api.addMissingSyoteparametrit(funktioargumentti);
                 }
