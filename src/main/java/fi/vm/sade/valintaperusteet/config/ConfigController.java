@@ -6,9 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-/**
- * @author kkammone
- */
 @Controller
 public class ConfigController {
     @Value("${localisation.rest}")
@@ -63,13 +60,11 @@ public class ConfigController {
         append(b, "HAKEMUS_URL_BASE", hakemusServiceUrl);
         append(b, "TEMPLATE_URL_BASE", "");
         append(b, "AUTHENTICATION_URL_BASE", authenticationServiceUrl);
-
         append(b, "CAS_URL", casUrl);
         if (!authMode.isEmpty()) {
             append(b, "AUTH_MODE", authMode);
 
         }
-
         return b.toString();
     }
 
@@ -79,5 +74,4 @@ public class ConfigController {
         b.append(value);
         b.append("\";\n");
     }
-
 }
