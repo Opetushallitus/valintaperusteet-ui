@@ -56,7 +56,7 @@ angular.module('valintaperusteet')
                                 console.log("fetchChildOrganizations", oid)
                                 var d = $q.defer();
                                 OrganizationChildOids.get({oid: oid}, function (childOids) {
-                                    console.log("fetchChildOrganizations","OrganizationChildOids", childOids)
+                                    console.log("fetchChildOrganizations","OrganizationChildOids", childOids.oids)
                                     var childPromises = resolveList(childOids.oids, function (childOid, deferred) {
                                         if (model.organizationChildrenOids.indexOf(childOid) !== -1) {
                                             model.organizationChildrenOids.push(childOid);
