@@ -43,6 +43,7 @@ angular.module('valintaperusteet')
                             }
 
                             function fetchOrganization(oid, list) {
+                                console.log("fetchOrganization", oid)
                                 return OrganizationByOid.get({oid: oid}, function (organization) {
                                     list.push(organization);
                                 }, function (error) {
@@ -52,11 +53,14 @@ angular.module('valintaperusteet')
 
                             //child organizations
                             function fetchChildOrganizations(oid) {
+                                console.log("fetchChildOrganizations", oid)
                                 var d = $q.defer();
                                 OrganizationChildOids.get({oid: oid}, function (childOids) {
+                                    console.log("fetchChildOrganizations","OrganizationChildOids", childOids)
                                     var childPromises = resolveList(childOids.oids, function (childOid, deferred) {
                                         if (model.organizationChildrenOids.indexOf(childOid) !== -1) {
                                             model.organizationChildrenOids.push(childOid);
+                                            console.log("fetchChildOrganizations","resolveList", childOid)
                                             transferResolveReject($q.all([fetchOrganization(childOid, model.organizationChildren), fetchChildOrganizations(childOid)]), deferred)
                                         } else {
                                             deferred.resolve()
@@ -82,9 +86,11 @@ angular.module('valintaperusteet')
                             }
 
                             function fetchParentOrganizations(parentOids) {
+                                console.log("fetchParentOrganizations", parentOids)
                                 return resolveList(parentOids, function (parentOid, deferred) {
                                     if (model.organizationParentsOids.indexOf(parentOid) === -1) {
                                         model.organizationParentsOids.push(parentOid);
+                                        console.log("fetchParentOrganizations","resolveList", parentOid)
                                         fetchOrganization(parentOid, model.organizationParents).then(function (parentOrganization) {
                                             transferResolveReject(fetchParentOrganizations(parseParentOids(parentOrganization)), deferred)
                                         });
