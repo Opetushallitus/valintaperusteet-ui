@@ -58,7 +58,7 @@ angular.module('valintaperusteet')
                                 OrganizationChildOids.get({oid: oid}, function (childOids) {
                                     console.log("fetchChildOrganizations","OrganizationChildOids", childOids.oids)
                                     var childPromises = resolveList(childOids.oids, function (childOid, deferred) {
-                                        if (model.organizationChildrenOids.indexOf(childOid) !== -1) {
+                                        if (model.organizationChildrenOids.indexOf(childOid) === -1) {
                                             model.organizationChildrenOids.push(childOid);
                                             console.log("fetchChildOrganizations","resolveList", childOid)
                                             transferResolveReject($q.all([fetchOrganization(childOid, model.organizationChildren), fetchChildOrganizations(childOid)]), deferred)
