@@ -2,6 +2,7 @@ angular.module('valintaperusteet')
 
     .service('AuthService', ['$q', '$http', '$timeout', 'MyRolesModel', 'READ', 'UPDATE', 'CRUD', 'OPH_ORG_OID', 'RoleService',
         function ($q, $http, $timeout, MyRolesModel, READ, UPDATE, CRUD, OPH_ORG_OID, RoleService) {
+            "use strict";
 
             var api = this;
 
@@ -30,9 +31,14 @@ angular.module('valintaperusteet')
 
             var accessCheck = function (service, orgs, accessFunction) {
                 var deferred = $q.defer();
+                var found = false;
+                function rejectDeferred() {
+                    if(!found) {
+                        deferred.reject();
+                    }
+                }
                 MyRolesModel.then(function (model) {
                     if (orgs && orgs.length > 0) {
-                        var found = false;
                         $q.all(orgs.map(function (orgOid) {
                             return $http.get(ORGANISAATIO_URL_BASE + "organisaatio/" + orgOid + "/parentoids", { cache: true}).success(function (result) {
                                 result.split("/").forEach(function (org) {
@@ -42,11 +48,7 @@ angular.module('valintaperusteet')
                                     }
                                 });
                             });
-                        })).then(function() {
-                            if(!found) {
-                                deferred.reject();
-                            }
-                        })
+                        })).then(rejectDeferred, rejectDeferred)
                     } else {
                         if (accessFunction(service, "", model)) {
                             deferred.resolve();
@@ -54,9 +56,7 @@ angular.module('valintaperusteet')
                             deferred.reject();
                         }
                     }
-                }, function() {
-                    deferred.reject();
-                });
+                }, rejectDeferred);
                 return deferred.promise;
             };
 
