@@ -32,21 +32,21 @@ angular.module('valintaperusteet')
                 var deferred = $q.defer();
                 MyRolesModel.then(function (model) {
                     if (orgs && orgs.length > 0) {
-                        orgs.forEach(function (orgOid) {
-                            $http.get(ORGANISAATIO_URL_BASE + "organisaatio/" + orgOid + "/parentoids", { cache: true}).success(function (result) {
-                                var found = false;
+                        var found = false;
+                        $q.all(orgs.map(function (orgOid) {
+                            return $http.get(ORGANISAATIO_URL_BASE + "organisaatio/" + orgOid + "/parentoids", { cache: true}).success(function (result) {
                                 result.split("/").forEach(function (org) {
                                     if (accessFunction(service, org, model)) {
                                         found = true;
+                                        deferred.resolve();
                                     }
                                 });
-                                if (found) {
-                                    deferred.resolve();
-                                } else {
-                                    deferred.reject();
-                                }
                             });
-                        });
+                        })).then(function() {
+                            if(!found) {
+                                deferred.reject();
+                            }
+                        })
                     } else {
                         if (accessFunction(service, "", model)) {
                             deferred.resolve();
@@ -54,8 +54,9 @@ angular.module('valintaperusteet')
                             deferred.reject();
                         }
                     }
+                }, function() {
+                    deferred.reject();
                 });
-
                 return deferred.promise;
             };
 

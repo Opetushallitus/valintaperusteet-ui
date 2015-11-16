@@ -68,10 +68,6 @@ angular.module('valintaperusteet')
 
                 resetRights(); // reset all rights to false
 
-                // Make all authentication request asynchronously so there's no need to wait for consecutive calls
-                // Calling crudOphPromise.then below starts the promise chain - all promises won't likely be called
-                // because running successcallback stops the chain. No need to check if user has lower level rights
-
                 // OPH level
                 AuthService.crudOph('APP_VALINTAPERUSTEET').then(function () { setCrudRights("oph"); }, crudOphRejectFn);
                 var updateOph = AuthService.updateOph('APP_VALINTAPERUSTEET');
@@ -90,28 +86,21 @@ angular.module('valintaperusteet')
                         readOrgRejectFn();
                     }
                 }
-                var updateOrg, readOrg
                 function handleOrganizationOids(organizationOids) {
                     if(_.isEmpty(organizationOids)) {
                         readOrgRejectFn();
                     } else {
                         //check rights against valintaryhma or hakukohde organizations
                         AuthService.crudOrg('APP_VALINTAPERUSTEET', organizationOids).then(function () { setCrudRights("org"); }, crudOrgRejectFn);
-                        updateOrg = AuthService.updateOrg('APP_VALINTAPERUSTEET', organizationOids)
-                        readOrg = AuthService.readOrg('APP_VALINTAPERUSTEET', organizationOids)
                     }
+                    function crudOrgRejectFn() { AuthService.updateOrg('APP_VALINTAPERUSTEET', organizationOids).then(function () { setUpdateRights("org"); }, updateOrgRejectFn); }
+                    function updateOrgRejectFn() { AuthService.readOrg('APP_VALINTAPERUSTEET', organizationOids).then(function () { setReadRights("org"); }, readOrgRejectFn); }
                 }
-                function crudOrgRejectFn() { updateOrg.then(function () { setUpdateRights("org"); }, updateOrgRejectFn); }
-                function updateOrgRejectFn() { readOrg.then(function () { setReadRights("org"); }, readOrgRejectFn); }
 
                 // no ORG, APP level
-                var updateApp, readApp
-                function readOrgRejectFn () {AuthService.crudOrg('APP_VALINTAPERUSTEET').then(function () { setCrudRights("noOrg"); }, crudAppRejectFn);
-                    updateApp = AuthService.updateOrg('APP_VALINTAPERUSTEET')
-                    readApp = AuthService.readOrg('APP_VALINTAPERUSTEET')
-                }
-                function crudAppRejectFn() { updateApp.then(function() { setUpdateRights("noOrg"); }, updateAppRejectFn);}
-                function updateAppRejectFn() { readApp.then(function() { setReadRights("noOrg"); }, readAppRejectFn); }
+                function readOrgRejectFn () {AuthService.crudOrg('APP_VALINTAPERUSTEET').then(function () { setCrudRights("noOrg"); }, crudAppRejectFn);}
+                function crudAppRejectFn() { AuthService.updateOrg('APP_VALINTAPERUSTEET').then(function() { setUpdateRights("noOrg"); }, updateAppRejectFn);}
+                function updateAppRejectFn() { AuthService.readOrg('APP_VALINTAPERUSTEET').then(function() { setReadRights("noOrg"); }, readAppRejectFn); }
                 function readAppRejectFn() { $log.error('Ei oikeuksia'); model.deferred.reject(); }
 
                 return model.deferred.promise;
