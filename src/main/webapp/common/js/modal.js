@@ -7,6 +7,49 @@ angular.module('valintaperusteet')
         ERROR: 'danger'
     })
 //MODAALISET IKKUNAT
+    .factory('SuoritaToiminto', ['$modal', function($modal) {
+        return {
+            avaa: function(action, otsikko, ilmoitus) {
+                $modal.open({
+                    backdrop: 'static',
+                    templateUrl: '../common/modaalinen/odotaIkkuna.html',
+                    controller: function($scope, $window, $modalInstance) {
+                        $scope.ilmoitus = ilmoitus?ilmoitus:"Suoritetaan tallennus";
+                        $scope.otsikko = otsikko?otsikko:"Suoritetaan tallennus";
+                        $scope.state="info";
+                        $scope.working = true;
+                        $scope.peruuta = null;
+                        action(function(successAction, message) {
+                                   $scope.working = null;
+                                   $scope.ilmoitus = message?message:"Tallennus onnistui";
+                                   $scope.state="success";
+                                   $scope.ok = function() {
+                                       $modalInstance.dismiss('cancel');
+                                       successAction();
+                                   }}
+                               ,function(failAction,message) {
+                                   $scope.working = null;
+                                   $scope.ilmoitus = message?message:"Tallennus epäonnistui";
+                                   $scope.state="danger";
+                                   $scope.ok = function() {
+                                       $modalInstance.dismiss('cancel');
+                                       failAction();
+                                   }});
+
+                        $scope.peruuta = function() {
+                            $modalInstance.dismiss('cancel');
+                        };
+                    },
+                    resolve: {
+
+                    }
+                }).result.then(function() {
+                    }, function() {
+                    });
+
+            }
+        };
+    }])
     .factory('Ilmoitus', ['$modal', 'IlmoitusTila', function($modal, IlmoitusTila) {
         return {
             avaa: function(otsikko, ilmoitus, tila) {

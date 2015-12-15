@@ -33,10 +33,10 @@ angular.module('valintaperusteet')
                 model.refresh(oid);
             }
         };
-        this.persistValintaryhmaValinnanvaihe = function(parentValintaryhmaOid, valinnanvaiheet) {
+        this.persistValintaryhmaValinnanvaihe = function(parentValintaryhmaOid, valinnanvaiheet, afterSuccess, afterFailure) {
             if(model.valinnanvaihe.oid) {
-                
-                Valinnanvaihe.post(model.valinnanvaihe, function(result) {
+                var promises = [];
+                promises.push(Valinnanvaihe.post(model.valinnanvaihe, function(result) {
                     var i;
                     //update valinnanvaihe in ValintaryhmaModel
                     for(i in valinnanvaiheet) {
@@ -44,16 +44,21 @@ angular.module('valintaperusteet')
                             valinnanvaiheet[i] = result;
                         }
                     }
-                });
-                Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
+                }).$promise);
 
-                ValintatapajonoJarjesta.post(getValintatapajonoOids(), function(result) {});
+                promises.push(ValintatapajonoJarjesta.post(getValintatapajonoOids(), function(result) {}).$promise);
 
                 model.valintatapajonot.forEach(function(element, index, array){
-                    Valintatapajono.post({oid: model.valintatapajonot[index].oid}, element, function(result) {
-                    });
+                    promises.push(Valintatapajono.post({oid: model.valintatapajonot[index].oid}, element, function(result) {
+                    }).$promise);
                 });
-                
+
+                $q.all(promises).then(function () {
+                    afterSuccess(function() {});
+                }, function(err) {
+                    afterFailure(function() {});
+                });
+
             } else {
                 var valinnanvaihe = {
                     nimi: model.valinnanvaihe.nimi,
@@ -64,7 +69,9 @@ angular.module('valintaperusteet')
                 NewValintaryhmaValinnanvaihe.put({valintaryhmaOid: parentValintaryhmaOid}, valinnanvaihe, function(result){
                     model.valinnanvaihe = result;
                     valinnanvaiheet.push(result);
-                    Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
+                    afterSuccess(function() {});
+                }, function(fail) {
+                    afterFailure(function() {});
                 });
             }
         };
@@ -88,8 +95,8 @@ angular.module('valintaperusteet')
 }])
 
     .controller('ValintaryhmaValinnanvaiheController', ['$scope', '$location', '$routeParams',
-        'ValintaryhmaValinnanvaiheModel', 'ValintaryhmaModel',
-    function ($scope, $location, $routeParams, ValintaryhmaValinnanvaiheModel, ValintaryhmaModel) {
+        'ValintaryhmaValinnanvaiheModel', 'ValintaryhmaModel', 'SuoritaToiminto',
+    function ($scope, $location, $routeParams, ValintaryhmaValinnanvaiheModel, ValintaryhmaModel, SuoritaToiminto) {
     "use strict";
 
     $scope.valintaryhmaOid = $routeParams.id;
@@ -98,7 +105,10 @@ angular.module('valintaperusteet')
     $scope.model.refreshIfNeeded($scope.ValintaryhmaValinnanvaiheOid);
 
     $scope.submit = function() {
-        $scope.model.persistValintaryhmaValinnanvaihe($scope.valintaryhmaOid, ValintaryhmaModel.valinnanvaiheet);
+        SuoritaToiminto.avaa(function(success, failure) {
+            $scope.model.persistValintaryhmaValinnanvaihe($scope.valintaryhmaOid, ValintaryhmaModel.valinnanvaiheet, success, failure);
+        });
+
     };
 
     $scope.cancel = function() {
@@ -141,23 +151,30 @@ angular.module('valintaperusteet')
             }
         };
 
-        this.persist = function(parentValintaryhmaOid, valinnanvaiheet) {
+        this.persist = function(parentValintaryhmaOid, valinnanvaiheet, afterSuccess, afterFailure) {
             if(model.valintakoevalinnanvaihe.oid) {
 
                 //päivitä valintaryhmän valintakoevalinnanvaiheen tiedot
-                Valinnanvaihe.post(model.valintakoevalinnanvaihe, function(result) {
+                var promises = [];
+                promises.push(Valinnanvaihe.post(model.valintakoevalinnanvaihe, function(result) {
                     var i;
                     for(i in valinnanvaiheet) {
                         if(result.oid === valinnanvaiheet[i].oid) {
                             valinnanvaiheet[i] = result;
                         }
                     }
-                });
+                }).$promise);
 
                 //päivitä valintaryhmän valintakoevalinnanvaiheen valintakokeet
                 for (var i = 0 ; i < model.valintakokeet.length ; i++) {
-                    Valintakoe.update({valintakoeOid: model.valintakokeet[i].oid}, model.valintakokeet[i], function(result) {});
+                    promises.push(Valintakoe.update({valintakoeOid: model.valintakokeet[i].oid}, model.valintakokeet[i], function(result) {}).$promise);
                 }
+
+                $q.all(promises).then(function () {
+                    afterSuccess(function() {});
+                }, function(err) {
+                    afterFailure(function() {});
+                });
 
             } else {
                 
@@ -171,6 +188,9 @@ angular.module('valintaperusteet')
                 NewValintaryhmaValinnanvaihe.put({valintaryhmaOid: parentValintaryhmaOid}, valintakoevalinnanvaihe, function(result){
                     model.valintakoevalinnanvaihe = result;
                     valinnanvaiheet.push(result);
+                    afterSuccess(function() {});
+                }, function(error){
+                    afterFailure(function() {});
                 });
             }
         };
@@ -191,8 +211,8 @@ angular.module('valintaperusteet')
 }])
 
 
-    .controller('ValintaryhmaValintakoeValinnanvaiheController', ['$scope', '$location', '$routeParams', 'ValintaryhmaValintakoeValinnanvaiheModel', 'ValintaryhmaModel',
-        function ($scope, $location, $routeParams, ValintaryhmaValintakoeValinnanvaiheModel, ValintaryhmaModel) {
+    .controller('ValintaryhmaValintakoeValinnanvaiheController', ['$scope', '$location', '$routeParams', 'ValintaryhmaValintakoeValinnanvaiheModel', 'ValintaryhmaModel', 'SuoritaToiminto',
+        function ($scope, $location, $routeParams, ValintaryhmaValintakoeValinnanvaiheModel, ValintaryhmaModel, SuoritaToiminto) {
     "use strict";
 
     $scope.valintaryhmaOid = $routeParams.id;
@@ -202,7 +222,9 @@ angular.module('valintaperusteet')
     
 
     $scope.submit = function() {
-        ValintaryhmaValintakoeValinnanvaiheModel.persist($scope.valintaryhmaOid, ValintaryhmaModel.valinnanvaiheet);
+        SuoritaToiminto.avaa(function(success, failure) {
+            ValintaryhmaValintakoeValinnanvaiheModel.persist($scope.valintaryhmaOid, ValintaryhmaModel.valinnanvaiheet, success, failure);
+        });
     };
 
     $scope.modifyvalintakoe = function(valintakoeOid) {
