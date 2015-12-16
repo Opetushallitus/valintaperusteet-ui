@@ -180,14 +180,16 @@ angular.module('valintaperusteet')
                 templateUrl: 'poistajononmuodostumiskriteeri.html',
                 controller: function ($scope, $window, $modalInstance) {
                     $scope.ok = function () {
+                        $scope.working = true;
                         Jarjestyskriteeri.delete({oid: oid}, function () {
                             for (var i in model.jarjestyskriteerit) {
                                 if (oid === model.jarjestyskriteerit[i].oid) {
                                     model.jarjestyskriteerit.splice(i, 1);
                                 }
                             }
+                        }).$promise.then(function() {
+                            $modalInstance.close();
                         });
-                        $modalInstance.close();
                     };
                     $scope.cancel = function () {
                         $modalInstance.dismiss('cancel');
@@ -309,7 +311,6 @@ angular.module('valintaperusteet')
             };
 
             $scope.modifyKriteeri = function (oid) {
-
 
                 $location.path("/hakukohde/" + $scope.hakukohdeOid +
                     '/valinnanvaihe/' + $scope.valinnanvaiheOid +

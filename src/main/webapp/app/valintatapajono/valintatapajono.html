@@ -22,10 +22,11 @@
         muodostumiskriteerin?' }}
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">{{ t('valintatapajono.poistajononmuodostumiskriteeri.kylla') ||
+        <button class="btn btn-primary" ng-click="ok()" ng-hide="working">{{ t('valintatapajono.poistajononmuodostumiskriteeri.kylla') ||
             'Kyllä' }}
         </button>
-        <button class="btn btn-warning" ng-click="cancel()">{{ t('valintatapajono.poistajononmuodostumiskriteeri.ei') ||
+        <button class="btn btn-primary" ng-disabled="true" ng-show="working">{{ t('ilmoitus.kasitellaan') || 'Käsitellään' }}</button>
+        <button class="btn btn-warning" ng-click="cancel()" ng-hide="working">{{ t('valintatapajono.poistajononmuodostumiskriteeri.ei') ||
             'Ei' }}
         </button>
     </div>
