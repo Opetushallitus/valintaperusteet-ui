@@ -122,55 +122,92 @@ angular.module('valintaperusteet')
                 };
 
                 this.updateKohdejoukot = function (kohdejoukko, oid) {
-                    ChildValintaryhmas.get({"parentOid": oid}, function (result) {
-                        result.forEach(function (valintaryhma) {
+                    var deferred = $q.defer();
 
+                    ChildValintaryhmas.get({"parentOid": oid}, function (result) {
+                        if(result.length == 0) {
+                            deferred.resolve();
+                        }
+                        result.forEach(function (valintaryhma) {
+                            var promises = [];
                             if (valintaryhma.kohdejoukko !== kohdejoukko) {
                                 valintaryhma.kohdejoukko = kohdejoukko;
-                                Valintaryhma.post(valintaryhma, function (result) {
-                                });
+                                promises.push(Valintaryhma.post(valintaryhma, function (result) {
+                                }).$promise);
                             }
-                            model.updateKohdejoukot(kohdejoukko, valintaryhma.oid);
+                            promises.push(model.updateKohdejoukot(kohdejoukko, valintaryhma.oid));
+
+                            $q.all(promises).then(function() {
+                                deferred.resolve();
+                            }, function(error) {
+                                deferred.reject();
+                            });
                         });
+                    }, function(error) {
+                        deferred.reject();
                     });
+                    return deferred.promise;
                 };
 
-                this.persistValintaryhma = function (oid) {
+                this.persistValintaryhma = function (oid, afterSuccess, afterFailure) {
                     if (model.valintaryhma.level === 1) {
                         RootValintaryhmas.get({parentOid: model.parentOid}, function (all) {
-                            model.persist(all, all);
+                            model.persist(all, all, afterSuccess, afterFailure);
+                        }, function(error) {
+                            afterFailure(function() {});
                         });
                     } else {
                         ParentValintaryhmas.get({parentOid: oid}, function (parents) {
                             ChildValintaryhmas.get({"parentOid": parents[0].oid}, function (children) {
-                                model.persist(parents, children);
+                                model.persist(parents, children, afterSuccess, afterFailure);
+                            }, function(error) {
+                                afterFailure(function() {});
                             });
+                        }, function(error) {
+                            afterFailure(function() {});
                         });
                     }
                 };
 
-                this.persist = function(parents, children) {
+                this.persist = function(parents, children, afterSuccess, afterFailure) {
                     if (!Utils.hasSameName(model, parents, children)) {
                         model.nameerror = false;
-
+                        var promises = [];
+                        var deferred = $q.defer();
+                        promises.push(deferred.promise);
                         Valintaryhma.post(model.valintaryhma, function (result) {
                             model.valintaryhma = result;
                             if (model.valintaryhma.level === 1) {
-                                model.updateKohdejoukot(model.valintaryhma.kohdejoukko, model.valintaryhma.oid);
+                                model.updateKohdejoukot(model.valintaryhma.kohdejoukko, model.valintaryhma.oid).then(function() {
+                                    deferred.resolve();
+                                }, function(error) {
+                                    deferred.reject();
+                                });
+                            } else {
+                                deferred.resolve();
                             }
-                            Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
                             Treemodel.refresh();
+                        }, function(error) {
+                            deferred.reject();
                         });
 
                         if (model.valinnanvaiheet.length > 0) {
-                            ValinnanvaiheJarjesta.post(getValinnanvaiheOids(), function (result) {
-                            });
+                            promises.push(ValinnanvaiheJarjesta.post(getValinnanvaiheOids(), function (result) {
+                            }).$promise);
                             for (var i = 0; i < model.valinnanvaiheet.length; ++i) {
-                                Valinnanvaihe.post(model.valinnanvaiheet[i], function () {
-                                });
+                                promises.push(Valinnanvaihe.post(model.valinnanvaiheet[i], function () {
+                                }).$promise);
                             }
                         }
+
+                        $q.all(promises).then(function () {
+                            afterSuccess(function() {});
+                        }, function(err) {
+                            afterFailure(function() {});
+                        });
+
                     } else {
+                        afterFailure(function() {}, 'Valintaryhmän nimi on jo käytössä. Anna jokin toinen nimi ryhmälle.');
                         model.nameerror = true;
                     }
                 };
@@ -378,8 +415,8 @@ angular.module('valintaperusteet')
         }])
 
 
-    .controller('ValintaryhmaController', ['$scope', '$q', '$location', '$routeParams', 'ValintaryhmaModel', 'Laskentakaava', 'UserAccessLevels', '$modal',
-        function ($scope, $q, $location, $routeParams, ValintaryhmaModel, Laskentakaava, UserAccessLevels, $modal) {
+    .controller('ValintaryhmaController', ['$scope', '$q', '$location', '$routeParams', 'ValintaryhmaModel', 'Laskentakaava', 'UserAccessLevels', '$modal', 'SuoritaToiminto',
+        function ($scope, $q, $location, $routeParams, ValintaryhmaModel, Laskentakaava, UserAccessLevels, $modal, SuoritaToiminto) {
             "use strict";
 
             $scope.valintaryhmaOid = $routeParams.id;
@@ -389,7 +426,9 @@ angular.module('valintaperusteet')
             UserAccessLevels.refreshIfNeeded($routeParams.id, $routeParams.hakukohdeOid);
 
             $scope.submit = function () {
-                $scope.model.persistValintaryhma($scope.valintaryhmaOid);
+                SuoritaToiminto.avaa(function(success, failure) {
+                    $scope.model.persistValintaryhma($scope.valintaryhmaOid, success, failure);
+                });
             };
 
             $scope.cancel = function () {
