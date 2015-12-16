@@ -240,14 +240,17 @@ angular.module('valintaperusteet')
                         templateUrl: 'poistavalinnanvaihe.html',
                         controller: function ($scope, $window, $modalInstance) {
                             $scope.ok = function () {
+                                $scope.working = true;
                                 Valinnanvaihe.delete({oid: vaihe.oid}, function () {
                                     for (var i in model.valinnanvaiheet) {
                                         if (vaihe.oid === model.valinnanvaiheet[i].oid) {
                                             model.valinnanvaiheet.splice(i, 1);
                                         }
                                     }
+                                }).$promise.then(function() {
+                                     $scope.working = false;
+                                     $modalInstance.close();
                                 });
-                                $modalInstance.close();
                             };
                             $scope.cancel = function () {
                                 $modalInstance.dismiss('cancel');

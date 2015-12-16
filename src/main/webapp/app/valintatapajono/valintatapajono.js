@@ -188,6 +188,7 @@ angular.module('valintaperusteet')
                                 }
                             }
                         }).$promise.then(function() {
+                            $scope.working = false;
                             $modalInstance.close();
                         });
                     };

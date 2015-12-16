@@ -43,10 +43,11 @@
         {{ t('valintaryhmalomake.poistavalinnanvaihe.body') || 'Oletko varma, että haluat poistaa valinnan vaiheen?' }}
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" auth ng-disabled="!userAccess.updateOrg" ng-click="ok()">{{ t('valintaryhmalomake.poistavalinnanvaihe.kylla') || 'Kyllä'
+        <button class="btn btn-primary" auth ng-disabled="!userAccess.updateOrg" ng-click="ok()" ng-hide="working">{{ t('valintaryhmalomake.poistavalinnanvaihe.kylla') || 'Kyllä'
             }}
         </button>
-        <button class="btn btn-warning" ng-click="cancel()">{{ t('valintaryhmalomake.poistavalinnanvaihe.ei') || 'Ei'
+        <button class="btn btn-primary" ng-disabled="true" ng-show="working">{{ t('ilmoitus.kasitellaan') || 'Käsitellään' }}</button>
+        <button class="btn btn-warning" ng-click="cancel()" ng-hide="working">{{ t('valintaryhmalomake.poistavalinnanvaihe.ei') || 'Ei'
             }}
         </button>
     </div>
