@@ -74,27 +74,42 @@ angular.module('valintaperusteet')
             }
         };
 
-        this.persistHakukohde = function() {
-            Hakukohde.post(model.hakukohde, function(result) {
-                Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
+        this.persistHakukohde = function(afterSuccess, afterFailure) {
+            var promises = [];
+            promises.push(Hakukohde.post(model.hakukohde, function(result) {
             }, function (error) {
-                Ilmoitus.avaa("Tallennus epäonnistui", "Tallennus epäonnistui. Ole hyvä ja yritä hetken päästä uudelleen.", IlmoitusTila.ERROR);
-            });
+            }).$promise);
             if(model.valinnanvaiheet.length > 0) {
+                var deferred = $q.defer();
+                promises.push(deferred.promise);
                 ValinnanvaiheJarjesta.post(getValinnanvaiheOids(), function(result) {
+                    var postPromises = [];
                     for(var i = 0 ; i < model.valinnanvaiheet.length ; ++i) {
-                        Valinnanvaihe.post(model.valinnanvaiheet[i], function(){
-
-                        });
+                        postPromises.push(Valinnanvaihe.post(model.valinnanvaiheet[i], function(){
+                        }).$promise);
                     }
+                    $q.all(postPromises).then(function () {
+                         deferred.resolve();
+                    }, function(err) {
+                        deferred.reject();
+                    });
+                }, function(error) {
+                    deferred.reject();
                 });
             }
 
             if(model.hakijaryhmat.length > 0) {
-                HakijaryhmaJarjesta.post(model.hakijaryhmat, function (result) {
+                promises.push(HakijaryhmaJarjesta.post(model.hakijaryhmat, function (result) {
                 }, function (error) {
-                });
+                }).$promise);
             }
+
+            $q.all(promises).then(function () {
+                afterSuccess(function() {});
+            }, function(err) {
+                afterFailure(function() {});
+            });
+
         };
 
         this.remove = function(vaihe) {
@@ -177,8 +192,8 @@ angular.module('valintaperusteet')
     return model;
 }])
 
-.controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'UserAccessLevels',
-        function($scope, $location, $routeParams, HakukohdeModel, UserAccessLevels) {
+.controller('HakukohdeController', ['$scope', '$location', '$routeParams', 'HakukohdeModel', 'UserAccessLevels', 'SuoritaToiminto',
+        function($scope, $location, $routeParams, HakukohdeModel, UserAccessLevels, SuoritaToiminto) {
     "use strict";
 
     $scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -188,7 +203,9 @@ angular.module('valintaperusteet')
     UserAccessLevels.refreshIfNeeded($routeParams.id, $routeParams.hakukohdeOid);
 
     $scope.submit = function() {
-        $scope.model.persistHakukohde();
+        SuoritaToiminto.avaa(function(success, failure) {
+            $scope.model.persistHakukohde(success, failure);
+        });
     };
     $scope.cancel = function() {
         $location.path("/");

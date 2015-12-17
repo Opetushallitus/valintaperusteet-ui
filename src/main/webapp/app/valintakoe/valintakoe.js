@@ -126,8 +126,8 @@ angular.module('valintaperusteet')
 
 
     .controller('ValintaryhmaValintakoeController', ['$scope', '$location', '$routeParams', 'ValintakoeModel',
-        'ValintaryhmaValintakoeValinnanvaiheModel',
-        function ($scope, $location, $routeParams, ValintakoeModel, ValintaryhmaValintakoeValinnanvaiheModel) {
+        'ValintaryhmaValintakoeValinnanvaiheModel', 'SuoritaToiminto',
+        function ($scope, $location, $routeParams, ValintakoeModel, ValintaryhmaValintakoeValinnanvaiheModel, SuoritaToiminto) {
     "use strict";
 
 	$scope.valintaryhmaOid = $routeParams.id;
@@ -137,11 +137,16 @@ angular.module('valintaperusteet')
 	$scope.model.refreshIfNeeded($scope.valintakoeOid, $scope.valintaryhmaOid, undefined);
 
 	$scope.submit = function() {
-		var promise = $scope.model.persistValintakoe($scope.valintakoeValinnanvaiheOid, ValintaryhmaValintakoeValinnanvaiheModel.valintakokeet);
-		promise.then(function(){
-			$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.valintaryhmaOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid);
+        SuoritaToiminto.avaa(function(success, failure) {
+			var promise = $scope.model.persistValintakoe($scope.valintakoeValinnanvaiheOid, ValintaryhmaValintakoeValinnanvaiheModel.valintakokeet);
+			promise.then(function(){
+				success(function() {
+					$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.valintaryhmaOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid);
+				});
+			}, function(error) {
+            	failure(function(){});
+            });
 		});
-		
 	};
 
 	$scope.cancel = function () {
@@ -150,9 +155,9 @@ angular.module('valintaperusteet')
 }])
 
     .controller('HakukohdeValintakoeController',['$scope', '$location', '$routeParams', 'ValintakoeModel',
-        'ValintaryhmaValintakoeValinnanvaiheModel', 'HakukohdeValintakoeValinnanvaiheModel',
+        'ValintaryhmaValintakoeValinnanvaiheModel', 'HakukohdeValintakoeValinnanvaiheModel', 'SuoritaToiminto',
         function ($scope, $location, $routeParams, ValintakoeModel, ValintaryhmaValintakoeValinnanvaiheModel,
-                  HakukohdeValintakoeValinnanvaiheModel) {
+                  HakukohdeValintakoeValinnanvaiheModel, SuoritaToiminto) {
     "use strict";
 
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -162,11 +167,16 @@ angular.module('valintaperusteet')
 	$scope.model.refreshIfNeeded($scope.valintakoeOid, undefined, $scope.hakukohdeOid);
 
 	$scope.submit = function() {
-		var promise = $scope.model.persistValintakoe($scope.valintakoeValinnanvaiheOid, HakukohdeValintakoeValinnanvaiheModel.valintakokeet);
-		promise.then(function() {
-			$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.hakukohdeOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid);
+        SuoritaToiminto.avaa(function(success, failure) {
+			var promise = $scope.model.persistValintakoe($scope.valintakoeValinnanvaiheOid, HakukohdeValintakoeValinnanvaiheModel.valintakokeet);
+			promise.then(function() {
+				success(function() {
+					$location.path("/" + $scope.model.getParentGroupType($location.$$path) + "/" + $scope.hakukohdeOid + "/valintakoevalinnanvaihe/" + $scope.valintakoeValinnanvaiheOid);
+				});
+			}, function(error) {
+				failure(function(){});
+			});
 		});
-		
 	};
 
 	$scope.cancel = function () {
