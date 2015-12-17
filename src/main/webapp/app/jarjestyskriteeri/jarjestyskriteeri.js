@@ -53,27 +53,37 @@ app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskrit
                     function (jk) {
                         Laskentakaava.get({oid: jk.laskentakaavaId, funktiopuu: false}, function (result) {
                             jk.nimi = result.nimi;
+                            deferred.resolve();
+                        }, function(err) {
+                            deferred.reject();
                         });
                         jarjestyskriteerit.push(jk);
-                        Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
-                        deferred.resolve();
+                    }, function(err) {
+                        deferred.reject();
                     });
             } else {
                 Jarjestyskriteeri.post(obj, function (jk) {
                     var i;
 
+                    var promises = [];
                     for (i in jarjestyskriteerit) {
                         if (jk.oid === jarjestyskriteerit[i].oid) {
 
-                            Laskentakaava.get({oid: jk.laskentakaavaId, funktiopuu: false}, function (result) {
+                            promises.push(Laskentakaava.get({oid: jk.laskentakaavaId, funktiopuu: false}, function (result) {
                                 jk.nimi = result.nimi;
-                            });
+                            }).$promise);
 
                             jarjestyskriteerit[i] = jk;
-                            Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
-                            deferred.resolve();
                         }
                     }
+                    $q.all(promises).then(function () {
+                         deferred.resolve();
+                    }, function(err) {
+                        deferred.reject();
+                    });
+
+                }, function(err) {
+                    deferred.reject();
                 });
             }
 
@@ -87,8 +97,8 @@ app.factory('JarjestyskriteeriModel', function ($q, Laskentakaava, Jarjestyskrit
 });
 
 angular.module('valintaperusteet').
-    controller('JarjestyskriteeriController', ['$scope', '$filter', '$location', '$routeParams', 'JarjestyskriteeriModel', 'ValintatapajonoModel',
-        function ($scope, $filter, $location, $routeParams, JarjestyskriteeriModel, ValintatapajonoModel) {
+    controller('JarjestyskriteeriController', ['$scope', '$filter', '$location', '$routeParams', 'JarjestyskriteeriModel', 'ValintatapajonoModel', 'SuoritaToiminto',
+        function ($scope, $filter, $location, $routeParams, JarjestyskriteeriModel, ValintatapajonoModel, SuoritaToiminto) {
     "use strict";
 
 	$scope.hakukohdeOid = $routeParams.hakukohdeOid;
@@ -104,18 +114,23 @@ angular.module('valintaperusteet').
 
 
     $scope.submit = function () {
-        var promise = JarjestyskriteeriModel.submit($scope.valintatapajonoOid, ValintatapajonoModel.jarjestyskriteerit);
-        promise.then(function (greeting) {
-            var path;
-            if ($routeParams.hakukohdeOid) {
-                path = "/hakukohde/" + $routeParams.hakukohdeOid;
-            } else {
-                path = "/valintaryhma/" + $routeParams.id;
-            }
-            $location.path(path + '/valinnanvaihe/' + $routeParams.valinnanvaiheOid +
-                '/valintatapajono/' + $routeParams.valintatapajonoOid);
+        SuoritaToiminto.avaa(function(success, failure) {
+            var promise = JarjestyskriteeriModel.submit($scope.valintatapajonoOid, ValintatapajonoModel.jarjestyskriteerit);
+            promise.then(function (greeting) {
+                success(function() {
+                    var path;
+                    if ($routeParams.hakukohdeOid) {
+                        path = "/hakukohde/" + $routeParams.hakukohdeOid;
+                    } else {
+                        path = "/valintaryhma/" + $routeParams.id;
+                    }
+                    $location.path(path + '/valinnanvaihe/' + $routeParams.valinnanvaiheOid +
+                        '/valintatapajono/' + $routeParams.valintatapajonoOid);
+                });
+            }, function(error) {
+                failure(function() {});
+            });
         });
-
     };
 
     $scope.cancel = function () {
