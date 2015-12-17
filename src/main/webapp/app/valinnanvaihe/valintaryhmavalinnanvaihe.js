@@ -1,8 +1,8 @@
 angular.module('valintaperusteet')
 
-.factory('ValintaryhmaValinnanvaiheModel', ['Valinnanvaihe', 'Valintatapajono', 'ValinnanvaiheValintatapajono',
+.factory('ValintaryhmaValinnanvaiheModel', ['$q', 'Valinnanvaihe', 'Valintatapajono', 'ValinnanvaiheValintatapajono',
         'NewValintaryhmaValinnanvaihe', 'ValintatapajonoJarjesta', 'Ilmoitus',
-        function(Valinnanvaihe, Valintatapajono, ValinnanvaiheValintatapajono, NewValintaryhmaValinnanvaihe,
+        function($q, Valinnanvaihe, Valintatapajono, ValinnanvaiheValintatapajono, NewValintaryhmaValinnanvaihe,
                  ValintatapajonoJarjesta, Ilmoitus) {
 
     "use strict";
@@ -126,8 +126,8 @@ angular.module('valintaperusteet')
 
 
 
-.factory('ValintaryhmaValintakoeValinnanvaiheModel', ['Valinnanvaihe', 'ValinnanvaiheValintakoe', 'NewValintaryhmaValinnanvaihe', 'Valintakoe',
-        function(Valinnanvaihe, ValinnanvaiheValintakoe, NewValintaryhmaValinnanvaihe, Valintakoe) {
+.factory('ValintaryhmaValintakoeValinnanvaiheModel', ['$q', 'Valinnanvaihe', 'ValinnanvaiheValintakoe', 'NewValintaryhmaValinnanvaihe', 'Valintakoe', 'SuoritaToiminto',
+        function($q, Valinnanvaihe, ValinnanvaiheValintakoe, NewValintaryhmaValinnanvaihe, Valintakoe, SuoritaToiminto) {
     "use strict";
 
     var model = new function() {
