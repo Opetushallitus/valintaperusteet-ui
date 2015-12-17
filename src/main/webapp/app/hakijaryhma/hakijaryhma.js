@@ -109,6 +109,7 @@ angular.module('valintaperusteet')
     
             $scope.model = HakijaryhmaModel;
             $scope.model.refresh($routeParams.hakijaryhmaOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valintatapajonoOid);
+            $scope.working = false;
 
             if(!$routeParams.hakijaryhmaOid && sessionStorage.getItem('hakijaryhmaSkeleton')) {
                 var storage = JSON.parse(sessionStorage.getItem('hakijaryhmaSkeleton'));
@@ -122,10 +123,11 @@ angular.module('valintaperusteet')
             }
 
             $scope.submit = function () {
+                $scope.working = true;
                 var promise = HakijaryhmaModel.submit($routeParams.id, $routeParams.hakukohdeOid, $routeParams.valintatapajonoOid);
 
                 promise.then(function () {
-
+                    $scope.working = false;
                     if ($routeParams.valintatapajonoOid) {
                         var isValintaryhmaChild = $routeParams.id ? true : false;
                         ValintatapajonoModel.refresh($routeParams.valintatapajonoOid, $routeParams.valinnanvaiheOid);
@@ -142,6 +144,8 @@ angular.module('valintaperusteet')
                         ValintaryhmaModel.refresh($routeParams.id);
                         $location.path("/valintaryhma/" + $routeParams.id);
                     }
+                }, function(error) {
+                    $scope.working = false;
                 });
 
             };

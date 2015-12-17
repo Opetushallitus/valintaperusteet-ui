@@ -272,10 +272,10 @@
                     popover-popup-delay="500"
                     popover-placement="top"
                     popover-trigger="mouseenter"
+                    ng-disabled="working"
                     popover="Muista tallentaa muutoksesi"><i class="fa fa-arrow-left"></i> Takaisin
             </button>
-
-            <button ng-show="model.hakijaryhma.oid"
+            <button ng-show="(model.hakijaryhma.oid && !working)"
                     auth
                     ng-disabled="!form.$valid || !userAccess.updateOrg"
                     class="btn btn-sm btn-primary"
@@ -284,12 +284,18 @@
                 <i class="fa fa-floppy-o"></i> Tallenna
             </button>
 
-            <button ng-show="!model.hakijaryhma.oid"
+            <button ng-show="(!model.hakijaryhma.oid && !working)"
                     auth
                     ng-disabled="!form.$valid || !userAccess.crudOrg"
                     class="btn btn-sm btn-primary"
                     type="submit">
                 <i class="fa fa-floppy-o"></i> Lisää
+            </button>
+
+            <button ng-show="working"
+                    ng-disabled="true"
+                    class="btn btn-sm btn-primary">
+                <i class="fa fa-cog fa-spin"></i> Suoritetaan
             </button>
 
         </div>
