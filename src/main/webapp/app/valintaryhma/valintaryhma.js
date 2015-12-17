@@ -485,10 +485,14 @@ angular.module('valintaperusteet')
                     controller: function ($scope, $window, $timeout, $modalInstance, kopioitavaOid, ValintaryhmaKopiointi) {
                         $scope.model = {};
                         $scope.kopioObj = {};
+                        $scope.working=false;
                         $scope.kopioiValintaryhma = function () {
+                            $scope.working=true;
                             ValintaryhmaKopiointi.put({parentOid: $scope.kopioObj.value.oid, kopioitavaOid: $routeParams.id, nimi: $scope.model.uusinimi }, function () {
+                                $scope.working=false;
                                 $modalInstance.dismiss('cancel');
                             }, function (error) {
+                                $scope.working=false;
                                 $scope.error = error;
                                 $timeout(function () {
                                     $scope.error = false;
@@ -531,6 +535,7 @@ angular.module('valintaperusteet')
         $scope.domain.refresh();
 
         $scope.model = {};
+        $scope.working=false;
 
         $scope.hakijaryhma = {};
 
@@ -540,6 +545,7 @@ angular.module('valintaperusteet')
         });
 
         $scope.kopioiHakijaryhma = function () {
+            $scope.working=true;
 
             var payload = {
                 uusinimi: $scope.model.uusinimi,
@@ -553,8 +559,10 @@ angular.module('valintaperusteet')
             };
 
             HakijaryhmaKopiointi.put(payload, function (result) {
+                $scope.working=false;
                 $scope.$broadcast('suljemodal');
             }, function (error) {
+                $scope.working=false;
                 $log.error('Hakijaryhman kopiointi toiseen valintaryhmään ei onnistunut', error);
                 $scope.$broadcast('suljemodal');
             });

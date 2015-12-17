@@ -16,6 +16,7 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-sm btn-default" ng-click="sulje()">{{ t('valintaperusteet.sulje') || 'Sulje'}}</button>
-    <button ng-click="kopioiHakijaryhma()" ng-disabled="kaavakopio.$invalid" class="btn btn-sm btn-primary">{{t('valintaperusteet.kopioi') || 'Kopioi'}}</button>
+    <button class="btn btn-sm btn-default" ng-click="sulje()" ng-hide="working">{{ t('valintaperusteet.sulje') || 'Sulje'}}</button>
+    <button ng-click="kopioiHakijaryhma()" ng-disabled="kaavakopio.$invalid" class="btn btn-sm btn-primary" ng-hide="working">{{t('valintaperusteet.kopioi') || 'Kopioi'}}</button>
+    <button ng-disabled="true" class="btn btn-sm btn-primary" ng-show="working"><i class="fa fa-cog fa-spin"></i>  {{ t('ilmoitus.kasitellaan') || 'Käsitellään' }}</button>
 </div>
