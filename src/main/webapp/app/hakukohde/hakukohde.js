@@ -98,11 +98,12 @@ angular.module('valintaperusteet')
                 });
             }
 
-            if(model.hakijaryhmat.length > 0) {
+/*        if(model.hakijaryhmat.length > 0) {
                 promises.push(HakijaryhmaJarjesta.post(model.hakijaryhmat, function (result) {
                 }, function (error) {
                 }).$promise);
             }
+*/
 
             $q.all(promises).then(function () {
                 afterSuccess(function() {});
