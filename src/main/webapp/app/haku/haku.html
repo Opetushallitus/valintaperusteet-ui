@@ -18,8 +18,8 @@
                     ng-change="changeHaku()">
                 <option value=""></option>
             </select>
-            <button ng-click="show = !show" class="btn btn-default btn-sm margin-vertical-2"><i
-                    ng-class="show ? 'fa fa-eye-slash' : 'fa fa-eye'"></i> {{t('hakulista.rajaa') || 'Rajaa
+            <button ng-click="showLimiters = !showLimiters" class="btn btn-default btn-sm margin-vertical-2"><i
+                    ng-class="showLimiters ? 'fa fa-eye-slash' : 'fa fa-eye'"></i> {{t('hakulista.rajaa') || 'Rajaa
                 hakuja'}}
             </button>
         </div>
@@ -30,7 +30,7 @@
 
 
 
-    <div collapse="!show" class="margin-top-2">
+    <div collapse="!showLimiters" class="margin-top-2">
         <div class="form-horizontal col-md-12">
 
             <div class="form-group">
