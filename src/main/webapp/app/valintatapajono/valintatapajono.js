@@ -149,6 +149,7 @@ angular.module('valintaperusteet')
                 }).$promise);
 
                 model.hakijaryhmat.forEach(function (hr) {
+                    hr.masterOid = null;
                     promises.push(HakijaryhmaValintatapajono.update({oid: hr.oid}, hr, function (result) {
                         hr = result;
                     }).$promise);
