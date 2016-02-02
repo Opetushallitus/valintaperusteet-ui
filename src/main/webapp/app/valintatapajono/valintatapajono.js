@@ -5,9 +5,10 @@ angular.module('valintaperusteet')
     .factory('ValintatapajonoModel', ['$q', 'Valintatapajono', 'ValinnanvaiheValintatapajono', 'ValintatapajonoJarjestyskriteeri',
         'Laskentakaava', 'Jarjestyskriteeri', 'JarjestyskriteeriJarjesta', 'ValintatapajonoHakijaryhma', 'HakukohdeHakijaryhma',
         'ValintaryhmaHakijaryhma', 'HakijaryhmaValintatapajono', 'ValintatapajonoValmisSijoiteltavaksi', '$modal', 'Ilmoitus',
+        '$location',
     function ($q, Valintatapajono, ValinnanvaiheValintatapajono, ValintatapajonoJarjestyskriteeri, Laskentakaava,
               Jarjestyskriteeri, JarjestyskriteeriJarjesta, ValintatapajonoHakijaryhma, HakukohdeHakijaryhma,
-              ValintaryhmaHakijaryhma, HakijaryhmaValintatapajono, ValintatapajonoValmisSijoiteltavaksi, $modal, Ilmoitus) {
+              ValintaryhmaHakijaryhma, HakijaryhmaValintatapajono, ValintatapajonoValmisSijoiteltavaksi, $modal, Ilmoitus, $location) {
     "use strict";
 
     var model = new function () {
@@ -121,6 +122,7 @@ angular.module('valintaperusteet')
                             model.valintatapajono.varasijojaTaytetaanAsti = new Date(model.valintatapajono.varasijojaTaytetaanAsti);
                         }
                         valintatapajonot.push(result);
+                        $location.path($location.path() + result.oid);
                         afterSuccess(function() {});
                     }, function(error) {
                         afterFailure(function() {});
