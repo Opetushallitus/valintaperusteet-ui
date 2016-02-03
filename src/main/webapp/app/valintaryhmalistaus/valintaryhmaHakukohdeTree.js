@@ -57,42 +57,21 @@ angular.module('valintaperusteet')
             return "";
         },
         refresh: function () {
-            var kohdejoukko = "";
-
-            if (HakuModel.haku.kohdejoukkoUri) {
-                kohdejoukko = HakuModel.haku.kohdejoukkoUri.split("#")[0];
-            }
-
-            var tila = null;
-            if (this.search.vainValmiitJaJulkaistut) {
-                tila = ["VALMIS", "JULKAISTU"];
-            }
-
-            ValintaperusteetPuu.get({
-                q: this.search.q,
-                hakuOid: HakuModel.hakuOid,
-                tila: tila,
-                kohdejoukko: kohdejoukko
-            }, function (result) {
-                modelInterface.valintaperusteList = result;
-                modelInterface.update();
-            });
+            return this.refreshHaku(HakuModel.haku);
         },
         refreshHaku: function (haku) {
-            var kohdejoukko = "";
+            var kohdejoukko, tila;
 
             if (haku.kohdejoukkoUri) {
                 kohdejoukko = haku.kohdejoukkoUri.split("#")[0];
             }
-
-            var tila = null;
             if (this.search.vainValmiitJaJulkaistut) {
                 tila = ["VALMIS", "JULKAISTU"];
             }
 
             ValintaperusteetPuu.get({
                 q: this.search.q,
-                hakuOid: haku.hakuOid,
+                hakuOid: haku.oid,
                 tila: tila,
                 kohdejoukko: kohdejoukko
             }, function (result) {
