@@ -78,6 +78,28 @@ angular.module('valintaperusteet')
                 modelInterface.update();
             });
         },
+        refreshHaku: function (haku) {
+            var kohdejoukko = "";
+
+            if (haku.kohdejoukkoUri) {
+                kohdejoukko = haku.kohdejoukkoUri.split("#")[0];
+            }
+
+            var tila = null;
+            if (this.search.vainValmiitJaJulkaistut) {
+                tila = ["VALMIS", "JULKAISTU"];
+            }
+
+            ValintaperusteetPuu.get({
+                q: this.search.q,
+                hakuOid: haku.hakuOid,
+                tila: tila,
+                kohdejoukko: kohdejoukko
+            }, function (result) {
+                modelInterface.valintaperusteList = result;
+                modelInterface.update();
+            });
+        },
         expandTree: function () {
             modelInterface.forEachValintaryhma(function (item) {
                 item.isVisible = true;
