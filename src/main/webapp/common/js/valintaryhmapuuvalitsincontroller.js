@@ -8,8 +8,9 @@ angular.module('valintaperusteet')
         $scope.hakuModel.init();
         $scope.hakuModel.hakuDeferred.promise.then(function(){
             $scope.valintaryhmaPuu = Treemodel;
-            Treemodel.refresh();
+            Treemodel.refreshHaku($scope.hakuModel.haku);
         });
+
         // Deep copy for non-persisting changes
         $scope.customHakuUtil = angular.copy(CustomHakuUtil);
         $scope.customHakuUtil.hakutyyppi.value = undefined;
@@ -17,6 +18,7 @@ angular.module('valintaperusteet')
         $scope.customHakuUtil.hakutapa.value = undefined;
         $scope.customHakuUtil.hakukausi.value = undefined;
         $scope.customHakuUtil.hakuvuosi.value = undefined;
+        $scope.customHakuUtil.refresh();
 
         $scope.selection = {}; // input radio needs this empty object when mapping object reference
         $scope.changeSelection = function (puuNode) {
