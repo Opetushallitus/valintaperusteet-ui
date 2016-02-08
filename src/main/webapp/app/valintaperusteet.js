@@ -14,6 +14,13 @@ var app = angular.module('valintaperusteet', ['ngResource', 'ngCookies', 'loadin
         });
     })
 
+    .run(function($http, $cookies) {
+        $http.defaults.headers.common['clientSubSystemCode'] = "valintaperusteet.valintaperusteet-ui.frontend";
+        if($cookies['CSRF']) {
+            $http.defaults.headers.common['CSRF'] = $cookies['CSRF'];
+        }
+    })
+
     .constant('CAS_URL', CAS_URL || "/cas/myroles")
 
     // Applications in myroles this module uses
