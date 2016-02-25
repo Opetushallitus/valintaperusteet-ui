@@ -171,7 +171,7 @@
     <label class="control-label col-md-2" for="">{{ t('valintaryhmalomake.vastuuorganisaatio') || 'Vastuuorganisaatio' }}</label>
     <div class="col-md-6">
         <select class="form-control"
-                ng-model="model.valintaryhma.vastuuorganisaatio"
+                ng-model="model.valintaryhma.vastuuorganisaatioOid"
                 ng-options="o.oid as (o.nimi.fi || o.nimi.sv || o.nimi.en) for o in model.valintaryhma.organisaatiot">
             <option value=""></option>
         </select>
