@@ -429,6 +429,9 @@ angular.module('valintaperusteet')
             UserAccessLevels.refreshIfNeeded($routeParams.id, $routeParams.hakukohdeOid);
 
             $scope.submit = function () {
+                if($scope.model.valintaryhma.viimeinenKaynnistyspaiva) {
+                    $scope.model.valintaryhma.viimeinenKaynnistyspaiva = new Date($scope.model.valintaryhma.viimeinenKaynnistyspaiva);
+                }
                 SuoritaToiminto.avaa(function(success, failure) {
                     $scope.model.persistValintaryhma($scope.valintaryhmaOid, success, failure);
                 });
