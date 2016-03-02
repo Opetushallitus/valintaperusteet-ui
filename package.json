@@ -1,10 +1,12 @@
 {
   "devDependencies": {
     "test":  "*",
+    "phantomjs": "~1.9.1",
     "mocha-phantomjs": "3.5.3"
   },
   "dependencies": {
     "test":  "*",
+    "phantomjs": "~1.9.1",
     "mocha-phantomjs": "3.5.3"
   },
   "scripts": {
