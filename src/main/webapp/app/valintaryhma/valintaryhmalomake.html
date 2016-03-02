@@ -130,25 +130,6 @@
 </div>
 
 <div class="form-group">
-    <label class="control-label col-md-2" for="viimeinenKaynnistyspaiva">{{ t('valintaryhmalomake.viimeinenKaynnistyspaiva') || 'Viimeinen käynnistyspäivä'
-        }}</label>
-
-    <div class="col-md-4">
-        <input class="form-control"
-               auth ng-disabled="!userAccess.updateOrg"
-               id="viimeinenKaynnistyspaiva"
-               placeholder="{{ t('valintaryhmalomake.viimeinenKaynnistyspaiva') || 'pvm' }}"
-               ng-model="model.valintaryhma.viimeinenKaynnistyspaiva"
-               datepicker-popup="dd.MM.yyyy"
-               is-open="viimeinenKaynnistyspaiva_open"
-               ng-click = "viimeinenKaynnistyspaiva_open = true"
-               show-button-bar="false"
-        />
-    </div>
-
-</div>
-
-<div class="form-group">
     <label class="control-label col-md-2">{{ t('valintaryhmalomake.organisaatiot') || 'Organisaatiot' }}:</label>
 
     <div class="col-md-10">
@@ -196,6 +177,25 @@
             <option value=""></option>
         </select>
     </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label col-md-2" for="viimeinenKaynnistyspaiva">{{ t('valintaryhmalomake.viimeinenKaynnistyspaiva') || 'Viimeinen käynnistyspäivä'
+        }}</label>
+
+    <div class="col-md-4">
+        <input class="form-control"
+               auth ng-disabled="!userAccess.updateOrg"
+               id="viimeinenKaynnistyspaiva"
+               placeholder="{{ t('valintaryhmalomake.viimeinenKaynnistyspaiva') || 'pvm' }}"
+               ng-model="model.valintaryhma.viimeinenKaynnistyspaiva"
+               datepicker-popup="dd.MM.yyyy"
+               is-open="viimeinenKaynnistyspaiva_open"
+               ng-click = "viimeinenKaynnistyspaiva_open = true"
+               show-button-bar="false"
+        />
+    </div>
+
 </div>
 
 <!-- VALINTAKOEKOODIEN LISTAUS -->
