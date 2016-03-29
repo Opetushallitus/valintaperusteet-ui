@@ -107,7 +107,6 @@ angular.module('valintaperusteet')
             };
 
             function setCrudRights(level) {
-                console.log("setCrudRights", level)
                 switch(level) {
                     case "oph":
                         model.crudOph = true;
