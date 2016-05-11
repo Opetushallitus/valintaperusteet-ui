@@ -171,7 +171,7 @@
     <label class="control-label col-md-2" for="">{{ t('valintaryhmalomake.vastuuorganisaatio') || 'Vastuuorganisaatio' }}</label>
     <div class="col-md-6">
         <select class="form-control"
-                auth ng-disabled="!userAccess.updateOrg"
+                auth ng-disabled="!userAccess.crudOph"
                 ng-model="model.valintaryhma.vastuuorganisaatioOid"
                 ng-options="o.oid as (o.nimi.fi || o.nimi.sv || o.nimi.en) for o in model.valintaryhma.organisaatiot">
             <option value=""></option>
@@ -185,7 +185,7 @@
 
     <div class="col-md-4">
         <input class="form-control"
-               auth ng-disabled="!userAccess.updateOrg"
+               auth ng-disabled="!userAccess.crudOph"
                id="viimeinenKaynnistyspaiva"
                placeholder="{{ t('valintaryhmalomake.viimeinenKaynnistyspaiva') || 'pvm' }}"
                ng-model="model.valintaryhma.viimeinenKaynnistyspaiva"
