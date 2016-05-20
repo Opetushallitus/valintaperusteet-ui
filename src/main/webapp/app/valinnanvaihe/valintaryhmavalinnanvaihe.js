@@ -97,6 +97,10 @@ angular.module('valintaperusteet')
             }
         };
         this.remove = function(jono) {
+            if (!window.confirm(LocalisationService.tl('valintatapajono.haluatkoVarmastiPoistaa') ||
+                    'Haluatko varmasti poistaa valintatapajonon?')) {
+                return;
+            }
             fetchValintatapajonoUsageInformation(jono).success(function(inUse) {
                 var msg = LocalisationService.tl('valintatapajono.eiVoiPoistaaKoskaSijoittelunKaytossa') ||
                             'Jonoa ei voi poistaa, koska se on sijoittelun käytössä';
