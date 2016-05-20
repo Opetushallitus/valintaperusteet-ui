@@ -44,6 +44,8 @@ public class ConfigController {
     @Value("${valintaperusteet-ui.authentication-service-url}")
     private String authenticationServiceUrl;
 
+    @Value("${valintalaskenta-ui.sijoittelu-service-url.rest}")
+    private String sijoitteluServiceUrl;
 
     @RequestMapping(value = "/configuration.js", method = RequestMethod.GET, produces = "text/javascript", headers="Accept=*/*")
     @ResponseBody
@@ -61,6 +63,7 @@ public class ConfigController {
         append(b, "TEMPLATE_URL_BASE", "");
         append(b, "AUTHENTICATION_URL_BASE", authenticationServiceUrl);
         append(b, "CAS_URL", casUrl);
+        append(b, "SIJOITTELU_URL_BASE", sijoitteluServiceUrl);
         if (!authMode.isEmpty()) {
             append(b, "AUTH_MODE", authMode);
 

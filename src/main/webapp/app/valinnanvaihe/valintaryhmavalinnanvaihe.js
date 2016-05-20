@@ -1,9 +1,10 @@
 angular.module('valintaperusteet')
 
 .factory('ValintaryhmaValinnanvaiheModel', ['$q', 'Valinnanvaihe', 'Valintatapajono', 'ValinnanvaiheValintatapajono',
-        'NewValintaryhmaValinnanvaihe', 'ValintatapajonoJarjesta', 'Ilmoitus',
+        'NewValintaryhmaValinnanvaihe', 'ValintatapajonoJarjesta', 'Ilmoitus', '$http', '$cookieStore', 'IlmoitusTila',
+        'LocalisationService',
         function($q, Valinnanvaihe, Valintatapajono, ValinnanvaiheValintatapajono, NewValintaryhmaValinnanvaihe,
-                 ValintatapajonoJarjesta, Ilmoitus) {
+                 ValintatapajonoJarjesta, Ilmoitus, $http, $cookieStore, IlmoitusTila, LocalisationService) {
 
     "use strict";
 
@@ -23,11 +24,31 @@ angular.module('valintaperusteet')
                     model.valinnanvaihe = result;
                 });
 
-                ValinnanvaiheValintatapajono.get({parentOid: oid}, function(result) {
-                    model.valintatapajonot = result;
+                ValinnanvaiheValintatapajono.get({parentOid: oid}, function(valintatapajonot) {
+                    model.valintatapajonot = valintatapajonot;
+                    populateSijoitteluUsage(valintatapajonot);
                 });
             }
         };
+
+        function populateSijoitteluUsage(valintatapajonot) {
+            _.each(valintatapajonot, function(jono) {
+                jono.loadingComplete = false;
+                fetchValintatapajonoUsageInformation(jono)
+                    .success(function(inUse) {
+                        jono.isUsedBySijoittelu = inUse;
+                        jono.loadingComplete = true;
+                    });
+            });
+        }
+
+        function fetchValintatapajonoUsageInformation(jono) {
+            var hakuOid = $cookieStore.get('hakuoid');
+            return $http.get(SIJOITTELU_URL_BASE + 'resources/sijoittelu/' + hakuOid + '/valintatapajonoInUse/' + jono.oid, {
+                cache: false
+            });
+        }
+
         this.refreshIfNeeded = function(oid) {
             if(oid !== model.valinnanvaihe.oid) {
                 model.refresh(oid);
@@ -76,8 +97,16 @@ angular.module('valintaperusteet')
             }
         };
         this.remove = function(jono) {
-            Valintatapajono.delete({oid: jono.oid}, function(result) {    
-                model.refresh(model.valinnanvaihe.oid);
+            fetchValintatapajonoUsageInformation(jono).success(function(inUse) {
+                var msg = LocalisationService.tl('valintatapajono.eiVoiPoistaaKoskaSijoittelunKaytossa') ||
+                            'Jonoa ei voi poistaa, koska se on sijoittelun käytössä';
+                if (inUse) {
+                    Ilmoitus.avaa(msg, msg, IlmoitusTila.WARNING);
+                } else {
+                    Valintatapajono.delete({oid: jono.oid}, function(result) {
+                        model.refresh(model.valinnanvaihe.oid);
+                    });
+                }
             });
         };
 

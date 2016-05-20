@@ -2512,3 +2512,8 @@ div.tilaParial {
     .tabs .tab.disabled span, .tabs .tab.disabled:hover span {
       background: #f6f6f6;
       background-image: url('../img/texture-45dg-lines-96ccdb.gif'); }
+
+span.usedBySijoittelu {
+  font-size: 12px;
+  font-style: italic;
+}

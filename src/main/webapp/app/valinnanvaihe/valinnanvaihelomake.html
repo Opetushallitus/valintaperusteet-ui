@@ -66,13 +66,17 @@
                             <span ng-if="!jono.inheritance">{{t('valintaperusteet.periytyy.false') || 'Ei periydy'}}</span>
                         </td>
                         <td>{{$index}}</td>
-                        <td>
-                            <a auth ng-disabled="!userAccess.crudOrg" ng-show="!jono.inheritance" class="btn btn-sm btn-default"
-                                    ng-click="model.remove(jono)">
-                                <i
-                                   class="fa fa-trash-o"
-                                        ></i></a>
-
+                        <td ng-show="jono.loadingComplete">
+                            <span class="usedBySijoittelu" ng-if="jono.isUsedBySijoittelu">
+                                {{ t('valintatapajono.eiVoiPoistaaKoskaSijoittelunKaytossa') || 'Jonoa ei voi poistaa, koska se on sijoittelun käytössä' }}
+                            </span>
+                            <span ng-if="!jono.isUsedBySijoittelu">
+                                <a auth ng-disabled="!userAccess.crudOrg"
+                                   ng-show="!jono.inheritance" class="btn btn-sm btn-default"
+                                   ng-click="model.remove(jono)">
+                                    <i class="fa fa-trash-o"></i>
+                                </a>
+                            </span>
                         </td>
                     </tr>
                     </tbody>
