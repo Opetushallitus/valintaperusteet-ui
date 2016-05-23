@@ -44,7 +44,7 @@ angular.module('valintaperusteet')
 
         function fetchValintatapajonoUsageInformation(jono) {
             var hakuOid = $cookieStore.get('hakuoid');
-            return $http.get(SIJOITTELU_URL_BASE + 'resources/sijoittelu/' + hakuOid + '/valintatapajonoInUse/' + jono.oid, {
+            return $http.get(SIJOITTELU_URL_BASE + 'resources/sijoittelu/' + hakuOid + '/valintatapajono-in-use/' + jono.oid, {
                 cache: false
             });
         }
