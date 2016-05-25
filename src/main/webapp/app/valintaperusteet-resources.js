@@ -182,12 +182,38 @@ angular.module('valintaperusteet')
             delete: {method: "DELETE"}
         });
     }])
-    .factory('ValinnanvaiheValintatapajono', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valinnanvaihe/:parentOid/valintatapajono", {parentOid: "@parentOid"}, {
-            get: {method: "GET", isArray: true, cache: false},
-            insert: {method: "PUT"}
-        });
-    }])
+
+    .factory('ValinnanvaiheValintatapajono', ['$resource', '$q', 'Valintatapajono',
+        function ($resource, $q, Valintatapajono) {
+            var resource = $resource(SERVICE_URL_BASE + "resources/valinnanvaihe/:parentOid/valintatapajono",
+                {parentOid: "@parentOid"}, {
+                get: {method: "GET", isArray: true, cache: false},
+                insert: {method: "PUT"}
+            });
+
+            function populateSijoitteluUsage(valintatapajonot) {
+                return $q.all(valintatapajonot.map(Valintatapajono.fetchSijoitteluUsage))
+                        .then(function(sijoitteluUsage) {
+                            return _.map(valintatapajonot, function(jono, index) {
+                                jono.usedBySijoittelu = sijoitteluUsage[index].data;
+                                return jono;
+                            });
+                        });
+            }
+
+            resource.fetchWithSijoitteluUsage = function(parentOid) {
+                var deferred = $q.defer();
+                resource.get({parentOid: parentOid}, function(valintatapajonot) {
+                    populateSijoitteluUsage(valintatapajonot).then(function() {
+                        deferred.resolve(valintatapajonot);
+                    });
+                });
+                return deferred.promise;
+            };
+
+            return resource;
+        }
+    ])
     .factory('ValinnanvaiheJarjesta', ['$resource', function ($resource) {
         return $resource(SERVICE_URL_BASE + "resources/valinnanvaihe/jarjesta", {}, {
             post: {method: "POST", isArray: true}
@@ -219,13 +245,48 @@ angular.module('valintaperusteet')
 
 
     //Valintatapajono
-    .factory('Valintatapajono', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:oid", {oid: "@oid"}, {
-            get: {method: "GET", cache: false},
-            post: {method: "POST"},
-            delete: {method: "DELETE"}
-        });
-    }])
+    .factory('Valintatapajono', ['$resource', 'LocalisationService', 'Ilmoitus', '$cookieStore', '$http', '$q',
+        'IlmoitusTila',
+        function ($resource, LocalisationService, Ilmoitus, $cookieStore, $http, $q, IlmoitusTila) {
+            var resource = $resource(SERVICE_URL_BASE + "resources/valintatapajono/:oid", {oid: "@oid"}, {
+                get: {method: "GET", cache: false},
+                post: {method: "POST"},
+                delete: {method: "DELETE"}
+            });
+
+            resource.fetchSijoitteluUsage = function(jono) {
+                var hakuOid = $cookieStore.get('hakuoid');
+                return $http.get(SIJOITTELU_URL_BASE + 'resources/sijoittelu/' +
+                    hakuOid + '/valintatapajono-in-use/' + jono.oid, {
+                    cache: false
+                });
+            };
+
+            resource.deleteWithDialog = function(jono) {
+                var deferred = $q.defer();
+                if (!window.confirm(LocalisationService.tl('valintatapajono.haluatkoVarmastiPoistaa') ||
+                        'Haluatko varmasti poistaa valintatapajonon?')) {
+                    deferred.reject();
+                } else {
+                    resource.fetchSijoitteluUsage(jono).success(function(inUse) {
+                        var msg = LocalisationService.tl('valintatapajono.eiVoiPoistaaKoskaSijoittelunKaytossa') ||
+                            'Jonoa ei voi poistaa, koska se on sijoittelun käytössä';
+                        if (inUse) {
+                            Ilmoitus.avaa(msg, msg, IlmoitusTila.WARNING);
+                            deferred.reject();
+                        } else {
+                            resource.delete({oid: jono.oid}, function() {
+                                deferred.resolve();
+                            });
+                        }
+                    });
+                }
+                return deferred.promise;
+            };
+
+            return resource
+        }
+    ])
     .factory('ValintatapajonoValmisSijoiteltavaksi', ['$resource', function ($resource) {
         return $resource(VALINTALASKENTA_URL_BASE + "resources/valintatapajono/:oid/valmissijoiteltavaksi", {valintatapajonoOid: "@valintatapajonoOid"}, {
             get: {method: "GET", cache: false}

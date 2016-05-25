@@ -44,15 +44,14 @@ angular.module('valintaperusteet').
                 model.valinnanvaihe = {};
                 model.valintatapajonot = [];
             } else {
-                
                 Valinnanvaihe.get({oid: oid}, function(result) {
                     model.valinnanvaihe = result;
                     kuuluuSijoitteluun(oid);
                 });
-                
-                ValinnanvaiheValintatapajono.get({parentOid: oid}, function(result) {
-                    model.valintatapajonot = result;
-                }); 
+
+                ValinnanvaiheValintatapajono.fetchWithSijoitteluUsage(oid).then(function(valintatapajonot) {
+                    model.valintatapajonot = valintatapajonot;
+                });
             }
         };
 
@@ -65,12 +64,8 @@ angular.module('valintaperusteet').
         };
 
         this.remove = function(jono) {
-            Valintatapajono.delete({oid: jono.oid}, function(result) {
-                for(var i in model.valintatapajonot) {
-                    if(jono.oid === model.valintatapajonot[i].oid) {
-                        model.valintatapajonot.splice(i,1);
-                    }
-                }
+            Valintatapajono.deleteWithDialog(jono).then(function() {
+                model.refresh(model.valinnanvaihe.oid);
             });
         };
 
