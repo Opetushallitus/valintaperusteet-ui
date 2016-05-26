@@ -195,7 +195,7 @@ angular.module('valintaperusteet')
                 return $q.all(valintatapajonot.map(Valintatapajono.fetchSijoitteluUsage))
                         .then(function(sijoitteluUsage) {
                             return _.map(valintatapajonot, function(jono, index) {
-                                jono.usedBySijoittelu = sijoitteluUsage[index].data;
+                                jono.usedBySijoittelu = sijoitteluUsage[index];
                                 return jono;
                             });
                         });
@@ -245,9 +245,9 @@ angular.module('valintaperusteet')
 
 
     //Valintatapajono
-    .factory('Valintatapajono', ['$resource', 'LocalisationService', 'Ilmoitus', '$cookieStore', '$http', '$q',
-        'IlmoitusTila',
-        function ($resource, LocalisationService, Ilmoitus, $cookieStore, $http, $q, IlmoitusTila) {
+    .factory('Valintatapajono', ['$resource', 'LocalisationService', 'Ilmoitus', '$location', '$http', '$q',
+        'IlmoitusTila', 'TarjontaHakukohde',
+        function ($resource, LocalisationService, Ilmoitus, $location, $http, $q, IlmoitusTila, TarjontaHakukohde) {
             var resource = $resource(SERVICE_URL_BASE + "resources/valintatapajono/:oid", {oid: "@oid"}, {
                 get: {method: "GET", cache: false},
                 post: {method: "POST"},
@@ -255,20 +255,32 @@ angular.module('valintaperusteet')
             });
 
             resource.fetchSijoitteluUsage = function(jono) {
-                var hakuOid = $cookieStore.get('hakuoid');
-                return $http.get(SIJOITTELU_URL_BASE + 'resources/sijoittelu/' +
-                    hakuOid + '/valintatapajono-in-use/' + jono.oid, {
-                    cache: false
+                var deferred = $q.defer();
+                var hakukohdeOid = $location.url().match(/hakukohde\/([^\/]+)/)[1];
+
+                TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function(hakukohde) {
+                    var hakuOid = hakukohde.result.hakuOid;
+
+                    $http.get(SIJOITTELU_URL_BASE + 'resources/sijoittelu/' +
+                        hakuOid + '/valintatapajono-in-use/' + jono.oid, {
+                        cache: false
+                    }).success(deferred.resolve);
                 });
+
+                return deferred.promise;
             };
 
-            resource.deleteWithDialog = function(jono) {
+            resource.deleteWithDialog = function(jono, checkSijoitteluUsage) {
                 var deferred = $q.defer();
+                var fetchSijoitteluUsage = checkSijoitteluUsage
+                                            ? resource.fetchSijoitteluUsage(jono)
+                                            : $q.when(false);
+
                 if (!window.confirm(LocalisationService.tl('valintatapajono.haluatkoVarmastiPoistaa') ||
                         'Haluatko varmasti poistaa valintatapajonon?')) {
                     deferred.reject();
                 } else {
-                    resource.fetchSijoitteluUsage(jono).success(function(inUse) {
+                    fetchSijoitteluUsage.then(function(inUse) {
                         var msg = LocalisationService.tl('valintatapajono.eiVoiPoistaaKoskaSijoittelunKaytossa') ||
                             'Jonoa ei voi poistaa, koska se on sijoittelun käytössä';
                         if (inUse) {

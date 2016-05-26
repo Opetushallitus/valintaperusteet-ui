@@ -23,7 +23,7 @@ angular.module('valintaperusteet')
                     model.valinnanvaihe = result;
                 });
 
-                ValinnanvaiheValintatapajono.fetchWithSijoitteluUsage(oid).then(function(valintatapajonot) {
+                ValinnanvaiheValintatapajono.get({parentOid: oid}, function(valintatapajonot) {
                     model.valintatapajonot = valintatapajonot;
                 });
             }

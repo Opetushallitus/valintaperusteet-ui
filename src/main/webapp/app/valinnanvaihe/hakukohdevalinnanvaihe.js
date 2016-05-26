@@ -64,7 +64,7 @@ angular.module('valintaperusteet').
         };
 
         this.remove = function(jono) {
-            Valintatapajono.deleteWithDialog(jono).then(function() {
+            Valintatapajono.deleteWithDialog(jono, true).then(function() {
                 model.refresh(model.valinnanvaihe.oid);
             });
         };
