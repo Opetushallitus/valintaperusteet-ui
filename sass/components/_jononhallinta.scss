@@ -11,6 +11,7 @@ body {
 
   #heading {
     font-size: 20px;
+    font-family: $open-sans;
   }
 
   #application-wrapper {
@@ -20,6 +21,7 @@ body {
 
   #stateSelector {
     font-size: 12px;
+    font-family: $open-sans;
     background-color: #F0F0F0;
     color: #707070;
     margin-top: 30px;
@@ -60,7 +62,7 @@ body {
   }
 
   #jobList {
-
+    font-family: $open-sans;
     .flexContainer {
       padding-top: 20px;
       display: -ms-flex;
@@ -150,12 +152,12 @@ body {
         font-size: 14px;
         color: #2A2A2A;
         .jobItemDescription {
-          padding-bottom: 5px;
           .jobItemName {
-            height: 30%;
+            padding-bottom: 5px;
           }
           .jobItemDetails {
-            height: 70%;
+            font-size: 0.85em;
+
           }
           .actionButton:hover {
             color: red;
