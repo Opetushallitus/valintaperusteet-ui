@@ -1,0 +1,29 @@
+<div class="modal-header"><h3>{{ t('hakijaryhmatyyppikoodinvalinta.header') || 'Hakijaryhmatyyppioodin lisäys' }}</h3></div>
+<div class="modal-body">
+    <div filterable-list class="autocomplete">
+        <div class="form-row">
+            <button type="button" class="btn btn-sm btn-default" ng-click="addHakijaryhmatyyppikoodiUri(selectedId)"
+                    ng-disabled="!selectedId"><i class="fa fa-plus"></i> {{ t('hakijaryhmatyyppikoodinvalinta.hakijaryhmatyyppikoodi') || 'Hakijaryhmatyyppikoodi' }}
+            </button>
+        </div>
+
+        <div class="ac-selection">
+            <h3 class="margin-top-0">{{ t('hakijaryhmatyyppikoodinvalinta.valittu') || 'Valittu hakijaryhmatyyppikoodi' }}: {{selectedId}}</h3>
+        </div>
+
+        <input class="width-60 ac-filter search" type="text" placeholder="{{ t('hakijaryhmatyyppikoodinvalinta.suodata') || 'Suodata hakijaryhmatyyppikoodeja' }}"
+               ng-model="valintakoekoodifilter"/>
+
+        <ul class="ac-options" ng-show="model.hakijaryhmatyyppikoodit">
+            <li fl-option="{{hakijaryhmatyyppikoodi.koodiUri}}" class="ac-option" ng-click="setHakijaryhmatyyppikoodiUri()"
+                ng-repeat="hakijaryhmatyyppikoodi in model.hakijaryhmatyyppikoodit | filter:hakijaryhmatyyppikoodifilter | hakijaryhmatyyppikoodiFullMatchFilter">
+                <span>{{hakijaryhmatyyppikoodi.metadata[0].nimi}}</span>
+                <span class="float-right">{{hakijaryhmatyyppikoodi.koodiUri}}</span>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="modal-footer">
+    <a class="btn btn-default btn-sm" ng-click="sulje();"
+       role="button">{{ t('valintakoekoodinvalinta.sulje') || 'Sulje' }}</a>
+</div>

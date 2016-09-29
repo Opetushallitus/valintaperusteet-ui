@@ -1,10 +1,10 @@
 angular.module('valintaperusteet').controller('LaskentakaavaController',
     ['$scope', '_', '$location', '$routeParams', '$timeout', 'KaavaValidointi', 'Laskentakaava', 'LaskentakaavaLista',
         'TemplateService', 'FunktioService', 'Valintaperusteviitetyypit', 'Arvokonvertterikuvauskielet',
-        'FunktioNimiService', 'FunktioFactory', 'KaavaValidation', 'KaavaVirheTyypit', 'ErrorService', 'FunktiokuvausService', 'FunktiokutsuKaareService', '$modal',
+        'FunktioNimiService', 'FunktioFactory', 'KaavaValidation', 'KaavaVirheTyypit', 'ErrorService', 'FunktiokuvausService', 'FunktiokutsuKaareService', 'Syotettavanarvonkoodit', 'SyotettavanarvontyyppiService', '$modal',
         function ($scope, _, $location, $routeParams, $timeout, KaavaValidointi, Laskentakaava, LaskentakaavaLista,
                   TemplateService, FunktioService, Valintaperusteviitetyypit, Arvokonvertterikuvauskielet, FunktioNimiService,
-                  FunktioFactory, KaavaValidation, KaavaVirheTyypit, ErrorService, FunktiokuvausService, FunktiokutsuKaareService, $modal) {
+                  FunktioFactory, KaavaValidation, KaavaVirheTyypit, ErrorService, FunktiokuvausService, FunktiokutsuKaareService, Syotettavanarvonkoodit, SyotettavanarvontyyppiService, $modal) {
             'use strict';
             //servicet laskentakaavapuun piirtämiseen
             $scope.templateService = TemplateService;
@@ -13,6 +13,8 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
             $scope.funktioFactory = FunktioFactory;
             $scope.valintaperusteviitetyypit = Valintaperusteviitetyypit;
             $scope.arvokonvertterikuvauskielet = Arvokonvertterikuvauskielet;
+
+            $scope.syotettavanarvonkoodit = [];
 
             $scope.model = {};
             $scope.openAll = false;
@@ -461,6 +463,39 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                 $scope.$broadcast('showLaskentakaavaAsetukset')
             };
 
+            // muuta syotetttavanarvontyyppi DTO:n vaatimaan muotoon
+            $scope.fixSyotettavanarvontyyppi = function (funktioargumentit, syotettavanarvonkoodit){
+                for(var i = 0;i < funktioargumentit.length;i++) {
+                    if (funktioargumentit[i].lapsi.valintaperusteviitteet !== undefined && funktioargumentit[i].lapsi.valintaperusteviitteet !== undefined) {
+                        for (var index = 0; index < syotettavanarvonkoodit.length; index++) {
+                            var koodi = syotettavanarvonkoodit[index];
+                            for (var j = 0;j < funktioargumentit[i].lapsi.valintaperusteviitteet.length; j++) {
+                                if (funktioargumentit[i].lapsi.valintaperusteviitteet[j].syotettavanarvontyyppi != undefined && koodi.koodiUri == funktioargumentit[i].lapsi.valintaperusteviitteet[j].syotettavanarvontyyppi) {
+                                    // map this to DTO
+                                    var sat = {
+                                        "uri": koodi.koodiUri,
+                                        "arvo": koodi.koodiArvo
+                                    };
+
+                                    koodi.metadata.forEach(function (metadata) {
+                                        if (metadata.kieli === "FI") {
+                                            sat.nimiFi = metadata.nimi;
+                                        } else if (metadata.kieli === "SV") {
+                                            sat.nimiSv = metadata.nimi;
+                                        } else if (metadata.kieli === "EN") {
+                                            sat.nimiEn = metadata.nimi;
+                                        }
+                                    });
+                                    funktioargumentit[i].lapsi.valintaperusteviitteet[j].syotettavanarvontyyppi = sat;
+                                }
+                            }
+                        }
+                    }
+                }
+                return funktioargumentit;
+            };
+
+
             $scope.persistNewKaava = function () {
                 var kaava = {
                     valintaryhmaOid: $routeParams.id,
@@ -505,8 +540,13 @@ angular.module('valintaperusteet').controller('LaskentakaavaController',
                     //poistetaan laskentakaavassa olevista painotettu keskiarvo -funktiokutsuista tyhjät objektit
                     $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.cleanLaskentakaavaPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
 
+                    var syotettavanarvonkoodit = SyotettavanarvontyyppiService.getSyotettavanarvontyypit();
+
+                    $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = $scope.fixSyotettavanarvontyyppi($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit, syotettavanarvonkoodit);
+
                     $scope.model.laskentakaavapuu.$save({oid: $scope.model.laskentakaavapuu.id}, function (result) {
                             $scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit = FunktioService.addPKObjects($scope.model.laskentakaavapuu.funktiokutsu.funktioargumentit);
+
                             $scope.saved = true;
 
                             if (urlEnd === 'laskentakaava/') {

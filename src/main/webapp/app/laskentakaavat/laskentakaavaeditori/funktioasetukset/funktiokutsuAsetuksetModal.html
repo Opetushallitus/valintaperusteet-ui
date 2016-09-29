@@ -155,8 +155,33 @@
                 </div>
 
             </div>
+<!-- Syötettävän arvon tyyppi -->
+            <div class="form-group" ng-if="valintaperuste.lahde === 'SYOTETTAVA_ARVO'">
 
-    <div class="col-md-10" ng-if="valintaperusteviite.tyyppi == 'ARVOJOUKKO'">
+                <label class="col-md-2 control-label">{{ t('laskentakaavaviiteasetuksetmodal.syotettavanArvonTyyppi') || 'Syötettävän arvon tyyppi' }}</label>
+
+                <div class="col-md-10">
+                    <select ng-disabled="!userAccess.updateOrg" name="syotettavanarvontyyppi" ng-model="valintaperuste.syotettavanarvontyyppi.uri" ng-options="item.koodiUri as item.koodiArvo for item in syotettavanarvontyyppit"></select>
+                </div>
+            </div>
+<!-- Tilastointi -->
+            <div class="form-group" ng-if="valintaperuste.lahde === 'SYOTETTAVA_ARVO'">
+
+                <label class="col-md-2 control-label">{{ t('laskentakaavaviiteasetuksetmodal.tilastoidaan') || 'Tilastoidaan' }}</label>
+
+                <div class="col-md-10">
+                    <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg"  type="radio" name="tilastoidaan" ng-value="true" ng-model="valintaperuste.tilastoidaan">
+                    {{ t('laskentakaavaviiteasetuksetmodal.tilastoidaan') || 'Tilastoidaan' }}
+                    </input>
+                    <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg"  type="radio" name="tilastoidaan" ng-value="false" ng-model="valintaperuste.tilastoidaan">
+                    {{ t('laskentakaavaviiteasetuksetmodal.eitilastoida') || 'Ei tilastoida' }}
+                    </input>
+                </div>
+
+            </div>
+
+
+            <div class="col-md-10" ng-if="valintaperusteviite.tyyppi == 'ARVOJOUKKO'">
         <select ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" ng-model="valintaperuste.tunniste"
                 ng-options="arvo.avain as arvo.arvo for arvo in valintaperusteviite.arvojoukko | orderBy:'arvo'"></select>
     </div>

@@ -32,7 +32,7 @@ angular.module('valintaperusteet')
 }])
 
 
-    .filter('valintakoekoodiFullMatchFilter', ['ValintaryhmaModel', function (ValintaryhmaModel) {
+.filter('valintakoekoodiFullMatchFilter', ['ValintaryhmaModel', function (ValintaryhmaModel) {
     return function (list) {
         var model = ValintaryhmaModel;
         var koodi;
@@ -52,6 +52,37 @@ angular.module('valintaperusteet')
                     filterableListKoodi = result[i];
                     for (var j = 0; j < model.valintaryhma.valintakoekoodit.length; j++) {
                         koodi = model.valintaryhma.valintakoekoodit[j];
+                        if (koodi.uri === filterableListKoodi.koodiUri) {
+                            result.splice(i, 1);
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    };
+}])
+
+.filter('hakijaryhmatyyppikoodiFullMatchFilter', ['HakijaryhmaModel', function (HakijaryhmaModel) {
+    return function (list) {
+        var model = HakijaryhmaModel;
+        var koodi;
+        var filterableListKoodi;
+
+        var result = [];
+
+        if (list) {
+
+
+            for (var i = 0; i < list.length; i++) {
+                result[i] = list[i];
+            }
+
+            if (model.hakijaryhma.hakijaryhmatyyppikoodit) {
+                for (var i = 0; i < result.length; i++) {
+                    filterableListKoodi = result[i];
+                    for (var j = 0; j < model.hakijaryhma.hakijaryhmatyyppikoodit.length; j++) {
+                        koodi = model.hakijaryhma.hakijaryhmatyyppikoodit[j];
                         if (koodi.uri === filterableListKoodi.koodiUri) {
                             result.splice(i, 1);
                         }

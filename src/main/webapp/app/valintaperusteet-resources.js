@@ -122,6 +122,17 @@ angular.module('valintaperusteet')
         });
     }])
 
+    .factory('KoodistoHakijaryhmatyyppikoodi', ['$resource', function ($resource) {
+        return $resource(KOODISTO_URL_BASE + "json/hakijaryhmantyypit/koodi", {}, {
+            get: {method: "GET", isArray: true, cache: true}
+        });
+    }])
+
+    .factory('KoodistoSyotettavanarvonkoodi', ['$resource', function ($resource) {
+        return $resource(KOODISTO_URL_BASE + "json/syotettavanarvontyypit/koodi", {}, {
+            get: {method: "GET", isArray: true, cache: true}
+        });
+    }])
 
     //Hakukohde
     .factory('RootHakukohde', ['$resource', function ($resource) {
@@ -325,6 +336,14 @@ angular.module('valintaperusteet')
         });
     }])
 
+    .factory('HakijaryhmaHakijaryhmatyyppikoodi', ['$resource', function ($resource) {
+        return $resource(SERVICE_URL_BASE + "resources/hakijaryhma/:hakijaryhmaOid/hakijaryhmatyyppikoodi", {hakijaryhmaOid: "@hakijaryhmaOid"}, {
+            insert: {method: "PUT"}, //one
+            post: {method: "POST", isArray: true} //array
+        });
+    }])
+
+
     .factory('ValintaryhmaHakijaryhma', ['$resource', function ($resource) {
         return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid/hakijaryhma", {oid: "@oid"}, {
             get: {method: "GET", isArray: true, cache: false},
@@ -482,4 +501,14 @@ angular.module('valintaperusteet')
 
     .factory('HakujenHakukaudet', ['$resource', function ($resource) {
         return $resource(KOODISTO_URL_BASE + "codeelement/codes/kausi/1");
+    }])
+
+    .factory('Hakijaryhmientyyppikoodit', ['$resource', function ($resource) {
+        return $resource(KOODISTO_URL_BASE + "codeelement/codes/hakijaryhmantyypit/1");
+    }])
+
+    .factory('Syotettavanarvonkoodit', ['$resource', function ($resource) {
+        return $resource(KOODISTO_URL_BASE + "codeelement/codes/syotettavanarvontyypit/1", {
+            get: {method: "GET", isArray: true, cache: false}
+        });
     }]);

@@ -28,6 +28,8 @@ angular.module('valintaperusteet')
             return deferred.promise;
         }
 
+
+
         this.getFunktiokuvaukset = function () {
             return api.funktiokuvaukset;
         };

@@ -3,11 +3,11 @@ angular.module('valintaperusteet')
     .controller('funktiokutsuAsetuksetController', ['$scope', '$log', '$q', '$routeParams', '$location', '$timeout', 'Laskentakaava',
         'FunktioNimiService', 'FunktioFactory', 'KaavaValidation', 'GuidGenerator', 'HakemusavaimetLisakysymykset', 'HakemusavaimetLomake',
         'ValintaryhmaModel', 'Treemodel', 'LaskentakaavaValintaryhma', '$cookieStore', '$window', 'UserModel', 'ErrorService', '_', 'FunktioService',
-        'LaskentakaavaModalService', 'FunktiokutsuKaareService', 'FunktiokuvausService', 'HakukohdeModel', 'HakemusavaimetLisakysymyksetAvaimet',
+        'LaskentakaavaModalService', 'FunktiokutsuKaareService', 'FunktiokuvausService', 'HakukohdeModel', 'HakemusavaimetLisakysymyksetAvaimet', 'KoodistoSyotettavanarvonkoodi',
         function ($scope, $log, $q, $routeParams, $location, $timeout, Laskentakaava,
                   FunktioNimiService, FunktioFactory, KaavaValidation, GuidGenerator, HakemusavaimetLisakysymykset, HakemusavaimetLomake,
                   ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore, $window, UserModel, ErrorService, _, FunktioService,
-                  LaskentakaavaModalService, FunktiokutsuKaareService, FunktiokuvausService, HakukohdeModel, HakemusavaimetLisakysymyksetAvaimet) {
+                  LaskentakaavaModalService, FunktiokutsuKaareService, FunktiokuvausService, HakukohdeModel, HakemusavaimetLisakysymyksetAvaimet, KoodistoSyotettavanarvonkoodi) {
 
             UserModel.refreshIfNeeded();
 
@@ -21,6 +21,20 @@ angular.module('valintaperusteet')
 
             $scope.lisakysymysAvaimet = [];
             $scope.bigdata = [];
+
+
+            KoodistoSyotettavanarvonkoodi.get(function(result) {
+                $scope.syotettavanarvontyyppit = result;
+            });
+
+            function getSyotettavanarvonkoodit() {
+                var deferred = $q.defer();
+                Syotettavanarvonkoodit.get(function (result) {
+                    this.syotettavanarvonkoodit = result;
+                    deferred.resolve();
+                });
+                return deferred.promise;
+            };
 
             if ($routeParams.id !== undefined) { //if laskentakaava belongs to a valintaryhma
                 $scope.valintaryhmaModel.refreshIfNeeded($routeParams.id);
