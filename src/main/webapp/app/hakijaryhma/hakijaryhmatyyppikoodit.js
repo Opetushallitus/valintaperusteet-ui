@@ -10,12 +10,8 @@ angular.module('valintaperusteet')
             });
         };
 
-        $scope.setHakijaryhmatyyppikoodiUri = function (newUri) {
-            $scope.newHakijaryhmatyyppikoodiUri = newUri;
-        };
-
-        $scope.addHakijaryhmatyyppikoodiUri = function (newHakijaryhmatyyppikoodiUri) {
-            $scope.model.addHakijaryhmatyyppikoodiUri(newHakijaryhmatyyppikoodiUri);
+        $scope.saveHakijaryhmatyyppikoodiUri = function (newHakijaryhmatyyppikoodiUri) {
+            $scope.model.setHakijaryhmatyyppikoodiUri(newHakijaryhmatyyppikoodiUri);
         };
 
         $scope.removeHakijaryhmatyyppikoodi = function (hakijaryhmatyyppikoodi) {

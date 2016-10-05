@@ -54,7 +54,7 @@ angular.module('valintaperusteet')
                 return deferred.promise;
             };
 
-            this.addHakijaryhmatyyppikoodiUri = function(hakijaryhmatyyppikoodiUri) {
+            this.setHakijaryhmatyyppikoodiUri = function(hakijaryhmatyyppikoodiUri) {
                 model.hakijaryhmatyyppikoodit.some(function (koodi) {
                     if(koodi.koodiUri === hakijaryhmatyyppikoodiUri) {
                         var hakijaryhmatyyppikoodi = {"uri": koodi.koodiUri,

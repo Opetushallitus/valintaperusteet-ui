@@ -5,7 +5,7 @@
         <div class="col-md-10">
             <a auth ng-disabled="!userAccess.updateOrg" ng-click="showHakijaryhmatyyppikoodit()" type="button"
                class="btn btn-sm btn-default">
-                <span><i class="fa fa-plus"></i> {{ t('hakijaryhmatyyppikoodit.uusi') || 'Uusi hakijaryhmatyyppikoodi' }}</span>
+                <span><i class="fa fa-exchange"></i> {{ t('hakijaryhmatyyppikoodit.vaihda') || 'Vaihda hakijaryhmatyyppikoodi' }}</span>
             </a>
             <modal modal-template="../common/partials/hakijaryhmatyyppikoodinValinta.html" auth="update">
                 <modal-open></modal-open>
@@ -15,7 +15,7 @@
         <div class="col-md-10 col-md-offset-2">
             <p ng-if="!model.hakijaryhma.hakijaryhmatyyppikoodi"
                  class="alert alert-info">
-                {{ t('hakijaryhmatyyppikoodit.virhe') || 'Tähän hakijaryhmään ei ole vielä liitetty yhtään hakijaryhmatyyppikoodia'
+                {{ t('hakijaryhmatyyppikoodit.virhe') || 'Tähän hakijaryhmään ei ole vielä liitetty hakijaryhmatyyppikoodia'
                 }}
             </p>
             <table ng-if="model.hakijaryhma.hakijaryhmatyyppikoodi"
