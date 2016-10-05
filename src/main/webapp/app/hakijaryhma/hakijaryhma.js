@@ -9,7 +9,7 @@ angular.module('valintaperusteet')
 
         var model = new function()  {
             this.hakijaryhma = {};
-            this.hakijaryhma.hakijaryhmatyyppikoodit = [];
+            this.hakijaryhma.hakijaryhmatyyppikoodi = {};
             this.hakijaryhmatyyppikoodit = [];
             this.valintatapajonot = [];
             this.onkoHakijaryhma = true;
@@ -21,7 +21,7 @@ angular.module('valintaperusteet')
                 model.hakijaryhma.kaytetaanRyhmaanKuuluvia = true;
                 model.valintatapajonot.length = 0;
                 model.hakijaryhmatyyppikoodit = [];
-                model.hakijaryhma.hakijaryhmatyyppikoodit = [];
+                model.hakijaryhma.hakijaryhmatyyppikoodi = {};
                 if (oid) {
                     if (hakukohdeOid || valintatapajonoOid) {
                         HakijaryhmaValintatapajono.get({oid: oid}, function (result) {
@@ -71,10 +71,7 @@ angular.module('valintaperusteet')
                         });
                         // THEN POST
                         HakijaryhmaHakijaryhmatyyppikoodi.insert({hakijaryhmaOid: model.hakijaryhma.oid}, hakijaryhmatyyppikoodi, function(result) {
-                            if (!model.hakijaryhma.hakijaryhmatyyppikoodit) {
-                                model.hakijaryhma.hakijaryhmatyyppikoodit = [];
-                            }
-                            model.hakijaryhma.hakijaryhmatyyppikoodit.push(result);
+                            model.hakijaryhma.hakijaryhmatyyppikoodi = result;
                         }, function(error){
                             alert(error.data);
                         });
@@ -83,18 +80,8 @@ angular.module('valintaperusteet')
                 });
             };
             this.removeHakijaryhmatyyppikoodi = function (hakijaryhmatyyppikoodi) {
-                var hakijaryhmatyyppikoodit, index;
-                hakijaryhmatyyppikoodit = model.hakijaryhma.hakijaryhmatyyppikoodit;
-                index = hakijaryhmatyyppikoodit.indexOf(hakijaryhmatyyppikoodi);
-
-                if (index !== -1) {
-                    hakijaryhmatyyppikoodit.splice(index, 1);
-                }
-
-                HakijaryhmaHakijaryhmatyyppikoodi.post({hakijaryhmaOid: model.hakijaryhma.oid}, hakijaryhmatyyppikoodit, function (result) {
-                    if (model.hakijaryhma.hakijaryhmatyyppikoodit.length === 0) {
-                        model.hakijaryhma.hakijaryhmatyyppikoodit = undefined;
-                    }
+                HakijaryhmaHakijaryhmatyyppikoodi.post({hakijaryhmaOid: model.hakijaryhma.oid}, null, function (result) {
+                    model.hakijaryhma.hakijaryhmatyyppikoodit = undefined;
                 });
             };
 

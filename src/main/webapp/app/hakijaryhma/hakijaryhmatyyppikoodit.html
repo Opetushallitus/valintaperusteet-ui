@@ -18,12 +18,12 @@
         </div>
 
         <div class="col-md-10 col-md-offset-2">
-            <div ng-if="toggleHakijaryhmatyyppikoodit && !model.hakijaryhma.hakijaryhmatyyppikoodit"
+            <div ng-if="toggleHakijaryhmatyyppikoodit && !model.hakijaryhma.hakijaryhmatyyppikoodi"
                  class="alert alert-info">
                 {{ t('hakijaryhmatyyppikoodit.virhe') || 'Tähän hakijaryhmään ei ole vielä liitetty yhtään hakijaryhmatyyppikoodia'
                 }}
             </div>
-            <table ng-if="toggleHakijaryhmatyyppikoodit && model.hakijaryhma.hakijaryhmatyyppikoodit"
+            <table ng-if="toggleHakijaryhmatyyppikoodit && model.hakijaryhma.hakijaryhmatyyppikoodi"
                    class="virkailija-table-1">
                 <thead>
                 <tr>
@@ -34,12 +34,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="hakijaryhmatyyppikoodi in model.hakijaryhma.hakijaryhmatyyppikoodit">
-                    <td>{{hakijaryhmatyyppikoodi.uri}}</td>
-                    <td>{{hakijaryhmatyyppikoodi.arvo}}</td>
-                    <td>{{hakijaryhmatyyppikoodi.nimiFi}}</td>
+                <tr>
+                    <td>{{model.hakijaryhma.hakijaryhmatyyppikoodi.uri}}</td>
+                    <td>{{model.hakijaryhma.hakijaryhmatyyppikoodi.arvo}}</td>
+                    <td>{{model.hakijaryhma.hakijaryhmatyyppikoodi.nimiFi}}</td>
                     <td>
-                        <button class="btn btn-sm btn-default" auth ng-disabled="!userAccess.updateOrg" ng-click="removeHakijaryhmatyyppikoodi(hakijaryhmatyyppikoodi)">
+                        <button class="btn btn-sm btn-default" auth ng-disabled="!userAccess.updateOrg" ng-click="removeHakijaryhmatyyppikoodi(model.hakijaryhma.hakijaryhmatyyppikoodi)">
                             <i class="fa fa-trash-o"></i>
                         </button>
                     </td>
