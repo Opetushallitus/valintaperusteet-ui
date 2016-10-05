@@ -338,8 +338,8 @@ angular.module('valintaperusteet')
 
     .factory('HakijaryhmaHakijaryhmatyyppikoodi', ['$resource', function ($resource) {
         return $resource(SERVICE_URL_BASE + "resources/hakijaryhma/:hakijaryhmaOid/hakijaryhmatyyppikoodi", {hakijaryhmaOid: "@hakijaryhmaOid"}, {
-            insert: {method: "PUT"}, //one
-            post: {method: "POST"} // one
+            update: {method: "POST"},
+            delete: {method: "DELETE"}
         });
     }])
 

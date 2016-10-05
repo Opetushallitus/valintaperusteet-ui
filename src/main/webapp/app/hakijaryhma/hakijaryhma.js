@@ -70,7 +70,7 @@ angular.module('valintaperusteet')
                             }
                         });
                         // THEN POST
-                        HakijaryhmaHakijaryhmatyyppikoodi.insert({hakijaryhmaOid: model.hakijaryhma.oid}, hakijaryhmatyyppikoodi, function(result) {
+                        HakijaryhmaHakijaryhmatyyppikoodi.update({hakijaryhmaOid: model.hakijaryhma.oid}, hakijaryhmatyyppikoodi, function(result) {
                             model.hakijaryhma.hakijaryhmatyyppikoodi = result;
                         }, function(error){
                             alert(error.data);
@@ -80,7 +80,7 @@ angular.module('valintaperusteet')
                 });
             };
             this.removeHakijaryhmatyyppikoodi = function (hakijaryhmatyyppikoodi) {
-                HakijaryhmaHakijaryhmatyyppikoodi.post({hakijaryhmaOid: model.hakijaryhma.oid}, null, function (result) {
+                HakijaryhmaHakijaryhmatyyppikoodi.delete({hakijaryhmaOid: model.hakijaryhma.oid}, function (result) {
                     model.hakijaryhma.hakijaryhmatyyppikoodit = undefined;
                 });
             };
