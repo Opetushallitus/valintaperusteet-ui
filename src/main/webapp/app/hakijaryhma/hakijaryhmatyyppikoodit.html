@@ -3,11 +3,6 @@
         <label class="control-label col-md-2">{{ t('hakijaryhmatyyppikoodit.header') || 'Hakijaryhmatyyppikoodit' }}</label>
 
         <div class="col-md-10">
-            <a ng-click="toggleTyyppikoodit()" class="btn btn-sm btn-default">
-                <i ng-if="toggleHakijaryhmatyyppikoodit" class="fa fa-eye-slash"></i>
-                <i ng-if="!toggleHakijaryhmatyyppikoodit" class="fa fa-eye"></i> {{ t('hakijaryhmatyyppikoodit.header') ||
-                'Hakijaryhmatyyppikoodit' }}
-            </a>
             <a auth ng-disabled="!userAccess.updateOrg" ng-click="showHakijaryhmatyyppikoodit()" type="button"
                class="btn btn-sm btn-default">
                 <span><i class="fa fa-plus"></i> {{ t('hakijaryhmatyyppikoodit.uusi') || 'Uusi hakijaryhmatyyppikoodi' }}</span>
@@ -18,12 +13,12 @@
         </div>
 
         <div class="col-md-10 col-md-offset-2">
-            <div ng-if="toggleHakijaryhmatyyppikoodit && !model.hakijaryhma.hakijaryhmatyyppikoodi"
+            <p ng-if="!model.hakijaryhma.hakijaryhmatyyppikoodi"
                  class="alert alert-info">
                 {{ t('hakijaryhmatyyppikoodit.virhe') || 'Tähän hakijaryhmään ei ole vielä liitetty yhtään hakijaryhmatyyppikoodia'
                 }}
-            </div>
-            <table ng-if="toggleHakijaryhmatyyppikoodit && model.hakijaryhma.hakijaryhmatyyppikoodi"
+            </p>
+            <table ng-if="model.hakijaryhma.hakijaryhmatyyppikoodi"
                    class="virkailija-table-1">
                 <thead>
                 <tr>

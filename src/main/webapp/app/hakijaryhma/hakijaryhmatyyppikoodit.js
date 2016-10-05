@@ -3,15 +3,8 @@ angular.module('valintaperusteet')
     .controller('HakijaryhmatyyppikooditController', ['$scope', function($scope) {
         "use strict";
 
-        $scope.toggleHakijaryhmatyyppikoodit = false;
-
-        $scope.toggleTyyppikoodit = function () {
-            $scope.toggleHakijaryhmatyyppikoodit = !$scope.toggleHakijaryhmatyyppikoodit;
-        };
-
         $scope.showHakijaryhmatyyppikoodit = function () {
             var promise = $scope.model.getHakijaryhmatyyppikoodit();
-            $scope.toggleHakijaryhmatyyppikoodit = true;
             promise.finally(function () {
                 $scope.show();
             });
