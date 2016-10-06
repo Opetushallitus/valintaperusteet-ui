@@ -104,16 +104,7 @@ angular.module('valintaperusteet')
                 var deferred = $q.defer();
 
                 if (model.hakijaryhma.oid) {
-                    if (hakukohdeOid || valintatapajonoOid) {
-                        HakijaryhmaValintatapajono.update({oid: model.hakijaryhma.oid}, model.hakijaryhma, function (result) {
-                            model.hakijaryhma = result;
-                            Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
-                            deferred.resolve();
-                        }, function (err) {
-                            Ilmoitus.avaa("Tallennus epäonnistui", "Hakijaryhmän tallentaminen hakukohteelle tai valintatapajonolle epäonnistui", IlmoitusTila.ERROR);
-                            deferred.reject('Hakijaryhmän tallentaminen hakukohteelle tai valintatapajonolle epäonnistui', err);
-                        });
-                    } else {
+                    if (model.onkoHakijaryhma) {
                         Hakijaryhma.update({oid: model.hakijaryhma.oid}, model.hakijaryhma, function (result) {
                             model.hakijaryhma = result;
                             Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
@@ -122,9 +113,17 @@ angular.module('valintaperusteet')
                             Ilmoitus.avaa("Tallennus epäonnistui", "Hakijaryhmän tallentaminen valintaryhmään epäonnistui", IlmoitusTila.ERROR);
                             deferred.reject('Hakijaryhmän tallentaminen valintaryhmään epäonnistui', err);
                         });
+                    } else {
+                        HakijaryhmaValintatapajono.update({oid: model.hakijaryhma.oid}, model.hakijaryhma, function (result) {
+                            model.hakijaryhma = result;
+                            Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
+                            deferred.resolve();
+                        }, function (err) {
+                            Ilmoitus.avaa("Tallennus epäonnistui", "Hakijaryhmän tallentaminen hakukohteelle tai valintatapajonolle epäonnistui", IlmoitusTila.ERROR);
+                            deferred.reject('Hakijaryhmän tallentaminen hakukohteelle tai valintatapajonolle epäonnistui', err);
+                        });
                     }
                 } else if (hakukohdeOid && valintatapajonoOid) {
-                    console.log('sadsad');
                     ValintatapajonoHakijaryhma.insert({oid: valintatapajonoOid}, model.hakijaryhma, function (result) {
                         model.hakijaryhma = result;
                         Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
