@@ -343,6 +343,12 @@ angular.module('valintaperusteet')
         });
     }])
 
+    .factory('HakijaryhmaValintatapajonoHakijaryhmatyyppikoodi', ['$resource', function ($resource) {
+        return $resource(SERVICE_URL_BASE + "resources/hakijaryhma_valintatapajono/:hakijaryhmaOid/hakijaryhmatyyppikoodi", {hakijaryhmaOid: "@hakijaryhmaOid"}, {
+            update: {method: "POST"},
+            delete: {method: "DELETE"}
+        });
+    }])
 
     .factory('ValintaryhmaHakijaryhma', ['$resource', function ($resource) {
         return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid/hakijaryhma", {oid: "@oid"}, {

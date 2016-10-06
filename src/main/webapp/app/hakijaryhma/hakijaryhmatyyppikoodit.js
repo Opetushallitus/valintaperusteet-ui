@@ -14,8 +14,8 @@ angular.module('valintaperusteet')
             $scope.model.setHakijaryhmatyyppikoodiUri(newHakijaryhmatyyppikoodiUri);
         };
 
-        $scope.removeHakijaryhmatyyppikoodi = function (hakijaryhmatyyppikoodi) {
-            $scope.model.removeHakijaryhmatyyppikoodi(hakijaryhmatyyppikoodi);
+        $scope.removeHakijaryhmatyyppikoodi = function () {
+            $scope.model.removeHakijaryhmatyyppikoodi();
         };
 
     }]);

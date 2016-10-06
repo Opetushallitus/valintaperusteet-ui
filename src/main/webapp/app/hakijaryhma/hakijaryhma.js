@@ -4,7 +4,7 @@ angular.module('valintaperusteet')
     .factory('HakijaryhmaModel', function ($q, Hakijaryhma, LaskentakaavaModel, ValintaryhmaHakijaryhma,
                                            HakukohdeHakijaryhma, HakijaryhmanValintatapajonot, ValintatapajonoHakijaryhma,
                                            HakijaryhmaValintatapajono, Ilmoitus, IlmoitusTila, KoodistoHakijaryhmatyyppikoodi,
-                                           HakijaryhmaHakijaryhmatyyppikoodi) {
+                                           HakijaryhmaHakijaryhmatyyppikoodi, HakijaryhmaValintatapajonoHakijaryhmatyyppikoodi) {
         "use strict";
 
         var model = new function()  {
@@ -70,22 +70,35 @@ angular.module('valintaperusteet')
                             }
                         });
                         // THEN POST
-                        HakijaryhmaHakijaryhmatyyppikoodi.update({hakijaryhmaOid: model.hakijaryhma.oid}, hakijaryhmatyyppikoodi, function(result) {
-                            model.hakijaryhma.hakijaryhmatyyppikoodi = result;
-                        }, function(error){
-                            alert(error.data);
-                        });
+                        if (model.onkoHakijaryhma) {
+                            HakijaryhmaHakijaryhmatyyppikoodi.update({hakijaryhmaOid: model.hakijaryhma.oid}, hakijaryhmatyyppikoodi, function(result) {
+                                model.hakijaryhma.hakijaryhmatyyppikoodi = result;
+                            }, function(error){
+                                alert(error.data);
+                            });
+                        } else {
+                            HakijaryhmaValintatapajonoHakijaryhmatyyppikoodi.update({hakijaryhmaOid: model.hakijaryhma.oid}, hakijaryhmatyyppikoodi, function(result) {
+                                model.hakijaryhma.hakijaryhmatyyppikoodi = result;
+                            }, function(error){
+                                alert(error.data);
+                            });
+                        }
                         return true;
                     }
                 });
             };
-            this.removeHakijaryhmatyyppikoodi = function (hakijaryhmatyyppikoodi) {
-                HakijaryhmaHakijaryhmatyyppikoodi.delete({hakijaryhmaOid: model.hakijaryhma.oid}, function (result) {
-                    model.hakijaryhma.hakijaryhmatyyppikoodit = undefined;
-                });
+
+            this.removeHakijaryhmatyyppikoodi = function () {
+                if (model.onkoHakijaryhma) {
+                    HakijaryhmaHakijaryhmatyyppikoodi.delete({hakijaryhmaOid: model.hakijaryhma.oid}, function (result) {
+                        model.hakijaryhma.hakijaryhmatyyppikoodit = undefined;
+                    });
+                } else {
+                    HakijaryhmaValintatapajonoHakijaryhmatyyppikoodi.delete({hakijaryhmaOid: model.hakijaryhma.oid}, function (result) {
+                        model.hakijaryhma.hakijaryhmatyyppikoodit = undefined;
+                    });
+                }
             };
-
-
 
             this.submit = function (valintaryhmaOid, hakukohdeOid, valintatapajonoOid) {
                 var deferred = $q.defer();
