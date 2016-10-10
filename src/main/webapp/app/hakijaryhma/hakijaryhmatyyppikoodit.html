@@ -1,48 +1,9 @@
-<div ng-controller="HakijaryhmatyyppikooditController">
-    <div class="form-group">
-        <label class="control-label col-md-2">{{ t('hakijaryhmatyyppikoodit.header') || 'Hakijaryhmatyyppikoodit' }}</label>
+<div class="form-group">
+    <label class="col-md-2 control-label">{{ t('hakijaryhmatyyppikoodi.label') || 'Hakijaryhmatyyppikoodi' }}</label>
 
-        <div class="col-md-10">
-            <a auth ng-disabled="!userAccess.updateOrg" ng-click="showHakijaryhmatyyppikoodit()" type="button"
-               class="btn btn-sm btn-default">
-                <span><i class="fa fa-exchange"></i> {{ t('hakijaryhmatyyppikoodit.vaihda') || 'Vaihda hakijaryhmatyyppikoodi' }}</span>
-            </a>
-            <modal modal-template="../common/partials/hakijaryhmatyyppikoodinValinta.html" auth="update">
-                <modal-open></modal-open>
-            </modal>
-        </div>
-
-        <div class="col-md-10 col-md-offset-2">
-            <p ng-if="!model.hakijaryhma.hakijaryhmatyyppikoodi"
-                 class="alert alert-info">
-                {{ t('hakijaryhmatyyppikoodit.virhe') || 'Tähän hakijaryhmään ei ole vielä liitetty hakijaryhmatyyppikoodia'
-                }}
-            </p>
-            <table ng-if="model.hakijaryhma.hakijaryhmatyyppikoodi"
-                   class="virkailija-table-1">
-                <thead>
-                <tr>
-                    <th>{{ t('hakijaryhmatyyppikoodit.koodi') || 'Koodi' }}</th>
-                    <th>{{ t('hakijaryhmatyyppikoodit.arvo') || 'Arvo' }}</th>
-                    <th>{{ t('hakijaryhmatyyppikoodit.nimi') || 'Nimi' }}</th>
-                    <th>{{ t('hakijaryhmatyyppikoodit.poista') || 'Poista' }}</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>{{model.hakijaryhma.hakijaryhmatyyppikoodi.uri}}</td>
-                    <td>{{model.hakijaryhma.hakijaryhmatyyppikoodi.arvo}}</td>
-                    <td>{{model.hakijaryhma.hakijaryhmatyyppikoodi.nimiFi}}</td>
-                    <td>
-                        <button class="btn btn-sm btn-default" auth ng-disabled="!userAccess.updateOrg" ng-click="removeHakijaryhmatyyppikoodi()">
-                            <i class="fa fa-trash-o"></i>
-                        </button>
-                    </td>
-                </tr>
-
-                </tbody>
-
-            </table>
-        </div>
+    <div class="col-md-10">
+        <span class="radio-inline" ng-repeat="tyyppi in model.hakijaryhmatyyppikoodit">
+            <input ng-disabled="!userAccess.updateOrg" type="radio" name="hakijaryhmatyyppikoodi" required ng-change="$parent.model.setHakijaryhmatyyppikoodiUri(tyyppi.koodiUri)" ng-model="model.hakijaryhma.hakijaryhmatyyppikoodi.uri" ng-value="tyyppi.koodiUri" />{{tyyppi.metadata[0].nimi}}
+        </span>
     </div>
 </div>

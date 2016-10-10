@@ -336,20 +336,6 @@ angular.module('valintaperusteet')
         });
     }])
 
-    .factory('HakijaryhmaHakijaryhmatyyppikoodi', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/hakijaryhma/:hakijaryhmaOid/hakijaryhmatyyppikoodi", {hakijaryhmaOid: "@hakijaryhmaOid"}, {
-            update: {method: "POST"},
-            delete: {method: "DELETE"}
-        });
-    }])
-
-    .factory('HakijaryhmaValintatapajonoHakijaryhmatyyppikoodi', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/hakijaryhma_valintatapajono/:hakijaryhmaOid/hakijaryhmatyyppikoodi", {hakijaryhmaOid: "@hakijaryhmaOid"}, {
-            update: {method: "POST"},
-            delete: {method: "DELETE"}
-        });
-    }])
-
     .factory('ValintaryhmaHakijaryhma', ['$resource', function ($resource) {
         return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid/hakijaryhma", {oid: "@oid"}, {
             get: {method: "GET", isArray: true, cache: false},

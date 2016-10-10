@@ -3,8 +3,7 @@ angular.module('valintaperusteet')
 
     .factory('HakijaryhmaModel', function ($q, Hakijaryhma, LaskentakaavaModel, ValintaryhmaHakijaryhma,
                                            HakukohdeHakijaryhma, HakijaryhmanValintatapajonot, ValintatapajonoHakijaryhma,
-                                           HakijaryhmaValintatapajono, Ilmoitus, IlmoitusTila, KoodistoHakijaryhmatyyppikoodi,
-                                           HakijaryhmaHakijaryhmatyyppikoodi, HakijaryhmaValintatapajonoHakijaryhmatyyppikoodi) {
+                                           HakijaryhmaValintatapajono, Ilmoitus, IlmoitusTila, KoodistoHakijaryhmatyyppikoodi) {
         "use strict";
 
         var model = new function()  {
@@ -14,6 +13,28 @@ angular.module('valintaperusteet')
             this.valintatapajonot = [];
             this.onkoHakijaryhma = true;
 
+            this.setHakijaryhmatyyppikoodiUri = function(hakijaryhmatyyppikoodiUri) {
+                model.hakijaryhmatyyppikoodit.some(function (koodi) {
+                    if(koodi.koodiUri === hakijaryhmatyyppikoodiUri) {
+                        var hakijaryhmatyyppikoodi = {"uri": koodi.koodiUri,
+                            "arvo":koodi.koodiArvo};
+
+                        koodi.metadata.forEach(function(metadata){
+                            if(metadata.kieli === "FI") {
+                                hakijaryhmatyyppikoodi.nimiFi = metadata.nimi;
+                            } else if(metadata.kieli === "SV") {
+                                hakijaryhmatyyppikoodi.nimiSv = metadata.nimi;
+                            } else if(metadata.kieli === "EN") {
+                                hakijaryhmatyyppikoodi.nimiEn = metadata.nimi;
+                            }
+                        });
+                        model.hakijaryhma.hakijaryhmatyyppikoodi =  hakijaryhmatyyppikoodi;
+                        return true;
+                    }
+                });
+                return false;
+            };
+
             this.refresh = function (oid, valintaryhmaOid, hakukohdeOid, valintatapajonoOid) {
                 model.hakijaryhma = {};
                 model.hakijaryhma.kaytaKaikki = false;
@@ -21,7 +42,6 @@ angular.module('valintaperusteet')
                 model.hakijaryhma.kaytetaanRyhmaanKuuluvia = true;
                 model.valintatapajonot.length = 0;
                 model.hakijaryhmatyyppikoodit = [];
-                model.hakijaryhma.hakijaryhmatyyppikoodi = {};
                 if (oid) {
                     if (hakukohdeOid || valintatapajonoOid) {
                         HakijaryhmaValintatapajono.get({oid: oid}, function (result) {
@@ -41,68 +61,16 @@ angular.module('valintaperusteet')
 
                 KoodistoHakijaryhmatyyppikoodi.get(function(result) {
                     model.hakijaryhmatyyppikoodit = result;
-                });
-
-            };
-
-            this.getHakijaryhmatyyppikoodit = function () {
-                var deferred = $q.defer();
-                KoodistoHakijaryhmatyyppikoodi.get(function (result) {
-                    model.hakijaryhmatyyppikoodit = result;
-                    deferred.resolve();
-                });
-                return deferred.promise;
-            };
-
-            this.setHakijaryhmatyyppikoodiUri = function(hakijaryhmatyyppikoodiUri) {
-                model.hakijaryhmatyyppikoodit.some(function (koodi) {
-                    if(koodi.koodiUri === hakijaryhmatyyppikoodiUri) {
-                        var hakijaryhmatyyppikoodi = {"uri": koodi.koodiUri,
-                            "arvo":koodi.koodiArvo};
-
-                        koodi.metadata.forEach(function(metadata){
-                            if(metadata.kieli === "FI") {
-                                hakijaryhmatyyppikoodi.nimiFi = metadata.nimi;
-                            } else if(metadata.kieli === "SV") {
-                                hakijaryhmatyyppikoodi.nimiSv = metadata.nimi;
-                            } else if(metadata.kieli === "EN") {
-                                hakijaryhmatyyppikoodi.nimiEn = metadata.nimi;
-                            }
-                        });
-                        // THEN POST
-                        if (model.onkoHakijaryhma) {
-                            HakijaryhmaHakijaryhmatyyppikoodi.update({hakijaryhmaOid: model.hakijaryhma.oid}, hakijaryhmatyyppikoodi, function(result) {
-                                model.hakijaryhma.hakijaryhmatyyppikoodi = result;
-                            }, function(error){
-                                alert(error.data);
-                            });
-                        } else {
-                            HakijaryhmaValintatapajonoHakijaryhmatyyppikoodi.update({hakijaryhmaOid: model.hakijaryhma.oid}, hakijaryhmatyyppikoodi, function(result) {
-                                model.hakijaryhma.hakijaryhmatyyppikoodi = result;
-                            }, function(error){
-                                alert(error.data);
-                            });
-                        }
-                        return true;
+                    if(!model.hakijaryhma.hakijaryhmatyyppikoodi) {
+                        model.hakijaryhma.hakijaryhmatyyppikoodi = {'uri': 'hakijaryhmantyypit_muu'};
                     }
+                    model.setHakijaryhmatyyppikoodiUri(model.hakijaryhma.hakijaryhmatyyppikoodi.uri);
                 });
-            };
 
-            this.removeHakijaryhmatyyppikoodi = function () {
-                if (model.onkoHakijaryhma) {
-                    HakijaryhmaHakijaryhmatyyppikoodi.delete({hakijaryhmaOid: model.hakijaryhma.oid}, function (result) {
-                        model.hakijaryhma.hakijaryhmatyyppikoodit = undefined;
-                    });
-                } else {
-                    HakijaryhmaValintatapajonoHakijaryhmatyyppikoodi.delete({hakijaryhmaOid: model.hakijaryhma.oid}, function (result) {
-                        model.hakijaryhma.hakijaryhmatyyppikoodit = undefined;
-                    });
-                }
             };
 
             this.submit = function (valintaryhmaOid, hakukohdeOid, valintatapajonoOid) {
                 var deferred = $q.defer();
-
                 if (model.hakijaryhma.oid) {
                     if (model.onkoHakijaryhma) {
                         Hakijaryhma.update({oid: model.hakijaryhma.oid}, model.hakijaryhma, function (result) {
