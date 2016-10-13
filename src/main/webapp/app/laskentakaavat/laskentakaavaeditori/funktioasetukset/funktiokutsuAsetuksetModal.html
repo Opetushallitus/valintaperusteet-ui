@@ -156,7 +156,7 @@
 
             </div>
 <!-- Syötettävän arvon tyyppi -->
-            <div class="form-group" ng-if="valintaperuste.lahde === 'SYOTETTAVA_ARVO'">
+            <div class="form-group" ng-if="valintaperuste.lahde === 'SYOTETTAVA_ARVO' || valintaperuste.lahde === 'HAKUKOHTEEN_SYOTETTAVA_ARVO'">
 
                 <label class="col-md-2 control-label">{{ t('laskentakaavaviiteasetuksetmodal.syotettavanArvonTyyppi') || 'Syötettävän arvon tyyppi' }}</label>
 
@@ -165,7 +165,7 @@
                 </div>
             </div>
 <!-- Tilastointi -->
-            <div class="form-group" ng-if="valintaperuste.lahde === 'SYOTETTAVA_ARVO'">
+            <div class="form-group" ng-if="valintaperuste.lahde === 'SYOTETTAVA_ARVO' ||valintaperuste.lahde === 'HAKUKOHTEEN_SYOTETTAVA_ARVO'">
 
                 <label class="col-md-2 control-label">{{ t('laskentakaavaviiteasetuksetmodal.tilastoidaan') || 'Tilastoidaan' }}</label>
 
