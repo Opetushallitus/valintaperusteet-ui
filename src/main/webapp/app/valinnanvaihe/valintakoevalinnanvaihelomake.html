@@ -56,7 +56,7 @@
                         <td><a ng-click="modifyvalintakoe(valintakoe.oid)">{{valintakoe.nimi}}</a></td>
                         <td>{{valintakoe.kuvaus}}</td>
                         <td>
-                            <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-default btn-sm"
+                            <button auth ng-disabled="!userAccess.updateOrg || valintakoe.peritty" class="btn btn-default btn-sm"
                                     ng-click="model.removeValintakoe(valintakoe)">
                                 <i class="fa fa-trash-o organisaatio"></i>
                             </button>
