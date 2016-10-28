@@ -1,24 +1,25 @@
+var plainUrl = window.urls().noEncode().url;
+
 angular.module('valintaperusteet')
-
-
 
 
     // HAKU-APP
     .factory('HakemusAvaimet', ['$resource', function ($resource) {
-        return $resource(HAKEMUS_URL_BASE + "application-system-form-editor/application-system-form/:asId", {asId: "@asId"}, {
-            get: {method: "GET", isArray: false, cache: true}
+        return $resource(plainUrl("haku-app.application-system-form-editor.application-system-form", ":asId"),
+            {asId: "@asId"},
+            {get: {method: "GET", isArray: false, cache: true}
         });
     }])
 
     .factory('HakemusLisakysymykset', ['$resource', function ($resource) {
-        return $resource(HAKEMUS_URL_BASE + "application-system-form-editor/theme-question/list/:asId", {asId: "@asId"}, {
+        return $resource(plainUrl("haku-app.application-system-form-editor.theme-question.list", ":asId"), {asId: "@asId"}, {
             get: {method: "GET", isArray: false, cache: true}
         });
     }])
 
     //Valintaryhma
     .factory('ValintaperusteetPuu', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/puu", {
+        return $resource(window.url("valintaperusteet-service.puu"), {
             q: "@q",
             hakuOid: "@hakuOid",
             tila: "@tila",
@@ -30,7 +31,7 @@ angular.module('valintaperusteet')
 
 
     .factory('RootValintaryhmas', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valintaryhma", {}, {
+        return $resource(window.url("valintaperusteet-service.valintaryhma"), {}, {
             get: {
                 method: "GET", isArray: true, cache: false,
                 params: {
@@ -41,21 +42,24 @@ angular.module('valintaperusteet')
     }])
 
     .factory('ChildValintaryhmas', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:parentOid/lapsi", {parentOid: "@parentOid"}, {
-            get: {method: "GET", isArray: true, cache: false},
-            insert: {method: "PUT", cache: false}
-        });
+        return $resource(plainUrl("valintaperusteet-service.valintaryhma.lapsi", ":parentOid"),
+            {parentOid: "@parentOid"},
+            {
+                get: {method: "GET", isArray: true, cache: false},
+                insert: {method: "PUT", cache: false}
+            }
+        );
     }])
 
     .factory('ChildHakukohdes', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid/hakukohde", {}, {
+        return $resource(plainUrl("valintaperusteet-service.valintaryhma.hakukohde", ":oid"), {}, {
             get: {method: "GET", isArray: true, cache: false}
         });
     }])
 
     //Sama kuin Hakukohderyhma mutta odottaa yksittaista tulosta!
     .factory('Valintaryhma', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid", {oid: "@oid"}, {
+        return $resource(plainUrl("valintaperusteet-service.valintaryhma.oid", ":oid"), {oid: "@oid"}, {
             get: {method: "GET", cache: false},
             post: {method: "POST"},
             insert: {method: "PUT"},
@@ -65,129 +69,137 @@ angular.module('valintaperusteet')
     }])
 
     .factory('ValintaryhmaKopiointi', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:parentOid/kopioiLapseksi", {parentOid: "@parentOid", lahdeOid: "@kopioitavaOid", nimi: "@nimi"},
-            {
-            put: {method: "PUT"}
-        });
+        return $resource(plainUrl("valintaperusteet-service.valintaryhma.kopioilapseksi", ":parentOid"),
+            {parentOid: "@parentOid", lahdeOid: "@kopioitavaOid", nimi: "@nimi"},
+            {put: {method: "PUT"}}
+        );
     }])
 
     .factory('ParentValintaryhmas', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:parentOid/parents", {parentOid: "@parentOid"}, {
+        return $resource(plainUrl("valintaperusteet-service.valintaryhma.parents", ":parentOid"), {parentOid: "@parentOid"}, {
             get: {method: "GET", isArray: true, cache: false}
         });
     }])
 
     .factory('ValintaryhmaValinnanvaihe', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid/valinnanvaihe", {oid: "@oid"}, {
-            get: {method: "GET", isArray: true, cache: false}
-        });
+        return $resource(plainUrl("valintaperusteet-service.valintaryhma.valinnanvaihe", ":oid"),
+            {oid: "@oid"},
+            {get: {method: "GET", isArray: true, cache: false}}
+        );
     }])
 
     .factory('NewValintaryhmaValinnanvaihe', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:valintaryhmaOid/valinnanvaihe", {valintaryhmaOid: "@valintaryhmaOid"}, {
-            put: {method: "PUT", cache: false}
-        });
+        return $resource(plainUrl("valintaperusteet-service.valintaryhma.valinnanvaihe", ":valintaryhmaOid"),
+            {valintaryhmaOid: "@valintaryhmaOid"},
+            {put: {method: "PUT", cache: false}}
+        );
     }])
 
     .factory('ValintaryhmaHakukohdekoodi', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:valintaryhmaOid/hakukohdekoodi", {valintaryhmaOid: "@valintaryhmaOid"}, {
-            insert: {method: "PUT"}, //one
-            post: {method: "POST", isArray: true} //array
-        });
+        return $resource(plainUrl("valintaperusteet-service.valintaryhma.hakukohdekoodi", ":valintaryhmaOid"),
+            {valintaryhmaOid: "@valintaryhmaOid"},
+            {
+                insert: {method: "PUT"},
+                post: {method: "POST", isArray: true}
+            });
     }])
 
     .factory('ValintaryhmaValintakoekoodi', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:valintaryhmaOid/valintakoekoodi", {valintaryhmaOid: "@valintaryhmaOid"}, {
-            insert: {method: "PUT"}, //one
-            post: {method: "POST", isArray: true} //array
-        });
+        return $resource(plainUrl("valintaperusteet-service.valintaryhma.valintakoekoodi", ":valintaryhmaOid"),
+            {valintaryhmaOid: "@valintaryhmaOid"},
+            {
+                insert: {method: "PUT"},
+                post: {method: "POST", isArray: true}
+            });
     }])
 
     .factory('KoodistoHakukohdekoodi', ['$resource', function ($resource) {
-        return $resource(KOODISTO_URL_BASE + "json/hakukohteet/koodi", {}, {
+        return $resource(window.url("koodisto-service.hakukohteet.koodi"), {}, {
             get: {method: "GET", isArray: true, cache: true}
         });
     }])
 
     .factory('KoodistoValintakoekoodi', ['$resource', function ($resource) {
-        return $resource(KOODISTO_URL_BASE + "json/valintakokeentyyppi/koodi", {}, {
+        return $resource(window.url("koodisto-service.valintakokeentyyppi.koodi"), {}, {
             get: {method: "get", isArray: true, cache: true}
         });
     }])
 
     .factory('KoodistoHaunKohdejoukko', ['$resource', function ($resource) {
-        return $resource(KOODISTO_URL_BASE + "json/haunkohdejoukko/koodi", {}, {
-            //return $resource(KOODISTO_URL_BASE + "codeelement/codes/haunkohdejoukko/0", {}, {
+        return $resource(window.url("koodisto-service.haunkohdejoukko.koodi"), {}, {
             get: {method: "get", isArray: true, cache: true}
         });
     }])
 
     .factory('KoodistoHakijaryhmatyyppikoodi', ['$resource', function ($resource) {
-        return $resource(KOODISTO_URL_BASE + "json/hakijaryhmantyypit/koodi", {}, {
+        return $resource(window.url("koodisto-service.hakijaryhmantyypit.koodi"), {}, {
             get: {method: "GET", isArray: true, cache: true}
         });
     }])
 
     .factory('KoodistoSyotettavanarvonkoodi', ['$resource', function ($resource) {
-        return $resource(KOODISTO_URL_BASE + "json/syotettavanarvontyypit/koodi", {}, {
+        return $resource(window.url("koodisto-service.syotettavanarvontyypit.koodi"), {}, {
             get: {method: "GET", isArray: true, cache: true}
         });
     }])
 
     //Hakukohde
     .factory('RootHakukohde', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/hakukohde", {paataso: true}, {
+        return $resource(window.url("valintaperusteet-service.hakukohde"), {paataso: true}, {
             get: {method: "GET", isArray: true, cache: false}
         });
     }])
 
     .factory('ChildHakukohdes', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid/hakukohde", {}, {
+        return $resource(plainUrl("valintaperusteet-service.valintaryhma.hakukohde", ":oid"), {}, {
             get: {method: "GET", isArray: true, cache: false}
         });
     }])
 
     .factory('HakukohdeKuuluuSijoitteluun', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/hakukohde/:oid/kuuluuSijoitteluun", {}, {
+        return $resource(plainUrl("valintaperusteet-service.hakukohde.kuuluusijoitteluun", ":oid"), {}, {
             get: {method: "GET", cache: false}
         });
     }])
 
     .factory('NewHakukohde', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/hakukohde", {}, {
+        return $resource(window.url("valintaperusteet-service.hakukohde"), {}, {
             insert: {method: "PUT", cache: false}
         });
     }])
 
     .factory('HakukohdeValinnanvaihe', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/hakukohde/:parentOid/valinnanvaihe", {parentOid: "@parentOid"}, {
-            get: {method: "GET", isArray: true, cache: false},
-            post: {method: "POST"},
-            insert: {method: "PUT"}
-        });
+        return $resource(plainUrl("valintaperusteet-service.hakukohde.valinnanvaihe", ":parentOid"),
+            {parentOid: "@parentOid"},
+            {
+                get: {method: "GET", isArray: true, cache: false},
+                post: {method: "POST"},
+                insert: {method: "PUT"}
+            });
     }])
 
     .factory('Hakukohde', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/hakukohde/:oid", {oid: "@oid"}, {
+        return $resource(plainUrl("valintaperusteet-service.hakukohde.oid", ":oid"), {oid: "@oid"}, {
             get: {method: "GET", cache: false},
             post: {method: "POST"}
         });
     }])
     .factory('HakukohdeHakukohdekoodi', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeOid/hakukohdekoodi", {hakukohdeOid: "@hakukohdeOid"}, {
-            post: {method: "POST"}
-        });
+        return $resource(plainUrl("valintaperusteet-service.hakukohde.hakukohdekoodi", ":hakukohdeOid"),
+            {hakukohdeOid: "@hakukohdeOid"},
+            {post: {method: "POST"}}
+        );
     }])
 
     .factory('HakukohdeSiirra', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeOid/siirra", {hakukohdeOid: "@hakukohdeOid"}, {
-            siirra: {method: "POST"}
-        });
+        return $resource(plainUrl("valintaperusteet-service.hakukohde.siirra", ":hakukohdeOid"),
+            {hakukohdeOid: "@hakukohdeOid"},
+            {siirra: {method: "POST"}}
+        );
     }])
 
-    //Valinnanvaihe
     .factory('Valinnanvaihe', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valinnanvaihe/:oid", {oid: "@oid"}, {
+        return $resource(plainUrl("valintaperusteet-service.valinnanvaihe", ":oid"), {oid: "@oid"}, {
             get: {method: "GET", cache: false},
             post: {method: "POST"},
             delete: {method: "DELETE"}
@@ -196,7 +208,7 @@ angular.module('valintaperusteet')
 
     .factory('ValinnanvaiheValintatapajono', ['$resource', '$q', 'Valintatapajono',
         function ($resource, $q, Valintatapajono) {
-            var resource = $resource(SERVICE_URL_BASE + "resources/valinnanvaihe/:parentOid/valintatapajono",
+            var resource = $resource(plainUrl("valintaperusteet-service.valinnanvaihe.valintatapajono", ":parentOid"),
                 {parentOid: "@parentOid"}, {
                 get: {method: "GET", isArray: true, cache: false},
                 insert: {method: "PUT"}
@@ -226,32 +238,36 @@ angular.module('valintaperusteet')
         }
     ])
     .factory('ValinnanvaiheJarjesta', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valinnanvaihe/jarjesta", {}, {
+        return $resource(window.url("valintaperusteet-service.valinnanvaihe.jarjesta"), {}, {
             post: {method: "POST", isArray: true}
         });
     }])
     .factory('ValinnanvaiheKuuluuSijoitteluun', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valinnanvaihe/:oid/kuuluuSijoitteluun", {}, {
+        return $resource(plainUrl("valintaperusteet-service.valinnanvaihe.kuuluusijoitteluun", ":oid"), {}, {
             get: {method: "GET", cache: false}
         });
     }])
 
     .factory('ValinnanvaiheValintakoe', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valinnanvaihe/:valinnanvaiheOid/valintakoe", {valinnanvaiheOid: "@valinnanvaiheOid"}, {
-            insert: {method: "PUT"},
-            get: {method: "GET", isArray: true, cache: false},
-            remove: {method: "REMOVE"}
-        });
+        return $resource(plainUrl("valintaperusteet-service.valinnanvaihe.valintakoe", ":valinnanvaiheOid"),
+            {valinnanvaiheOid: "@valinnanvaiheOid"},
+            {
+                insert: {method: "PUT"},
+                get: {method: "GET", isArray: true, cache: false},
+                remove: {method: "REMOVE"}
+            });
     }])
 
 
     //Valintakoe
     .factory('Valintakoe', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valintakoe/:valintakoeOid", {valintakoeOid: "@valintakoeOid"}, {
-            get: {method: "GET", cache: false},
-            update: {method: "POST"},
-            delete: {method: "DELETE"}
-        });
+        return $resource(plainUrl("valintaperusteet-service.valintakoe", ":valintakoeOid"),
+            {valintakoeOid: "@valintakoeOid"},
+            {
+                get: {method: "GET", cache: false},
+                update: {method: "POST"},
+                delete: {method: "DELETE"}
+            });
     }])
 
 
@@ -259,7 +275,7 @@ angular.module('valintaperusteet')
     .factory('Valintatapajono', ['$resource', 'LocalisationService', 'Ilmoitus', '$location', '$http', '$q',
         'IlmoitusTila', 'TarjontaHakukohde',
         function ($resource, LocalisationService, Ilmoitus, $location, $http, $q, IlmoitusTila, TarjontaHakukohde) {
-            var resource = $resource(SERVICE_URL_BASE + "resources/valintatapajono/:oid", {oid: "@oid"}, {
+            var resource = $resource(plainUrl("valintaperusteet-service.valintatapajono", ":oid"), {oid: "@oid"}, {
                 get: {method: "GET", cache: false},
                 post: {method: "POST"},
                 delete: {method: "DELETE"}
@@ -311,25 +327,28 @@ angular.module('valintaperusteet')
         }
     ])
     .factory('ValintatapajonoValmisSijoiteltavaksi', ['$resource', function ($resource) {
-        return $resource(VALINTALASKENTA_URL_BASE + "resources/valintatapajono/:oid/valmissijoiteltavaksi", {valintatapajonoOid: "@valintatapajonoOid"}, {
-            get: {method: "GET", cache: false}
+        return $resource(plainUrl("valintalaskenta-laskenta-service.valintatapajono.valmissijoiteltavaksi", ":oid"),
+            {valintatapajonoOid: "@valintatapajonoOid"},
+            {get: {method: "GET", cache: false}
         });
     }])
     .factory('ValintatapajonoJarjestyskriteeri', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:parentOid/jarjestyskriteeri", {parentOid: "@parentOid"}, {
-            get: {method: "GET", isArray: true, cache: false},
-            insert: {method: "PUT"}
-        });
+        return $resource(plainUrl("valintaperusteet-service.valintatapajono.jarjestyskriteeri", ":parentOid"),
+            {parentOid: "@parentOid"},
+            {
+                get: {method: "GET", isArray: true, cache: false},
+                insert: {method: "PUT"}
+            });
     }])
     .factory('ValintatapajonoJarjesta', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valintatapajono/jarjesta", {}, {
+        return $resource(window.url("valintaperusteet-service.valintatapajono.jarjesta"), {}, {
             post: {method: "POST", isArray: true}
         });
     }])
 
     // Hakijaryhma
     .factory('Hakijaryhma', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/hakijaryhma/:oid", {oid: "@oid"}, {
+        return $resource(plainUrl("valintaperusteet-service.hakijaryhma", ":oid"), {oid: "@oid"}, {
             get: {method: "GET", cache: false},
             update: {method: "POST"},
             delete: {method: "DELETE"}
@@ -337,21 +356,21 @@ angular.module('valintaperusteet')
     }])
 
     .factory('ValintaryhmaHakijaryhma', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valintaryhma/:oid/hakijaryhma", {oid: "@oid"}, {
+        return $resource(plainUrl("valintaperusteet-service.valintaryhma.hakijaryhma", ":oid"), {oid: "@oid"}, {
             get: {method: "GET", isArray: true, cache: false},
             insert: {method: "PUT"}
         });
     }])
 
     .factory('HakukohdeHakijaryhma', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/hakukohde/:oid/hakijaryhma", {oid: "@oid"}, {
+        return $resource(plainUrl("valintaperusteet-service.hakukohde.hakijaryhma", ":oid"), {oid: "@oid"}, {
             get: {method: "GET", isArray: true, cache: false},
             insert: {method: "PUT"}
         });
     }])
 
     .factory('ValintatapajonoHakijaryhma', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:oid/hakijaryhma/:hakijaryhmaOid", {
+        return $resource(plainUrl("valintaperusteet-service.valintatapajono.hakijaryhma", ":oid", ":hakijaryhmaOid"), {
             oid: "@oid",
             hakijaryhmaOid: "@hakijaryhmaOid"
         }, {
@@ -361,7 +380,7 @@ angular.module('valintaperusteet')
     }])
 
     .factory('HakijaryhmaValintatapajono', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/hakijaryhma_valintatapajono/:oid", {oid: "@oid"}, {
+        return $resource(plainUrl("valintaperusteet-service.hakijaryhma_valintatapajono", ":oid"), {oid: "@oid"}, {
             get: {method: "GET", cache: false},
             delete: {method: "DELETE"},
             update: {method: "POST"}
@@ -369,7 +388,7 @@ angular.module('valintaperusteet')
     }])
 
     .factory('HakijaryhmaLiita', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoOid/hakijaryhma/:hakijaryhmaOid", {
+        return $resource(plainUrl("valintaperusteet-service.valintatapajono.hakijaryhma", ":valintatapajonoOid", ":hakijaryhmaOid"), {
             valintatapajonoOid: "@valintatapajonoOid",
             hakijaryhmaOid: "@hakijaryhmaOid"
         }, {
@@ -378,7 +397,7 @@ angular.module('valintaperusteet')
     }])
 
     .factory('HakijaryhmaLiitaHakukohde', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/hakukohde/:hakukohdeOid/hakijaryhma/:hakijaryhmaOid", {
+        return $resource(plainUrl("valintaperusteet-service.hakukohde.hakijaryhma.oid", ":hakukohdeOid", ":hakijaryhmaOid"), {
             hakukohdeOid: "@hakukohdeOid",
             hakijaryhmaOid: "@hakijaryhmaOid"
         }, {
@@ -387,105 +406,105 @@ angular.module('valintaperusteet')
     }])
 
     .factory('HakijaryhmaKopiointi', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/hakijaryhma/siirra", {}, {put: {method: "PUT"}})
+        return $resource(window.url("valintaperusteet-service.hakijaryhma.siirra"), {}, {put: {method: "PUT"}})
     }])
 
     //Järjestyskriteeri
     .factory('Jarjestyskriteeri', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/jarjestyskriteeri/:oid", {oid: "@oid"}, {
+        return $resource(plainUrl("valintaperusteet-service.jarjestyskriteeri", ":oid"), {oid: "@oid"}, {
             post: {method: "POST"}
         });
     }])
     .factory('JarjestyskriteeriJarjesta', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/jarjestyskriteeri/jarjesta", {}, {
+        return $resource(Swindow.url("valintaperusteet-service.jarjestyskriteeri.jarjesta"), {}, {
             post: {method: "POST", isArray: true}
         });
     }])
 
     .factory('TarjontaImport', ['$resource', function ($resource) {
-        return $resource(VALINTALASKENTAKOOSTE_URL_BASE + "resources/hakuimport/aktivoi", {}, {
+        return $resource(window.url("valintalaskentakoostepalvelu.hakuimport.aktivoi"), {}, {
             aktivoi: {method: "GET", cache: false}
         });
     }])
 
     //TARJONTA RESOURCES
     .factory('Haku', ['$resource', function ($resource) {
-        return $resource(TARJONTA_URL_BASE + "haku?count=500", {}, {
+        return $resource(window.url("tarjonta-service.haku", {count : 500}), {}, {
             get: {method: "GET", cache: true}
         });
     }])
     .factory('HaunTiedot', ['$resource', function ($resource) {
-        return $resource(TARJONTA_URL_BASE + "haku/:hakuOid", {hakuOid: "@hakuOid"}, {
+        return $resource(plainUrl("tarjonta-service.haku.oid", ":hakuOid"), {hakuOid: "@hakuOid"}, {
             get: {method: "GET", cache: true}
         });
     }])
 
     .factory('TarjontaHaut', function($resource) {
-        return $resource(TARJONTA_URL_BASE + "haku/find?addHakukohdes=false");
+        return $resource(window.url("tarjonta-service.haku.find", {addHakukohdes : "false"}));
     })
 
     .factory('TarjontaHaku', ['$resource', function ($resource) {
-        return $resource(TARJONTA_URL_BASE + "haku/:hakuOid/hakukohdeTulos", {}, {
+        return $resource(plainUrl("tarjonta-service.haku.hakukohdetulos", ":hakuOid"), {}, {
             query: {method: 'GET', isArray: false, cache: true}
         });
     }])
     .factory('HakukohdeNimi', ['$resource', function ($resource) {
-        return $resource(TARJONTA_URL_BASE + "hakukohde/:hakukohdeoid/nimi", {hakukohdeoid: "@hakukohdeoid"}, {
+        return $resource(plainUrl("tarjonta-service.hakukohde.nimi", ":hakukohdeoid"), {hakukohdeoid: "@hakukohdeoid"}, {
             get: {method: "GET", cache: true}
         });
     }])
 
     .factory('TarjontaHakukohde', ['$resource', function ($resource) {
-        return $resource(TARJONTA_URL_BASE + "hakukohde/:hakukohdeoid", {hakukohdeoid: "@hakukohdeoid"});
+        return $resource(plainUrl("tarjonta-service.hakukohde.oid", ":hakukohdeoid"), {hakukohdeoid: "@hakukohdeoid"});
     }])
 
 
     .factory('Organizations', ['$resource', function ($resource) {
-        return $resource(ORGANIZATION_SERVICE_URL_BASE + "rest/organisaatio/hae", {}, {
+        return $resource(window.url("organisaatio-service.organisaatio.hae"), {}, {
             get: {method: "GET", cache: true}
         });
     }])
 
     .factory('OrganizationByOid', ['$resource', function ($resource) {
-        return $resource(ORGANIZATION_SERVICE_URL_BASE + "rest/organisaatio/:oid", {oid: "@oid"}, {
+        return $resource(plainUrl("organisaatio-service.organisaatio", ":oid"), {oid: "@oid"}, {
             get: {method: "GET", cache: true}
         });
     }])
 
     .factory('OrganizationParentOids', ['$resource', function ($resource) {
-        return $resource(ORGANIZATION_SERVICE_URL_BASE + "rest/organisaatio/:oid/parentoids", {oid: "@oid"}, {
+        return $resource(plainUrl("organisaatio-service.organisaatio.parentoids", ":oid"), {oid: "@oid"}, {
             get: {method: "GET", cache: true}
         });
     }])
 
     .factory('OrganizationChildOids', ['$resource', function ($resource) {
-        return $resource(ORGANIZATION_SERVICE_URL_BASE + "rest/organisaatio/:oid/childoids", {oid: "@oid"}, {
+        return $resource(plainUrl("organisaatio-service.organisaatio.childoids", ":oid"), {oid: "@oid"}, {
             get: {method: "GET", cache: true}
         });
     }])
 
     .factory('HakujenHakutyypit', ['$resource', function ($resource) {
-        return $resource(KOODISTO_URL_BASE + "codeelement/codes/hakutyyppi/1");
+        return $resource(window.url("koodisto-service.codeelement.codes.hakutyyppi.1"));
     }])
 
     .factory('HakujenKohdejoukot', ['$resource', function ($resource) {
-        return $resource(KOODISTO_URL_BASE + "codeelement/codes/haunkohdejoukko/1");
+        return $resource(window.url("koodisto-service.codeelement.codes.haunkohdejoukko.1"));
     }])
 
     .factory('HakujenHakutavat', ['$resource', function ($resource) {
-        return $resource(KOODISTO_URL_BASE + "codeelement/codes/hakutapa/1");
+        return $resource(window.url("koodisto-service.codeelement.codes.hakutapa.1"));
     }])
 
     .factory('HakujenHakukaudet', ['$resource', function ($resource) {
-        return $resource(KOODISTO_URL_BASE + "codeelement/codes/kausi/1");
+        return $resource(window.url("koodisto-service.codeelement.codes.kausi.1"));
     }])
 
     .factory('Hakijaryhmientyyppikoodit', ['$resource', function ($resource) {
-        return $resource(KOODISTO_URL_BASE + "codeelement/codes/hakijaryhmantyypit/1");
+        return $resource(window.url("koodisto-service.codeelement.codes.hakijaryhmatyypit.1"));
     }])
 
     .factory('Syotettavanarvonkoodit', ['$resource', function ($resource) {
-        return $resource(KOODISTO_URL_BASE + "codeelement/codes/syotettavanarvontyypit/1", {
+        return $resource(window.url("koodisto-service.codeelement.codes.syotettavanarvontyypit.1"), {
             get: {method: "GET", isArray: true, cache: false}
         });
     }]);

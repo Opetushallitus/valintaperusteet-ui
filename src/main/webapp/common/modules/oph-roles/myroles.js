@@ -1,6 +1,6 @@
 angular.module('oph-roles')
 
-    .factory('MyRolesModel', ['$q', '$http', 'CAS_URL', 'TestUsers', function ($q, $http, CAS_URL, TestUsers) {
+    .factory('MyRolesModel', ['$q', '$http', 'TestUsers', function ($q, $http, TestUsers) {
         var deferred = $q.defer();
 
         var factory = (function () {
@@ -10,7 +10,7 @@ angular.module('oph-roles')
             //kk-käyttäjä
             //instance.myroles = TestUsers.kkCrud;
             //deferred.resolve(instance);
-            $http.get(CAS_URL).success(function (result) {
+            $http.get(window.url("cas.myroles")).success(function (result) {
                 instance.myroles = result;
                 deferred.resolve(instance);
             });

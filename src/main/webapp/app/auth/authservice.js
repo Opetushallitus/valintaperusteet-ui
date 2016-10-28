@@ -40,7 +40,8 @@ angular.module('valintaperusteet')
                 MyRolesModel.then(function (model) {
                     if (orgs && orgs.length > 0) {
                         $q.all(orgs.map(function (orgOid) {
-                            return $http.get(ORGANISAATIO_URL_BASE + "organisaatio/" + orgOid + "/parentoids", { cache: true}).success(function (result) {
+                            return $http.get(window.url("organisaatio-service.organisaatio.parentoids", orgOid), {cache: true}
+                            ).success(function (result) {
                                 result.split("/").forEach(function (org) {
                                     if (accessFunction(service, org, model)) {
                                         found = true;

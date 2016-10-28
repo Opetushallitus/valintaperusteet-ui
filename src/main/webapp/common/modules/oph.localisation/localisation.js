@@ -4,7 +4,7 @@
 angular.module('oph.localisation', ['oph-roles'])
     .factory('Localisations',[ '$resource','$q', function ($resource, $q) {
         var localisations ={};
-        var locals = $resource(LOCALISATION_URL_BASE+'/localisation',{},{
+        var locals = $resource(window.url("lokalisointi.localisation"),{},{
             query: {
                 method:'GET',
                 params:{
