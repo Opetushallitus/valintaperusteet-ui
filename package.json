@@ -1,13 +1,13 @@
 {
   "devDependencies": {
     "test":  "*",
-    "phantomjs": "~1.9.1",
-    "mocha-phantomjs": "3.5.3"
+    "phantomjs-prebuilt": "~2.1.7",
+    "mocha-phantomjs-core": "2.0.1"
   },
   "dependencies": {
     "test":  "*",
-    "phantomjs": "~1.9.1",
-    "mocha-phantomjs": "3.5.3"
+    "phantomjs-prebuilt": "~2.1.7",
+    "mocha-phantomjs-core": "2.0.1"
   },
   "scripts": {
     "test": "mocha-phantomjs -R dot http://localhost:18180/valintaperusteet-ui/test/runner.html"
