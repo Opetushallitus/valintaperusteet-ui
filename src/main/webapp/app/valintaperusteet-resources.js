@@ -416,7 +416,7 @@ angular.module('valintaperusteet')
         });
     }])
     .factory('JarjestyskriteeriJarjesta', ['$resource', function ($resource) {
-        return $resource(Swindow.url("valintaperusteet-service.jarjestyskriteeri.jarjesta"), {}, {
+        return $resource(window.url("valintaperusteet-service.jarjestyskriteeri.jarjesta"), {}, {
             post: {method: "POST", isArray: true}
         });
     }])
