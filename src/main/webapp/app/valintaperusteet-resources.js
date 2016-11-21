@@ -288,8 +288,8 @@ angular.module('valintaperusteet')
                 TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function(hakukohde) {
                     var hakuOid = hakukohde.result.hakuOid;
 
-                    $http.get(SIJOITTELU_URL_BASE + 'resources/sijoittelu/' +
-                        hakuOid + '/valintatapajono-in-use/' + jono.oid, {
+                    $http.get(window.url("sijoittelu-service.sijoittelu.valintatapajono-in-use",
+                        hakuOid, jono.oid), {
                         cache: false
                     }).success(deferred.resolve);
                 });
