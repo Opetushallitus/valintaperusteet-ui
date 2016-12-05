@@ -50,7 +50,7 @@
             <li>
                 <span class="node">
                 <i class="fa fa-users valintaryhma auki"></i>
-                <input name="valintaryhmaOid" type="radio" ng-model="selection.node" name="puunode" value="" id="root"/> <label
+                <input name="valintaryhmaOid" type="radio" ng-model="selection.node" ng-change="changeSelection('ROOT')" name="puunode" value="" id="root"/> <label
                         for="root">{{ t('valintaryhmaselector.juuri') || 'Juuri' }}</label>
                 </span>
             </li>

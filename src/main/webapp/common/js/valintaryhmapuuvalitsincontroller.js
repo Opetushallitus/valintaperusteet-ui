@@ -22,7 +22,14 @@ angular.module('valintaperusteet')
 
         $scope.selection = {}; // input radio needs this empty object when mapping object reference
         $scope.changeSelection = function (puuNode) {
-            $scope.kopioObj.value = puuNode; //kopioObj must be set in parent scope
+            //kopioObj must be set in parent scope
+            if(puuNode === "ROOT") {
+              $scope.kopioObj.value = {
+                oid: null
+              }
+            } else {
+              $scope.kopioObj.value = puuNode;
+            }
         };
         $scope.changeHaku = function () {
             if($scope.hakuModel && $scope.hakuModel.haku) {
