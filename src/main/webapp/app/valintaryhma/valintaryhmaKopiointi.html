@@ -24,7 +24,7 @@
 </div>
 <div class="modal-footer">
     <button class="btn btn-sm btn-default" ng-click="cancel()" ng-hide="working">{{ t('valintaperusteet.sulje') || 'Sulje'}}</button>
-    <button ng-click="kopioiValintaryhma()" ng-disabled="valintaryhmaKopio.$invalid" class="btn btn-sm btn-primary" ng-hide="working">
+    <button ng-click="kopioiValintaryhma()" ng-disabled="!kopioObj.value || valintaryhmaKopio.$invalid" class="btn btn-sm btn-primary" ng-hide="working">
         {{t('valintaperusteet.kopioi') || 'Kopioi'}}
     </button>
     <button ng-disabled="true" class="btn btn-sm btn-primary" ng-show="working">
