@@ -485,22 +485,35 @@ angular.module('valintaperusteet')
                     backdrop: 'static',
                     templateUrl: 'valintaryhma/valintaryhmaKopiointi.html',
                     size: 'lg',
-                    controller: function ($scope, $window, $timeout, $modalInstance, kopioitavaOid, ValintaryhmaKopiointi) {
+                    controller: function ($scope, $window, $timeout, $modalInstance, kopioitavaOid, ValintaryhmaKopiointi, ValintaryhmaKopiointiJuureen) {
                         $scope.model = {};
                         $scope.kopioObj = {};
                         $scope.working=false;
                         $scope.kopioiValintaryhma = function () {
                             $scope.working=true;
-                            ValintaryhmaKopiointi.put({parentOid: $scope.kopioObj.value.oid, kopioitavaOid: $routeParams.id, nimi: $scope.model.uusinimi }, function () {
-                                $scope.working=false;
-                                $modalInstance.dismiss('cancel');
-                            }, function (error) {
-                                $scope.working=false;
-                                $scope.error = error;
-                                $timeout(function () {
-                                    $scope.error = false;
-                                }, 7000);
-                            });
+                            if(!$scope.kopioObj.value.oid) {
+                                ValintaryhmaKopiointiJuureen.put({kopioitavaOid: $routeParams.id, nimi: $scope.model.uusinimi }, function () {
+                                    $scope.working=false;
+                                    $modalInstance.dismiss('cancel');
+                                }, function (error) {
+                                    $scope.working=false;
+                                    $scope.error = error;
+                                    $timeout(function () {
+                                        $scope.error = false;
+                                    }, 7000);
+                                });
+                            } else {
+                                ValintaryhmaKopiointi.put({parentOid: $scope.kopioObj.value.oid, kopioitavaOid: $routeParams.id, nimi: $scope.model.uusinimi }, function () {
+                                    $scope.working=false;
+                                    $modalInstance.dismiss('cancel');
+                                }, function (error) {
+                                    $scope.working=false;
+                                    $scope.error = error;
+                                    $timeout(function () {
+                                        $scope.error = false;
+                                    }, 7000);
+                                });
+                            }
 
                         };
 

@@ -75,6 +75,13 @@ angular.module('valintaperusteet')
         );
     }])
 
+    .factory('ValintaryhmaKopiointiJuureen', ['$resource', function ($resource) {
+        return $resource(plainUrl("valintaperusteet-service.valintaryhma.kopioijuureen"),
+            {lahdeOid: "@kopioitavaOid", nimi: "@nimi"},
+            {put: {method: "PUT"}}
+        );
+    }])
+
     .factory('ParentValintaryhmas', ['$resource', function ($resource) {
         return $resource(plainUrl("valintaperusteet-service.valintaryhma.parents", ":parentOid"), {parentOid: "@parentOid"}, {
             get: {method: "GET", isArray: true, cache: false}

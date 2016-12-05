@@ -73,6 +73,7 @@ window.urls.addProperties({
     "valintaperusteet-service.valintaryhma.hakukohde" : "/valintaperusteet-service/resources/valintaryhma/$1/hakukohde",
     "valintaperusteet-service.valintaryhma.hakukohdekoodi" : "/valintaperusteet-service/resources/valintaryhma/$1/hakukohdekoodi",
     "valintaperusteet-service.valintaryhma.kopioilapseksi" : "/valintaperusteet-service/resources/valintaryhma/$1/kopioiLapseksi",
+    "valintaperusteet-service.valintaryhma.kopioijuureen" : "/valintaperusteet-service/resources/valintaryhma/kopioiJuureen",
     "valintaperusteet-service.valintaryhma.lapsi" : "/valintaperusteet-service/resources/valintaryhma/$1/lapsi",
     "valintaperusteet-service.valintaryhma.oid" : "/valintaperusteet-service/resources/valintaryhma/$1",
     "valintaperusteet-service.valintaryhma.parents" : "/valintaperusteet-service/resources/valintaryhma/$1/parents",
