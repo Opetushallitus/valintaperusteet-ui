@@ -71,14 +71,14 @@ angular.module('valintaperusteet')
     .factory('ValintaryhmaKopiointi', ['$resource', function ($resource) {
         return $resource(plainUrl("valintaperusteet-service.valintaryhma.kopioilapseksi", ":parentOid"),
             {parentOid: "@parentOid", lahdeOid: "@kopioitavaOid", nimi: "@nimi"},
-            {put: {method: "PUT"}}
+            {put: {method: "PUT", timeout: 300000}}
         );
     }])
 
     .factory('ValintaryhmaKopiointiJuureen', ['$resource', function ($resource) {
         return $resource(plainUrl("valintaperusteet-service.valintaryhma.kopioijuureen"),
             {lahdeOid: "@kopioitavaOid", nimi: "@nimi"},
-            {put: {method: "PUT"}}
+            {put: {method: "PUT", timeout: 300000}}
         );
     }])
 
