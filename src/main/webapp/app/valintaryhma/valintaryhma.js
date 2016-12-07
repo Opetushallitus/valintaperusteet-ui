@@ -418,8 +418,8 @@ angular.module('valintaperusteet')
         }])
 
 
-    .controller('ValintaryhmaController', ['$scope', '$q', '$location', '$routeParams', 'ValintaryhmaModel', 'Laskentakaava', 'UserAccessLevels', '$modal', 'SuoritaToiminto',
-        function ($scope, $q, $location, $routeParams, ValintaryhmaModel, Laskentakaava, UserAccessLevels, $modal, SuoritaToiminto) {
+    .controller('ValintaryhmaController', ['$scope', '$log', '$q', '$location', '$routeParams', 'ValintaryhmaModel', 'Laskentakaava', 'UserAccessLevels', '$modal', 'SuoritaToiminto',
+        function ($scope, $log, $q, $location, $routeParams, ValintaryhmaModel, Laskentakaava, UserAccessLevels, $modal, SuoritaToiminto) {
             "use strict";
 
             $scope.valintaryhmaOid = $routeParams.id;
@@ -481,38 +481,49 @@ angular.module('valintaperusteet')
             };
 
             $scope.showValintaryhmaKopiointi = function () {
+                var resultErrorHandler = function($scope) {
+                    return function (httpResponse) {
+                        $log.error("Valintaryhmän kopiointi epäonnnistui: ", httpResponse)
+                        if (httpResponse.status) {
+                              var errorStr = "Valintaryhmän kopiointi epäonnnistui. Virhe: " + httpResponse.status;
+                              if (httpResponse.data) {
+                                  if (httpResponse.data.message) {
+                                      errorStr = errorStr + " - " + httpResponse.data.message;
+                                  } else if (httpResponse.statusText) {
+                                      errorStr = errorStr + " - " + httpResponse.statusText;
+                                  } else {
+                                      errorStr = errorStr + " - " + httpResponse.data;
+                                  }
+                              }
+                              $scope.error = errorStr;
+                              $scope.working = false;
+                        } else {
+                              $scope.error = "Valintaryhmän kopiointi aikakatkaistu. Huom! Älä käynnistä uutta, kopiointi todennäköisesti yhä palvelimella käynnissä";
+                        }
+
+                    }
+                }
                 $modal.open({
                     backdrop: 'static',
                     templateUrl: 'valintaryhma/valintaryhmaKopiointi.html',
                     size: 'lg',
-                    controller: function ($scope, $window, $timeout, $modalInstance, kopioitavaOid, ValintaryhmaKopiointi, ValintaryhmaKopiointiJuureen) {
+                    controller: function ($scope, $window, $modalInstance, kopioitavaOid, ValintaryhmaKopiointi, ValintaryhmaKopiointiJuureen) {
                         $scope.model = {};
                         $scope.kopioObj = {};
                         $scope.working=false;
                         $scope.kopioiValintaryhma = function () {
+                            $scope.error = false;
                             $scope.working=true;
                             if(!$scope.kopioObj.value.oid) {
                                 ValintaryhmaKopiointiJuureen.put({kopioitavaOid: $routeParams.id, nimi: $scope.model.uusinimi }, function () {
                                     $scope.working=false;
                                     $modalInstance.dismiss('cancel');
-                                }, function (error) {
-                                    $scope.working=false;
-                                    $scope.error = error;
-                                    $timeout(function () {
-                                        $scope.error = false;
-                                    }, 7000);
-                                });
+                                }, resultErrorHandler($scope));
                             } else {
                                 ValintaryhmaKopiointi.put({parentOid: $scope.kopioObj.value.oid, kopioitavaOid: $routeParams.id, nimi: $scope.model.uusinimi }, function () {
                                     $scope.working=false;
                                     $modalInstance.dismiss('cancel');
-                                }, function (error) {
-                                    $scope.working=false;
-                                    $scope.error = error;
-                                    $timeout(function () {
-                                        $scope.error = false;
-                                    }, 7000);
-                                });
+                                }, resultErrorHandler($scope));
                             }
 
                         };

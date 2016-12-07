@@ -18,12 +18,12 @@
             </div>
         </div>
         <div collapse="!error" class="alert alert-danger">
-            <h3>{{error.data.message}}</h3>
+            <h3>{{error}}</h3>
         </div>
     </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-sm btn-default" ng-click="cancel()" ng-hide="working">{{ t('valintaperusteet.sulje') || 'Sulje'}}</button>
+    <button class="btn btn-sm btn-default" ng-click="cancel()" ng-disabled="working && !error">{{ t('valintaperusteet.sulje') || 'Sulje'}}</button>
     <button ng-click="kopioiValintaryhma()" ng-disabled="!kopioObj.value || valintaryhmaKopio.$invalid" class="btn btn-sm btn-primary" ng-hide="working">
         {{t('valintaperusteet.kopioi') || 'Kopioi'}}
     </button>
