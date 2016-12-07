@@ -1,12 +1,12 @@
 angular.module('valintaperusteet')
 
-    .factory('ValintaryhmaModel', ['$q', '_', 'Valintaryhma', 'Hakijaryhma', 'HakijaryhmaJarjesta', 'KoodistoHakukohdekoodi',
+    .factory('ValintaryhmaModel', ['$q', '_', 'Valintaryhma', 'Hakijaryhma', 'KoodistoHakukohdekoodi',
         'KoodistoValintakoekoodi', 'KoodistoHaunKohdejoukko', 'Laskentakaava', 'Treemodel',
         'ValintaryhmaValintakoekoodi', 'Valinnanvaihe', 'ValintaryhmaValinnanvaihe',
         'ValinnanvaiheJarjesta', 'ValintaryhmaHakukohdekoodi', 'ValintaryhmaHakijaryhma',
         'OrganizationByOid', '$modal', 'Utils','ParentValintaryhmas',
         'ChildValintaryhmas', '$location', '$log', 'RootValintaryhmas', 'TarjontaHaut', 'Ilmoitus', 'HakuModel',
-        function ($q, _, Valintaryhma, Hakijaryhma, HakijaryhmaJarjesta, KoodistoHakukohdekoodi,
+        function ($q, _, Valintaryhma, Hakijaryhma, KoodistoHakukohdekoodi,
                   KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel,
                   ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe,
                   ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma,

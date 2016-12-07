@@ -3,12 +3,12 @@ angular.module('valintaperusteet')
     .factory('HakukohdeModel', ['$q', 'HakukohdeHakukohdekoodi', 'KoodistoHakukohdekoodi', 'Hakukohde', 'Valintaryhma',
         'HakukohdeValinnanvaihe', 'Valinnanvaihe', 'ValinnanvaiheJarjesta',
         'HakukohdeKuuluuSijoitteluun', 'HakukohdeHakijaryhma', 'Laskentakaava',
-        'HakijaryhmaJarjesta', 'Hakijaryhma', 'Haku', 'HaunTiedot', 'HakukohdeNimi',
+        'Hakijaryhma', 'Haku', 'HaunTiedot', 'HakukohdeNimi',
         'HakijaryhmanValintatapajonot', 'Ilmoitus', 'IlmoitusTila', 'HakijaryhmaValintatapajono',
         function($q, HakukohdeHakukohdekoodi, KoodistoHakukohdekoodi, Hakukohde, Valintaryhma,
         HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta,
         HakukohdeKuuluuSijoitteluun, HakukohdeHakijaryhma, Laskentakaava,
-        HakijaryhmaJarjesta, Hakijaryhma, Haku, HaunTiedot, HakukohdeNimi,
+        Hakijaryhma, Haku, HaunTiedot, HakukohdeNimi,
         HakijaryhmanValintatapajonot, Ilmoitus, IlmoitusTila, HakijaryhmaValintatapajono) {
     "use strict";
 
@@ -97,13 +97,6 @@ angular.module('valintaperusteet')
                     deferred.reject();
                 });
             }
-
-/*        if(model.hakijaryhmat.length > 0) {
-                promises.push(HakijaryhmaJarjesta.post(model.hakijaryhmat, function (result) {
-                }, function (error) {
-                }).$promise);
-            }
-*/
 
             $q.all(promises).then(function () {
                 afterSuccess(function() {});

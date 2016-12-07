@@ -377,12 +377,6 @@ angular.module('valintaperusteet')
         });
     }])
 
-    .factory('HakijaryhmaJarjesta', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/hakijaryhma/jarjesta", {}, {
-            post: {method: "POST", isArray: true}
-        });
-    }])
-
     .factory('HakijaryhmaLiita', ['$resource', function ($resource) {
         return $resource(SERVICE_URL_BASE + "resources/valintatapajono/:valintatapajonoOid/hakijaryhma/:hakijaryhmaOid", {
             valintatapajonoOid: "@valintatapajonoOid",
