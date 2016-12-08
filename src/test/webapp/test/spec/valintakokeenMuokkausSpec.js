@@ -1,4 +1,3 @@
-
 describe('Valintakokeen muokkaus', function() {
     var VALINTAKOE1 = "VALINTAKOE1";
     var page = valintakokeen_muokkausPage();

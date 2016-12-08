@@ -3,6 +3,7 @@ function valintaryhmatFixtures(valintaryhmat) {
         var httpBackend = testFrame().httpBackend
         httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/valintaryhma\/.*\/parents/).respond(valintaryhmat);
         httpBackend.when('PUT', /.*\/valintaperusteet-service\/resources\/valintaryhma\/kopioi.*/).respond(500, "Server error");
+        httpBackend.when('GET', /.*\/valintaperusteet-service\/resources\/valintaryhma\/VALINTARYHMA/).respond(valintaryhmat[0]);
     }
 }
 function laskentakaavatFixtures(laskentakaavat) {
