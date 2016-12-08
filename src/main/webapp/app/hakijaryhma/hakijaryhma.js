@@ -2,7 +2,7 @@
 angular.module('valintaperusteet')
 
     .factory('HakijaryhmaModel', function ($q, Hakijaryhma, LaskentakaavaModel, ValintaryhmaHakijaryhma,
-                                           HakukohdeHakijaryhma, HakijaryhmanValintatapajonot, ValintatapajonoHakijaryhma,
+                                           HakukohdeHakijaryhma, ValintatapajonoHakijaryhma,
                                            HakijaryhmaValintatapajono, Ilmoitus, IlmoitusTila, KoodistoHakijaryhmatyyppikoodi) {
         "use strict";
 

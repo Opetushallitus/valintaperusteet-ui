@@ -4,12 +4,12 @@ angular.module('valintaperusteet')
         'HakukohdeValinnanvaihe', 'Valinnanvaihe', 'ValinnanvaiheJarjesta',
         'HakukohdeKuuluuSijoitteluun', 'HakukohdeHakijaryhma', 'Laskentakaava',
         'Hakijaryhma', 'Haku', 'HaunTiedot', 'HakukohdeNimi',
-        'HakijaryhmanValintatapajonot', 'Ilmoitus', 'IlmoitusTila', 'HakijaryhmaValintatapajono',
+        'Ilmoitus', 'IlmoitusTila', 'HakijaryhmaValintatapajono',
         function($q, HakukohdeHakukohdekoodi, KoodistoHakukohdekoodi, Hakukohde, Valintaryhma,
         HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta,
         HakukohdeKuuluuSijoitteluun, HakukohdeHakijaryhma, Laskentakaava,
         Hakijaryhma, Haku, HaunTiedot, HakukohdeNimi,
-        HakijaryhmanValintatapajonot, Ilmoitus, IlmoitusTila, HakijaryhmaValintatapajono) {
+        Ilmoitus, IlmoitusTila, HakijaryhmaValintatapajono) {
     "use strict";
 
     var model = new function()  {

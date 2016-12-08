@@ -360,15 +360,6 @@ angular.module('valintaperusteet')
         });
     }])
 
-    .factory('HakijaryhmanValintatapajonot', ['$resource', function ($resource) {
-        return $resource(SERVICE_URL_BASE + "resources/hakijaryhma/:oid/valintatapajono", {
-            oid: "@oid",
-            hakijaryhmaOid: "@hakijaryhmaOid"
-        }, {
-            get: {method: "GET", isArray: true, cache: false}
-        });
-    }])
-
     .factory('HakijaryhmaValintatapajono', ['$resource', function ($resource) {
         return $resource(SERVICE_URL_BASE + "resources/hakijaryhma_valintatapajono/:oid", {oid: "@oid"}, {
             get: {method: "GET", cache: false},
