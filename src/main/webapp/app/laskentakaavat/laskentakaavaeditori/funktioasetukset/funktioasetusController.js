@@ -2,11 +2,11 @@ angular.module('valintaperusteet')
 
     .controller('funktiokutsuAsetuksetController', ['$scope', '$log', '$q', '$routeParams', '$location', '$timeout', 'Laskentakaava',
         'FunktioNimiService', 'FunktioFactory', 'KaavaValidation', 'GuidGenerator', 'HakemusavaimetLisakysymykset', 'HakemusavaimetLomake',
-        'ValintaryhmaModel', 'Treemodel', 'LaskentakaavaValintaryhma', '$cookieStore', '$window', 'UserModel', 'ErrorService', '_', 'FunktioService',
+        'ValintaryhmaModel', 'Treemodel', 'LaskentakaavanHakuoid', '$cookieStore', '$window', 'UserModel', 'ErrorService', '_', 'FunktioService',
         'LaskentakaavaModalService', 'FunktiokutsuKaareService', 'FunktiokuvausService', 'HakukohdeModel', 'HakemusavaimetLisakysymyksetAvaimet', 'KoodistoSyotettavanarvonkoodi',
         function ($scope, $log, $q, $routeParams, $location, $timeout, Laskentakaava,
                   FunktioNimiService, FunktioFactory, KaavaValidation, GuidGenerator, HakemusavaimetLisakysymykset, HakemusavaimetLomake,
-                  ValintaryhmaModel, Treemodel, LaskentakaavaValintaryhma, $cookieStore, $window, UserModel, ErrorService, _, FunktioService,
+                  ValintaryhmaModel, Treemodel, LaskentakaavanHakuoid, $cookieStore, $window, UserModel, ErrorService, _, FunktioService,
                   LaskentakaavaModalService, FunktiokutsuKaareService, FunktiokuvausService, HakukohdeModel, HakemusavaimetLisakysymyksetAvaimet, KoodistoSyotettavanarvonkoodi) {
 
             UserModel.refreshIfNeeded();
@@ -98,24 +98,14 @@ angular.module('valintaperusteet')
             };
 
             $scope.resolveHaku = function() {
-
-                var hakuoid = $cookieStore.get('hakuoid');
-                if(hakuoid) {
-                    $scope.getHakemusAvaimet(hakuoid);
-                }
-                else if(!hakuoid && $scope.treemodel.search.haku) {
-                    $scope.getHakemusAvaimet($scope.treemodel.search.haku.oid);
-
-                } else if(!hakuoid && $routeParams.laskentakaavaOid) {
-                    LaskentakaavaValintaryhma.get({oid: $routeParams.laskentakaavaOid}, function(valintaryhma) {
-                        if(!_.isEmpty(valintaryhma.hakuoid)) {
-                            $scope.getHakemusAvaimet(valintaryhma.hakuoid);
+                if ($routeParams.laskentakaavaOid) {
+                    LaskentakaavanHakuoid.get({hakukohdeOid: $routeParams.hakukohdeOid ? $routeParams.hakukohdeOid : "", valintaryhmaOid: $routeParams.id ? $routeParams.id : ""}, function(haku) {
+                        if(!_.isEmpty(haku.hakuoid)) {
+                            $scope.getHakemusAvaimet(haku.hakuoid);
                         } else {
                             $log.log("hakuoidia ei löydy");
                         }
                     });
-                } else {
-                    $log.log("hakuoidia ei löydy");
                 }
             };
 

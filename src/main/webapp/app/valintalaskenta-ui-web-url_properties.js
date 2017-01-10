@@ -60,7 +60,7 @@ window.urls.addProperties({
     "valintaperusteet-service.laskentakaava.funktiokuvaus" : "/valintaperusteet-service/resources/laskentakaava/funktiokuvaus",
     "valintaperusteet-service.laskentakaava.siirra" : "/valintaperusteet-service/resources/laskentakaava/siirra",
     "valintaperusteet-service.laskentakaava.validoi" : "/valintaperusteet-service/resources/laskentakaava/validoi",
-    "valintaperusteet-service.laskentakaava.valintaryhma" : "/valintaperusteet-service/resources/laskentakaava/$1/valintaryhma",
+    "valintaperusteet-service.laskentakaava.hakuoid" : "/valintaperusteet-service/resources/laskentakaava/hakuoid?hakukohde=$1&valintaryhma=$2",
     "valintaperusteet-service.puu" : "/valintaperusteet-service/resources/puu",
     "valintaperusteet-service.valinnanvaihe" : "/valintaperusteet-service/resources/valinnanvaihe/$1",
     "valintaperusteet-service.valinnanvaihe.jarjesta" : "/valintaperusteet-service/resources/valinnanvaihe/jarjesta",

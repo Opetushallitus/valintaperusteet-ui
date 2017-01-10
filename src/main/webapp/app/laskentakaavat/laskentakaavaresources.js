@@ -29,11 +29,11 @@ angular.module('valintaperusteet').factory('FunktioKuvausResource', function ($r
         });
     })
 
-    .factory('LaskentakaavaValintaryhma', function ($resource) {
+    .factory('LaskentakaavanHakuoid', function ($resource) {
 
-        return $resource(plainUrl("valintaperusteet-service.laskentakaava.valintaryhma", ":oid"),
-            {oid: "@oid"},
-            {get: {method: "GET", cache: false}}
+        return $resource(plainUrl("valintaperusteet-service.laskentakaava.hakuoid", ":hakukohdeOid", ":valintaryhmaOid"),
+            {hakukohdeOid: "@hakukohdeOid", valintaryhmaOid: "@valintaryhmaOid"},
+            {get: {method: "GET"}}
         );
     })
 
