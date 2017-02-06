@@ -25,6 +25,13 @@ angular.module('valintaperusteet')
             require: '?ngModel',
             link: function (scope, element, attrs, ngModel) {
 
+                element.on('mouseenter', function() {
+                    element.css('cursor', 'ns-resize');
+                });
+                element.on('mouseleave', function() {
+                    element.removeAttr('cursor');
+                });
+
                 var onStart, onUpdate, opts, _start, _update;
                 opts = angular.extend({}, options, scope.$eval(attrs.uiOptions));
                 if (ngModel != null) {
