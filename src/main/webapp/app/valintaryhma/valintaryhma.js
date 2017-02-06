@@ -1,12 +1,12 @@
 angular.module('valintaperusteet')
 
-    .factory('ValintaryhmaModel', ['$q', '_', 'Valintaryhma', 'Hakijaryhma', 'KoodistoHakukohdekoodi',
+    .factory('ValintaryhmaModel', ['$q', '_', 'Valintaryhma', 'Hakijaryhma', 'HakijaryhmaJarjesta', 'KoodistoHakukohdekoodi',
         'KoodistoValintakoekoodi', 'KoodistoHaunKohdejoukko', 'Laskentakaava', 'Treemodel',
         'ValintaryhmaValintakoekoodi', 'Valinnanvaihe', 'ValintaryhmaValinnanvaihe',
         'ValinnanvaiheJarjesta', 'ValintaryhmaHakukohdekoodi', 'ValintaryhmaHakijaryhma',
         'OrganizationByOid', '$modal', 'Utils','ParentValintaryhmas',
         'ChildValintaryhmas', '$location', '$log', 'RootValintaryhmas', 'TarjontaHaut', 'Ilmoitus', 'HakuModel',
-        function ($q, _, Valintaryhma, Hakijaryhma, KoodistoHakukohdekoodi,
+        function ($q, _, Valintaryhma, Hakijaryhma, HakijaryhmaJarjesta, KoodistoHakukohdekoodi,
                   KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel,
                   ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe,
                   ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma,
@@ -200,6 +200,15 @@ angular.module('valintaperusteet')
                             }
                         }
 
+                        if (model.hakijaryhmat.length > 0) {
+                            promises.push(HakijaryhmaJarjesta.post(getHakijaryhmaOids(), function (result) {
+                            }).$promise);
+                            for (var i = 0; i < model.hakijaryhmat.length; ++i) {
+                                promises.push(Hakijaryhma.update(model.hakijaryhmat[i], function () {
+                                }).$promise);
+                            }
+                        }
+
                         $q.all(promises).then(function () {
                             afterSuccess(function() {});
                         }, function(err) {
@@ -266,6 +275,14 @@ angular.module('valintaperusteet')
                     var oids = [];
                     for (var i = 0; i < model.valinnanvaiheet.length; ++i) {
                         oids.push(model.valinnanvaiheet[i].oid);
+                    }
+                    return oids;
+                }
+
+                function getHakijaryhmaOids() {
+                    var oids = [];
+                    for (var i = 0; i < model.hakijaryhmat.length; ++i) {
+                        oids.push(model.hakijaryhmat[i].oid);
                     }
                     return oids;
                 }

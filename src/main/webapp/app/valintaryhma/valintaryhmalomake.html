@@ -280,7 +280,7 @@
                 <th>{{ t('valintaryhmalomake.kopioihakijaryhma') || 'Kopioi hakijaryhmä'}}</th>
             </tr>
             </thead>
-            <tbody ng-model="model.hakijaryhmat">
+            <tbody ui-sortable ng-model="model.hakijaryhmat">
             <tr ng-repeat="data in model.hakijaryhmat">
                 <td>
                     <a href="#/valintaryhma/{{model.valintaryhma.oid}}/hakijaryhma/{{data.oid}}">{{data.nimi}}</a>

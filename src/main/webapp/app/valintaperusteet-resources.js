@@ -361,6 +361,12 @@ angular.module('valintaperusteet')
             delete: {method: "DELETE"}
         });
     }])
+    .factory('HakijaryhmaJarjesta', ['$resource', function ($resource) {
+        return $resource(window.url("valintaperusteet-service.hakijaryhma.jarjesta"), {}, {
+            post: {method: "POST", isArray: true}
+        });
+    }])
+
 
     .factory('ValintaryhmaHakijaryhma', ['$resource', function ($resource) {
         return $resource(plainUrl("valintaperusteet-service.valintaryhma.hakijaryhma", ":oid"), {oid: "@oid"}, {

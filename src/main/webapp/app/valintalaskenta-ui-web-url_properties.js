@@ -44,7 +44,7 @@ window.urls.addProperties({
     "valintaperusteet-service.hakijaryhma.siirra" : "/valintaperusteet-service/resources/hakijaryhma/siirra",
     "valintaperusteet-service.hakijaryhma.valintatapajono" : "/valintaperusteet-service/resources/hakijaryhma/$1/valintatapajono",
     "valintaperusteet-service.hakijaryhma_valintatapajono" : "/valintaperusteet-service/resources/hakijaryhma_valintatapajono/$1",
-    "valintaperusteet-service.hakijraryhma.jarjesta" : "/valintaperusteet-service/resources/hakijaryhma/jarjesta",
+    "valintaperusteet-service.hakijaryhma.jarjesta" : "/valintaperusteet-service/resources/hakijaryhma/jarjesta",
     "valintaperusteet-service.hakukohde" : "/valintaperusteet-service/resources/hakukohde",
     "valintaperusteet-service.hakukohde.hakijaryhma" : "/valintaperusteet-service/resources/hakukohde/$1/hakijaryhma",
     "valintaperusteet-service.hakukohde.hakijaryhma.oid" : "/valintaperusteet-service/resources/hakukohde/$1/hakijaryhma/$2",
