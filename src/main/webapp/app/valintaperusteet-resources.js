@@ -382,6 +382,12 @@ angular.module('valintaperusteet')
         });
     }])
 
+    .factory('HakukohdeHakijaryhmaJarjesta', ['$resource', function ($resource) {
+        return $resource(window.url("valintaperusteet-service.hakukohde.hakijaryhma.jarjesta"), {}, {
+            post: {method: "POST", isArray: true}
+        });
+    }])
+
     .factory('ValintatapajonoHakijaryhma', ['$resource', function ($resource) {
         return $resource(plainUrl("valintaperusteet-service.valintatapajono.hakijaryhma", ":oid", ":hakijaryhmaOid"), {
             oid: "@oid",

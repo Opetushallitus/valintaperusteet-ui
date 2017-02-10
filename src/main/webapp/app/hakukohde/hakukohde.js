@@ -2,12 +2,12 @@ angular.module('valintaperusteet')
 
     .factory('HakukohdeModel', ['$q', 'HakukohdeHakukohdekoodi', 'KoodistoHakukohdekoodi', 'Hakukohde', 'Valintaryhma',
         'HakukohdeValinnanvaihe', 'Valinnanvaihe', 'ValinnanvaiheJarjesta',
-        'HakukohdeKuuluuSijoitteluun', 'HakukohdeHakijaryhma', 'Laskentakaava',
+        'HakukohdeKuuluuSijoitteluun', 'HakukohdeHakijaryhma', 'HakukohdeHakijaryhmaJarjesta', 'Laskentakaava',
         'Hakijaryhma', 'Haku', 'HaunTiedot', 'HakukohdeNimi',
         'Ilmoitus', 'IlmoitusTila', 'HakijaryhmaValintatapajono',
         function($q, HakukohdeHakukohdekoodi, KoodistoHakukohdekoodi, Hakukohde, Valintaryhma,
         HakukohdeValinnanvaihe, Valinnanvaihe, ValinnanvaiheJarjesta,
-        HakukohdeKuuluuSijoitteluun, HakukohdeHakijaryhma, Laskentakaava,
+        HakukohdeKuuluuSijoitteluun, HakukohdeHakijaryhma, HakukohdeHakijaryhmaJarjesta, Laskentakaava,
         Hakijaryhma, Haku, HaunTiedot, HakukohdeNimi,
         Ilmoitus, IlmoitusTila, HakijaryhmaValintatapajono) {
     "use strict";
@@ -76,11 +76,12 @@ angular.module('valintaperusteet')
 
         this.persistHakukohde = function(afterSuccess, afterFailure) {
             var promises = [];
+            var deferred = $q.defer();
             promises.push(Hakukohde.post(model.hakukohde, function(result) {
             }, function (error) {
             }).$promise);
+
             if(model.valinnanvaiheet.length > 0) {
-                var deferred = $q.defer();
                 promises.push(deferred.promise);
                 ValinnanvaiheJarjesta.post(getValinnanvaiheOids(), function(result) {
                     var postPromises = [];
@@ -94,6 +95,24 @@ angular.module('valintaperusteet')
                         deferred.reject();
                     });
                 }, function(error) {
+                    deferred.reject();
+                });
+            }
+
+            if (model.hakijaryhmat.length > 0) {
+                promises.push(deferred.promise);
+                HakukohdeHakijaryhmaJarjesta.post(getHakijaryhmaOids(), function(result) {
+                    var postPromises = [];
+                    for (var i = 0 ; i < model.hakijaryhmat.length ; ++i) {
+                        postPromises.push(HakijaryhmaValintatapajono.update(model.hakijaryhmat[i], function() {
+                        }).$promise);
+                    }
+                    $q.all(postPromises).then(function () {
+                        deferred.resolve();
+                    }, function(err) {
+                        deferred.reject();
+                    });
+                }, function(err) {
                     deferred.reject();
                 });
             }
