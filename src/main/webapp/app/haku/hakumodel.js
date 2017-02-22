@@ -111,8 +111,8 @@ angular.module('valintaperusteet')
             };
         }])
 
-    .service('CustomHakuUtil', ['$q', '_', 'HakujenHakutyypit', 'HakujenKohdejoukot', 'HakujenHakutavat', 'HakujenHakukaudet', 'EhdollisenHyvaksymisenEhdot', 'HakuModel',
-        function ($q, _, HakujenHakutyypit, HakujenKohdejoukot, HakujenHakutavat, HakujenHakukaudet, EhdollisenHyvaksymisenEhdot, HakuModel) {
+    .service('CustomHakuUtil', ['$q', '_', 'HakujenHakutyypit', 'HakujenKohdejoukot', 'HakujenHakutavat', 'HakujenHakukaudet', 'HakuModel',
+        function ($q, _, HakujenHakutyypit, HakujenKohdejoukot, HakujenHakutavat, HakujenHakukaudet, HakuModel) {
             this.hakuKeys = ['hakuvuosi', 'hakukausi', 'kohdejoukko', 'hakutapa', 'hakutyyppi'];
 
             this.deferred = undefined; // deferred here is meant just to prevent multiple refresh-calls
@@ -122,7 +122,6 @@ angular.module('valintaperusteet')
             this.hakutapaOpts = undefined;
             this.hakukausiOpts = undefined;
             this.hakuvuodetOpts = undefined;
-            this.ehdollisestiHyvaksyttavissaOlevatOpts = undefined;
 
             this.refresh = function () {
                 var that = this;
@@ -160,15 +159,6 @@ angular.module('valintaperusteet')
                         return {
                             koodiUri: kausi.koodiUri,
                             nimi: _.findWhere(kausi.metadata, {kieli: 'FI'}).nimi
-                        };
-                    });
-                });
-
-                EhdollisenHyvaksymisenEhdot.query(function (result) {
-                    that.ehdollisestiHyvaksyttavissaOlevatOpts = _.map(result, function (ehto) { //parse hakuoptions
-                        return {
-                            koodiUri: ehto.koodiUri,
-                            nimi: _.findWhere(ehto.metadata, {kieli: 'FI'}).nimi
                         };
                     });
                 });
