@@ -1,13 +1,13 @@
 angular.module('valintaperusteet')
 
     .factory('ValintaryhmaModel', ['$q', '_', 'Valintaryhma', 'Hakijaryhma', 'HakijaryhmaJarjesta', 'KoodistoHakukohdekoodi',
-        'KoodistoValintakoekoodi', 'KoodistoHaunKohdejoukko', 'Laskentakaava', 'Treemodel',
+        'KoodistoAikuHakukohdekoodi', 'KoodistoValintakoekoodi', 'KoodistoHaunKohdejoukko', 'Laskentakaava', 'Treemodel',
         'ValintaryhmaValintakoekoodi', 'Valinnanvaihe', 'ValintaryhmaValinnanvaihe',
         'ValinnanvaiheJarjesta', 'ValintaryhmaHakukohdekoodi', 'ValintaryhmaHakijaryhma',
         'OrganizationByOid', '$modal', 'Utils','ParentValintaryhmas',
         'ChildValintaryhmas', '$location', '$log', 'RootValintaryhmas', 'TarjontaHaut', 'Ilmoitus', 'HakuModel',
         function ($q, _, Valintaryhma, Hakijaryhma, HakijaryhmaJarjesta, KoodistoHakukohdekoodi,
-                  KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel,
+                  KoodistoAikuHakukohdekoodi, KoodistoValintakoekoodi, KoodistoHaunKohdejoukko, Laskentakaava, Treemodel,
                   ValintaryhmaValintakoekoodi, Valinnanvaihe, ValintaryhmaValinnanvaihe,
                   ValinnanvaiheJarjesta, ValintaryhmaHakukohdekoodi, ValintaryhmaHakijaryhma,
                   OrganizationByOid, $modal, Utils, ParentValintaryhmas,
@@ -97,8 +97,11 @@ angular.module('valintaperusteet')
 
                 this.getHakukohdekoodit = function () {
                     var deferred = $q.defer();
-                    KoodistoHakukohdekoodi.get(function (result) {
-                        model.hakukohdekoodit = result;
+                    $q.all([
+                        KoodistoHakukohdekoodi.get().$promise,
+                        KoodistoAikuHakukohdekoodi.get().$promise
+                    ]).then(function (resolved) {
+                        model.hakukohdekoodit = resolved[0].concat(resolved[1]);
                         deferred.resolve();
                     });
                     return deferred.promise;

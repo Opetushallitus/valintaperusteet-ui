@@ -126,6 +126,12 @@ angular.module('valintaperusteet')
         });
     }])
 
+    .factory('KoodistoAikuHakukohdekoodi', ['$resource', function ($resource) {
+        return $resource(window.url("koodisto-service.aikuhakukohteet.koodi"), {}, {
+            get: {method: "GET", isArray: true, cache: true}
+        });
+    }])
+
     .factory('KoodistoValintakoekoodi', ['$resource', function ($resource) {
         return $resource(window.url("koodisto-service.valintakokeentyyppi.koodi"), {}, {
             get: {method: "get", isArray: true, cache: true}
