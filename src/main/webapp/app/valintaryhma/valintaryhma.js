@@ -101,8 +101,7 @@ angular.module('valintaperusteet')
                         KoodistoHakukohdekoodi.get().$promise,
                         KoodistoAikuHakukohdekoodi.get().$promise
                     ]).then(function (resolved) {
-                        model.hakukohdekoodit= resolved[0];
-                        model.hakukohdekoodit.concat(resolved[1]);
+                        model.hakukohdekoodit = resolved[0].concat(resolved[1]);
                         deferred.resolve();
                     });
                     return deferred.promise;
