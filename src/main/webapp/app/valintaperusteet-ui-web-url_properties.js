@@ -15,6 +15,7 @@ window.urls.addProperties({
     "koodisto-service.codeelement.codes.syotettavanarvontyypit.1" : "/koodisto-service/rest/codeelement/codes/syotettavanarvontyypit/1",
     "koodisto-service.hakijaryhmantyypit.koodi" : "/koodisto-service/rest/json/hakijaryhmantyypit/koodi",
     "koodisto-service.hakukohteet.koodi" : "/koodisto-service/rest/json/hakukohteet/koodi",
+    "koodisto-service.aikuhakukohteet.koodi" : "/koodisto-service/rest/json/aikuhakukohteet/koodi",
     "koodisto-service.haunkohdejoukko.koodi" : "/koodisto-service/rest/json/haunkohdejoukko/koodi",
     "koodisto-service.syotettavanarvontyypit.koodi" : "/koodisto-service/rest/json/syotettavanarvontyypit/koodi",
     "koodisto-service.valintakokeentyyppi.koodi" : "/koodisto-service/rest/json/valintakokeentyyppi/koodi",
