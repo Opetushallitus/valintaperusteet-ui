@@ -465,7 +465,9 @@ angular.module('valintaperusteet')
     }])
 
     .factory('TarjontaHaut', function($resource) {
-        return $resource(window.url("tarjonta-service.haku.find", {addHakukohdes : "false"}));
+        return $resource(window.url("tarjonta-service.haku.find", {addHakukohdes : "false"}),
+            {virkailijaTyyppi: "@virkailijaTyyppi"},
+            {get: {method: "GET", cache: false}});
     })
 
     .factory('TarjontaHaku', ['$resource', function ($resource) {

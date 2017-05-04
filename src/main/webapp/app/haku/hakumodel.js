@@ -25,8 +25,17 @@ angular.module('valintaperusteet')
                 this.hakuDeferred = $q.defer();
                 UserModel.refreshIfNeeded();
 
+                var hakufiltering = "all";
+                if (UserModel.isOphUser() || UserModel.hasOtherThanKKUserOrgs && UserModel.isKKUser) {
+                    hakufiltering = "all";
+                } else if (UserModel.isKKUser && !UserModel.hasOtherThanKKUserOrgs) {
+                    hakufiltering = "kkUser";
+                } else if (!UserModel.isKKUser && UserModel.hasOtherThanKKUserOrgs) {
+                    hakufiltering = "toinenAsteUser";
+                }
+
                 var that = this
-                TarjontaHaut.get({}, function (resultWrapper) {
+                TarjontaHaut.get({virkailijaTyyppi: hakufiltering}, function (resultWrapper) {
                     that.haut = _.filter(resultWrapper.result, function (haku) {
                         return haku.tila === 'JULKAISTU' || haku.tila === 'VALMIS';
                     });
