@@ -7,6 +7,7 @@ factory('FunktioNimiService', function() {
 			LUKUARVO: 'Lukuarvo',
 			TOTUUSARVO: 'Totuusarvo',
 			HAKUTOIVE: 'Hakutoive',
+            HAKUTOIVERYHMASSA: 'Hakutoive ryhmässä',
 			DEMOGRAFIA: 'Demografia',
 			HAETOTUUSARVO: 'Hae totuusarvo',
 			HAELUKUARVO: 'Hae lukuarvo',

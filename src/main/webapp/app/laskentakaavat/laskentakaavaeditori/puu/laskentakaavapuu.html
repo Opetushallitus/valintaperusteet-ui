@@ -266,6 +266,27 @@
     </div>
 </script>
 
+<!-- HAKUTOIVERYHMASSA -->
+<script type="text/ng-template" id="hakutoiveryhmassa">
+    <div class="parameter" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
+        <span class="icon" ng-click="funktiowrapper.open = funktiowrapper.open ? false : true">&nbsp;</span>
+        <funktiokutsu-label>
+            <span add-class-on-mouseover="bold" class="node"
+                  ng-click="showFunktiokutsuTools()">
+
+                <span ng-if="!getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'n')">?</span>
+                <span ng-if="getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'n')">{{getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'n')}}</span>
+
+                <span>. hakutoive ryhmassa </span>
+
+                <span ng-if="!getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'ryhmaoid')">?</span>
+                <span ng-if="getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'ryhmaoid')">{{getSyoteparametriArvo(funktiowrapper.lapsi.syoteparametrit, 'ryhmaoid')}}</span>
+
+            </span>
+        </funktiokutsu-label>
+    </div>
+</script>
+
 <!-- DEMOGRAFIA -->
 <script type="text/ng-template" id="demografia">
     <div class="parameter" ng-class="funktioSelection == funktiowrapper ? 'active' : ''">
@@ -585,23 +606,28 @@ YHTASUURI
             </td>
         </tr>
         <tr>
+            <td ng-click="addFunktio(parent, 'HAKUTOIVERYHMASSA', funktioSlotIndex); showNewFunktioList.visible = false">
+                <span>{{ t('laskentakaavapuu.hakutoiveryhmassa') || 'Hakutoive hakukohderyhmässä' }}</span>
+            </td>
             <td ng-click="addFunktio(parent, 'HAEMERKKIJONOJAKONVERTOITOTUUSARVOKSI', funktioSlotIndex); showNewFunktioList.visible = false">
                 <span>{{ t('laskentakaavapuu.haemerkkijonototuusarvoksi') || 'Hae merkkijono ja konvertoi totuusarvoksi' }}</span>
             </td>
-            <td ng-click="addFunktio(parent, 'NIMETTYTOTUUSARVO', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.nimettytotuusarvo') || 'Nimetty totuusarvo' }}</span></td>
         </tr>
         <tr>
+            <td ng-click="addFunktio(parent, 'NIMETTYTOTUUSARVO', funktioSlotIndex); showNewFunktioList.visible = false">
+                <span>{{ t('laskentakaavapuu.nimettytotuusarvo') || 'Nimetty totuusarvo' }}</span></td>
             <td ng-click="addFunktio(parent, 'HAEMERKKIJONOJAVERTAAYHTASUURUUS', funktioSlotIndex); showNewFunktioList.visible = false">
                 <span>{{ t('laskentakaavapuu.haemerkkijonoyhtasuuruus') || 'Hae merkkijono ja vertaa yhtäsuuruus' }}</span>
             </td>
-            <td ng-click="addFunktio(parent, 'VALINTAPERUSTEYHTASUURUUS', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.valintaperusteyhtasuuruus') || 'Valintaperusteyhtäsuuruus' }}</span></td>
         </tr>
         <tr>
+            <td ng-click="addFunktio(parent, 'VALINTAPERUSTEYHTASUURUUS', funktioSlotIndex); showNewFunktioList.visible = false">
+                <span>{{ t('laskentakaavapuu.valintaperusteyhtasuuruus') || 'Valintaperusteyhtäsuuruus' }}</span></td>
             <td ng-click="addFunktio(parent, 'HAKUKELPOISUUS', funktioSlotIndex); showNewFunktioList.visible = false">
                 <span>{{ t('laskentakaavapuu.hakukelpoisuus') || 'Hakukelpoisuus'}}</span>
             </td>
+        </tr>
+        <tr>
             <td ng-if="parent.lapsi"
                 ng-click="addLaskentakaavaviite(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.viittaus') || 'Viittaus toiseen kaavaan' }}</span>
             </td>

@@ -50,6 +50,7 @@ angular.module('valintaperusteet').factory('TemplateService', function() {
 				TOTUUSARVO: 'totuusarvo',
                 HAKUKELPOISUUS: 'totuusarvo',
                 HAKUTOIVE: 'hakutoive',
+                HAKUTOIVERYHMASSA: 'hakutoiveryhmassa',
 				DEMOGRAFIA: 'demografia',
 
 				HAETOTUUSARVO: 'haettava_arvo',
