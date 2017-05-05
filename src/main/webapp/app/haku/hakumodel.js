@@ -26,7 +26,7 @@ angular.module('valintaperusteet')
                 UserModel.refreshIfNeeded();
 
                 var hakufiltering = "all";
-                if (UserModel.isOphUser() || UserModel.hasOtherThanKKUserOrgs && UserModel.isKKUser) {
+                if (UserModel.isOphUser || UserModel.hasOtherThanKKUserOrgs && UserModel.isKKUser) {
                     hakufiltering = "all";
                 } else if (UserModel.isKKUser && !UserModel.hasOtherThanKKUserOrgs) {
                     hakufiltering = "kkUser";
