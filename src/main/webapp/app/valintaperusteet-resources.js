@@ -310,11 +310,9 @@ angular.module('valintaperusteet')
                 return deferred.promise;
             };
 
-            resource.deleteWithDialog = function(jono, checkSijoitteluUsage) {
+            resource.deleteWithDialog = function(jono) {
                 var deferred = $q.defer();
-                var fetchSijoitteluUsage = checkSijoitteluUsage
-                                            ? resource.fetchSijoitteluUsage(jono)
-                                            : $q.when(false);
+                var fetchSijoitteluUsage = resource.fetchSijoitteluUsage(jono);
 
                 if (!window.confirm(LocalisationService.tl('valintatapajono.haluatkoVarmastiPoistaa') ||
                         'Haluatko varmasti poistaa valintatapajonon?')) {
