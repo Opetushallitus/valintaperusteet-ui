@@ -34,11 +34,11 @@ window.urls.addProperties({
     "tarjonta-service.hakukohde.nimi" : "/tarjonta-service/rest/v1/hakukohde/$1/nimi",
     "tarjonta-service.hakukohde.oid" : "/tarjonta-service/rest/v1/hakukohde/$1",
 
-    "sijoittelu-service.sijoittelu.valintatapajono-in-use" : "/sijoittelu-service/resources/sijoittelu/$1/valintatapajono-in-use/$2",
-
     "valintalaskenta-laskenta-service.valintatapajono.valmissijoiteltavaksi" : "/valintalaskenta-laskenta-service/resources/valintatapajono/$1/valmissijoiteltavaksi",
 
     "valintalaskentakoostepalvelu.hakuimport.aktivoi" : "/valintalaskentakoostepalvelu/resources/hakuimport/aktivoi",
+    
+    "valinta-tulos-service.auth.valinnan-tulos.byValintatapajono": "/valinta-tulos-service/auth/valinnan-tulos?valintatapajonoOid=$1",
 
     "valintaperusteet-service.buildversion" : "/valintaperusteet-service/buildversion.txt?auth",
     "valintaperusteet-service.hakijaryhma" : "/valintaperusteet-service/resources/hakijaryhma/$1",

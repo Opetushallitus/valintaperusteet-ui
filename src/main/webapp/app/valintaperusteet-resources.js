@@ -301,10 +301,13 @@ angular.module('valintaperusteet')
                 TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function(hakukohde) {
                     var hakuOid = hakukohde.result.hakuOid;
 
-                    $http.get(window.url("sijoittelu-service.sijoittelu.valintatapajono-in-use",
+                    $http.get(window.url("valinta-tulos-service.auth.valinnan-tulos.byValintatapajono",
                         hakuOid, jono.oid), {
                         cache: false
-                    }).success(deferred.resolve);
+                    }).success(function (result) {
+                        var isInUse = result.size == 0;
+                        deferred.resolve(isInUse);
+                    })
                 });
 
                 return deferred.promise;
