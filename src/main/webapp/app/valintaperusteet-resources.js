@@ -307,6 +307,9 @@ angular.module('valintaperusteet')
                     }).success(function (result) {
                         var isInUse = result.size == 0;
                         deferred.resolve(isInUse);
+                    }).error(function(e) {
+                        $log.error("valintatapajonon käytön hakeminen epäonnistui: ", error);
+                        deferred.reject(e);
                     })
                 });
 
