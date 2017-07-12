@@ -312,7 +312,7 @@ angular.module('valintaperusteet')
                     $http.get(window.url("valinta-tulos-service.valinnan-tulos", jono.oid), {
                         cache: false
                     }).success(function (result) {
-                        var isInUse = result.size == 0;
+                        var isInUse = result.size !== 0;
                         deferred.resolve(isInUse);
                     });
                 });
