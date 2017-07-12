@@ -307,11 +307,9 @@ angular.module('valintaperusteet')
 
             resource.fetchSijoitteluUsage = function(jono) {
                 var deferred = $q.defer();
-                var hakukohdeOid = $location.url().match(/hakukohde\/([^\/]+)/)[1];
 
                 resource.auth().then(function() {
-                    $http.get(window.url("valinta-tulos-service.valinnan-tulos",
-                        hakukohdeOid, jono.oid), {
+                    $http.get(window.url("valinta-tulos-service.valinnan-tulos", jono.oid), {
                         cache: false
                     }).success(function (result) {
                         var isInUse = result.size == 0;

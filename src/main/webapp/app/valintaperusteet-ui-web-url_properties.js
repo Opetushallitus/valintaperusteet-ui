@@ -39,7 +39,7 @@ window.urls.addProperties({
     "valintalaskentakoostepalvelu.hakuimport.aktivoi" : "/valintalaskentakoostepalvelu/resources/hakuimport/aktivoi",
 
     "valinta-tulos-service.login": "/valinta-tulos-service/auth/login",
-    "valinta-tulos-service.valinnan-tulos": "/valinta-tulos-service/auth/valinnan-tulos?hakukohdeOid=$1&valintatapajonoOid=$2",
+    "valinta-tulos-service.valinnan-tulos": "/valinta-tulos-service/auth/valinnan-tulos?valintatapajonoOid=$1",
 
     "valintaperusteet-service.buildversion" : "/valintaperusteet-service/buildversion.txt?auth",
     "valintaperusteet-service.hakijaryhma" : "/valintaperusteet-service/resources/hakijaryhma/$1",
