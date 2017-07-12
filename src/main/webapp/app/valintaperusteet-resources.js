@@ -298,16 +298,12 @@ angular.module('valintaperusteet')
                 var deferred = $q.defer();
                 var hakukohdeOid = $location.url().match(/hakukohde\/([^\/]+)/)[1];
 
-                TarjontaHakukohde.get({hakukohdeoid: hakukohdeOid}, function(hakukohde) {
-                    var hakuOid = hakukohde.result.hakuOid;
-
-                    $http.get(window.url("valinta-tulos-service.auth.valinnan-tulos.byValintatapajono",
-                        hakuOid, jono.oid), {
-                        cache: false
-                    }).success(function (result) {
-                        var isInUse = result.size == 0;
-                        deferred.resolve(isInUse);
-                    })
+                $http.get(window.url("valinta-tulos-service.auth.valinnan-tulos",
+                    hakukohdeOid, jono.oid), {
+                    cache: false
+                }).success(function (result) {
+                    var isInUse = result.size == 0;
+                    deferred.resolve(isInUse);
                 });
 
                 return deferred.promise;
