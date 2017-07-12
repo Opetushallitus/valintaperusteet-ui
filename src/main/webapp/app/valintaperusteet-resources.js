@@ -294,16 +294,29 @@ angular.module('valintaperusteet')
                 delete: {method: "DELETE"}
             });
 
+            resource.auth = function() {
+                var deferred = $q.defer();
+
+                $http.get(window.url("valinta-tulos-service.login")
+                    ).success(function () {
+                        deferred.resolve();
+                    });
+
+                return deferred.promise;
+            };
+
             resource.fetchSijoitteluUsage = function(jono) {
                 var deferred = $q.defer();
                 var hakukohdeOid = $location.url().match(/hakukohde\/([^\/]+)/)[1];
 
-                $http.get(window.url("valinta-tulos-service.auth.valinnan-tulos",
-                    hakukohdeOid, jono.oid), {
-                    cache: false
-                }).success(function (result) {
-                    var isInUse = result.size == 0;
-                    deferred.resolve(isInUse);
+                resource.auth().then(function() {
+                    $http.get(window.url("valinta-tulos-service.valinnan-tulos",
+                        hakukohdeOid, jono.oid), {
+                        cache: false
+                    }).success(function (result) {
+                        var isInUse = result.size == 0;
+                        deferred.resolve(isInUse);
+                    });
                 });
 
                 return deferred.promise;
