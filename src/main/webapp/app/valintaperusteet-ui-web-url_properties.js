@@ -1,6 +1,4 @@
 window.urls.addProperties({
-    "authentication-service.palvelu" : "/authentication-service/resources/palvelu",
-
     "cas.myroles" : "/cas/myroles",
 
     "haku-app.application-system-form-editor.application-system-form" : "/haku-app/application-system-form-editor/application-system-form/$1",
