@@ -275,8 +275,8 @@ angular.module('valintaperusteet')
 }])
 
     .controller('HakukohdeValintatapajonoController', ['$scope', '$location', '$routeParams', 'ValintatapajonoModel',
-        'HakukohdeValinnanVaiheModel', 'SuoritaToiminto',
-        function ($scope, $location, $routeParams, ValintatapajonoModel, HakukohdeValinnanVaiheModel, SuoritaToiminto) {
+        'HakukohdeValinnanVaiheModel', 'SuoritaToiminto', 'OnkoValintatapaJonoaSijoiteltu',
+        function ($scope, $location, $routeParams, ValintatapajonoModel, HakukohdeValinnanVaiheModel, SuoritaToiminto, OnkoValintatapaJonoaSijoiteltu) {
             "use strict";
             $scope.hakukohdeOid = $routeParams.hakukohdeOid;
             $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
@@ -284,6 +284,17 @@ angular.module('valintaperusteet')
             $scope.model = ValintatapajonoModel;
 
             $scope.model.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valinnanvaiheOid);
+
+            $scope.forceSiirretaanSijoitteluun = false;
+            if($routeParams.valintatapajonoOid) {
+                $scope.forceSiirretaanSijoitteluun = OnkoValintatapaJonoaSijoiteltu.get({jonoOid: $routeParams.valintatapajonoOid});
+                if($scope.forceSiirretaanSijoitteluun) {
+                    $scope.$watch('model', function() {
+                        $scope.model.siirretaanSijoitteluun = true;
+                    });
+                }
+            }
+            $scope.model.valintatapajono.siirretaanSijoitteluun = $scope.forceSiirretaanSijoitteluun;
 
             $scope.submit = function () {
                 SuoritaToiminto.avaa(function(success, failure) {
@@ -361,6 +372,11 @@ angular.module('valintaperusteet')
             $scope.forceSiirretaanSijoitteluun = false;
             if($routeParams.valintatapajonoOid) {
                 $scope.forceSiirretaanSijoitteluun = OnkoValintatapaJonoaSijoiteltu.get({jonoOid: $routeParams.valintatapajonoOid});
+                if($scope.forceSiirretaanSijoitteluun) {
+                    $scope.$watch('model', function() {
+                        $scope.model.siirretaanSijoitteluun = true;
+                    });
+                }
             }
             $scope.model.valintatapajono.siirretaanSijoitteluun = $scope.forceSiirretaanSijoitteluun;
 
