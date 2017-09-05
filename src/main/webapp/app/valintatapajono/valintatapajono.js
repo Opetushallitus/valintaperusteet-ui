@@ -291,6 +291,7 @@ angular.module('valintaperusteet')
                 isSijoiteltu.$promise.then(function (data) {
                     if (data.IsSijoiteltu) {
                         $scope.model.siirretaanSijoitteluun = true;
+                        $scope.forceSiirretaanSijoitteluun = true;
                         $scope.$watch('model', function () {
                             $scope.model.siirretaanSijoitteluun = true;
                         });
@@ -377,6 +378,7 @@ angular.module('valintaperusteet')
                  isSijoiteltu.$promise.then(function (data) {
                      if (data.IsSijoiteltu) {
                          $scope.model.siirretaanSijoitteluun = true;
+                         $scope.forceSiirretaanSijoitteluun = true;
                          $scope.$watch('model', function () {
                              $scope.model.siirretaanSijoitteluun = true;
                          });
