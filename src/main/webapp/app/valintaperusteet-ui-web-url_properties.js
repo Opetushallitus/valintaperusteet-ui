@@ -84,5 +84,7 @@ window.urls.addProperties({
     "valintaperusteet-service.valintatapajono" : "/valintaperusteet-service/resources/valintatapajono/$1",
     "valintaperusteet-service.valintatapajono.hakijaryhma" : "/valintaperusteet-service/resources/valintatapajono/$1/hakijaryhma/$2",
     "valintaperusteet-service.valintatapajono.jarjesta" : "/valintaperusteet-service/resources/valintatapajono/jarjesta",
-    "valintaperusteet-service.valintatapajono.jarjestyskriteeri" : "/valintaperusteet-service/resources/valintatapajono/$1/jarjestyskriteeri"
+    "valintaperusteet-service.valintatapajono.jarjestyskriteeri" : "/valintaperusteet-service/resources/valintatapajono/$1/jarjestyskriteeri",
+
+    "valinta-tulos-service.onkoJonoaSijoiteltu": "/valinta-tulos-service/auth/sijoittelu/jono/:jonoOid"
 });

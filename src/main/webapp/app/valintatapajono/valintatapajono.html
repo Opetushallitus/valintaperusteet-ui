@@ -87,7 +87,7 @@
     <div class="col-md-2">
         <div class="checkbox">
             <label>
-                <input auth ng-disabled="!userAccess.updateOrg" type="checkbox" id="siirretaanSijoitteluun"
+                <input auth ng-disabled="!userAccess.updateOrg || forceSiirretaanSijoitteluun == true" type="checkbox" id="siirretaanSijoitteluun"
                        name="siirretaanSijoitteluun"
                        ng-model="model.valintatapajono.siirretaanSijoitteluun">
             </label>

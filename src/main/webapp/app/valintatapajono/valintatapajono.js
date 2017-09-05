@@ -11,6 +11,8 @@ angular.module('valintaperusteet')
               ValintaryhmaHakijaryhma, HakijaryhmaValintatapajono, ValintatapajonoValmisSijoiteltavaksi, $modal, Ilmoitus, $location) {
     "use strict";
 
+
+
     var model = new function () {
         this.valintatapajono = {};
         this.jarjestyskriteerit = [];
@@ -346,8 +348,8 @@ angular.module('valintaperusteet')
 
 
     .controller('ValintaryhmaValintatapajonoController', ['$scope', '$location', '$routeParams', '$timeout',
-        'ValintatapajonoModel', 'ValintaryhmaValinnanvaiheModel', 'SuoritaToiminto',
-         function ($scope, $location, $routeParams, $timeout, ValintatapajonoModel, ValintaryhmaValinnanvaiheModel, SuoritaToiminto) {
+        'ValintatapajonoModel', 'ValintaryhmaValinnanvaiheModel', 'SuoritaToiminto', 'OnkoValintatapaJonoaSijoiteltu',
+         function ($scope, $location, $routeParams, $timeout, ValintatapajonoModel, ValintaryhmaValinnanvaiheModel, SuoritaToiminto, OnkoValintatapaJonoaSijoiteltu) {
             "use strict";
 
             $scope.valintaryhmaOid = $routeParams.id;
@@ -355,6 +357,13 @@ angular.module('valintaperusteet')
 
             $scope.model = ValintatapajonoModel;
             $scope.model.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valinnanvaiheOid);
+
+            $scope.forceSiirretaanSijoitteluun = false;
+            if($routeParams.valintatapajonoOid) {
+                $scope.forceSiirretaanSijoitteluun = OnkoValintatapaJonoaSijoiteltu.get({jonoOid: $routeParams.valintatapajonoOid});
+            }
+            $scope.model.valintatapajono.siirretaanSijoitteluun = $scope.forceSiirretaanSijoitteluun;
+
 
             $scope.submit = function () {
                 SuoritaToiminto.avaa(function(success, failure) {

@@ -542,4 +542,9 @@ angular.module('valintaperusteet')
         return $resource(window.url("koodisto-service.codeelement.codes.syotettavanarvontyypit.1"), {
             get: {method: "GET", isArray: true, cache: false}
         });
+    }])
+
+    .factory('OnkoValintatapaJonoaSijoiteltu', ['$resource', function($resource) {
+        return $resource(window.url("valinta-tulos-service.onkoJonoaSijoiteltu", ":jonoOid"), {jonoOid: "@jonoOid"}, {
+        })
     }]);
