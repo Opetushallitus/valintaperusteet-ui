@@ -286,15 +286,17 @@ angular.module('valintaperusteet')
             $scope.model.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valinnanvaiheOid);
 
             $scope.forceSiirretaanSijoitteluun = false;
-            if($routeParams.valintatapajonoOid) {
-                $scope.forceSiirretaanSijoitteluun = OnkoValintatapaJonoaSijoiteltu.get({jonoOid: $routeParams.valintatapajonoOid});
-                if($scope.forceSiirretaanSijoitteluun) {
-                    $scope.$watch('model', function() {
+            if ($routeParams.valintatapajonoOid) {
+                var isSijoiteltu = OnkoValintatapaJonoaSijoiteltu.get({jonoOid: $routeParams.valintatapajonoOid});
+                isSijoiteltu.$promise.then(function (data) {
+                    if (data.IsSijoiteltu) {
                         $scope.model.siirretaanSijoitteluun = true;
-                    });
-                }
+                        $scope.$watch('model', function () {
+                            $scope.model.siirretaanSijoitteluun = true;
+                        });
+                    }
+                });
             }
-            $scope.model.valintatapajono.siirretaanSijoitteluun = $scope.forceSiirretaanSijoitteluun;
 
             $scope.submit = function () {
                 SuoritaToiminto.avaa(function(success, failure) {
@@ -363,23 +365,24 @@ angular.module('valintaperusteet')
          function ($scope, $location, $routeParams, $timeout, ValintatapajonoModel, ValintaryhmaValinnanvaiheModel, SuoritaToiminto, OnkoValintatapaJonoaSijoiteltu) {
             "use strict";
 
-            $scope.valintaryhmaOid = $routeParams.id;
-            $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
+             $scope.valintaryhmaOid = $routeParams.id;
+             $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
 
-            $scope.model = ValintatapajonoModel;
-            $scope.model.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valinnanvaiheOid);
+             $scope.model = ValintatapajonoModel;
+             $scope.model.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valinnanvaiheOid);
 
-            $scope.forceSiirretaanSijoitteluun = false;
-            if($routeParams.valintatapajonoOid) {
-                $scope.forceSiirretaanSijoitteluun = OnkoValintatapaJonoaSijoiteltu.get({jonoOid: $routeParams.valintatapajonoOid});
-                if($scope.forceSiirretaanSijoitteluun) {
-                    $scope.$watch('model', function() {
-                        $scope.model.siirretaanSijoitteluun = true;
-                    });
-                }
-            }
-            $scope.model.valintatapajono.siirretaanSijoitteluun = $scope.forceSiirretaanSijoitteluun;
-
+             $scope.forceSiirretaanSijoitteluun = false;
+             if ($routeParams.valintatapajonoOid) {
+                 var isSijoiteltu = OnkoValintatapaJonoaSijoiteltu.get({jonoOid: $routeParams.valintatapajonoOid});
+                 isSijoiteltu.$promise.then(function (data) {
+                     if (data.IsSijoiteltu) {
+                         $scope.model.siirretaanSijoitteluun = true;
+                         $scope.$watch('model', function () {
+                             $scope.model.siirretaanSijoitteluun = true;
+                         });
+                     }
+                 });
+             }
 
             $scope.submit = function () {
                 SuoritaToiminto.avaa(function(success, failure) {
