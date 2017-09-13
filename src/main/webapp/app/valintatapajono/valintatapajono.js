@@ -275,9 +275,10 @@ angular.module('valintaperusteet')
 }])
 
     .controller('HakukohdeValintatapajonoController', ['$scope', '$location', '$routeParams', 'ValintatapajonoModel',
-        'HakukohdeValinnanVaiheModel', 'SuoritaToiminto', 'OnkoValintatapaJonoaSijoiteltu',
-        function ($scope, $location, $routeParams, ValintatapajonoModel, HakukohdeValinnanVaiheModel, SuoritaToiminto, OnkoValintatapaJonoaSijoiteltu) {
+        'HakukohdeValinnanVaiheModel', 'SuoritaToiminto', 'OnkoValintatapaJonoaSijoiteltu', 'UserModel',
+        function ($scope, $location, $routeParams, ValintatapajonoModel, HakukohdeValinnanVaiheModel, SuoritaToiminto, OnkoValintatapaJonoaSijoiteltu, UserModel) {
             "use strict";
+            UserModel.refreshIfNeeded();
             $scope.hakukohdeOid = $routeParams.hakukohdeOid;
             $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
 
@@ -286,7 +287,8 @@ angular.module('valintaperusteet')
             $scope.model.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valinnanvaiheOid);
 
             $scope.forceSiirretaanSijoitteluun = false;
-            if ($routeParams.valintatapajonoOid) {
+
+            if (!UserModel.isOphUser && $routeParams.valintatapajonoOid) {
                 var isSijoiteltu = OnkoValintatapaJonoaSijoiteltu.get({jonoOid: $routeParams.valintatapajonoOid});
                 isSijoiteltu.$promise.then(function (data) {
                     if (data.IsSijoiteltu) {
@@ -362,10 +364,10 @@ angular.module('valintaperusteet')
 
 
     .controller('ValintaryhmaValintatapajonoController', ['$scope', '$location', '$routeParams', '$timeout',
-        'ValintatapajonoModel', 'ValintaryhmaValinnanvaiheModel', 'SuoritaToiminto', 'OnkoValintatapaJonoaSijoiteltu',
-         function ($scope, $location, $routeParams, $timeout, ValintatapajonoModel, ValintaryhmaValinnanvaiheModel, SuoritaToiminto, OnkoValintatapaJonoaSijoiteltu) {
+        'ValintatapajonoModel', 'ValintaryhmaValinnanvaiheModel', 'SuoritaToiminto', 'OnkoValintatapaJonoaSijoiteltu', 'UserModel',
+         function ($scope, $location, $routeParams, $timeout, ValintatapajonoModel, ValintaryhmaValinnanvaiheModel, SuoritaToiminto, OnkoValintatapaJonoaSijoiteltu, UserModel) {
             "use strict";
-
+             UserModel.refreshIfNeeded();
              $scope.valintaryhmaOid = $routeParams.id;
              $scope.valinnanvaiheOid = $routeParams.valinnanvaiheOid;
 
@@ -373,7 +375,7 @@ angular.module('valintaperusteet')
              $scope.model.refreshIfNeeded($routeParams.valintatapajonoOid, $routeParams.id, $routeParams.hakukohdeOid, $routeParams.valinnanvaiheOid);
 
              $scope.forceSiirretaanSijoitteluun = false;
-             if ($routeParams.valintatapajonoOid) {
+             if (!UserModel.isOphUser && $routeParams.valintatapajonoOid) {
                  var isSijoiteltu = OnkoValintatapaJonoaSijoiteltu.get({jonoOid: $routeParams.valintatapajonoOid});
                  isSijoiteltu.$promise.then(function (data) {
                      if (data.IsSijoiteltu) {
