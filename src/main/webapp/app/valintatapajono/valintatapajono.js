@@ -5,10 +5,11 @@ angular.module('valintaperusteet')
     .factory('ValintatapajonoModel', ['$q', 'Valintatapajono', 'ValinnanvaiheValintatapajono', 'ValintatapajonoJarjestyskriteeri',
         'Laskentakaava', 'Jarjestyskriteeri', 'JarjestyskriteeriJarjesta', 'ValintatapajonoHakijaryhma', 'HakukohdeHakijaryhma',
         'ValintaryhmaHakijaryhma', 'HakijaryhmaValintatapajono', 'ValintatapajonoValmisSijoiteltavaksi', '$modal', 'Ilmoitus',
-        '$location',
+        'KoodistoValintatapajono', '$location',
     function ($q, Valintatapajono, ValinnanvaiheValintatapajono, ValintatapajonoJarjestyskriteeri, Laskentakaava,
               Jarjestyskriteeri, JarjestyskriteeriJarjesta, ValintatapajonoHakijaryhma, HakukohdeHakijaryhma,
-              ValintaryhmaHakijaryhma, HakijaryhmaValintatapajono, ValintatapajonoValmisSijoiteltavaksi, $modal, Ilmoitus, $location) {
+              ValintaryhmaHakijaryhma, HakijaryhmaValintatapajono, ValintatapajonoValmisSijoiteltavaksi, $modal,
+              Ilmoitus, KoodistoValintatapajono, $location) {
     "use strict";
 
 
@@ -18,8 +19,13 @@ angular.module('valintaperusteet')
         this.jarjestyskriteerit = [];
         this.hakijaryhmat = [];
         this.jonot = [];
+        this.valintatapajonoTyypit = [];
 
         this.refresh = function (oid, valinnanVaiheOid) {
+
+            KoodistoValintatapajono.get(function (result) {
+                model.valintatapajonoTyypit = result;
+            });
 
             ValinnanvaiheValintatapajono.get({parentOid: valinnanVaiheOid},
                 function (result) {

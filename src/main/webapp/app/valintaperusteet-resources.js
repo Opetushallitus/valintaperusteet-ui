@@ -156,6 +156,12 @@ angular.module('valintaperusteet')
         });
     }])
 
+    .factory('KoodistoValintatapajono', ['$resource', function ($resource) {
+        return $resource(window.url("koodisto-service.valintatapajono.koodi"), {}, {
+            get: {method: "GET", isArray: true, cache: true}
+        });
+    }])
+
     //Hakukohde
     .factory('RootHakukohde', ['$resource', function ($resource) {
         return $resource(window.url("valintaperusteet-service.hakukohde"), {paataso: true}, {

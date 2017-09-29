@@ -19,6 +19,7 @@ window.urls.addProperties({
     "koodisto-service.haunkohdejoukko.koodi" : "/koodisto-service/rest/json/haunkohdejoukko/koodi",
     "koodisto-service.syotettavanarvontyypit.koodi" : "/koodisto-service/rest/json/syotettavanarvontyypit/koodi",
     "koodisto-service.valintakokeentyyppi.koodi" : "/koodisto-service/rest/json/valintakokeentyyppi/koodi",
+    "koodisto-service.valintatapajono.koodi" : "koodisto-service/rest/json/valintatapajono/koodi",
 
     "lokalisointi.localisation" : "/lokalisointi/cxf/rest/v1/localisation",
 

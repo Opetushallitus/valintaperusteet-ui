@@ -64,6 +64,19 @@
 </div>
 
 <div class="form-group">
+    <label class="control-label col-md-2" for="tyyppi">{{ t('valintatapajono.tyyppi') || 'Valintatapajonon tyyppi'
+        }}</label>
+
+    <div class="col-md-6">
+        <select id="tyyppi" name="tyyppi" auth ng-disabled="!userAccess.updateOrg" class="form-control"
+                ng-model="model.valintatapajono.tyyppi" ng-required="model.valintatapajono.siirretaanSijoitteluun"
+                ng-options="k.koodiUri as k.metadata[0].nimi for k in model.valintatapajonoTyypit">
+            <option value=""></option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
 
     <label class="control-label col-md-2" for="aloituspaikat">{{ t('valintatapajono.aloituspaikat') || 'Aloituspaikat'
         }}</label>
