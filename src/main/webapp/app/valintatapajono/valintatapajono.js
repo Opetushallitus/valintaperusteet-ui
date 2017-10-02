@@ -23,9 +23,7 @@ angular.module('valintaperusteet')
 
         this.refresh = function (oid, valinnanVaiheOid) {
 
-            KoodistoValintatapajono.get(function (result) {
-                model.valintatapajonoTyypit = result;
-            });
+            this.refreshValintatapajonoTyypit();
 
             ValinnanvaiheValintatapajono.get({parentOid: valinnanVaiheOid},
                 function (result) {
@@ -66,6 +64,12 @@ angular.module('valintaperusteet')
             this.refreshJK(oid);
         };
 
+        this.refreshValintatapajonoTyypit = function() {
+            KoodistoValintatapajono.get(function (result) {
+                model.valintatapajonoTyypit = result;
+            });
+        };
+
         this.refreshIfNeeded = function (oid, valintaryhmaOid, hakukohdeOid, valinnanVaiheOid) {
             if (!oid) {
                 model.valintatapajono = {};
@@ -79,7 +83,7 @@ angular.module('valintaperusteet')
                 model.valintatapajono.valisijoittelu = !!model.valintatapajono.valisijoittelu;
                 model.valintatapajono.automaattinenLaskentaanSiirto = !!model.valintatapajono.automaattinenLaskentaanSiirto;
                 model.valintatapajono.automaattinenLaskentaanSiirtoMuokattavissa = !!model.valintatapajono.automaattinenLaskentaanSiirtoMuokattavissa;
-
+                this.refreshValintatapajonoTyypit();
             } else if (oid !== model.valintatapajono.oid) {
                 this.refresh(oid, valinnanVaiheOid);
             }
