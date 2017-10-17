@@ -37,7 +37,7 @@ describe('Valintaryhmän kopiointi', function() {
             wait.forAngular()
         ))
         describe('Alkutilassa', function() {
-            wait.forMilliseconds(10)
+            wait.forAngular()
             it('Aukeaa modaalinen ikkuna', function() {
                 expect(page.kopiointiOtsikko().length).to.equal(1)
             })
