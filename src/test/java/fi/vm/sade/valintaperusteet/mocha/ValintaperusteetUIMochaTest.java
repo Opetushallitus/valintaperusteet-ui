@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class ValintaperusteetUIMochaTestRunner {
+public class ValintaperusteetUIMochaTest {
 
     @Test
     public void mochaTest() throws Exception {
