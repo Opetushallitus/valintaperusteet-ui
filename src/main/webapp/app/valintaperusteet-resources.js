@@ -98,7 +98,7 @@ angular.module('valintaperusteet')
     .factory('NewValintaryhmaValinnanvaihe', ['$resource', function ($resource) {
         return $resource(plainUrl("valintaperusteet-service.valintaryhma.valinnanvaihe", ":valintaryhmaOid"),
             {valintaryhmaOid: "@valintaryhmaOid"},
-            {put: {method: "POST", cache: false}}
+            {insert: {method: "POST", cache: false}}
         );
     }])
 

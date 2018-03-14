@@ -67,7 +67,7 @@ angular.module('valintaperusteet')
                     aktiivinen: true,
                     valinnanVaiheTyyppi: "TAVALLINEN"
                 };
-                NewValintaryhmaValinnanvaihe.put({valintaryhmaOid: parentValintaryhmaOid}, valinnanvaihe, function(result){
+                NewValintaryhmaValinnanvaihe.insert({valintaryhmaOid: parentValintaryhmaOid}, valinnanvaihe, function(result){
                     model.valinnanvaihe = result;
                     valinnanvaiheet.push(result);
                     afterSuccess(function() {});
@@ -184,7 +184,7 @@ angular.module('valintaperusteet')
                     kuvaus: model.valintakoevalinnanvaihe.kuvaus,
                     aktiivinen: true,
                     valinnanVaiheTyyppi: "VALINTAKOE"
-                }
+                };
 
                 NewValintaryhmaValinnanvaihe.put({valintaryhmaOid: parentValintaryhmaOid}, valintakoevalinnanvaihe, function(result){
                     model.valintakoevalinnanvaihe = result;
