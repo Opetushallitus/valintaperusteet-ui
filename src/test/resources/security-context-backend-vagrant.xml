@@ -27,7 +27,6 @@
 <beans:beans xmlns="http://www.springframework.org/schema/security"
              xmlns:beans="http://www.springframework.org/schema/beans"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xmlns:p="http://www.springframework.org/schema/p"
              xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans.xsd
                     http://www.springframework.org/schema/security
@@ -116,16 +115,6 @@
 
     <!-- This filter handles a Single Logout Request from the CAS Server -->
     <beans:bean id="singleLogoutFilter" class="org.jasig.cas.client.session.SingleSignOutFilter"/>
-    <!-- This filter redirects to the CAS Server to signal Single Logout should be performed -->
-    <!-- tata ei oikeasti tarvita, koska logout tehdaan aina kutsumalla suoraan /cas/logout :ia
-    <beans:bean id="requestSingleLogoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
-        <beans:constructor-arg value="${web.url.cas}/logout"/>
-        <beans:constructor-arg>
-            <beans:bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"/>
-        </beans:constructor-arg>
-        <beans:property name="filterProcessesUrl" value="/j_spring_cas_security_logout"/>
-    </beans:bean>
-    -->
 
     <!-- enable proxy authentication (in front proxy) -->
     <!--
@@ -224,21 +213,6 @@
         <beans:property name="sendRenew" value="${cas.sendRenew}"/>
         <beans:property name="authenticateAllArtifacts" value="true"/>
     </beans:bean>
-
-    <!-- Tracing -->
-    <!--
-    <beans:bean name="traceInterceptor" class="fi.vm.sade.security.TraceInterceptor">
-    </beans:bean>
-    <beans:bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
-        <beans:property name="beanNames" value="*WS,*Ws,*AdminService,*PublicService"/>
-        <beans:property name="proxyTargetClass" value="false"/>
-        <beans:property name="interceptorNames">
-            <beans:list>
-                <beans:value>traceInterceptor</beans:value>
-            </beans:list>
-        </beans:property>
-    </beans:bean>
-    -->
 
     <beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
         <beans:constructor-arg>

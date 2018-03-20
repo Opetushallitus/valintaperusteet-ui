@@ -17,7 +17,7 @@ public class JettyTestRunner {
     static Server server = new Server(PORT);
     static WebAppContext webAppContext = new WebAppContext();
 
-    private static void initServer(Server server) throws IOException {
+    private static void initServer(Server server) {
         String[] resources = {ROOT + "/src/main/webapp", ROOT + "/src/test/webapp"};
         webAppContext.setBaseResource(
                 new ResourceCollection(resources)
@@ -50,11 +50,8 @@ public class JettyTestRunner {
     }
 
     public static int portChecker() {
-        try {
-            ServerSocket socket = new ServerSocket(0);
-            int port = socket.getLocalPort();
-            socket.close();
-            return port;
+        try(ServerSocket socket = new ServerSocket(0)) {
+            return socket.getLocalPort();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

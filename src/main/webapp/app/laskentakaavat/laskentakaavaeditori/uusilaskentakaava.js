@@ -5,8 +5,7 @@ angular.module('valintaperusteet').controller('UusiLaskentakaavaController', ['$
     $scope.funktioService = FunktioService;
 
     $scope.kaava = { tyyppi: "NIMETTYLUKUARVO" };
-    
-        
+
     $scope.$on('initializeKaava', function () {
         var funktiokuvaus = FunktiokuvausService.getFunktiokuvaus($scope.kaava.tyyppi);
         var laskentakaava = {
@@ -18,6 +17,7 @@ angular.module('valintaperusteet').controller('UusiLaskentakaavaController', ['$
             funktiokutsu: {
                 funktionimi: $scope.kaava.tyyppi,
                 tallennaTulos: false,
+                omaopintopolku: false,
                 tulosTunniste: null,
                 tulosTekstiFi: null,
                 tulosTekstiSv: null,

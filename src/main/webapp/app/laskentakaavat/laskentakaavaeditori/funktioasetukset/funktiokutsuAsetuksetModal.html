@@ -527,54 +527,72 @@
                         t('laskentakaavaviiteasetuksetmodal.arvonmaarittelyt') || 'Arvon määrittelyt' }}</label>
 
                     <div class="form-item-content">
-
                         <div class="settingsbox">
                             <table class="settingstable table table-striped">
                                 <thead>
-                                <tr>
-                                    <td>{{ t('laskentakaavaviiteasetuksetmodal.maarite') || 'Määrite' }}</td>
-                                    <td>{{ t('laskentakaavaviiteasetuksetmodal.arvo') || 'Arvo' }}</td>
-                                </tr>
+                                    <tr>
+                                        <td>{{ t('laskentakaavaviiteasetuksetmodal.maarite') || 'Määrite' }}</td>
+                                        <td>{{ t('laskentakaavaviiteasetuksetmodal.arvo') || 'Arvo' }}</td>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="funktiokuvausSyoteparametri in funktiokuvausForSelection.syoteparametrit">
-                                    <td ng-if="funktiokuvausSyoteparametri.kuvaus.length <= 0">{{
-                                        t('laskentakaavaviiteasetuksetmodal.avain') || 'Avain' }}:
-                                        {{funktiokuvausSyoteparametri.avain}}
+                                    <tr ng-repeat="funktiokuvausSyoteparametri in funktiokuvausForSelection.syoteparametrit">
+                                        <td ng-if="funktiokuvausSyoteparametri.kuvaus.length <= 0">{{
+                                            t('laskentakaavaviiteasetuksetmodal.avain') || 'Avain' }}:
+                                            {{funktiokuvausSyoteparametri.avain}}
+                                        </td>
+                                        <td ng-if="funktiokuvausSyoteparametri.kuvaus.length > 0">
+                                            {{funktiokuvausSyoteparametri.kuvaus}}
+                                        </td>
+                                        <td ng-init="syoteparametri = getSyoteparametri(funktioSelection.lapsi.syoteparametrit, funktiokuvausSyoteparametri)"
+                                            ng-include="getSyoteparametriTemplate(funktiokuvausSyoteparametri.tyyppi)"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ t('laskentakaavaviiteasetuksetmodal.tallennatulos') || 'Tallenna tulos' }}</td>
+                                        <td><input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="checkbox" size="25"
+                                                   ng-model="funktioSelection.lapsi.tallennaTulos"/></td>
+                                    </tr>
+                                    <tr ng-show="funktioSelection.lapsi.tallennaTulos">
+                                        <td>{{ t('laskentakaavaviiteasetuksetmodal.tulostunniste') || 'Tulostunniste' }}</td>
+                                        <td>
+                                            <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" size="25"
+                                                   placeholder="{{ t('laskentakaavaviiteasetuksetmodal.tulostunnistepakollinen') || 'Tulostunniste on pakollinen' }}"
+                                                   ng-model="funktioSelection.lapsi.tulosTunniste"/>
+                                            <i class="margin-left-1 fa fa-exclamation red"></i>
+                                        </td>
+                                    </tr>
+                                    <tr ng-show="funktioSelection.lapsi.tallennaTulos">
+                                        <td>{{ t('laskentakaavaviiteasetuksetmodal.tulostekstifi') || 'Tulosteksti FI' }}</td>
+                                        <td>
+                                            <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" size="25"
+                                                   placeholder="{{ t('laskentakaavaviiteasetuksetmodal.tulostunnistepakollinen') || 'Tulostunniste on pakollinen' }}"
+                                                   ng-model="funktioSelection.lapsi.tulosTekstiFi"/>
+                                            <i class="margin-left-1 fa fa-exclamation red"></i>
+                                        </td>
+                                    </tr>
+                                    <tr ng-show="funktioSelection.lapsi.tallennaTulos">
+                                        <td>{{ t('laskentakaavaviiteasetuksetmodal.tulostekstisv') || 'Tulosteksti SV' }}</td>
+                                        <td>
+                                            <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" size="25"
+                                                   placeholder="{{ t('laskentakaavaviiteasetuksetmodal.tulostunnistepakollinen') || 'Tulostunniste on pakollinen' }}"
+                                                   ng-model="funktioSelection.lapsi.tulosTekstiSv"/>
+                                            <i class="margin-left-1 fa fa-exclamation red"></i>
+                                        </td>
+                                    </tr>
+                                    <tr ng-show="funktioSelection.lapsi.tallennaTulos">
+                                        <td>{{ t('laskentakaavaviiteasetuksetmodal.tulostekstien') || 'Tulosteksti EN' }}</td>
+                                        <td>
+                                            <input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" size="25"
+                                                   placeholder="{{ t('laskentakaavaviiteasetuksetmodal.tulostunnistepakollinen') || 'Tulostunniste on pakollinen' }}"
+                                                   ng-model="funktioSelection.lapsi.tulosTekstiEn"/>
+                                            <i class="margin-left-1 fa fa-exclamation red"></i>
+                                        </td>
+                                    </tr>
+                                    <td>{{ t('laskentakaavaviiteasetuksetmodal.omaopintopolku') || 'Näytetään Oma Opintopolussa' }}</td>
+                                    <td>
+                                        <input ng-disabled="!funktioSelection.lapsi.tallennaTulos" type="checkbox" size="25"
+                                               ng-model="funktioSelection.lapsi.omaopintopolku"/>
                                     </td>
-                                    <td ng-if="funktiokuvausSyoteparametri.kuvaus.length > 0">
-                                        {{funktiokuvausSyoteparametri.kuvaus}}
-                                    </td>
-                                    <td ng-init="syoteparametri = getSyoteparametri(funktioSelection.lapsi.syoteparametrit, funktiokuvausSyoteparametri)"
-                                        ng-include="getSyoteparametriTemplate(funktiokuvausSyoteparametri.tyyppi)"></td>
-                                </tr>
-                                <tr>
-                                    <td>{{ t('laskentakaavaviiteasetuksetmodal.tallennatulos') || 'Tallenna tulos' }}</td>
-                                    <td><input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="checkbox" size="25"
-                                               ng-model="funktioSelection.lapsi.tallennaTulos"/></td>
-                                </tr>
-                                <tr ng-show="funktioSelection.lapsi.tallennaTulos">
-                                    <td>{{ t('laskentakaavaviiteasetuksetmodal.tulostunniste') || 'Tulostunniste' }}</td>
-                                    <td><input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" size="25"
-                                               placeholder="{{ t('laskentakaavaviiteasetuksetmodal.tulostunnistepakollinen') || 'Tulostunniste on pakollinen' }}"
-                                               ng-model="funktioSelection.lapsi.tulosTunniste"/><i
-                                            class="margin-left-1 fa fa-exclamation red"></i></td>
-                                </tr>
-                                <tr ng-show="funktioSelection.lapsi.tallennaTulos">
-                                    <td>{{ t('laskentakaavaviiteasetuksetmodal.tulostekstifi') || 'Tulosteksti FI' }}</td>
-                                    <td><input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" size="25"
-                                               ng-model="funktioSelection.lapsi.tulosTekstiFi"/></td>
-                                </tr>
-                                <tr ng-show="funktioSelection.lapsi.tallennaTulos">
-                                    <td>{{ t('laskentakaavaviiteasetuksetmodal.tulostekstisv') || 'Tulosteksti SV' }}</td>
-                                    <td><input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" size="25"
-                                               ng-model="funktioSelection.lapsi.tulosTekstiSv"/></td>
-                                </tr>
-                                <tr ng-show="funktioSelection.lapsi.tallennaTulos">
-                                    <td>{{ t('laskentakaavaviiteasetuksetmodal.tulostekstien') || 'Tulosteksti EN' }}</td>
-                                    <td><input ng-disabled="alikaavaValues.isAlikaava || !userAccess.updateOrg" type="text" size="25"
-                                               ng-model="funktioSelection.lapsi.tulosTekstiEn"/></td>
-                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -583,16 +601,12 @@
                 </div>
             </div>
         </div>
-
     </div>
 
-
     <div class="modal-footer">
-
         <button class="btn btn-default btn-sm"
                 ng-disabled="alikaavaValues.isAlikaava || funktioasetukset.parentFunktiokutsu === model.laskentakaavapuu.funktiokutsu || !userAccess.crudOrg"
-                ng-click="laskentakaavaModalService.toggleModalSelection('tallennusKaavana')">{{ t('laskentakaavaviiteasetuksetmodal.kaavanosantallennus') || 'Kaavan osan
-            tallennus' }}
+                ng-click="laskentakaavaModalService.toggleModalSelection('tallennusKaavana')">{{ t('laskentakaavaviiteasetuksetmodal.kaavanosantallennus') || 'Kaavan osan tallennus' }}
         </button>
 
         <button class="btn btn-default btn-sm" ng-click="sulje()"
@@ -605,11 +619,9 @@
 
 
 <div ng-show="laskentakaavaModalService.selection.tallennusKaavana">
-
     <div class="modal-header">
         <!-- tallenna funktiokutsu laskentakaavana -->
-        <h3>{{ t('laskentakaavaviiteasetuksetmodal.tallentaminen') || 'Funktiokutsun tallentaminen
-            laskentakaavana' }}</h3>
+        <h3>{{ t('laskentakaavaviiteasetuksetmodal.tallentaminen') || 'Funktiokutsun tallentaminen laskentakaavana' }}</h3>
     </div>
 
     <div class="modal-body">
@@ -666,13 +678,11 @@
         <button class="btn btn-default btn-sm" ng-click="laskentakaavaModalService.toggleModalSelection('asetukset')" popover-popup-delay="500"
                 popover-placement="top" popover-trigger="mouseenter"
                 popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
-            <i class="fa fa-arrow-left"></i> {{ t('laskentakaavaviiteasetuksetmodal.palaafunktioasetuksiin') || 'Palaa
-            funktioasetuksiin' }}
+            <i class="fa fa-arrow-left"></i> {{ t('laskentakaavaviiteasetuksetmodal.palaafunktioasetuksiin') || 'Palaa funktioasetuksiin' }}
         </button>
         <button class="btn btn-primary btn-sm" ng-disabled="!newKaavaNimi || !userAccess.crudOrg"
                 ng-click="saveAsNewLaskentakaava(funktioasetukset.parentFunktiokutsu, funktioSelection, newKaavaNimi, newKaavaKuvaus, sulje)">
-            <i class="fa fa-floppy-o"></i> {{ t('laskentakaavaviiteasetuksetmodal.tallenna') || 'Tallenna uutena
-            laskentakaavana' }}
+            <i class="fa fa-floppy-o"></i> {{ t('laskentakaavaviiteasetuksetmodal.tallenna') || 'Tallenna uutena laskentakaavana' }}
         </button>
         <button class="btn btn-default btn-sm" ng-click="sulje()" popover-popup-delay="500" popover-placement="top"
                 popover-trigger="mouseenter"

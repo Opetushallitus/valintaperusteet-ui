@@ -36,17 +36,19 @@ angular.module('valintaperusteet')
             };
 
             this.makeRootValidations = function (rootFunktiokutsu) {
+                var nimi = FunktioNimiService.getName(rootFunktiokutsu.funktionimi);
 
                 // tallennatulos valittu -> tulostunniste täytyy olla määritelty
                 // tehdään tarkistus ensin rootille
                 if (rootFunktiokutsu.tallennaTulos === true && _.isEmpty(rootFunktiokutsu.tulosTunniste)) {
-                    var nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu;
-                    nimi = FunktioNimiService.getName(rootFunktiokutsu.funktionimi);
-                    funktiokutsu = rootFunktiokutsu;
-                    parent = undefined;
-                    isFunktiokutsu = FunktioService.isFunktiokutsu(rootFunktiokutsu);
-                    funktiokutsuIndex = index;
-                    utility.addValidationError(nimi, KaavaVirheTyypit.PUUTTUVATALLENNATULOS, parent, funktiokutsu, funktiokutsuIndex);
+                    utility.addValidationError(nimi, KaavaVirheTyypit.PUUTTUVATALLENNATULOS, null, rootFunktiokutsu, index);
+                }
+
+                // tallennatulos valittu -> tulostekstit täytyy olla määritelty
+                // tehdään tarkistus ensin rootille
+                if (rootFunktiokutsu.tallennaTulos === true &&
+                    (_.isEmpty(rootFunktiokutsu.tulosTekstiFi) || _.isEmpty(rootFunktiokutsu.tulosTekstiSv) || _.isEmpty(rootFunktiokutsu.tulosTekstiEn))) {
+                    utility.addValidationError(nimi, KaavaVirheTyypit.PUUTTUVATULOSTEKSTI, null, rootFunktiokutsu, index);
                 }
 
                 // tallennatulos valittu -tarkistus rootin lapsille
@@ -64,6 +66,17 @@ angular.module('valintaperusteet')
                         );
                     }
 
+                    if (funktioargumentti.lapsi.tallennaTulos === true &&
+                        (_.isEmpty(funktioargumentti.lapsi.tulosTekstiFi) || _.isEmpty(funktioargumentti.lapsi.tulosTekstiSv) || _.isEmpty(funktioargumentti.lapsi.tulosTekstiEn))) {
+                        utility.addValidationError(
+                            FunktioNimiService.getName(funktioargumentti.lapsi.funktionimi),
+                            KaavaVirheTyypit.PUUTTUVATULOSTEKSTI,
+                            rootFunktiokutsu,
+                            funktioargumentti,
+                            funktioargumenttiIndex
+                        );
+                    }
+
                     //Tarkistetaan että hae totuusarvo ja konvertoi lukuarvoksi -funktiokutsulle on määritelty vähintään yksi arvokonvertteri
                     if (funktioargumentti.lapsi.funktionimi === "HAETOTUUSARVOJAKONVERTOILUKUARVOKSI" && (_.isEmpty(funktioargumentti.lapsi.arvokonvertteriparametrit) && _.isEmpty(funktioargumentti.lapsi.arvovalikonvertteriparametrit) )) {
                         utility.addValidationError(
@@ -74,20 +87,12 @@ angular.module('valintaperusteet')
                             funktioargumenttiIndex
                         );
                     }
-
-
                 });
 
 
                 // tarkistetaan onko kaikki nimetyt funktioargumentit määritelty
                 if (_.isEmpty(rootFunktiokutsu.funktioargumentit[0])) {
-                    var nimi, kuvaus, parent, funktiokutsu, funktiokutsuIndex, isFunktiokutsu;
-                    nimi = FunktioNimiService.getName(rootFunktiokutsu.funktionimi);
-                    funktiokutsu = rootFunktiokutsu;
-                    parent = undefined;
-                    isFunktiokutsu = FunktioService.isFunktiokutsu(rootFunktiokutsu);
-                    funktiokutsuIndex = 0;
-                    utility.addValidationError(nimi, KaavaVirheTyypit.JUURIPUUTTUVANIMETTYFUNKTIOARGUMENTTI, parent, funktiokutsu, funktiokutsuIndex);
+                    utility.addValidationError(nimi, KaavaVirheTyypit.JUURIPUUTTUVANIMETTYFUNKTIOARGUMENTTI, null, rootFunktiokutsu, 0);
                 }
             };
 

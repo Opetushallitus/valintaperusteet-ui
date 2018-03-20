@@ -16,14 +16,13 @@ public class ValintaPerusteetUiTomcat extends EmbeddedTomcat {
         super(port, ajpPort, MODULE_ROOT, CONTEXT_PATH);
     }
 
-    public final static void main(String... args) throws ServletException, LifecycleException {
+    public final static void main(String... args) {
         useIntegrationTestSettingsIfNoProfileSelected();
         new ValintaPerusteetUiTomcat(
                 Integer.parseInt(System.getProperty("/valintaperusteet-ui-app.port", String.valueOf(DEFAULT_PORT))),
                 Integer.parseInt(System.getProperty("/valintaperusteet-ui-app.port.ajp", String.valueOf(DEFAULT_AJP_PORT)))
         ).start().await();
     }
-
 
     private static void useIntegrationTestSettingsIfNoProfileSelected() {
         System.setProperty("application.system.cache", "false");
