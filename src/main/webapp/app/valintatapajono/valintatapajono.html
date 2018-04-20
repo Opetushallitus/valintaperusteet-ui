@@ -170,16 +170,16 @@
 </div>
 <div class="form-group">
 
-    <label class="control-label col-md-2" for="automaattinenLaskentaanSiirto">{{
-        t('valintatapajono.automaattinenLaskentaanSiirto') || 'Siirretäänkö lasketut tulokset automaattisesti
+    <label class="control-label col-md-2" for="automaattinenSijoitteluunSiirto">{{
+        t('valintatapajono.automaattinenSijoitteluunSiirto') || 'Siirretäänkö lasketut tulokset automaattisesti
         sijoitteluun'}}</label>
 
     <div class="col-md-2">
         <div class="checkbox">
             <label>
-                <input auth ng-disabled="!userAccess.updateOrg || (model.valmisSijoiteltavaksi && !userAccess.crudOph)" type="checkbox" id="automaattinenLaskentaanSiirto"
-                       name="automaattinenLaskentaanSiirto"
-                       ng-model="model.valintatapajono.automaattinenLaskentaanSiirto">
+                <input auth ng-disabled="!userAccess.updateOrg || (model.valmisSijoiteltavaksi && !userAccess.crudOph)" type="checkbox" id="automaattinenSijoitteluunSiirto"
+                       name="automaattinenSijoitteluunSiirto"
+                       ng-model="model.valintatapajono.automaattinenSijoitteluunSiirto">
             </label>
         </div>
     </div>
