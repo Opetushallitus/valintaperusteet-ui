@@ -186,7 +186,7 @@ angular.module('valintaperusteet')
                     valinnanVaiheTyyppi: "VALINTAKOE"
                 };
 
-                NewValintaryhmaValinnanvaihe.put({valintaryhmaOid: parentValintaryhmaOid}, valintakoevalinnanvaihe, function(result){
+                NewValintaryhmaValinnanvaihe.insert({valintaryhmaOid: parentValintaryhmaOid}, valintakoevalinnanvaihe, function(result){
                     model.valintakoevalinnanvaihe = result;
                     valinnanvaiheet.push(result);
                     afterSuccess(function() {});
