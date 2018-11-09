@@ -1,0 +1,43 @@
+sudo: required
+
+language: java
+
+jdk:
+- oraclejdk8
+
+services:
+- docker
+
+cache:
+  directories:
+  - $HOME/.m2
+
+env:
+  global:
+  # AWS_ACCESS_KEY_ID
+  - secure: "fKGkjIaLNtE/jsNdJsR4m0ihFA99hqF/HikVuRDjopooFGN3Ux2VZcm6LaztVOZWq8SCNRK6sKMt65A22HJzxLuURyIUI8UJHGXZfJHTEm92nz6pwVxrcHyH/sS9epOGudvsG/cF/PciCab2YM6SePUsn28E8SFkmNGUTjptHgcCIkg1R+fHXaJtWR0k/tnbTp+GIAv266NI0lS8W9X64Bvt/n0J4PE54bfjmUoXcG36nred7FDbhATmtNhb2nrjXpocOWNlMBCP77Lo+69l7A6jC9zTf/1WonPoyJ91K1SEBDAesYbo0ECPiiBZo6o9wHXhXbM62xa8edxQcGoCthawp4rzST5GeUqktzzjNQT6sBRHD9xeXyoT8HWboOniPd78ixJUoHTR6Qj/MdOJZZzUxv8B6Mb6IADaweKTOlRuZwoOJjbjtvgHZwz4WnDuUjKEyxGLyI7fmKNShgIhANUVebdpf8NTaC4vhVueVWQSD5i1UWX+YkVrkjE0r2JBC1fVTDcl3RLXBgWGDjirtehXnNf/2Xwb/y21yjEkAUCh0j3mMk6foKyGmlnRx4Mdtz0mfjfHPlY1JHR/mDh9uplpw6IeaHHMspO2jjXFvRJt9mLll96x23eP2+BzCHMJWdE7k6u/wM5r7iSDOVq2NWll7TWwqne7ggOoKNvIyWU="
+  # AWS_SECRET_ACCESS_KEY
+  - secure: "yebsJDqd/MEPJqtV8PXEr1av6xM6xzko00PKpZG7XgOH0+5loSrbGABlEh6qXDJPGfjW99ZzQvUfdLxeJyJ0mahbhNyEzRwEf0Ee4HmYuKYfyBg4dzQK6wcvSestVFZCUPJqrRg1TB5gjuNZZc+k6ezx7wXNb7l7SW/yavPo3LU8p5WGbtLDr9wsjU5WU1Exs2IFdpZjdLfmP/dwIuoNNqzVRaQHVQSRYlPcfW4EWGgxya/zSrPAa2TawHDnNRl0YQKe8oqZRuxqI8W+dQWLtKxhnpPtJNc5xj4AmzV7bJnRIyN46KYQM5a5iPJYWpYxji0bGysSHXZA/x//+SKk3xSWLBfJcDYpSX6vKmEwOk15wNu0opsYhD/8cefL9CJroubsnTh4N9RNzasfczPtpxSIBDH++YmdOHzT6BRVngYS84w2phGWA2X7AsiF74zZvQgvBMOgiHcP2UvV6L9gzRGC9NF360QUJU76D4usBbZn2jLompdtZRw5YY/i0ZiaNRAvd5aZHDUsYn8SwnsytglNetFYJfYXmQ+gK1Hn7PaV7LVDkTfTKeCU6FOaymukzGoAF90OUTmDtt10PxBOgXh9tFGLbX+P46PBa4o5FKNG+ArelFd2Js+a5Sy+gLSrHcfgwxNoFfWTLtxk/moGfejXKRZR6r+4t0pEFlLDP2Q="
+
+install:
+- git clone https://github.com/Opetushallitus/ci-tools.git
+- source ci-tools/common/setup-tools.sh
+- sudo sh -c "printf '\n%s penaali.hard.ware.fi\n' $(dig +short artifactory.opintopolku.fi|head -n1) >> /etc/hosts"
+- export ARTIFACT_NAME="valintaperusteet-ui"
+
+script:
+- ./webbuild.sh
+- mvn clean package -B -Dbranch=${TRAVIS_BRANCH} -Drevision=${TRAVIS_COMMIT} -DbuildNumber=${TRAVIS_BUILD_NUMBER}
+
+- mv target/valintaperusteet-ui.war $DOCKER_BUILD_DIR/artifact/valintaperusteet-ui.war
+- cp -vr src/main/resources/oph-configuration $DOCKER_BUILD_DIR/config/
+
+- export BASE_IMAGE="baseimage-war:master"
+- ./ci-tools/common/pull-image.sh
+- ./ci-tools/build/build-war.sh $ARTIFACT_NAME
+
+deploy:
+- provider: script
+  script: ./ci-tools/build/upload-image.sh $ARTIFACT_NAME
+  on:
+    all_branches: true
