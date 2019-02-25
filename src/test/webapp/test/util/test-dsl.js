@@ -113,8 +113,8 @@ function sleep(ms) {
 }
 
 wait = {
-    maxWaitMs: 20000,
-    waitIntervalMs: 10,
+    maxWaitMs: 40000,
+    waitIntervalMs: 20,
     until: function (condition, count) {
         return function (/*...promiseArgs*/) {
             var promiseArgs = arguments;
