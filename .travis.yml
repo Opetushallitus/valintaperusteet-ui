@@ -20,7 +20,7 @@ env:
   - secure: "yebsJDqd/MEPJqtV8PXEr1av6xM6xzko00PKpZG7XgOH0+5loSrbGABlEh6qXDJPGfjW99ZzQvUfdLxeJyJ0mahbhNyEzRwEf0Ee4HmYuKYfyBg4dzQK6wcvSestVFZCUPJqrRg1TB5gjuNZZc+k6ezx7wXNb7l7SW/yavPo3LU8p5WGbtLDr9wsjU5WU1Exs2IFdpZjdLfmP/dwIuoNNqzVRaQHVQSRYlPcfW4EWGgxya/zSrPAa2TawHDnNRl0YQKe8oqZRuxqI8W+dQWLtKxhnpPtJNc5xj4AmzV7bJnRIyN46KYQM5a5iPJYWpYxji0bGysSHXZA/x//+SKk3xSWLBfJcDYpSX6vKmEwOk15wNu0opsYhD/8cefL9CJroubsnTh4N9RNzasfczPtpxSIBDH++YmdOHzT6BRVngYS84w2phGWA2X7AsiF74zZvQgvBMOgiHcP2UvV6L9gzRGC9NF360QUJU76D4usBbZn2jLompdtZRw5YY/i0ZiaNRAvd5aZHDUsYn8SwnsytglNetFYJfYXmQ+gK1Hn7PaV7LVDkTfTKeCU6FOaymukzGoAF90OUTmDtt10PxBOgXh9tFGLbX+P46PBa4o5FKNG+ArelFd2Js+a5Sy+gLSrHcfgwxNoFfWTLtxk/moGfejXKRZR6r+4t0pEFlLDP2Q="
 
 install:
-- git clone --single-branch --branch jdk11 https://github.com/Opetushallitus/ci-tools.git
+- git clone https://github.com/Opetushallitus/ci-tools.git
 - source ci-tools/common/setup-tools.sh
 - sudo sh -c "printf '\n%s penaali.hard.ware.fi\n' $(dig +short artifactory.opintopolku.fi|head -n1) >> /etc/hosts"
 - export ARTIFACT_NAME="valintaperusteet-ui"
