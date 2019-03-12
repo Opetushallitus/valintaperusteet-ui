@@ -1,4 +1,4 @@
-/* master at https://github.com/Opetushallitus/haku/tree/master/haku-app/src/main/webapp/test/util/test-dsl.js */
+/* master at https://github.com/Opetushallitus/haku/tree/master/haku-app/src/main/resources/webapp/test/util/test-dsl.js */
 
 testDslDebug = false
 function dslDebug() {

@@ -8,7 +8,7 @@
 
     <name>Valintaperusteet :: UI</name>
 
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <properties>
         <spring.asm.version>3.1.4.RELEASE</spring.asm.version>
@@ -109,7 +109,6 @@
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
                 <version>3.1.0</version>
-                <scope>provided</scope>
             </dependency>
             <!-- spring security -->
             <dependency>
@@ -169,12 +168,6 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-webapp</artifactId>
-                <version>9.2.11.v20150529</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>4.12</version>
@@ -189,6 +182,21 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>fi.vm.sade.java-utils</groupId>
+            <artifactId>opintopolku-jetty</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>9.4.15.v20190215</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>9.4.15.v20190215</version>
+        </dependency>
         <dependency>
             <groupId>fi.vm.sade.java-utils</groupId>
             <artifactId>java-properties</artifactId>
@@ -277,10 +285,6 @@
             <artifactId>embedded-tomcat</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-webapp</artifactId>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
@@ -318,8 +322,8 @@
                         </goals>
                         <configuration>
                             <target>
-                                <echo message="writing target/${project.build.finalName}/buildversion.txt"/>
-                                <echo file="target/${project.build.finalName}/buildversion.txt">
+                                <echo message="writing ${project.build.outputDirectory}/webapp/buildversion.txt"/>
+                                <echo file="${project.build.outputDirectory}/webapp/buildversion.txt">
                                     <![CDATA[artifactId=${project.artifactId}
 version=${project.version}
 buildNumber=${build}
@@ -329,7 +333,7 @@ buildTtime=${maven.build.timestamp}
 ]]>
                                 </echo>
                                 <loadfile property="buildversiontxt"
-                                          srcFile="target/${project.build.finalName}/buildversion.txt"/>
+                                          srcFile="${project.build.outputDirectory}/webapp/buildversion.txt"/>
                                 <echo message="${buildversiontxt}"/>
                                 <echo file="target/mavenversion.txt">${project.version}</echo>
                             </target>
@@ -393,6 +397,42 @@ buildTtime=${maven.build.timestamp}
                     </rules>
                   </configuration>
                 </execution>
+              </executions>
+          </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-shade-plugin</artifactId>
+              <version>3.2.1</version>
+              <executions>
+                  <execution>
+                      <phase>package</phase>
+                      <goals>
+                          <goal>shade</goal>
+                      </goals>
+                      <configuration>
+                          <shadedArtifactAttached>true</shadedArtifactAttached>
+                          <shadedClassifierName>allinone</shadedClassifierName>
+                          <filters>
+                              <filter>
+                                  <artifact>*:*</artifact>
+                              </filter>
+                          </filters>
+                          <transformers>
+                              <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                  <manifestEntries>
+                                      <Main-Class>fi.vm.sade.valintaperusteet.ValintaperusteUiJetty</Main-Class>
+                                  </manifestEntries>
+                              </transformer>
+                              <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                  <resource>META-INF/spring.handlers</resource>
+                              </transformer>
+                              <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                  <resource>META-INF/spring.schemas</resource>
+                              </transformer>
+                          </transformers>
+                      </configuration>
+                  </execution>
               </executions>
           </plugin>
         </plugins>
