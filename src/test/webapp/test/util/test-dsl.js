@@ -1,4 +1,4 @@
-/* master at https://github.com/Opetushallitus/haku/tree/master/haku-app/src/main/webapp/test/util/test-dsl.js */
+/* master at https://github.com/Opetushallitus/haku/tree/master/haku-app/src/main/resources/webapp/test/util/test-dsl.js */
 
 testDslDebug = false
 function dslDebug() {
@@ -113,8 +113,8 @@ function sleep(ms) {
 }
 
 wait = {
-    maxWaitMs: 20000,
-    waitIntervalMs: 10,
+    maxWaitMs: 40000,
+    waitIntervalMs: 20,
     until: function (condition, count) {
         return function (/*...promiseArgs*/) {
             var promiseArgs = arguments;

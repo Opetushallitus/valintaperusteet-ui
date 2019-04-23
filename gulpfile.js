@@ -10,13 +10,13 @@ var gulp = require('gulp'),
 
 
 var paths = {
-    common: 'src/main/webapp/common/',
-    awesomeFontsOutput: 'src/main/webapp/common/fonts/',
+    common: 'src/main/resources/webapp/common/',
+    awesomeFontsOutput: 'src/main/resources/webapp/common/fonts/',
     awesomeFontsSrc: 'bower_components/fontawesome/fonts/**.*',
     fontAwesomeSrc: 'bower_components/fontawesome/css/font-awesome.min.css',
-    fontAwesomeOutput: 'src/main/webapp/common/css/',
+    fontAwesomeOutput: 'src/main/resources/webapp/common/css/',
 
-    jslib: 'src/main/webapp/common/jslib/',
+    jslib: 'src/main/resources/webapp/common/jslib/',
     testSourceRoot: 'src/test/ui/',
 
     bower_components: [
@@ -59,27 +59,27 @@ var paths = {
 
     ],
     livereloadSources: [
-        'src/main/webapp/app/**/*.*',
-        'src/main/webapp/common/css/other.css',
-        'src/main/webapp/common/css/virkailija.css',
-        'src/main/webapp/common/js/**/*.*',
-        'src/main/webapp/common/partials/**/*.*'
+        'src/main/resources/webapp/app/**/*.*',
+        'src/main/resources/webapp/common/css/other.css',
+        'src/main/resources/webapp/common/css/virkailija.css',
+        'src/main/resources/webapp/common/js/**/*.*',
+        'src/main/resources/webapp/common/partials/**/*.*'
     ],
-    css: 'src/main/webapp/common/css/',
+    css: 'src/main/resources/webapp/common/css/',
     sass: 'sass/valintaperusteet.scss',
     dev: [
         'bower_components/angular-mocks/angular-mocks.js',
         'bower_components/angular-mocks/angular-scenario.js'
     ],
     testfiles: [
-        'src/main/webapp/common/jslib/jquery.js',
-        'src/main/webapp/common/jslib/angular.js',
-        'src/main/webapp/common/jslib/*.js',
-        '!src/main/webapp/common/jslib/**/*.min.js',
-        '!src/main/webapp/common/jslib/ui-bootstrap-tpls-0.7.0.js',
-        'src/main/webapp/app/valintaperusteet.js',
-        'src/main/webapp/app/**/*.js',
-        'src/main/webapp/common/js/**/*.js',
+        'src/main/resources/webapp/common/jslib/jquery.js',
+        'src/main/resources/webapp/common/jslib/angular.js',
+        'src/main/resources/webapp/common/jslib/*.js',
+        '!src/main/resources/webapp/common/jslib/**/*.min.js',
+        '!src/main/resources/webapp/common/jslib/ui-bootstrap-tpls-0.7.0.js',
+        'src/main/resources/webapp/app/valintaperusteet.js',
+        'src/main/resources/webapp/app/**/*.js',
+        'src/main/resources/webapp/common/js/**/*.js',
         'src/test/ui/angular-mocks.js',
         'src/test/ui/unit/**/*.js'
     ]

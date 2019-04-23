@@ -18,18 +18,17 @@ public class JettyTestRunner {
     static WebAppContext webAppContext = new WebAppContext();
 
     private static void initServer(Server server) {
-        String[] resources = {ROOT + "/src/main/webapp", ROOT + "/src/test/webapp"};
+        String[] resources = {ROOT + "/src/main/resources/webapp", ROOT + "/src/test/webapp"};
         webAppContext.setBaseResource(
                 new ResourceCollection(resources)
         );
-        webAppContext.setContextPath("/valintaperusteet-ui");
         webAppContext.setDescriptor(ROOT + "/src/test/webapp/WEB-INF/web.xml");
         server.setHandler(webAppContext);
     }
 
-    public static void start() throws Exception {
+    public static void start() {
         initServer(server);
-        server.start();
+        ValintaperusteUiJetty.JETTY.start(webAppContext, server, ValintaperusteUiJetty.CONTEXT_PATH);
     }
 
     public static void stop() throws Exception {
