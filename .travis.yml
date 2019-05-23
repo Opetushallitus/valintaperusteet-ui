@@ -26,7 +26,6 @@ install:
 - export ARTIFACT_NAME="valintaperusteet-ui"
 
 script:
-- ./webbuild.sh
 - mvn clean package -B -Dbranch=${TRAVIS_BRANCH} -Drevision=${TRAVIS_COMMIT} -DbuildNumber=${TRAVIS_BUILD_NUMBER}
 
 - mv target/valintaperusteet-ui-*allinone.jar $DOCKER_BUILD_DIR/artifact/${ARTIFACT_NAME}.jar
