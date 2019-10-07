@@ -15,7 +15,7 @@ var app = angular.module('valintaperusteet', ['ngResource', 'ngCookies', 'loadin
     })
 
     .run(function($http, $cookies) {
-        $http.defaults.headers.common['clientSubSystemCode'] = "valintaperusteet.valintaperusteet-ui.frontend";
+        $http.defaults.headers.common['Caller-Id'] = "1.2.246.562.10.00000000001.valintaperusteet.valintaperusteet-ui.frontend";
         if($cookies['CSRF']) {
             $http.defaults.headers.common['CSRF'] = $cookies['CSRF'];
         }

@@ -7,7 +7,7 @@ modules.forEach(function(module) {
        .factory('csrfHeaderInterceptor', ['$cookies', function ($cookies) {
            return {
                request: function (config) {
-                   config.headers['clientSubSystemCode'] = "valintaperusteet.valintaperusteet-ui.frontend";
+                   config.headers['Caller-Id'] = "1.2.246.562.10.00000000001.valintaperusteet.valintaperusteet-ui.frontend";
 
                    var csrfToken = $cookies['CSRF'];
                    if (csrfToken) {
