@@ -11,6 +11,8 @@
     <packaging>jar</packaging>
 
     <properties>
+        <valintaperusteet-ui.mainClass>fi.vm.sade.valintaperusteet.ValintaperusteUiJetty</valintaperusteet-ui.mainClass>
+
         <frontend-maven-plugin.version>1.7.6</frontend-maven-plugin.version>
         <spring.asm.version>3.1.4.RELEASE</spring.asm.version>
         <spring.version>5.1.5.RELEASE</spring.version>
@@ -449,7 +451,7 @@ buildTtime=${maven.build.timestamp}
                               <transformer
                                 implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                   <manifestEntries>
-                                      <Main-Class>fi.vm.sade.valintaperusteet.ValintaperusteUiJetty</Main-Class>
+                                      <Main-Class>${valintaperusteet-ui.mainClass}</Main-Class>
                                   </manifestEntries>
                               </transformer>
                               <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
@@ -464,6 +466,23 @@ buildTtime=${maven.build.timestamp}
               </executions>
           </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <configuration>
+                        <mainClass>${valintaperusteet-ui.mainClass}</mainClass>
+                        <systemProperties>
+                            <systemProperty>
+                                <key>user.home</key>
+                                <value>${env.VALINTAPERUSTEET_UI_USER_HOME}</value>
+                            </systemProperty>
+                        </systemProperties>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <repositories>
