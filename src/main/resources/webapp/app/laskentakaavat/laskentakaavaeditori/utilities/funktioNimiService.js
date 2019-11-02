@@ -49,7 +49,8 @@ factory('FunktioNimiService', function() {
 			NIMETTYTOTUUSARVO: 'Nimetty totuusarvo',
             HAEYOARVOSANA: 'Hae YO-arvosana',
             HAEOSAKOEARVOSANA: 'Hae YO-kokeen pisteet',
-            HAKUKELPOISUUS: 'Hakukelpoisuus'
+            HAKUKELPOISUUS: 'Hakukelpoisuus',
+            HAEAMMATILLINENARVOSANA: 'Hae ammatillinen arvosana',
 		};
 
 		this.getName = function(funktionimi) {
