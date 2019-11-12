@@ -11,7 +11,7 @@
 
     <beans profile="default">
         <context:property-placeholder
-                location="classpath:valintaperusteet-ui.properties, file:///${user.home:''}/oph-configuration/common.properties, file:///${user.home:''}/oph-configuration/valinta.properties, file:///${user.home:''}/oph-configuration/valintaperusteet-ui.properties, file:///${user.home:''}/oph-configuration/override.properties"
+                location="file:///${user.home:''}/oph-configuration/common.properties, file:///${user.home:''}/oph-configuration/valinta.properties, file:///${user.home:''}/oph-configuration/valintaperusteet-ui.properties, file:///${user.home:''}/oph-configuration/override.properties"
                 ignore-resource-not-found="true"
                 properties-ref="defaultProps"/>
 
