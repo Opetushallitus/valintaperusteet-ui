@@ -49,7 +49,7 @@ angular.module('valintaperusteet').factory('FunktioNimiService', function () {
       HAEYOARVOSANA: 'Hae YO-arvosana',
       HAEOSAKOEARVOSANA: 'Hae YO-kokeen pisteet',
       HAKUKELPOISUUS: 'Hakukelpoisuus',
-      HAEAMMATILLINENYTOARVOSANA: 'Hae ammatillinen arvosana',
+      HAEAMMATILLINENYTOARVOSANA: 'Hae ammatillinen yto:n arvosana',
     };
 
     this.getName = function (funktionimi) {
