@@ -64,6 +64,7 @@ angular.module('valintaperusteet').factory('TemplateService', function () {
         HAEYOARVOSANA: 'haettava_arvo',
         HAEOSAKOEARVOSANA: 'haettava_arvo',
         HAEAMMATILLINENYTOARVOSANA: 'haettava_arvo',
+        ONKOAMMATILLINENYTOARVIOINTIASTEIKKO: 'haettava_arvo',
 
         SUMMA: 'summa',
 

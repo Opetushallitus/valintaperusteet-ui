@@ -633,6 +633,10 @@ YHTASUURI
             </td>
         </tr>
         <tr>
+            <td ng-click="addFunktio(parent, 'ONKOAMMATILLINENYTOARVIOINTIASTEIKKO', funktioSlotIndex); showNewFunktioList.visible = false">
+                <span>{{ t('laskentakaavapuu.onkoammatillinenytoarviointiasteikko') || 'Onko ammatillinen yto-arviointiasteikko' }}</span></td>
+        </tr>
+        <tr>
             <td ng-if="parent.lapsi"
                 ng-click="addLaskentakaavaviite(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.viittaus') || 'Viittaus toiseen kaavaan' }}</span>
             </td>
