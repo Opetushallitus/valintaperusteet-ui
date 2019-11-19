@@ -19,6 +19,9 @@
         <spring.security.version>4.2.11.RELEASE</spring.security.version>
 
         <maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <dependencyManagement>
