@@ -379,6 +379,7 @@ buildTtime=${maven.build.timestamp}
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.3</version>
                 <configuration>
                     <webResources>
                         <resource>
@@ -391,6 +392,7 @@ buildTtime=${maven.build.timestamp}
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M4</version>
                 <executions>
                     <execution>
                         <id>performance-parser-service-it</id>
