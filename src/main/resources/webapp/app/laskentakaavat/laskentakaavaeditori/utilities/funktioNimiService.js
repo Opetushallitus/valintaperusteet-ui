@@ -50,7 +50,6 @@ angular.module('valintaperusteet').factory('FunktioNimiService', function () {
       HAEOSAKOEARVOSANA: 'Hae YO-kokeen pisteet',
       HAKUKELPOISUUS: 'Hakukelpoisuus',
       HAEAMMATILLINENYTOARVOSANA: 'Hae ammatillinen yto:n arvosana',
-      ONKOAMMATILLINENYTOARVIOINTIASTEIKKO: 'Onko ammatillinen yto:n arviointiasteikko',
       HAEAMMATILLINENYTOARVIOINTIASTEIKKO: 'Hae ammatillinen yto:n arviointiasteikko'
     };
 
