@@ -100,7 +100,9 @@ angular.module('valintaperusteet').factory('TemplateService', function () {
 
         HYLKAAARVOVALILLA: 'hylkaa_arvovalilla',
         NIMETTYLUKUARVO: 'nimetty_lukuarvo',
-        NIMETTYTOTUUSARVO: 'nimetty_totuusarvo'
+        NIMETTYTOTUUSARVO: 'nimetty_totuusarvo',
+
+        ITEROIAMMATILLISETTUTKINNOT: 'funktio'
 
       };
       return map[key];
