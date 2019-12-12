@@ -547,6 +547,10 @@ YHTASUURI
                 <span>{{ t('laskentakaavapuu.yoarvosana') || 'YO-arvosana' }}</span></td>
         </tr>
         <tr>
+            <td ng-click="addFunktio(parent, 'ITEROIAMMATILLISETTUTKINNOT', funktioSlotIndex); showNewFunktioList.visible = false">
+                <span>{{ t('laskentakaavapuu.iteroiammatillisettutkinnot') || 'Iteroi ammatilliset perustutkinnot' }}</span></td>
+        </tr>
+        <tr>
             <td ng-click="addFunktio(parent, 'HAEAMMATILLINENYTOARVOSANA', funktioSlotIndex); showNewFunktioList.visible = false">
                 <span>{{ t('laskentakaavapuu.ammatillinenytoarvosana') || 'Ammatillinen yto-arvosana' }}</span></td>
         </tr>
