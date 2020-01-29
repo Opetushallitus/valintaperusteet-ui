@@ -51,7 +51,12 @@ angular.module('valintaperusteet').factory('FunktioNimiService', function () {
       HAKUKELPOISUUS: 'Hakukelpoisuus',
       HAEAMMATILLINENYTOARVOSANA: 'Hae ammatillinen yto:n arvosana',
       HAEAMMATILLINENYTOARVIOINTIASTEIKKO: 'Hae ammatillinen yto:n arviointiasteikko',
-      ITEROIAMMATILLISETTUTKINNOT: 'Iteroi ammatilliset perustutkinnot'
+      ITEROIAMMATILLISETTUTKINNOT: 'Iteroi ammatilliset perustutkinnot',
+      ITEROIAMMATILLISETOSAT: 'Iteroi ammatillisen tutkinnon osat',
+      HAEAMMATILLISENOSANLAAJUUS: 'Hae ammatillisen tutkinnon osan laajuus',
+      HAEAMMATILLISENOSANARVOSANA: 'Hae ammatillisen tutkinnon osan arvosana',
+      HAEAMMATILLISENTUTKINNONKESKIARVO: 'Hae ammatillisten tutkinnon tallennettu keskiarvo',
+      HAEAMMATILLISENTUTKINNONSUORITUSTAPA: 'Hae ammatillisen tutkinnon suoritustapa'
     };
 
     this.getName = function (funktionimi) {

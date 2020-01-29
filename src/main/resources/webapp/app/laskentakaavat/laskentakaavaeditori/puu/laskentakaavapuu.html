@@ -573,14 +573,26 @@ YHTASUURI
             <tr>
                 <td ng-click="addFunktio(parent, 'ITEROIAMMATILLISETTUTKINNOT', funktioSlotIndex); showNewFunktioList.visible = false">
                     <span>{{ t('laskentakaavapuu.iteroiammatillisettutkinnot') || 'Iteroi ammatilliset perustutkinnot' }}</span></td>
-            </tr>
-            <tr>
                 <td ng-click="addFunktio(parent, 'HAEAMMATILLINENYTOARVOSANA', funktioSlotIndex); showNewFunktioList.visible = false">
                     <span>{{ t('laskentakaavapuu.ammatillinenytoarvosana') || 'Ammatillinen yto-arvosana' }}</span></td>
             </tr>
             <tr>
+                <td ng-click="addFunktio(parent, 'ITEROIAMMATILLISETOSAT', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.iteroiammatillisetosat') || 'Iteroi ammatillisen tutkinnon osat' }}</span></td>
                 <td ng-click="addFunktio(parent, 'HAEAMMATILLINENYTOARVIOINTIASTEIKKO', funktioSlotIndex); showNewFunktioList.visible = false">
                     <span>{{ t('laskentakaavapuu.ammatillinenytoarviointiasteikko') || 'Hae ammatillinen yto-arviointiasteikko ja konvertoi lukuarvoksi' }}</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'HAEAMMATILLISENTUTKINNONSUORITUSTAPA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.haeammatillisentutkinnonsuoritustapa') || 'Hae ammatillisen tutkinnon suoritustapa ja konvertoi lukuarvoksi' }}</span></td>
+                <td ng-click="addFunktio(parent, 'HAEAMMATILLISENOSANARVOSANA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.haeammatillisenosanarvosana') || 'Hae ammatillisen tutkinnon osan arvosana' }}</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'HAEAMMATILLISENTUTKINNONKESKIARVO', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.haeammatillisentutkinnon keskiarvo') || 'Hae ammatillisen tutkinnon tallennettu keskiarvo' }}</span></td>
+                <td ng-click="addFunktio(parent, 'HAEAMMATILLISENOSANLAAJUUS', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.haeammatillisentutkinnonosanlaajuus') || 'Hae ammatillisen tutkinnon osan laajuus' }}</span></td>
             </tr>
             </tbody>
         </table>
