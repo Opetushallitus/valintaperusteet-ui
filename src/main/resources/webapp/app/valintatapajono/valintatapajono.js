@@ -12,7 +12,11 @@ angular.module('valintaperusteet')
               Ilmoitus, KoodistoValintatapajono, $location) {
     "use strict";
 
-
+    function lastMomentOfDate(date) {
+        const lastMoment = new Date(date)
+        lastMoment.setHours(23, 59, 59, 999)
+        return lastMoment
+    }
 
     var model = new function () {
         this.valintatapajono = {};
@@ -44,7 +48,11 @@ angular.module('valintaperusteet')
                 model.valintatapajono.astiRajattu = !!model.valintatapajono.varasijojaTaytetaanAsti;
                 if(model.valintatapajono.varasijojaTaytetaanAsti) {
                     model.valintatapajono.varasijojaTaytetaanAsti = new Date(model.valintatapajono.varasijojaTaytetaanAsti);
-                } 
+                }
+
+                if (model.valintatapajono.eiLasketaPaivamaaranJalkeen) {
+                    model.valintatapajono.eiLasketaPaivamaaranJalkeen = lastMomentOfDate(new Date(model.valintatapajono.eiLasketaPaivamaaranJalkeen));
+                }
 
                 if(model.valintatapajono.varasijojaKaytetaanAlkaen) {
                     model.valintatapajono.varasijojaKaytetaanAlkaen = new Date(model.valintatapajono.varasijojaKaytetaanAlkaen);
@@ -133,6 +141,9 @@ angular.module('valintaperusteet')
                         if(model.valintatapajono.varasijojaTaytetaanAsti) {
                             model.valintatapajono.varasijojaTaytetaanAsti = new Date(model.valintatapajono.varasijojaTaytetaanAsti);
                         }
+                        if (model.valintatapajono.eiLasketaPaivamaaranJalkeen) {
+                            model.valintatapajono.eiLasketaPaivamaaranJalkeen = lastMomentOfDate(new Date(model.valintatapajono.eiLasketaPaivamaaranJalkeen));
+                        }
                         valintatapajonot.push(result);
                         $location.path($location.path() + result.oid);
                         afterSuccess(function() {});
@@ -159,6 +170,10 @@ angular.module('valintaperusteet')
 
                     if(model.valintatapajono.varasijojaTaytetaanAsti) {
                         model.valintatapajono.varasijojaTaytetaanAsti = new Date(model.valintatapajono.varasijojaTaytetaanAsti);
+                    }
+
+                    if (model.valintatapajono.eiLasketaPaivamaaranJalkeen) {
+                        model.valintatapajono.eiLasketaPaivamaaranJalkeen = lastMomentOfDate(new Date(model.valintatapajono.eiLasketaPaivamaaranJalkeen));
                     }
                 }).$promise);
 
@@ -370,6 +385,12 @@ angular.module('valintaperusteet')
                 $event.stopPropagation();
                 $scope.astiRajattuOpen = true;
             };
+
+            $scope.openEiLasketaPaivamaaranJalkeen = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+                $scope.eiLasketaPaivamaaranJalkeenOpen = true;
+            }
         }])
 
 
@@ -462,7 +483,12 @@ angular.module('valintaperusteet')
                 $scope.astiRajattuOpen = true;
             };
 
-        }])
+            $scope.openEiLasketaPaivamaaranJalkeen = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+                $scope.eiLasketaPaivamaaranJalkeenOpen = true;
+            }
+         }])
 
 
 .factory('HakijaryhmaLiitaModel', ['$resource', '$location', '$routeParams', 'Hakijaryhma', 'HakijaryhmaLiita',
@@ -499,7 +525,7 @@ angular.module('valintaperusteet')
     $scope.model.refresh();
     $scope.hakukohdeModel = HakukohdeModel;
     $scope.domain = ValintaryhmaModel;
-        
+
     if($routeParams.id) {
         ValintaryhmaModel.refresh($routeParams.id);
     } else if($routeParams.hakukohdeOid) {
