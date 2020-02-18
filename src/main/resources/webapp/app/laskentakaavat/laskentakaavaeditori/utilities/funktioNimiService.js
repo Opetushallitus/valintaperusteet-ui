@@ -56,7 +56,10 @@ angular.module('valintaperusteet').factory('FunktioNimiService', function () {
       HAEAMMATILLISENOSANLAAJUUS: 'Hae ammatillisen tutkinnon osan laajuus',
       HAEAMMATILLISENOSANARVOSANA: 'Hae ammatillisen tutkinnon osan arvosana',
       HAEAMMATILLISENTUTKINNONKESKIARVO: 'Hae ammatillisten tutkinnon tallennettu keskiarvo',
-      HAEAMMATILLISENTUTKINNONSUORITUSTAPA: 'Hae ammatillisen tutkinnon suoritustapa'
+      HAEAMMATILLISENTUTKINNONSUORITUSTAPA: 'Hae ammatillisen tutkinnon suoritustapa',
+      ITEROIAMMATILLISETYTOOSAALUEET: 'Iteroi ammatillisen tutkinnon YTOn osa-alueet',
+      HAEAMMATILLISENYTOOSAALUEENLAAJUUS: 'Hae ammatillisen tutkinnon YTOn osa-alueen laajuus',
+      HAEAMMATILLISENYTOOSAALUEENARVOSANA: 'Hae ammatillisen tutkinnon YTOn osa-alueen arvosana'
     };
 
     this.getName = function (funktionimi) {

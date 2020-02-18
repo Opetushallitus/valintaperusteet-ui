@@ -72,6 +72,9 @@ angular.module('valintaperusteet').factory('TemplateService', function () {
         HAEAMMATILLISENOSANARVOSANA: 'funktio',
         HAEAMMATILLISENTUTKINNONKESKIARVO: 'funktio',
         HAEAMMATILLISENTUTKINNONSUORITUSTAPA: 'funktio',
+        ITEROIAMMATILLISETYTOOSAALUEET: 'funktio',
+        HAEAMMATILLISENYTOOSAALUEENLAAJUUS: 'funktio',
+        HAEAMMATILLISENYTOOSAALUEENARVOSANA: 'funktio',
 
         SUMMA: 'summa',
 
