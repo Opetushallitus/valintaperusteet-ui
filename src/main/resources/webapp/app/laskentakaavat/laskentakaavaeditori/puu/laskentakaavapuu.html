@@ -392,7 +392,10 @@ YHTASUURI
                     parent.lapsi.funktionimi === 'HYLKAA' ||
                     parent.lapsi.funktionimi === 'KONVERTOILUKUARVO' ||
                     parent.lapsi.funktionimi === 'PYORISTYS' || 
-                    parent.lapsi.funktionimi === 'HYLKAAARVOVALILLA'">
+                    parent.lapsi.funktionimi === 'HYLKAAARVOVALILLA' ||
+                    parent.lapsi.funktionimi === 'ITEROIAMMATILLISETYTOOSAALUEET' ||
+                    parent.lapsi.funktionimi === 'ITEROIAMMATILLISETTUTKINNOT' ||
+                    parent.lapsi.funktionimi === 'ITEROIAMMATILLISETOSAT'">
             <span ng-if="$index == 0"><i style="font-size: 18px" class="fa fa-plus-square kaavaeditor-blue"></i> {{ t('laskentakaavapuu.funktioargumentti') || 'Funktioargumentti' }}</span>
         </div>
         <div ng-if="parent.lapsi.funktionimi === 'NIMETTYTOTUUSARVO'">
