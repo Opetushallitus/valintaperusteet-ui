@@ -9,11 +9,11 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("webapp/common/jslib/angular"));
+		module.exports = factory(require("angular"));
 	else if(typeof define === 'function' && define.amd)
-		define(["webapp/common/jslib/angular"], factory);
+		define(["angular"], factory);
 	else if(typeof exports === 'object')
-		exports["angularCacheModuleName"] = factory(require("webapp/common/jslib/angular"));
+		exports["angularCacheModuleName"] = factory(require("angular"));
 	else
 		root["angularCacheModuleName"] = factory(root["angular"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
