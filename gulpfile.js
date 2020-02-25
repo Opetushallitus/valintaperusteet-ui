@@ -1,7 +1,6 @@
 var gulp = require('gulp'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
-    runSequence = require('run-sequence'),
     clean = require('gulp-clean'),
     watch = require('gulp-watch'),
     livereload = require('gulp-livereload'),
@@ -85,25 +84,9 @@ var paths = {
     ]
 };
 
-
-// Default
-gulp.task('default', function (callback) {
-    runSequence('test-singlerun', callback);
-});
-
-// Development
-gulp.task('dev', function (callback) {
-    runSequence(['test-watch', 'css', 'livereload'], function(){} );
-});
-
-
-gulp.task('build', function () {
-    runSequence(['sourceLibs', 'testLibs', 'icons', 'fontAwesomeCss'], function(){});
-});
-
 gulp.task('sourceLibs', function () {
     return gulp
-        .src(paths.bower_components)
+        .src(paths.bower_components, { allowEmpty: true })
         .pipe(gulp.dest(paths.jslib));
 });
 
@@ -129,7 +112,7 @@ gulp.task('icons', function() { 
 
 gulp.task('testLibs', function () {
     return gulp
-        .src(paths.dev)
+        .src(paths.dev, { allowEmpty: true })
         .pipe(gulp.dest(paths.testSourceRoot));
 });
 
@@ -164,4 +147,16 @@ gulp.task('test-watch', function () {
         }));
 });
 
+// Default
+gulp.task('default', gulp.series('test-singlerun', function(done) {
+    done()
+}));
 
+// Development
+gulp.task('dev', gulp.series('test-watch', 'css', 'livereload', function(done) {
+    done()
+}));
+
+gulp.task('build', gulp.series('sourceLibs', 'testLibs', 'icons', 'fontAwesomeCss', function(done) {
+    done()
+}));

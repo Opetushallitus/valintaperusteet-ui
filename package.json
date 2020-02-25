@@ -1,5 +1,14 @@
 {
   "devDependencies": {
+    "bower": "^1.8.8",
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-karma": "^0.0.5",
+    "gulp-livereload": "^4.0.2",
+    "gulp-uglify": "^3.0.2",
+    "gulp-watch": "^5.0.1",
+    "karma": "^4.4.1",
     "test": "*",
     "phantomjs-prebuilt": "~2.1.7",
     "mocha-phantomjs-core": "2.0.1"
