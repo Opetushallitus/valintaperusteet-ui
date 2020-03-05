@@ -392,7 +392,10 @@ YHTASUURI
                     parent.lapsi.funktionimi === 'HYLKAA' ||
                     parent.lapsi.funktionimi === 'KONVERTOILUKUARVO' ||
                     parent.lapsi.funktionimi === 'PYORISTYS' || 
-                    parent.lapsi.funktionimi === 'HYLKAAARVOVALILLA'">
+                    parent.lapsi.funktionimi === 'HYLKAAARVOVALILLA' ||
+                    parent.lapsi.funktionimi === 'ITEROIAMMATILLISETYTOOSAALUEET' ||
+                    parent.lapsi.funktionimi === 'ITEROIAMMATILLISETTUTKINNOT' ||
+                    parent.lapsi.funktionimi === 'ITEROIAMMATILLISETOSAT'">
             <span ng-if="$index == 0"><i style="font-size: 18px" class="fa fa-plus-square kaavaeditor-blue"></i> {{ t('laskentakaavapuu.funktioargumentti') || 'Funktioargumentti' }}</span>
         </div>
         <div ng-if="parent.lapsi.funktionimi === 'NIMETTYTOTUUSARVO'">
@@ -459,114 +462,156 @@ YHTASUURI
 <!-- UUSI LUKUARVOFUNKTIO -->
 <script type="text/ng-template" id="lukuarvoFunktiot">
 
-    <table class="dropmenu-table" ng-controller="funktioMenuController">
-        <thead>
-        <th colspan="2">{{ t('laskentakaavapuu.lisaa') || 'Lisää uusi funktio' }} <span class="float-right"
-                                                                                        ng-click="showNewFunktioList.visible = false"><i
-                style="font-size: 18px;" class="fa fa-times-circle-o"></i></span></th>
-        </thead>
-        <tbody>
-        <tr>
-            <td ng-click="addFunktio(parent, 'HAELUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.haelukuarvo') || 'Hae lukuarvo' }}</span></td>
-            <td ng-click="addFunktio(parent, 'LUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.vakio') || 'Vakio' }}</span>
-            </td>
-        </tr>
-        <tr>
-            <td ng-click="addFunktio(parent, 'SUMMA', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.summa') || 'Summa' }}</span></td>
-            <td ng-click="addFunktio(parent, 'JOS', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.jos') || 'Jos' }}</span></td>
-        </tr>
-        <tr>
-            <td ng-click="addFunktio(parent, 'TULO', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.tulo') || 'Tulo' }}</span></td>
-            <td ng-click="addFunktio(parent, 'OSAMAARA', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.osamaara') || 'Osamäärä' }}</span>
-            </td>
-        </tr>
-        <tr>
-            <td ng-click="addFunktio(parent, 'KESKIARVO', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.keskiarvo') || 'Keskiarvo' }}</span>
-            </td>
-            <td ng-click="addFunktio(parent, 'MEDIAANI', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.mediaani') || 'Mediaani' }}</span>
-            </td>
-        </tr>
-        <tr>
-            <td ng-click="addFunktio(parent, 'MINIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.minimi') || 'Minimi' }}</span>
-            </td>
-            <td ng-click="addFunktio(parent, 'MAKSIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.maksimi') || 'Maksimi' }}</span>
-            </td>
-        </tr>
-        <tr>
-            <td ng-click="addFunktio(parent, 'SUMMANPARASTA', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.nparastasumma') || 'N parasta summa' }}</span></td>
-            <td ng-click="addFunktio(parent, 'KESKIARVONPARASTA', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.nparastakeskiarvo') || 'N parasta keskiarvo' }}</span></td>
-        </tr>
-        <tr>
-            <td ng-click="addFunktio(parent, 'TULONPARASTA', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.nparastatulo') || 'N parasta tulo' }}</span></td>
-            <td ng-click="addFunktio(parent, 'PAINOTETTUKESKIARVO', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.painotettukeskiarvo') || 'Painotettu keskiarvo' }}</span></td>
-        </tr>
-        <tr>
-            <td ng-click="addFunktio(parent, 'NMAKSIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.nparas') || 'N paras' }}</span>
-            </td>
-            <td ng-click="addFunktio(parent, 'NMINIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.nhuonoin') || 'N huonoin' }}</span>
-            </td>
-        </tr>
-        <tr>
-            <td ng-click="addFunktio(parent, 'NEGAATIO', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.negaatio') || 'Negaatio' }}</span>
-            </td>
-            <td ng-click="addFunktio(parent, 'PYORISTYS', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.pyoristys') || 'Pyöristys' }}</span>
-            </td>
-        </tr>
-        <tr>
-            <td ng-click="addFunktio(parent, 'HYLKAA', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.hylkaa') || 'Hylkää' }}</span>
-            </td>
-            <td ng-click="addFunktio(parent, 'HYLKAAARVOVALILLA', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.hylkaaarvovalilla') || 'Hylkää arvovälillä' }}</span></td>
-        </tr>
-        <tr>
-            <td ng-click="addFunktio(parent, 'KONVERTOILUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.konversio') || 'Konversio' }}</span></td>
-            <td ng-click="addFunktio(parent, 'HAEOSAKOEARVOSANA', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.yoosakoearvosana') || 'YO-kokeen pisteet' }}</span>
-            </td>
-        </tr>
-        <tr>
-            <td ng-click="addFunktio(parent, 'HAETOTUUSARVOJAKONVERTOILUKUARVOKSI', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.haetotuusarvojakonvertoilukuarvoksi') || 'Hae totuusarvo ja konvertoi lukuarvoksi' }}</span>
-            </td>
-            <td ng-click="addFunktio(parent, 'NIMETTYLUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.nimettylukuarvo') || 'Nimetty lukuarvo' }}</span></td>
-        </tr>
-        <tr>
-            <td ng-click="addFunktio(parent, 'HAELUKUARVOEHDOLLA', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.haelukuarvoehdolla') || 'Hae lukuarvo ehdolla' }}</span></td>
-            <td ng-click="addFunktio(parent, 'HAEYOARVOSANA', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.yoarvosana') || 'YO-arvosana' }}</span></td>
-        </tr>
-        <tr>
-            <td ng-click="addFunktio(parent, 'HAEAMMATILLINENYTOARVOSANA', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.ammatillinenytoarvosana') || 'Ammatillinen yto-arvosana' }}</span></td>
-        </tr>
-        <tr>
-            <td ng-click="addFunktio(parent, 'HAEAMMATILLINENYTOARVIOINTIASTEIKKO', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.ammatillinenytoarviointiasteikko') || 'Hae ammatillinen yto-arviointiasteikko ja konvertoi lukuarvoksi' }}</span></td>
-        </tr>
-        <tr ng-if="parent.lapsi">
-            <td ng-click="addLaskentakaavaviite(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.viittaus') || 'Viittaus toiseen kaavaan' }}</span>
-            </td>
-            <td ng-click="addFunktio(parent, 'HAEMERKKIJONOJAKONVERTOILUKUARVOKSI', funktioSlotIndex); showNewFunktioList.visible = false">
-                <span>{{ t('laskentakaavapuu.haemerkkijono') || 'Hae merkkijono ja konvertoi lukuarvoksi' }}</span></td>
-        </tr>
-        <tr>
-            <td ng-click="addFunktio(parent, 'SKAALAUS', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.skaalaus') || 'Skaalaus' }}</span>
-            </td>
-            <td ng-if="clipboard && clipboard.lapsi.tyyppi === 'LUKUARVOFUNKTIO'" ng-click="pasteFunktiokutsu(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.lisaaleikepoydalta') || 'Lisää funktiokutsu leikepöydältä'}}</span></td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="funktiotaulukot">
+
+        <table class="dropmenu-table" ng-controller="funktioMenuController">
+            <thead>
+            <th colspan="2">{{ t('laskentakaavapuu.lisaa') || 'Lisää uusi funktio' }} <span class="float-right"
+                                                                                            ng-click="showNewFunktioList.visible = false"><i
+                    style="font-size: 18px;" class="fa fa-times-circle-o"></i></span></th>
+            </thead>
+            <tbody>
+            <tr>
+                <td ng-click="addFunktio(parent, 'HAELUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.haelukuarvo') || 'Hae lukuarvo' }}</span></td>
+                <td ng-click="addFunktio(parent, 'LUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.vakio') || 'Vakio' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'SUMMA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.summa') || 'Summa' }}</span></td>
+                <td ng-click="addFunktio(parent, 'JOS', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.jos') || 'Jos' }}</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'TULO', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.tulo') || 'Tulo' }}</span></td>
+                <td ng-click="addFunktio(parent, 'OSAMAARA', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.osamaara') || 'Osamäärä' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'KESKIARVO', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.keskiarvo') || 'Keskiarvo' }}</span>
+                </td>
+                <td ng-click="addFunktio(parent, 'MEDIAANI', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.mediaani') || 'Mediaani' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'MINIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.minimi') || 'Minimi' }}</span>
+                </td>
+                <td ng-click="addFunktio(parent, 'MAKSIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.maksimi') || 'Maksimi' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'SUMMANPARASTA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.nparastasumma') || 'N parasta summa' }}</span></td>
+                <td ng-click="addFunktio(parent, 'KESKIARVONPARASTA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.nparastakeskiarvo') || 'N parasta keskiarvo' }}</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'TULONPARASTA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.nparastatulo') || 'N parasta tulo' }}</span></td>
+                <td ng-click="addFunktio(parent, 'PAINOTETTUKESKIARVO', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.painotettukeskiarvo') || 'Painotettu keskiarvo' }}</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'NMAKSIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.nparas') || 'N paras' }}</span>
+                </td>
+                <td ng-click="addFunktio(parent, 'NMINIMI', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.nhuonoin') || 'N huonoin' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'NEGAATIO', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.negaatio') || 'Negaatio' }}</span>
+                </td>
+                <td ng-click="addFunktio(parent, 'PYORISTYS', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.pyoristys') || 'Pyöristys' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'HYLKAA', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.hylkaa') || 'Hylkää' }}</span>
+                </td>
+                <td ng-click="addFunktio(parent, 'HYLKAAARVOVALILLA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.hylkaaarvovalilla') || 'Hylkää arvovälillä' }}</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'KONVERTOILUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.konversio') || 'Konversio' }}</span></td>
+                <td ng-click="addFunktio(parent, 'HAEOSAKOEARVOSANA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.yoosakoearvosana') || 'YO-kokeen pisteet' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'HAETOTUUSARVOJAKONVERTOILUKUARVOKSI', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.haetotuusarvojakonvertoilukuarvoksi') || 'Hae totuusarvo ja konvertoi lukuarvoksi' }}</span>
+                </td>
+                <td ng-click="addFunktio(parent, 'NIMETTYLUKUARVO', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.nimettylukuarvo') || 'Nimetty lukuarvo' }}</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'HAELUKUARVOEHDOLLA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.haelukuarvoehdolla') || 'Hae lukuarvo ehdolla' }}</span></td>
+                <td ng-click="addFunktio(parent, 'HAEYOARVOSANA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.yoarvosana') || 'YO-arvosana' }}</span></td>
+            </tr>
+            <tr ng-if="parent.lapsi">
+                <td ng-click="addLaskentakaavaviite(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.viittaus') || 'Viittaus toiseen kaavaan' }}</span>
+                </td>
+                <td ng-click="addFunktio(parent, 'HAEMERKKIJONOJAKONVERTOILUKUARVOKSI', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.haemerkkijono') || 'Hae merkkijono ja konvertoi lukuarvoksi' }}</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'SKAALAUS', funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.skaalaus') || 'Skaalaus' }}</span>
+                </td>
+                <td ng-if="clipboard && clipboard.lapsi.tyyppi === 'LUKUARVOFUNKTIO'" ng-click="pasteFunktiokutsu(parent, funktioSlotIndex); showNewFunktioList.visible = false"><span>{{ t('laskentakaavapuu.lisaaleikepoydalta') || 'Lisää funktiokutsu leikepöydältä'}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="dropmenu-table" ng-controller="funktioMenuController">
+            <thead>
+            <th colspan="2">{{ t('laskentakaavapuu.lisaa.koskifunktio') || 'Lisää uusi Koskesta dataa hakeva funktio' }} <span class="float-right"
+                                                                                                                               ng-click="showNewFunktioList.visible = false"><i
+                    style="font-size: 18px;" class="fa fa-times-circle-o"></i></span></th>
+            </thead>
+            <tbody>
+            <tr>
+                <td ng-click="addFunktio(parent, 'ITEROIAMMATILLISETTUTKINNOT', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.iteroiammatillisettutkinnot') || 'Iteroi ammatilliset perustutkinnot' }}</span></td>
+                <td ng-click="addFunktio(parent, 'HAEAMMATILLINENYTOARVOSANA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.ammatillinenytoarvosana') || 'Ammatillinen yto-arvosana' }}</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'ITEROIAMMATILLISETOSAT', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.iteroiammatillisetosat') || 'Iteroi ammatillisen tutkinnon osat' }}</span></td>
+                <td ng-click="addFunktio(parent, 'HAEAMMATILLINENYTOARVIOINTIASTEIKKO', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.ammatillinenytoarviointiasteikko') || 'Hae ammatillinen yto-arviointiasteikko ja konvertoi lukuarvoksi' }}</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'HAEAMMATILLISENTUTKINNONSUORITUSTAPA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.haeammatillisentutkinnonsuoritustapa') || 'Hae ammatillisen tutkinnon suoritustapa ja konvertoi lukuarvoksi' }}</span></td>
+                <td ng-click="addFunktio(parent, 'HAEAMMATILLISENOSANARVOSANA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.haeammatillisenosanarvosana') || 'Hae ammatillisen tutkinnon osan arvosana' }}</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'HAEAMMATILLISENTUTKINNONKESKIARVO', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.haeammatillisentutkinnon_keskiarvo') || 'Hae ammatillisen tutkinnon tallennettu keskiarvo' }}</span></td>
+                <td ng-click="addFunktio(parent, 'HAEAMMATILLISENOSANLAAJUUS', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.haeammatillisentutkinnonosanlaajuus') || 'Hae ammatillisen tutkinnon osan laajuus' }}</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'ITEROIAMMATILLISETYTOOSAALUEET', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.iteroiammatillisetytoosaalueet') || 'Iteroi ammatillisen tutkinnon YTOn osa-alueet' }}</span></td>
+                <td ng-click="addFunktio(parent, 'HAEAMMATILLISENYTOOSAALUEENLAAJUUS', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.haeammatillisenytonosaalueenlaajuus') || 'Hae ammatillisen tutkinnon YTON osa-alueen laajuus' }}</span></td>
+            </tr>
+            <tr>
+                <td ng-click="addFunktio(parent, 'HAEAMMATILLISENYTOOSAALUEENARVOSANA', funktioSlotIndex); showNewFunktioList.visible = false">
+                    <span>{{ t('laskentakaavapuu.haeammatillisenytonosaalueenarvosana') || 'Hae ammatillisen tutkinnon YTON osa-alueen arvosana' }}</span></td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
 </script>
 
 <!-- UUSI TOTUUSARVOFUNKTIO -->

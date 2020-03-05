@@ -50,7 +50,16 @@ angular.module('valintaperusteet').factory('FunktioNimiService', function () {
       HAEOSAKOEARVOSANA: 'Hae YO-kokeen pisteet',
       HAKUKELPOISUUS: 'Hakukelpoisuus',
       HAEAMMATILLINENYTOARVOSANA: 'Hae ammatillinen yto:n arvosana',
-      HAEAMMATILLINENYTOARVIOINTIASTEIKKO: 'Hae ammatillinen yto:n arviointiasteikko'
+      HAEAMMATILLINENYTOARVIOINTIASTEIKKO: 'Hae ammatillinen yto:n arviointiasteikko',
+      ITEROIAMMATILLISETTUTKINNOT: 'Iteroi ammatilliset perustutkinnot',
+      ITEROIAMMATILLISETOSAT: 'Iteroi ammatillisen tutkinnon osat',
+      HAEAMMATILLISENOSANLAAJUUS: 'Hae ammatillisen tutkinnon osan laajuus',
+      HAEAMMATILLISENOSANARVOSANA: 'Hae ammatillisen tutkinnon osan arvosana',
+      HAEAMMATILLISENTUTKINNONKESKIARVO: 'Hae ammatillisten tutkinnon tallennettu keskiarvo',
+      HAEAMMATILLISENTUTKINNONSUORITUSTAPA: 'Hae ammatillisen tutkinnon suoritustapa',
+      ITEROIAMMATILLISETYTOOSAALUEET: 'Iteroi ammatillisen tutkinnon YTOn osa-alueet',
+      HAEAMMATILLISENYTOOSAALUEENLAAJUUS: 'Hae ammatillisen tutkinnon YTOn osa-alueen laajuus',
+      HAEAMMATILLISENYTOOSAALUEENARVOSANA: 'Hae ammatillisen tutkinnon YTOn osa-alueen arvosana'
     };
 
     this.getName = function (funktionimi) {

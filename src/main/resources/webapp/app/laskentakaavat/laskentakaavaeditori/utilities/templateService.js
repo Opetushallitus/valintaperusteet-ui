@@ -63,8 +63,18 @@ angular.module('valintaperusteet').factory('TemplateService', function () {
         VALINTAPERUSTEYHTASUURUUS: 'haettava_arvo',
         HAEYOARVOSANA: 'haettava_arvo',
         HAEOSAKOEARVOSANA: 'haettava_arvo',
+
         HAEAMMATILLINENYTOARVOSANA: 'haettava_arvo',
         HAEAMMATILLINENYTOARVIOINTIASTEIKKO: 'haettava_arvo',
+        ITEROIAMMATILLISETTUTKINNOT: 'funktio',
+        ITEROIAMMATILLISETOSAT: 'funktio',
+        HAEAMMATILLISENOSANLAAJUUS: 'funktio',
+        HAEAMMATILLISENOSANARVOSANA: 'funktio',
+        HAEAMMATILLISENTUTKINNONKESKIARVO: 'funktio',
+        HAEAMMATILLISENTUTKINNONSUORITUSTAPA: 'funktio',
+        ITEROIAMMATILLISETYTOOSAALUEET: 'funktio',
+        HAEAMMATILLISENYTOOSAALUEENLAAJUUS: 'funktio',
+        HAEAMMATILLISENYTOOSAALUEENARVOSANA: 'funktio',
 
         SUMMA: 'summa',
 
@@ -100,7 +110,7 @@ angular.module('valintaperusteet').factory('TemplateService', function () {
 
         HYLKAAARVOVALILLA: 'hylkaa_arvovalilla',
         NIMETTYLUKUARVO: 'nimetty_lukuarvo',
-        NIMETTYTOTUUSARVO: 'nimetty_totuusarvo'
+        NIMETTYTOTUUSARVO: 'nimetty_totuusarvo',
 
       };
       return map[key];
