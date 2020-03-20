@@ -1458,13 +1458,9 @@ label, .label {
 /*** Dropmenu table
 ************************************************/
 /* laskentakaavojen dropdown funktiolistalle */
-.funktiotaulukot {
-  position: absolute;
-}
 table.dropmenu-table {
   position: relative;
   z-index: 10;
-  width: 100%;
   top: -25px;
   left: -5px;
   border-collapse: separate;
