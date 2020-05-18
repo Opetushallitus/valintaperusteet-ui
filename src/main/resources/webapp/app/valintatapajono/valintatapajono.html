@@ -224,8 +224,10 @@
                    clear-text="Tyhjennä"
                    current-text="Tänään"
             />
-            <span class="input-group-btn">
-                        <a class="btn btn-default btn-sm" ng-click="openEiLasketaPaivamaaranJalkeen($event)"><i
+            <span class="input-group-btn"
+                  auth ng-disabled="nykyinenArvoOnMenneisyydessa() && !userAccess.crudOph">
+                        <a class="btn btn-default btn-sm" ng-click="openEiLasketaPaivamaaranJalkeen($event)"
+                           auth ng-disabled="nykyinenArvoOnMenneisyydessa() && !userAccess.crudOph"><i
                                 class="glyphicon glyphicon-calendar"></i></a>
                     </span>
         </p>

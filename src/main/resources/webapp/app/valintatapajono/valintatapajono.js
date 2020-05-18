@@ -391,6 +391,20 @@ angular.module('valintaperusteet')
                 $event.stopPropagation();
                 $scope.eiLasketaPaivamaaranJalkeenOpen = true;
             }
+
+            $scope.nykyinenArvoOnMenneisyydessa = function() {
+                var currentValue = $scope.model.valintatapajono.eiLasketaPaivamaaranJalkeen
+                if (currentValue == null) {
+                    console.log("Current = null");
+                    return false;
+                } else {
+                    var currentTime = new Date();
+                    var disabled = currentValue < currentTime;
+                    console.log("Nykyinen " + currentValue + ", aika nyt: " + currentTime + ", disabled: " + disabled);
+                    return disabled;
+                }
+
+            }
         }])
 
 
