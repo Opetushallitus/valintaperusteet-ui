@@ -395,7 +395,6 @@ angular.module('valintaperusteet')
             $scope.nykyinenArvoOnMenneisyydessa = function() {
                 var currentValue = $scope.model.valintatapajono.eiLasketaPaivamaaranJalkeen
                 if (currentValue == null) {
-                    console.log("Current = null");
                     return false;
                 } else {
                     var currentTime = new Date();
