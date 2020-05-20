@@ -393,12 +393,12 @@ angular.module('valintaperusteet')
             }
 
             $scope.nykyinenArvoOnMenneisyydessa = function() {
-                var currentValue = $scope.model.valintatapajono.eiLasketaPaivamaaranJalkeen
-                if (currentValue == null) {
+                if ($scope.model.valintatapajono.eiLasketaPaivamaaranJalkeen == null) {
                     return false;
                 } else {
                     var currentTime = new Date();
-                    var disabled = currentValue < currentTime;
+                    var currentValue = new Date($scope.model.valintatapajono.eiLasketaPaivamaaranJalkeen);
+                    var disabled = currentValue.setHours(0,0,0,0) < currentTime.setHours(0,0,0,0);
                     console.log("Nykyinen " + currentValue + ", aika nyt: " + currentTime + ", disabled: " + disabled);
                     return disabled;
                 }
