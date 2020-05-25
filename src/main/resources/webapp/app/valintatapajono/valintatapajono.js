@@ -391,6 +391,17 @@ angular.module('valintaperusteet')
                 $event.stopPropagation();
                 $scope.eiLasketaPaivamaaranJalkeenOpen = true;
             }
+
+            $scope.nykyinenArvoOnMenneisyydessa = function() {
+                if ($scope.model.valintatapajono.eiLasketaPaivamaaranJalkeen == null) {
+                    return false;
+                } else {
+                    var currentTime = new Date();
+                    var currentValue = new Date($scope.model.valintatapajono.eiLasketaPaivamaaranJalkeen);
+                    return currentValue.setHours(0,0,0,0) < currentTime.setHours(0,0,0,0);
+                }
+
+            }
         }])
 
 

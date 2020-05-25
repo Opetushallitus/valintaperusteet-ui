@@ -218,6 +218,7 @@
     <div class="col-md-4">
         <p class="input-group">
             <input class="form-control" datepicker-popup="dd.MM.yyyy"
+                   auth ng-disabled="nykyinenArvoOnMenneisyydessa() && !userAccess.crudOph"
                    ng-model="model.valintatapajono.eiLasketaPaivamaaranJalkeen"
                    is-open="eiLasketaPaivamaaranJalkeenOpen"
                    close-text="Sulje"
@@ -225,10 +226,18 @@
                    current-text="Tänään"
             />
             <span class="input-group-btn">
-                        <a class="btn btn-default btn-sm" ng-click="openEiLasketaPaivamaaranJalkeen($event)"><i
-                                class="glyphicon glyphicon-calendar"></i></a>
-                    </span>
+                <a class="btn btn-default btn-sm" ng-click="openEiLasketaPaivamaaranJalkeen($event)"
+                   auth ng-disabled="nykyinenArvoOnMenneisyydessa() && !userAccess.crudOph"><i
+                        class="glyphicon glyphicon-calendar"></i></a>
+            </span>
+
         </p>
+    </div>
+    <div class="col-md-6">
+        <span class="help-block"
+              auth ng-if="nykyinenArvoOnMenneisyydessa() && !userAccess.crudOph">
+                {{ t('valintatapajono.nykyinenarvomenneisyydessa') || 'Nykyinen päivämäärä on menneisyydessä, joten sitä voi muokata ainoastaan rekisterinpitäjä.' }}
+            </span>
     </div>
 </div>
 
