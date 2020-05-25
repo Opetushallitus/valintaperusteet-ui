@@ -398,9 +398,7 @@ angular.module('valintaperusteet')
                 } else {
                     var currentTime = new Date();
                     var currentValue = new Date($scope.model.valintatapajono.eiLasketaPaivamaaranJalkeen);
-                    var disabled = currentValue.setHours(0,0,0,0) < currentTime.setHours(0,0,0,0);
-                    console.log("Nykyinen " + currentValue + ", aika nyt: " + currentTime + ", disabled: " + disabled);
-                    return disabled;
+                    return currentValue.setHours(0,0,0,0) < currentTime.setHours(0,0,0,0);
                 }
 
             }
