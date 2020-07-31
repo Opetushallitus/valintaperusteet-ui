@@ -1,26 +1,28 @@
-angular.module('valintaperusteet')
-    .controller('ValintakoekoodiController', ['$scope', function($scope) {
+angular.module("valintaperusteet").controller("ValintakoekoodiController", [
+  "$scope",
+  function ($scope) {
     "use strict";
 
-	$scope.toggleValintaryhmaValintakokeet = false;
+    $scope.toggleValintaryhmaValintakokeet = false;
 
-	$scope.toggleValintakokeet = function () {
-		$scope.toggleValintaryhmaValintakokeet = !$scope.toggleValintaryhmaValintakokeet;
-	};
+    $scope.toggleValintakokeet = function () {
+      $scope.toggleValintaryhmaValintakokeet = !$scope.toggleValintaryhmaValintakokeet;
+    };
 
-	$scope.showValintakoeKoodit = function () {
-		var promise = $scope.model.getValintakoeKoodit();
-		$scope.toggleValintaryhmaValintakokeet = true;
-		promise.finally(function () {
-			$scope.show();
-		});
-	};
+    $scope.showValintakoeKoodit = function () {
+      var promise = $scope.model.getValintakoeKoodit();
+      $scope.toggleValintaryhmaValintakokeet = true;
+      promise.finally(function () {
+        $scope.show();
+      });
+    };
 
-	$scope.addValintakoeUri = function (newValintakoeUri) {
-		$scope.model.addValintakoeUri(newValintakoeUri);
-	};
+    $scope.addValintakoeUri = function (newValintakoeUri) {
+      $scope.model.addValintakoeUri(newValintakoeUri);
+    };
 
-	$scope.removeValintakoeKoodi = function (valintakoekoodi) {
-		$scope.model.removeValintakoeKoodi(valintakoekoodi);
-	};
-}]);
+    $scope.removeValintakoeKoodi = function (valintakoekoodi) {
+      $scope.model.removeValintakoeKoodi(valintakoekoodi);
+    };
+  },
+]);
