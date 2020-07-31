@@ -1,17 +1,5 @@
 sudo: required
 
-language: java
-
-jdk:
-- openjdk11
-
-services:
-- docker
-
-cache:
-  directories:
-  - $HOME/.m2
-
 env:
   global:
   # AWS_ACCESS_KEY_ID
@@ -19,23 +7,35 @@ env:
   # AWS_SECRET_ACCESS_KEY
   - secure: "yebsJDqd/MEPJqtV8PXEr1av6xM6xzko00PKpZG7XgOH0+5loSrbGABlEh6qXDJPGfjW99ZzQvUfdLxeJyJ0mahbhNyEzRwEf0Ee4HmYuKYfyBg4dzQK6wcvSestVFZCUPJqrRg1TB5gjuNZZc+k6ezx7wXNb7l7SW/yavPo3LU8p5WGbtLDr9wsjU5WU1Exs2IFdpZjdLfmP/dwIuoNNqzVRaQHVQSRYlPcfW4EWGgxya/zSrPAa2TawHDnNRl0YQKe8oqZRuxqI8W+dQWLtKxhnpPtJNc5xj4AmzV7bJnRIyN46KYQM5a5iPJYWpYxji0bGysSHXZA/x//+SKk3xSWLBfJcDYpSX6vKmEwOk15wNu0opsYhD/8cefL9CJroubsnTh4N9RNzasfczPtpxSIBDH++YmdOHzT6BRVngYS84w2phGWA2X7AsiF74zZvQgvBMOgiHcP2UvV6L9gzRGC9NF360QUJU76D4usBbZn2jLompdtZRw5YY/i0ZiaNRAvd5aZHDUsYn8SwnsytglNetFYJfYXmQ+gK1Hn7PaV7LVDkTfTKeCU6FOaymukzGoAF90OUTmDtt10PxBOgXh9tFGLbX+P46PBa4o5FKNG+ArelFd2Js+a5Sy+gLSrHcfgwxNoFfWTLtxk/moGfejXKRZR6r+4t0pEFlLDP2Q="
 
-install:
-- git clone https://github.com/Opetushallitus/ci-tools.git
-- source ci-tools/common/setup-tools.sh
-- export ARTIFACT_NAME="valintaperusteet-ui"
-
-script:
-- mvn clean package -B -Dbranch=${TRAVIS_BRANCH} -Drevision=${TRAVIS_COMMIT} -DbuildNumber=${TRAVIS_BUILD_NUMBER}
-
-- mv target/valintaperusteet-ui-*allinone.jar $DOCKER_BUILD_DIR/artifact/${ARTIFACT_NAME}.jar
-- cp -vr src/main/resources/oph-configuration $DOCKER_BUILD_DIR/config/
-
-- export BASE_IMAGE="baseimage-fatjar-openjdk11:master"
-- ./ci-tools/common/pull-image.sh
-- ./ci-tools/build/build-fatjar.sh $ARTIFACT_NAME
-
-deploy:
-- provider: script
-  script: ./ci-tools/build/upload-image.sh $ARTIFACT_NAME
-  on:
-    all_branches: true
+jobs:
+  include:
+    - language: java
+      jdk: openjdk11
+      services:
+        - docker
+      cache:
+        directories:
+          - $HOME/.m2
+      install:
+        - git clone https://github.com/Opetushallitus/ci-tools.git
+        - source ci-tools/common/setup-tools.sh
+        - export ARTIFACT_NAME="valintaperusteet-ui"
+      script: >-
+        ./bin/run-spotless-in-travis.sh &&
+        mvn clean package -B -Dbranch=${TRAVIS_BRANCH} -Drevision=${TRAVIS_COMMIT} -DbuildNumber=${TRAVIS_BUILD_NUMBER} &&
+        mv target/valintaperusteet-ui-*allinone.jar $DOCKER_BUILD_DIR/artifact/${ARTIFACT_NAME}.jar &&
+        cp -vr src/main/resources/oph-configuration $DOCKER_BUILD_DIR/config/ &&
+        export BASE_IMAGE="baseimage-fatjar-openjdk11:master" &&
+        ./ci-tools/common/pull-image.sh &&
+        ./ci-tools/build/build-fatjar.sh $ARTIFACT_NAME
+      deploy:
+        - provider: script
+          script: ./ci-tools/build/upload-image.sh $ARTIFACT_NAME
+          on:
+            all_branches: true
+    - language: node_js
+      node_js: 10
+      install:
+        - npm install
+      script:
+        - ./bin/run-eslint-in-travis.sh

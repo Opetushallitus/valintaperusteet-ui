@@ -1,6 +1,22 @@
 {
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "./src/**/*.{js,jsx,ts,tsx}": [
+      "./bin/run-eslint-pre-commit.sh"
+    ],
+    "./src/**/*.java": [
+      "./bin/run-spotless-pre-commit.sh"
+    ]
+  },
   "devDependencies": {
     "bower": "^1.8.8",
+    "eslint": "7.5.0",
+    "eslint-config-prettier": "6.11.0",
+    "eslint-plugin-prettier": "3.1.4",
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",
     "gulp-concat": "^2.6.1",
@@ -8,9 +24,12 @@
     "gulp-livereload": "^4.0.2",
     "gulp-uglify": "^3.0.2",
     "gulp-watch": "^5.0.1",
+    "husky": "4.2.5",
     "karma": "^4.4.1",
+    "lint-staged": "10.2.11",
     "test": "*",
     "phantomjs-prebuilt": "~2.1.7",
+    "prettier": "2.0.5",
     "mocha-phantomjs-core": "2.0.1"
   },
   "dependencies": {
