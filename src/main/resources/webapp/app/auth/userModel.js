@@ -1,14 +1,14 @@
-"use strict";
-angular.module("valintaperusteet").factory("UserModel", [
-  "$q",
-  "$log",
-  "_",
-  "MyRolesModel",
-  "AuthService",
-  "OrganizationByOid",
-  "OPH_ORG_OID",
-  "OrganizationChildOids",
-  "OrganizationParentOids",
+'use strict'
+angular.module('valintaperusteet').factory('UserModel', [
+  '$q',
+  '$log',
+  '_',
+  'MyRolesModel',
+  'AuthService',
+  'OrganizationByOid',
+  'OPH_ORG_OID',
+  'OrganizationChildOids',
+  'OrganizationParentOids',
   function (
     $q,
     $log,
@@ -21,67 +21,67 @@ angular.module("valintaperusteet").factory("UserModel", [
     OrganizationParentOids
   ) {
     var model = new (function () {
-      this.organizationsDeferred = undefined;
+      this.organizationsDeferred = undefined
 
-      this.organizationOids = [];
-      this.organizations = [];
+      this.organizationOids = []
+      this.organizations = []
 
-      this.organizationChildren = []; //array of organizations that are children for users organizations
-      this.organizationChildrenOids = [];
+      this.organizationChildren = [] //array of organizations that are children for users organizations
+      this.organizationChildrenOids = []
 
-      this.organizationParents = [];
-      this.organizationParentsOids = [];
+      this.organizationParents = []
+      this.organizationParentsOids = []
 
-      this.isKKUser = false;
-      this.hasOtherThanKKUserOrgs = false;
-      this.isOphUser = false;
+      this.isKKUser = false
+      this.hasOtherThanKKUserOrgs = false
+      this.isOphUser = false
 
       this.refresh = function () {
-        model.organizationsDeferred = $q.defer();
+        model.organizationsDeferred = $q.defer()
 
         MyRolesModel.then(function (myroles) {
-          AuthService.getOrganizations("APP_VALINTAPERUSTEET").then(
+          AuthService.getOrganizations('APP_VALINTAPERUSTEET').then(
             function (oidList) {
-              model.organizationOids = oidList;
+              model.organizationOids = oidList
 
               function resolveList(list, fn) {
                 var promises = list.map(function (o) {
-                  var deferred = $q.defer();
-                  fn(o, deferred);
-                  return deferred.promise;
-                });
-                return $q.all(promises);
+                  var deferred = $q.defer()
+                  fn(o, deferred)
+                  return deferred.promise
+                })
+                return $q.all(promises)
               }
 
               function transferResolveReject(a, b) {
                 a.then(
                   function () {
-                    b.resolve();
+                    b.resolve()
                   },
                   function (error) {
-                    b.reject(error);
+                    b.reject(error)
                   }
-                );
+                )
               }
 
               function fetchOrganization(oid, list) {
                 return OrganizationByOid.get(
                   { oid: oid },
                   function (organization) {
-                    list.push(organization);
+                    list.push(organization)
                   },
                   function (error) {
                     $log.error(
-                      "Organisaation tietojen hakeminen epäonnistui",
+                      'Organisaation tietojen hakeminen epäonnistui',
                       error
-                    );
+                    )
                   }
-                ).$promise;
+                ).$promise
               }
 
               //child organizations
               function fetchChildOrganizations(oid) {
-                var d = $q.defer();
+                var d = $q.defer()
                 OrganizationChildOids.get(
                   { oid: oid },
                   function (childOids) {
@@ -92,7 +92,7 @@ angular.module("valintaperusteet").factory("UserModel", [
                       if (
                         model.organizationChildrenOids.indexOf(childOid) === -1
                       ) {
-                        model.organizationChildrenOids.push(childOid);
+                        model.organizationChildrenOids.push(childOid)
                         transferResolveReject(
                           $q.all([
                             fetchOrganization(
@@ -102,42 +102,42 @@ angular.module("valintaperusteet").factory("UserModel", [
                             fetchChildOrganizations(childOid),
                           ]),
                           deferred
-                        );
+                        )
                       } else {
-                        deferred.resolve();
+                        deferred.resolve()
                       }
-                    });
-                    transferResolveReject(childPromises, d);
+                    })
+                    transferResolveReject(childPromises, d)
                   },
                   function (error) {
                     $log.error(
-                      "Lapsiorganisaatioiden haku epäonnistui organisaatiolle:",
+                      'Lapsiorganisaatioiden haku epäonnistui organisaatiolle:',
                       oid,
                       error
-                    );
-                    d.reject(error);
+                    )
+                    d.reject(error)
                   }
-                );
-                return d;
+                )
+                return d
               }
 
               // Parent organizations
               function parseParentOids(organization) {
-                if (_.has(organization, "parentOidPath")) {
+                if (_.has(organization, 'parentOidPath')) {
                   return organization.parentOidPath
-                    .split("|")
+                    .split('|')
                     .filter(function (parentOid) {
-                      return parentOid !== OPH_ORG_OID && !_.isEmpty(parentOid);
-                    });
+                      return parentOid !== OPH_ORG_OID && !_.isEmpty(parentOid)
+                    })
                 } else {
-                  return [];
+                  return []
                 }
               }
 
               function fetchParentOrganizations(parentOids) {
                 return resolveList(parentOids, function (parentOid, deferred) {
                   if (model.organizationParentsOids.indexOf(parentOid) === -1) {
-                    model.organizationParentsOids.push(parentOid);
+                    model.organizationParentsOids.push(parentOid)
                     fetchOrganization(
                       parentOid,
                       model.organizationParents
@@ -147,12 +147,12 @@ angular.module("valintaperusteet").factory("UserModel", [
                           parseParentOids(parentOrganization)
                         ),
                         deferred
-                      );
-                    });
+                      )
+                    })
                   } else {
-                    deferred.resolve();
+                    deferred.resolve()
                   }
-                });
+                })
               }
 
               //Organizations for user
@@ -160,24 +160,24 @@ angular.module("valintaperusteet").factory("UserModel", [
                 OrganizationByOid.get(
                   { oid: oid },
                   function (organization) {
-                    model.organizations.push(organization);
-                    deferred.resolve();
+                    model.organizations.push(organization)
+                    deferred.resolve()
                   },
                   function (error) {
                     $log.error(
-                      "Organisaation tietojen hakeminen epäonnistui:",
+                      'Organisaation tietojen hakeminen epäonnistui:',
                       error
-                    );
-                    deferred.reject(error);
+                    )
+                    deferred.reject(error)
                   }
-                );
+                )
               }).then(
                 function () {
-                  model.analyzeOrganizations();
+                  model.analyzeOrganizations()
 
                   //Find child and parent organizations for the users organizations, if user isn't ophuser
                   if (model.isOphUser) {
-                    model.organizationsDeferred.resolve();
+                    model.organizationsDeferred.resolve()
                   } else {
                     var parentResolve = resolveList(
                       model.organizations,
@@ -187,97 +187,97 @@ angular.module("valintaperusteet").factory("UserModel", [
                             parseParentOids(organization)
                           ),
                           deferred
-                        );
+                        )
                       }
-                    );
+                    )
                     var childResolve = model.organizationOids.map(function (
                       oid
                     ) {
-                      return fetchChildOrganizations(oid);
-                    });
+                      return fetchChildOrganizations(oid)
+                    })
                     var parentChildrenResolve = $q.all([
                       parentResolve,
                       childResolve,
-                    ]);
+                    ])
                     parentChildrenResolve.then(
                       function () {
-                        console.log("UserModel.refresh finished");
+                        console.log('UserModel.refresh finished')
                       },
                       function () {
-                        console.log("UserModel.refresh failed");
+                        console.log('UserModel.refresh failed')
                       }
-                    );
+                    )
                     transferResolveReject(
                       parentChildrenResolve,
                       model.organizationsDeferred
-                    );
+                    )
                   }
                 },
                 function (error) {
-                  model.organizationsDeferred.reject(error);
+                  model.organizationsDeferred.reject(error)
                 }
-              );
+              )
             },
             function (error) {
               $log.error(
-                "Käyttäjän organisaatiolistan hakeminen epäonnistui:",
+                'Käyttäjän organisaatiolistan hakeminen epäonnistui:',
                 error
-              );
-              model.organizationsDeferred.reject(error);
+              )
+              model.organizationsDeferred.reject(error)
             }
-          );
-        });
-        return model.organizationsDeferred.promise;
-      };
+          )
+        })
+        return model.organizationsDeferred.promise
+      }
 
       this.refreshIfNeeded = function () {
         if (_.isEmpty(model.organizationsDeferred)) {
-          model.refresh();
+          model.refresh()
         } else {
-          return model.organizationsDeferred.promise;
+          return model.organizationsDeferred.promise
         }
-      };
+      }
 
       this.analyzeOrganizations = function () {
-        model.isKKOrganization();
+        model.isKKOrganization()
         _.some(model.organizations, function (organisaatioData) {
           if (model.isOphOrganization(organisaatioData)) {
-            model.isOphUser = true;
+            model.isOphUser = true
           } else if (model.isOtherThanKKOrganization(organisaatioData)) {
-            model.hasOtherThanKKUserOrgs = true;
+            model.hasOtherThanKKUserOrgs = true
           }
-        });
-      };
+        })
+      }
 
       this.isKKOrganization = function () {
         MyRolesModel.then(
           function (myrolesModel) {
             model.isKKUser = _.some(myrolesModel.myroles, function (role) {
-              return role.indexOf("APP_VALINTAPERUSTEETKK") > -1;
-            });
+              return role.indexOf('APP_VALINTAPERUSTEETKK') > -1
+            })
           },
           function (error) {
             $log.error(
-              "Käyttäjän roolien hakeminen korkeakoulukäyttöoikeuksien tarkistuksessa epäonnistui"
-            );
+              'Käyttäjän roolien hakeminen korkeakoulukäyttöoikeuksien tarkistuksessa epäonnistui'
+            )
           }
-        );
-      };
+        )
+      }
 
       this.isOphOrganization = function (organization) {
-        return organization.oid === OPH_ORG_OID;
-      };
+        return organization.oid === OPH_ORG_OID
+      }
 
       this.isOtherThanKKOrganization = function (organization) {
         return !(
           !organization.oppilaitosTyyppiUri ||
-          organization.oppilaitosTyyppiUri.indexOf("_41") > -1 ||
-          organization.oppilaitosTyyppiUri.indexOf("_42") > -1 ||
-          organization.oppilaitosTyyppiUri.indexOf("_43") > -1
-        );
-      };
-    })();
+          organization.oppilaitosTyyppiUri.indexOf('_41') > -1 ||
+          organization.oppilaitosTyyppiUri.indexOf('_42') > -1 ||
+          organization.oppilaitosTyyppiUri.indexOf('_43') > -1
+        )
+      }
+    })()
 
-    return model;
+    return model
   },
-]);
+])

@@ -1,11 +1,11 @@
 angular
-  .module("oph.utils", [])
-  .factory("Utils", [
+  .module('oph.utils', [])
+  .factory('Utils', [
     function () {
-      "use strict";
+      'use strict'
       var utils = {
         hasSameName: function (model, parents, children) {
-          var nameFound = false;
+          var nameFound = false
           if (parents) {
             parents.forEach(function (parent) {
               if (
@@ -13,9 +13,9 @@ angular
                 parent.nimi === model.valintaryhma.nimi &&
                 parent.oid !== model.valintaryhma.oid
               ) {
-                nameFound = true;
+                nameFound = true
               }
-            });
+            })
           }
           if (children) {
             children.forEach(function (child) {
@@ -23,59 +23,59 @@ angular
                 child.nimi === model.valintaryhma.nimi &&
                 child.oid !== model.valintaryhma.oid
               ) {
-                nameFound = true;
+                nameFound = true
               }
               if (!nameFound && child.alavalintaryhmat) {
                 nameFound = utils.hasSameName(
                   model,
                   null,
                   child.alavalintaryhmat
-                );
+                )
               }
-            });
+            })
           }
-          return nameFound;
+          return nameFound
         },
-      };
-      return utils;
+      }
+      return utils
     },
   ])
 
-  .factory("HakemusavaimetLisakysymyksetAvaimet", [
-    "UserModel",
-    "HakemusavaimetLisakysymykset",
+  .factory('HakemusavaimetLisakysymyksetAvaimet', [
+    'UserModel',
+    'HakemusavaimetLisakysymykset',
     function (UserModel, HakemusavaimetLisakysymykset) {
-      "use strict";
+      'use strict'
       var parseOptions = function (options, lomake) {
         return _.map(options, function (option) {
-          var opt = {};
+          var opt = {}
           if (lomake) {
-            opt.id = option.value;
-            opt.text = option.i18nText.translations.fi;
+            opt.id = option.value
+            opt.text = option.i18nText.translations.fi
           } else {
-            opt.id = option.id;
-            opt.text = option.optionText.translations.fi;
+            opt.id = option.id
+            opt.text = option.optionText.translations.fi
           }
-          return opt;
-        });
-      };
+          return opt
+        })
+      }
       var parseAvaimet = function (haetutAvaimet) {
-        var avaimet = [];
+        var avaimet = []
         _.forEach(haetutAvaimet, function (phase) {
-          var obj = {};
-          obj.key = phase._id;
+          var obj = {}
+          obj.key = phase._id
           if (phase.messageText) {
-            obj.value = phase.messageText.translations.fi;
+            obj.value = phase.messageText.translations.fi
           } else {
-            obj.value = phase._id;
+            obj.value = phase._id
           }
           if (phase.options) {
-            obj.options = parseOptions(phase.options, false);
+            obj.options = parseOptions(phase.options, false)
           }
-          avaimet.push(obj);
-        });
-        return avaimet;
-      };
+          avaimet.push(obj)
+        })
+        return avaimet
+      }
 
       var service = {
         parseOptions: parseOptions,
@@ -85,27 +85,27 @@ angular
               HakemusavaimetLisakysymykset.get(
                 { hakuoid: hakuoid, orgId: UserModel.organizationOids[0] },
                 function (haetutAvaimet) {
-                  model.lisakysymysAvaimet = parseAvaimet(haetutAvaimet);
+                  model.lisakysymysAvaimet = parseAvaimet(haetutAvaimet)
                 },
                 function (error) {
-                  console.log("lisakysymyksiä ei löytynyt");
+                  console.log('lisakysymyksiä ei löytynyt')
                 }
-              );
+              )
             },
             function () {
               HakemusavaimetLisakysymykset.get(
                 { hakuoid: hakuoid },
                 function (haetutAvaimet) {
-                  model.lisakysymysAvaimet = parseAvaimet(haetutAvaimet);
+                  model.lisakysymysAvaimet = parseAvaimet(haetutAvaimet)
                 },
                 function (error) {
-                  console.log("lisakysymyksiä ei löytynyt");
+                  console.log('lisakysymyksiä ei löytynyt')
                 }
-              );
+              )
             }
-          );
+          )
         },
-      };
-      return service;
+      }
+      return service
     },
-  ]);
+  ])

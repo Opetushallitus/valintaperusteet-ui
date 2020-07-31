@@ -1,2 +1,2 @@
-TEMPLATE_URL_BASE = "";
-AUTH_MODE = "dev";
+TEMPLATE_URL_BASE = ''
+AUTH_MODE = 'dev'

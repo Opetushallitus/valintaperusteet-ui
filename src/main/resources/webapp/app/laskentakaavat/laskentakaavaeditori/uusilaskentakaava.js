@@ -1,19 +1,19 @@
-angular.module("valintaperusteet").controller("UusiLaskentakaavaController", [
-  "$scope",
-  "FunktioService",
-  "FunktiokuvausService",
-  "$routeParams",
+angular.module('valintaperusteet').controller('UusiLaskentakaavaController', [
+  '$scope',
+  'FunktioService',
+  'FunktiokuvausService',
+  '$routeParams',
   function ($scope, FunktioService, FunktiokuvausService) {
-    "use strict";
+    'use strict'
 
-    $scope.funktioService = FunktioService;
+    $scope.funktioService = FunktioService
 
-    $scope.kaava = { tyyppi: "NIMETTYLUKUARVO" };
+    $scope.kaava = { tyyppi: 'NIMETTYLUKUARVO' }
 
-    $scope.$on("initializeKaava", function () {
+    $scope.$on('initializeKaava', function () {
       var funktiokuvaus = FunktiokuvausService.getFunktiokuvaus(
         $scope.kaava.tyyppi
-      );
+      )
       var laskentakaava = {
         nimi: $scope.kaava.nimi,
         kuvaus: $scope.kaava.kuvaus,
@@ -35,14 +35,14 @@ angular.module("valintaperusteet").controller("UusiLaskentakaavaController", [
           validointivirheet: [],
           syoteparametrit: [
             {
-              avain: "nimi",
+              avain: 'nimi',
               arvo: $scope.kaava.nimi,
             },
           ],
         },
-      };
+      }
 
-      $scope.setLaskentakaava(laskentakaava);
-    });
+      $scope.setLaskentakaava(laskentakaava)
+    })
   },
-]);
+])

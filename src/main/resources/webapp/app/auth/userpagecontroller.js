@@ -1,13 +1,13 @@
 angular
-  .module("valintaperusteet")
+  .module('valintaperusteet')
 
-  .controller("UserPageController", [
-    "$scope",
-    "$routeParams",
-    "$log",
-    "UserAccessLevels",
-    "UserModel",
-    "OrganisaatioUtility",
+  .controller('UserPageController', [
+    '$scope',
+    '$routeParams',
+    '$log',
+    'UserAccessLevels',
+    'UserModel',
+    'OrganisaatioUtility',
     function (
       $scope,
       $routeParams,
@@ -16,20 +16,20 @@ angular
       UserModel,
       OrganisaatioUtility
     ) {
-      $scope.userAccess = UserAccessLevels;
+      $scope.userAccess = UserAccessLevels
       UserAccessLevels.refreshIfNeeded(
         $routeParams.id,
         $routeParams.hakukohdeOid
-      );
+      )
 
-      $scope.userModel = UserModel;
-      UserModel.refreshIfNeeded();
+      $scope.userModel = UserModel
+      UserModel.refreshIfNeeded()
 
-      $scope.organisaatioUtility = OrganisaatioUtility;
+      $scope.organisaatioUtility = OrganisaatioUtility
       if ($routeParams.id) {
-        $scope.isValintaryhma = true;
+        $scope.isValintaryhma = true
       } else if ($routeParams.hakukohdeOid) {
-        $scope.isHakukohde = true;
+        $scope.isHakukohde = true
       }
 
       if ($routeParams.id) {
@@ -37,29 +37,29 @@ angular
           $routeParams.id
         ).then(
           function setValintaryhmaOrganizations(result) {
-            $scope.valitunOrganisaationLapset = result;
+            $scope.valitunOrganisaationLapset = result
           },
           function (error) {
             $log.error(
-              "valintaryhmän/hakukohteen organisaatioiden haku epäonnistui",
+              'valintaryhmän/hakukohteen organisaatioiden haku epäonnistui',
               error
-            );
+            )
           }
-        );
+        )
       } else if ($routeParams.hakukohdeOid) {
         OrganisaatioUtility.getChildOrganizationsforHakukohde(
           $routeParams.hakukohdeOid
         ).then(
           function setHakukohdeOrganizations(result) {
-            $scope.valitunOrganisaationLapset = result;
+            $scope.valitunOrganisaationLapset = result
           },
           function (error) {
             $log.error(
-              "valintaryhmän/hakukohteen organisaatioiden haku epäonnistui",
+              'valintaryhmän/hakukohteen organisaatioiden haku epäonnistui',
               error
-            );
+            )
           }
-        );
+        )
       }
     },
-  ]);
+  ])

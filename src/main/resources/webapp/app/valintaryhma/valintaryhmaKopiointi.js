@@ -1,12 +1,12 @@
 angular
-  .module("valintaperusteet")
+  .module('valintaperusteet')
 
-  .controller("ValintaryhmaKopiointiController", [
-    "$scope",
-    "$routeParams",
-    "HakuModel",
-    "ValintaryhmaModel",
-    "ValintaperusteetPuu",
+  .controller('ValintaryhmaKopiointiController', [
+    '$scope',
+    '$routeParams',
+    'HakuModel',
+    'ValintaryhmaModel',
+    'ValintaperusteetPuu',
     function (
       $scope,
       $routeParams,
@@ -14,13 +14,13 @@ angular
       ValintaryhmaModel,
       ValintaperusteetPuu
     ) {
-      HakuModel.init();
+      HakuModel.init()
 
-      $scope.kopioObj = {};
+      $scope.kopioObj = {}
 
-      $scope.$on("showValintaryhmaKopiointi", function () {
-        $scope.show();
-      });
+      $scope.$on('showValintaryhmaKopiointi', function () {
+        $scope.show()
+      })
 
       $scope.kopioiValintaryhma = function () {
         HakuModel.hakuDeferred.promise.then(function () {
@@ -31,10 +31,10 @@ angular
               valintaryhma: $routeParams.id,
             },
             function (result) {
-              console.log(result);
+              console.log(result)
             }
-          );
-        });
-      };
+          )
+        })
+      }
     },
-  ]);
+  ])

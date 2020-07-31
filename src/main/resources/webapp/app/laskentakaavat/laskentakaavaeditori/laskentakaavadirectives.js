@@ -1,52 +1,52 @@
 angular
-  .module("valintaperusteet")
+  .module('valintaperusteet')
 
-  .directive("addClassOnMouseover", [
-    "$animate",
+  .directive('addClassOnMouseover', [
+    '$animate',
     function ($animate) {
-      "use strict";
+      'use strict'
 
       return function (scope, element, attrs) {
-        element.bind("mouseover", function (hover) {
+        element.bind('mouseover', function (hover) {
           if (hover) {
-            $animate.addClass(element, attrs.addClassOnMouseover);
+            $animate.addClass(element, attrs.addClassOnMouseover)
           }
-        });
+        })
 
-        element.bind("mouseout", function (hover) {
+        element.bind('mouseout', function (hover) {
           if (hover) {
-            $animate.removeClass(element, attrs.addClassOnMouseover);
+            $animate.removeClass(element, attrs.addClassOnMouseover)
           }
-        });
-      };
+        })
+      }
     },
   ])
 
-  .directive("funktiokutsuLabel", [
+  .directive('funktiokutsuLabel', [
     function () {
       return {
         transclude: true,
-        templateUrl: "laskentakaavat/laskentakaavaeditori/puu/tools.html",
+        templateUrl: 'laskentakaavat/laskentakaavaeditori/puu/tools.html',
         link: function ($scope, element, attrs) {
           $scope.status = {
             isopen: false,
-          };
+          }
         },
-      };
+      }
     },
   ])
 
-  .directive("kaavaviiteLabel", [
+  .directive('kaavaviiteLabel', [
     function () {
       return {
         transclude: true,
         templateUrl:
-          "laskentakaavat/laskentakaavaeditori/puu/kaavaviitetools.html",
+          'laskentakaavat/laskentakaavaeditori/puu/kaavaviitetools.html',
         link: function ($scope, element, attrs) {
           $scope.status = {
             isopen: false,
-          };
+          }
         },
-      };
+      }
     },
-  ]);
+  ])

@@ -1,40 +1,40 @@
 angular
-  .module("valintaperusteet")
-  .factory("KaavaKopiointiModel", function ($log, Laskentakaava) {
-    "use strict";
+  .module('valintaperusteet')
+  .factory('KaavaKopiointiModel', function ($log, Laskentakaava) {
+    'use strict'
     var model = new (function () {
-      this.laskentakaava = {};
+      this.laskentakaava = {}
 
       this.refresh = function (kaavaId) {
         Laskentakaava.get(
           { oid: kaavaId },
           function (result) {
-            model.laskentakaava = result.funktiokutsu;
+            model.laskentakaava = result.funktiokutsu
           },
           function (error) {
-            $log.error("Laskentakaavan hakeminen epäonnistui", error);
+            $log.error('Laskentakaavan hakeminen epäonnistui', error)
           }
-        );
-      };
+        )
+      }
 
       this.refreshIfNeeded = function (kaavaId) {
         if (model.laskentakaava.id !== kaavaId) {
-          model.refresh(kaavaId);
+          model.refresh(kaavaId)
         }
-      };
-    })();
+      }
+    })()
 
-    return model;
-  });
+    return model
+  })
 
-angular.module("valintaperusteet").controller("KaavaKopiointiController", [
-  "$scope",
-  "$log",
-  "KaavaKopiointiModel",
-  "HakuModel",
-  "Ylavalintaryhma",
-  "KaavaSiirto",
-  "Treemodel",
+angular.module('valintaperusteet').controller('KaavaKopiointiController', [
+  '$scope',
+  '$log',
+  'KaavaKopiointiModel',
+  'HakuModel',
+  'Ylavalintaryhma',
+  'KaavaSiirto',
+  'Treemodel',
   function (
     $scope,
     $log,
@@ -44,10 +44,10 @@ angular.module("valintaperusteet").controller("KaavaKopiointiController", [
     KaavaSiirto,
     Treemodel
   ) {
-    $scope.hakuModel = HakuModel;
+    $scope.hakuModel = HakuModel
 
-    $scope.kopiointiModel = KaavaKopiointiModel;
-    $scope.kopioObj = {};
+    $scope.kopiointiModel = KaavaKopiointiModel
+    $scope.kopioObj = {}
 
     $scope.kopioiKaava = function () {
       var payload = {
@@ -56,38 +56,38 @@ angular.module("valintaperusteet").controller("KaavaKopiointiController", [
         onLuonnos: $scope.kaavaData.onLuonnos,
         nimi: $scope.kaavaData.nimi,
         kuvaus: $scope.kaavaData.kuvaus,
-      };
+      }
 
       if (Treemodel.isHakukohde($scope.kopioObj.value)) {
-        payload.hakukohdeOid = $scope.kopioObj.value.oid;
+        payload.hakukohdeOid = $scope.kopioObj.value.oid
       } else {
-        payload.valintaryhmaOid = $scope.kopioObj.value.oid;
+        payload.valintaryhmaOid = $scope.kopioObj.value.oid
       }
 
       KaavaSiirto.put(
         payload,
         function (result) {
-          $scope.$broadcast("suljemodal");
+          $scope.$broadcast('suljemodal')
         },
         function (error) {
-          $log.error("Kaavan siirto ei onnistunut", error);
-          $scope.$broadcast("suljemodal");
+          $log.error('Kaavan siirto ei onnistunut', error)
+          $scope.$broadcast('suljemodal')
         }
-      );
-    };
+      )
+    }
 
     $scope.cancel = function () {
-      $scope.$broadcast("suljemodal");
-    };
+      $scope.$broadcast('suljemodal')
+    }
 
-    $scope.$on("kaavakopiointi", function (event, kaava) {
+    $scope.$on('kaavakopiointi', function (event, kaava) {
       if (kaava.id) {
-        $scope.kaavaData = kaava;
-        $scope.kopiointiModel.refreshIfNeeded(kaava.id);
-        $scope.show();
+        $scope.kaavaData = kaava
+        $scope.kopiointiModel.refreshIfNeeded(kaava.id)
+        $scope.show()
       } else {
-        $log.error("Kopioitavan kaavan Id puuttuu");
+        $log.error('Kopioitavan kaavan Id puuttuu')
       }
-    });
+    })
   },
-]);
+])

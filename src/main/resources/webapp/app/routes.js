@@ -1,320 +1,320 @@
 //Route configuration
 app.config(function ($routeProvider) {
-  "use strict";
+  'use strict'
 
   $routeProvider
     //front page
-    .when("/etusivu", {
-      controller: "ValintaryhmaHakukohdeTreeController",
+    .when('/etusivu', {
+      controller: 'ValintaryhmaHakukohdeTreeController',
       templateUrl:
-        TEMPLATE_URL_BASE + "valintaryhmalistaus/valintaryhmatlistaus.html",
+        TEMPLATE_URL_BASE + 'valintaryhmalistaus/valintaryhmatlistaus.html',
     })
     //edit valintaryhma
-    .when("/valintaryhma/", {
-      controller: "UusiValintaryhmaController",
+    .when('/valintaryhma/', {
+      controller: 'UusiValintaryhmaController',
       templateUrl:
-        TEMPLATE_URL_BASE + "valintaryhma/valintaryhmalomake_uusi.html",
-      label: "valintaryhmä",
+        TEMPLATE_URL_BASE + 'valintaryhma/valintaryhmalomake_uusi.html',
+      label: 'valintaryhmä',
     })
-    .when("/valintaryhma/:id", {
-      controller: "ValintaryhmaController",
-      templateUrl: TEMPLATE_URL_BASE + "valintaryhma/valintaryhmalomake.html",
-      label: "valintaryhmä",
+    .when('/valintaryhma/:id', {
+      controller: 'ValintaryhmaController',
+      templateUrl: TEMPLATE_URL_BASE + 'valintaryhma/valintaryhmalomake.html',
+      label: 'valintaryhmä',
     })
-    .when("/valintaryhma/:id/userpage", {
-      controller: "UserPageController",
-      templateUrl: TEMPLATE_URL_BASE + "../common/components/user/user.html",
-      label: "user",
+    .when('/valintaryhma/:id/userpage', {
+      controller: 'UserPageController',
+      templateUrl: TEMPLATE_URL_BASE + '../common/components/user/user.html',
+      label: 'user',
     })
-    .when("/valintaryhma/:id/hakijaryhma/", {
-      controller: "HakijaryhmaController",
-      templateUrl: TEMPLATE_URL_BASE + "hakijaryhma/hakijaryhma.html",
-      label: "hakijaryhmä",
+    .when('/valintaryhma/:id/hakijaryhma/', {
+      controller: 'HakijaryhmaController',
+      templateUrl: TEMPLATE_URL_BASE + 'hakijaryhma/hakijaryhma.html',
+      label: 'hakijaryhmä',
     })
-    .when("/valintaryhma/:id/hakijaryhma/:hakijaryhmaOid", {
-      controller: "HakijaryhmaController",
-      templateUrl: TEMPLATE_URL_BASE + "hakijaryhma/hakijaryhma.html",
-      label: "hakijaryhmä",
+    .when('/valintaryhma/:id/hakijaryhma/:hakijaryhmaOid', {
+      controller: 'HakijaryhmaController',
+      templateUrl: TEMPLATE_URL_BASE + 'hakijaryhma/hakijaryhma.html',
+      label: 'hakijaryhmä',
     })
-    .when("/valintaryhma/:id/valinnanvaihe/", {
-      controller: "ValintaryhmaValinnanvaiheController",
-      templateUrl: TEMPLATE_URL_BASE + "valinnanvaihe/valinnanvaihelomake.html",
+    .when('/valintaryhma/:id/valinnanvaihe/', {
+      controller: 'ValintaryhmaValinnanvaiheController',
+      templateUrl: TEMPLATE_URL_BASE + 'valinnanvaihe/valinnanvaihelomake.html',
     })
-    .when("/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid", {
-      controller: "ValintaryhmaValinnanvaiheController",
-      templateUrl: TEMPLATE_URL_BASE + "valinnanvaihe/valinnanvaihelomake.html",
-      label: "valinnanvaihe",
+    .when('/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid', {
+      controller: 'ValintaryhmaValinnanvaiheController',
+      templateUrl: TEMPLATE_URL_BASE + 'valinnanvaihe/valinnanvaihelomake.html',
+      label: 'valinnanvaihe',
     })
     .when(
-      "/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid/valintatapajono/",
+      '/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid/valintatapajono/',
       {
-        controller: "ValintaryhmaValintatapajonoController",
-        templateUrl: TEMPLATE_URL_BASE + "valintatapajono/valintatapajono.html",
-        label: "valintatapajono",
+        controller: 'ValintaryhmaValintatapajonoController',
+        templateUrl: TEMPLATE_URL_BASE + 'valintatapajono/valintatapajono.html',
+        label: 'valintatapajono',
       }
     )
     .when(
-      "/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid",
+      '/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid',
       {
-        controller: "ValintaryhmaValintatapajonoController",
-        templateUrl: TEMPLATE_URL_BASE + "valintatapajono/valintatapajono.html",
-        label: "valintatapajono",
+        controller: 'ValintaryhmaValintatapajonoController',
+        templateUrl: TEMPLATE_URL_BASE + 'valintatapajono/valintatapajono.html',
+        label: 'valintatapajono',
       }
     )
     .when(
-      "/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/jarjestyskriteeri/",
+      '/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/jarjestyskriteeri/',
       {
-        controller: "JarjestyskriteeriController",
+        controller: 'JarjestyskriteeriController',
         templateUrl:
-          TEMPLATE_URL_BASE + "jarjestyskriteeri/jarjestyskriteeri.html",
-        label: "järjestyskriteeri",
+          TEMPLATE_URL_BASE + 'jarjestyskriteeri/jarjestyskriteeri.html',
+        label: 'järjestyskriteeri',
       }
     )
     .when(
-      "/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/jarjestyskriteeri/:jarjestyskriteeriOid",
+      '/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/jarjestyskriteeri/:jarjestyskriteeriOid',
       {
-        controller: "JarjestyskriteeriController",
+        controller: 'JarjestyskriteeriController',
         templateUrl:
-          TEMPLATE_URL_BASE + "jarjestyskriteeri/jarjestyskriteeri.html",
-        label: "järjestyskriteeri",
+          TEMPLATE_URL_BASE + 'jarjestyskriteeri/jarjestyskriteeri.html',
+        label: 'järjestyskriteeri',
       }
     )
     .when(
-      "/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/hakijaryhma",
+      '/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/hakijaryhma',
       {
-        controller: "HakijaryhmaController",
-        templateUrl: TEMPLATE_URL_BASE + "hakijaryhma/hakijaryhma.html",
-        label: "hakijaryhmä",
+        controller: 'HakijaryhmaController',
+        templateUrl: TEMPLATE_URL_BASE + 'hakijaryhma/hakijaryhma.html',
+        label: 'hakijaryhmä',
       }
     )
     .when(
-      "/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/hakijaryhma/:hakijaryhmaOid",
+      '/valintaryhma/:id/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/hakijaryhma/:hakijaryhmaOid',
       {
-        controller: "HakijaryhmaController",
-        templateUrl: TEMPLATE_URL_BASE + "hakijaryhma/hakijaryhma.html",
-        label: "hakijaryhmä",
+        controller: 'HakijaryhmaController',
+        templateUrl: TEMPLATE_URL_BASE + 'hakijaryhma/hakijaryhma.html',
+        label: 'hakijaryhmä',
       }
     )
     //valintakoevalinnanvaihe
-    .when("/valintaryhma/:id/valintakoevalinnanvaihe/", {
-      controller: "ValintaryhmaValintakoeValinnanvaiheController",
+    .when('/valintaryhma/:id/valintakoevalinnanvaihe/', {
+      controller: 'ValintaryhmaValintakoeValinnanvaiheController',
       templateUrl:
-        TEMPLATE_URL_BASE + "valinnanvaihe/valintakoevalinnanvaihelomake.html",
-      label: "valintakoevalinnanvaihe",
+        TEMPLATE_URL_BASE + 'valinnanvaihe/valintakoevalinnanvaihelomake.html',
+      label: 'valintakoevalinnanvaihe',
     })
     .when(
-      "/valintaryhma/:id/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid",
+      '/valintaryhma/:id/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid',
       {
-        controller: "ValintaryhmaValintakoeValinnanvaiheController",
+        controller: 'ValintaryhmaValintakoeValinnanvaiheController',
         templateUrl:
           TEMPLATE_URL_BASE +
-          "valinnanvaihe/valintakoevalinnanvaihelomake.html",
-        label: "valintakoevalinnanvaihe",
+          'valinnanvaihe/valintakoevalinnanvaihelomake.html',
+        label: 'valintakoevalinnanvaihe',
       }
     )
     .when(
-      "/valintaryhma/:id/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid/valintakoe/",
+      '/valintaryhma/:id/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid/valintakoe/',
       {
-        controller: "ValintaryhmaValintakoeController",
-        templateUrl: TEMPLATE_URL_BASE + "valintakoe/valintakoelomake.html",
-        label: "valintakoe",
+        controller: 'ValintaryhmaValintakoeController',
+        templateUrl: TEMPLATE_URL_BASE + 'valintakoe/valintakoelomake.html',
+        label: 'valintakoe',
       }
     )
     .when(
-      "/valintaryhma/:id/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid/valintakoe/:valintakoeOid",
+      '/valintaryhma/:id/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid/valintakoe/:valintakoeOid',
       {
-        controller: "ValintaryhmaValintakoeController",
-        templateUrl: TEMPLATE_URL_BASE + "valintakoe/valintakoelomake.html",
-        label: "valintakoe",
+        controller: 'ValintaryhmaValintakoeController',
+        templateUrl: TEMPLATE_URL_BASE + 'valintakoe/valintakoelomake.html',
+        label: 'valintakoe',
       }
     )
-    .when("/hakukohde/:hakukohdeOid/valintakoevalinnanvaihe/", {
-      controller: "HakukohdeValintakoeValinnanvaiheController",
+    .when('/hakukohde/:hakukohdeOid/valintakoevalinnanvaihe/', {
+      controller: 'HakukohdeValintakoeValinnanvaiheController',
       templateUrl:
-        TEMPLATE_URL_BASE + "valinnanvaihe/valintakoevalinnanvaihelomake.html",
-      label: "valintakoevalinnanvaihe",
+        TEMPLATE_URL_BASE + 'valinnanvaihe/valintakoevalinnanvaihelomake.html',
+      label: 'valintakoevalinnanvaihe',
     })
     .when(
-      "/hakukohde/:hakukohdeOid/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid",
+      '/hakukohde/:hakukohdeOid/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid',
       {
-        controller: "HakukohdeValintakoeValinnanvaiheController",
+        controller: 'HakukohdeValintakoeValinnanvaiheController',
         templateUrl:
           TEMPLATE_URL_BASE +
-          "valinnanvaihe/valintakoevalinnanvaihelomake.html",
-        label: "valintakoevalinnanvaihe",
+          'valinnanvaihe/valintakoevalinnanvaihelomake.html',
+        label: 'valintakoevalinnanvaihe',
       }
     )
     .when(
-      "/hakukohde/:hakukohdeOid/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid/valintakoe/",
+      '/hakukohde/:hakukohdeOid/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid/valintakoe/',
       {
-        controller: "HakukohdeValintakoeController",
-        templateUrl: TEMPLATE_URL_BASE + "valintakoe/valintakoelomake.html",
-        label: "valintakoe",
+        controller: 'HakukohdeValintakoeController',
+        templateUrl: TEMPLATE_URL_BASE + 'valintakoe/valintakoelomake.html',
+        label: 'valintakoe',
       }
     )
     .when(
-      "/hakukohde/:hakukohdeOid/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid/valintakoe/:valintakoeOid",
+      '/hakukohde/:hakukohdeOid/valintakoevalinnanvaihe/:valintakoevalinnanvaiheOid/valintakoe/:valintakoeOid',
       {
-        controller: "HakukohdeValintakoeController",
-        templateUrl: TEMPLATE_URL_BASE + "valintakoe/valintakoelomake.html",
-        label: "valintakoe",
+        controller: 'HakukohdeValintakoeController',
+        templateUrl: TEMPLATE_URL_BASE + 'valintakoe/valintakoelomake.html',
+        label: 'valintakoe',
       }
     )
     // edit hakukohde
-    .when("/hakukohde/", {
-      controller: "UusiHakukohdeController",
-      templateUrl: TEMPLATE_URL_BASE + "hakukohde/hakukohde_uusi.html",
-      label: "hakukohde",
+    .when('/hakukohde/', {
+      controller: 'UusiHakukohdeController',
+      templateUrl: TEMPLATE_URL_BASE + 'hakukohde/hakukohde_uusi.html',
+      label: 'hakukohde',
     })
-    .when("/hakukohde/:hakukohdeOid", {
-      controller: "HakukohdeController",
-      templateUrl: TEMPLATE_URL_BASE + "hakukohde/hakukohdelomake.html",
-      label: "hakukohde",
+    .when('/hakukohde/:hakukohdeOid', {
+      controller: 'HakukohdeController',
+      templateUrl: TEMPLATE_URL_BASE + 'hakukohde/hakukohdelomake.html',
+      label: 'hakukohde',
     })
-    .when("/hakukohde/:hakukohdeOid/userpage", {
-      controller: "UserPageController",
-      templateUrl: TEMPLATE_URL_BASE + "../common/components/user/user.html",
-      label: "user",
+    .when('/hakukohde/:hakukohdeOid/userpage', {
+      controller: 'UserPageController',
+      templateUrl: TEMPLATE_URL_BASE + '../common/components/user/user.html',
+      label: 'user',
     })
-    .when("/hakukohde/:hakukohdeOid/hakijaryhma/", {
-      controller: "HakijaryhmaController",
-      templateUrl: TEMPLATE_URL_BASE + "hakijaryhma/hakijaryhma.html",
-      label: "hakijaryhmä",
+    .when('/hakukohde/:hakukohdeOid/hakijaryhma/', {
+      controller: 'HakijaryhmaController',
+      templateUrl: TEMPLATE_URL_BASE + 'hakijaryhma/hakijaryhma.html',
+      label: 'hakijaryhmä',
     })
-    .when("/hakukohde/:hakukohdeOid/hakijaryhma/:hakijaryhmaOid", {
-      controller: "HakijaryhmaController",
-      templateUrl: TEMPLATE_URL_BASE + "hakijaryhma/hakijaryhma.html",
-      label: "hakijaryhmä",
+    .when('/hakukohde/:hakukohdeOid/hakijaryhma/:hakijaryhmaOid', {
+      controller: 'HakijaryhmaController',
+      templateUrl: TEMPLATE_URL_BASE + 'hakijaryhma/hakijaryhma.html',
+      label: 'hakijaryhmä',
     })
-    .when("/hakukohde/:hakukohdeOid/valinnanvaihe/", {
-      controller: "ValinnanVaiheController",
-      templateUrl: TEMPLATE_URL_BASE + "valinnanvaihe/valinnanvaihelomake.html",
-      label: "valinnanvaihe",
+    .when('/hakukohde/:hakukohdeOid/valinnanvaihe/', {
+      controller: 'ValinnanVaiheController',
+      templateUrl: TEMPLATE_URL_BASE + 'valinnanvaihe/valinnanvaihelomake.html',
+      label: 'valinnanvaihe',
     })
-    .when("/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid", {
-      controller: "ValinnanVaiheController",
-      templateUrl: TEMPLATE_URL_BASE + "valinnanvaihe/valinnanvaihelomake.html",
-      label: "valinnanvaihe",
+    .when('/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid', {
+      controller: 'ValinnanVaiheController',
+      templateUrl: TEMPLATE_URL_BASE + 'valinnanvaihe/valinnanvaihelomake.html',
+      label: 'valinnanvaihe',
     })
     .when(
-      "/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/",
+      '/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/',
       {
-        controller: "HakukohdeValintatapajonoController",
-        templateUrl: TEMPLATE_URL_BASE + "valintatapajono/valintatapajono.html",
-        label: "valintatapajono",
+        controller: 'HakukohdeValintatapajonoController',
+        templateUrl: TEMPLATE_URL_BASE + 'valintatapajono/valintatapajono.html',
+        label: 'valintatapajono',
       }
     )
     .when(
-      "/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid",
+      '/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid',
       {
-        controller: "HakukohdeValintatapajonoController",
-        templateUrl: TEMPLATE_URL_BASE + "valintatapajono/valintatapajono.html",
-        label: "valintatapajono",
+        controller: 'HakukohdeValintatapajonoController',
+        templateUrl: TEMPLATE_URL_BASE + 'valintatapajono/valintatapajono.html',
+        label: 'valintatapajono',
       }
     )
     .when(
-      "/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/jarjestyskriteeri/",
+      '/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/jarjestyskriteeri/',
       {
-        controller: "JarjestyskriteeriController",
+        controller: 'JarjestyskriteeriController',
         templateUrl:
-          TEMPLATE_URL_BASE + "jarjestyskriteeri/jarjestyskriteeri.html",
-        label: "järjestyskriteeri",
+          TEMPLATE_URL_BASE + 'jarjestyskriteeri/jarjestyskriteeri.html',
+        label: 'järjestyskriteeri',
       }
     )
     .when(
-      "/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/jarjestyskriteeri/:jarjestyskriteeriOid",
+      '/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/jarjestyskriteeri/:jarjestyskriteeriOid',
       {
-        controller: "JarjestyskriteeriController",
+        controller: 'JarjestyskriteeriController',
         templateUrl:
-          TEMPLATE_URL_BASE + "jarjestyskriteeri/jarjestyskriteeri.html",
-        label: "järjestyskriteeri",
+          TEMPLATE_URL_BASE + 'jarjestyskriteeri/jarjestyskriteeri.html',
+        label: 'järjestyskriteeri',
       }
     )
     .when(
-      "/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/hakijaryhma",
+      '/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/hakijaryhma',
       {
-        controller: "HakijaryhmaController",
-        templateUrl: TEMPLATE_URL_BASE + "hakijaryhma/hakijaryhma.html",
-        label: "hakijaryhmä",
+        controller: 'HakijaryhmaController',
+        templateUrl: TEMPLATE_URL_BASE + 'hakijaryhma/hakijaryhma.html',
+        label: 'hakijaryhmä',
       }
     )
     .when(
-      "/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/hakijaryhma/:hakijaryhmaOid",
+      '/hakukohde/:hakukohdeOid/valinnanvaihe/:valinnanvaiheOid/valintatapajono/:valintatapajonoOid/hakijaryhma/:hakijaryhmaOid',
       {
-        controller: "HakijaryhmaController",
-        templateUrl: TEMPLATE_URL_BASE + "hakijaryhma/hakijaryhma.html",
-        label: "hakijaryhmä",
+        controller: 'HakijaryhmaController',
+        templateUrl: TEMPLATE_URL_BASE + 'hakijaryhma/hakijaryhma.html',
+        label: 'hakijaryhmä',
       }
     )
     //Laskentakaavaeditori
-    .when("/laskentakaava", {
-      controller: "LaskentakaavaListController",
+    .when('/laskentakaava', {
+      controller: 'LaskentakaavaListController',
       templateUrl:
-        TEMPLATE_URL_BASE + "laskentakaavat/listaus/laskentakaavalista.html",
-      label: "laskentakaavalista",
+        TEMPLATE_URL_BASE + 'laskentakaavat/listaus/laskentakaavalista.html',
+      label: 'laskentakaavalista',
     })
-    .when("/laskentakaava/:laskentakaavaOid", {
-      controller: "LaskentakaavaController",
+    .when('/laskentakaava/:laskentakaavaOid', {
+      controller: 'LaskentakaavaController',
       templateUrl:
         TEMPLATE_URL_BASE +
-        "laskentakaavat/laskentakaavaeditori/laskentakaavalomake.html",
-      label: "laskentakaava",
+        'laskentakaavat/laskentakaavaeditori/laskentakaavalomake.html',
+      label: 'laskentakaava',
     })
-    .when("/valintaryhma/:id/laskentakaavalista", {
-      controller: "LaskentakaavaListController",
+    .when('/valintaryhma/:id/laskentakaavalista', {
+      controller: 'LaskentakaavaListController',
       templateUrl:
-        TEMPLATE_URL_BASE + "laskentakaavat/listaus/laskentakaavalista.html",
-      label: "laskentakaavalista",
+        TEMPLATE_URL_BASE + 'laskentakaavat/listaus/laskentakaavalista.html',
+      label: 'laskentakaavalista',
     })
-    .when("/valintaryhma/:id/laskentakaavalista/laskentakaava/", {
-      controller: "LaskentakaavaLomakeController",
+    .when('/valintaryhma/:id/laskentakaavalista/laskentakaava/', {
+      controller: 'LaskentakaavaLomakeController',
       templateUrl:
         TEMPLATE_URL_BASE +
-        "laskentakaavat/laskentakaavaeditori/laskentakaavalomake.html",
-      label: "laskentakaava",
+        'laskentakaavat/laskentakaavaeditori/laskentakaavalomake.html',
+      label: 'laskentakaava',
     })
     .when(
-      "/valintaryhma/:id/laskentakaavalista/laskentakaava/:laskentakaavaOid",
+      '/valintaryhma/:id/laskentakaavalista/laskentakaava/:laskentakaavaOid',
       {
-        controller: "LaskentakaavaLomakeController",
+        controller: 'LaskentakaavaLomakeController',
         templateUrl:
           TEMPLATE_URL_BASE +
-          "laskentakaavat/laskentakaavaeditori/laskentakaavalomake.html",
-        label: "laskentakaava",
+          'laskentakaavat/laskentakaavaeditori/laskentakaavalomake.html',
+        label: 'laskentakaava',
       }
     )
-    .when("/hakukohde/:hakukohdeOid/laskentakaavalista", {
-      controller: "HakukohdeLaskentakaavaListController",
+    .when('/hakukohde/:hakukohdeOid/laskentakaavalista', {
+      controller: 'HakukohdeLaskentakaavaListController',
       templateUrl:
         TEMPLATE_URL_BASE +
-        "laskentakaavat/listaus/hakukohdelaskentakaavalista.html",
-      label: "laskentakaavalista",
+        'laskentakaavat/listaus/hakukohdelaskentakaavalista.html',
+      label: 'laskentakaavalista',
     })
-    .when("/hakukohde/:hakukohdeOid/laskentakaavalista/laskentakaava/", {
-      controller: "LaskentakaavaLomakeController",
+    .when('/hakukohde/:hakukohdeOid/laskentakaavalista/laskentakaava/', {
+      controller: 'LaskentakaavaLomakeController',
       templateUrl:
         TEMPLATE_URL_BASE +
-        "laskentakaavat/laskentakaavaeditori/laskentakaavalomake.html",
-      label: "laskentakaava",
+        'laskentakaavat/laskentakaavaeditori/laskentakaavalomake.html',
+      label: 'laskentakaava',
     })
     .when(
-      "/hakukohde/:hakukohdeOid/laskentakaavalista/laskentakaava/:laskentakaavaOid",
+      '/hakukohde/:hakukohdeOid/laskentakaavalista/laskentakaava/:laskentakaavaOid',
       {
-        controller: "LaskentakaavaLomakeController",
+        controller: 'LaskentakaavaLomakeController',
         templateUrl:
           TEMPLATE_URL_BASE +
-          "laskentakaavat/laskentakaavaeditori/laskentakaavalomake.html",
-        label: "laskentakaava",
+          'laskentakaavat/laskentakaavaeditori/laskentakaavalomake.html',
+        label: 'laskentakaava',
       }
     )
     //Tarjonta import
-    .when("/import", {
-      controller: "ImportController",
+    .when('/import', {
+      controller: 'ImportController',
       templateUrl:
         TEMPLATE_URL_BASE +
-        "yhteisvalinnanhallinta/yhteisvalinnanhallinta.html",
-      label: "Yhteisvalinnahallinta",
+        'yhteisvalinnanhallinta/yhteisvalinnanhallinta.html',
+      label: 'Yhteisvalinnahallinta',
     })
     //else
-    .otherwise({ redirectTo: "/etusivu" });
-});
+    .otherwise({ redirectTo: '/etusivu' })
+})

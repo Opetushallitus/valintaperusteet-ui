@@ -1,8 +1,8 @@
 // Valintaryhma Järjestyskriteerit
 angular
-  .module("valintaperusteet")
+  .module('valintaperusteet')
 
-  .factory("HakijaryhmaModel", function (
+  .factory('HakijaryhmaModel', function (
     $q,
     Hakijaryhma,
     LaskentakaavaModel,
@@ -14,14 +14,14 @@ angular
     IlmoitusTila,
     KoodistoHakijaryhmatyyppikoodi
   ) {
-    "use strict";
+    'use strict'
 
     var model = new (function () {
-      this.hakijaryhma = {};
-      this.hakijaryhma.hakijaryhmatyyppikoodi = {};
-      this.hakijaryhmatyyppikoodit = [];
-      this.valintatapajonot = [];
-      this.onkoHakijaryhma = true;
+      this.hakijaryhma = {}
+      this.hakijaryhma.hakijaryhmatyyppikoodi = {}
+      this.hakijaryhmatyyppikoodit = []
+      this.valintatapajonot = []
+      this.onkoHakijaryhma = true
 
       this.setHakijaryhmatyyppikoodiUri = function (hakijaryhmatyyppikoodiUri) {
         model.hakijaryhmatyyppikoodit.some(function (koodi) {
@@ -29,23 +29,23 @@ angular
             var hakijaryhmatyyppikoodi = {
               uri: koodi.koodiUri,
               arvo: koodi.koodiArvo,
-            };
+            }
 
             koodi.metadata.forEach(function (metadata) {
-              if (metadata.kieli === "FI") {
-                hakijaryhmatyyppikoodi.nimiFi = metadata.nimi;
-              } else if (metadata.kieli === "SV") {
-                hakijaryhmatyyppikoodi.nimiSv = metadata.nimi;
-              } else if (metadata.kieli === "EN") {
-                hakijaryhmatyyppikoodi.nimiEn = metadata.nimi;
+              if (metadata.kieli === 'FI') {
+                hakijaryhmatyyppikoodi.nimiFi = metadata.nimi
+              } else if (metadata.kieli === 'SV') {
+                hakijaryhmatyyppikoodi.nimiSv = metadata.nimi
+              } else if (metadata.kieli === 'EN') {
+                hakijaryhmatyyppikoodi.nimiEn = metadata.nimi
               }
-            });
-            model.hakijaryhma.hakijaryhmatyyppikoodi = hakijaryhmatyyppikoodi;
-            return true;
+            })
+            model.hakijaryhma.hakijaryhmatyyppikoodi = hakijaryhmatyyppikoodi
+            return true
           }
-        });
-        return false;
-      };
+        })
+        return false
+      }
 
       this.refresh = function (
         oid,
@@ -53,176 +53,176 @@ angular
         hakukohdeOid,
         valintatapajonoOid
       ) {
-        model.hakijaryhma = {};
-        model.hakijaryhma.kaytaKaikki = false;
-        model.hakijaryhma.tarkkaKiintio = false;
-        model.hakijaryhma.kaytetaanRyhmaanKuuluvia = true;
-        model.valintatapajonot.length = 0;
-        model.hakijaryhmatyyppikoodit = [];
+        model.hakijaryhma = {}
+        model.hakijaryhma.kaytaKaikki = false
+        model.hakijaryhma.tarkkaKiintio = false
+        model.hakijaryhma.kaytetaanRyhmaanKuuluvia = true
+        model.valintatapajonot.length = 0
+        model.hakijaryhmatyyppikoodit = []
         if (oid) {
           if (hakukohdeOid || valintatapajonoOid) {
             HakijaryhmaValintatapajono.get({ oid: oid }, function (result) {
-              model.hakijaryhma = result;
-              model.onkoHakijaryhma = false;
-            });
+              model.hakijaryhma = result
+              model.onkoHakijaryhma = false
+            })
           } else {
             Hakijaryhma.get({ oid: oid }, function (result) {
-              model.hakijaryhma = result;
-              model.onkoHakijaryhma = true;
-            });
+              model.hakijaryhma = result
+              model.onkoHakijaryhma = true
+            })
           }
         }
 
-        LaskentakaavaModel.refresh(valintaryhmaOid, hakukohdeOid);
-        model.laskentakaavaModel = LaskentakaavaModel;
+        LaskentakaavaModel.refresh(valintaryhmaOid, hakukohdeOid)
+        model.laskentakaavaModel = LaskentakaavaModel
 
         KoodistoHakijaryhmatyyppikoodi.get(function (result) {
-          model.hakijaryhmatyyppikoodit = result;
+          model.hakijaryhmatyyppikoodit = result
           if (!model.hakijaryhma.hakijaryhmatyyppikoodi) {
             model.hakijaryhma.hakijaryhmatyyppikoodi = {
-              uri: "hakijaryhmantyypit_muu",
-            };
+              uri: 'hakijaryhmantyypit_muu',
+            }
           }
           model.setHakijaryhmatyyppikoodiUri(
             model.hakijaryhma.hakijaryhmatyyppikoodi.uri
-          );
-        });
-      };
+          )
+        })
+      }
 
       this.submit = function (
         valintaryhmaOid,
         hakukohdeOid,
         valintatapajonoOid
       ) {
-        var deferred = $q.defer();
+        var deferred = $q.defer()
         if (model.hakijaryhma.oid) {
           if (model.onkoHakijaryhma) {
             Hakijaryhma.update(
               { oid: model.hakijaryhma.oid },
               model.hakijaryhma,
               function (result) {
-                model.hakijaryhma = result;
-                Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
-                deferred.resolve();
+                model.hakijaryhma = result
+                Ilmoitus.avaa('Tallennus onnistui', 'Tallennus onnistui.')
+                deferred.resolve()
               },
               function (err) {
                 Ilmoitus.avaa(
-                  "Tallennus epäonnistui",
-                  "Hakijaryhmän tallentaminen valintaryhmään epäonnistui",
+                  'Tallennus epäonnistui',
+                  'Hakijaryhmän tallentaminen valintaryhmään epäonnistui',
                   IlmoitusTila.ERROR
-                );
+                )
                 deferred.reject(
-                  "Hakijaryhmän tallentaminen valintaryhmään epäonnistui",
+                  'Hakijaryhmän tallentaminen valintaryhmään epäonnistui',
                   err
-                );
+                )
               }
-            );
+            )
           } else {
             HakijaryhmaValintatapajono.update(
               { oid: model.hakijaryhma.oid },
               model.hakijaryhma,
               function (result) {
-                model.hakijaryhma = result;
-                Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
-                deferred.resolve();
+                model.hakijaryhma = result
+                Ilmoitus.avaa('Tallennus onnistui', 'Tallennus onnistui.')
+                deferred.resolve()
               },
               function (err) {
                 Ilmoitus.avaa(
-                  "Tallennus epäonnistui",
-                  "Hakijaryhmän tallentaminen hakukohteelle tai valintatapajonolle epäonnistui",
+                  'Tallennus epäonnistui',
+                  'Hakijaryhmän tallentaminen hakukohteelle tai valintatapajonolle epäonnistui',
                   IlmoitusTila.ERROR
-                );
+                )
                 deferred.reject(
-                  "Hakijaryhmän tallentaminen hakukohteelle tai valintatapajonolle epäonnistui",
+                  'Hakijaryhmän tallentaminen hakukohteelle tai valintatapajonolle epäonnistui',
                   err
-                );
+                )
               }
-            );
+            )
           }
         } else if (hakukohdeOid && valintatapajonoOid) {
           ValintatapajonoHakijaryhma.insert(
             { oid: valintatapajonoOid },
             model.hakijaryhma,
             function (result) {
-              model.hakijaryhma = result;
-              Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
-              deferred.resolve();
+              model.hakijaryhma = result
+              Ilmoitus.avaa('Tallennus onnistui', 'Tallennus onnistui.')
+              deferred.resolve()
             },
             function (err) {
               Ilmoitus.avaa(
-                "Tallennus epäonnistui",
-                "Hakijaryhmän tallentaminen valintatapajonoon epäonnistui",
+                'Tallennus epäonnistui',
+                'Hakijaryhmän tallentaminen valintatapajonoon epäonnistui',
                 IlmoitusTila.ERROR
-              );
+              )
               deferred.reject(
-                "Hakijaryhmän tallentaminen valintatapajonoon epäonnistui",
+                'Hakijaryhmän tallentaminen valintatapajonoon epäonnistui',
                 err
-              );
+              )
             }
-          );
+          )
         } else if (hakukohdeOid) {
           HakukohdeHakijaryhma.insert(
             { oid: hakukohdeOid },
             model.hakijaryhma,
             function (result) {
-              model.hakijaryhma = result;
-              Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
-              deferred.resolve();
+              model.hakijaryhma = result
+              Ilmoitus.avaa('Tallennus onnistui', 'Tallennus onnistui.')
+              deferred.resolve()
             },
             function (err) {
               Ilmoitus.avaa(
-                "Tallennus epäonnistui",
-                "Hakijaryhmän tallentaminen hakukohteeseen epäonnistui",
+                'Tallennus epäonnistui',
+                'Hakijaryhmän tallentaminen hakukohteeseen epäonnistui',
                 IlmoitusTila.ERROR
-              );
+              )
               deferred.reject(
-                "Hakijaryhmän tallentaminen hakukohteeseen epäonnistui",
+                'Hakijaryhmän tallentaminen hakukohteeseen epäonnistui',
                 err
-              );
+              )
             }
-          );
+          )
         } else if (valintaryhmaOid) {
           ValintaryhmaHakijaryhma.insert(
             { oid: valintaryhmaOid },
             model.hakijaryhma,
             function (result) {
-              Ilmoitus.avaa("Tallennus onnistui", "Tallennus onnistui.");
-              model.hakijaryhma = result;
-              deferred.resolve();
+              Ilmoitus.avaa('Tallennus onnistui', 'Tallennus onnistui.')
+              model.hakijaryhma = result
+              deferred.resolve()
             },
             function (err) {
               Ilmoitus.avaa(
-                "Tallennus epäonnistui",
-                "Hakijaryhmän tallentaminen valintaryhmään epäonnistui",
+                'Tallennus epäonnistui',
+                'Hakijaryhmän tallentaminen valintaryhmään epäonnistui',
                 IlmoitusTila.ERROR
-              );
+              )
               deferred.reject(
-                "Hakijaryhmän tallentaminen valintaryhmään epäonnistui",
+                'Hakijaryhmän tallentaminen valintaryhmään epäonnistui',
                 err
-              );
+              )
             }
-          );
+          )
         } else {
           deferred.reject(
-            "Hakukohteen tai valintatapajonon tunnistetta ei löytynyt. Hakijaryhmän tallentaminen epäonnistui"
-          );
+            'Hakukohteen tai valintatapajonon tunnistetta ei löytynyt. Hakijaryhmän tallentaminen epäonnistui'
+          )
         }
 
-        return deferred.promise;
-      };
-    })();
+        return deferred.promise
+      }
+    })()
 
-    return model;
+    return model
   })
 
-  .controller("HakijaryhmaController", [
-    "$scope",
-    "$location",
-    "$routeParams",
-    "HakijaryhmaModel",
-    "HakukohdeModel",
-    "ValintaryhmaModel",
-    "ValintatapajonoModel",
+  .controller('HakijaryhmaController', [
+    '$scope',
+    '$location',
+    '$routeParams',
+    'HakijaryhmaModel',
+    'HakukohdeModel',
+    'ValintaryhmaModel',
+    'ValintatapajonoModel',
     function (
       $scope,
       $location,
@@ -232,143 +232,143 @@ angular
       ValintaryhmaModel,
       ValintatapajonoModel
     ) {
-      "use strict";
+      'use strict'
 
-      $scope.model = HakijaryhmaModel;
+      $scope.model = HakijaryhmaModel
       $scope.model.refresh(
         $routeParams.hakijaryhmaOid,
         $routeParams.id,
         $routeParams.hakukohdeOid,
         $routeParams.valintatapajonoOid
-      );
-      $scope.working = false;
+      )
+      $scope.working = false
 
       if (
         !$routeParams.hakijaryhmaOid &&
-        sessionStorage.getItem("hakijaryhmaSkeleton")
+        sessionStorage.getItem('hakijaryhmaSkeleton')
       ) {
-        var storage = JSON.parse(sessionStorage.getItem("hakijaryhmaSkeleton"));
-        $scope.model.hakijaryhma = storage.skeleton;
+        var storage = JSON.parse(sessionStorage.getItem('hakijaryhmaSkeleton'))
+        $scope.model.hakijaryhma = storage.skeleton
       } else {
         ValintatapajonoModel.refreshIfNeeded(
           $routeParams.valintatapajonoOid,
           $routeParams.id,
           $routeParams.hakukohdeOid,
           $routeParams.valinnanvaiheOid
-        );
+        )
       }
 
-      if (sessionStorage.getItem("hakijaryhmaSkeleton")) {
-        sessionStorage.removeItem("hakijaryhmaSkeleton");
+      if (sessionStorage.getItem('hakijaryhmaSkeleton')) {
+        sessionStorage.removeItem('hakijaryhmaSkeleton')
       }
 
       $scope.submit = function () {
-        $scope.working = true;
+        $scope.working = true
         var promise = HakijaryhmaModel.submit(
           $routeParams.id,
           $routeParams.hakukohdeOid,
           $routeParams.valintatapajonoOid
-        );
+        )
 
         promise.then(
           function () {
-            $scope.working = false;
+            $scope.working = false
             if ($routeParams.valintatapajonoOid) {
-              var isValintaryhmaChild = $routeParams.id ? true : false;
+              var isValintaryhmaChild = $routeParams.id ? true : false
               ValintatapajonoModel.refresh(
                 $routeParams.valintatapajonoOid,
                 $routeParams.valinnanvaiheOid
-              );
+              )
 
               if (isValintaryhmaChild) {
                 $location.path(
-                  "/valintaryhma/" +
+                  '/valintaryhma/' +
                     $routeParams.id +
-                    "/valinnanvaihe/" +
+                    '/valinnanvaihe/' +
                     $routeParams.valinnanvaiheOid +
-                    "/valintatapajono/" +
+                    '/valintatapajono/' +
                     $routeParams.valintatapajonoOid
-                );
+                )
               } else {
                 $location.path(
-                  "/hakukohde/" +
+                  '/hakukohde/' +
                     $routeParams.hakukohdeOid +
-                    "/valinnanvaihe/" +
+                    '/valinnanvaihe/' +
                     $routeParams.valinnanvaiheOid +
-                    "/valintatapajono/" +
+                    '/valintatapajono/' +
                     $routeParams.valintatapajonoOid
-                );
+                )
               }
             } else if ($routeParams.hakukohdeOid) {
-              HakukohdeModel.refresh($routeParams.hakukohdeOid);
-              $location.path("/hakukohde/" + $routeParams.hakukohdeOid);
+              HakukohdeModel.refresh($routeParams.hakukohdeOid)
+              $location.path('/hakukohde/' + $routeParams.hakukohdeOid)
             } else {
-              ValintaryhmaModel.refresh($routeParams.id);
-              $location.path("/valintaryhma/" + $routeParams.id);
+              ValintaryhmaModel.refresh($routeParams.id)
+              $location.path('/valintaryhma/' + $routeParams.id)
             }
           },
           function (error) {
-            $scope.working = false;
+            $scope.working = false
           }
-        );
-      };
+        )
+      }
 
       $scope.cancel = function () {
-        var path;
+        var path
 
         if ($routeParams.valintatapajonoOid) {
           if ($routeParams.id) {
             $location.path(
-              "/valintaryhma/" +
+              '/valintaryhma/' +
                 $routeParams.id +
-                "/valinnanvaihe/" +
+                '/valinnanvaihe/' +
                 $routeParams.valinnanvaiheOid +
-                "/valintatapajono/" +
+                '/valintatapajono/' +
                 $routeParams.valintatapajonoOid
-            );
+            )
           } else {
             $location.path(
-              "/hakukohde/" +
+              '/hakukohde/' +
                 $routeParams.hakukohdeOid +
-                "/valinnanvaihe/" +
+                '/valinnanvaihe/' +
                 $routeParams.valinnanvaiheOid +
-                "/valintatapajono/" +
+                '/valintatapajono/' +
                 $routeParams.valintatapajonoOid
-            );
+            )
           }
         } else if ($routeParams.hakukohdeOid) {
-          path = "/hakukohde/" + $routeParams.hakukohdeOid;
+          path = '/hakukohde/' + $routeParams.hakukohdeOid
         } else {
-          path = "/valintaryhma/" + $routeParams.id;
+          path = '/valintaryhma/' + $routeParams.id
         }
 
-        $location.path(path);
-      };
+        $location.path(path)
+      }
 
       $scope.createNewLaskentakaava = function () {
         var hakijaryhmaSkeleton = {
           skeleton: $scope.model.hakijaryhma,
           url: $location.path(),
-        };
+        }
 
         sessionStorage.setItem(
-          "hakijaryhmaSkeleton",
+          'hakijaryhmaSkeleton',
           JSON.stringify(hakijaryhmaSkeleton)
-        );
+        )
 
         if ($routeParams.id) {
           $location.path(
-            "/valintaryhma/" +
+            '/valintaryhma/' +
               $routeParams.id +
-              "/laskentakaavalista/laskentakaava/"
-          );
+              '/laskentakaavalista/laskentakaava/'
+          )
         } else {
           $location.path(
-            "/hakukohde/" +
+            '/hakukohde/' +
               $routeParams.hakukohdeOid +
-              "/laskentakaavalista/laskentakaava/"
-          );
+              '/laskentakaavalista/laskentakaava/'
+          )
         }
-      };
+      }
     },
-  ]);
+  ])

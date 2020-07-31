@@ -2,73 +2,73 @@
  * Hakee käännöspalvelusta resurssit sovelluksen lokalisointiin
  */
 angular
-  .module("oph.localisation", ["oph-roles"])
-  .factory("Localisations", [
-    "$resource",
-    "$q",
+  .module('oph.localisation', ['oph-roles'])
+  .factory('Localisations', [
+    '$resource',
+    '$q',
     function ($resource, $q) {
-      var localisations = {};
+      var localisations = {}
       var locals = $resource(
-        window.url("lokalisointi.localisation"),
+        window.url('lokalisointi.localisation'),
         {},
         {
           query: {
-            method: "GET",
+            method: 'GET',
             params: {
-              category: "valintaperusteet",
+              category: 'valintaperusteet',
             },
             isArray: true,
           },
         }
-      );
+      )
       /**
        * Haetaan lokalisoinnit käännöspalvelusta
        * palauttaa käännösten objekti taulukon.
        * @returns {promise}
        */
       localisations.getLocalisations = function () {
-        var deferred = $q.defer();
+        var deferred = $q.defer()
         locals.query().$promise.then(function (data) {
-          deferred.resolve(data);
-        });
-        return deferred.promise;
-      };
-      return localisations;
+          deferred.resolve(data)
+        })
+        return deferred.promise
+      }
+      return localisations
     },
   ])
 
   /**
    * Sovelluksen lokalisointi palvelu
    */
-  .service("LocalisationService", [
-    "Localisations",
-    "$q",
-    "MyRolesModel",
-    "$cacheFactory",
+  .service('LocalisationService', [
+    'Localisations',
+    '$q',
+    'MyRolesModel',
+    '$cacheFactory',
     function (Localisations, $q, MyRolesModel, $cacheFactory) {
       //välimuisti käännöksille
-      var cache = $cacheFactory("locales");
+      var cache = $cacheFactory('locales')
 
       /**
        * Palauttaa käyttäjän käyttökielen ( fi | sv | en )cas/myroles:sta oletus kieli on fi
        * @returns {promise}
        */
       this.getUserLang = function () {
-        var deferred = $q.defer();
+        var deferred = $q.defer()
         MyRolesModel.then(function (data) {
-          var found = true;
+          var found = true
           // oletus kieli fi, jos käyttäjällä ei kieltä asetettu cas/myroles:ssa
-          var userLang = "fi";
+          var userLang = 'fi'
           for (var i = 0; i < data.length && found; i++) {
-            if (data[i].match("LANG_") !== null) {
-              userLang = data[i].slice(5);
-              found = false;
+            if (data[i].match('LANG_') !== null) {
+              userLang = data[i].slice(5)
+              found = false
             }
           }
-          deferred.resolve(userLang);
-        });
-        return deferred.promise;
-      };
+          deferred.resolve(userLang)
+        })
+        return deferred.promise
+      }
 
       /**
        * Haetaan käännöspalvelusta käyttäjän käyttökielen mukaan
@@ -78,41 +78,41 @@ angular
        * @returns {promise}
        */
       function getTranslations(userLang) {
-        var deferred = $q.defer();
+        var deferred = $q.defer()
         if (cache.info().size == 0) {
           Localisations.getLocalisations().then(function (data) {
             for (var trl in data) {
               if (data[trl].id !== undefined && data[trl].locale === userLang) {
-                putCachedLocalisation(data[trl].key, data[trl].value);
+                putCachedLocalisation(data[trl].key, data[trl].value)
               }
             }
-            deferred.resolve();
-          });
+            deferred.resolve()
+          })
         }
-        return deferred.promise;
+        return deferred.promise
       }
 
       this.getTranslationsForArray = function (array) {
-        var deferred = $q.defer();
+        var deferred = $q.defer()
 
-        var self = this;
-        var promises = [];
+        var self = this
+        var promises = []
 
         array.forEach(function (item) {
-          item.text = item.default_text;
+          item.text = item.default_text
           promises.push(
             self.getTranslation(item.text_prop).then(function (text) {
               if (text) {
-                item.text = text;
+                item.text = text
               }
             })
-          );
-        });
+          )
+        })
         $q.all(promises).then(function () {
-          deferred.resolve();
-        });
-        return deferred.promise;
-      };
+          deferred.resolve()
+        })
+        return deferred.promise
+      }
 
       /**
        * Palauttaa käännöstekstin avaimelle
@@ -120,27 +120,27 @@ angular
        * @returns {promise}
        */
       this.getTranslation = function (key) {
-        var deferred = $q.defer();
+        var deferred = $q.defer()
         if (!hasTranslation(key)) {
           this.getUserLang().then(function (data) {
             getTranslations(data).then(function () {
-              var locale = cache.get(key);
-              deferred.resolve(locale ? cache.get(key) : undefined);
-            });
-          });
+              var locale = cache.get(key)
+              deferred.resolve(locale ? cache.get(key) : undefined)
+            })
+          })
         } else {
-          var locale = cache.get(key);
-          deferred.resolve(locale ? cache.get(key) : undefined);
+          var locale = cache.get(key)
+          deferred.resolve(locale ? cache.get(key) : undefined)
         }
-        return deferred.promise;
-      };
+        return deferred.promise
+      }
       /**
        * Laittaa käännöstekstit välimuistiin avain arvo pareine
        * @param key: käännöstekstin avain
        * @param newEntry: käännnösteksi
        */
       function putCachedLocalisation(key, newEntry) {
-        cache.put(key, newEntry);
+        cache.put(key, newEntry)
       }
       /**
        * Tarkistaa onko käännösteksti olemassa
@@ -148,7 +148,7 @@ angular
        * @returns {*|boolean}
        */
       function hasTranslation(key) {
-        return angular.isDefined(cache.get(key));
+        return angular.isDefined(cache.get(key))
       }
 
       /**
@@ -158,29 +158,29 @@ angular
        */
       this.tl = function (key) {
         if (hasTranslation(key)) {
-          return cache.get(key);
+          return cache.get(key)
         } else {
-          return undefined;
+          return undefined
         }
-      };
+      }
     },
   ])
   /**
    * UI-directive käännösten käyttämiseen
    */
-  .directive("tl", [
-    "LocalisationService",
+  .directive('tl', [
+    'LocalisationService',
     function (LocalisationService) {
       return {
-        restrict: "A",
+        restrict: 'A',
         replace: true,
         scope: false,
         compile: function (element, attrs) {
-          var key = attrs["tl"];
+          var key = attrs['tl']
           LocalisationService.getTranslation(key).then(function (data) {
-            element.html(data);
-          });
+            element.html(data)
+          })
         },
-      };
+      }
     },
-  ]);
+  ])

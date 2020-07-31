@@ -1,60 +1,60 @@
 angular
-  .module("loading", [])
+  .module('loading', [])
 
-  .factory("loadingService", [
+  .factory('loadingService', [
     function () {
       var service = {
         requestCount: 0,
         isLoading: function () {
-          return service.requestCount > 0;
+          return service.requestCount > 0
         },
-      };
-      return service;
+      }
+      return service
     },
   ])
 
-  .factory("onCompleteInterceptor", [
-    "loadingService",
-    "$q",
+  .factory('onCompleteInterceptor', [
+    'loadingService',
+    '$q',
     function (loadingService, $q) {
       return {
         request: function (config) {
-          loadingService.requestCount++;
-          return config;
+          loadingService.requestCount++
+          return config
         },
         requestError: function (rejection) {
-          return $q.reject(rejection);
+          return $q.reject(rejection)
         },
         response: function (response) {
-          loadingService.requestCount--;
-          return response;
+          loadingService.requestCount--
+          return response
         },
         responseError: function (rejection) {
-          loadingService.requestCount--;
-          return $q.reject(rejection);
+          loadingService.requestCount--
+          return $q.reject(rejection)
         },
-      };
+      }
     },
   ])
 
   .config([
-    "$httpProvider",
+    '$httpProvider',
     function ($httpProvider) {
-      $httpProvider.interceptors.push("onCompleteInterceptor");
+      $httpProvider.interceptors.push('onCompleteInterceptor')
     },
   ])
 
-  .controller("LoadingCtrl", [
-    "$scope",
-    "loadingService",
+  .controller('LoadingCtrl', [
+    '$scope',
+    'loadingService',
     function ($scope, loadingService) {
       $scope.$watch(
         function () {
-          return loadingService.isLoading();
+          return loadingService.isLoading()
         },
         function (value) {
-          $scope.loading = value;
+          $scope.loading = value
         }
-      );
+      )
     },
-  ]);
+  ])

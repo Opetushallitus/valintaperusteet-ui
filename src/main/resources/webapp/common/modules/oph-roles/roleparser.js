@@ -1,17 +1,17 @@
 angular
-  .module("oph-roles", ["lodash"])
+  .module('oph-roles', ['lodash'])
 
   //AppRole == part of a role in myroles list - for example APP_VALINTAPERUSTEET & APP_VALINTOJENTOTEUTTAMINEN are AppRoles
-  .service("RoleParser", [
-    "$log",
-    "_",
-    "READ",
-    "UPDATE",
-    "CRUD",
-    "OID_REGEXP",
-    "OPH_ORG_OID",
+  .service('RoleParser', [
+    '$log',
+    '_',
+    'READ',
+    'UPDATE',
+    'CRUD',
+    'OID_REGEXP',
+    'OPH_ORG_OID',
     function ($log, _, READ, UPDATE, CRUD, OID_REGEXP, OPH_ORG_OID) {
-      var api = this;
+      var api = this
 
       /**
        * Parse rights for the services defined in services-parameter and for the organizations (and their accessLevel) for the services
@@ -20,23 +20,23 @@ angular
        * @returns {Array} of objects containing service, its access level and services organizations and their accesslevels
        */
       this.parseRoles = function (myRoles, services) {
-        var rolesArr = myRoles.myroles;
+        var rolesArr = myRoles.myroles
 
         //parse rightlevels for each organization in roles
         return _(services)
           .filter(function (service) {
-            return api.getRolesByApp(rolesArr, service).length !== 0;
+            return api.getRolesByApp(rolesArr, service).length !== 0
           })
           .map(function (service) {
-            var rolesByApp = api.getRolesByApp(rolesArr, service);
+            var rolesByApp = api.getRolesByApp(rolesArr, service)
             return {
               service: service,
               accessRights: api.getAppRights(rolesByApp, service),
               organizationRights: api.getOrganizationRights(rolesByApp),
-            };
+            }
           })
-          .value();
-      };
+          .value()
+      }
 
       /**
        * Get rightslevel for the service (e.g. 'VALINTAPERUSTEET' or 'VALINTOJENTOTEUTTAMINEN')
@@ -45,19 +45,19 @@ angular
        * @returns {Array} of objects containing oid and corresponding highest rightlevel
        */
       this.getAppRights = function (roles, service) {
-        var accessRights = "READ";
+        var accessRights = 'READ'
         _.some(roles, function (role) {
           if (
             !api.containsOid(role) &&
             api.getRoleRightLevel(role) !== undefined &&
             api.isHigherAccessLevel(accessRights, api.getRoleRightLevel(role))
           ) {
-            accessRights = api.getRoleRightLevel(role);
+            accessRights = api.getRoleRightLevel(role)
           }
-          return accessRights === "CRUD" ? true : false;
-        });
-        return accessRights;
-      };
+          return accessRights === 'CRUD' ? true : false
+        })
+        return accessRights
+      }
 
       /**
        * Get organizations and highest corresponding highest
@@ -69,33 +69,33 @@ angular
         //unique oids found in roles-parameter
         var oids = _(roles)
           .filter(function (role) {
-            return api.containsOid(role);
+            return api.containsOid(role)
           })
           .map(function (role) {
-            return api.getOrganizationOid(role);
+            return api.getOrganizationOid(role)
           })
           .uniq()
-          .value();
+          .value()
 
         return _.map(oids, function (oid) {
-          var accessRights = "READ"; //default rights
+          var accessRights = 'READ' //default rights
           _.some(roles, function (role) {
             if (
               api.containsOid(role) &&
               api.getOrganizationOid(role) === oid &&
               api.isHigherAccessLevel(accessRights, api.getRoleRightLevel(role))
             ) {
-              accessRights = api.getRoleRightLevel(role);
+              accessRights = api.getRoleRightLevel(role)
             }
-            return accessRights === "CRUD" ? true : false; //if crud-rights found no need to continue
-          });
+            return accessRights === 'CRUD' ? true : false //if crud-rights found no need to continue
+          })
 
           return {
             oid: oid,
             accessRights: accessRights,
-          };
-        });
-      };
+          }
+        })
+      }
 
       /**
        *  Compare rightlevels and determine if second argument is higher
@@ -106,10 +106,10 @@ angular
       this.isHigherAccessLevel = function (comparated, comparator) {
         return (
           comparated === comparator ||
-          ((comparated === "READ_UPDATE" || comparated === "READ") &&
-            (comparator === "CRUD" || comparator === "READ_UPDATE"))
-        );
-      };
+          ((comparated === 'READ_UPDATE' || comparated === 'READ') &&
+            (comparator === 'CRUD' || comparator === 'READ_UPDATE'))
+        )
+      }
 
       /**
        *   Parse out roles that aren't exact matches for service (e.g. APP_VALINTAPERUSTEET vs. APP_VALINTAPERUSTEETKK)
@@ -121,12 +121,12 @@ angular
         return _.filter(roles, function (role) {
           return (
             service === role ||
-            _.startsWith(role, service + "_" + "CRUD") ||
-            _.startsWith(role, service + "_" + "READ_UPDATE") ||
-            _.startsWith(role, service + "_" + "READ")
-          );
-        });
-      };
+            _.startsWith(role, service + '_' + 'CRUD') ||
+            _.startsWith(role, service + '_' + 'READ_UPDATE') ||
+            _.startsWith(role, service + '_' + 'READ')
+          )
+        })
+      }
 
       /**
        *  Search for rightlevel-string in role
@@ -135,18 +135,18 @@ angular
        * @returns {String} returns CRUD, READ_UPDATE, READ or undefined rightlevel isn't found
        */
       this.getRoleRightLevel = function (role) {
-        var accessLeveltokens = ["CRUD", "READ_UPDATE", "READ"];
-        var rightLevel = undefined;
+        var accessLeveltokens = ['CRUD', 'READ_UPDATE', 'READ']
+        var rightLevel = undefined
 
         _.some(accessLeveltokens, function (token) {
           if (role.indexOf(token) >= 0) {
-            rightLevel = token;
-            return true;
+            rightLevel = token
+            return true
           }
-        });
+        })
 
-        return rightLevel;
-      };
+        return rightLevel
+      }
 
       /**
        *  Does this role contain an oid
@@ -155,8 +155,8 @@ angular
        * @returns {Boolean} role contains oid
        */
       this.containsOid = function (role) {
-        return OID_REGEXP.test(role);
-      };
+        return OID_REGEXP.test(role)
+      }
 
       /**
        *  get oid-string from role
@@ -166,11 +166,11 @@ angular
        */
       this.getOrganizationOid = function (role) {
         if (!api.containsOid(role)) {
-          $log.error("Oidin parsiminen käyttäjän epäonnistui roolista: ", role);
-          return;
+          $log.error('Oidin parsiminen käyttäjän epäonnistui roolista: ', role)
+          return
         }
-        return role.match(OID_REGEXP)[0];
-      };
+        return role.match(OID_REGEXP)[0]
+      }
 
       /**
        *  oph-user
@@ -180,9 +180,9 @@ angular
        */
       this.isOphUser = function (roles) {
         return _.some(roles, function (role) {
-          return _.includes(role, OPH_ORG_OID);
-        });
-      };
+          return _.includes(role, OPH_ORG_OID)
+        })
+      }
 
       /**
        *  Get highest. expect roles include oph-user -organization
@@ -191,19 +191,19 @@ angular
        * @returns {String} oph-users rights (READ, READ_UPDATE, CRUD)
        */
       this.getRightsForOrganization = function (roles, organization) {
-        var rights = "READ";
+        var rights = 'READ'
         _(roles)
           .filter(function (role) {
-            return _.includes(role, organization);
+            return _.includes(role, organization)
           })
           .some(function (role) {
             if (api.isHigherAccessLevel(rights, api.getRoleRightLevel(role))) {
-              rights = api.getRoleRightLevel(role);
-              return true;
+              rights = api.getRoleRightLevel(role)
+              return true
             }
-          });
+          })
 
-        return rights;
-      };
+        return rights
+      }
     },
-  ]);
+  ])

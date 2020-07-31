@@ -1,54 +1,54 @@
 angular
-  .module("valintaperusteet")
+  .module('valintaperusteet')
 
-  .service("SyotettavanarvontyyppiService", [
-    "$log",
-    "$q",
-    "KoodistoSyotettavanarvonkoodi",
-    "_",
+  .service('SyotettavanarvontyyppiService', [
+    '$log',
+    '$q',
+    'KoodistoSyotettavanarvonkoodi',
+    '_',
     function ($log, $q, KoodistoSyotettavanarvonkoodi, _) {
-      syotettavanarvontyypit = [];
+      syotettavanarvontyypit = []
 
       // Keep Syotettavanarvonkoodit usage internal for this service
       function fetchSyotettavanarvontyypit() {
-        var deferred = $q.defer();
+        var deferred = $q.defer()
         KoodistoSyotettavanarvonkoodi.get(
           {},
           function (result) {
-            deferred.resolve(result);
+            deferred.resolve(result)
           },
           function (error) {
             $log.error(
-              "Syotettavien arvojen tyyppien hakeminen epäonnistui",
+              'Syotettavien arvojen tyyppien hakeminen epäonnistui',
               error
-            );
-            deferred.reject();
+            )
+            deferred.reject()
           }
-        );
-        return deferred.promise;
+        )
+        return deferred.promise
       }
 
       function setSyotettavanarvontyypit() {
         fetchSyotettavanarvontyypit().then(
           function (data) {
-            syotettavanarvontyypit = data;
+            syotettavanarvontyypit = data
           },
           function (data) {
-            console.log(data);
+            console.log(data)
           },
           function (data) {
-            console.log(data);
+            console.log(data)
           }
-        );
+        )
       }
 
       this.getSyotettavanarvontyypit = function () {
-        return syotettavanarvontyypit;
-      };
+        return syotettavanarvontyypit
+      }
 
       //IIFE: run fetchFunktiokuvaukset immediately when this service is initiated
-      (function () {
-        setSyotettavanarvontyypit();
-      })();
+      ;(function () {
+        setSyotettavanarvontyypit()
+      })()
     },
-  ]);
+  ])

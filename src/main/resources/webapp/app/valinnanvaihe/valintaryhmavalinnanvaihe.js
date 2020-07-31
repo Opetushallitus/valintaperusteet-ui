@@ -1,13 +1,13 @@
 angular
-  .module("valintaperusteet")
+  .module('valintaperusteet')
 
-  .factory("ValintaryhmaValinnanvaiheModel", [
-    "$q",
-    "Valinnanvaihe",
-    "Valintatapajono",
-    "ValinnanvaiheValintatapajono",
-    "NewValintaryhmaValinnanvaihe",
-    "ValintatapajonoJarjesta",
+  .factory('ValintaryhmaValinnanvaiheModel', [
+    '$q',
+    'Valinnanvaihe',
+    'Valintatapajono',
+    'ValinnanvaiheValintatapajono',
+    'NewValintaryhmaValinnanvaihe',
+    'ValintatapajonoJarjesta',
     function (
       $q,
       Valinnanvaihe,
@@ -16,34 +16,34 @@ angular
       NewValintaryhmaValinnanvaihe,
       ValintatapajonoJarjesta
     ) {
-      "use strict";
+      'use strict'
 
       var model = new (function () {
-        this.valinnanvaihe = {};
-        this.valintatapajonot = [];
+        this.valinnanvaihe = {}
+        this.valintatapajonot = []
 
         this.refresh = function (oid) {
           if (!oid) {
-            model.valinnanvaihe = {};
-            model.valintatapajonot = [];
+            model.valinnanvaihe = {}
+            model.valintatapajonot = []
           } else {
             Valinnanvaihe.get({ oid: oid }, function (result) {
-              model.valinnanvaihe = result;
-            });
+              model.valinnanvaihe = result
+            })
 
             ValinnanvaiheValintatapajono.get({ parentOid: oid }, function (
               valintatapajonot
             ) {
-              model.valintatapajonot = valintatapajonot;
-            });
+              model.valintatapajonot = valintatapajonot
+            })
           }
-        };
+        }
 
         this.refreshIfNeeded = function (oid) {
           if (oid !== model.valinnanvaihe.oid) {
-            model.refresh(oid);
+            model.refresh(oid)
           }
-        };
+        }
         this.persistValintaryhmaValinnanvaihe = function (
           parentValintaryhmaOid,
           valinnanvaiheet,
@@ -51,24 +51,24 @@ angular
           afterFailure
         ) {
           if (model.valinnanvaihe.oid) {
-            var promises = [];
+            var promises = []
             promises.push(
               Valinnanvaihe.post(model.valinnanvaihe, function (result) {
-                var i;
+                var i
                 //update valinnanvaihe in ValintaryhmaModel
                 for (i in valinnanvaiheet) {
                   if (result.oid === valinnanvaiheet[i].oid) {
-                    valinnanvaiheet[i] = result;
+                    valinnanvaiheet[i] = result
                   }
                 }
               }).$promise
-            );
+            )
 
             promises.push(
               ValintatapajonoJarjesta.post(getValintatapajonoOids(), function (
                 result
               ) {}).$promise
-            );
+            )
 
             model.valintatapajonot.forEach(function (element, index, array) {
               promises.push(
@@ -77,63 +77,63 @@ angular
                   element,
                   function (result) {}
                 ).$promise
-              );
-            });
+              )
+            })
 
             $q.all(promises).then(
               function () {
-                afterSuccess(function () {});
+                afterSuccess(function () {})
               },
               function (err) {
-                afterFailure(function () {});
+                afterFailure(function () {})
               }
-            );
+            )
           } else {
             var valinnanvaihe = {
               nimi: model.valinnanvaihe.nimi,
               kuvaus: model.valinnanvaihe.kuvaus,
               aktiivinen: true,
-              valinnanVaiheTyyppi: "TAVALLINEN",
-            };
+              valinnanVaiheTyyppi: 'TAVALLINEN',
+            }
             NewValintaryhmaValinnanvaihe.insert(
               { valintaryhmaOid: parentValintaryhmaOid },
               valinnanvaihe,
               function (result) {
-                model.valinnanvaihe = result;
-                valinnanvaiheet.push(result);
-                afterSuccess(function () {});
+                model.valinnanvaihe = result
+                valinnanvaiheet.push(result)
+                afterSuccess(function () {})
               },
               function (fail) {
-                afterFailure(function () {});
+                afterFailure(function () {})
               }
-            );
+            )
           }
-        };
+        }
         this.remove = function (jono) {
           Valintatapajono.deleteWithDialog(jono).then(function () {
-            model.refresh(model.valinnanvaihe.oid);
-          });
-        };
+            model.refresh(model.valinnanvaihe.oid)
+          })
+        }
 
         function getValintatapajonoOids() {
-          var oids = [];
+          var oids = []
           for (var i = 0; i < model.valintatapajonot.length; ++i) {
-            oids.push(model.valintatapajonot[i].oid);
+            oids.push(model.valintatapajonot[i].oid)
           }
-          return oids;
+          return oids
         }
-      })();
-      return model;
+      })()
+      return model
     },
   ])
 
-  .controller("ValintaryhmaValinnanvaiheController", [
-    "$scope",
-    "$location",
-    "$routeParams",
-    "ValintaryhmaValinnanvaiheModel",
-    "ValintaryhmaModel",
-    "SuoritaToiminto",
+  .controller('ValintaryhmaValinnanvaiheController', [
+    '$scope',
+    '$location',
+    '$routeParams',
+    'ValintaryhmaValinnanvaiheModel',
+    'ValintaryhmaModel',
+    'SuoritaToiminto',
     function (
       $scope,
       $location,
@@ -142,12 +142,12 @@ angular
       ValintaryhmaModel,
       SuoritaToiminto
     ) {
-      "use strict";
+      'use strict'
 
-      $scope.valintaryhmaOid = $routeParams.id;
-      $scope.ValintaryhmaValinnanvaiheOid = $routeParams.valinnanvaiheOid;
-      $scope.model = ValintaryhmaValinnanvaiheModel;
-      $scope.model.refreshIfNeeded($scope.ValintaryhmaValinnanvaiheOid);
+      $scope.valintaryhmaOid = $routeParams.id
+      $scope.ValintaryhmaValinnanvaiheOid = $routeParams.valinnanvaiheOid
+      $scope.model = ValintaryhmaValinnanvaiheModel
+      $scope.model.refreshIfNeeded($scope.ValintaryhmaValinnanvaiheOid)
 
       $scope.submit = function () {
         SuoritaToiminto.avaa(function (success, failure) {
@@ -156,44 +156,44 @@ angular
             ValintaryhmaModel.valinnanvaiheet,
             success,
             failure
-          );
-        });
-      };
+          )
+        })
+      }
 
       $scope.cancel = function () {
-        $location.path("/valintaryhma/" + $scope.valintaryhmaOid);
-      };
+        $location.path('/valintaryhma/' + $scope.valintaryhmaOid)
+      }
 
       $scope.addJono = function () {
         $location.path(
-          "/valintaryhma/" +
+          '/valintaryhma/' +
             $scope.valintaryhmaOid +
-            "/valinnanvaihe/" +
+            '/valinnanvaihe/' +
             $scope.model.valinnanvaihe.oid +
-            "/valintatapajono/"
-        );
-      };
+            '/valintatapajono/'
+        )
+      }
 
       $scope.modifyJono = function (oid) {
         $location.path(
-          "/valintaryhma/" +
+          '/valintaryhma/' +
             $scope.valintaryhmaOid +
-            "/valinnanvaihe/" +
+            '/valinnanvaihe/' +
             $scope.model.valinnanvaihe.oid +
-            "/valintatapajono/" +
+            '/valintatapajono/' +
             oid
-        );
-      };
+        )
+      }
     },
   ])
 
-  .factory("ValintaryhmaValintakoeValinnanvaiheModel", [
-    "$q",
-    "Valinnanvaihe",
-    "ValinnanvaiheValintakoe",
-    "NewValintaryhmaValinnanvaihe",
-    "Valintakoe",
-    "SuoritaToiminto",
+  .factory('ValintaryhmaValintakoeValinnanvaiheModel', [
+    '$q',
+    'Valinnanvaihe',
+    'ValinnanvaiheValintakoe',
+    'NewValintaryhmaValinnanvaihe',
+    'Valintakoe',
+    'SuoritaToiminto',
     function (
       $q,
       Valinnanvaihe,
@@ -202,30 +202,30 @@ angular
       Valintakoe,
       SuoritaToiminto
     ) {
-      "use strict";
+      'use strict'
 
       var model = new (function () {
-        this.valintakoevalinnanvaihe = {};
-        this.valintakokeet = [];
+        this.valintakoevalinnanvaihe = {}
+        this.valintakokeet = []
 
         this.refresh = function (oid) {
           if (!oid) {
-            model.valintakoevalinnanvaihe = {};
-            model.valintakokeet = [];
+            model.valintakoevalinnanvaihe = {}
+            model.valintakokeet = []
           } else {
             Valinnanvaihe.get({ oid: oid }, function (result) {
-              model.valintakoevalinnanvaihe = result;
-            });
+              model.valintakoevalinnanvaihe = result
+            })
 
             ValinnanvaiheValintakoe.get(
               { valinnanvaiheOid: oid },
               {},
               function (result) {
-                model.valintakokeet = result;
+                model.valintakokeet = result
               }
-            );
+            )
           }
-        };
+        }
 
         this.persist = function (
           parentValintaryhmaOid,
@@ -235,19 +235,19 @@ angular
         ) {
           if (model.valintakoevalinnanvaihe.oid) {
             //päivitä valintaryhmän valintakoevalinnanvaiheen tiedot
-            var promises = [];
+            var promises = []
             promises.push(
               Valinnanvaihe.post(model.valintakoevalinnanvaihe, function (
                 result
               ) {
-                var i;
+                var i
                 for (i in valinnanvaiheet) {
                   if (result.oid === valinnanvaiheet[i].oid) {
-                    valinnanvaiheet[i] = result;
+                    valinnanvaiheet[i] = result
                   }
                 }
               }).$promise
-            );
+            )
 
             //päivitä valintaryhmän valintakoevalinnanvaiheen valintakokeet
             for (var i = 0; i < model.valintakokeet.length; i++) {
@@ -257,39 +257,39 @@ angular
                   model.valintakokeet[i],
                   function (result) {}
                 ).$promise
-              );
+              )
             }
 
             $q.all(promises).then(
               function () {
-                afterSuccess(function () {});
+                afterSuccess(function () {})
               },
               function (err) {
-                afterFailure(function () {});
+                afterFailure(function () {})
               }
-            );
+            )
           } else {
             var valintakoevalinnanvaihe = {
               nimi: model.valintakoevalinnanvaihe.nimi,
               kuvaus: model.valintakoevalinnanvaihe.kuvaus,
               aktiivinen: true,
-              valinnanVaiheTyyppi: "VALINTAKOE",
-            };
+              valinnanVaiheTyyppi: 'VALINTAKOE',
+            }
 
             NewValintaryhmaValinnanvaihe.insert(
               { valintaryhmaOid: parentValintaryhmaOid },
               valintakoevalinnanvaihe,
               function (result) {
-                model.valintakoevalinnanvaihe = result;
-                valinnanvaiheet.push(result);
-                afterSuccess(function () {});
+                model.valintakoevalinnanvaihe = result
+                valinnanvaiheet.push(result)
+                afterSuccess(function () {})
               },
               function (error) {
-                afterFailure(function () {});
+                afterFailure(function () {})
               }
-            );
+            )
           }
-        };
+        }
 
         this.removeValintakoe = function (valintakoe) {
           Valintakoe.remove({ valintakoeOid: valintakoe.oid }, function (
@@ -297,24 +297,24 @@ angular
           ) {
             for (var i in model.valintakokeet) {
               if (valintakoe.oid === model.valintakokeet[i].oid) {
-                model.valintakokeet.splice(i, 1);
+                model.valintakokeet.splice(i, 1)
               }
             }
-          });
-        };
-      })();
+          })
+        }
+      })()
 
-      return model;
+      return model
     },
   ])
 
-  .controller("ValintaryhmaValintakoeValinnanvaiheController", [
-    "$scope",
-    "$location",
-    "$routeParams",
-    "ValintaryhmaValintakoeValinnanvaiheModel",
-    "ValintaryhmaModel",
-    "SuoritaToiminto",
+  .controller('ValintaryhmaValintakoeValinnanvaiheController', [
+    '$scope',
+    '$location',
+    '$routeParams',
+    'ValintaryhmaValintakoeValinnanvaiheModel',
+    'ValintaryhmaModel',
+    'SuoritaToiminto',
     function (
       $scope,
       $location,
@@ -323,13 +323,13 @@ angular
       ValintaryhmaModel,
       SuoritaToiminto
     ) {
-      "use strict";
+      'use strict'
 
-      $scope.valintaryhmaOid = $routeParams.id;
+      $scope.valintaryhmaOid = $routeParams.id
       $scope.ValintaryhmaValintakoeValinnanvaiheOid =
-        $routeParams.valintakoevalinnanvaiheOid;
-      $scope.model = ValintaryhmaValintakoeValinnanvaiheModel;
-      $scope.model.refresh($scope.ValintaryhmaValintakoeValinnanvaiheOid);
+        $routeParams.valintakoevalinnanvaiheOid
+      $scope.model = ValintaryhmaValintakoeValinnanvaiheModel
+      $scope.model.refresh($scope.ValintaryhmaValintakoeValinnanvaiheOid)
 
       $scope.submit = function () {
         SuoritaToiminto.avaa(function (success, failure) {
@@ -338,33 +338,33 @@ angular
             ValintaryhmaModel.valinnanvaiheet,
             success,
             failure
-          );
-        });
-      };
+          )
+        })
+      }
 
       $scope.modifyvalintakoe = function (valintakoeOid) {
         $location.path(
-          "/valintaryhma/" +
+          '/valintaryhma/' +
             $scope.valintaryhmaOid +
-            "/valintakoevalinnanvaihe/" +
+            '/valintakoevalinnanvaihe/' +
             $scope.model.valintakoevalinnanvaihe.oid +
-            "/valintakoe/" +
+            '/valintakoe/' +
             valintakoeOid
-        );
-      };
+        )
+      }
 
       $scope.addValintakoe = function () {
         $location.path(
-          "/valintaryhma/" +
+          '/valintaryhma/' +
             $scope.valintaryhmaOid +
-            "/valintakoevalinnanvaihe/" +
+            '/valintakoevalinnanvaihe/' +
             $scope.model.valintakoevalinnanvaihe.oid +
-            "/valintakoe/"
-        );
-      };
+            '/valintakoe/'
+        )
+      }
 
       $scope.cancel = function () {
-        $location.path("/valintaryhma/" + $scope.valintaryhmaOid);
-      };
+        $location.path('/valintaryhma/' + $scope.valintaryhmaOid)
+      }
     },
-  ]);
+  ])

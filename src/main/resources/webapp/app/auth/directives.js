@@ -1,15 +1,15 @@
 angular
-  .module("valintaperusteet")
+  .module('valintaperusteet')
 
-  .directive("auth", [
-    "$routeParams",
-    "$q",
-    "$animate",
-    "$timeout",
-    "$log",
-    "AuthService",
-    "UserAccessLevels",
-    "UserModel",
+  .directive('auth', [
+    '$routeParams',
+    '$q',
+    '$animate',
+    '$timeout',
+    '$log',
+    'AuthService',
+    'UserAccessLevels',
+    'UserModel',
     function (
       $routeParams,
       $q,
@@ -23,21 +23,21 @@ angular
       return {
         priority: 1000,
         link: function ($scope, element, attrs) {
-          UserModel.refreshIfNeeded();
+          UserModel.refreshIfNeeded()
           UserAccessLevels.refreshIfNeeded(
             $routeParams.id,
             $routeParams.hakukohdeOid
-          );
+          )
 
-          $scope.userAccess = UserAccessLevels;
-          $scope.userModel = UserModel;
+          $scope.userAccess = UserAccessLevels
+          $scope.userModel = UserModel
 
-          $animate.addClass(element, "ng-hide");
+          $animate.addClass(element, 'ng-hide')
 
-          var promises = [];
+          var promises = []
 
-          promises.push(UserModel.organizationsDeferred.promise);
-          promises.push(UserAccessLevels.deferred.promise);
+          promises.push(UserModel.organizationsDeferred.promise)
+          promises.push(UserAccessLevels.deferred.promise)
 
           // Reveal element for oph-users and KK-users by default
           $q.all(promises).then(
@@ -46,14 +46,14 @@ angular
                 UserAccessLevels.isOphUser() ||
                 (UserModel.isKKUser && UserAccessLevels.readApp)
               ) {
-                $animate.removeClass(element, "ng-hide");
+                $animate.removeClass(element, 'ng-hide')
               }
             },
             function (error) {
-              $log.error("Error revealing element:", error);
+              $log.error('Error revealing element:', error)
             }
-          );
+          )
         },
-      };
+      }
     },
-  ]);
+  ])

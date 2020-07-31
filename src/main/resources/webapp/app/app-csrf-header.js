@@ -1,33 +1,33 @@
-"use strict";
+'use strict'
 
-var modules = ["valintaperusteet"];
+var modules = ['valintaperusteet']
 
 modules.forEach(function (module) {
   angular
     .module(module)
-    .factory("csrfHeaderInterceptor", [
-      "$cookies",
+    .factory('csrfHeaderInterceptor', [
+      '$cookies',
       function ($cookies) {
         return {
           request: function (config) {
-            config.headers["Caller-Id"] =
-              "1.2.246.562.10.00000000001.valintaperusteet.valintaperusteet-ui.frontend";
+            config.headers['Caller-Id'] =
+              '1.2.246.562.10.00000000001.valintaperusteet.valintaperusteet-ui.frontend'
 
-            var csrfToken = $cookies["CSRF"];
+            var csrfToken = $cookies['CSRF']
             if (csrfToken) {
-              config.headers["CSRF"] = csrfToken;
-              console.debug("CSRF header '%s' set", csrfToken);
+              config.headers['CSRF'] = csrfToken
+              console.debug("CSRF header '%s' set", csrfToken)
             }
 
-            return config;
+            return config
           },
-        };
+        }
       },
     ])
     .config([
-      "$httpProvider",
+      '$httpProvider',
       function ($httpProvider) {
-        $httpProvider.interceptors.push("csrfHeaderInterceptor");
+        $httpProvider.interceptors.push('csrfHeaderInterceptor')
       },
-    ]);
-});
+    ])
+})

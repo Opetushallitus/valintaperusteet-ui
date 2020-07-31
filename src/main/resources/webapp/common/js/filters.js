@@ -1,117 +1,117 @@
 angular
-  .module("valintaperusteet")
+  .module('valintaperusteet')
 
-  .filter("hakukohdekoodiFullMatchFilter", [
-    "ValintaryhmaModel",
+  .filter('hakukohdekoodiFullMatchFilter', [
+    'ValintaryhmaModel',
     function (ValintaryhmaModel) {
       return function (list) {
-        var model = ValintaryhmaModel;
-        var koodi;
-        var filterableListKoodi;
-        var result = [];
+        var model = ValintaryhmaModel
+        var koodi
+        var filterableListKoodi
+        var result = []
 
         //copy original list (removing objects here would make it difficult to add them back if necessary)
         if (list) {
           for (var i = 0; i < list.length; i++) {
-            result[i] = list[i];
+            result[i] = list[i]
           }
 
           if (model.valintaryhma.hakukohdekoodit) {
             for (var i = 0; i < result.length; i++) {
-              filterableListKoodi = result[i];
+              filterableListKoodi = result[i]
               for (
                 var j = 0;
                 j < model.valintaryhma.hakukohdekoodit.length;
                 j++
               ) {
-                koodi = model.valintaryhma.hakukohdekoodit[j];
+                koodi = model.valintaryhma.hakukohdekoodit[j]
                 if (koodi.uri === filterableListKoodi.koodiUri) {
-                  result.splice(i, 1);
+                  result.splice(i, 1)
                 }
               }
             }
           }
         }
-        return result;
-      };
+        return result
+      }
     },
   ])
 
-  .filter("valintakoekoodiFullMatchFilter", [
-    "ValintaryhmaModel",
+  .filter('valintakoekoodiFullMatchFilter', [
+    'ValintaryhmaModel',
     function (ValintaryhmaModel) {
       return function (list) {
-        var model = ValintaryhmaModel;
-        var koodi;
-        var filterableListKoodi;
+        var model = ValintaryhmaModel
+        var koodi
+        var filterableListKoodi
 
-        var result = [];
+        var result = []
 
         if (list) {
           for (var i = 0; i < list.length; i++) {
-            result[i] = list[i];
+            result[i] = list[i]
           }
 
           if (model.valintaryhma.valintakoekoodit) {
             for (var i = 0; i < result.length; i++) {
-              filterableListKoodi = result[i];
+              filterableListKoodi = result[i]
               for (
                 var j = 0;
                 j < model.valintaryhma.valintakoekoodit.length;
                 j++
               ) {
-                koodi = model.valintaryhma.valintakoekoodit[j];
+                koodi = model.valintaryhma.valintakoekoodit[j]
                 if (koodi.uri === filterableListKoodi.koodiUri) {
-                  result.splice(i, 1);
+                  result.splice(i, 1)
                 }
               }
             }
           }
         }
-        return result;
-      };
+        return result
+      }
     },
   ])
 
-  .filter("hakijaryhmatyyppikoodiFullMatchFilter", [
-    "HakijaryhmaModel",
+  .filter('hakijaryhmatyyppikoodiFullMatchFilter', [
+    'HakijaryhmaModel',
     function (HakijaryhmaModel) {
       return function (list) {
-        var model = HakijaryhmaModel;
-        var koodi;
-        var filterableListKoodi;
+        var model = HakijaryhmaModel
+        var koodi
+        var filterableListKoodi
 
-        var result = [];
+        var result = []
 
         if (list) {
           for (var i = 0; i < list.length; i++) {
-            result[i] = list[i];
+            result[i] = list[i]
           }
 
           if (model.hakijaryhma.hakijaryhmatyyppikoodit) {
             for (var i = 0; i < result.length; i++) {
-              filterableListKoodi = result[i];
+              filterableListKoodi = result[i]
               for (
                 var j = 0;
                 j < model.hakijaryhma.hakijaryhmatyyppikoodit.length;
                 j++
               ) {
-                koodi = model.hakijaryhma.hakijaryhmatyyppikoodit[j];
+                koodi = model.hakijaryhma.hakijaryhmatyyppikoodit[j]
                 if (koodi.uri === filterableListKoodi.koodiUri) {
-                  result.splice(i, 1);
+                  result.splice(i, 1)
                 }
               }
             }
           }
         }
-        return result;
-      };
+        return result
+      }
     },
   ])
 
-  .filter("laskentakaavaFilter", [
-    "_",
-    "ValintatapajonoModel",
+  .filter('laskentakaavaFilter', [
+    '_',
+    'ValintatapajonoModel',
     function (_, ValintatapajonoModel) {
       return function (list) {
         return _.difference(
@@ -120,17 +120,17 @@ angular
             return _.some(ValintatapajonoModel.jarjestyskriteerit, function (
               jk
             ) {
-              return jk.laskentakaavaId == item.id;
-            });
+              return jk.laskentakaavaId == item.id
+            })
           })
-        );
-      };
+        )
+      }
     },
   ])
 
-  .filter("hakijaryhmatFilter", [
-    "_",
-    "ValintatapajonoModel",
+  .filter('hakijaryhmatFilter', [
+    '_',
+    'ValintatapajonoModel',
     function (_, ValintatapajonoModel) {
       return function (hakijaryhmat) {
         return _.difference(
@@ -139,29 +139,29 @@ angular
             return _.some(ValintatapajonoModel.hakijaryhmat, function (
               filterItem
             ) {
-              return origItem.oid === filterItem.masterOid;
-            });
+              return origItem.oid === filterItem.masterOid
+            })
           })
-        );
-      };
+        )
+      }
     },
   ])
 
-  .filter("HakuOwnerFilter", [
-    "UserModel",
-    "_",
+  .filter('HakuOwnerFilter', [
+    'UserModel',
+    '_',
     function (UserModel, _) {
       return function (haut) {
         var userOrgs = UserModel.organizationOids
           .concat(UserModel.organizationChildrenOids)
-          .concat(UserModel.organizationParentsOids);
+          .concat(UserModel.organizationParentsOids)
         return UserModel.isOphUser
           ? haut
           : _.filter(haut, function (haku) {
               return _.some(userOrgs, function (userOrgOid) {
-                return _.contains(haku.organisaatioOids, userOrgOid);
-              });
-            });
-      };
+                return _.contains(haku.organisaatioOids, userOrgOid)
+              })
+            })
+      }
     },
-  ]);
+  ])

@@ -1,28 +1,28 @@
 // Valintaryhma Järjestyskriteerit
-app.factory("LaskentakaavaModel", function (
+app.factory('LaskentakaavaModel', function (
   Laskentakaava,
   ParentValintaryhmas,
   Hakukohde
 ) {
-  "use strict";
+  'use strict'
 
   var factory = (function () {
-    var instance = {};
-    instance.laskentakaavat = [];
+    var instance = {}
+    instance.laskentakaavat = []
 
     instance.refresh = function (valintaryhmaOid, hakukohdeOid) {
-      instance.laskentakaavat = [];
+      instance.laskentakaavat = []
 
       //root kaavat
       Laskentakaava.list(function (result) {
         if (result.length > 0) {
           var obj = {
-            name: "Juurikaavat",
+            name: 'Juurikaavat',
             result: result,
-          };
-          instance.laskentakaavat.push(obj);
+          }
+          instance.laskentakaavat.push(obj)
         }
-      });
+      })
 
       // hakukohteelta tulevat
       if (hakukohdeOid) {
@@ -30,22 +30,22 @@ app.factory("LaskentakaavaModel", function (
           if (result.length > 0) {
             var obj = {
               hakukohdeOid: hakukohdeOid,
-              name: "Hakukohteen laskentakaavat",
+              name: 'Hakukohteen laskentakaavat',
               result: result,
-            };
-            instance.laskentakaavat.push(obj);
+            }
+            instance.laskentakaavat.push(obj)
           }
-        });
+        })
         Hakukohde.get({ oid: hakukohdeOid }, function (result) {
-          Valintaryhmas(result.valintaryhmaOid);
-        });
+          Valintaryhmas(result.valintaryhmaOid)
+        })
       }
 
       // valintaryhmiltä tulevata
       if (valintaryhmaOid) {
-        Valintaryhmas(valintaryhmaOid);
+        Valintaryhmas(valintaryhmaOid)
       }
-    };
+    }
 
     function Valintaryhmas(valintaryhmaOid) {
       ParentValintaryhmas.get({ parentOid: valintaryhmaOid }, function (data) {
@@ -56,16 +56,16 @@ app.factory("LaskentakaavaModel", function (
                 valintaryhmaOid: temp.oid,
                 name: temp.nimi,
                 result: result,
-              };
-              instance.laskentakaavat.push(obj);
+              }
+              instance.laskentakaavat.push(obj)
             }
-          });
-        });
-      });
+          })
+        })
+      })
     }
 
-    return instance;
-  })();
+    return instance
+  })()
 
-  return factory;
-});
+  return factory
+})

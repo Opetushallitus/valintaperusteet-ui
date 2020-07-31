@@ -1,8 +1,8 @@
-angular.module("valintaperusteet").factory("FunktioFactory", [
-  "FunktiokuvausService",
-  "FunktioService",
+angular.module('valintaperusteet').factory('FunktioFactory', [
+  'FunktiokuvausService',
+  'FunktioService',
   function (FunktiokuvausService, FunktioService) {
-    "use strict";
+    'use strict'
 
     var factory = new (function () {
       this.createEmptyLaskentakaava = function (
@@ -11,17 +11,17 @@ angular.module("valintaperusteet").factory("FunktioFactory", [
         nimi,
         kuvaus
       ) {
-        var kaavatree = {};
+        var kaavatree = {}
         var newfunktioFunktionimi =
-          funktiokutsu.lapsi.tyyppi === "LUKUARVOFUNKTIO"
-            ? "NIMETTYLUKUARVO"
-            : "NIMETTYTOTUUSARVO";
+          funktiokutsu.lapsi.tyyppi === 'LUKUARVOFUNKTIO'
+            ? 'NIMETTYLUKUARVO'
+            : 'NIMETTYTOTUUSARVO'
 
         var funktiokuvaus = FunktiokuvausService.getFunktiokuvaus(
           funktiokutsu.lapsi.funktionimi
-        );
+        )
 
-        angular.copy(funktiokutsu, kaavatree);
+        angular.copy(funktiokutsu, kaavatree)
 
         var kaava = {
           valintaryhmaOid: routeParams.id,
@@ -32,7 +32,7 @@ angular.module("valintaperusteet").factory("FunktioFactory", [
               funktionimi: newfunktioFunktionimi,
               arvokonvertteriparametrit: [],
               arvovalikonvertteriparametrit: [],
-              syoteparametrit: [{ arvo: nimi, avain: "nimi" }],
+              syoteparametrit: [{ arvo: nimi, avain: 'nimi' }],
               tulosTunniste: null,
               tulosTekstiFi: null,
               tulosTekstiSv: null,
@@ -49,10 +49,10 @@ angular.module("valintaperusteet").factory("FunktioFactory", [
             nimi: nimi,
             kardinaliteetti: 1,
           },
-        };
+        }
 
-        return kaava;
-      };
+        return kaava
+      }
 
       this.getLaskentakaavaviiteFromLaskentakaava = function (laskentakaava) {
         return {
@@ -70,7 +70,7 @@ angular.module("valintaperusteet").factory("FunktioFactory", [
             kuvaus: laskentakaava.kuvaus,
             tyyppi: laskentakaava.tyyppi,
             id: laskentakaava.id,
-            lapsityyppi: "laskentakaava",
+            lapsityyppi: 'laskentakaava',
             tulosTunniste: null,
             tulosTekstiFi: null,
             tulosTekstiSv: null,
@@ -78,8 +78,8 @@ angular.module("valintaperusteet").factory("FunktioFactory", [
             tallennaTulos: null,
             omaopintopolku: null,
           },
-        };
-      };
+        }
+      }
 
       this.createLaskentakaavaviite = function (laskentakaavaviite) {
         if (laskentakaavaviite) {
@@ -97,7 +97,7 @@ angular.module("valintaperusteet").factory("FunktioFactory", [
               kuvaus: laskentakaavaviite.kuvaus,
               tyyppi: laskentakaavaviite.tyyppi,
               id: laskentakaavaviite.id,
-              lapsityyppi: "laskentakaava",
+              lapsityyppi: 'laskentakaava',
               tulosTunniste: null,
               tulosTekstiFi: null,
               tulosTekstiSv: null,
@@ -106,7 +106,7 @@ angular.module("valintaperusteet").factory("FunktioFactory", [
               omaopintopolku: false,
             },
             indeksi: 0,
-          };
+          }
         } else {
           return {
             lapsi: {
@@ -118,11 +118,11 @@ angular.module("valintaperusteet").factory("FunktioFactory", [
               valintaperusteviitteet: [],
               validointivirheet: [],
               onLuonnos: false,
-              nimi: "Valitse laskentakaava",
+              nimi: 'Valitse laskentakaava',
               kuvaus: null,
               tyyppi: null,
               id: null,
-              lapsityyppi: "laskentakaava",
+              lapsityyppi: 'laskentakaava',
               tulosTunniste: null,
               tulosTekstiFi: null,
               tulosTekstiSv: null,
@@ -131,9 +131,9 @@ angular.module("valintaperusteet").factory("FunktioFactory", [
               omaopintopolku: false,
             },
             indeksi: 0,
-          };
+          }
         }
-      };
+      }
 
       this.createFunktioInstance = function (
         parentFunktiokutsu,
@@ -146,21 +146,21 @@ angular.module("valintaperusteet").factory("FunktioFactory", [
             )
           : FunktiokuvausService.getFunktiokuvaus(
               parentFunktiokutsu.lapsi.funktionimi
-            );
+            )
         var newFunktioFunktiokuvaus = FunktiokuvausService.getFunktiokuvaus(
           newFunktioType
-        );
-        var funktioprototype = generateFunktioPrototype();
+        )
+        var funktioprototype = generateFunktioPrototype()
 
         //Funktionimi
-        funktioprototype.lapsi.funktionimi = newFunktioType;
-        funktioprototype.lapsi.tyyppi = newFunktioFunktiokuvaus.tyyppi;
+        funktioprototype.lapsi.funktionimi = newFunktioType
+        funktioprototype.lapsi.tyyppi = newFunktioFunktiokuvaus.tyyppi
 
         //Asetetaan lapsityyppi
-        setLapsityyppi(funktioprototype, newFunktioType);
+        setLapsityyppi(funktioprototype, newFunktioType)
 
         //Generoidaan parametrit
-        populateParameters(funktioprototype, newFunktioFunktiokuvaus);
+        populateParameters(funktioprototype, newFunktioFunktiokuvaus)
 
         //Generoidaan funktioargumentit
         if (newFunktioFunktiokuvaus.funktioargumentit) {
@@ -173,32 +173,32 @@ angular.module("valintaperusteet").factory("FunktioFactory", [
             FunktiokuvausService.isPainotettukeskiarvoByFunktioNimi(
               newFunktioType
             )
-          );
+          )
         }
 
-        return funktioprototype;
-      };
+        return funktioprototype
+      }
 
       function populateParameters(funktioprototype, funktiokuvaus) {
         // Lisätään funktioprototypeen funktiokuvauksen valintaperusteiden mukainen määrä tyhjiä objekteja
         if (funktiokuvaus.valintaperusteviitteet) {
           funktiokuvaus.valintaperusteviitteet.forEach(function (item) {
-            funktioprototype.lapsi.valintaperusteviitteet.push({});
-          });
+            funktioprototype.lapsi.valintaperusteviitteet.push({})
+          })
         }
 
         // Lisätään funktioprototypeen funktiokuvauksen mukaiset syoteparametrit
         if (funktiokuvaus.syoteparametrit) {
           funktiokuvaus.syoteparametrit.forEach(function (item) {
-            funktioprototype.lapsi.syoteparametrit.push({});
+            funktioprototype.lapsi.syoteparametrit.push({})
             //täytyy käyttää angular.copya, tai syoteparametrit luoduissa eri funktiokutsuissa viittaavat samoihin syoteparametriobjekteihin
             angular.copy(
               item,
               funktioprototype.lapsi.syoteparametrit[
                 funktioprototype.lapsi.syoteparametrit.length - 1
               ]
-            );
-          });
+            )
+          })
         }
       }
 
@@ -213,14 +213,14 @@ angular.module("valintaperusteet").factory("FunktioFactory", [
         if (hasNimetytFunktioargumentit) {
           //Lisätään yhtä monta null objektia, kuin nimettyjä funktioargumentteja.
           funktiokuvaus.funktioargumentit.forEach(function () {
-            funktioprototype.lapsi.funktioargumentit.push(null);
-          });
+            funktioprototype.lapsi.funktioargumentit.push(null)
+          })
         } else if (isPainotettukeskiarvoChild) {
-          funktioprototype.lapsi.funktioargumentit.push({});
-          funktioprototype.lapsi.funktioargumentit.push({});
+          funktioprototype.lapsi.funktioargumentit.push({})
+          funktioprototype.lapsi.funktioargumentit.push({})
         } else {
           //jos funktiolla on nimeämätön määrä funktioargumentteja, lisätään listaan yksi null
-          funktioprototype.lapsi.funktioargumentit.push(null);
+          funktioprototype.lapsi.funktioargumentit.push(null)
         }
       }
 
@@ -248,18 +248,18 @@ angular.module("valintaperusteet").factory("FunktioFactory", [
           },
 
           indeksi: 0,
-        };
+        }
       }
 
       function setLapsityyppi(funktioprototype, funktiotyyppi) {
-        if (funktiotyyppi === "LASKENTAKAAVAVIITE") {
-          funktioprototype.lapsi.lapsityyppi = "laskentakaava";
+        if (funktiotyyppi === 'LASKENTAKAAVAVIITE') {
+          funktioprototype.lapsi.lapsityyppi = 'laskentakaava'
         } else {
-          funktioprototype.lapsi.lapsityyppi = "funktiokutsu";
+          funktioprototype.lapsi.lapsityyppi = 'funktiokutsu'
         }
       }
-    })();
+    })()
 
-    return factory;
+    return factory
   },
-]);
+])

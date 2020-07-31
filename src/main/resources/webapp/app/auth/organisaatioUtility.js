@@ -1,21 +1,21 @@
 // Organisaatiotiedot erillisessä
 angular
-  .module("valintaperusteet")
+  .module('valintaperusteet')
 
-  .constant("OPH_ORG_OID", "1.2.246.562.10.00000000001")
+  .constant('OPH_ORG_OID', '1.2.246.562.10.00000000001')
 
-  .service("OrganisaatioUtility", [
-    "$q",
-    "$log",
-    "_",
-    "Valintaryhma",
-    "HakukohdeModel",
-    "OrganizationByOid",
-    "OrganizationParentOids",
-    "Hakukohde",
-    "TarjontaHakukohde",
-    "OPH_ORG_OID",
-    "OrganizationChildOids",
+  .service('OrganisaatioUtility', [
+    '$q',
+    '$log',
+    '_',
+    'Valintaryhma',
+    'HakukohdeModel',
+    'OrganizationByOid',
+    'OrganizationParentOids',
+    'Hakukohde',
+    'TarjontaHakukohde',
+    'OPH_ORG_OID',
+    'OrganizationChildOids',
     function (
       $q,
       $log,
@@ -35,63 +35,63 @@ angular
        * @returns {Promise object} returning organization objects for this valintaryhma
        */
       this.getChildOrganizationsForValintaryhma = function (valintaryhmaOid) {
-        var deferred = $q.defer();
-        var organizations = [];
+        var deferred = $q.defer()
+        var organizations = []
         Valintaryhma.get(
           { oid: valintaryhmaOid },
           function (result) {
-            var organizationsDeferreds = [];
-            var parentValintaryhmaOrganizationPromises = [];
+            var organizationsDeferreds = []
+            var parentValintaryhmaOrganizationPromises = []
             _.forEach(result.organisaatiot, function (organisaatioOidWrapper) {
-              var organisaatioOids = [];
-              organisaatioOids.push(organisaatioOidWrapper.oid);
+              var organisaatioOids = []
+              organisaatioOids.push(organisaatioOidWrapper.oid)
               if (!_.isEmpty(organisaatioOidWrapper.parentOidPath)) {
-                var oidPath;
-                if (organisaatioOidWrapper.parentOidPath.indexOf("|") != -1) {
-                  oidPath = organisaatioOidWrapper.parentOidPath.split("|");
+                var oidPath
+                if (organisaatioOidWrapper.parentOidPath.indexOf('|') != -1) {
+                  oidPath = organisaatioOidWrapper.parentOidPath.split('|')
                 } else {
-                  oidPath = organisaatioOidWrapper.parentOidPath.split("/");
+                  oidPath = organisaatioOidWrapper.parentOidPath.split('/')
                 }
 
                 _.forEach(oidPath, function (organisaatioOid) {
                   if (!_.isEmpty(organisaatioOid)) {
-                    organisaatioOids.push(organisaatioOid);
+                    organisaatioOids.push(organisaatioOid)
                   }
-                });
+                })
               }
 
-              var uniqueParentOrganisaatioOids = _.uniq(organisaatioOids);
+              var uniqueParentOrganisaatioOids = _.uniq(organisaatioOids)
 
-              var parentOrgDefer = $q.defer();
+              var parentOrgDefer = $q.defer()
               parentValintaryhmaOrganizationPromises.push(
                 parentOrgDefer.promise
-              );
+              )
               _.forEach(uniqueParentOrganisaatioOids, function (
                 uniqueParentOrganisaatioOid
               ) {
                 OrganizationByOid.get(
                   { oid: uniqueParentOrganisaatioOid },
                   function (organisaatio) {
-                    organizations.push(organisaatio);
-                    parentOrgDefer.resolve();
+                    organizations.push(organisaatio)
+                    parentOrgDefer.resolve()
                   },
                   function (error) {
-                    parentOrgDefer.reject();
+                    parentOrgDefer.reject()
                   }
-                );
-              });
-            });
+                )
+              })
+            })
 
-            deferred.resolve(organizations);
+            deferred.resolve(organizations)
           },
           function () {
-            $log.error("valintaryhmän tietojen hakeminen epäonnistui");
-            deferred.reject();
+            $log.error('valintaryhmän tietojen hakeminen epäonnistui')
+            deferred.reject()
           }
-        );
+        )
 
-        return deferred.promise;
-      };
+        return deferred.promise
+      }
 
       /**
        *
@@ -101,76 +101,76 @@ angular
       this.getChildOrganizationsForValintaryhmaAsOidList = function (
         valintaryhmaOid
       ) {
-        var deferred = $q.defer();
-        var organizations = [];
+        var deferred = $q.defer()
+        var organizations = []
 
         Valintaryhma.get(
           { oid: valintaryhmaOid },
           function (result) {
-            var organizationsPromises = [];
+            var organizationsPromises = []
             if (result.organisaatiot) {
               _.forEach(result.organisaatiot, function (org) {
-                organizations.push(org.oid);
+                organizations.push(org.oid)
 
                 //find parent oids for this organization
-                var parentOids = [];
+                var parentOids = []
                 if (!_.isEmpty(org.parentOidPath)) {
-                  var oidPath;
-                  if (org.parentOidPath.indexOf("|") != -1) {
-                    oidPath = org.parentOidPath.split("|");
+                  var oidPath
+                  if (org.parentOidPath.indexOf('|') != -1) {
+                    oidPath = org.parentOidPath.split('|')
                   } else {
-                    oidPath = org.parentOidPath.split("/");
+                    oidPath = org.parentOidPath.split('/')
                   }
                   _.forEach(oidPath, function (orgOid) {
                     if (!_.isEmpty(orgOid)) {
-                      organizations.push(orgOid);
+                      organizations.push(orgOid)
                     }
-                  });
+                  })
                 }
 
                 //find child for this oids
                 if (org.oid !== OPH_ORG_OID) {
-                  var defer = $q.defer();
-                  organizationsPromises.push(defer.promise);
+                  var defer = $q.defer()
+                  organizationsPromises.push(defer.promise)
                   OrganizationChildOids.get(
                     { oid: org.oid },
                     function (childOids) {
                       _.forEach(childOids.oids, function (oid) {
-                        organizations.push(oid);
-                      });
+                        organizations.push(oid)
+                      })
 
-                      defer.resolve();
+                      defer.resolve()
                     },
                     function (error) {
                       $log.error(
-                        "Organisaation: " +
+                        'Organisaation: ' +
                           org.oid +
-                          " tietojen hakeminen epäonnistui.",
+                          ' tietojen hakeminen epäonnistui.',
                         error
-                      );
+                      )
                       // resolve deferred object anyway so that organization may only miss some childorganizations, not all
-                      defer.resolve();
+                      defer.resolve()
                     }
-                  );
+                  )
                 }
-              });
+              })
             }
             $q.all(organizationsPromises).then(function () {
-              organizations = _.uniq(organizations);
+              organizations = _.uniq(organizations)
               organizations = _.filter(organizations, function (orgoid) {
-                return orgoid !== OPH_ORG_OID;
-              });
-              deferred.resolve(organizations);
-            });
+                return orgoid !== OPH_ORG_OID
+              })
+              deferred.resolve(organizations)
+            })
           },
           function () {
-            $log.error("valintaryhmän tietojen hakeminen epäonnistui");
-            deferred.reject();
+            $log.error('valintaryhmän tietojen hakeminen epäonnistui')
+            deferred.reject()
           }
-        );
+        )
 
-        return deferred.promise;
-      };
+        return deferred.promise
+      }
 
       /**
        *
@@ -178,112 +178,112 @@ angular
        * @returns {Promise object} returning organization objects for this hakukohde
        */
       this.getChildOrganizationsforHakukohde = function (hakukohdeOid) {
-        var deferred = $q.defer();
-        var organizations = [];
+        var deferred = $q.defer()
+        var organizations = []
 
         TarjontaHakukohde.get(
           { hakukohdeoid: hakukohdeOid },
           function (hakukohdeWrapper) {
-            var organizationsPromises = [];
+            var organizationsPromises = []
 
             _.forEach(hakukohdeWrapper.result.tarjoajaOids, function (
               tarjoajaOid
             ) {
-              var tarjoajaDefer = $q.defer();
-              organizationsPromises.push(tarjoajaDefer.promise);
+              var tarjoajaDefer = $q.defer()
+              organizationsPromises.push(tarjoajaDefer.promise)
 
               OrganizationParentOids.get(
                 { oid: tarjoajaOid },
                 function (oidstring) {
                   //join strings in array until resource is fixed
-                  var help = "";
+                  var help = ''
                   oidstring = _.map(
                     oidstring,
                     function (item) {
-                      if (typeof item === "string") {
-                        help = help + item;
+                      if (typeof item === 'string') {
+                        help = help + item
                       }
                     },
-                    ""
-                  );
-                  oidstring = help;
+                    ''
+                  )
+                  oidstring = help
 
-                  var oidlist = oidstring.split("/");
+                  var oidlist = oidstring.split('/')
                   oidlist = _.filter(oidlist, function (oid) {
-                    return oid !== OPH_ORG_OID;
-                  });
-                  var orgpromises = [];
+                    return oid !== OPH_ORG_OID
+                  })
+                  var orgpromises = []
                   _.forEach(oidlist, function (orgoid) {
-                    var organizationDefer = $q.defer();
-                    orgpromises.push(organizationDefer.promise);
+                    var organizationDefer = $q.defer()
+                    orgpromises.push(organizationDefer.promise)
                     OrganizationByOid.get(
                       { oid: orgoid },
                       function (organisaatio) {
-                        organizations.push(organisaatio);
-                        organizationDefer.resolve();
+                        organizations.push(organisaatio)
+                        organizationDefer.resolve()
                       },
                       function (error) {
                         $log.error(
-                          "Organisaation " +
+                          'Organisaation ' +
                             tarjoajaOid +
-                            " hakeminen epäonnistui",
+                            ' hakeminen epäonnistui',
                           error
-                        );
-                        organizationDefer.reject();
+                        )
+                        organizationDefer.reject()
                       }
-                    );
-                  });
+                    )
+                  })
 
                   $q.all(orgpromises).then(
                     function () {
-                      tarjoajaDefer.resolve();
+                      tarjoajaDefer.resolve()
                     },
                     function () {
                       //resolve even on fail, there might be organizations that have been fetched
-                      tarjoajaDefer.resolve();
+                      tarjoajaDefer.resolve()
                     }
-                  );
+                  )
 
                   //tarjoajaDefer must be resolved after organizationDefers are pushed to promises array
                 },
                 function (error) {
                   $log.info(
-                    "Organisaation " +
+                    'Organisaation ' +
                       tarjoajaOid +
-                      " parentoidien haku epäonnistui",
+                      ' parentoidien haku epäonnistui',
                     error
-                  );
-                  tarjoajaDefer.reject();
+                  )
+                  tarjoajaDefer.reject()
                 }
-              );
-            });
+              )
+            })
 
             $q.all(organizationsPromises).then(
               function () {
-                deferred.resolve(organizations);
+                deferred.resolve(organizations)
               },
               function () {
                 if (!_.isEmpty(organizations)) {
                   $log.info(
-                    "Hakukohteen " +
+                    'Hakukohteen ' +
                       hakukohdeOid +
-                      " kaikkien organisaatioiden tietoja ei saatu haettua"
-                  );
-                  deferred.resolve(organizations);
+                      ' kaikkien organisaatioiden tietoja ei saatu haettua'
+                  )
+                  deferred.resolve(organizations)
                 } else {
-                  deferred.reject();
+                  deferred.reject()
                 }
               }
-            );
+            )
           },
           function (error) {
-            $log.error("Hakukohteen tietojen hakeminen epäonnistui");
-            deferred.reject();
+            $log.error('Hakukohteen tietojen hakeminen epäonnistui')
+            deferred.reject()
           }
-        );
+        )
 
-        return deferred.promise;
-      };
+        return deferred.promise
+      }
 
       /**
        *
@@ -293,81 +293,81 @@ angular
       this.getChildOrganizationsForHakukohdeAsOidList = function (
         hakukohdeOid
       ) {
-        var deferred = $q.defer();
-        var organizations = [];
+        var deferred = $q.defer()
+        var organizations = []
 
         TarjontaHakukohde.get(
           { hakukohdeoid: hakukohdeOid },
           function (hakukohdeWrapper) {
-            var organizationsPromises = [];
+            var organizationsPromises = []
             _.forEach(hakukohdeWrapper.result.tarjoajaOids, function (
               tarjoajaOid
             ) {
-              var organizationDefer = $q.defer();
-              organizationsPromises.push(organizationDefer.promise);
+              var organizationDefer = $q.defer()
+              organizationsPromises.push(organizationDefer.promise)
 
               OrganizationParentOids.get(
                 { oid: tarjoajaOid },
                 function (oidstring) {
                   //join strings in array until resource is fixed
-                  var help = "";
+                  var help = ''
                   oidstring = _.map(
                     oidstring,
                     function (item) {
-                      if (typeof item === "string") {
-                        help = help + item;
+                      if (typeof item === 'string') {
+                        help = help + item
                       }
                     },
-                    ""
-                  );
-                  oidstring = help;
+                    ''
+                  )
+                  oidstring = help
 
-                  var oidlist = oidstring.split("/");
+                  var oidlist = oidstring.split('/')
                   // remove ophoid
                   oidlist = _.filter(oidlist, function (oid) {
-                    return oid !== OPH_ORG_OID;
-                  });
+                    return oid !== OPH_ORG_OID
+                  })
 
-                  organizations = _.union(organizations, oidlist);
-                  organizationDefer.resolve();
+                  organizations = _.union(organizations, oidlist)
+                  organizationDefer.resolve()
                 },
                 function (error) {
                   $log.error(
-                    "Organisaation " +
+                    'Organisaation ' +
                       tarjoajaOid +
-                      " parentoidien hakeminen epäonnistui",
+                      ' parentoidien hakeminen epäonnistui',
                     error
-                  );
-                  organizationDefer.reject();
+                  )
+                  organizationDefer.reject()
                 }
-              );
-            });
+              )
+            })
 
             $q.all(organizationsPromises).then(
               function () {
-                deferred.resolve(organizations);
+                deferred.resolve(organizations)
               },
               function () {
                 if (!_.isEmpty(organizations)) {
                   $log.info(
-                    "Hakukohteen " +
+                    'Hakukohteen ' +
                       hakukohdeOid +
-                      " kaikkien organisaatioiden tietoja ei saatu haettua"
-                  );
-                  deferred.resolve(organizations);
+                      ' kaikkien organisaatioiden tietoja ei saatu haettua'
+                  )
+                  deferred.resolve(organizations)
                 } else {
-                  deferred.reject();
+                  deferred.reject()
                 }
               }
-            );
+            )
           },
           function (error) {
-            $log.error("Hakukohteen tietojen hakeminen epäonnistui");
-            deferred.reject();
+            $log.error('Hakukohteen tietojen hakeminen epäonnistui')
+            deferred.reject()
           }
-        );
+        )
 
-        return deferred.promise;
-      };
+        return deferred.promise
+      }
     },
-  ]);
+  ])
