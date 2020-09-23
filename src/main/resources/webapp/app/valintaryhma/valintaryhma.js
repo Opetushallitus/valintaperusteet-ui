@@ -27,7 +27,6 @@ angular
     '$location',
     '$log',
     'RootValintaryhmas',
-    'TarjontaHaut',
     'Ilmoitus',
     'HakuModel',
     function (
@@ -56,7 +55,6 @@ angular
       $location,
       $log,
       RootValintaryhmas,
-      TarjontaHaut,
       Ilmoitus,
       HakuModel
     ) {

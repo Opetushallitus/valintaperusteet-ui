@@ -45,14 +45,14 @@ window.urls.addProperties({
   'organisaatio-service.organisaatio.parentoids':
     '/organisaatio-service/rest/organisaatio/$1/parentoids',
 
-  'tarjonta-service.haku': '/tarjonta-service/rest/v1/haku',
   'tarjonta-service.haku.find': '/tarjonta-service/rest/v1/haku/find',
-  'tarjonta-service.haku.hakukohdetulos':
-    '/tarjonta-service/rest/v1/haku/$1/hakukohdeTulos',
   'tarjonta-service.haku.oid': '/tarjonta-service/rest/v1/haku/$1',
-  'tarjonta-service.hakukohde.nimi':
-    '/tarjonta-service/rest/v1/hakukohde/$1/nimi',
   'tarjonta-service.hakukohde.oid': '/tarjonta-service/rest/v1/hakukohde/$1',
+
+  'kouta-internal.auth.login': '/kouta-internal/auth/login',
+  'kouta-internal.haku.search': '/kouta-internal/haku/search',
+  'kouta-internal.haku': '/kouta-internal/haku/$1',
+  'kouta-internal.hakukohde': '/kouta-internal/hakukohde/$1',
 
   'valintalaskenta-laskenta-service.valintatapajono.valmissijoiteltavaksi':
     '/valintalaskenta-laskenta-service/resources/valintatapajono/$1/valmissijoiteltavaksi',

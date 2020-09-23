@@ -3,13 +3,11 @@ angular
 
   .factory('HakuModel', [
     '$q',
-    'Haku',
-    'HaunTiedot',
     '$cookieStore',
     '_',
     'UserModel',
     'TarjontaHaut',
-    function ($q, Haku, HaunTiedot, $cookieStore, _, UserModel, TarjontaHaut) {
+    function ($q, $cookieStore, _, UserModel, TarjontaHaut) {
       'use strict'
 
       return new (function () {
@@ -17,16 +15,6 @@ angular
         this.hakuOid = ''
         this.haku = {}
         this.haut = []
-
-        this.getHakuNimi = function (haku) {
-          var kielet = ['kieli_fi', 'kieli_sv', 'kieli_en']
-
-          var kieli = _.find(kielet, function (kieli) {
-            return !_.isEmpty(haku.nimi[kieli])
-          })
-
-          return haku.nimi[kieli]
-        }
 
         this.init = function () {
           if (this.haut.length < 1 && !this.hakuDeferred) {
@@ -54,13 +42,9 @@ angular
             var that = this
             TarjontaHaut.get(
               { virkailijaTyyppi: hakufiltering },
-              function (resultWrapper) {
-                that.haut = _.filter(resultWrapper.result, function (haku) {
+              function (haut) {
+                that.haut = _.filter(haut, function (haku) {
                   return haku.tila === 'JULKAISTU' || haku.tila === 'VALMIS'
-                })
-                //select and set name for haku
-                _.map(that.haut, function (haku) {
-                  haku.uiNimi = that.getHakuNimi(haku)
                 })
 
                 if ($cookieStore.get('hakuoid')) {
@@ -239,7 +223,9 @@ angular
         HakuModel.hakuDeferred.promise.then(function () {
           that.hakuvuodetOpts = _.uniq(
             _.pluck(HakuModel.haut, 'hakukausiVuosi')
-          )
+          ).filter(function (hakuvuosi) {
+            return hakuvuosi !== null
+          })
         })
 
         this.deferred.resolve()

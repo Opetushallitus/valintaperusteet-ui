@@ -15,9 +15,7 @@ angular
     'HakukohdeHakijaryhmaJarjesta',
     'Laskentakaava',
     'Hakijaryhma',
-    'Haku',
     'HaunTiedot',
-    'HakukohdeNimi',
     'Ilmoitus',
     'IlmoitusTila',
     'HakijaryhmaValintatapajono',
@@ -35,9 +33,7 @@ angular
       HakukohdeHakijaryhmaJarjesta,
       Laskentakaava,
       Hakijaryhma,
-      Haku,
       HaunTiedot,
-      HakukohdeNimi,
       Ilmoitus,
       IlmoitusTila,
       HakijaryhmaValintatapajono
@@ -75,16 +71,8 @@ angular
                 )
               }
 
-              HaunTiedot.get({ hakuOid: result.hakuoid }, function (
-                haunTiedotWrapper
-              ) {
-                model.haku = haunTiedotWrapper.result
-              })
-
-              HakukohdeNimi.get({ hakukohdeoid: oid }, function (
-                resultWrapper
-              ) {
-                model.hakukohdeNimi = resultWrapper.result
+              HaunTiedot.get({ hakuOid: result.hakuoid }, function (haku) {
+                model.haku = haku
               })
 
               HakukohdeKuuluuSijoitteluun.get({ oid: oid }, function (result) {

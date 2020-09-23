@@ -34,6 +34,10 @@ var app = angular
     }
   })
 
+  .run(function ($http) {
+    $http.get(window.url('kouta-internal.auth.login'))
+  })
+
   // Applications in myroles this module uses
   .constant('ValintaperusteApps', [
     'APP_VALINTAPERUSTEET',

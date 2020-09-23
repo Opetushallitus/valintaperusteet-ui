@@ -1,4 +1,49 @@
 var plainUrl = window.urls().noEncode().url
+var uiNimi = function (nimi) {
+  return nimi[
+    ['kieli_fi', 'kieli_sv', 'kieli_en'].find(function (kieli) {
+      return nimi[kieli] !== undefined && nimi[kieli].trim() !== ''
+    })
+  ]
+}
+var tarjontaHakuToHaku = function (haku) {
+  return {
+    oid: haku.oid,
+    tila: haku.tila,
+    nimi: haku.nimi,
+    uiNimi: uiNimi(haku.nimi),
+    kohdejoukkoUri: haku.kohdejoukkoUri,
+    hakukausiVuosi: haku.hakukausiVuosi,
+    hakukausiUri: haku.hakukausiUri,
+    hakutapaUri: haku.hakutapaUri,
+    hakutyyppiUri: haku.hakutyyppiUri,
+    organisaatioOids: haku.organisaatioOids,
+  }
+}
+var koutaHakuToHaku = function (haku) {
+  var nimi = {}
+  if (haku.nimi.fi !== undefined && haku.nimi.fi.trim() !== '') {
+    nimi.kieli_fi = haku.nimi.fi
+  }
+  if (haku.nimi.sv !== undefined && haku.nimi.sv.trim() !== '') {
+    nimi.kieli_sv = haku.nimi.sv
+  }
+  if (haku.nimi.en !== undefined && haku.nimi.en.trim() !== '') {
+    nimi.kieli_en = haku.nimi.en
+  }
+  return {
+    oid: haku.oid,
+    tila: 'JULKAISTU',
+    nimi: nimi,
+    uiNimi: uiNimi(nimi),
+    kohdejoukkoUri: haku.kohdejoukkoKoodiUri,
+    hakukausiVuosi: null,
+    hakukausiUri: null,
+    hakutapaUri: haku.hakutapaKoodiUri,
+    hakutyyppiUri: null,
+    organisaatioOids: [haku.organisaatioOid],
+  }
+}
 
 angular
   .module('valintaperusteet')
@@ -545,7 +590,6 @@ angular
     '$http',
     '$q',
     'IlmoitusTila',
-    'TarjontaHakukohde',
     function (
       $resource,
       LocalisationService,
@@ -553,8 +597,7 @@ angular
       $location,
       $http,
       $q,
-      IlmoitusTila,
-      TarjontaHakukohde
+      IlmoitusTila
     ) {
       var resource = $resource(
         plainUrl('valintaperusteet-service.valintatapajono', ':oid'),
@@ -869,33 +912,35 @@ angular
   ])
 
   //TARJONTA RESOURCES
-  .factory('Haku', [
-    '$resource',
-    function ($resource) {
-      return $resource(
-        window.url('tarjonta-service.haku', { count: 500 }),
-        {},
-        {
-          get: { method: 'GET', cache: true },
-        }
-      )
-    },
-  ])
-  .factory('HaunTiedot', [
-    '$resource',
-    function ($resource) {
-      return $resource(
-        plainUrl('tarjonta-service.haku.oid', ':hakuOid'),
-        { hakuOid: '@hakuOid' },
-        {
-          get: { method: 'GET', cache: true },
-        }
-      )
-    },
-  ])
+  .factory('HaunTiedot', function ($resource) {
+    var tarjontaResource = $resource(
+      plainUrl('tarjonta-service.haku.oid', ':hakuOid'),
+      { hakuOid: '@hakuOid' },
+      { get: { method: 'GET', cache: true } }
+    )
+    var koutaResource = $resource(
+      plainUrl('kouta-internal.haku', ':hakuOid'),
+      { hakuOid: '@hakuOid' },
+      { get: { method: 'GET', cache: true } }
+    )
+    return {
+      get: function (params, onSuccess, onError) {
+        var tarjontaP = tarjontaResource.get(params).$promise
+        var koutaP = koutaResource.get(params).$promise
+        tarjontaP
+          .then(function (tarjontaHaku) {
+            if (tarjontaHaku.result) {
+              return tarjontaHakuToHaku(tarjontaHaku.result)
+            }
+            return koutaP.then(koutaHakuToHaku)
+          })
+          .then(onSuccess, onError)
+      },
+    }
+  })
 
   .factory('TarjontaHaut', function ($resource) {
-    return $resource(
+    var tarjontaResource = $resource(
       window.url('tarjonta-service.haku.find', {
         addHakukohdes: 'false',
         cache: 'true',
@@ -903,42 +948,69 @@ angular
       { virkailijaTyyppi: '@virkailijaTyyppi' },
       { get: { method: 'GET', cache: false } }
     )
+    var koutaResource = $resource(
+      window.url('kouta-internal.haku.search'),
+      {},
+      { get: { method: 'GET', isArray: true, cache: false } }
+    )
+    return {
+      get: function (params, onSuccess, onError) {
+        var tarjontaP = tarjontaResource.get(params).$promise
+        var koutaP = koutaResource.get().$promise
+        tarjontaP
+          .then(function (tarjontaHaut) {
+            return koutaP.then(function (koutaHaut) {
+              return tarjontaHaut.result
+                .map(tarjontaHakuToHaku)
+                .concat(koutaHaut.map(koutaHakuToHaku))
+            })
+          })
+          .then(onSuccess, onError)
+      },
+    }
   })
 
-  .factory('TarjontaHaku', [
-    '$resource',
-    function ($resource) {
-      return $resource(
-        plainUrl('tarjonta-service.haku.hakukohdetulos', ':hakuOid'),
-        {},
-        {
-          query: { method: 'GET', isArray: false, cache: true },
-        }
-      )
-    },
-  ])
-  .factory('HakukohdeNimi', [
-    '$resource',
-    function ($resource) {
-      return $resource(
-        plainUrl('tarjonta-service.hakukohde.nimi', ':hakukohdeoid'),
-        { hakukohdeoid: '@hakukohdeoid' },
-        {
-          get: { method: 'GET', cache: true },
-        }
-      )
-    },
-  ])
-
-  .factory('TarjontaHakukohde', [
-    '$resource',
-    function ($resource) {
-      return $resource(
-        plainUrl('tarjonta-service.hakukohde.oid', ':hakukohdeoid'),
-        { hakukohdeoid: '@hakukohdeoid' }
-      )
-    },
-  ])
+  .factory('TarjontaHakukohde', function ($resource) {
+    var tarjontaResource = $resource(
+      plainUrl('tarjonta-service.hakukohde.oid', ':hakukohdeoid'),
+      { hakukohdeoid: '@hakukohdeoid' }
+    )
+    var koutaHakukohdeResource = $resource(
+      plainUrl('kouta-internal.hakukohde', ':hakukohdeoid'),
+      { hakukohdeoid: '@hakukohdeoid' }
+    )
+    return {
+      get: function (params, onSuccess, onError) {
+        var tarjontaP = tarjontaResource
+          .get(params)
+          .$promise.then(function (hakukohde) {
+            if (hakukohde.result) {
+              return {
+                oid: hakukohde.result.oid,
+                tarjoajaOids: hakukohde.result.tarjoajaOids,
+              }
+            }
+            return null
+          })
+        var koutaP = koutaHakukohdeResource
+          .get(params)
+          .$promise.then(function (hakukohde) {
+            return {
+              oid: hakukohde.oid,
+              tarjoajaOids: hakukohde.tarjoajat,
+            }
+          })
+        tarjontaP
+          .then(function (tarjontaHakukohde) {
+            if (tarjontaHakukohde) {
+              return tarjontaHakukohde
+            }
+            return koutaP
+          })
+          .then(onSuccess, onError)
+      },
+    }
+  })
 
   .factory('Organizations', [
     '$resource',

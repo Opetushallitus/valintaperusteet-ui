@@ -151,18 +151,12 @@ angular
     '$location',
     'UusiHakukohdeModel',
     'Ylavalintaryhma',
-    'Haku',
-    'TarjontaHaku',
-    'HaunTiedot',
     'Hakukohde',
     function (
       $scope,
       $location,
       UusiHakukohdeModel,
       Ylavalintaryhma,
-      Haku,
-      TarjontaHaku,
-      HaunTiedot,
       Hakukohde
     ) {
       'use strict'
@@ -174,39 +168,7 @@ angular
       UusiHakukohdeModel.refresh()
       Ylavalintaryhma.refresh()
 
-      Haku.get({}, function (resultWrapper) {
-        var hakuArray = resultWrapper.result
-        var haut = []
-
-        for (var i = 0; i < hakuArray.length; ++i) {
-          HaunTiedot.get({ hakuOid: hakuArray[i].oid }, function (
-            resultWrapper
-          ) {
-            haut.push(resultWrapper.result)
-          })
-        }
-
-        $scope.haut = haut
-      })
-
-      /* Hakua ei pysty muuttamaan uuden hakukohteen luonnin lomakkeella joten tämän ei pitäisi olla tarpeellinen
-    $scope.$watch("model.hakukohde.hakuoid", function() {
-        $scope.hakukohteet = [];
-        $scope.model.selectedHakukohde = undefined;
-
-        if($scope.model.hakukohde.hakuoid) {
-            var searchParams = {
-                hakuOid:$scope.model.hakukohde.hakuoid,
-                startIndex:0,
-                count:999999
-            };
-
-            TarjontaHaku.get(searchParams, function(result) {
-                $scope.hakukohteet = result.tulokset;
-            });
-        }
-    });
-    */
+      $scope.haut = []
 
       $scope.setHakuoid = function (item) {
         $scope.model.hakukohde.hakuoid = item.oid
