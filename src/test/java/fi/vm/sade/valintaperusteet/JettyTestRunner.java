@@ -17,7 +17,7 @@ public class JettyTestRunner {
   static WebAppContext webAppContext = new WebAppContext();
 
   private static void initServer(Server server) {
-    String[] resources = {ROOT + "/src/main/resources/webapp", ROOT + "/src/test/webapp"};
+    String[] resources = {ROOT + "/src/test/webapp", ROOT + "/src/main/resources/webapp"};
     webAppContext.setBaseResource(new ResourceCollection(resources));
     webAppContext.setDescriptor(ROOT + "/src/test/webapp/WEB-INF/web.xml");
     server.setHandler(webAppContext);
