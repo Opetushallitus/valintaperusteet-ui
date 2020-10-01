@@ -63,7 +63,13 @@ angular
           return ''
         },
         refresh: function () {
-          return this.refreshHaku(HakuModel.haku)
+          HakuModel.init()
+          var that = this
+          HakuModel.hakuDeferred.promise.then(function () {
+            if (HakuModel.haku) {
+              that.refreshHaku(HakuModel.haku)
+            }
+          })
         },
         refreshHaku: function (haku) {
           var kohdejoukko, tila
