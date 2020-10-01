@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html ng-app="valintaperusteet">
+<html lang="fi" ng-app="valintaperusteet">
 
-<head>  
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
     <title>Valintaperusteiden mallinnus</title>
     
     <!-- libs -->
@@ -104,9 +106,6 @@
 
     <script type="text/javascript" src="../test/angular-mocks.js"></script>
     <script type="text/javascript" src="../test/e2e-mocks.js"></script>
-    <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
-
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <!-- virkailija css -->
     <link href="../common/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -126,5 +125,7 @@
         <div id="angularbox" ng-view="" ng-controller="mainCtrl"></div>
     </div>
 </body>
+
+<script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
 
 </html>
