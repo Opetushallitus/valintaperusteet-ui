@@ -19,61 +19,55 @@ angular
         this.init = function () {
           if (this.haut.length < 1 && !this.hakuDeferred) {
             this.hakuDeferred = $q.defer()
-            UserModel.refreshIfNeeded()
-
-            var hakufiltering = 'all'
-            if (
-              UserModel.isOphUser ||
-              (UserModel.hasOtherThanKKUserOrgs && UserModel.isKKUser)
-            ) {
-              hakufiltering = 'all'
-            } else if (
-              UserModel.isKKUser &&
-              !UserModel.hasOtherThanKKUserOrgs
-            ) {
-              hakufiltering = 'kkUser'
-            } else if (
-              !UserModel.isKKUser &&
-              UserModel.hasOtherThanKKUserOrgs
-            ) {
-              hakufiltering = 'toinenAsteUser'
-            }
-
             var that = this
-            TarjontaHaut.get(
-              { virkailijaTyyppi: hakufiltering },
-              function (haut) {
-                that.haut = _.filter(haut, function (haku) {
-                  return haku.tila === 'JULKAISTU' || haku.tila === 'VALMIS'
-                })
-
-                if ($cookieStore.get('hakuoid')) {
-                  var previouslySelectedHaku = _.find(that.haut, function (
-                    haku
-                  ) {
-                    return haku.oid === $cookieStore.get('hakuoid')
-                  })
-                  if (previouslySelectedHaku) {
-                    that.hakuOid = $cookieStore.get('hakuoid')
-                    that.haku = previouslySelectedHaku
-                  }
-                } else {
-                  that.haku = that.haut[0]
-                }
-
-                UserModel.organizationsDeferred.promise.then(
-                  function () {
-                    that.hakuDeferred.resolve()
-                  },
-                  function (error) {
-                    that.hakuDeferred.reject()
-                  }
-                )
-              },
-              function (error) {
-                console.log(error)
+            UserModel.refreshIfNeeded().then(function () {
+              var hakufiltering = 'all'
+              if (
+                UserModel.isOphUser ||
+                (UserModel.hasOtherThanKKUserOrgs && UserModel.isKKUser)
+              ) {
+                hakufiltering = 'all'
+              } else if (
+                UserModel.isKKUser &&
+                !UserModel.hasOtherThanKKUserOrgs
+              ) {
+                hakufiltering = 'kkUser'
+              } else if (
+                !UserModel.isKKUser &&
+                UserModel.hasOtherThanKKUserOrgs
+              ) {
+                hakufiltering = 'toinenAsteUser'
               }
-            )
+
+              TarjontaHaut.get(
+                { virkailijaTyyppi: hakufiltering },
+                function (haut) {
+                  that.haut = _.filter(haut, function (haku) {
+                    return haku.tila === 'JULKAISTU' || haku.tila === 'VALMIS'
+                  })
+
+                  if ($cookieStore.get('hakuoid')) {
+                    var previouslySelectedHaku = _.find(that.haut, function (
+                      haku
+                    ) {
+                      return haku.oid === $cookieStore.get('hakuoid')
+                    })
+                    if (previouslySelectedHaku) {
+                      that.hakuOid = $cookieStore.get('hakuoid')
+                      that.haku = previouslySelectedHaku
+                    }
+                  } else {
+                    that.haku = that.haut[0]
+                  }
+
+                  that.hakuDeferred.resolve()
+                },
+                function (error) {
+                  console.log(error)
+                  that.hakuDeferred.reject()
+                }
+              )
+            })
           }
         }
 
