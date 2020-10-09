@@ -955,8 +955,12 @@ angular
     )
     return {
       get: function (params, onSuccess, onError) {
-        var tarjontaP = tarjontaResource.get(params).$promise
-        var koutaP = koutaResource.get().$promise
+        var tarjontaP = tarjontaResource.get({
+          virkailijaTyyppi: params.virkailijaTyyppi,
+        }).$promise
+        var koutaP = koutaResource.get({
+          tarjoaja: params.organizationOids.toString(),
+        }).$promise
         tarjontaP
           .then(function (tarjontaHaut) {
             return koutaP.then(function (koutaHaut) {

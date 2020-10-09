@@ -39,8 +39,18 @@ angular
                 hakufiltering = 'toinenAsteUser'
               }
 
+              var organizationOids = _.filter(
+                UserModel.organizationOids,
+                function (o) {
+                  return o.startsWith('1.2.246.562.10.')
+                }
+              )
+
               TarjontaHaut.get(
-                { virkailijaTyyppi: hakufiltering },
+                {
+                  virkailijaTyyppi: hakufiltering,
+                  organizationOids: organizationOids,
+                },
                 function (haut) {
                   that.haut = _.filter(haut, function (haku) {
                     return haku.tila === 'JULKAISTU' || haku.tila === 'VALMIS'
