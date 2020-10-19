@@ -954,22 +954,20 @@ angular
       { get: { method: 'GET', isArray: true, cache: false } }
     )
     return {
-      get: function (params, onSuccess, onError) {
+      get: function (params) {
         var tarjontaP = tarjontaResource.get({
           virkailijaTyyppi: params.virkailijaTyyppi,
         }).$promise
         var koutaP = koutaResource.get({
           tarjoaja: params.organizationOids.toString(),
         }).$promise
-        tarjontaP
-          .then(function (tarjontaHaut) {
-            return koutaP.then(function (koutaHaut) {
-              return tarjontaHaut.result
-                .map(tarjontaHakuToHaku)
-                .concat(koutaHaut.map(koutaHakuToHaku))
-            })
+        return tarjontaP.then(function (tarjontaHaut) {
+          return koutaP.then(function (koutaHaut) {
+            return tarjontaHaut.result
+              .map(tarjontaHakuToHaku)
+              .concat(koutaHaut.map(koutaHakuToHaku))
           })
-          .then(onSuccess, onError)
+        })
       },
     }
   })

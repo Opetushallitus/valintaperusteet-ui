@@ -8,10 +8,9 @@ angular
     function ($scope, Treemodel, HakuModel, CustomHakuUtil) {
       // Deep copy for non-persisting changes
       $scope.hakuModel = angular.copy(HakuModel)
-      $scope.hakuModel.init()
-      $scope.hakuModel.hakuDeferred.promise.then(function () {
+      $scope.hakuModel.init().then(function (model) {
         $scope.valintaryhmaPuu = Treemodel
-        Treemodel.refreshHaku($scope.hakuModel.haku)
+        Treemodel.refreshHaku(model.haku)
       })
 
       // Deep copy for non-persisting changes

@@ -63,12 +63,9 @@ angular
           return ''
         },
         refresh: function () {
-          HakuModel.init()
           var that = this
-          HakuModel.hakuDeferred.promise.then(function () {
-            if (HakuModel.haku) {
-              that.refreshHaku(HakuModel.haku)
-            }
+          HakuModel.init().then(function (model) {
+            that.refreshHaku(model.haku)
           })
         },
         refreshHaku: function (haku) {
@@ -253,7 +250,7 @@ angular
       $scope.domain = Treemodel
 
       $scope.hakuModel = HakuModel
-      $scope.$watch('hakuModel.hakuOid', function () {
+      $scope.$watch('hakuModel.haku', function () {
         $scope.domain.refresh()
       })
 

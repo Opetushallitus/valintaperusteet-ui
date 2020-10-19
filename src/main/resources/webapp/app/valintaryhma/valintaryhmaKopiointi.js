@@ -23,10 +23,10 @@ angular
       })
 
       $scope.kopioiValintaryhma = function () {
-        HakuModel.hakuDeferred.promise.then(function () {
+        HakuModel.init().then(function (model) {
           ValintaperusteetPuu.get(
             {
-              hakuOid: HakuModel.hakuOid,
+              hakuOid: model.haku.oid,
               hakukohteet: false,
               valintaryhma: $routeParams.id,
             },

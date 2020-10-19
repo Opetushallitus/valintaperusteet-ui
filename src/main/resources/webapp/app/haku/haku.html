@@ -5,16 +5,14 @@
         <!-- Show all hakus -->
         <select auth ng-if="!userModel.isKKUser" id="haku" class="form-control"
                 ng-model="hakuModel.haku"
-                ng-options="haku.uiNimi for haku in hakuModel.haut | CustomHakuFilter:customHakuUtil | orderBy:'nimi.kieli_fi'"
-                ng-change="changeHaku()">
+                ng-options="haku.uiNimi for haku in hakuModel.haut | CustomHakuFilter:customHakuUtil | orderBy:'nimi.kieli_fi'">
             <option value=""></option>
         </select>
 
         <!-- For KKUser filter out all other than KKHaut-->
         <select auth ng-if="userModel.isKKUser" id="haku" class="form-control"
                 ng-model="hakuModel.haku"
-                ng-options="haku.uiNimi for haku in hakuModel.haut | CustomHakuFilter:customHakuUtil | kkHakuFilter | orderBy:'nimi.kieli_fi'"
-                ng-change="changeHaku()">
+                ng-options="haku.uiNimi for haku in hakuModel.haut | CustomHakuFilter:customHakuUtil | kkHakuFilter | orderBy:'nimi.kieli_fi'">
             <option value=""></option>
         </select>
         <button ng-click="showLimiters = !showLimiters" class="btn btn-default btn-sm margin-vertical-2"><i

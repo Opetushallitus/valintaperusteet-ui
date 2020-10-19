@@ -11,74 +11,80 @@ angular
       'use strict'
 
       return new (function () {
-        this.hakuDeferred = undefined
-        this.hakuOid = ''
+        this.initializingPromise = null
         this.haku = {}
         this.haut = []
 
-        this.init = function () {
-          if (this.haut.length < 1 && !this.hakuDeferred) {
-            this.hakuDeferred = $q.defer()
-            var that = this
-            UserModel.refreshIfNeeded().then(function () {
-              var hakufiltering = 'all'
-              if (
-                UserModel.isOphUser ||
-                (UserModel.hasOtherThanKKUserOrgs && UserModel.isKKUser)
-              ) {
-                hakufiltering = 'all'
-              } else if (
-                UserModel.isKKUser &&
-                !UserModel.hasOtherThanKKUserOrgs
-              ) {
-                hakufiltering = 'kkUser'
-              } else if (
-                !UserModel.isKKUser &&
-                UserModel.hasOtherThanKKUserOrgs
-              ) {
-                hakufiltering = 'toinenAsteUser'
+        this.refresh = function () {
+          var that = this
+          return UserModel.refreshIfNeeded().then(function () {
+            var hakufiltering = 'all'
+            if (
+              UserModel.isOphUser ||
+              (UserModel.hasOtherThanKKUserOrgs && UserModel.isKKUser)
+            ) {
+              hakufiltering = 'all'
+            } else if (
+              UserModel.isKKUser &&
+              !UserModel.hasOtherThanKKUserOrgs
+            ) {
+              hakufiltering = 'kkUser'
+            } else if (
+              !UserModel.isKKUser &&
+              UserModel.hasOtherThanKKUserOrgs
+            ) {
+              hakufiltering = 'toinenAsteUser'
+            }
+
+            var organizationOids = _.filter(
+              UserModel.organizationOids,
+              function (o) {
+                return o.startsWith('1.2.246.562.10.')
               }
+            )
 
-              var organizationOids = _.filter(
-                UserModel.organizationOids,
-                function (o) {
-                  return o.startsWith('1.2.246.562.10.')
+            return TarjontaHaut.get({
+              virkailijaTyyppi: hakufiltering,
+              organizationOids: organizationOids,
+            }).then(
+              function (haut) {
+                that.haut = _.filter(haut, function (haku) {
+                  return haku.tila === 'JULKAISTU' || haku.tila === 'VALMIS'
+                })
+
+                var previousHakuOid = $cookieStore.get('hakuoid')
+                if (previousHakuOid) {
+                  that.haku =
+                    _.find(that.haut, function (haku) {
+                      return haku.oid === previousHakuOid
+                    }) || that.haut[0]
+                } else {
+                  that.haku = that.haut[0]
                 }
-              )
+                return that
+              },
+              function (error) {
+                console.log(error)
+                return error
+              }
+            )
+          })
+        }
 
-              TarjontaHaut.get(
-                {
-                  virkailijaTyyppi: hakufiltering,
-                  organizationOids: organizationOids,
-                },
-                function (haut) {
-                  that.haut = _.filter(haut, function (haku) {
-                    return haku.tila === 'JULKAISTU' || haku.tila === 'VALMIS'
-                  })
-
-                  if ($cookieStore.get('hakuoid')) {
-                    var previouslySelectedHaku = _.find(that.haut, function (
-                      haku
-                    ) {
-                      return haku.oid === $cookieStore.get('hakuoid')
-                    })
-                    if (previouslySelectedHaku) {
-                      that.hakuOid = $cookieStore.get('hakuoid')
-                      that.haku = previouslySelectedHaku
-                    }
-                  } else {
-                    that.haku = that.haut[0]
-                  }
-
-                  that.hakuDeferred.resolve()
-                },
-                function (error) {
-                  console.log(error)
-                  that.hakuDeferred.reject()
-                }
-              )
-            })
+        this.init = function () {
+          if (!this.initializingPromise) {
+            var that = this
+            this.initializingPromise = this.refresh().then(
+              function (model) {
+                return model
+              },
+              function (error) {
+                that.initializingPromise = null
+                return error
+              }
+            )
           }
+          return this.initializingPromise
         }
 
         this.isKKHaku = function (haku) {
@@ -99,16 +105,15 @@ angular
       $scope.customHakuUtil = CustomHakuUtil
       CustomHakuUtil.refreshIfNeeded()
 
-      $scope.changeHaku = function () {
-        if ($scope.hakuModel && $scope.hakuModel.haku) {
-          $scope.hakuModel.hakuOid = $scope.hakuModel.haku.oid
+      $scope.$watch('hakuModel.haku', function () {
+        if ($scope.hakuModel.haku.oid) {
           sessionStorage.setItem(
             'valintaperusteHakuOid',
-            $scope.hakuModel.hakuOid
+            $scope.hakuModel.haku.oid
           )
-          $cookieStore.put('hakuoid', $scope.hakuModel.hakuOid)
+          $cookieStore.put('hakuoid', $scope.hakuModel.haku.oid)
         }
-      }
+      })
     },
   ])
 
@@ -220,13 +225,9 @@ angular
           })
         })
 
-        if (_.isEmpty(HakuModel.deferred)) {
-          HakuModel.init()
-        }
-
-        HakuModel.hakuDeferred.promise.then(function () {
+        HakuModel.init().then(function (model) {
           that.hakuvuodetOpts = _.uniq(
-            _.pluck(HakuModel.haut, 'hakukausiVuosi')
+            _.pluck(model.haut, 'hakukausiVuosi')
           ).filter(function (hakuvuosi) {
             return hakuvuosi !== null
           })
