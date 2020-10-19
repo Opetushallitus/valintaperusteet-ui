@@ -12,6 +12,7 @@ angular
 
       return new (function () {
         this.initializingPromise = null
+        this.onlyKoutaHaut = false
         this.haku = {}
         this.haut = []
 
@@ -46,6 +47,7 @@ angular
             return TarjontaHaut.get({
               virkailijaTyyppi: hakufiltering,
               organizationOids: organizationOids,
+              onlyKoutaHaut: that.onlyKoutaHaut,
             }).then(
               function (haut) {
                 that.haut = _.filter(haut, function (haku) {

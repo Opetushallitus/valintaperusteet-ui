@@ -939,7 +939,7 @@ angular
     }
   })
 
-  .factory('TarjontaHaut', function ($resource) {
+  .factory('TarjontaHaut', function ($resource, $q) {
     var tarjontaResource = $resource(
       window.url('tarjonta-service.haku.find', {
         addHakukohdes: 'false',
@@ -955,17 +955,25 @@ angular
     )
     return {
       get: function (params) {
-        var tarjontaP = tarjontaResource.get({
-          virkailijaTyyppi: params.virkailijaTyyppi,
-        }).$promise
-        var koutaP = koutaResource.get({
-          tarjoaja: params.organizationOids.toString(),
-        }).$promise
+        var tarjontaP = params.onlyKoutaHaut
+          ? $q.when([])
+          : tarjontaResource
+              .get({
+                virkailijaTyyppi: params.virkailijaTyyppi,
+              })
+              .$promise.then(function (tarjontaHaut) {
+                return (tarjontaHaut.result || []).map(tarjontaHakuToHaku)
+              })
+        var koutaP = koutaResource
+          .get({
+            tarjoaja: params.organizationOids.toString(),
+          })
+          .$promise.then(function (koutaHaut) {
+            return koutaHaut.map(koutaHakuToHaku)
+          })
         return tarjontaP.then(function (tarjontaHaut) {
           return koutaP.then(function (koutaHaut) {
-            return tarjontaHaut.result
-              .map(tarjontaHakuToHaku)
-              .concat(koutaHaut.map(koutaHakuToHaku))
+            return tarjontaHaut.concat(koutaHaut)
           })
         })
       },

@@ -65,7 +65,9 @@ angular
         refresh: function () {
           var that = this
           HakuModel.init().then(function (model) {
-            that.refreshHaku(model.haku)
+            if (model.haku) {
+              that.refreshHaku(model.haku)
+            }
           })
         },
         refreshHaku: function (haku) {
