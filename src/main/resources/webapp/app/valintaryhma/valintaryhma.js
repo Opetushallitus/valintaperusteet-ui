@@ -27,7 +27,6 @@ angular
     '$location',
     '$log',
     'RootValintaryhmas',
-    'TarjontaHaut',
     'Ilmoitus',
     'HakuModel',
     function (
@@ -56,7 +55,6 @@ angular
       $location,
       $log,
       RootValintaryhmas,
-      TarjontaHaut,
       Ilmoitus,
       HakuModel
     ) {
@@ -144,13 +142,9 @@ angular
               model.kohdejoukot = result
             })
 
-            if (_.isEmpty(HakuModel.hakuDeferred)) {
-              HakuModel.init()
-            }
-
-            HakuModel.hakuDeferred.promise.then(
-              function () {
-                model.haut = HakuModel.haut
+            HakuModel.init().then(
+              function (hakuModel) {
+                model.haut = hakuModel.haut
               },
               function (error) {
                 $log.error('Hakujen haku epäonnistui', error)

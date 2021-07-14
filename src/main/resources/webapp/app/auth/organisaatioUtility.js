@@ -183,12 +183,10 @@ angular
 
         TarjontaHakukohde.get(
           { hakukohdeoid: hakukohdeOid },
-          function (hakukohdeWrapper) {
+          function (hakukohde) {
             var organizationsPromises = []
 
-            _.forEach(hakukohdeWrapper.result.tarjoajaOids, function (
-              tarjoajaOid
-            ) {
+            _.forEach(hakukohde.tarjoajaOids, function (tarjoajaOid) {
               var tarjoajaDefer = $q.defer()
               organizationsPromises.push(tarjoajaDefer.promise)
 
@@ -298,11 +296,9 @@ angular
 
         TarjontaHakukohde.get(
           { hakukohdeoid: hakukohdeOid },
-          function (hakukohdeWrapper) {
+          function (hakukohde) {
             var organizationsPromises = []
-            _.forEach(hakukohdeWrapper.result.tarjoajaOids, function (
-              tarjoajaOid
-            ) {
+            _.forEach(hakukohde.tarjoajaOids, function (tarjoajaOid) {
               var organizationDefer = $q.defer()
               organizationsPromises.push(organizationDefer.promise)
 

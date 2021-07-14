@@ -63,7 +63,12 @@ angular
           return ''
         },
         refresh: function () {
-          return this.refreshHaku(HakuModel.haku)
+          var that = this
+          HakuModel.init().then(function (model) {
+            if (model.haku) {
+              that.refreshHaku(model.haku)
+            }
+          })
         },
         refreshHaku: function (haku) {
           var kohdejoukko, tila
@@ -247,7 +252,7 @@ angular
       $scope.domain = Treemodel
 
       $scope.hakuModel = HakuModel
-      $scope.$watch('hakuModel.hakuOid', function () {
+      $scope.$watch('hakuModel.haku', function () {
         $scope.domain.refresh()
       })
 
