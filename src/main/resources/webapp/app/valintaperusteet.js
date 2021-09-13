@@ -109,6 +109,7 @@ var app = angular
        * hänen palveluun määrittämä käyttökieli
        */
       LocalisationService.getUserLang().then(function (data) {
+        $rootScope.userLang = data
         $scope.userLang = data
       })
       /**

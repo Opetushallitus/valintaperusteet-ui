@@ -2,6 +2,7 @@ angular
   .module('valintaperusteet')
 
   .factory('ValintatapajonoModel', [
+    '$rootScope',
     '$q',
     'Valintatapajono',
     'ValinnanvaiheValintatapajono',
@@ -19,6 +20,7 @@ angular
     'KoodistoValintatapajono',
     '$location',
     function (
+      $rootScope,
       $q,
       Valintatapajono,
       ValinnanvaiheValintatapajono,
@@ -116,6 +118,11 @@ angular
 
         this.refreshValintatapajonoTyypit = function () {
           KoodistoValintatapajono.get(function (result) {
+            result.forEach((koodi) => {
+              koodi.metadata = koodi.metadata.filter(
+                (m) => m.kieli == $rootScope.userLang.toUpperCase()
+              )
+            })
             model.valintatapajonoTyypit = result
           })
         }
