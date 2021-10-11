@@ -1007,7 +1007,7 @@ angular
           .$promise.then(function (hakukohde) {
             return {
               oid: hakukohde.oid,
-              tarjoajaOids: hakukohde.tarjoajat,
+              tarjoajaOids: [hakukohde.tarjoaja],
             }
           })
         tarjontaP
