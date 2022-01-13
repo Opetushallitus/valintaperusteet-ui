@@ -33,11 +33,11 @@ angular
           $scope.kopioObj.value = puuNode
         }
       }
-      $scope.changeHaku = function () {
+      $scope.$watch('hakuModel.haku', function () {
         if ($scope.hakuModel && $scope.hakuModel.haku) {
           // Bypass HakuModel used in Treemodel
           Treemodel.refreshHaku($scope.hakuModel.haku)
         }
-      }
+      })
     },
   ])
