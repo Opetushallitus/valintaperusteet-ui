@@ -18,7 +18,8 @@
     <label class="col-md-2 control-label">{{ t('hakukohdelomake.hakukohdeoid') || 'Oid' }}: </label>
     <div class="col-md-10 form-control-static">
         {{model.hakukohde.oid}}&nbsp;&nbsp;&nbsp;
-        <a href="/tarjonta-app/index.html#/hakukohde/{{model.hakukohde.oid}}" target="_blank">Tarjonta <i class="fa fa-external-link"></i></a>
+        <a ng-if="model.hakukohde.oid.length != 35" href="/tarjonta-app/index.html#/hakukohde/{{model.hakukohde.oid}}" target="_blank">Tarjonta <i class="fa fa-external-link"></i></a>
+        <a ng-if="model.hakukohde.oid.length == 35" href="/kouta/hakukohde/{{model.hakukohde.oid}}" target="_blank">Tarjonta <i class="fa fa-external-link"></i></a>
     </div>
 </div>
 
