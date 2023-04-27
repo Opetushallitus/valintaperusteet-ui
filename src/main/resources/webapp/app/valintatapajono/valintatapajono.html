@@ -309,6 +309,22 @@
 
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="merkitseMyohAuto">{{ t('valintatapajono.merkitseMyohAuto') ||
+                'Merkitse vastaanotto automaattisesti myöhästyneeksi' }}</label>
+
+            <div class="col-md-4">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="merkitseMyohAuto" name="merkitseMyohAuto"
+                               ng-model="model.valintatapajono.merkitseMyohAuto">
+                    </label>
+
+                </div>
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="control-label col-md-2" for="poissaOlevaTaytto">{{ t('valintatapajono.varasijataytto') ||
                 'Varasijatäyttö poissa olevaksi ilmoittautuneiden tilalle' }}</label>
@@ -323,6 +339,7 @@
                 </div>
             </div>
         </div>
+
         <div class="form-group" ng-if="hakukohdeOid">
             <label class="control-label col-md-2" for="tayttojono">{{ t('valintatapajono.josjonoon') || 'Jos jonoon jää täyttämättömiä aloituspaikkoja, aloituspaikat siirretään jonoon' }}</label>
 

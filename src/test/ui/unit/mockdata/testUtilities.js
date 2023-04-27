@@ -159,7 +159,7 @@ angular.module('MockData')
 
     ).value('valintakoeJSON',
     {"tunniste":"{{hakukohde.kielikoe_tunniste}}","laskentakaavaId":4934,"nimi":"Kielikoe","kuvaus":"Kielikoe","aktiivinen":true,"lahetetaankoKoekutsut":true,"kutsutaankoKaikki":false,"oid":"14030802039981246535948132449350"}
-    ).value('valintatapajonoallJSON',[{"aloituspaikat":0,"nimi":"Harkinnanvaraisten kÃ¤sittelyvaiheen valintatapajono","kuvaus":"Harkinnanvaraisten kÃ¤sittelyvaiheen valintatapajono","siirretaanSijoitteluun":false,"tasapistesaanto":"ARVONTA","aktiivinen":true,"eiVarasijatayttoa":false,"kaikkiEhdonTayttavatHyvaksytaan":false,"varasijat":0,"varasijaTayttoPaivat":0,"poissaOlevaTaytto":false,"varasijojaKaytetaanAlkaen":null,"varasijojaTaytetaanAsti":null,"kaytetaanValintalaskentaa":true,"oid":"1403080025667-5818256173337411432","inheritance":true, "tayttojono": null}]
+    ).value('valintatapajonoallJSON',[{"aloituspaikat":0,"nimi":"Harkinnanvaraisten kÃ¤sittelyvaiheen valintatapajono","kuvaus":"Harkinnanvaraisten kÃ¤sittelyvaiheen valintatapajono","siirretaanSijoitteluun":false,"tasapistesaanto":"ARVONTA","aktiivinen":true,"eiVarasijatayttoa":false,"kaikkiEhdonTayttavatHyvaksytaan":false,"varasijat":0,"varasijaTayttoPaivat":0,"poissaOlevaTaytto":false,"merkitseMyohAuto":false,"varasijojaKaytetaanAlkaen":null,"varasijojaTaytetaanAsti":null,"kaytetaanValintalaskentaa":true,"oid":"1403080025667-5818256173337411432","inheritance":true, "tayttojono": null}]
     ).value('findallJSON',
     { "result": [ {
         "modified" : 1403526147721,
