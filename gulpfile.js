@@ -103,10 +103,10 @@ gulp.task('fontAwesomeCss', function () {
 
 });
 
-gulp.task('icons', function() { 
+gulp.task('icons', function() {
     return gulp
-        .src(paths.awesomeFontsSrc) 
-        .pipe(gulp.dest(paths.awesomeFontsOutput)); 
+        .src(paths.awesomeFontsSrc)
+        .pipe(gulp.dest(paths.awesomeFontsOutput));
 });
 
 
