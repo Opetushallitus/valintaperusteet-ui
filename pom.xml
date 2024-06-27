@@ -13,7 +13,7 @@
     <properties>
         <frontend-maven-plugin.version>1.7.6</frontend-maven-plugin.version>
         <spring.asm.version>3.1.4.RELEASE</spring.asm.version>
-        <spring.version>5.1.5.RELEASE</spring.version>
+        <spring.version>5.3.34</spring.version>
         <spring.security.version>4.2.11.RELEASE</spring.security.version>
 
         <maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
@@ -372,8 +372,7 @@ vcsRevision=${revision}
 buildTtime=${maven.build.timestamp}
 ]]>
                                 </echo>
-                                <loadfile property="buildversiontxt"
-                                          srcFile="${project.build.outputDirectory}/webapp/buildversion.txt"/>
+                                <loadfile property="buildversiontxt" srcFile="${project.build.outputDirectory}/webapp/buildversion.txt"/>
                                 <echo message="${buildversiontxt}"/>
                                 <echo file="target/mavenversion.txt">${project.version}</echo>
                             </target>
@@ -435,7 +434,7 @@ buildTtime=${maven.build.timestamp}
                       <requireJavaVersion>
                         <version>11</version>
                       </requireJavaVersion>
-                      <dependencyConvergence />
+                      <dependencyConvergence/>
                     </rules>
                   </configuration>
                 </execution>
@@ -460,8 +459,7 @@ buildTtime=${maven.build.timestamp}
                               </filter>
                           </filters>
                           <transformers>
-                              <transformer
-                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                              <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                   <manifestEntries>
                                       <Main-Class>fi.vm.sade.valintaperusteet.ValintaperusteUiJetty</Main-Class>
                                   </manifestEntries>
@@ -519,11 +517,11 @@ buildTtime=${maven.build.timestamp}
                         <executions>
                             <execution>
                                 <id>install node and npm</id>
-                                <phase />
+                                <phase/>
                             </execution>
                             <execution>
                                 <id>npm install</id>
-                                <phase />
+                                <phase/>
                             </execution>
                         </executions>
                     </plugin>
@@ -541,7 +539,7 @@ buildTtime=${maven.build.timestamp}
                         <executions>
                             <execution>
                                 <id>write buildversion.txt</id>
-                                <phase />
+                                <phase/>
                             </execution>
                         </executions>
                     </plugin>
@@ -552,7 +550,7 @@ buildTtime=${maven.build.timestamp}
                         <executions>
                             <execution>
                                 <id>default-compile</id>
-                                <phase />
+                                <phase/>
                             </execution>
                         </executions>
                     </plugin>
@@ -562,7 +560,7 @@ buildTtime=${maven.build.timestamp}
                         <version>3.2.1</version>
                         <executions>
                             <execution>
-                                <phase />
+                                <phase/>
                             </execution>
                         </executions>
                     </plugin>
