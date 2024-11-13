@@ -30,7 +30,8 @@
     "test": "*",
     "phantomjs-prebuilt": "~2.1.7",
     "prettier": "2.0.5",
-    "mocha-phantomjs-core": "2.0.1"
+    "mocha-phantomjs-core": "2.0.1",
+    "mocha-headless-chrome": "4.0.0"
   },
   "dependencies": {
     "test": "*",
