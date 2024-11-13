@@ -10,7 +10,7 @@
 spring:
 
 cas:
-  service: https://{{host_virkailija}}/valintalaskenta-ui
+  service: https://{{host_virkailija}}/valintaperusteet-ui
 
 host:
   host-virkailija: {{host_virkailija}}

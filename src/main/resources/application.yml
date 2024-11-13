@@ -12,7 +12,7 @@ server:
     threads:
       max: 20
 
-valintalaskenta-ui:
+valintaperusteet-ui:
   uses-ssl-proxy: false
   disable-same-site-cookie: false
 
