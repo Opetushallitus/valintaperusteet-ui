@@ -40,10 +40,6 @@ jobs:
         with:
           timezoneLinux: "Europe/Helsinki"
 
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 10
-
       - name: Build
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
