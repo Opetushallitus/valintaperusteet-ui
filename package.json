@@ -38,6 +38,11 @@
     "phantomjs-prebuilt": "~2.1.7",
     "mocha-phantomjs-core": "2.0.1"
   },
+  "overrides": {
+    "cryptiles": "4.1.2",
+    "json-schema": "0.4.0",
+    "minimist": "0.2.4"
+  },
   "scripts": {
     "test": "mocha-phantomjs -R dot http://localhost:18180/valintaperusteet-ui/test/runner.html"
   }
