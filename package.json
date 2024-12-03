@@ -30,12 +30,8 @@
     "test": "*",
     "phantomjs-prebuilt": "~2.1.7",
     "prettier": "2.0.5",
-    "mocha-phantomjs-core": "2.0.1"
-  },
-  "dependencies": {
-    "test": "*",
-    "phantomjs-prebuilt": "~2.1.7",
-    "mocha-phantomjs-core": "2.0.1"
+    "mocha-phantomjs-core": "2.0.1",
+    "mocha-headless-chrome": "4.0.0"
   },
   "scripts": {
     "test": "mocha-phantomjs -R dot http://localhost:18180/valintaperusteet-ui/test/runner.html"
