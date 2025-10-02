@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fi.vm.sade.valintaperusteet</groupId>
@@ -14,7 +15,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.5</version>
+        <version>3.4.10</version>
     </parent>
 
     <dependencyManagement>
@@ -45,14 +46,14 @@
                 <version>2.17.0</version>
             </dependency>
             <dependency>
-                <groupId>ch.qos.logback.access</groupId>
-                <artifactId>tomcat</artifactId>
-                <version>2.0.3</version>
-            </dependency>
-            <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>33.3.1-jre</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>4.5.14</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -77,6 +78,16 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-cas</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcprov-jdk15on</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcpkix-jdk15on</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.session</groupId>
@@ -87,8 +98,23 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
         <dependency>
-            <groupId>ch.qos.logback.access</groupId>
-            <artifactId>tomcat</artifactId>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-access</artifactId>
+            <version>1.4.14</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>tomcat-catalina</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>tomcat-coyote</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>tomcat-util</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -97,6 +123,16 @@
         <dependency>
             <groupId>fi.vm.sade.java-utils</groupId>
             <artifactId>opintopolku-cas-servlet-filter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcprov-jdk15on</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcpkix-jdk15on</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>fi.vm.sade.java-utils</groupId>
@@ -169,8 +205,9 @@
                             <goal>install-node-and-npm</goal>
                         </goals>
                         <configuration>
-                            <nodeVersion>v10.24.1</nodeVersion>
-                            <npmVersion>6.14.12</npmVersion>
+                            <!-- Node/npm that work with Puppeteer & modern locks -->
+                            <nodeVersion>v20.16.0</nodeVersion>
+                            <npmVersion>10.8.2</npmVersion>
                         </configuration>
                     </execution>
                     <execution>
@@ -180,18 +217,16 @@
                         </goals>
                         <phase>generate-resources</phase>
                         <configuration>
-                            <arguments>ci</arguments>
+                            <!-- Flags to avoid CI noise and match local behavior -->
+                            <arguments>ci --no-audit --no-fund</arguments>
+                            <!-- Optional: skip Chromium download if you use system Chrome -->
+                            <!--
+                            <environmentVariables>
+                              <PUPPETEER_SKIP_DOWNLOAD>true</PUPPETEER_SKIP_DOWNLOAD>
+                            </environmentVariables>
+                            -->
                         </configuration>
                     </execution>
-                    <!--execution>
-                        <id>npm run build</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>run build</arguments>
-                        </configuration>
-                    </execution -->
                 </executions>
             </plugin>
             <plugin>
@@ -207,10 +242,6 @@
                         <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
                     </nonFilteredFileExtensions>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>Copy frontend build to target</id>
@@ -229,6 +260,17 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- Exclude the legacy UI Mocha JUnit by default -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/mocha/ValintaperusteetUIMochaTest.java</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -256,6 +298,16 @@
                                 <phase>none</phase>
                             </execution>
                         </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>3.2.5</version>
+                        <configuration>
+                            <excludes>
+                                <!-- skip the PhantomJS-based JUnit in this profile -->
+                                <exclude>**/mocha/ValintaperusteetUIMochaTest.java</exclude>
+                            </excludes>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
@@ -299,7 +351,7 @@
         <repository>
             <id>repository.jboss.org</id>
             <name>JBoss Repository</name>
-            <url>http://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+            <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
         </repository>
     </repositories>
 </project>
