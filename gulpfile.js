@@ -1,11 +1,8 @@
-var gulp = require('gulp'),
-    concat = require('gulp-concat'),
-    uglify = require('gulp-uglify'),
-    clean = require('gulp-clean'),
-    watch = require('gulp-watch'),
-    livereload = require('gulp-livereload'),
-    karma = require('gulp-karma');
-    //sass = require('gulp-sass');
+const gulp = require('gulp')
+const livereload = require('gulp-livereload')
+const { Server: KarmaServer, config: karmaConfig } = require('karma')
+const path = require('path')
+const sass = require('gulp-sass')(require('sass'))
 
 
 var paths = {
@@ -117,35 +114,55 @@ gulp.task('testLibs', function () {
 });
 
 gulp.task('livereload', function () {
-    return gulp
-        .src(paths.livereloadSources)
-        .pipe(watch())
-        .pipe(livereload());
+    livereload.listen({ quiet: true });
+
+    const watcher = gulp.watch(paths.livereloadSources);
+    watcher.on('all', (_event, filePath) => {
+        livereload.changed(filePath);
+    });
+
+    return watcher;
 });
 
 gulp.task('test-singlerun', function () {
-    return gulp.src(paths.testfiles)
-        .pipe(karma({
-            configFile: 'src/test/ui/valintaperusteet.conf.js'
-        }).on('error', function (err) {
-            // Make sure failed tests cause gulp to exit non-zero
-            throw err;
-        }));
+    try {
+        // green test run will require mocks/stubs setup.
+        process.env.CHROME_BIN = require('puppeteer').executablePath();
+    } catch (e) {}
+    return new Promise((resolve, reject) => {
+        const server = new KarmaServer({
+            configFile: path.resolve(__dirname, 'src/test/resources/ui/valintaperusteet.conf.js'),
+            singleRun: true
+        }, exitCode => {
+            exitCode === 0 ? resolve() : reject(new Error(`Karma failed with code ${exitCode}`));
+        });
+        server.start();
+    });
 });
-
-
 
 // Run tests
 gulp.task('test-watch', function () {
-    return gulp.src(paths.testfiles)
-        .pipe(karma({
-            configFile: 'src/test/ui/valintaperusteet.conf.js',
-            action: 'watch'
-        }).on('error', function (err) {
-            // Make sure failed tests cause gulp to exit non-zero
-            throw err;
-        }));
+    // Prefer Puppeteer’s Chromium if available;
+    // green test run will require mocks/stubs setup.
+    try { process.env.CHROME_BIN = require('puppeteer').executablePath(); } catch (e) {}
+
+    const karmaConfPath = path.resolve(__dirname, 'src/test/resources/ui/valintaperusteet.conf.js');
+
+    // Use parseConfig (Karma 6+), and override for watch mode
+    return karmaConfig.parseConfig(
+        karmaConfPath,
+        { singleRun: false, autoWatch: true },
+        { promiseConfig: true, throwErrors: true }
+    ).then(cfg =>
+        new Promise((resolve, reject) => {
+            const server = new KarmaServer(cfg, code =>
+                code === 0 ? resolve() : reject(new Error(`Karma exited with code ${code}`))
+            );
+            server.start();
+        })
+    );
 });
+
 
 // Default
 gulp.task('default', gulp.series('test-singlerun', function(done) {
