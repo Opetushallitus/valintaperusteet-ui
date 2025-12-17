@@ -1,9 +1,4 @@
 {
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "./src/**/*.{js,jsx,ts,tsx}": [
       "./bin/run-eslint-pre-commit.sh"
@@ -23,7 +18,7 @@
     "gulp-livereload": "^4.0.2",
     "gulp-sass": "^6.0.1",
     "gulp-uglify": "^3.0.2",
-    "husky": "4.2.5",
+    "husky": "^9.1.7",
     "karma": "^6.4.4",
     "karma-chrome-launcher": "^3.2.0",
     "karma-coverage": "^2.2.1",
@@ -35,7 +30,8 @@
     "sass": "^1.92.1"
   },
   "scripts": {
-    "test": "echo \"No JS test runner wired. Use 'npx gulp test-singlerun' or run Maven tests.\" && exit 0"
+    "test": "echo \"No JS test runner wired. Use 'npx gulp test-singlerun' or run Maven tests.\" && exit 0",
+    "prepare": "husky"
   },
   "devEngines": {
     "packageManager": {
