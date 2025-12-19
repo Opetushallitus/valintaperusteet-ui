@@ -56,6 +56,7 @@ angular
           $scope.funktioasetukset.parentFunktiokutsu,
           $scope.funktioasetukset.selectedFunktioIndex
         )
+        kaarittavaFunktiokutsu.indeksi = 0
         var kaarivaFunktiokutsu = FunktioFactory.createFunktioInstance(
           $scope.funktioasetukset.parentFunktiokutsu,
           kaarivaFunktiokutsuNimi,
@@ -88,6 +89,7 @@ angular
           $scope.funktioasetukset.parentFunktiokutsu,
           $scope.funktioasetukset.selectedFunktioIndex
         )
+        kaarittavaFunktiokutsu.indeksi = 0
         var kaarivaFunktiokutsu = FunktioFactory.createFunktioInstance(
           $scope.funktioasetukset.parentFunktiokutsu,
           kaarivaFunktiokutsuNimi,

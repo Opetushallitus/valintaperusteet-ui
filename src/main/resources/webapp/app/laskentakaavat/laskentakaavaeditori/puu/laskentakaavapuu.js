@@ -543,6 +543,7 @@ angular.module('valintaperusteet').controller('LaskentakaavaController', [
     }
 
     $scope.setClipboard = function (funktiokutsu) {
+      funktiokutsu.indeksi = 0
       $scope.clipboard = funktiokutsu
     }
 
