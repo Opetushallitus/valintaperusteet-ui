@@ -25,13 +25,13 @@
     "karma-jasmine": "^5.1.0",
     "karma-junit-reporter": "^2.0.1",
     "lint-staged": "10.2.11",
-    "preinstall": "pnpx only-allow@1.2.2 pnpm",
     "prettier": "2.0.5",
     "puppeteer": "^24.22.3",
     "sass": "^1.92.1"
   },
   "scripts": {
     "test": "echo \"No JS test runner wired. Use 'npx gulp test-singlerun' or run Maven tests.\" && exit 0",
+    "preinstall": "pnpx only-allow@1.2.2 pnpm",
     "prepare": "husky"
   },
   "packageManager": "pnpm@10.26.1+sha512.664074abc367d2c9324fdc18037097ce0a8f126034160f709928e9e9f95d98714347044e5c3164d65bd5da6c59c6be362b107546292a8eecb7999196e5ce58fa"
