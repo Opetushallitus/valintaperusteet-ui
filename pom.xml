@@ -186,25 +186,25 @@
                 <version>1.15.0</version>
                 <executions>
                     <execution>
-                        <id>install node and npm</id>
+                        <id>install node and pnpm</id>
                         <goals>
-                            <goal>install-node-and-npm</goal>
+                            <goal>install-node-and-pnpm</goal>
                         </goals>
                         <configuration>
-                            <!-- Node/npm that work with Puppeteer & modern locks -->
+                            <!-- Node/pnpm that work with Puppeteer & modern locks -->
                             <nodeVersion>v20.16.0</nodeVersion>
-                            <npmVersion>10.8.2</npmVersion>
+                            <pnpmVersion>10.26.0</pnpmVersion>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>npm ci</id>
+                        <id>pnpm install</id>
                         <goals>
-                            <goal>npm</goal>
+                            <goal>pnpm</goal>
                         </goals>
                         <phase>generate-resources</phase>
                         <configuration>
                             <!-- Flags to avoid CI noise and match local behavior -->
-                            <arguments>ci --no-audit --no-fund</arguments>
+                            <arguments>install</arguments>
                             <!-- Optional: skip Chromium download if you use system Chrome -->
                             <!--
                             <environmentVariables>
@@ -272,15 +272,15 @@
                         <version>1.15.0</version>
                         <executions>
                             <execution>
-                                <id>install node and npm</id>
+                                <id>install node and pnpm</id>
                                 <phase>none</phase>
                             </execution>
                             <execution>
-                                <id>npm ci</id>
+                                <id>pnpm install</id>
                                 <phase>none</phase>
                             </execution>
                             <execution>
-                                <id>npm run build</id>
+                                <id>pnpm run build</id>
                                 <phase>none</phase>
                             </execution>
                         </executions>

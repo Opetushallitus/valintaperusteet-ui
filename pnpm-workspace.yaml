@@ -1,0 +1,8 @@
+minimumReleaseAge: 4320
+
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - es5-ext
+  - fsevents
+  - husky
+  - puppeteer
