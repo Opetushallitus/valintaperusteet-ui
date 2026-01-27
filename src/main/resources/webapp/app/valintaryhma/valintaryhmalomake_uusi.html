@@ -32,7 +32,7 @@
             <label class="control-label col-md-2" for="hakunimi">{{ t('valintaryhmalomake.haku') || 'Haku' }}</label>
 
             <div class="col-md-6">
-                <select auth ng-disabled="model.parentOid" id="hakunimi" class="form-control" ng-model="model.valintaryhma.hakuoid"
+                <select auth="yhteisvalinta" ng-disabled="model.parentOid" id="hakunimi" class="form-control" ng-model="model.valintaryhma.hakuoid"
                         ng-options="h.oid as h.uiNimi for h in model.haut | orderBy:'nimi.kieli_fi'">
                     <option value=""></option>
                 </select>
@@ -43,7 +43,7 @@
             <label class="control-label col-md-2" for="hakuvuosi">{{ t('valintaryhmalomake.hakuvuosi') || 'Hakuvuosi' }}</label>
 
             <div class="col-md-6">
-                <input auth ng-disabled="!userAccess.updateOrg" class="form-control"
+                <input auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg" class="form-control"
                        type="text" id="hakuvuosi" ng-model="model.valintaryhma.hakuvuosi" />
             </div>
         </div>
@@ -119,7 +119,7 @@
                         popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
                         class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
                 </button>
-                <button auth ng-disabled="!form.$valid || !userAccess.hasCrudRights() || userModel.organizationOids.length === 0" class="btn btn-sm btn-primary" type="submit"><i
+                <button auth="yhteisvalinta" ng-disabled="!form.$valid || !userAccess.hasCrudRights() || userModel.organizationOids.length === 0" class="btn btn-sm btn-primary" type="submit"><i
                         class="fa fa-floppy-o"></i> {{ t('common.tallenna') || 'Tallenna' }}
                 </button>
             </div>
