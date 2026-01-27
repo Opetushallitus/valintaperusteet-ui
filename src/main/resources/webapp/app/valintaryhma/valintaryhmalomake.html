@@ -67,7 +67,7 @@
 <div class="tabs">
     <a href="#/etusivu" class="tab current"><span>{{ t('common.etusivu') || 'Valintaryhmät ja hakukohteet' }}</span></a>
     <a href="#/valintaryhma/{{model.valintaryhma.oid}}/laskentakaavalista" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>,
-    <a auth ng-if="userAccess.crudOph || (userAccess.hasCrudRights() && userModel.isKKUser)" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
+    <a auth="yhteisvalinta" ng-if="userAccess.crudOph || (userAccess.hasCrudRights() && userModel.isKKUser) || userModel.hasYhteisvalintaRights" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
 
 </div>
 

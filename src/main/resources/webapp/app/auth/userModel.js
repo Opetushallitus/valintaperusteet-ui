@@ -35,11 +35,13 @@ angular.module('valintaperusteet').factory('UserModel', [
       this.isKKUser = false
       this.hasOtherThanKKUserOrgs = false
       this.isOphUser = false
+      this.hasYhteisvalintaRights = false
 
       this.refresh = function () {
         model.organizationsDeferred = $q.defer()
 
         MyRolesModel.then(function (myroles) {
+          model.setYhteisvalintaRights(myroles)
           AuthService.getOrganizations('APP_VALINTAPERUSTEET').then(
             function (oidList) {
               model.organizationOids = oidList
@@ -266,6 +268,19 @@ angular.module('valintaperusteet').factory('UserModel', [
 
       this.isOphOrganization = function (organization) {
         return organization.oid === OPH_ORG_OID
+      }
+
+      this.setYhteisvalintaRights = function (myrolesModel) {
+        var roles = (myrolesModel && myrolesModel.myroles) || []
+        model.hasYhteisvalintaRights = _.some(roles, function (role) {
+          if (!/^APP_(HAKEMUS|KOUTA|VALINTOJENTOTEUTTAMINEN)(_|$)/.test(role)) {
+            return false
+          }
+          return (
+            /_(READ_UPDATE|CRUD)(_|$)/.test(role) ||
+            /_(OPHPAAKAYTTAJA|TULOSTENTUONTI)(_|$)/.test(role)
+          )
+        })
       }
 
       this.isOtherThanKKOrganization = function (organization) {
