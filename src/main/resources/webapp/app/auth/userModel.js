@@ -273,7 +273,9 @@ angular.module('valintaperusteet').factory('UserModel', [
       this.setYhteisvalintaRights = function (myrolesModel) {
         var roles = (myrolesModel && myrolesModel.myroles) || []
         model.hasYhteisvalintaRights = _.some(roles, function (role) {
-          if (!/^APP_(HAKEMUS|KOUTA|VALINTOJENTOTEUTTAMINEN)(_|$)/.test(role)) {
+          if (
+            !/^APP_(HAKEMUS|KOUTA|VALINTOJENTOTEUTTAMINEN(KK)?)(_|$)/.test(role)
+          ) {
             return false
           }
           return (
