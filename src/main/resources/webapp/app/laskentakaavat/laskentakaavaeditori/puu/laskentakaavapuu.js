@@ -183,16 +183,16 @@ angular.module('valintaperusteet').controller('LaskentakaavaController', [
 
     $scope.setLaskentakaavaviite = function (kaava) {
       //lähetetään skooppihierarkiassa alaspäin viesti, jossa kulkee uuden kaavan id ja vanhan kaavan id.
-      $scope.$broadcast(
-        'changeAlikaava',
-        kaava.id,
+      var existingViite =
         $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[
           $scope.funktioasetukset.selectedFunktioIndex
-        ].id
-      )
+        ]
+      $scope.$broadcast('changeAlikaava', kaava.id, existingViite.id)
+      var newViite = $scope.funktioFactory.createLaskentakaavaviite(kaava)
+      newViite.indeksi = existingViite.indeksi
       $scope.funktioasetukset.parentFunktiokutsu.lapsi.funktioargumentit[
         $scope.funktioasetukset.selectedFunktioIndex
-      ] = $scope.funktioFactory.createLaskentakaavaviite(kaava)
+      ] = newViite
     }
 
     $scope.toggleAll = function () {
