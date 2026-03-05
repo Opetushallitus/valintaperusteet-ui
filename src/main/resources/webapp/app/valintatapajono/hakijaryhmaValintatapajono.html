@@ -46,7 +46,7 @@
     </div>
 
     <div class="form-row">
-        <button auth="update" ng-disabled="!form.$valid" class="button small primary" type="submit">
+        <button ng-disabled="!form.$valid || (!userAccess.updateOrg && !userModel.hasYhteisvalintaRights)" class="button small primary" type="submit">
             {{ t('hakijaryhmavalintatapajono.liita') || 'Liitä' }}
         </button>
 
