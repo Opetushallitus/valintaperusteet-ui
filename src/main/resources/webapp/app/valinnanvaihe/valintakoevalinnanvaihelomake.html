@@ -16,7 +16,7 @@
                 }}</label>
 
             <div class="col-md-6">
-                <input class="form-control" auth ng-disabled="!userAccess.updateOrg" id="nimi"
+                <input class="form-control" auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights" id="nimi"
                        ng-model="model.valintakoevalinnanvaihe.nimi" required/>
             </div>
         </div>
@@ -27,7 +27,7 @@
                 }}</label>
 
             <div class="col-md-6">
-                <textarea class="form-control" auth ng-disabled="!userAccess.updateOrg" id="kuvaus"
+                <textarea class="form-control" auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights" id="kuvaus"
                           ng-model="model.valintakoevalinnanvaihe.kuvaus"/>
             </div>
         </div>
@@ -50,14 +50,14 @@
                     </thead>
                     <tbody ng-model="model.valintakokeet">
                     <tr ng-repeat="valintakoe in model.valintakokeet">
-                        <td><input auth ng-disabled="!userAccess.updateOrg" type="checkbox"
+                        <td><input auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights" type="checkbox"
                                    ng-model="valintakoe.aktiivinen"/></td>
                         <td>{{valintakoe.tunniste}}</td>
                         <td><a ng-click="modifyvalintakoe(valintakoe.oid)">{{valintakoe.nimi}}</a></td>
                         <td>{{valintakoe.kuvaus}}</td>
                         <td>
                             <div ng-if="!valintakoe.peritty">
-                                <button auth ng-disabled="!userAccess.updateOrg" class="btn btn-default btn-sm"
+                                <button auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights" class="btn btn-default btn-sm"
                                         ng-click="model.removeValintakoe(valintakoe)">
                                     <i class="fa fa-trash-o organisaatio"></i>
                                 </button>
@@ -75,7 +75,7 @@
 
         <div class="form-group">
             <div class="col-md-2 col-md-offset-2">
-                <a auth ng-disabled="!userAccess.crudOrg || !model.valintakoevalinnanvaihe.oid" class="btn btn-sm btn-default"
+                <a auth="yhteisvalinta" ng-disabled="(!userAccess.crudOrg && !userModel.hasYhteisvalintaRights) || !model.valintakoevalinnanvaihe.oid" class="btn btn-sm btn-default"
                         ng-click="addValintakoe()"><i class="fa fa-plus"></i> {{
                     t('valintakoevalinnanvaihelomake.valintakoe') || 'Valintakoe' }}
                 </a>
@@ -90,7 +90,7 @@
                         popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
                         class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
                 </button>
-                <button auth ng-disabled="!form.$valid || !userAccess.updateOrg" class="btn btn-sm btn-primary"
+                <button auth="yhteisvalinta" ng-disabled="!form.$valid || (!userAccess.updateOrg && !userModel.hasYhteisvalintaRights)" class="btn btn-sm btn-primary"
                         type="submit">
                     <i
                             class="fa fa-floppy-o"></i>

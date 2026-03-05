@@ -112,7 +112,7 @@
     <label class="control-label col-md-2" for="hakuvuosi">{{ t('valintaryhmalomake.hakuvuosi') || 'Hakuvuosi' }}</label>
 
     <div class="col-md-6">
-        <input auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights" class="form-control"
+        <input ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights" class="form-control"
                type="text" id="hakuvuosi" ng-model="model.valintaryhma.hakuvuosi" />
     </div>
 </div>
@@ -171,7 +171,7 @@
     <label class="control-label col-md-2" for="">{{ t('valintaryhmalomake.vastuuorganisaatio') || 'Vastuuorganisaatio' }}</label>
     <div class="col-md-6">
         <select class="form-control"
-                auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights"
+                ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights"
                 ng-model="model.valintaryhma.vastuuorganisaatioOid"
                 ng-options="o.oid as (o.nimi.fi || o.nimi.sv || o.nimi.en) for o in model.valintaryhma.organisaatiot">
             <option value=""></option>

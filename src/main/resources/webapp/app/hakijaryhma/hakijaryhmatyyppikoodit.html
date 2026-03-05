@@ -3,7 +3,7 @@
 
     <div class="col-md-10">
         <span class="radio-inline" ng-repeat="tyyppi in model.hakijaryhmatyyppikoodit">
-            <input ng-disabled="!userAccess.updateOrg" type="radio" name="hakijaryhmatyyppikoodi" required ng-change="$parent.model.setHakijaryhmatyyppikoodiUri(tyyppi.koodiUri)" ng-model="model.hakijaryhma.hakijaryhmatyyppikoodi.uri" ng-value="tyyppi.koodiUri" />{{tyyppi.metadata[0].nimi}}
+            <input ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights" type="radio" name="hakijaryhmatyyppikoodi" required ng-change="$parent.model.setHakijaryhmatyyppikoodiUri(tyyppi.koodiUri)" ng-model="model.hakijaryhma.hakijaryhmatyyppikoodi.uri" ng-value="tyyppi.koodiUri" />{{tyyppi.metadata[0].nimi}}
         </span>
     </div>
 </div>

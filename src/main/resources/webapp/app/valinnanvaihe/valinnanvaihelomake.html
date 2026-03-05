@@ -24,7 +24,7 @@
             <label class="control-label col-md-2" for="nimi">{{ t('valinnanvaihelomake.nimi') || 'Nimi' }}</label>
 
             <div class="col-md-4 ">
-                <input class="form-control" type="text" auth ng-disabled="!userAccess.updateOrg" name="nimi" id="nimi"
+                <input class="form-control" type="text" auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights" name="nimi" id="nimi"
                        ng-model="model.valinnanvaihe.nimi" required/>
             </div>
         </div>
@@ -33,7 +33,7 @@
             <label class="col-md-2 control-label" for="kuvaus">{{ t('valinnanvaihelomake.kuvaus') || 'Kuvaus' }}</label>
 
             <div class="col-md-4">
-                <textarea class="form-control" auth ng-disabled="!userAccess.updateOrg" name="kuvaus" id="kuvaus"
+                <textarea class="form-control" auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights" name="kuvaus" id="kuvaus"
                           ng-model="model.valinnanvaihe.kuvaus"/>
             </div>
         </div>
@@ -55,7 +55,7 @@
                     </thead>
                     <tbody ui-sortable ng-model="model.valintatapajonot">
                     <tr ng-repeat="jono in model.valintatapajonot">
-                        <td><input auth ng-disabled="!userAccess.updateOrg" type="checkbox" ng-model="jono.aktiivinen"/>
+                        <td><input auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights" type="checkbox" ng-model="jono.aktiivinen"/>
                         </td>
                         <td>
                             <a ng-class="{true:'', false:'line-through'}[jono.aktiivinen]"
@@ -71,7 +71,7 @@
                                 {{ t('valintatapajono.eiVoiPoistaaKoskaSijoittelunKaytossa') || 'Jonoa ei voi poistaa, koska se on sijoittelun käytössä' }}
                             </span>
                             <span ng-if="!jono.usedBySijoittelu">
-                                <a auth ng-disabled="!userAccess.crudOrg"
+                                <a auth="yhteisvalinta" ng-disabled="!userAccess.crudOrg && !userModel.hasYhteisvalintaRights"
                                    ng-show="!jono.inheritance" class="btn btn-sm btn-default"
                                    ng-click="model.remove(jono)">
                                     <i class="fa fa-trash-o"></i>
@@ -88,7 +88,7 @@
 
         <div class="form-group" ng-show="model.valinnanvaihe.oid">
             <div class="col-md-2 col-md-offset-2">
-                <a auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="addJono()"><i
+                <a auth="yhteisvalinta" ng-disabled="!userAccess.crudOrg && !userModel.hasYhteisvalintaRights" class="btn btn-sm btn-default" ng-click="addJono()"><i
                         class="fa fa-plus"></i> {{ t('valinnanvaihelomake.jono') || 'Jono' }}
                 </a>
             </div>
@@ -97,7 +97,7 @@
         <div class="form-group">
             <div class="col-md-2">
                 <div class="pull-right">
-                    <button auth ng-disabled="!userAccess.updateOrg" ng-disabled="!form.$valid"
+                    <button auth="yhteisvalinta" ng-disabled="!form.$valid || (!userAccess.updateOrg && !userModel.hasYhteisvalintaRights)"
                             class="btn btn-sm btn-primary"
                             type="submit"><i
                             class="fa fa-floppy-o"></i>
