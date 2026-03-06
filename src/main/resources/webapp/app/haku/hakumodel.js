@@ -21,6 +21,7 @@ angular
           return UserModel.refreshIfNeeded().then(function () {
             var hakufiltering = 'all'
             if (
+              UserModel.hasYhteisvalintaRights ||
               UserModel.isOphUser ||
               (UserModel.hasOtherThanKKUserOrgs && UserModel.isKKUser)
             ) {

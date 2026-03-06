@@ -18,3 +18,5 @@ bower_components
 .~lock*
 .java-version
 .opintopolku-local/
+.clj-kondo
+OY-*

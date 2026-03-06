@@ -5,7 +5,7 @@
     <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaavalista" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
     <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaavalista"
        class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
-    <a auth ng-if="userAccess.crudOph || (userAccess.hasCrudRights() && userModel.isKKUser)" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
+    <a auth="yhteisvalinta" ng-if="userAccess.crudOph || (userAccess.hasCrudRights() && userModel.isKKUser) || userModel.hasYhteisvalintaRights" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
 </div>
 
 <div class="tabsheets">
@@ -17,7 +17,7 @@
                 }}</label>
 
             <div class="col-md-6">
-                <input auth ng-disabled="!userAccess.updateOrg" class="form-control" type="text" name="metatiedot"
+                <input ng-disabled="!userAccess.canUpdateSelection()" class="form-control" type="text" name="metatiedot"
                        id="metatiedot"
                        ng-model="model.jarjestyskriteeri.metatiedot"/>
             </div>
@@ -38,7 +38,7 @@
                 <div class="col-md-10" ng-if="kaavasFiltered(group.result)">
                     <div ng-repeat="data in group.result | laskentakaavaFilter">
                         <p class="form-control-static">
-                            <input auth ng-disabled="!userAccess.updateOrg" type="radio" name="laskentakaava"
+                            <input ng-disabled="!userAccess.canUpdateSelection()" type="radio" name="laskentakaava"
                                    value="{{data.id}}"
                                    ng-model="model.jarjestyskriteeri.laskentakaavaId"
                                    ng-required="!model.jarjestyskriteeri.laskentakaavaId"/>
@@ -78,7 +78,7 @@
                 <div class="col-md-10">
                     <div ng-repeat="data in group.result">
                         <p class="form-control-static">
-                            <input auth ng-disabled="!userAccess.updateOrg" type="radio" name="laskentakaava"
+                            <input ng-disabled="!userAccess.canUpdateSelection()" type="radio" name="laskentakaava"
                                    value="{{data.id}}"
                                    ng-model="model.jarjestyskriteeri.laskentakaavaId"
                                    ng-required="!model.jarjestyskriteeri.laskentakaavaId"/>
@@ -118,7 +118,7 @@
                             class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
                     </button>
 
-                    <button auth ng-disabled="!form.$valid || !userAccess.updateOrg" class="btn btn-sm btn-primary" type="submit">
+                    <button ng-disabled="!form.$valid || (!userAccess.canUpdateSelection())" class="btn btn-sm btn-primary" type="submit">
                         <div ng-show="!model.jarjestyskriteeri.oid">
                             <i class="fa fa-floppy-o"></i> {{ t('jarjestyskriteeri.lisaa') || 'Lisää' }}
                         </div>
