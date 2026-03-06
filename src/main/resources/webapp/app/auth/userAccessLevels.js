@@ -5,8 +5,9 @@ angular.module('valintaperusteet').factory('UserAccessLevels', [
   '$log',
   'AuthService',
   'OrganisaatioUtility',
+  'UserModel',
   '_',
-  function ($q, $log, AuthService, OrganisaatioUtility, _) {
+  function ($q, $log, AuthService, OrganisaatioUtility, UserModel, _) {
     var model = new (function () {
       'use strict'
       this.deferred = undefined
@@ -53,6 +54,16 @@ angular.module('valintaperusteet').factory('UserAccessLevels', [
 
       this.hasReadRights = function () {
         return model.readOph || model.readOrg || model.readApp
+      }
+
+      // Domain-level edit/create fallback used in templates:
+      // organization update/crud OR yhteisvalinta rights.
+      this.canUpdateSelection = function () {
+        return model.updateOrg || UserModel.hasYhteisvalintaRights
+      }
+
+      this.canCrudSelection = function () {
+        return model.crudOrg || UserModel.hasYhteisvalintaRights
       }
 
       this.refreshIfNeeded = function (valintaryhmaOid, hakukohdeOid) {

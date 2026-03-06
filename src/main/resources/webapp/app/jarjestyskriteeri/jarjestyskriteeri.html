@@ -17,7 +17,7 @@
                 }}</label>
 
             <div class="col-md-6">
-                <input ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights" class="form-control" type="text" name="metatiedot"
+                <input ng-disabled="!userAccess.canUpdateSelection()" class="form-control" type="text" name="metatiedot"
                        id="metatiedot"
                        ng-model="model.jarjestyskriteeri.metatiedot"/>
             </div>
@@ -38,7 +38,7 @@
                 <div class="col-md-10" ng-if="kaavasFiltered(group.result)">
                     <div ng-repeat="data in group.result | laskentakaavaFilter">
                         <p class="form-control-static">
-                            <input ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights" type="radio" name="laskentakaava"
+                            <input ng-disabled="!userAccess.canUpdateSelection()" type="radio" name="laskentakaava"
                                    value="{{data.id}}"
                                    ng-model="model.jarjestyskriteeri.laskentakaavaId"
                                    ng-required="!model.jarjestyskriteeri.laskentakaavaId"/>
@@ -78,7 +78,7 @@
                 <div class="col-md-10">
                     <div ng-repeat="data in group.result">
                         <p class="form-control-static">
-                            <input ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights" type="radio" name="laskentakaava"
+                            <input ng-disabled="!userAccess.canUpdateSelection()" type="radio" name="laskentakaava"
                                    value="{{data.id}}"
                                    ng-model="model.jarjestyskriteeri.laskentakaavaId"
                                    ng-required="!model.jarjestyskriteeri.laskentakaavaId"/>
@@ -118,7 +118,7 @@
                             class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
                     </button>
 
-                    <button ng-disabled="!form.$valid || (!userAccess.updateOrg && !userModel.hasYhteisvalintaRights)" class="btn btn-sm btn-primary" type="submit">
+                    <button ng-disabled="!form.$valid || (!userAccess.canUpdateSelection())" class="btn btn-sm btn-primary" type="submit">
                         <div ng-show="!model.jarjestyskriteeri.oid">
                             <i class="fa fa-floppy-o"></i> {{ t('jarjestyskriteeri.lisaa') || 'Lisää' }}
                         </div>
