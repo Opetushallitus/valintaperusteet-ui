@@ -42,9 +42,11 @@ angular
           // Reveal element for oph-users and KK-users by default
           $q.all(promises).then(
             function () {
+              var isYhteisvalintaAuth = attrs.auth === 'yhteisvalinta'
               if (
                 UserAccessLevels.isOphUser() ||
-                (UserModel.isKKUser && UserAccessLevels.readApp)
+                (UserModel.isKKUser && UserAccessLevels.readApp) ||
+                (isYhteisvalintaAuth && UserModel.hasYhteisvalintaRights)
               ) {
                 $animate.removeClass(element, 'ng-hide')
               }

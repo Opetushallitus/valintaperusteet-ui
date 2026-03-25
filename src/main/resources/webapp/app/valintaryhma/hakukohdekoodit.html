@@ -8,12 +8,12 @@
                 <i ng-if="toggleValintaryhmaHakukohdekoodit" class="fa fa-eye-slash"></i> {{ t('hakukohdekoodit.header')
                 || 'Hakukohdekoodit' }}
             </a>
-            <a auth ng-disabled="!userAccess.updateOrg" ng-click="showHakukohdeKoodit()" type="button"
+            <a auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights" ng-click="showHakukohdeKoodit()" type="button"
                     class="btn btn-sm btn-default">
                 <i class="fa fa-plus"></i> {{ t('hakukohdekoodit.uusi') || 'Uusi hakukohdekoodi' }}
             </a>
 
-            <modal modal-template="../common/partials/hakukohdekoodinValinta.html" auth="update">
+            <modal modal-template="../common/partials/hakukohdekoodinValinta.html" auth="yhteisvalinta">
                 <modal-open></modal-open>
             </modal>
         </div>
@@ -40,7 +40,7 @@
                     <td class="align-center">{{hakukohdekoodi.arvo}}</td>
                     <td class="align-center">{{hakukohdekoodi.nimiFi}}</td>
                     <td class="align-center">
-                        <button class="btn btn-sm btn-default" auth ng-disabled="!userAccess.updateOrg" ng-click="removeHakukohdeKoodi(hakukohdekoodi)">
+                        <button class="btn btn-sm btn-default" auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights" ng-click="removeHakukohdeKoodi(hakukohdekoodi)">
                             <i class="fa fa-trash-o"></i>
                         </button>
                     </td>

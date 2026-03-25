@@ -4,7 +4,7 @@
     <a href="#/etusivu" class="tab current"><span>{{ t('common.etusivu') || 'Valintaryhmät ja hakukohteet' }}</span></a>
     <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaavalista" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
     <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaavalista" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
-    <a auth ng-if="userAccess.crudOph || (userAccess.hasCrudRights() && userModel.isKKUser)" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
+    <a auth="yhteisvalinta" ng-if="userAccess.crudOph || (userAccess.hasCrudRights() && userModel.isKKUser) || userModel.hasYhteisvalintaRights" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
 </div>
 
 <div class="tabsheets">
@@ -23,7 +23,7 @@
         <label class="col-md-2 control-label" for="nimi">Nimi</label>
 
         <div class="col-md-4">
-            <input auth ng-disabled="!userAccess.updateOrg" class="form-control" type="text" id="nimi" required
+            <input auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights" class="form-control" type="text" id="nimi" required
                    ng-model="model.hakijaryhma.nimi"/>
         </div>
     </div>
@@ -32,7 +32,7 @@
         <label class="col-md-2 control-label" for="kuvaus">Kuvaus</label>
 
         <div class="col-md-4">
-            <input auth ng-disabled="!userAccess.updateOrg" class="form-control" type="text" id="kuvaus"
+            <input auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights" class="form-control" type="text" id="kuvaus"
                    ng-model="model.hakijaryhma.kuvaus"/>
         </div>
     </div>
@@ -41,7 +41,7 @@
         <label class="col-md-2 control-label" for="kiintio">Kiintiön koko</label>
 
         <div class="col-md-4">
-            <input auth ng-disabled="!userAccess.updateOrg" class="form-control" type="number" min="0" required
+            <input auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights" class="form-control" type="number" min="0" required
                    id="kiintio"
                    ng-model="model.hakijaryhma.kiintio"/>
         </div>
@@ -64,7 +64,7 @@
                        popover-placement="right"
                        popover-trigger="mouseenter"
                        popover="Hakijaryhmästä hyväksytään enintään kiintiön mukainen määrä"
-                       auth ng-disabled="!userAccess.updateOrg"
+                       auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights"
                         />
             </div>
         </div>
@@ -88,7 +88,7 @@
                        popover-placement="right"
                        popover-trigger="mouseenter"
                        popover="Vain hakijaryhmään kuuluvat voivat tulla hyväksytyiksi"
-                       auth ng-disabled="!userAccess.updateOrg"
+                       auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights"
                         />
             </div>
         </div>
@@ -111,7 +111,7 @@
                        popover-placement="right"
                        popover-trigger="mouseenter"
                        popover="Käytetäänkö hakijaryhmään kuuluvia"
-                       auth ng-disabled="!userAccess.updateOrg"
+                       auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights"
                         />
             </div>
         </div>
@@ -129,7 +129,7 @@
                    popover="Hakijaryhmään liittyvä laskentakaava">Laskentakaava:</label>
         </div>
         <div class="col-md-10">
-            <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default"
+            <button auth="yhteisvalinta" ng-disabled="!userAccess.crudOrg && !userModel.hasYhteisvalintaRights" class="btn btn-sm btn-default"
                     ng-click="createNewLaskentakaava()">Luo uusi laskentakaava
             </button>
         </div>
@@ -142,7 +142,7 @@
                 <label>
                     <input type="radio" name="laskentakaava" value="{{data.id}}"
                            ng-model="model.hakijaryhma.laskentakaavaId"
-                           ng-required="!model.hakijaryhma.laskentakaavaId" auth ng-disabled="!userAccess.updateOrg">
+                           ng-required="!model.hakijaryhma.laskentakaavaId" auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights">
                     {{data.nimi}} (<span
                         ng-bind="data.id"></span>)
                 </label>
@@ -177,7 +177,7 @@
                        popover-placement="right"
                        popover-trigger="mouseenter"
                        popover="Hakijaryhmästä on aktiivinen"
-                       auth ng-disabled="!userAccess.updateOrg"
+                       auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights"
                         />
             </div>
         </div>
@@ -209,7 +209,7 @@
                        popover-placement="right"
                        popover-trigger="mouseenter"
                        popover="Hakijaryhmästä hyväksytään enintään kiintiön mukainen määrä"
-                       auth ng-disabled="!userAccess.updateOrg"
+                       auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights"
                         />
             </div>
         </div>
@@ -233,7 +233,7 @@
                        popover-placement="right"
                        popover-trigger="mouseenter"
                        popover="Vain hakijaryhmään kuuluvat voivat tulla hyväksytyiksi"
-                       auth ng-disabled="!userAccess.updateOrg"
+                       auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights"
                         />
             </div>
         </div>
@@ -257,7 +257,7 @@
                        popover-placement="right"
                        popover-trigger="mouseenter"
                        popover="Käytetäänkö hakijaryhmään kuuluvia"
-                       auth ng-disabled="!userAccess.updateOrg"
+                       auth="yhteisvalinta" ng-disabled="!userAccess.updateOrg && !userModel.hasYhteisvalintaRights"
                         />
             </div>
         </div>
@@ -280,8 +280,8 @@
                     popover="Muista tallentaa muutoksesi"><i class="fa fa-arrow-left"></i> Takaisin
             </button>
             <button ng-show="(model.hakijaryhma.oid && !working)"
-                    auth
-                    ng-disabled="!form.$valid || !userAccess.updateOrg"
+                    auth="yhteisvalinta"
+                    ng-disabled="!form.$valid || (!userAccess.updateOrg && !userModel.hasYhteisvalintaRights)"
                     class="btn btn-sm btn-primary"
                     type="submit"
                     >
@@ -289,8 +289,8 @@
             </button>
 
             <button ng-show="(!model.hakijaryhma.oid && !working)"
-                    auth
-                    ng-disabled="!form.$valid || !userAccess.crudOrg"
+                    auth="yhteisvalinta"
+                    ng-disabled="!form.$valid || (!userAccess.crudOrg && !userModel.hasYhteisvalintaRights)"
                     class="btn btn-sm btn-primary"
                     type="submit">
                 <i class="fa fa-floppy-o"></i> Lisää

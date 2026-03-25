@@ -483,63 +483,41 @@ angular
         })
       }
 
-      $scope.cancel = function () {
-        $location.path(
+      function getValinnanvaihePath() {
+        return (
           '/hakukohde/' +
-            $scope.hakukohdeOid +
-            '/valinnanvaihe/' +
-            $scope.valinnanvaiheOid
+          $scope.hakukohdeOid +
+          '/valinnanvaihe/' +
+          $scope.valinnanvaiheOid
         )
+      }
+
+      function getValintatapajonoPath() {
+        return (
+          getValinnanvaihePath() +
+          '/valintatapajono/' +
+          $scope.model.valintatapajono.oid
+        )
+      }
+
+      $scope.cancel = function () {
+        $location.path(getValinnanvaihePath())
       }
 
       $scope.addKriteeri = function () {
-        $location.path(
-          '/hakukohde/' +
-            $scope.hakukohdeOid +
-            '/valinnanvaihe/' +
-            $scope.valinnanvaiheOid +
-            '/valintatapajono/' +
-            $scope.model.valintatapajono.oid +
-            '/jarjestyskriteeri/'
-        )
+        $location.path(getValintatapajonoPath() + '/jarjestyskriteeri/')
       }
 
       $scope.addHakijaryhma = function () {
-        $location.path(
-          '/hakukohde/' +
-            $scope.hakukohdeOid +
-            '/valinnanvaihe/' +
-            $scope.valinnanvaiheOid +
-            '/valintatapajono/' +
-            $scope.model.valintatapajono.oid +
-            '/hakijaryhma'
-        )
+        $location.path(getValintatapajonoPath() + '/hakijaryhma')
       }
 
       $scope.modifyHakijaryhma = function (oid) {
-        $location.path(
-          '/hakukohde/' +
-            $scope.hakukohdeOid +
-            '/valinnanvaihe/' +
-            $scope.valinnanvaiheOid +
-            '/valintatapajono/' +
-            $scope.model.valintatapajono.oid +
-            '/hakijaryhma/' +
-            oid
-        )
+        $location.path(getValintatapajonoPath() + '/hakijaryhma/' + oid)
       }
 
       $scope.modifyKriteeri = function (oid) {
-        $location.path(
-          '/hakukohde/' +
-            $scope.hakukohdeOid +
-            '/valinnanvaihe/' +
-            $scope.valinnanvaiheOid +
-            '/valintatapajono/' +
-            $scope.model.valintatapajono.oid +
-            '/jarjestyskriteeri/' +
-            oid
-        )
+        $location.path(getValintatapajonoPath() + '/jarjestyskriteeri/' + oid)
       }
 
       $scope.remove = function (oid) {
@@ -649,62 +627,40 @@ angular
         })
       }
 
-      $scope.cancel = function () {
-        $location.path(
+      function getValinnanvaihePath() {
+        return (
           '/valintaryhma/' +
-            $scope.valintaryhmaOid +
-            '/valinnanvaihe/' +
-            $scope.valinnanvaiheOid
+          $scope.valintaryhmaOid +
+          '/valinnanvaihe/' +
+          $scope.valinnanvaiheOid
         )
+      }
+
+      function getValintatapajonoPath() {
+        return (
+          getValinnanvaihePath() +
+          '/valintatapajono/' +
+          $scope.model.valintatapajono.oid
+        )
+      }
+
+      $scope.cancel = function () {
+        $location.path(getValinnanvaihePath())
       }
 
       $scope.addKriteeri = function () {
-        $location.path(
-          '/valintaryhma/' +
-            $scope.valintaryhmaOid +
-            '/valinnanvaihe/' +
-            $scope.valinnanvaiheOid +
-            '/valintatapajono/' +
-            $scope.model.valintatapajono.oid +
-            '/jarjestyskriteeri/'
-        )
+        $location.path(getValintatapajonoPath() + '/jarjestyskriteeri/')
       }
 
       $scope.addHakijaryhma = function () {
-        $location.path(
-          '/valintaryhma/' +
-            $scope.valintaryhmaOid +
-            '/valinnanvaihe/' +
-            $scope.valinnanvaiheOid +
-            '/valintatapajono/' +
-            $scope.model.valintatapajono.oid +
-            '/hakijaryhma'
-        )
+        $location.path(getValintatapajonoPath() + '/hakijaryhma')
       }
 
       $scope.modifyKriteeri = function (oid) {
-        $location.path(
-          '/valintaryhma/' +
-            $scope.valintaryhmaOid +
-            '/valinnanvaihe/' +
-            $scope.valinnanvaiheOid +
-            '/valintatapajono/' +
-            $scope.model.valintatapajono.oid +
-            '/jarjestyskriteeri/' +
-            oid
-        )
+        $location.path(getValintatapajonoPath() + '/jarjestyskriteeri/' + oid)
       }
       $scope.modifyHakijaryhma = function (oid) {
-        $location.path(
-          '/valintaryhma/' +
-            $scope.valintaryhmaOid +
-            '/valinnanvaihe/' +
-            $scope.valinnanvaiheOid +
-            '/valintatapajono/' +
-            $scope.model.valintatapajono.oid +
-            '/hakijaryhma/' +
-            oid
-        )
+        $location.path(getValintatapajonoPath() + '/hakijaryhma/' + oid)
       }
 
       $scope.remove = function (oid) {

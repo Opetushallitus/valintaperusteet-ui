@@ -3,18 +3,17 @@
 <div class="tabs">
     <a href="#/etusivu" class="tab"><span>{{ t('common.etusivu') || 'Valintaryhmät ja hakukohteet' }}</span></a>
     <a href="#/laskentakaava" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
-    <a ng-disabled="true" auth href="#/import" class="tab float-right current"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
+    <a ng-disabled="true" auth="yhteisvalinta" href="#/import" class="tab float-right current"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
 </div>
 <div class="tabsheets">
 
     <breadcrumb></breadcrumb>
     <h2>{{ t('yhteisvalinnanhallinta.synkronoi') || 'Synkronoi tarjonta' }}</h2>
-    <select auth
-            ng-if="userAccess.hasCrudRights() && (userModel.isOphUser || userModel.isKKUser) && (model.haut.length > 0)"
+    <select auth="yhteisvalinta"
+            ng-if="((userAccess.hasCrudRights() && (userModel.isOphUser || userModel.isKKUser)) || userModel.hasYhteisvalintaRights) && (model.haut.length > 0)"
             ng-model="model.haku"
             ng-options="haku.uiNimi for haku in model.haut | HakuOwnerFilter | orderBy:'nimi.kieli_fi'">
     </select>
 
-    <button auth ng-disabled="!( userAccess.crudOph || (userModel.isKKUser && userAccess.hasCrudRights()) )" ng-click="aktivoi()" class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.synkronoi') || 'Synkronoi tarjonta' }}</button>
+    <button auth="yhteisvalinta" ng-disabled="!( userAccess.crudOph || (userModel.isKKUser && userAccess.hasCrudRights()) || userModel.hasYhteisvalintaRights )" ng-click="aktivoi()" class="btn btn-primary btn-sm">{{ t('yhteisvalinnanhallinta.synkronoi') || 'Synkronoi tarjonta' }}</button>
 </div>
-

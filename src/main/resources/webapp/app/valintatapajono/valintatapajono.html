@@ -38,7 +38,7 @@
     <a href="#/etusivu" class="tab current"><span>{{ t('common.etusivu') || 'Valintaryhmät ja hakukohteet' }}</span></a>
     <a ng-if="valintaryhmaOid" ng-href="#/valintaryhma/{{valintaryhmaOid}}/laskentakaavalista" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
     <a ng-if="hakukohdeOid" ng-href="#/hakukohde/{{hakukohdeOid}}/laskentakaavalista" class="tab"><span>{{ t('common.laskentakaava') || 'Laskentakaavat' }}</span></a>
-    <a auth ng-if="userAccess.crudOph || (userAccess.hasCrudRights() && userModel.isKKUser)" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
+    <a auth="yhteisvalinta" ng-if="userAccess.crudOph || (userAccess.hasCrudRights() && userModel.isKKUser) || userModel.hasYhteisvalintaRights" href="#/import" class="tab float-right"><span>{{ t('common.import') || 'Yhteisvalinnan hallinta' }}</span></a>
 </div>
 
 <div class="tabsheets">
@@ -49,7 +49,7 @@
     <label class="control-label col-md-2" for="nimi">{{ t('valintatapajono.jononnimi') || 'Jonon nimi' }}</label>
 
     <div class="col-md-4">
-        <input class="form-control" auth ng-disabled="!userAccess.updateOrg" type="text" name="nimi" id="nimi"
+        <input class="form-control" ng-disabled="!userAccess.canUpdateSelection()" type="text" name="nimi" id="nimi"
                ng-model="model.valintatapajono.nimi" required/>
     </div>
 </div>
@@ -58,7 +58,7 @@
     <label class="control-label col-md-2" for="kuvaus">{{ t('valintatapajono.kuvaus') || 'Kuvaus' }}</label>
 
     <div class="col-md-4">
-        <textarea class="form-control" auth ng-disabled="!userAccess.updateOrg" name="kuvaus" id="kuvaus"
+        <textarea class="form-control" ng-disabled="!userAccess.canUpdateSelection()" name="kuvaus" id="kuvaus"
                   ng-model="model.valintatapajono.kuvaus"/>
     </div>
 </div>
@@ -68,7 +68,7 @@
         }}</label>
 
     <div class="col-md-6">
-        <select id="tyyppi" name="tyyppi" auth ng-disabled="!userAccess.updateOrg" class="form-control"
+        <select id="tyyppi" name="tyyppi" ng-disabled="!userAccess.canUpdateSelection()" class="form-control"
                 ng-model="model.valintatapajono.tyyppi" ng-required="model.valintatapajono.siirretaanSijoitteluun"
                 ng-options="k.koodiUri as k.metadata[0].nimi for k in model.valintatapajonoTyypit">
             <option value=""></option>
@@ -82,11 +82,11 @@
         }}</label>
 
     <div class="col-md-4">
-        <input class="form-control" auth ng-disabled="!userAccess.updateOrg"
+        <input class="form-control" ng-disabled="!userAccess.canUpdateSelection()"
                ng-if="!model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan" type="number" min="0" id="aloituspaikat"
                name="aloituspaikat"
                ng-model="model.valintatapajono.aloituspaikat" required>
-        <input class="form-control" auth ng-disabled="!userAccess.updateOrg"
+        <input class="form-control" ng-disabled="!userAccess.canUpdateSelection()"
                ng-if="model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan" type="number" min="0" id="aloituspaikat"
                name="aloituspaikat"
                ng-model="model.valintatapajono.aloituspaikat"/>
@@ -100,7 +100,7 @@
     <div class="col-md-2">
         <div class="checkbox">
             <label>
-                <input auth ng-disabled="!userAccess.updateOrg || forceSiirretaanSijoitteluun == true" type="checkbox" id="siirretaanSijoitteluun"
+                <input ng-disabled="(!userAccess.canUpdateSelection()) || forceSiirretaanSijoitteluun == true" type="checkbox" id="siirretaanSijoitteluun"
                        name="siirretaanSijoitteluun"
                        ng-model="model.valintatapajono.siirretaanSijoitteluun">
             </label>
@@ -115,7 +115,7 @@
     <div class="col-md-2">
         <div class="checkbox">
             <label>
-                <input auth ng-disabled="!userAccess.updateOrg" type="checkbox" id="kaytetaanValintalaskentaa"
+                <input ng-disabled="!userAccess.canUpdateSelection()" type="checkbox" id="kaytetaanValintalaskentaa"
                        name="kaytetaanValintalaskentaa"
                        ng-model="model.valintatapajono.kaytetaanValintalaskentaa">
             </label>
@@ -131,7 +131,7 @@
     <div class="col-md-2">
         <div class="checkbox">
             <label>
-                <input auth ng-disabled="!userAccess.updateOrg" type="checkbox" id="kaikkiEhdonTayttavatHyvaksytaan"
+                <input ng-disabled="!userAccess.canUpdateSelection()" type="checkbox" id="kaikkiEhdonTayttavatHyvaksytaan"
                        name="kaikkiEhdonTayttavatHyvaksytaan"
                        ng-model="model.valintatapajono.kaikkiEhdonTayttavatHyvaksytaan">
             </label>
@@ -146,7 +146,7 @@
     <div class="col-md-2">
         <div class="checkbox">
             <label>
-                <input auth ng-disabled="!userAccess.updateOrg" type="checkbox" id="poistetaankoHylatyt"
+                <input ng-disabled="!userAccess.canUpdateSelection()" type="checkbox" id="poistetaankoHylatyt"
                        name="poistetaankoHylatyt"
                        ng-model="model.valintatapajono.poistetaankoHylatyt">
             </label>
@@ -161,7 +161,7 @@
     <div class="col-md-2">
         <div class="checkbox">
             <label>
-                <input auth ng-disabled="!userAccess.updateOrg" type="checkbox" id="valisijoittelu"
+                <input ng-disabled="!userAccess.canUpdateSelection()" type="checkbox" id="valisijoittelu"
                        name="valisijoittelu"
                        ng-model="model.valintatapajono.valisijoittelu">
             </label>
@@ -177,7 +177,7 @@
     <div class="col-md-2">
         <div class="checkbox">
             <label>
-                <input auth ng-disabled="!userAccess.updateOrg || (model.valmisSijoiteltavaksi && !userAccess.crudOph)" type="checkbox" id="automaattinenSijoitteluunSiirto"
+                <input ng-disabled="(!userAccess.canUpdateSelection()) || (model.valmisSijoiteltavaksi && !userAccess.crudOph)" type="checkbox" id="automaattinenSijoitteluunSiirto"
                        name="automaattinenSijoitteluunSiirto"
                        ng-model="model.valintatapajono.automaattinenSijoitteluunSiirto">
             </label>
@@ -191,20 +191,20 @@
     <div class="col-md-2">
         <div class="radio">
             <label>
-                <input auth ng-disabled="!userAccess.updateOrg" type="radio" name="tps"
+                <input ng-disabled="!userAccess.canUpdateSelection()" type="radio" name="tps"
                        ng-model="model.valintatapajono.tasapistesaanto" id="tps1"
                        value="YLITAYTTO" required/>
             </label><label for="tps1">{{ t('valintatapajono.ylitaytto') || 'Ylitäyttö' }}</label>
         </div>
         <div class="radio">
             <label>
-                <input auth ng-disabled="!userAccess.updateOrg" type="radio" name="tps"
+                <input ng-disabled="!userAccess.canUpdateSelection()" type="radio" name="tps"
                        ng-model="model.valintatapajono.tasapistesaanto" id="tps2"
                        value="ALITAYTTO" required/></label>
             <label for="tps2">{{ t('valintatapajono.alitaytto') || 'Alitäyttö' }}</label>
         </div>
         <div class="radio">
-            <label><input auth ng-disabled="!userAccess.updateOrg" type="radio" name="tps"
+            <label><input ng-disabled="!userAccess.canUpdateSelection()" type="radio" name="tps"
                           ng-model="model.valintatapajono.tasapistesaanto" id="tps3"
                           value="ARVONTA" required/></label>
             <label for="tps3">{{ t('valintatapajono.arvonta') || 'Arvonta' }}</label>
@@ -218,7 +218,7 @@
     <div class="col-md-4">
         <p class="input-group">
             <input class="form-control" datepicker-popup="dd.MM.yyyy"
-                   auth ng-disabled="nykyinenArvoOnMenneisyydessa() && !userAccess.crudOph"
+                   ng-disabled="nykyinenArvoOnMenneisyydessa() && !userAccess.crudOph"
                    ng-model="model.valintatapajono.eiLasketaPaivamaaranJalkeen"
                    is-open="eiLasketaPaivamaaranJalkeenOpen"
                    close-text="Sulje"
@@ -227,7 +227,7 @@
             />
             <span class="input-group-btn">
                 <a class="btn btn-default btn-sm" ng-click="openEiLasketaPaivamaaranJalkeen($event)"
-                   auth ng-disabled="nykyinenArvoOnMenneisyydessa() && !userAccess.crudOph"><i
+                   ng-disabled="nykyinenArvoOnMenneisyydessa() && !userAccess.crudOph"><i
                         class="glyphicon glyphicon-calendar"></i></a>
             </span>
 
@@ -235,7 +235,7 @@
     </div>
     <div class="col-md-6">
         <span class="help-block"
-              auth ng-if="nykyinenArvoOnMenneisyydessa() && !userAccess.crudOph">
+              ng-if="nykyinenArvoOnMenneisyydessa() && !userAccess.crudOph">
                 {{ t('valintatapajono.nykyinenarvomenneisyydessa') || 'Nykyinen päivämäärä on menneisyydessä, joten sitä voi muokata ainoastaan rekisterinpitäjä.' }}
             </span>
     </div>
@@ -387,7 +387,7 @@
             <tbody ui-sortable class="margin-top-2" ng-model="model.jarjestyskriteerit">
             <tr ng-repeat="data in model.jarjestyskriteerit">
                 <td>{{$index + 1}}</td>
-                <td><input auth ng-disabled="!userAccess.updateOrg" type="checkbox" ng-model="data.aktiivinen"/></td>
+                <td><input ng-disabled="!userAccess.canUpdateSelection()" type="checkbox" ng-model="data.aktiivinen"/></td>
                 <td>
                     <a ng-class="{true:'', false:'line-through'}[data.aktiivinen]"
                        ng-click="modifyKriteeri(data.oid)">{{data.nimi}}</a>
@@ -398,8 +398,8 @@
                 </td>
                 <td>{{data.inheritance}}</td>
                 <td>
-                    <a ng-show="!data.inheritance" class="btn btn-sm btn-default" auth
-                            ng-disabled="!userAccess.crudOrg">
+                    <a ng-show="!data.inheritance" class="btn btn-sm btn-default"
+                            ng-disabled="!userAccess.canUpdateSelection()">
                         <i class="fa fa-trash-o" ng-click="remove(data.oid)"></i>
                     </a>
                 </td>
@@ -416,7 +416,7 @@
 
 <div class="form-group" ng-show="model.valintatapajono.oid">
     <div class="col-md-2 col-md-offset-2">
-        <a auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="addKriteeri()"><i
+        <a ng-disabled="!userAccess.canUpdateSelection()" class="btn btn-sm btn-default" ng-click="addKriteeri()"><i
                 class="fa fa-plus"></i> {{ t('valintatapajono.kriteeri') || 'Kriteeri' }}
         </a>
     </div>
@@ -445,7 +445,7 @@
             </thead>
             <tbody ui-sortable ng-model="model.hakijaryhmat">
             <tr ng-repeat="data in model.hakijaryhmat">
-                <td><input auth ng-disabled="!userAccess.updateOrg" type="checkbox" ng-model="data.aktiivinen"/></td>
+                <td><input ng-disabled="!userAccess.canUpdateSelection()" type="checkbox" ng-model="data.aktiivinen"/></td>
                 <td>
                     <a ng-class="{true:'', false:'line-through'}[data.aktiivinen]"
                        ng-click="modifyHakijaryhma(data.oid)">{{data.nimi}}</a>
@@ -453,7 +453,7 @@
                 <td>{{data.kuvaus}}</td>
                 <td>{{data.kiintio}}</td>
                 <td>
-                    <a auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default"
+                    <a ng-disabled="!userAccess.canUpdateSelection()" class="btn btn-sm btn-default"
                             ng-show="!data.inheritance"
                             ng-click="model.removeHakijaryhma(data.oid)"><i class="fa fa-trash-o"></i></a>
                 </td>
@@ -466,14 +466,14 @@
             <modal modal-template="hakijaryhma/hakijaryhmaModal.html">
                 <modal-open></modal-open>
             </modal>
-            <a auth ng-disabled="!userAccess.updateOrg" class="btn btn-sm btn-primary" type="button"
+            <a ng-disabled="!userAccess.canUpdateSelection()" class="btn btn-sm btn-primary" type="button"
                     ng-click="openHakijaryhmaModal()"><i
                     class="fa fa-plus"></i>
                 Liitä hakijaryhmä
             </a>
         </div>
 
-        <a auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="addHakijaryhma()"><i
+        <a ng-disabled="!userAccess.canUpdateSelection()" class="btn btn-sm btn-default" ng-click="addHakijaryhma()"><i
                 class="fa fa-plus"></i> Luo uusi hakijaryhmä
         </a>
 
@@ -487,7 +487,7 @@
                     popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
                     class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
             </button>
-            <button auth ng-disabled="!form.$valid || !userAccess.updateOrg" class="btn btn-sm btn-primary"
+            <button ng-disabled="!form.$valid || (!userAccess.canUpdateSelection())" class="btn btn-sm btn-primary"
                     type="submit"><i
                     class="fa fa-floppy-o"></i>
                 {{ t('common.tallenna') || 'Tallenna' }}
