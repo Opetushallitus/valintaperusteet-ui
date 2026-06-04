@@ -3,11 +3,14 @@ angular
 
   .factory('Treemodel', [
     '$resource',
+    '$timeout',
     'ValintaperusteetPuu',
     'AuthService',
     'HakuModel',
-    function ($resource, ValintaperusteetPuu, AuthService, HakuModel) {
+    function ($resource, $timeout, ValintaperusteetPuu, AuthService, HakuModel) {
       'use strict'
+
+      var refreshHakuTimer = null
 
       //and return interface for manipulating the model
       var modelInterface = {
@@ -71,27 +74,34 @@ angular
           })
         },
         refreshHaku: function (haku) {
-          var kohdejoukko, tila
-
-          if (haku.kohdejoukkoUri) {
-            kohdejoukko = haku.kohdejoukkoUri.split('#')[0]
+          var that = this
+          if (refreshHakuTimer) {
+            $timeout.cancel(refreshHakuTimer)
           }
-          if (this.search.vainValmiitJaJulkaistut) {
-            tila = ['VALMIS', 'JULKAISTU']
-          }
+          refreshHakuTimer = $timeout(function () {
+            refreshHakuTimer = null
+            var kohdejoukko, tila
 
-          ValintaperusteetPuu.get(
-            {
-              q: this.search.q,
-              hakuOid: haku.oid,
-              tila: tila,
-              kohdejoukko: kohdejoukko,
-            },
-            function (result) {
-              modelInterface.valintaperusteList = result
-              modelInterface.update()
+            if (haku.kohdejoukkoUri) {
+              kohdejoukko = haku.kohdejoukkoUri.split('#')[0]
             }
-          )
+            if (that.search.vainValmiitJaJulkaistut) {
+              tila = ['VALMIS', 'JULKAISTU']
+            }
+
+            ValintaperusteetPuu.get(
+              {
+                q: that.search.q,
+                hakuOid: haku.oid,
+                tila: tila,
+                kohdejoukko: kohdejoukko,
+              },
+              function (result) {
+                modelInterface.valintaperusteList = result
+                modelInterface.update()
+              }
+            )
+          }, 300)
         },
         expandTree: function () {
           modelInterface.forEachValintaryhma(function (item) {
