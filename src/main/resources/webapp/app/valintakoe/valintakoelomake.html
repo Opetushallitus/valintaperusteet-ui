@@ -18,7 +18,7 @@
                 }}</label>
 
             <div class="col-md-6">
-                <input ng-disabled="!userAccess.canUpdateSelection()" class="form-control" id="valintakoenimi" name="tunniste"
+                <input ng-disabled="!userAccess.canUpdateSelection()" class="form-control" id="valintakoenimi"
                        ng-model="model.valintakoe.tunniste" required/>
             </div>
         </div>
@@ -27,7 +27,7 @@
             <label class="control-label col-md-2" for="nimi">{{ t('valintakoelomake.nimi') || 'Nimi' }}</label>
 
             <div class="col-md-6">
-                <input class="form-control" ng-disabled="!userAccess.canUpdateSelection()" id="nimi" name="nimi"
+                <input class="form-control" ng-disabled="!userAccess.canUpdateSelection()" id="nimi"
                        ng-model="model.valintakoe.nimi" required/>
             </div>
         </div>
@@ -63,11 +63,11 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2" for="kohde">{{ t('valintakoelomake.kohde') || 'Kutsun kohde'
+            <label class="control-label col-md-2" for="kutsunKohde">{{ t('valintakoelomake.kohde') || 'Kutsun kohde'
                 }}</label>
 
             <div class="col-md-6">
-                <select id="kutsunKohde" class="form-control" ng-disabled="!userAccess.canUpdateSelection()" id="kohde" name="kohde"
+                <select id="kutsunKohde" class="form-control" ng-disabled="!userAccess.canUpdateSelection()" name="kohde"
                         ng-model="model.valintakoe.kutsunKohde">
                     <option value="YLIN_TOIVE">{{ t('valintakoelomake.ylin_toive') || 'Hakijan ylin hakutoive' }}
                     </option>
@@ -86,10 +86,10 @@
         </div>
 
         <div class="form-group" ng-show="model.valintakoe.kutsunKohde == 'HAKIJAN_VALINTA'">
-            <label class="control-label col-md-2" for="kohdeavain">{{ t('valintakoelomake.kohdeavain') || 'Lisäkysymyksen tunniste'
+            <label class="control-label col-md-2" for="lisakysymyksenTunniste">{{ t('valintakoelomake.kohdeavain') || 'Lisäkysymyksen tunniste'
                 }}</label>
             <div class="col-md-6">
-                <select id="lisakysymyksenTunniste" class="form-control" ng-model="model.valintakoe.kutsunKohdeAvain" id="kohdeavain"
+                <select id="lisakysymyksenTunniste" class="form-control" ng-model="model.valintakoe.kutsunKohdeAvain"
                         ng-options="data.key as data.value for data in model.lisakysymysAvaimet | orderBy: 'value'"
                         ng-disabled="!userAccess.canUpdateSelection()">
                     <option value=""></option>
@@ -164,7 +164,7 @@
                             class="fa fa-arrow-left"></i>
                         {{ t('common.takaisin') || 'Takaisin' }}
                     </button>
-                    <button ng-disabled="!model.valintakoe.tunniste || !model.valintakoe.nimi || !userAccess.canUpdateSelection()" class="btn btn-sm btn-primary"
+                    <button ng-disabled="!form.$valid || !userAccess.canUpdateSelection()" class="btn btn-sm btn-primary"
                             type="submit"><i
                             class="fa fa-floppy-o"></i>
                         {{ t('common.tallenna') || 'Tallenna' }}
