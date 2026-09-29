@@ -187,7 +187,7 @@
                         </goals>
                         <configuration>
                             <!-- Node/pnpm that work with Puppeteer & modern locks -->
-                            <nodeVersion>v20.16.0</nodeVersion>
+                            <nodeVersion>v24.21.0</nodeVersion>
                             <pnpmVersion>10.26.0</pnpmVersion>
                         </configuration>
                     </execution>
