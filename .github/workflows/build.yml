@@ -30,10 +30,10 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
 
-      - name: Set up JDK 21
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '21'
+          java-version-file: .java-version
           distribution: 'corretto'
 
       - uses: szenius/set-timezone@v1.0
