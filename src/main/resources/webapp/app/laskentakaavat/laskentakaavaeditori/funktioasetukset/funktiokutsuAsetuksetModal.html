@@ -611,7 +611,7 @@
 
         <button class="btn btn-default btn-sm" ng-click="sulje()"
                 role="button" popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter"
-                popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
+                data-popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
             {{ t('laskentakaavaviiteasetuksetmodal.sulje') || 'Sulje' }}
         </button>
     </div>
@@ -677,7 +677,7 @@
         <!-- tallenna funktiokutsu laskentakaavana -->
         <button class="btn btn-default btn-sm" ng-click="laskentakaavaModalService.toggleModalSelection('asetukset')" popover-popup-delay="500"
                 popover-placement="top" popover-trigger="mouseenter"
-                popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
+                data-popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
             <i class="fa fa-arrow-left"></i> {{ t('laskentakaavaviiteasetuksetmodal.palaafunktioasetuksiin') || 'Palaa funktioasetuksiin' }}
         </button>
         <button class="btn btn-primary btn-sm" ng-disabled="!newKaavaNimi || !userAccess.crudOrg"
@@ -686,7 +686,7 @@
         </button>
         <button class="btn btn-default btn-sm" ng-click="sulje()" popover-popup-delay="500" popover-placement="top"
                 popover-trigger="mouseenter"
-                popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
+                data-popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">
             {{ t('laskentakaavaviiteasetuksetmodal.sulje') || 'Sulje' }}
         </button>
     </div>
