@@ -15,13 +15,13 @@
 
     <div class="col-sm-12 margin-bottom-2">
         <button class="btn btn-sm btn-default" ng-click="back()" popover-popup-delay="250" popover-placement="top"
-              popover-trigger="mouseenter" popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
+              popover-trigger="mouseenter" data-popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
                 class="fa fa-arrow-left"></i> {{ t('laskentakaavat.listaan') || 'Laskentakaavalistaan' }}</button>
         <button class="btn btn-sm btn-default" ng-if="hasHakijaryhmaCookie()" ng-click="returnHakijaryhmaLuonti()"
               popover-popup-delay="250"
               popover-placement="top"
               popover-trigger="mouseenter"
-              popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}">
+              data-popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}">
             <i class="fa fa-arrow-left"></i> {{ t('laskentakaavat.hakijaryhmanluontiin') || 'Takaisin hakijaryhmän luontiin' }}
         </button>
         <button auth ng-disabled="!userAccess.updateOrg" ng-if="kaavaHasId" class="btn btn-sm btn-primary" ng-click="persist()"><i class="fa fa-floppy-o"></i> {{ t('common.tallenna') || 'Tallenna' }}</button>
