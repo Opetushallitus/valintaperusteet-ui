@@ -116,7 +116,7 @@
                 <div class="pull-right">
                 <button type="button" class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500"
                         popover-placement="top" popover-trigger="mouseenter"
-                        popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
+                        data-popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
                         class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
                 </button>
                 <button auth="yhteisvalinta" ng-disabled="!form.$valid || !userAccess.hasCrudRights() || userModel.organizationOids.length === 0" class="btn btn-sm btn-primary" type="submit"><i
