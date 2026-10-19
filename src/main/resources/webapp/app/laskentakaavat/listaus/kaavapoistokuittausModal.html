@@ -6,5 +6,5 @@
 </div>
 <div class="modal-footer">
     <button class="btn btn-sm btn-default" ng-click="cancel()">{{t('valintaperusteet.peruuta') || 'Peruuta'}}</button>
-    <button auth ng-disabled="!userAccess.crudOrg" class="btn btn-sm btn-default" ng-click="ok()"><i class="fa fa-trash-o"></i> {{t('valintaperusteet.poista' || 'Poista')}}</button>
+    <button auth="yhteisvalinta" ng-disabled="!userAccess.canCrudSelection()" class="btn btn-sm btn-default" ng-click="ok()"><i class="fa fa-trash-o"></i> {{t('valintaperusteet.poista' || 'Poista')}}</button>
 </div>
