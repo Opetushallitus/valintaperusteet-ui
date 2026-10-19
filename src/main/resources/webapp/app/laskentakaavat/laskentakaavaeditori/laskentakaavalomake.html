@@ -24,7 +24,7 @@
               data-popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}">
             <i class="fa fa-arrow-left"></i> {{ t('laskentakaavat.hakijaryhmanluontiin') || 'Takaisin hakijaryhmän luontiin' }}
         </button>
-        <button auth ng-disabled="!userAccess.updateOrg" ng-if="kaavaHasId" class="btn btn-sm btn-primary" ng-click="persist()"><i class="fa fa-floppy-o"></i> {{ t('common.tallenna') || 'Tallenna' }}</button>
+        <button auth="yhteisvalinta" ng-disabled="!userAccess.canUpdateSelection()" ng-if="kaavaHasId" class="btn btn-sm btn-primary" ng-click="persist()"><i class="fa fa-floppy-o"></i> {{ t('common.tallenna') || 'Tallenna' }}</button>
         <button ng-if="!kaavaHasId && newKaavaTemplate" class="btn btn-sm btn-primary" ng-click="persistNewKaava()"><i
                 class="fa fa-floppy-o"></i> {{ t('laskentakaavat.uusikaava.tallenna') || 'Tallenna uusi kaava'}}</button>
         <button ng-if="!kaavaHasId && !newKaavaTemplate" class="btn btn-sm btn-primary"
