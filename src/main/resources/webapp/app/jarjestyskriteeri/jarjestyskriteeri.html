@@ -49,7 +49,7 @@
                             <a popover-popup-delay="200"
                                popover-placement="right"
                                popover-trigger="mouseenter"
-                               popover="{{ t('jarjestyskriteeri.kaavaavataan') || 'Kaava avataan uuteen välilehteen' }}"
+                               data-popover="{{ t('jarjestyskriteeri.kaavaavataan') || 'Kaava avataan uuteen välilehteen' }}"
                                ng-if="group.valintaryhmaOid"
                                target="_blank"
                                ng-href="#/valintaryhma/{{group.valintaryhmaOid}}/laskentakaavalista/laskentakaava/{{data.id}}">{{
@@ -57,7 +57,7 @@
                             <a popover-popup-delay="200"
                                popover-placement="right"
                                popover-trigger="mouseenter"
-                               popover="{{ t('jarjestyskriteeri.kaavaavataan') || 'Kaava avataan uuteen välilehteen' }}"
+                               data-popover="{{ t('jarjestyskriteeri.kaavaavataan') || 'Kaava avataan uuteen välilehteen' }}"
                                ng-if="group.hakukohdeOid"
                                target="_blank"
                                ng-href="#/hakukohde/{{group.hakukohdeOid}}/laskentakaavalista/laskentakaava/{{data.id}}">{{
@@ -88,7 +88,7 @@
                             <a popover-popup-delay="200"
                                popover-placement="right"
                                popover-trigger="mouseenter"
-                               popover="{{ t('jarjestyskriteeri.kaavaavataan') || 'Kaava avataan uuteen välilehteen' }}"
+                               data-popover="{{ t('jarjestyskriteeri.kaavaavataan') || 'Kaava avataan uuteen välilehteen' }}"
                                ng-if="group.valintaryhmaOid"
                                target="_blank"
                                ng-href="#/valintaryhma/{{group.valintaryhmaOid}}/laskentakaavalista/laskentakaava/{{data.id}}">{{
@@ -96,7 +96,7 @@
                             <a popover-popup-delay="200"
                                popover-placement="right"
                                popover-trigger="mouseenter"
-                               popover="{{ t('jarjestyskriteeri.kaavaavataan') || 'Kaava avataan uuteen välilehteen' }}"
+                               data-popover="{{ t('jarjestyskriteeri.kaavaavataan') || 'Kaava avataan uuteen välilehteen' }}"
                                ng-if="group.hakukohdeOid"
                                target="_blank"
                                ng-href="#/hakukohde/{{group.hakukohdeOid}}/laskentakaavalista/laskentakaava/{{data.id}}">{{
@@ -114,7 +114,7 @@
                 <div class="pull-right">
                     <button class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500"
                             popover-placement="top" popover-trigger="mouseenter"
-                            popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
+                            data-popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
                             class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
                     </button>
 

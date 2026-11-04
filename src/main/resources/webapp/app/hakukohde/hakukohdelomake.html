@@ -235,7 +235,7 @@
         <div class="pull-right">
             <button type="button" class="btn btn-sm btn-default" ng-click="cancel()" popover-popup-delay="500"
                     popover-placement="top" popover-trigger="mouseenter"
-                    popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
+                    data-popover="{{ t('common.muista') || 'Muista tallentaa muutoksesi' }}"><i
                     class="fa fa-arrow-left"></i> {{ t('common.takaisin') || 'Takaisin' }}
             </button>
             <button auth ng-disabled="!form.$valid || !userAccess.updateOrg" class="btn btn-sm btn-primary"

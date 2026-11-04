@@ -32,7 +32,7 @@
     <button class="btn btn-default btn-sm" ng-click="kaariFunktiokutsu(selectedKaarivaFunktionimi, childFunktiokutsuIndex); sulje()"
             ng-disabled="!selectedKaarivaFunktionimi"
             popover-popup-delay="500" popover-placement="top" popover-trigger="mouseenter"
-            popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">{{ t('funktiokutsuasetuksetmodal.kaareenvalinta.tallenna') || 'Kääri funktiokutsu'}}</button>
+            data-popover="{{ t('laskentakaavaviiteasetuksetmodal.muutokseteivat') || 'Muutokset eivät tallennu ennen kuin tallennat kaavan laskentakaavanäkymästä' }}">{{ t('funktiokutsuasetuksetmodal.kaareenvalinta.tallenna') || 'Kääri funktiokutsu'}}</button>
 
     <button class="btn btn-default btn-sm" ng-click="close()">
         {{ t('laskentakaavaviiteasetuksetmodal.sulje') || 'Sulje' }}
